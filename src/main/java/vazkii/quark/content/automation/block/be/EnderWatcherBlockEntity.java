@@ -2,7 +2,7 @@ package vazkii.quark.content.automation.block.be;
 
 import java.util.List;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

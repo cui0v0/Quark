@@ -2,10 +2,8 @@ package vazkii.quark.base.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -28,10 +26,6 @@ public abstract class QuarkButtonBlock extends ButtonBlock implements IQuarkBloc
 		RegistryHelper.registerBlock(this, regname);
 		RegistryHelper.setCreativeTab(this, creativeTab);
 	}
-
-	@Nonnull
-	@Override
-	protected abstract SoundEvent getSound(boolean powered);
 
 	@Override
 	public QuarkButtonBlock setCondition(BooleanSupplier enabledSupplier) {

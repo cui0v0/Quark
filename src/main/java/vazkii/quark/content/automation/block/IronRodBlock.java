@@ -7,11 +7,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EndRodBlock;
@@ -23,7 +21,6 @@ import net.minecraft.world.level.material.Material;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.ICollateralMover;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
@@ -42,7 +39,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuar
 				.noOcclusion());
 
 		RegistryHelper.registerBlock(this, "iron_rod");
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.REDSTONE_BLOCKS);
 
 		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.CUTOUT);
 
@@ -64,12 +61,6 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuar
 	@Override
 	public boolean doesConditionApply() {
 		return enabledSupplier.getAsBoolean();
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

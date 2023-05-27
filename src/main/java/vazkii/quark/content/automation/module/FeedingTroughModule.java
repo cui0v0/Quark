@@ -11,7 +11,6 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +21,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -39,6 +38,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -62,7 +62,7 @@ public class FeedingTroughModule extends QuarkModule {
 	
 	private static final String TAG_CACHE = "quark:feedingTroughCache";
 
-	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(Registry.POINT_OF_INTEREST_TYPE.getKey(feedingTroughPoi));
+	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(ForgeRegistries.POI_TYPES.getKey(feedingTroughPoi));
 
 	@Config(description = "How long, in game ticks, between animals being able to eat from the trough")
 	@Config.Min(1)
@@ -107,7 +107,7 @@ public class FeedingTroughModule extends QuarkModule {
 				animal.getAge() != 0)
 			return found;
 
-		Vec3 position = animal.position();
+		BlockPos position = animal.blockPosition();
 		TroughPointer pointer = null;
 		
 		boolean cached = false;
@@ -121,7 +121,7 @@ public class FeedingTroughModule extends QuarkModule {
 		
 		if(!cached)
 			pointer = level.getPoiManager().findAllClosestFirstWithType(
-				IS_FEEDER, p -> p.distSqr(new Vec3i(position.x, position.y, position.z)) <= range * range,
+				IS_FEEDER, p -> p.distSqr(position) <= range * range,
 				animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
 				.map(Pair::getSecond)
 				.map(pos -> getTroughFakePlayer(level, pos, goal))
@@ -159,14 +159,14 @@ public class FeedingTroughModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		feeding_trough = new FeedingTroughBlock("feeding_trough", this, CreativeModeTab.TAB_DECORATIONS,
+		feeding_trough = new FeedingTroughBlock("feeding_trough", this, CreativeModeTabs.FUNCTIONAL_BLOCKS,
 				Block.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feeding_trough).build(null);
-		RegistryHelper.register(blockEntityType, "feeding_trough", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(blockEntityType, "feeding_trough", ForgeRegistries.BLOCK_ENTITY_TYPES);
 
 		feedingTroughPoi = new PoiType(getBlockStates(feeding_trough), 1, 32);
-		RegistryHelper.register(feedingTroughPoi, "feeding_trough", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+		RegistryHelper.register(feedingTroughPoi, "feeding_trough", ForgeRegistries.POI_TYPES);
 	}
 
 	private static Set<BlockState> getBlockStates(Block p_218074_) {

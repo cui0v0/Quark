@@ -1,6 +1,6 @@
 package vazkii.quark.content.automation.module;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -21,6 +21,6 @@ public class RedstoneRandomizerModule extends QuarkModule {
 	
 	@Override
 	public void register() {
-		redstone_randomizer = new RedstoneRandomizerBlock("redstone_randomizer", this, CreativeModeTab.TAB_REDSTONE, Block.Properties.of(Material.DECORATION).strength(0).sound(SoundType.WOOD));
+		redstone_randomizer = new RedstoneRandomizerBlock("redstone_randomizer", this, CreativeModeTabs.REDSTONE_BLOCKS, Block.Properties.of(Material.DECORATION).strength(0).sound(SoundType.WOOD));
 	}
 }

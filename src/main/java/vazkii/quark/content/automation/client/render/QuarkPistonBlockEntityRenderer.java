@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +43,7 @@ public class QuarkPistonBlockEntityRenderer {
 	
 	public static boolean renderTESafely(Level world, BlockPos truePos, BlockState state, BlockEntity tile, BlockEntity sourceTE, float partialTicks, Vec3 offset, PoseStack matrix, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		Block block = state.getBlock();
-		String id = Objects.toString(Registry.BLOCK.getKey(block));
+		String id = Objects.toString(ForgeRegistries.BLOCKS.getKey(block));
 		
 		PoseStack.Pose currEntry = matrix.last();
 		render: try {

@@ -17,7 +17,6 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -130,7 +129,7 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 		if (state.getBlock() == Blocks.PISTON_HEAD)
 			return true;
 
-		ResourceLocation res = Registry.BLOCK.getKey(state.getBlock());
+		ResourceLocation res = ForgeRegistries.BLOCKS.getKey(state.getBlock());
 		return res == null || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.toString()) || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.getNamespace());
 	}
 
@@ -200,7 +199,7 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 				world.setBlock(pos, state, 0);
 
 			if (entityTag != null && !world.isClientSide) {
-				if (delayedUpdateList.contains(Objects.toString(Registry.BLOCK.getKey(block))))
+				if (delayedUpdateList.contains(Objects.toString(ForgeRegistries.BLOCKS.getKey(block))))
 					registerDelayedUpdate(world, pos, entityTag);
 				else {
 					BlockEntity entity = loadBlockEntitySafe(world, pos, entityTag);

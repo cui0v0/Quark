@@ -1,6 +1,7 @@
 package vazkii.quark.content.automation.module;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -21,8 +22,8 @@ public class MetalButtonsModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		iron_button = new MetalButtonBlock("iron_button", this, 100).setCondition(() -> enableIron);
-		gold_button = new MetalButtonBlock("gold_button", this, 4).setCondition(() -> enableGold);
+		iron_button = new MetalButtonBlock("iron_button", this, BlockSetType.IRON, 100).setCondition(() -> enableIron);
+		gold_button = new MetalButtonBlock("gold_button", this, BlockSetType.GOLD, 4).setCondition(() -> enableGold);
 	}
 	
 }

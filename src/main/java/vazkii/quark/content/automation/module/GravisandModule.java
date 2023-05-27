@@ -2,14 +2,14 @@ package vazkii.quark.content.automation.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -27,7 +27,7 @@ public class GravisandModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		gravisand = new GravisandBlock("gravisand", this, CreativeModeTab.TAB_REDSTONE, Block.Properties.copy(Blocks.SAND));
+		gravisand = new GravisandBlock("gravisand", this, CreativeModeTabs.REDSTONE_BLOCKS, Block.Properties.copy(Blocks.SAND));
 
 		gravisandType = EntityType.Builder.<Gravisand>of(Gravisand::new, MobCategory.MISC)
 				.sized(0.98F, 0.98F)
@@ -35,7 +35,7 @@ public class GravisandModule extends QuarkModule {
 				.updateInterval(20) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new Gravisand(gravisandType, world))
 				.build("gravisand");
-		RegistryHelper.register(gravisandType, "gravisand", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(gravisandType, "gravisand", ForgeRegistries.ENTITY_TYPES);
 	}
 
 	@Override

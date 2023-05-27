@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.resources.ResourceLocation;
@@ -55,7 +54,7 @@ public class DispensersPlaceBlocksModule extends QuarkModule {
 			Map<Item, DispenseItemBehavior> registry = DispenserBlock.DISPENSER_REGISTRY;
 			
 			for(Block b : ForgeRegistries.BLOCKS) {
-				ResourceLocation res = Registry.BLOCK.getKey(b);
+				ResourceLocation res = ForgeRegistries.BLOCKS.getKey(b);
 				if(!blacklist.contains(Objects.toString(res))) {
 					Item item = b.asItem();
 					if(item instanceof BlockItem) {

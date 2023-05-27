@@ -3,6 +3,7 @@ package vazkii.quark.content.automation.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +32,7 @@ public class EnderWatcherBlock extends QuarkBlock implements EntityBlock {
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
 	public EnderWatcherBlock(QuarkModule module) {
-		super("ender_watcher", module, CreativeModeTab.TAB_REDSTONE,
+		super("ender_watcher", module, CreativeModeTabs.REDSTONE_BLOCKS,
 				Block.Properties.of(Material.METAL, MaterialColor.COLOR_GREEN)
 				.strength(3F, 10F)
 				.sound(SoundType.METAL));
