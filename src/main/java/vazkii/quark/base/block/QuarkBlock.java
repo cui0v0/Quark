@@ -1,8 +1,10 @@
 package vazkii.quark.base.block;
 
-import net.minecraft.core.NonNullList;
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -10,12 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import vazkii.arl.block.BasicBlock;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
 
 public class QuarkBlock extends BasicBlock implements IQuarkBlock {
 
@@ -26,16 +23,10 @@ public class QuarkBlock extends BasicBlock implements IQuarkBlock {
         super(regname, properties);
         this.module = module;
 
-        CreativeTabHandler.addTab(this, creativeTab);
+        RegistryHelper.setCreativeTab(this, creativeTab);
 
         if (module.category.isAddon())
             RequiredModTooltipHandler.map(this, module.category.requiredMod);
-    }
-
-    @Override
-    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        if (isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-            super.fillItemCategory(group, items);
     }
 
     @Override

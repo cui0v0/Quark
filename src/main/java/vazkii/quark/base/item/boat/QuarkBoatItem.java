@@ -13,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
@@ -35,8 +36,10 @@ public class QuarkBoatItem extends QuarkItem {
 
 	public QuarkBoatItem(String type, QuarkModule module, boolean chest) {
 		super(type + (chest ? "_chest" : "") + "_boat", module,
-				(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_TRANSPORTATION));
+				(new Item.Properties()).stacksTo(1));
 
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
+		
 		this.type = type;
 		this.chest = chest;
 	}
@@ -75,7 +78,7 @@ public class QuarkBoatItem extends QuarkItem {
 				} else {
 					if (!world.isClientSide) {
 						world.addFreshEntity(boat);
-						world.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(hitresult.getLocation()));
+						world.gameEvent(player, GameEvent.ENTITY_PLACE, BlockPos.containing(hitresult.getLocation()));
 						if (!player.getAbilities().instabuild) {
 							itemstack.shrink(1);
 						}

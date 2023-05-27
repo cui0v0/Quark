@@ -22,11 +22,12 @@ import net.minecraft.network.chat.Component;
 import vazkii.arl.util.ClientTicker;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.client.util.Button2;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 
-public class QButton extends Button {
+public class QButton extends Button2 {
 
 	private static final int ORANGE = 1;
 	private static final int PURPLE = 2;
@@ -115,14 +116,16 @@ public class QButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.renderButton(mstack, mouseX, mouseY, partialTicks);
+	public void renderWidget(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+		super.renderWidget(mstack, mouseX, mouseY, partialTicks);
 
 		int iconIndex = Math.min(4, ContributorRewardHandler.localPatronTier);
-		if(celebrating != null) {
+		if(celebrating != null)
 			iconIndex = celebrating.tier;
-		}
 
+		int x = getX();
+		int y = getY();
+		
 		if(iconIndex > 0) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);

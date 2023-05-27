@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -52,7 +51,7 @@ public class BrewingHandler {
 
 	public static void addPotionMix(String flag, Supplier<Ingredient> reagent, MobEffect effect,
 									@Nullable MobEffect negation, int normalTime, int longTime, int strongTime) {
-		ResourceLocation loc = RegistryHelper.getRegistryName(effect, BuiltInRegistries.MOB_EFFECT);
+		ResourceLocation loc = RegistryHelper.getRegistryName(effect, ForgeRegistries.MOB_EFFECTS);
 		
 		if (loc != null) {
 			String baseName = loc.getPath();
@@ -65,7 +64,7 @@ public class BrewingHandler {
 			addPotionMix(flag, reagent, normalType, longType, strongType);
 
 			if (negation != null) {
-				ResourceLocation negationLoc = RegistryHelper.getRegistryName(negation, BuiltInRegistries.MOB_EFFECT);
+				ResourceLocation negationLoc = RegistryHelper.getRegistryName(negation, ForgeRegistries.MOB_EFFECTS);
 				if (negationLoc != null) {
 					String negationBaseName = negationLoc.getPath();
 

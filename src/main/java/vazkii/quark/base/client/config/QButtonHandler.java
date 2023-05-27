@@ -1,6 +1,9 @@
 package vazkii.quark.base.client.config;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.Util;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -18,8 +21,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.screen.widgets.QButton;
 import vazkii.quark.base.handler.GeneralConfig;
 
-import java.util.List;
-
 @EventBusSubscriber(modid = Quark.MOD_ID, value = Dist.CLIENT)
 public class QButtonHandler {
 
@@ -36,7 +37,7 @@ public class QButtonHandler {
 			for(GuiEventListener b : listeners)
 				if(b instanceof AbstractWidget abs) {
 					if(targets.contains(abs.getMessage().getString())) {
-						Button qButton = new QButton(abs.x + (GeneralConfig.qButtonOnRight ? 103 : -24), abs.y);
+						Button qButton = new QButton(abs.getX() + (GeneralConfig.qButtonOnRight ? 103 : -24), abs.getY());
 						event.addListener(qButton);
 						return;
 					}

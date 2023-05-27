@@ -13,11 +13,10 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -36,6 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
@@ -91,8 +92,8 @@ public class WoodSetHandler {
 				.setCustomClientFactory((spawnEntity, world) -> new QuarkChestBoat(quarkChestBoatEntityType, world))
 				.build("quark_chest_boat");
 
-		RegistryHelper.register(quarkBoatEntityType, "quark_boat", Registry.ENTITY_TYPE_REGISTRY);
-		RegistryHelper.register(quarkChestBoatEntityType, "quark_chest_boat", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(quarkBoatEntityType, "quark_boat", ForgeRegistries.ENTITY_TYPES);
+		RegistryHelper.register(quarkChestBoatEntityType, "quark_chest_boat", ForgeRegistries.ENTITY_TYPES);
 	}
 
 	public static void setup(FMLCommonSetupEvent event) {
@@ -122,31 +123,34 @@ public class WoodSetHandler {
 	}
 	
 	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat) {
-		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
-		WoodSet set = new WoodSet(name, module, type);
+		String namespacedName = Quark.MOD_ID + ":" + name;
+		BlockSetType setType = BlockSetType.register(new BlockSetType(namespacedName));
+		WoodType woodType = WoodType.register(new WoodType(namespacedName, setType));
+		
+		WoodSet set = new WoodSet(name, module, setType, woodType);
 
 		if(hasLog) {
 			set.log = log(name + "_log", module, color, barkColor);
-			set.wood = new QuarkPillarBlock(name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
+			set.wood = new QuarkPillarBlock(name + "_wood", module, CreativeModeTabs.BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
 			set.strippedLog = log("stripped_" + name + "_log", module, color, color);
-			set.strippedWood = new QuarkPillarBlock("stripped_" + name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
+			set.strippedWood = new QuarkPillarBlock("stripped_" + name + "_wood", module, CreativeModeTabs.BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
 		}		
 		
-		set.planks = new QuarkBlock(name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.planks = new QuarkBlock(name + "_planks", module, CreativeModeTabs.BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 		
 		set.slab = VariantHandler.addSlab((IQuarkBlock) set.planks).getBlock();
 		set.stairs = VariantHandler.addStairs((IQuarkBlock) set.planks).getBlock();
-		set.fence = new QuarkFenceBlock(name + "_fence", module, CreativeModeTab.TAB_DECORATIONS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.fenceGate = new QuarkFenceGateBlock(name + "_fence_gate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fence = new QuarkFenceBlock(name + "_fence", module, CreativeModeTabs.BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fenceGate = new QuarkFenceGateBlock(name + "_fence_gate", module, CreativeModeTabs.REDSTONE_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD), woodType);
 
-		set.door = new QuarkDoorBlock(name + "_door", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
-		set.trapdoor = new QuarkTrapdoorBlock(name + "_trapdoor", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
+		set.door = new QuarkDoorBlock(name + "_door", module, CreativeModeTabs.REDSTONE_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion(), setType);
+		set.trapdoor = new QuarkTrapdoorBlock(name + "_trapdoor", module, CreativeModeTabs.REDSTONE_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false), setType);
 
-		set.button = new QuarkWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
-		set.pressurePlate = new QuarkPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.button = new QuarkWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
+		set.pressurePlate = new QuarkPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, CreativeModeTabs.REDSTONE_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
 
-		set.sign = new QuarkStandingSignBlock(name + "_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
-		set.wallSign = new QuarkWallSignBlock(name + "_wall_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
+		set.sign = new QuarkStandingSignBlock(name + "_sign", module, woodType, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
+		set.wallSign = new QuarkWallSignBlock(name + "_wall_sign", module, woodType, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
 		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantLaddersModule.class));
@@ -200,7 +204,7 @@ public class WoodSetHandler {
 	}
 
 	private static RotatedPillarBlock log(String name, QuarkModule module, MaterialColor topColor, MaterialColor sideColor) {
-		return new QuarkPillarBlock(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		return new QuarkPillarBlock(name, module, CreativeModeTabs.BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
 				.strength(2.0F).sound(SoundType.WOOD));
 	}
@@ -220,6 +224,7 @@ public class WoodSetHandler {
 	public static class WoodSet {
 
 		public final String name;
+		public final BlockSetType setType;
 		public final WoodType type;
 		public final QuarkModule module;
 
@@ -231,9 +236,10 @@ public class WoodSetHandler {
 
 		public Item signItem, boatItem, chestBoatItem;
 
-		public WoodSet(String name, QuarkModule module, WoodType type) {
+		public WoodSet(String name, QuarkModule module, BlockSetType setType, WoodType type) {
 			this.name = name;
 			this.module = module;
+			this.setType = setType;
 			this.type = type;
 		}
 

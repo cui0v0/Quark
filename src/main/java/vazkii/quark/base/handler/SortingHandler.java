@@ -415,13 +415,13 @@ public final class SortingHandler {
 		ArmorItem armor1 = (ArmorItem) stack1.getItem();
 		ArmorItem armor2 = (ArmorItem) stack2.getItem();
 
-		EquipmentSlot slot1 = armor1.getSlot();
-		EquipmentSlot slot2 = armor2.getSlot();
+		ArmorItem.Type slot1 = armor1.getType();
+		ArmorItem.Type slot2 = armor2.getType();
 
 		if (slot1 == slot2)
-			return armor2.getMaterial().getDefenseForSlot(slot2) - armor2.getMaterial().getDefenseForSlot(slot1);
+			return armor2.getMaterial().getDefenseForType(slot2) - armor2.getMaterial().getDefenseForType(slot1);
 
-		return slot2.getIndex() - slot1.getIndex();
+		return slot1.ordinal() - slot2.ordinal();
 	}
 
 	public static int damageCompare(ItemStack stack1, ItemStack stack2) {

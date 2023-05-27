@@ -2,19 +2,16 @@ package vazkii.quark.base.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import vazkii.arl.interf.IBlockItemProvider;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.item.QuarkDoubleHighBlockItem;
@@ -25,19 +22,13 @@ public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IBlockItem
 	private final QuarkModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkDoorBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
-		super(properties);
+	public QuarkDoorBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties, BlockSetType setType) {
+		super(properties, setType);
 		this.module = module;
 
 		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.CUTOUT);
 		RegistryHelper.registerBlock(this, regname);
-		CreativeTabHandler.addTab(this, creativeTab);
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
+		RegistryHelper.setCreativeTab(this, creativeTab);
 	}
 
 	@Override

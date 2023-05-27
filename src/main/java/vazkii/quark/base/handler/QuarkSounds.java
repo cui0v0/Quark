@@ -1,8 +1,7 @@
 package vazkii.quark.base.handler;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -15,7 +14,7 @@ import vazkii.arl.util.RegistryHelper;
  * Created at 12:40 PM on 9/9/19.
  */
 public class QuarkSounds {
-	private static final List<SoundEvent> REGISTRY_DEFERENCE = Lists.newArrayList();
+	private static final Map<String, SoundEvent> REGISTRY_DEFERENCE = new HashMap<>();
 
 	public static final SoundEvent ENTITY_STONELING_MEEP = register("entity.stoneling.meep");
 	public static final SoundEvent ENTITY_STONELING_PURR = register("entity.stoneling.purr");
@@ -92,16 +91,19 @@ public class QuarkSounds {
 	public static final SoundEvent MUSIC_GLIMMERING_WEALD = register("music.glimmering_weald");
 
 	public static void start() {
-		for (SoundEvent event : REGISTRY_DEFERENCE)
-			RegistryHelper.register(event, ForgeRegistries.SOUND_EVENTS);
+		for(String name : REGISTRY_DEFERENCE.keySet()) {
+			SoundEvent event = REGISTRY_DEFERENCE.get(name);
+			RegistryHelper.register(event, name, ForgeRegistries.SOUND_EVENTS);
+		}
+		
 		REGISTRY_DEFERENCE.clear();
 	}
 
 	public static SoundEvent register(String name) {
 		ResourceLocation loc = GameData.checkPrefix(name, false);
-		SoundEvent event = new SoundEvent(loc);
+		SoundEvent event = SoundEvent.createVariableRangeEvent(loc);
 		RegistryHelper.setInternalName(event, loc);
-		REGISTRY_DEFERENCE.add(event);
+		REGISTRY_DEFERENCE.put(name, event);
 		return event;
 	}
 }

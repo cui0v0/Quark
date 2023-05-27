@@ -2,15 +2,11 @@ package vazkii.quark.base.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BushBlock;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
@@ -26,15 +22,9 @@ public class QuarkBushBlock extends BushBlock implements IQuarkBlock {
 
 		RegistryHelper.registerBlock(this, regname);
 
-		CreativeTabHandler.addTab(this, creativeTab);
+		RegistryHelper.setCreativeTab(this, creativeTab);
 
 		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.CUTOUT);
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

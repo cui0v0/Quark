@@ -10,21 +10,23 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.compress.utils.Lists;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +73,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.tags.ITag;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
@@ -238,15 +243,10 @@ public class MiscUtil {
 		return putIntoInv(stack, level, blockPos, tile, face, true, doSimulation).isEmpty();
 	}
 
-	public static <T> List<T> getTagValues(TagKey<T> tag) {
-		// TODO: redo this logic for 1.19.4
-//		Registry<T> registry = access.registryOrThrow(tag.registry());
-//		HolderSet<T> holderSet = registry.getTag(tag).orElse(null);
-//		
-//		if(holderSet == null)
-			return Lists.newArrayList();
-//
-//		return holderSet.stream().map(Holder::value).toList();
+	public static <T> List<T> getTagValues(TagKey<T> tagKey) {
+		ForgeRegistry<T> registry = RegistryManager.ACTIVE.getRegistry(tagKey.registry());
+		ITag<T> tag = registry.tags().getTag(tagKey);
+		return tag.stream().filter(t -> t != null).collect(Collectors.toList());
 	}
 
 	public static String toColorString(int color) {
@@ -286,15 +286,14 @@ public class MiscUtil {
 	}
 
 	public static BlockState fromString(String key) {
-		// TODO: redo this logic for 1.19.4
-//		try {
-//			BlockResult result = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK, new StringReader(key), false);
-//			BlockState state = result.blockState();
-//			return state == null ? Blocks.AIR.defaultBlockState() : state;
-//		} catch (CommandSyntaxException e) {
+		try {
+			BlockResult result = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), key, false);
+			BlockState state = result.blockState();
+			return state == null ? Blocks.AIR.defaultBlockState() : state;
+		} catch (CommandSyntaxException e) {
 			return Blocks.AIR.defaultBlockState();
-//		}
-	}
+		}
+	}	
 
 	@OnlyIn(Dist.CLIENT)
 	public static int getGuiTextColor(String name) {

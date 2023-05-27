@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import vazkii.quark.base.client.util.Button2;
 
 public abstract class AbstractInputScreen<T> extends AbstractQScreen {
 
@@ -35,9 +36,9 @@ public abstract class AbstractInputScreen<T> extends AbstractQScreen {
 		int left = (width - (bWidth + pad) * 3) / 2;
 		int vStart = height - 30;
 
-		addRenderableWidget(new Button(left, vStart, bWidth, 20, Component.translatable("quark.gui.config.default"), this::setDefault));
-		addRenderableWidget(resetButton = new Button(left + bWidth + pad, vStart, bWidth, 20, Component.translatable("quark.gui.config.discard"), this::reset));
-		addRenderableWidget(doneButton = new Button(left + (bWidth + pad) * 2, vStart, bWidth, 20, Component.translatable("gui.done"), this::save));
+		addRenderableWidget(new Button2(left, vStart, bWidth, 20, Component.translatable("quark.gui.config.default"), this::setDefault));
+		addRenderableWidget(resetButton = new Button2(left + bWidth + pad, vStart, bWidth, 20, Component.translatable("quark.gui.config.discard"), this::reset));
+		addRenderableWidget(doneButton = new Button2(left + (bWidth + pad) * 2, vStart, bWidth, 20, Component.translatable("gui.done"), this::save));
 
 		onInit();
 		update();

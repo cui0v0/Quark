@@ -2,15 +2,13 @@ package vazkii.quark.base.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
 
 /**
@@ -22,18 +20,17 @@ public class QuarkFenceGateBlock extends FenceGateBlock implements IQuarkBlock {
 	private final QuarkModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkFenceGateBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
-		super(properties);
+	public QuarkFenceGateBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties, WoodType woodType) {
+		this(regname, module, creativeTab, properties, woodType.fenceGateOpen(), woodType.fenceGateClose());
+	}
+
+	
+	public QuarkFenceGateBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties, SoundEvent openSound, SoundEvent closeSound) {
+		super(properties, openSound, closeSound);
 		this.module = module;
 
 		RegistryHelper.registerBlock(this, regname);
-		CreativeTabHandler.addTab(this, creativeTab);
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
+		RegistryHelper.setCreativeTab(this, creativeTab);
 	}
 
 	@Override

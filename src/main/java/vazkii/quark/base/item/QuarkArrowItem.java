@@ -2,13 +2,10 @@ package vazkii.quark.base.item;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,16 +18,11 @@ public abstract class QuarkArrowItem extends ArrowItem implements IQuarkItem {
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public QuarkArrowItem(String name, QuarkModule module) {
-		super(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
+		super(new Item.Properties());
 
 		RegistryHelper.registerItem(this, name);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.COMBAT);
 		this.module = module;
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

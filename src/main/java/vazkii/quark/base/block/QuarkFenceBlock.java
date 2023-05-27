@@ -2,15 +2,11 @@ package vazkii.quark.base.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.FenceBlock;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
 
 public class QuarkFenceBlock extends FenceBlock implements IQuarkBlock {
@@ -23,13 +19,7 @@ public class QuarkFenceBlock extends FenceBlock implements IQuarkBlock {
 		this.module = module;
 
 		RegistryHelper.registerBlock(this, regname);
-		CreativeTabHandler.addTab(this, creativeTab);
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
+		RegistryHelper.setCreativeTab(this, creativeTab);
 	}
 
 	@Override

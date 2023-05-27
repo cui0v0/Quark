@@ -2,7 +2,6 @@ package vazkii.quark.base.item.boat;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -14,6 +13,7 @@ import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.QuarkBoatType;
 
@@ -63,7 +63,7 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 
 	@Override
 	public ItemEntity spawnAtLocation(ItemLike itemLike) {
-		if(Registry.ITEM.getKey(itemLike.asItem()).getPath().contains("_planks"))
+		if(ForgeRegistries.ITEMS.getKey(itemLike.asItem()).getPath().contains("_planks"))
 			return super.spawnAtLocation(getQuarkBoatTypeObj().planks());
 		return super.spawnAtLocation(itemLike);
 	}
@@ -72,17 +72,6 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 	@Override
 	public Item getDropItem() {
 		return getQuarkBoatTypeObj().chestBoat();
-	}
-
-	@Nonnull
-	@Override
-	public Type getBoatType() {
-		return Boat.Type.OAK;
-	}
-
-	@Override
-	public void setType(@Nonnull Type type) {
-		// NO-OP
 	}
 	
 	@Override

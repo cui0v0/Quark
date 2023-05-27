@@ -4,14 +4,16 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.joml.Quaternionf;
+
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -41,7 +43,12 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		return WoodSetHandler.boatTypes().collect(ImmutableMap.toImmutableMap(Functions.identity(), name -> {
 			String folder = chest ? "chest_boat" : "boat";
 			ResourceLocation texture = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/" + folder + "/" + name + ".png");
-			BoatModel model = new BoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat), chest);
+			BoatModel model;
+			
+			if(chest)
+				model = new BoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat));
+			else 
+				model = new ChestBoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat));
 
 			return new BoatModelTuple(texture, model);
 		}));
@@ -53,7 +60,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 	public void render(Boat boat, float yaw, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
 		matrix.pushPose();
 		matrix.translate(0.0D, 0.375D, 0.0D);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
+		matrix.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
 		float wiggleAngle = (float)boat.getHurtTime() - partialTicks;
 		float wiggleMagnitude = boat.getDamage() - partialTicks;
 		if (wiggleMagnitude < 0.0F) {
@@ -61,12 +68,12 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		}
 
 		if (wiggleAngle > 0.0F) {
-			matrix.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(wiggleAngle) * wiggleAngle * wiggleMagnitude / 10.0F * (float)boat.getHurtDir()));
+			matrix.mulPose(Axis.XP.rotationDegrees(Mth.sin(wiggleAngle) * wiggleAngle * wiggleMagnitude / 10.0F * (float)boat.getHurtDir()));
 		}
 
 		float f2 = boat.getBubbleAngle(partialTicks);
 		if (!Mth.equal(f2, 0.0F)) {
-			matrix.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boat.getBubbleAngle(partialTicks), true));
+	         matrix.mulPose((new Quaternionf()).setAngleAxis(boat.getBubbleAngle(partialTicks) * ((float) Math.PI / 180F), 1.0F, 0.0F, 1.0F));
 		}
 
 		BoatModelTuple tuple = getModelWithLocation(boat);
@@ -74,7 +81,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		BoatModel model = tuple.model();
 		
 		matrix.scale(-1.0F, -1.0F, 1.0F);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		matrix.mulPose(Axis.YP.rotationDegrees(90.0F));
 		model.setupAnim(boat, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(model.renderType(loc));
 		model.renderToBuffer(matrix, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

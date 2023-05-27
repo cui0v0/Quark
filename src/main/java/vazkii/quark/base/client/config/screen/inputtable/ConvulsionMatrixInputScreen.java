@@ -8,8 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
+import vazkii.quark.base.client.util.Button2;
 import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
 
 public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScreen<ConvulsionMatrixConfig> {
@@ -45,7 +45,7 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 
 		int i = 0;
 		for(String s : mutable.params.presetMap.keySet()) {
-			addRenderableWidget(new Button(x + (w * i), y + 115, w - p, 20, Component.literal(s), this::onSlide));
+			addRenderableWidget(new Button2(x + (w * i), y + 115, w - p, 20, Component.literal(s), this::onSlide));
 			i++;
 		}
 	}
@@ -64,32 +64,36 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 
 		int sliders = 0;
 		boolean needsUpdate = false;
-		for(Widget w : renderables)
-			if(w instanceof ForgeSlider s) {
+		for(Renderable renderable : renderables)
+			if(renderable instanceof ForgeSlider s) {
+				int sx = s.getX();
+				int sy = s.getY();
+				
 				double val = correct(s);
 				double curr = mutable.colorMatrix[sliders];
 				if(curr != val) {
 					mutable.colorMatrix[sliders] = val;
 					needsUpdate = true;
 				}
+				
 
 				String displayVal = String.format("%.2f", val);
-				font.drawShadow(mstack, displayVal, s.x + (float) (s.getWidth() / 2 - font.width(displayVal) / 2) , s.y + 6, 0xFFFFFF);
+				font.drawShadow(mstack, displayVal, sx + (float) (s.getWidth() / 2 - font.width(displayVal) / 2) , sy + 6, 0xFFFFFF);
 
 				switch (sliders) {
 				case 0 -> {
-					font.drawShadow(mstack, "R =", s.x - 20, s.y + 5, 0xFF0000);
-					font.drawShadow(mstack, "R", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0xFF0000);
+					font.drawShadow(mstack, "R =", sx - 20, sy + 5, 0xFF0000);
+					font.drawShadow(mstack, "R", sx + (float) (s.getWidth() / 2 - 2), sy - 12, 0xFF0000);
 				}
-				case 1 -> font.drawShadow(mstack, "G", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x00FF00);
-				case 2 -> font.drawShadow(mstack, "B", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x0077FF);
-				case 3 -> font.drawShadow(mstack, "G =", s.x - 20, s.y + 5, 0x00FF00);
-				case 6 -> font.drawShadow(mstack, "B =", s.x - 20, s.y + 5, 0x0077FF);
-				default -> {
+				case 1 -> font.drawShadow(mstack, "G", sx + (float) (s.getWidth() / 2 - 2), sy - 12, 0x00FF00);
+				case 2 -> font.drawShadow(mstack, "B", sx + (float) (s.getWidth() / 2 - 2), sy - 12, 0x0077FF);
+				case 3 -> font.drawShadow(mstack, "G =", sx - 20, sy + 5, 0x00FF00);
+				case 6 -> font.drawShadow(mstack, "B =", sx - 20, sy + 5, 0x0077FF);
+				default -> { }
 				}
-				}
+				
 				if((sliders % 3) != 0)
-					font.drawShadow(mstack, "+", s.x - 9, s.y + 5, 0xFFFFFF);
+					font.drawShadow(mstack, "+", sx - 9, sy + 5, 0xFFFFFF);
 
 				sliders++;
 			}
@@ -124,7 +128,7 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 			font.draw(mstack, name, cx + 2, cy + 2, 0x55000000);
 
 			if(renderFolliage) {
-				minecraft.getItemRenderer().renderGuiItem(new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
+				minecraft.getItemRenderer().renderGuiItem(mstack, new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
 				mstack.pushPose();
 				mstack.translate(0, 0, 999);
 				fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage & 0x55FFFFFF);
@@ -163,8 +167,8 @@ public class ConvulsionMatrixInputScreen extends AbstractInputtableConfigTypeScr
 			int sliders = 0; 
 			mutable.colorMatrix = Arrays.copyOf(matrix, matrix.length);
 
-			for(Widget w : renderables)
-				if(w instanceof ForgeSlider s) {
+			for(Renderable renderable : renderables)
+				if(renderable instanceof ForgeSlider s) {
 					s.setValue(matrix[sliders]);
 					sliders++;
 				}

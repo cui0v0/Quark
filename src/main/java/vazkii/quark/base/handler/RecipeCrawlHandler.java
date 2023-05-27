@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -66,7 +67,7 @@ public class RecipeCrawlHandler {
 		MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Reset());
 	}
 
-	private static void load(RecipeManager manager) {
+	private static void load(RegistryAccess access, RecipeManager manager) {
 		if(!manager.getRecipes().isEmpty()) {
 			MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.CrawlStarting());
 
@@ -77,21 +78,21 @@ public class RecipeCrawlHandler {
 			Collection<Recipe<?>> recipes = manager.getRecipes();
 
 			for(Recipe<?> recipe : recipes) {
-				if(recipe == null || recipe.getIngredients() == null || recipe.getResultItem() == null)
+				if(recipe == null || recipe.getIngredients() == null || recipe.getResultItem(access) == null)
 					continue;
 
 				RecipeCrawlEvent.Visit<?> event;
 
 				if(recipe instanceof ShapedRecipe sr)
-					event = new Visit.Shaped(sr);
+					event = new Visit.Shaped(access, sr);
 				else if(recipe instanceof ShapelessRecipe sr)
-					event = new Visit.Shapeless(sr);
+					event = new Visit.Shapeless(access, sr);
 				else if(recipe instanceof CustomRecipe cr)
-					event = new Visit.Custom(cr);
+					event = new Visit.Custom(access, cr);
 				else if(recipe instanceof AbstractCookingRecipe acr)
-					event = new Visit.Cooking(acr);
+					event = new Visit.Cooking(access, acr);
 				else 
-					event = new Visit.Misc(recipe);
+					event = new Visit.Misc(access, recipe);
 
 				recipesToLazyDigest.add(recipe);
 				MinecraftForge.EVENT_BUS.post(event);
@@ -102,9 +103,11 @@ public class RecipeCrawlHandler {
 	@SubscribeEvent
 	public static void onTick(ServerTickEvent tick) {
 		synchronized(mutex) {
+			RegistryAccess access = tick.getServer().registryAccess();
+			
 			if(needsCrawl) {
 				RecipeManager manager = tick.getServer().getRecipeManager();
-				load(manager);
+				load(access, manager);
 				needsCrawl = false;
 			}
 			
@@ -113,7 +116,7 @@ public class RecipeCrawlHandler {
 				backwardsDigestion.clear();
 				
 				for(Recipe<?> recipe : recipesToLazyDigest)
-					digest(recipe);
+					digest(access, recipe);
 				
 				recipesToLazyDigest.clear();
 				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion, backwardsDigestion));
@@ -121,8 +124,8 @@ public class RecipeCrawlHandler {
 		}
 	}
 
-	private static void digest(Recipe<?> recipe) {
-		ItemStack out = recipe.getResultItem();
+	private static void digest(RegistryAccess access, Recipe<?> recipe) {
+		ItemStack out = recipe.getResultItem(access);
 		Item outItem = out.getItem();
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();

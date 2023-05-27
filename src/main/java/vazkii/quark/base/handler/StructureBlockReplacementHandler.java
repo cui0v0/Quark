@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -28,7 +28,7 @@ public class StructureBlockReplacementHandler {
 	
 	@Nullable
 	public static ResourceKey<Structure> getStructureKey(ServerLevelAccessor accessor, StructureHolder structure) {
-		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).flatMap(
+		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registries.STRUCTURE).flatMap(
 				(it) -> it.getResourceKey(structure.currentStructure));
 		
 		return res.isEmpty() ? null : res.get();
@@ -36,7 +36,7 @@ public class StructureBlockReplacementHandler {
 	
 	@Nullable
 	public static ResourceLocation getStructureRes(ServerLevelAccessor accessor, StructureHolder structure) {
-		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY).map(
+		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registries.STRUCTURE).map(
 				(it) -> it.getKey(structure.currentStructure));
 		
 		return res.isEmpty() ? null : res.get();

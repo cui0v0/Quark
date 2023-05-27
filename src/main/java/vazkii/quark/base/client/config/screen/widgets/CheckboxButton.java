@@ -7,13 +7,13 @@ import javax.annotation.Nonnull;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.api.config.IConfigObject;
+import vazkii.quark.base.client.util.Button2;
 import vazkii.quark.base.handler.MiscUtil;
 
-public class CheckboxButton extends Button {
+public class CheckboxButton extends Button2 {
 
 	private final Supplier<Boolean> checkedSupplier;
 
@@ -27,8 +27,8 @@ public class CheckboxButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partial) {
-		super.renderButton(mstack, mouseX, mouseY, partial);
+	public void renderWidget(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partial) {
+		super.renderWidget(mstack, mouseX, mouseY, partial);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -37,7 +37,7 @@ public class CheckboxButton extends Button {
 		int u = enabled ? 0 : 16;
 		int v = 93;
 
-		blit(mstack, x + 2, y + 1, u, v, 15, 15);
+		blit(mstack, getX() + 2, getY() + 1, u, v, 15, 15);
 	}
 
 }

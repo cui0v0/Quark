@@ -1,11 +1,13 @@
 package vazkii.quark.base.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,14 +16,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.arl.interf.IBlockColorProvider;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
 
 public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IBlockColorProvider {
 
@@ -33,15 +30,9 @@ public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IBlockColo
 
 		this.parent = parent;
 		RegistryHelper.registerBlock(this, IQuarkBlock.inheritQuark(parent, "%s_wall"));
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.BUILDING_BLOCKS);
 
 		RenderLayerHandler.setInherited(this, parent.getBlock());
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(parent.isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Nullable

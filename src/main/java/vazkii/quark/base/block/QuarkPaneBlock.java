@@ -1,19 +1,16 @@
 package vazkii.quark.base.block;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
 import vazkii.arl.util.RegistryHelper;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
 
 public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 
@@ -25,17 +22,12 @@ public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 
 		this.module = module;
 		RegistryHelper.registerBlock(this, name);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.BUILDING_BLOCKS);
 
 		if(renderType != null)
 			RenderLayerHandler.setRenderType(this, renderType);
 	}
 
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
 
 	@Nullable
 	@Override

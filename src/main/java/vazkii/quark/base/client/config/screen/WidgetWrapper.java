@@ -9,13 +9,13 @@ public class WidgetWrapper {
 	
 	public WidgetWrapper(AbstractWidget widget) {
 		this.widget = widget;
-		this.relativeX = widget.x;
-		this.relativeY = widget.y;
+		this.relativeX = widget.getX();
+		this.relativeY = widget.getY();
 	}
 	
 	public void updatePosition(int currX, int currY) {
-		widget.x = currX + relativeX;
-		widget.y = currY + relativeY;
+		widget.setX(currX + relativeX);
+		widget.setY(currY + relativeY);
 		widget.visible = true;
 	}
 	

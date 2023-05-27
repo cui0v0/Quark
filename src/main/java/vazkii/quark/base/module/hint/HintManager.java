@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.QuarkModule;
@@ -38,7 +38,7 @@ public class HintManager {
 	
 	public static void hintItem(BiConsumer<Item, Component> consumer, ItemLike itemLike) {
 		Item item = itemLike.asItem();
-		ResourceLocation res = RegistryHelper.getRegistryName(item, BuiltInRegistries.ITEM);
+		ResourceLocation res = RegistryHelper.getRegistryName(item, ForgeRegistries.ITEMS);
 		String ns = res.getNamespace();
 		String path = res.getPath();
 		

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
@@ -52,8 +52,11 @@ public class RGBColorInputScreen extends AbstractInputtableConfigTypeScreen<RGBC
 
 		int sliders = 0;
 		boolean needsUpdate = false;
-		for(Widget w : renderables)
-			if(w instanceof ForgeSlider s) {
+		for(Renderable renderable : renderables)
+			if(renderable instanceof ForgeSlider s) {
+				int sx = s.getX();
+				int sy = s.getY();
+				
 				double val = correct(s);
 				double curr = mutable.getElement(sliders);
 				if(curr != val) {
@@ -62,13 +65,13 @@ public class RGBColorInputScreen extends AbstractInputtableConfigTypeScreen<RGBC
 				}
 
 				String displayVal = String.format("%.2f", val);
-				font.drawShadow(mstack, displayVal, s.x + (float) (s.getWidth() / 2 - font.width(displayVal) / 2) , s.y + 6, 0xFFFFFF);
+				font.drawShadow(mstack, displayVal, sx + (float) (s.getWidth() / 2 - font.width(displayVal) / 2) , sy + 6, 0xFFFFFF);
 
 				switch (sliders) {
-				case 0 -> font.drawShadow(mstack, "R =", s.x - 20, s.y + 5, 0xFF0000);
-				case 1 -> font.drawShadow(mstack, "G =", s.x - 20, s.y + 5, 0x00FF00);
-				case 2 -> font.drawShadow(mstack, "B =", s.x - 20, s.y + 5, 0x0077FF);
-				case 3 -> font.drawShadow(mstack, "A =", s.x - 20, s.y + 5, 0xFFFFFF);
+				case 0 -> font.drawShadow(mstack, "R =", sx - 20, sy + 5, 0xFF0000);
+				case 1 -> font.drawShadow(mstack, "G =", sx - 20, sy + 5, 0x00FF00);
+				case 2 -> font.drawShadow(mstack, "B =", sx - 20, sy + 5, 0x0077FF);
+				case 3 -> font.drawShadow(mstack, "A =", sx - 20, sy + 5, 0xFFFFFF);
 				default -> {
 				}
 				}

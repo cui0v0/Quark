@@ -7,14 +7,14 @@ import javax.annotation.Nonnull;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.client.util.Button2;
 
-public class SocialButton extends Button {
+public class SocialButton extends Button2 {
 
 	public static final ResourceLocation SOCIAL_ICONS = new ResourceLocation(Quark.MOD_ID, "textures/gui/social_icons.png");
 
@@ -30,8 +30,8 @@ public class SocialButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.renderButton(mstack, mouseX, mouseY, partialTicks);
+	public void renderWidget(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+		super.renderWidget(mstack, mouseX, mouseY, partialTicks);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.enableBlend();
@@ -42,7 +42,7 @@ public class SocialButton extends Button {
 		int u = socialId * 20;
 		int v = isHovered ? 20 : 0;
 
-		blit(mstack, x, y, u, v, 20, 20, 128, 64);
+		blit(mstack, getX(), getY(), u, v, 20, 20, 128, 64);
 
 		if(isHovered)
 			TopLayerTooltipHandler.setTooltip(List.of(text.getString()), mouseX, mouseY);

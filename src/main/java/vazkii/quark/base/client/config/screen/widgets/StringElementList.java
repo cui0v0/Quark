@@ -6,11 +6,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.base.client.config.screen.ListInputScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
+import vazkii.quark.base.client.util.Button2;
 
 public class StringElementList extends ScrollableWidgetList<ListInputScreen, StringElementList.Entry>{
 
@@ -52,9 +52,9 @@ public class StringElementList extends ScrollableWidgetList<ListInputScreen, Str
 				});
 				children.add(new WidgetWrapper(field));
 
-				children.add(new WidgetWrapper(new Button(230, 3, 20, 20, Component.literal("-").withStyle(ChatFormatting.RED), b -> parent.remove(index))));
+				children.add(new WidgetWrapper(new Button2(230, 3, 20, 20, Component.literal("-").withStyle(ChatFormatting.RED), b -> parent.remove(index))));
 			} else {
-				children.add(new WidgetWrapper(new Button(10, 3, 20, 20, Component.literal("+").withStyle(ChatFormatting.GREEN), b -> parent.addNew())));
+				children.add(new WidgetWrapper(new Button2(10, 3, 20, 20, Component.literal("+").withStyle(ChatFormatting.GREEN), b -> parent.addNew())));
 			}
 		}
 

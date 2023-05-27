@@ -1,8 +1,13 @@
 package vazkii.quark.base.client.render;
 
+import java.util.Calendar;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -19,15 +24,16 @@ import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.AbstractChestBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-
-import javax.annotation.Nonnull;
-import java.util.Calendar;
 
 // A copy of ChestTileEntityRenderer from vanilla but less private
 public abstract class GenericChestBERenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
@@ -102,7 +108,7 @@ public abstract class GenericChestBERenderer<T extends BlockEntity & LidBlockEnt
 			matrix.pushPose();
 			float f = blockstate.getValue(ChestBlock.FACING).toYRot();
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-f));
+			matrix.mulPose(Axis.YP.rotationDegrees(-f));
 			matrix.translate(-0.5D, -0.5D, -0.5D);
 			DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> icallbackwrapper;
 			if (flag) {

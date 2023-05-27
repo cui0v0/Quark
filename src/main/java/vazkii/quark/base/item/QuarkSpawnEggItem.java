@@ -1,17 +1,14 @@
 package vazkii.quark.base.item;
 
-import net.minecraft.core.NonNullList;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.QuarkModule;
-
-import javax.annotation.Nonnull;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
 
@@ -22,13 +19,9 @@ public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
 		super(type, primaryColor, secondaryColor, properties);
 
 		RegistryHelper.registerItem(this, regname);
-		this.module = module;
-	}
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
 
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
+		this.module = module;
 	}
 
 	@Override

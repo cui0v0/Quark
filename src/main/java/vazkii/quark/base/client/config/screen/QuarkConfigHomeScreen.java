@@ -25,6 +25,7 @@ import vazkii.quark.base.client.config.external.ExternalConfigHandler;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
 import vazkii.quark.base.client.config.screen.widgets.IconButton;
 import vazkii.quark.base.client.config.screen.widgets.SocialButton;
+import vazkii.quark.base.client.util.Button2;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.ModuleCategory;
@@ -87,16 +88,16 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		}
 
 		IConfigCategory cat = IngameConfigHandler.INSTANCE.getConfigCategory(null);
-		addRenderableWidget(new Button(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
+		addRenderableWidget(new Button2(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
 		i++;
 
 		if(addExternal) {
 			cat = ExternalConfigHandler.instance.mockCategory;
-			addRenderableWidget(new Button(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
+			addRenderableWidget(new Button2(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
 		}
 
 		bWidth = 200;
-		addRenderableWidget(new Button(width / 2 - bWidth / 2, height - 30, bWidth, 20, Component.translatable("quark.gui.config.save"), this::commit));
+		addRenderableWidget(new Button2(width / 2 - bWidth / 2, height - 30, bWidth, 20, Component.translatable("quark.gui.config.save"), this::commit));
 
 		vStart = height - 55;
 		bWidth = 20;

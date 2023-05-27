@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -67,8 +68,8 @@ public class ModelHandler {
 		toretoise = addModel("toretoise", ToretoiseModel::createBodyLayer, ToretoiseModel::new);
 		wraith = addModel("wraith", WraithModel::createBodyLayer, WraithModel::new);
 		
-		quark_boat = addModel("quark_boat", () -> BoatModel.createBodyModel(false), r -> new BoatModel(r, false));
-		quark_boat_chest = addModel("quark_boat_chest", () -> BoatModel.createBodyModel(true), r -> new BoatModel(r, true));
+		quark_boat = addModel("quark_boat", () -> BoatModel.createBodyModel(), r -> new BoatModel(r));
+		quark_boat_chest = addModel("quark_boat_chest", () -> ChestBoatModel.createBodyModel(), r -> new ChestBoatModel(r));
 
 		forgotten_hat = addArmorModel("forgotten_hat", ForgottenHatModel::createBodyLayer);
 		backpack = addArmorModel("backpack", BackpackModel::createBodyLayer);

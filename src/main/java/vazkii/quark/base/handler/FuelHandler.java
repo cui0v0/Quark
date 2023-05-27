@@ -34,7 +34,7 @@ public class FuelHandler {
 	}
 
 	public static void addWood(Block block) {
-		String regname = Objects.toString(RegistryHelper.getRegistryName(block, BuiltInRegistries.BLOCK));
+		String regname = Objects.toString(RegistryHelper.getRegistryName(block, ForgeRegistries.BLOCKS));
 		if(regname.contains("crimson") || regname.contains("warped"))
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
@@ -44,7 +44,7 @@ public class FuelHandler {
 
 	public static void addAllWoods() {
 		for(Block block : ForgeRegistries.BLOCKS) {
-			ResourceLocation regname = RegistryHelper.getRegistryName(block, BuiltInRegistries.BLOCK);
+			ResourceLocation regname = RegistryHelper.getRegistryName(block, ForgeRegistries.BLOCKS);
 			if(block != null && regname.getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
 				addWood(block);
 		}
