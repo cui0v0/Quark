@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -49,7 +50,7 @@ public class TerraBlenderIntegration implements Supplier<UndergroundBiomeHandler
 
 			for(UndergroundBiomeSkeleton skeleton : proxy.skeletons)
 				if(skeleton.module().enabled) {
-					ResourceKey<Biome> resourceKey = ResourceKey.create(Registry.BIOME_REGISTRY, skeleton.biome());
+					ResourceKey<Biome> resourceKey = ResourceKey.create(Registries.BIOME, skeleton.biome());
 					mapper.accept(Pair.of(skeleton.climate(), resourceKey));
 					didAnything = true;
 				}

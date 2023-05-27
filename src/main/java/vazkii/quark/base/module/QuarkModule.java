@@ -1,16 +1,12 @@
 package vazkii.quark.base.module;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,7 +19,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.event.ModuleLoadedEvent;
 import vazkii.quark.api.event.ModuleStateChangedEvent;
 import vazkii.quark.base.Quark;
@@ -108,7 +103,7 @@ public class QuarkModule {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void textureStitch(TextureStitchEvent.Pre event) {
+	public void textureStitch(TextureStitchEvent.Post event) {
 		// NO-OP
 	}
 

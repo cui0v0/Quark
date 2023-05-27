@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -38,7 +38,7 @@ public class HintManager {
 	
 	public static void hintItem(BiConsumer<Item, Component> consumer, ItemLike itemLike) {
 		Item item = itemLike.asItem();
-		ResourceLocation res = RegistryHelper.getRegistryName(item, Registry.ITEM);
+		ResourceLocation res = RegistryHelper.getRegistryName(item, BuiltInRegistries.ITEM);
 		String ns = res.getNamespace();
 		String path = res.getPath();
 		

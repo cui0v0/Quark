@@ -13,12 +13,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -61,8 +63,8 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer inv) {
-		return parent.assemble(inv);
+	public ItemStack assemble(@Nonnull CraftingContainer inv, RegistryAccess access) {
+		return parent.assemble(inv, access);
 	}
 
 	@Override
@@ -72,8 +74,8 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack getResultItem() {
-		return parent.getResultItem();
+	public ItemStack getResultItem(RegistryAccess access) {
+		return parent.getResultItem(access);
 	}
 
 	@Nonnull
@@ -121,6 +123,12 @@ public class ExclusionRecipe implements CraftingRecipe {
 	@Override
 	public ItemStack getToastSymbol() {
 		return parent.getToastSymbol();
+	}
+	
+
+	@Override
+	public CraftingBookCategory category() {
+		return parent.category();
 	}
 
 	private static class ShapedExclusionRecipe extends ExclusionRecipe implements IShapedRecipe<CraftingContainer> {
@@ -202,8 +210,9 @@ public class ExclusionRecipe implements CraftingRecipe {
 			buffer.writeVarInt(recipe.excluded.size());
 			for (ResourceLocation loc : recipe.excluded)
 				buffer.writeUtf(loc.toString(), 32767);
-			buffer.writeUtf(Objects.toString(Registry.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
+			buffer.writeUtf(Objects.toString(BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
 			((RecipeSerializer<Recipe<?>>) recipe.parent.getSerializer()).toNetwork(buffer, recipe.parent);
 		}
 	}
+
 }

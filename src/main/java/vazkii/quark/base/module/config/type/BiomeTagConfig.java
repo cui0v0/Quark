@@ -1,16 +1,16 @@
 package vazkii.quark.base.module.config.type;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 
@@ -72,7 +72,7 @@ public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
 	public void updateTypes() {
 		tags = new LinkedList<>();
 		for (String s : biomeTagStrings) {
-			TagKey<Biome> tag = TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(s));
+			TagKey<Biome> tag = TagKey.create(Registries.BIOME, new ResourceLocation(s));
 
 			if(tag != null)
 				tags.add(tag);

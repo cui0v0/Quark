@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 import com.google.common.base.Preconditions;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.ParallelDispatchEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.module.config.ConfigResolver;
 
@@ -84,7 +84,6 @@ public final class ModuleLoader {
 	public void register() {
 		dispatch(Step.REGISTER, QuarkModule::register);
 		dispatch(Step.POST_REGISTER, QuarkModule::postRegister);
-		CreativeTabHandler.finalizeTabs();
 		config.registerConfigBoundElements();
 	}
 
@@ -134,7 +133,7 @@ public final class ModuleLoader {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void textureStitch(TextureStitchEvent.Pre event) {
+	public void textureStitch(TextureStitchEvent.Post event) {
 		dispatch(Step.TEXTURE_STITCH, m -> m.textureStitch(event));
 	}
 

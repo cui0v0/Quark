@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -33,7 +34,7 @@ public class FuelHandler {
 	}
 
 	public static void addWood(Block block) {
-		String regname = Objects.toString(RegistryHelper.getRegistryName(block, Registry.BLOCK));
+		String regname = Objects.toString(RegistryHelper.getRegistryName(block, BuiltInRegistries.BLOCK));
 		if(regname.contains("crimson") || regname.contains("warped"))
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
@@ -43,7 +44,7 @@ public class FuelHandler {
 
 	public static void addAllWoods() {
 		for(Block block : ForgeRegistries.BLOCKS) {
-			ResourceLocation regname = RegistryHelper.getRegistryName(block, Registry.BLOCK);
+			ResourceLocation regname = RegistryHelper.getRegistryName(block, BuiltInRegistries.BLOCK);
 			if(block != null && regname.getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
 				addWood(block);
 		}

@@ -249,7 +249,6 @@ public class PistonsMoveTileEntitiesModule extends QuarkModule {
 
 	private static CompoundTag getAndClearMovement(Level world, BlockPos pos) {
 		return getMovingBlockEntityData(world, pos, true);
-		// TODO this function formerly called the callback, make sure it's called from all the right places
 	}
 
 	private static void registerDelayedUpdate(Level world, BlockPos pos, CompoundTag tag) {

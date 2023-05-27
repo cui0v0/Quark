@@ -4,24 +4,26 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.handler.DyeHandler;
 
 // copy of ArmorDyeRecipe but tweaked for our system 
 public class DyeRecipe extends CustomRecipe {
 	
-	public static final SimpleRecipeSerializer<?> SERIALIZER = new SimpleRecipeSerializer<>(DyeRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<?> SERIALIZER = new SimpleCraftingRecipeSerializer<>(DyeRecipe::new);
 	
-	public DyeRecipe(ResourceLocation p_43757_) {
-		super(p_43757_);
+	public DyeRecipe(ResourceLocation p_43757_, CraftingBookCategory category) {
+		super(p_43757_, category);
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class DyeRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer p_43767_) {
+	public ItemStack assemble(CraftingContainer p_43767_, RegistryAccess acccess) {
 		List<DyeItem> list = Lists.newArrayList();
 		ItemStack itemstack = ItemStack.EMPTY;
 

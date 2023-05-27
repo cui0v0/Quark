@@ -1,9 +1,14 @@
 package vazkii.quark.base.recipe.ingredient;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -15,11 +20,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.handler.BrewingHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * @author WireSegal
@@ -59,8 +59,8 @@ public class PotionIngredient extends Ingredient {
 	public JsonElement toJson() {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", Objects.toString(CraftingHelper.getID(PotionIngredient.Serializer.INSTANCE)));
-		json.addProperty("item", Objects.toString(Registry.ITEM.getKey(item)));
-		json.addProperty("potion", Objects.toString(Registry.POTION.getKey(potion)));
+		json.addProperty("item", Objects.toString(ForgeRegistries.ITEMS.getKey(item)));
+		json.addProperty("potion", Objects.toString(ForgeRegistries.POTIONS.getKey(potion)));
 		return json;
 	}
 

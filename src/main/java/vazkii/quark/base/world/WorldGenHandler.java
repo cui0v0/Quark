@@ -17,7 +17,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
@@ -55,24 +55,25 @@ public class WorldGenHandler {
 	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
 
 	public static void register() {
-		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
-			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
-
-			// Always do .toLowerCase(Locale.ENGLISH) with that locale. If you leave it off, computers in
-			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
-			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
-			RegistryHelper.register(deferredFeature, name, Registry.FEATURE_REGISTRY);
-			
-			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
-
-			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
-			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, resloc, feature);
-
-			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());
-			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, resloc, placed);
-
-			defers.put(stage, placedHolder);
-		}
+		// TODO 1.19.4
+//		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
+//			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
+//
+//			// Always do .toLowerCase(Locale.ENGLISH) with that locale. If you leave it off, computers in
+//			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
+//			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
+//			RegistryHelper.register(deferredFeature, name, Registries.FEATURE);
+//			
+//			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
+//
+//			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
+//			Holder<ConfiguredFeature<?, ?>> featureHolder = Registry.register(Registries.CONFIGURED_FEATURE, resloc, feature);
+//
+//			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());
+//			Holder<PlacedFeature> placedHolder = Registry.register(Registries.PLACED_FEATURE, resloc, placed);
+//
+//			defers.put(stage, placedHolder);
+//		}
 	}
 
 	public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder biomeInfoBuilder) {

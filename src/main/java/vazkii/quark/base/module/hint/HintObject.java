@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -58,7 +58,7 @@ public class HintObject {
 			key = tagKey.location().getPath();
 		
 		try {
-			List<?> tagItems = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, tagKey);
+			List<?> tagItems = MiscUtil.getTagValues(tagKey);
 			applyIterable(consumer, tagItems);
 		} catch(IllegalStateException e) {
 			throw new RuntimeException("Tag " + key + " failed to load. (Module " + module.displayName + ")", e);

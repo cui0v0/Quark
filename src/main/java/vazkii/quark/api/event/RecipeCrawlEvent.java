@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -48,49 +49,49 @@ public abstract class RecipeCrawlEvent extends Event {
 		public final ItemStack output;
 		public final NonNullList<Ingredient> ingredients;
 		
-		public Visit(T recipe) {
+		public Visit(RegistryAccess access, T recipe) {
 			this.recipe = recipe;
 			this.recipeID = recipe.getId();
-			this.output = recipe.getResultItem();
+			this.output = recipe.getResultItem(access);
 			this.ingredients = recipe.getIngredients();
 		}
 		
 		public static class Shaped extends Visit<ShapedRecipe> {
 
-			public Shaped(ShapedRecipe recipe) {
-				super(recipe);
+			public Shaped(RegistryAccess access, ShapedRecipe recipe) {
+				super(access, recipe);
 			}
 			
 		}
 		
 		public static class Shapeless extends Visit<ShapelessRecipe> {
 
-			public Shapeless(ShapelessRecipe recipe) {
-				super(recipe);
+			public Shapeless(RegistryAccess access, ShapelessRecipe recipe) {
+				super(access, recipe);
 			}
 			
 		}
 		
 		public static class Custom extends Visit<CustomRecipe> {
 
-			public Custom(CustomRecipe recipe) {
-				super(recipe);
+			public Custom(RegistryAccess access, CustomRecipe recipe) {
+				super(access, recipe);
 			}
 			
 		}
 		
 		public static class Cooking extends Visit<AbstractCookingRecipe> {
 
-			public Cooking(AbstractCookingRecipe recipe) {
-				super(recipe);
+			public Cooking(RegistryAccess access, AbstractCookingRecipe recipe) {
+				super(access, recipe);
 			}
 			
 		}
 		
 		public static class Misc extends Visit<Recipe<?>> {
 
-			public Misc(Recipe<?> recipe) {
-				super(recipe);
+			public Misc(RegistryAccess access, Recipe<?> recipe) {
+				super(access, recipe);
 			}
 			
 		}

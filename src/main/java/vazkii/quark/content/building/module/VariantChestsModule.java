@@ -325,7 +325,7 @@ public class VariantChestsModule extends QuarkModule {
 	}
 
 	@Override
-	public void textureStitch(TextureStitchEvent.Pre event) {
+	public void textureStitch(TextureStitchEvent event) {
 		if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
 			for (Block b : allChests)
 				VariantChestRenderer.accept(event, b);

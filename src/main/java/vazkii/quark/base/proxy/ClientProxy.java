@@ -98,7 +98,7 @@ public class ClientProxy extends CommonProxy {
 		ModuleLoader.INSTANCE.modelLayers(event);
 	}
 
-	public void textureStitch(TextureStitchEvent.Pre event) {
+	public void textureStitch(TextureStitchEvent.Post event) {
 		ModuleLoader.INSTANCE.textureStitch(event);
 	}
 

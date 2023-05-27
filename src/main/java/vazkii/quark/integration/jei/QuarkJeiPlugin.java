@@ -26,16 +26,11 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.core.NonNullList;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
@@ -55,11 +50,9 @@ import vazkii.quark.addons.oddities.client.screen.CrateScreen;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.building.module.VariantFurnacesModule;
@@ -104,19 +97,20 @@ public class QuarkJeiPlugin implements IModPlugin {
 			if(!GeneralConfig.hideDisabledContent)
 				return;
 
-			NonNullList<ItemStack> stacks = NonNullList.create();
-			for (Item item : ForgeRegistries.ITEMS.getValues()) {
-				ResourceLocation loc = ForgeRegistries.ITEMS.getKey(item);
-				if (loc != null && loc.getNamespace().equals("quark")) {
-					if ((item instanceof IQuarkItem quarkItem && !quarkItem.isEnabled()) ||
-							(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IQuarkBlock quarkBlock && !quarkBlock.isEnabled())) {
-						item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
-					}
-				}
-			}
-
-			if (!stacks.isEmpty())
-				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacks));
+			// TODO
+//			NonNullList<ItemStack> stacks = NonNullList.create();
+//			for (Item item : ForgeRegistries.ITEMS.getValues()) {
+//				ResourceLocation loc = ForgeRegistries.ITEMS.getKey(item);
+//				if (loc != null && loc.getNamespace().equals("quark")) {
+//					if ((item instanceof IQuarkItem quarkItem && !quarkItem.isEnabled()) ||
+//							(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IQuarkBlock quarkBlock && !quarkBlock.isEnabled())) {
+//						item.fillItemCategory(CreativeModeTabs.TAB_SEARCH, stacks);
+//					}
+//				}
+//			}
+//
+//			if (!stacks.isEmpty())
+//				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacks));
 		});
 	}
 
@@ -232,7 +226,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				.collect(Collectors.toList());
 
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Item rune : MiscUtil.getTagValues(BuiltinRegistries.ACCESS, ColorRunesModule.runesTag)) {
+		for (Item rune : MiscUtil.getTagValues(ColorRunesModule.runesTag)) {
 			ItemStack runeStack = new ItemStack(rune);
 			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
 					used.stream().map(stack -> {

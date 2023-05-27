@@ -32,10 +32,6 @@ import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.IConfigCallback;
 import vazkii.quark.base.network.QuarkNetwork;
-import vazkii.quark.base.recipe.DataMaintainingCampfireRecipe;
-import vazkii.quark.base.recipe.DataMaintainingRecipe;
-import vazkii.quark.base.recipe.DataMaintainingSmeltingRecipe;
-import vazkii.quark.base.recipe.DataMaintainingSmokingRecipe;
 import vazkii.quark.base.recipe.ExclusionRecipe;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.base.world.WorldGenHandler;
@@ -48,10 +44,6 @@ public class CommonProxy {
 
 	public void start() {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining", DataMaintainingRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_smelting", DataMaintainingSmeltingRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_campfire", DataMaintainingCampfireRecipe.SERIALIZER);
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":maintaining_smoking", DataMaintainingSmokingRecipe.SERIALIZER);
 
 		QuarkSounds.start();
 		ModuleLoader.INSTANCE.start();
