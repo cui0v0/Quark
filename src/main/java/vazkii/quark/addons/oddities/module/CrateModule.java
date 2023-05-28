@@ -3,7 +3,6 @@ package vazkii.quark.addons.oddities.module;
 import java.util.function.BiConsumer;
 
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -12,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.CrateBlock;
 import vazkii.quark.addons.oddities.block.be.CrateBlockEntity;
@@ -37,10 +37,10 @@ public class CrateModule extends QuarkModule {
 		crate = new CrateBlock(this);
 		
 		menuType = IForgeMenuType.create(CrateMenu::fromNetwork);
-		RegistryHelper.register(menuType, "crate", Registry.MENU_REGISTRY);
+		RegistryHelper.register(menuType, "crate", ForgeRegistries.MENU_TYPES);
 		
 		blockEntityType = BlockEntityType.Builder.of(CrateBlockEntity::new, crate).build(null);
-		RegistryHelper.register(blockEntityType, "crate", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(blockEntityType, "crate", ForgeRegistries.BLOCK_ENTITY_TYPES);
 	}
 	
 	@Override

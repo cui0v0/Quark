@@ -1,10 +1,15 @@
 package vazkii.quark.addons.oddities.item;
 
+import java.util.Map;
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -18,7 +23,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -43,10 +54,6 @@ import vazkii.quark.base.handler.ProxiedItemStackHandler;
 import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 
-import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.function.Consumer;
-
 public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemColorProvider, MenuProvider {
 
 	private static final String WORN_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn.png";
@@ -59,14 +66,14 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemC
 	private HumanoidModel model;
 
 	public BackpackItem(QuarkModule module) {
-		super(ArmorMaterials.LEATHER, EquipmentSlot.CHEST,
+		super(ArmorMaterials.LEATHER, ArmorItem.Type.CHESTPLATE,
 				new Item.Properties()
 				.stacksTo(1)
 				.durability(0)
-				.tab(CreativeModeTab.TAB_TOOLS)
 				.rarity(Rarity.RARE));
 
 		RegistryHelper.registerItem(this, "backpack");
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
 		this.module = module;
 
 		if(module.category.isAddon())
@@ -229,12 +236,6 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, IItemC
 	@Override
 	public boolean isEnchantable(@Nonnull ItemStack stack) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

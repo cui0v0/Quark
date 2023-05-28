@@ -1,6 +1,20 @@
 package vazkii.quark.addons.oddities.block.be;
 
-import com.mojang.math.Vector3f;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Random;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
+import org.joml.Vector3f;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -34,10 +48,6 @@ import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.client.handler.NetworkProfilingHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Predicate;
 
 public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 

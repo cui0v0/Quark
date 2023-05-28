@@ -8,7 +8,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +21,7 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.client.render.entity.TotemOfHoldingRenderer;
 import vazkii.quark.addons.oddities.entity.TotemOfHoldingEntity;
@@ -69,7 +69,7 @@ public class TotemOfHoldingModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new TotemOfHoldingEntity(totemType, world))
 				.build("totem");
-		RegistryHelper.register(totemType, "totem", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(totemType, "totem", ForgeRegistries.ENTITY_TYPES);
 	}
 
 	@Override

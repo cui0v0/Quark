@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -86,7 +87,7 @@ public class TotemOfHoldingEntity extends Entity {
 				ItemStack stack = storedItems.remove(0);
 
 				if(stack.getItem() instanceof ArmorItem armor) {
-					EquipmentSlot slot = armor.getSlot();
+					EquipmentSlot slot = armor.getEquipmentSlot();
 					ItemStack curr = player.getItemBySlot(slot);
 
 					if(curr.isEmpty()) {
@@ -204,7 +205,7 @@ public class TotemOfHoldingEntity extends Entity {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

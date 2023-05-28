@@ -1,10 +1,16 @@
 package vazkii.quark.addons.oddities.client.screen;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -18,10 +24,6 @@ import vazkii.quark.addons.oddities.module.BackpackModule;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.oddities.HandleBackpackMessage;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BackpackInventoryScreen extends InventoryScreen {
 
@@ -54,12 +56,12 @@ public class BackpackInventoryScreen extends InventoryScreen {
 
 		buttonYs.clear();
 
-		for(Widget widget : renderables)
-			if(widget instanceof Button b)
+		for(Renderable renderable : renderables)
+			if(renderable instanceof Button b)
 				if(b.getClass().getName().contains("GuiButtonInventoryBook")) { // class check for Patchouli
 					if(!buttonYs.containsKey(b)) {
-						b.y -= 29;
-						buttonYs.put(b, b.y);
+						b.setY(b.getY() - 29);
+						buttonYs.put(b, b.getY());
 					}
 				}
 
@@ -67,7 +69,7 @@ public class BackpackInventoryScreen extends InventoryScreen {
 
 	@Override
 	public void containerTick() {
-		buttonYs.forEach((button, y) -> button.y = y);
+		buttonYs.forEach(Button::setY);
 
 		super.containerTick();
 
@@ -99,16 +101,19 @@ public class BackpackInventoryScreen extends InventoryScreen {
 		int i = leftPos;
 		int j = topPos;
 		blit(stack, i, j, 0, 0, imageWidth, imageHeight);
-		renderEntityInInventory(i + 51, j + 75, 30, i + 51 - mouseX, j + 75 - 50 - mouseY, minecraft.player);
+		renderEntityInInventoryFollowsMouse(stack, i + 51, j + 75, 30, i + 51 - mouseX, j + 75 - 50 - mouseY, minecraft.player);
 		moveCharmsButtons();
 	}
 
 	private void moveCharmsButtons() {
-		for(Widget widget : renderables) {
+		for(Renderable renderable : renderables) {
 			//Charms buttons have a static Y pos, so use that to only focus on them.
-			if(widget instanceof ImageButton img) {
-				if(img.y == height / 2 - 22)
-					img.setPosition(img.x, img.y - 29);
+			if(renderable instanceof ImageButton img) {
+				int x = img.getX();
+				int y = img.getY();
+				
+				if(y == height / 2 - 22)
+					img.setPosition(x, y - 29);
 			}
 		}
 	}

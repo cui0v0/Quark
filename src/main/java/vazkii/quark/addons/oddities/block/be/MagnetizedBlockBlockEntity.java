@@ -1,7 +1,12 @@
 package vazkii.quark.addons.oddities.block.be;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +16,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BasePressurePlateBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,9 +33,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.addons.oddities.magnetsystem.MagnetSystem;
 import vazkii.quark.addons.oddities.module.MagnetsModule;
 import vazkii.quark.api.IMagnetMoveAction;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class MagnetizedBlockBlockEntity extends BlockEntity {
 	private BlockState magnetState;
@@ -306,7 +311,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	public void load(@Nonnull CompoundTag compound) {
 		super.load(compound);
 
-		this.magnetState = NbtUtils.readBlockState(compound.getCompound("blockState"));
+		this.magnetState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), compound.getCompound("blockState"));
 		this.magnetFacing = Direction.from3DDataValue(compound.getInt("facing"));
 		this.progress = compound.getFloat("progress");
 		this.lastProgress = this.progress;

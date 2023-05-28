@@ -104,7 +104,7 @@ public class MovingMagnetizedBlock extends QuarkBlock implements EntityBlock {
 
 	@Nullable
 	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, Vec3 origin) {
-		BlockPos pos = new BlockPos(origin);
+		BlockPos pos = BlockPos.containing(origin);
 		return getMagnetTileEntity(world, pos);
 	}
 

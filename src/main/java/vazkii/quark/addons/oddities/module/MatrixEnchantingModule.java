@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -170,10 +169,10 @@ public class MatrixEnchantingModule extends QuarkModule {
 		matrixEnchanter = new MatrixEnchantingTableBlock(this);
 
 		menuType = IForgeMenuType.create(MatrixEnchantingMenu::fromNetwork);
-		RegistryHelper.register(menuType, "matrix_enchanting", Registry.MENU_REGISTRY);
+		RegistryHelper.register(menuType, "matrix_enchanting", ForgeRegistries.MENU_TYPES);
 
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
-		RegistryHelper.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(blockEntityType, "matrix_enchanting", ForgeRegistries.BLOCK_ENTITY_TYPES);
 		
 		influenceTrigger = QuarkAdvancementHandler.registerGenericTrigger("influence");
 	}

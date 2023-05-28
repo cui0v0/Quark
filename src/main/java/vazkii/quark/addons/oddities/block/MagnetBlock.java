@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -44,7 +44,7 @@ public class MagnetBlock extends QuarkBlock implements EntityBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public MagnetBlock(QuarkModule module) {
-		super("magnet", module, CreativeModeTab.TAB_REDSTONE, Properties.copy(Blocks.IRON_BLOCK));
+		super("magnet", module, CreativeModeTabs.REDSTONE_BLOCKS, Properties.copy(Blocks.IRON_BLOCK));
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(POWERED, false));
 	}
 

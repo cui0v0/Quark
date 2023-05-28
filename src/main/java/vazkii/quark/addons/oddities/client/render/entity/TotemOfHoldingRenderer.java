@@ -3,7 +3,7 @@ package vazkii.quark.addons.oddities.client.render.entity;
 import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -52,7 +52,7 @@ public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity>
 		ModelManager modelManager = mc.getModelManager();
 
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(rotation));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(rotation));
 		matrixStackIn.translate(0, translation, 0);
 		matrixStackIn.scale(scale, scale, scale);
 		matrixStackIn.translate(-0.5, 0, -0.5);

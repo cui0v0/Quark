@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -68,7 +68,7 @@ public class TinyPotatoBlock extends QuarkBlock implements SimpleWaterloggedBloc
 	}
 
 	public TinyPotatoBlock(QuarkModule module) {
-		super("tiny_potato", module, CreativeModeTab.TAB_DECORATIONS,
+		super("tiny_potato", module, CreativeModeTabs.BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOL).strength(0.25F));
 		registerDefaultState(defaultBlockState()
 				.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));

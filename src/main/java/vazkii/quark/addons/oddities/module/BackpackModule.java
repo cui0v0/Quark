@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -17,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +31,7 @@ import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
@@ -78,12 +78,13 @@ public class BackpackModule extends QuarkModule {
 	@Override
 	public void register() {
 		backpack = new BackpackItem(this);
-		ravager_hide = new QuarkItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
+		ravager_hide = new QuarkItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE)).setCondition(() -> enableRavagerHide);
+		RegistryHelper.setCreativeTab(ravager_hide, CreativeModeTabs.INGREDIENTS);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
-		RegistryHelper.register(menyType, "backpack", Registry.MENU_REGISTRY);
+		RegistryHelper.register(menyType, "backpack", ForgeRegistries.MENU_TYPES);
 
-		bonded_ravager_hide = new QuarkBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
+		bonded_ravager_hide = new QuarkBlock("bonded_ravager_hide", this, CreativeModeTabs.BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
 				.strength(1F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableRavagerHide);

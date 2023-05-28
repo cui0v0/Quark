@@ -11,25 +11,26 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -127,7 +128,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 				rotY = 270F;
 				break;
 		}
-		ms.mulPose(Vector3f.YN.rotationDegrees(rotY));
+		ms.mulPose(Axis.YN.rotationDegrees(rotY));
 
 		float jump = potato.jumpTicks;
 		if (jump > 0) {
@@ -139,7 +140,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 		float wiggle = (float) Math.sin(jump / 10 * Math.PI) * 0.05F;
 
 		ms.translate(wiggle, up, 0F);
-		ms.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.mulPose(Axis.ZP.rotationDegrees(rotZ));
 
 		boolean render = !(info.name().equals("mami") || info.name().equals("soaryn") || info.name().equals("eloraam") && jump != 0);
 		if (render) {
@@ -158,12 +159,12 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 		ms.translate(0F, 1.5F, 0F);
 		ms.pushPose();
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
+		ms.mulPose(Axis.ZP.rotationDegrees(180F));
 		renderItems(potato, potatoFacing, ms, buffers, light, overlay);
 		ms.popPose();
 
-		ms.mulPose(Vector3f.ZP.rotationDegrees(-rotZ));
-		ms.mulPose(Vector3f.YN.rotationDegrees(-rotY));
+		ms.mulPose(Axis.ZP.rotationDegrees(-rotZ));
+		ms.mulPose(Axis.YN.rotationDegrees(-rotY));
 
 		renderName(potato, info.name(), ms, buffers, light);
 		ms.popPose();
@@ -184,15 +185,15 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 			float opacity = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int opacityRGB = (int) (opacity * 255.0F) << 24;
-			mc.font.drawInBatch(potato.name, -halfWidth, 0, 0x20FFFFFF, false, ms.last().pose(), buffers, true, opacityRGB, light);
-			mc.font.drawInBatch(potato.name, -halfWidth, 0, 0xFFFFFFFF, false, ms.last().pose(), buffers, false, 0, light);
+			mc.font.drawInBatch(potato.name, -halfWidth, 0, 0x20FFFFFF, false, ms.last().pose(), buffers, Font.DisplayMode.SEE_THROUGH, opacityRGB, light);
+			mc.font.drawInBatch(potato.name, -halfWidth, 0, 0xFFFFFFFF, false, ms.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, light);
 			if (name.equals("pahimar") || name.equals("soaryn")) {
 				ms.translate(0F, 14F, 0F);
 				String str = name.equals("pahimar") ? "[WIP]" : "(soon)";
 				halfWidth = mc.font.width(str) / 2;
 
-				mc.font.drawInBatch(str, -halfWidth, 0, 0x20FFFFFF, false, ms.last().pose(), buffers, true, opacityRGB, light);
-				mc.font.drawInBatch(str, -halfWidth, 0, 0xFFFFFFFF, false, ms.last().pose(), buffers, true, 0, light);
+				mc.font.drawInBatch(str, -halfWidth, 0, 0x20FFFFFF, false, ms.last().pose(), buffers, Font.DisplayMode.NORMAL, opacityRGB, light);
+				mc.font.drawInBatch(str, -halfWidth, 0, 0xFFFFFFFF, false, ms.last().pose(), buffers, Font.DisplayMode.NORMAL, 0, light);
 			}
 
 			ms.popPose();
@@ -201,7 +202,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 	private void renderItems(TinyPotatoBlockEntity potato, Direction facing, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		ms.pushPose();
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
+		ms.mulPose(Axis.ZP.rotationDegrees(180F));
 		ms.translate(0F, -1F, 0F);
 		float s = 1F / 3.5F;
 		ms.scale(s, s, s);
@@ -214,7 +215,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 			ms.pushPose();
 			Direction side = Direction.values()[i];
-			if (side.getAxis() != Axis.Y) {
+			if (side.getAxis() != Direction.Axis.Y) {
 				float sideAngle = side.toYRot() - facing.toYRot();
 				side = Direction.fromYRot(sideAngle);
 			}
@@ -261,7 +262,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 					} else if (block) {
 						ms.translate(-0.4F, 0.8F, 0F);
 					} else {
-						ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
+						ms.mulPose(Axis.YP.rotationDegrees(-90F));
 					}
 					ms.translate(-0.3F, -1.9F, 0.04F);
 				}
@@ -271,7 +272,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 					} else if (block) {
 						ms.translate(1F, 0.8F, 1F);
 					} else {
-						ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
+						ms.mulPose(Axis.YP.rotationDegrees(-90F));
 					}
 					ms.translate(-0.3F, -1.9F, -0.92F);
 				}
@@ -283,9 +284,9 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 				ms.scale(0.5F, 0.5F, 0.5F);
 			}
 			if (block && side == Direction.NORTH) {
-				ms.mulPose(Vector3f.YP.rotationDegrees(180F));
+				ms.mulPose(Axis.YP.rotationDegrees(180F));
 			}
-			renderItem(ms, buffers, light, overlay, stack);
+			renderItem(ms, buffers, light, overlay, stack, potato.getLevel());
 			ms.popPose();
 		}
 		ms.popPose();
@@ -295,8 +296,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 		blockRenderDispatcher.getModelRenderer().renderModel(ms.last(), buffer, null, model, 1, 1, 1, light, overlay);
 	}
 
-	private void renderItem(PoseStack ms, MultiBufferSource buffers, int light, int overlay, ItemStack stack) {
-		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.HEAD,
-				light, overlay, ms, buffers, 0);
+	private void renderItem(PoseStack ms, MultiBufferSource buffers, int light, int overlay, ItemStack stack, Level level) {
+		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.HEAD, light, overlay, ms, buffers, level, 0);
 	}
 }

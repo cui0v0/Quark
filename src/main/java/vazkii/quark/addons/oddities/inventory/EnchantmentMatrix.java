@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +26,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
-import vazkii.quark.content.tools.item.PathfindersQuillItem;
 
 public class EnchantmentMatrix {
 
@@ -419,7 +417,7 @@ public class EnchantmentMatrix {
 			this.influence = wrapper.influence;
 			this.type = type;
 
-			Random rng = new Random(Objects.toString(Registry.ENCHANTMENT.getKey(enchant)).hashCode());
+			Random rng = new Random(Objects.toString(ForgeRegistries.ENCHANTMENTS.getKey(enchant)).hashCode());
 			float h = rng.nextFloat();
 			float s = rng.nextFloat() * 0.2F + 0.8F;
 			float b = rng.nextFloat() * 0.25F + 0.75F;
@@ -462,7 +460,7 @@ public class EnchantmentMatrix {
 			cmp.putInt(TAG_COLOR, color);
 			cmp.putInt(TAG_TYPE, type);
 			if (enchant != null)
-				cmp.putString(TAG_ENCHANTMENT, Objects.toString(Registry.ENCHANTMENT.getKey(enchant)));
+				cmp.putString(TAG_ENCHANTMENT, Objects.toString(ForgeRegistries.ENCHANTMENTS.getKey(enchant)));
 			cmp.putInt(TAG_LEVEL, level);
 			cmp.putInt(TAG_X, x);
 			cmp.putInt(TAG_Y, y);
