@@ -15,6 +15,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -138,7 +139,7 @@ public class AncientTomesModule extends QuarkModule {
 		ancient_tome = new AncientTomeItem(this);
 
 		tomeEnchantType = new LootItemFunctionType(new EnchantTome.Serializer());
-		Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "tome_enchant"), tomeEnchantType);
+		Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "tome_enchant"), tomeEnchantType);
 		
 		overlevelTrigger = QuarkAdvancementHandler.registerGenericTrigger("overlevel");
 		instamineDeepslateTrigger = QuarkAdvancementHandler.registerGenericTrigger("instamine_deepslate");
@@ -415,7 +416,7 @@ public class AncientTomesModule extends QuarkModule {
 
 		List<String> strings = new ArrayList<>();
 		for(Enchantment e : enchants) {
-			ResourceLocation regname = Registry.ENCHANTMENT.getKey(e);
+			ResourceLocation regname = ForgeRegistries.ENCHANTMENTS.getKey(e);
 			if(e != null && regname != null)
 				strings.add(regname.toString());
 		}
@@ -431,8 +432,9 @@ public class AncientTomesModule extends QuarkModule {
 	private final List<Enchantment> curses = new ArrayList<>();
 
 	public void setupCursesList() {
-		for (var e : Registry.ENCHANTMENT) {
-			if (e.isCurse()) curses.add(e);
+		for (Enchantment e : ForgeRegistries.ENCHANTMENTS) {
+			if (e.isCurse()) 
+				curses.add(e);
 		}
 	}
 

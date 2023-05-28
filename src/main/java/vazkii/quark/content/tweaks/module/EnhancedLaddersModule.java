@@ -8,7 +8,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -94,7 +92,7 @@ public class EnhancedLaddersModule extends QuarkModule {
 		if(allowInventorySneak)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.ladder_sneak"));
 		
-		List<Item> ladders = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, laddersTag);
+		List<Item> ladders = MiscUtil.getTagValues(laddersTag);
 		for(Item item : ladders)
 			consumer.accept(item, comp);
 	}

@@ -1,29 +1,31 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.module.TrowelModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class TrowelItem extends QuarkItem implements IUsageTickerOverride {
 
@@ -32,8 +34,8 @@ public class TrowelItem extends QuarkItem implements IUsageTickerOverride {
 
 	public TrowelItem(QuarkModule module) {
 		super("trowel", module, new Item.Properties()
-				.durability(255)
-				.tab(CreativeModeTab.TAB_TOOLS));
+				.durability(255));
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	@Nonnull

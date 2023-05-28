@@ -1,8 +1,21 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +29,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -26,24 +44,15 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.extensions.IForgeItem;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 import vazkii.arl.interf.IItemColorProvider;
 import vazkii.arl.util.ClientTicker;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
-import vazkii.quark.mixin.BeaconBlockEntityMixin;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PathfindersQuillItem extends QuarkItem implements IItemColorProvider {
 
@@ -66,7 +75,8 @@ public class PathfindersQuillItem extends QuarkItem implements IItemColorProvide
     }
 
     public PathfindersQuillItem(QuarkModule module) {
-        this(module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
+        this(module, new Item.Properties().stacksTo(1));
+        RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
     }
 
     public static ResourceLocation getTargetBiome(ItemStack stack) {
@@ -159,7 +169,8 @@ public class PathfindersQuillItem extends QuarkItem implements IItemColorProvide
                 player.displayClientMessage(Component.translatable(msg), true);
 
                 Vec3 pos = player.getPosition(1F);
-                level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.NOTE_BLOCK_CHIME, SoundSource.PLAYERS, 0.5F, 1F);
+                // TODO: 1.19.4 sounds
+//                level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.NOTE_BLOCK_CHIME, SoundSource.PLAYERS, 0.5F, 1F);
 
                 player.getInventory().setItem(slot, runningStack);
             }
@@ -330,13 +341,11 @@ public class PathfindersQuillItem extends QuarkItem implements IItemColorProvide
 
         return comp;
     }
-
+    
     @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if ((isEnabled() && allowedIn(group)) || group == CreativeModeTab.TAB_SEARCH) {
-            for (TradeInfo trade : PathfinderMapsModule.tradeList)
-                items.add(forBiome(trade.biome.toString(), trade.color));
-        }
+    public void addCreativeModeExtras(CreativeModeTab tab, BuildContents event) {
+        for(TradeInfo trade : PathfinderMapsModule.tradeList)
+            event.accept(forBiome(trade.biome.toString(), trade.color));
     }
 
     @Override

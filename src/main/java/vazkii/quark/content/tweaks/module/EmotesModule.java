@@ -27,7 +27,9 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -120,11 +122,11 @@ public class EmotesModule extends QuarkModule {
 		mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
 
 			@Override
-			public void loadPacks(@Nonnull Consumer<Pack> packConsumer, @Nonnull Pack.PackConstructor packInfoFactory) {
+			public void loadPacks(@Nonnull Consumer<Pack> packConsumer) {
 				resourcePack = new CustomEmoteIconResourcePack();
 
 				String name = "quark:emote_resources";
-				Pack t = Pack.create(name, true, () -> resourcePack, packInfoFactory, Pack.Position.TOP, tx->tx);
+				Pack t = Pack.readMetaAndCreate(name, Component.literal("Quark Emotes"), true, (s) -> resourcePack, PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
 				packConsumer.accept(t);
 			}
 		});

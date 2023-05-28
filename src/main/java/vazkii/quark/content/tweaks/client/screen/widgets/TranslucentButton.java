@@ -1,21 +1,18 @@
 package vazkii.quark.content.tweaks.client.screen.widgets;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import vazkii.quark.base.client.util.Button2;
 
-import javax.annotation.Nonnull;
-
-public class TranslucentButton extends Button {
+public class TranslucentButton extends Button2 {
 
 	public TranslucentButton(int xIn, int yIn, int widthIn, int heightIn, Component text, OnPress onPress) {
 		super(xIn, yIn, widthIn, heightIn, text, onPress);
 	}
 
-	@Override
-	public void blit(@Nonnull PoseStack stack, int x, int y, int textureX, int textureY, int width, int height) {
-		fill(stack, x, y, x + width, y + height, Integer.MIN_VALUE);
-	}
+	// TODO 1.19.4: gui rendering
+//	@Override
+//	public void blit(@Nonnull PoseStack stack, int x, int y, int textureX, int textureY, int width, int height) {
+//		fill(stack, x, y, x + width, y + height, Integer.MIN_VALUE);
+//	}
 
 }

@@ -43,7 +43,7 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 	}
 
 	private DynamicGameEventListener<VibrationListener> makeListener() {
-		return new DynamicGameEventListener<>(new VibrationListener(new EntityPositionSource(this, this.getEyeHeight()), 16, this, (VibrationListener.ReceivingEvent) null, 0.0F, 0));
+		return new DynamicGameEventListener<VibrationListener>(new VibrationListener(new EntityPositionSource(this, this.getEyeHeight()), 16, this));
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.function.BooleanSupplier;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.Material;
@@ -81,9 +81,9 @@ public class NewStoneTypesModule extends QuarkModule {
 		if(raw != null)
 			normal = raw;
 		else
-			normal = constr.make(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
+			normal = constr.make(name, module, CreativeModeTabs.BUILDING_BLOCKS, props).setCondition(enabledCond);
 
-		QuarkBlock polished = constr.make("polished_" + name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
+		QuarkBlock polished = constr.make("polished_" + name, module, CreativeModeTabs.BUILDING_BLOCKS, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
 
 		VariantHandler.addSlabStairsWall(normal instanceof IQuarkBlock quarkBlock ? quarkBlock : new QuarkBlockWrapper(normal, module).setCondition(enabledCond));

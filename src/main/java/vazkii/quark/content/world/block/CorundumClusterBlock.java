@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -55,7 +55,7 @@ public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterlogge
 	}
 
 	public CorundumClusterBlock(CorundumBlock base) {
-		super(IQuarkBlock.inheritQuark(base, "%s_cluster"), base.getModule(), CreativeModeTab.TAB_DECORATIONS,
+		super(IQuarkBlock.inheritQuark(base, "%s_cluster"), base.getModule(), CreativeModeTabs.NATURAL_BLOCKS,
 				Block.Properties.copy(base)
 				.sound(SoundType.AMETHYST_CLUSTER));
 

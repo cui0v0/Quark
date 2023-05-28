@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.DyeHandler;
@@ -55,7 +55,7 @@ public class DyeableItemFramesModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new DyedItemFrame(entityType, world))
 				.build("dyed_item_frame");
-		RegistryHelper.register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(entityType, "dyed_item_frame", ForgeRegistries.ENTITY_TYPES);
 
 		DyeHandler.addDyeable(Items.ITEM_FRAME, this);
 		DyeHandler.addDyeable(Items.GLOW_ITEM_FRAME, this);

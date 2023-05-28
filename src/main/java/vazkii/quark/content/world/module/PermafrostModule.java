@@ -1,6 +1,6 @@
 package vazkii.quark.content.world.module;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -22,14 +22,14 @@ public class PermafrostModule extends AbstractUndergroundStyleModule<PermafrostS
 	
 	@Override
 	public void register() {
-		permafrost = new QuarkBlock("permafrost", this, CreativeModeTab.TAB_BUILDING_BLOCKS, 
+		permafrost = new QuarkBlock("permafrost", this, CreativeModeTabs.BUILDING_BLOCKS, 
 				Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 10F)
 				.sound(SoundType.STONE));
 		
 		VariantHandler.addSlabStairsWall(permafrost);
-		VariantHandler.addSlabStairsWall(new QuarkBlock("permafrost_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(permafrost)));
+		VariantHandler.addSlabStairsWall(new QuarkBlock("permafrost_bricks", this, CreativeModeTabs.BUILDING_BLOCKS, Block.Properties.copy(permafrost)));
 		
 		generationSettings.biomeObj.setBlock(permafrost.defaultBlockState());
 		

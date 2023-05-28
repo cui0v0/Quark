@@ -30,7 +30,7 @@ public class ZombieVillagersOnNormalModule extends QuarkModule {
 				ZombieVillager zombievillager = villager.convertTo(EntityType.ZOMBIE_VILLAGER, false);
 				zombievillager.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(zombievillager.blockPosition()), MobSpawnType.CONVERSION, new Zombie.ZombieGroupData(false, true), (CompoundTag)null);
 				zombievillager.setVillagerData(villager.getVillagerData());
-				zombievillager.setGossips(villager.getGossips().store(NbtOps.INSTANCE).getValue());
+				zombievillager.setGossips(villager.getGossips().store(NbtOps.INSTANCE));
 				zombievillager.setTradeOffers(villager.getOffers().createTag());
 				zombievillager.setVillagerXp(villager.getVillagerXp());
 				

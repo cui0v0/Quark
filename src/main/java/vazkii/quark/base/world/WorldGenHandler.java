@@ -55,7 +55,7 @@ public class WorldGenHandler {
 	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
 
 	public static void register() {
-		// TODO 1.19.4 new logic
+		// TODO 1.19.4: worldgen
 //		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 //			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
 //

@@ -1,7 +1,13 @@
 package vazkii.quark.integration.jei;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
@@ -11,12 +17,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import vazkii.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public record ElytraDuplicationExtension(ElytraDuplicationRecipe recipe) implements ICraftingCategoryExtension {
 
@@ -29,7 +32,7 @@ public record ElytraDuplicationExtension(ElytraDuplicationRecipe recipe) impleme
 			inputLists.add(expandedInput);
 		}
 		craftingGridHelper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, inputLists, 0, 0);
-		craftingGridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem()));
+		craftingGridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Lists.newArrayList(new ItemStack(Items.ELYTRA)));
 
 	}
 

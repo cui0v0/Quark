@@ -14,7 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -45,7 +45,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 	private final boolean simple;
 
 	public ChorusVegetationBlock(String regname, QuarkModule module, boolean simple) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
+		super(regname, module, CreativeModeTabs.NATURAL_BLOCKS,
 				BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
 				.noCollission()
 				.instabreak()
@@ -140,7 +140,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(@Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(@Nonnull LevelReader worldIn, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean isClient) {
 		return true;
 	}
 

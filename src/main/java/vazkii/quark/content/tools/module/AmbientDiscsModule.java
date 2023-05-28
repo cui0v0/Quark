@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
@@ -20,6 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkMusicDiscItem;
@@ -51,7 +51,7 @@ public class AmbientDiscsModule extends QuarkModule {
 	}
 
 	private void disc(SoundEvent sound) {
-		String name = RegistryHelper.getRegistryName(sound, Registry.SOUND_EVENT).getPath().replaceAll(".+\\.", "");
+		String name = RegistryHelper.getRegistryName(sound, ForgeRegistries.SOUND_EVENTS).getPath().replaceAll(".+\\.", "");
 		discs.add(new QuarkMusicDiscItem(15, () -> sound, name, this, Integer.MAX_VALUE));
 	}
 
@@ -75,7 +75,7 @@ public class AmbientDiscsModule extends QuarkModule {
 			if(sound != null) {
 				soundEngine.play(sound);
 			} else {
-				ItemStack stack = tile.getRecord();
+				ItemStack stack = tile.getFirstItem();
 				if(stack.getItem() instanceof QuarkMusicDiscItem disc)
 					disc.playAmbientSound(pos);
 			}

@@ -3,7 +3,6 @@ package vazkii.quark.content.tweaks.module;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -32,7 +31,7 @@ public class MoreBannerLayersModule extends QuarkModule {
 	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
 		Component comp = Component.translatable("quark.jei.hint.banner_layer_buff", layerLimit);
 		
-		List<Item> banners = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, ItemTags.BANNERS);
+		List<Item> banners = MiscUtil.getTagValues(ItemTags.BANNERS);
 		for(Item item : banners)
 			consumer.accept(item, comp);
 	}

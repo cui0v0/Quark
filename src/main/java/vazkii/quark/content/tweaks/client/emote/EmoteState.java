@@ -11,7 +11,7 @@
 package vazkii.quark.content.tweaks.client.emote;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.player.Player;
@@ -64,11 +64,11 @@ public class EmoteState {
 		stack.translate(0, height / 2, 0);
 
 		if (rotY != 0)
-			stack.mulPose(Vector3f.YP.rotation(rotY));
+			stack.mulPose(Axis.YP.rotation(rotY));
 		if (rotX != 0)
-			stack.mulPose(Vector3f.XP.rotation(rotX));
+			stack.mulPose(Axis.XP.rotation(rotX));
 		if (rotZ != 0)
-			stack.mulPose(Vector3f.ZP.rotation(rotZ));
+			stack.mulPose(Axis.ZP.rotation(rotZ));
 
 		stack.translate(0, -height / 2, 0);
 	}

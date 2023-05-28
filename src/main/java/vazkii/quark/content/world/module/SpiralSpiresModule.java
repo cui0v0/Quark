@@ -14,7 +14,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -74,7 +74,7 @@ public class SpiralSpiresModule extends QuarkModule {
 		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_PURPLE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
-		dusky_myalite = new QuarkBlock("dusky_myalite", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
+		dusky_myalite = new QuarkBlock("dusky_myalite", this, CreativeModeTabs.BUILDING_BLOCKS, props);
 
 		myalite_crystal = new MyaliteCrystalBlock(this);
 		
@@ -105,7 +105,7 @@ public class SpiralSpiresModule extends QuarkModule {
 
 		Entity entity = event.getEntity();
 		Level world = entity.level;
-		BlockPos pos = new BlockPos(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+		BlockPos pos = BlockPos.containing(event.getTargetX(), event.getTargetY(), event.getTargetZ());
 
 		List<BlockPos> myalite = getAdjacentMyalite(null, world, pos, null);
 		if (myalite == null || myalite.isEmpty()) {

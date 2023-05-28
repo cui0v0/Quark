@@ -1,7 +1,7 @@
 package vazkii.quark.content.tools.client.tooltip;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,9 +11,9 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.content.tools.item.SeedPouchItem;
-
-import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class SeedPouchClientTooltipComponent implements ClientTooltipComponent {
@@ -35,7 +35,7 @@ public class SeedPouchClientTooltipComponent implements ClientTooltipComponent {
 	}
 
 	@Override
-	public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+	public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer) {
 		Pair<ItemStack, Integer> contents = SeedPouchItem.getContents(stack);
 		if(contents != null) {
 			ItemStack seed = contents.getLeft().copy();
@@ -53,8 +53,8 @@ public class SeedPouchClientTooltipComponent implements ClientTooltipComponent {
 				int x = tooltipX + 8 * i;
 				int y = tooltipY + (int) (Math.sin(i * 498543) * 2);
 
-				render.renderAndDecorateItem(seed, x, y);
-				render.renderGuiItemDecorations(mc.font, seed, x, y);
+				render.renderAndDecorateItem(pose, seed, x, y);
+				render.renderGuiItemDecorations(pose, mc.font, seed, x, y);
 			}
 		}
 	}

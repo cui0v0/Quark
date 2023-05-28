@@ -11,7 +11,6 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.Position;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
@@ -84,7 +84,7 @@ public class ParrotEggsModule extends QuarkModule {
 				.updateInterval(10) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new ParrotEgg(parrotEggType, world))
 				.build("parrot_egg");
-		RegistryHelper.register(parrotEggType, "parrot_egg", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(parrotEggType, "parrot_egg", ForgeRegistries.ENTITY_TYPES);
 
 		parrotEggs = new ArrayList<>();
 		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
@@ -132,7 +132,7 @@ public class ParrotEggsModule extends QuarkModule {
 			return null;
 
 		UUID uuid = parrot.getUUID();
-		if (parrot.getVariant() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
+		if (parrot.getVariant() == Parrot.Variant.GRAY && uuid.getLeastSignificantBits() % 20 == 0)
 			return KOTO;
 
 		return null;
@@ -192,7 +192,7 @@ public class ParrotEggsModule extends QuarkModule {
 	}
 
 	private int getResultingEggColor(Parrot parrot) {
-		int color = parrot.getVariant();
+		int color = parrot.getVariant().ordinal();
 		RandomSource rand = parrot.level.random;
 		if(rand.nextBoolean())
 			return color;

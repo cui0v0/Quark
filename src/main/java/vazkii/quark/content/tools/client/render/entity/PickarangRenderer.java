@@ -3,16 +3,16 @@ package vazkii.quark.content.tools.client.render.entity;
 import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 
 public class PickarangRenderer extends EntityRenderer<AbstractPickarang<?>> {
@@ -26,13 +26,13 @@ public class PickarangRenderer extends EntityRenderer<AbstractPickarang<?>> {
 		if (entity.tickCount >= 2) {
 			matrix.pushPose();
 			matrix.translate(0, 0.2, 0);
-			matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
+			matrix.mulPose(Axis.XP.rotationDegrees(90F));
 
 			Minecraft mc = Minecraft.getInstance();
 			float time = entity.tickCount + (mc.isPaused() ? 0 : partialTicks);
-			matrix.mulPose(Vector3f.ZP.rotationDegrees(time * 20F));
+			matrix.mulPose(Axis.ZP.rotationDegrees(time * 20F));
 
-			mc.getItemRenderer().renderStatic(entity.getStack(), TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buffer, 0);
+			mc.getItemRenderer().renderStatic(entity.getStack(), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buffer, entity.getLevel(), 0);
 
 			matrix.popPose();
 		}

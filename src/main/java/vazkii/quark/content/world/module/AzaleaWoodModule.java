@@ -26,21 +26,22 @@ public class AzaleaWoodModule extends QuarkModule {
 
 	@Override
 	public void enabledStatusChanged(boolean firstLoad, boolean oldStatus, boolean newStatus) {
-		ConfiguredFeature<TreeConfiguration, ?> configured = null;
-		try {
-			configured = TreeFeatures.AZALEA_TREE.value();
-		} catch(IllegalStateException e) {
-			e.printStackTrace();
-		}
-		
-		if(configured != null) {
-			TreeConfiguration config = configured.config();
-	
-			if(newStatus && woodSet != null)
-				config.trunkProvider = BlockStateProvider.simple(woodSet.log);
-			else if(!firstLoad)
-				config.trunkProvider = BlockStateProvider.simple(Blocks.OAK_LOG);
-		}
+		// TODO: 1.19.4 worldgen
+//		ConfiguredFeature<TreeConfiguration, ?> configured = null;
+//		try {
+//			configured = TreeFeatures.AZALEA_TREE.value();
+//		} catch(IllegalStateException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		if(configured != null) {
+//			TreeConfiguration config = configured.config();
+//	
+//			if(newStatus && woodSet != null)
+//				config.trunkProvider = BlockStateProvider.simple(woodSet.log);
+//			else if(!firstLoad)
+//				config.trunkProvider = BlockStateProvider.simple(Blocks.OAK_LOG);
+//		}
 	}
 
 }

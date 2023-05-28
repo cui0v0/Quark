@@ -2,7 +2,6 @@ package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -22,6 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
@@ -65,7 +65,7 @@ public class SignEditingModule extends QuarkModule {
 				&& (!requiresEmptyHand || stack.isEmpty())
 				&& !(stack.getItem() instanceof DyeItem)
 				&& !(stack.getItem() == Items.GLOW_INK_SAC)
-				&& !Registry.BLOCK.getKey(tile.getBlockState().getBlock()).getNamespace().equals("signbutton")
+				&& !ForgeRegistries.BLOCKS.getKey(tile.getBlockState().getBlock()).getNamespace().equals("signbutton")
 				&& player.mayUseItemAt(event.getPos(), event.getFace(), event.getItemStack())
 				&& !event.getEntity().isDiscrete()) {
 

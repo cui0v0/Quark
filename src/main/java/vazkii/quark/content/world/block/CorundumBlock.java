@@ -3,7 +3,7 @@ package vazkii.quark.content.world.block;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +11,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -37,7 +37,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 	public CorundumClusterBlock cluster;
 
 	public CorundumBlock(String regname, int color, QuarkModule module, MaterialColor materialColor, boolean waxed) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
+		super(regname, module, CreativeModeTabs.NATURAL_BLOCKS, true,
 				Block.Properties.of(Material.GLASS, materialColor)
 				.strength(0.3F, 0F)
 				.sound(SoundType.AMETHYST)

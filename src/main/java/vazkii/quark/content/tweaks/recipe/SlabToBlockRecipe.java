@@ -2,26 +2,28 @@ package vazkii.quark.content.tweaks.recipe;
 
 import java.util.Optional;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 import vazkii.quark.content.tweaks.module.SlabsToBlocksModule;
 
 public class SlabToBlockRecipe extends CustomRecipe {
 	
-	public static final SimpleRecipeSerializer<?> SERIALIZER = new SimpleRecipeSerializer<>(SlabToBlockRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<?> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SlabToBlockRecipe::new);
 	private boolean locked = false;
 	
-	public SlabToBlockRecipe(ResourceLocation id) {
-		super(id);
+	public SlabToBlockRecipe(ResourceLocation id, CraftingBookCategory cat) {
+		super(id, cat);
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class SlabToBlockRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
 		for(int i = 0; i < container.getContainerSize(); i++) {
 			ItemStack stack = container.getItem(i);
 			if(!stack.isEmpty()) {

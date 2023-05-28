@@ -1,7 +1,6 @@
 package vazkii.quark.content.tools.module;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -41,7 +41,7 @@ public class BottledCloudModule extends QuarkModule {
 		bottled_cloud = new BottledCloudItem(this);
 		
 		blockEntityType = BlockEntityType.Builder.of(CloudBlockEntity::new, cloud).build(null);
-		RegistryHelper.register(blockEntityType, "cloud", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(blockEntityType, "cloud", ForgeRegistries.BLOCK_ENTITY_TYPES);
 	} 
 	
 	@Override

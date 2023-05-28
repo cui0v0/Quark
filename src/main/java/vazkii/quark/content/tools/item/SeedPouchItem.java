@@ -10,8 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,13 +24,16 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 import vazkii.arl.util.ItemNBTHelper;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
 import vazkii.quark.base.handler.MiscUtil;
@@ -52,8 +53,8 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 		super("seed_pouch", module,
 				new Item.Properties()
 				.stacksTo(1)
-				.durability(SeedPouchModule.maxItems + 1)
-				.tab(CreativeModeTab.TAB_TOOLS));
+				.durability(SeedPouchModule.maxItems + 1));
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	@Override
@@ -285,14 +286,12 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		super.fillItemCategory(group, items);
-
-		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
+	public void addCreativeModeExtras(CreativeModeTab tab, BuildContents event) {
+		if(SeedPouchModule.showAllVariantsInCreative) {
 			List<Item> tagItems;
 
 			try {
-				tagItems = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
+				tagItems = MiscUtil.getTagValues(SeedPouchModule.seedPouchHoldableTag);
 			} catch(IllegalStateException e) { // Tag not bound yet
 				return;
 			}
@@ -304,7 +303,7 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 				ItemStack stack = new ItemStack(this);
 				setItemStack(stack, new ItemStack(i));
 				setCount(stack, SeedPouchModule.maxItems);
-				items.add(stack);
+				event.accept(stack);
 			}
 		}
 	}

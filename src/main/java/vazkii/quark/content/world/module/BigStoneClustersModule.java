@@ -7,7 +7,6 @@ import java.util.function.BooleanSupplier;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -88,7 +88,9 @@ public class BigStoneClustersModule extends QuarkModule {
 			}
 			
 			String dimFinal = dimension;
-			Registry.BLOCK.getOptional(new ResourceLocation(bname)).ifPresent(blockObj -> {
+			ResourceLocation res = new ResourceLocation(bname);
+			if(ForgeRegistries.BLOCKS.containsKey(res)) {
+				Block blockObj = ForgeRegistries.BLOCKS.getValue(res);
 				if(blockObj != Blocks.AIR) {
 					if(dimFinal == null)
 						blockReplacePredicate = blockReplacePredicate.or((w, b) -> blockObj == b);
@@ -103,7 +105,7 @@ public class BigStoneClustersModule extends QuarkModule {
 						});
 					}
 				}
-			});
+			}
 		}
 	}
 	

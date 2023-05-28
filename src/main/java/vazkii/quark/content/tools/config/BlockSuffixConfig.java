@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
@@ -46,7 +46,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	}
 	
 	public String getVariantForBlock(Block block) {
-		String name = Registry.BLOCK.getKey(block).getPath();
+		String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
 		
 		for(String s : sortedSuffixes) {
 			String check = String.format("_%s", s);
@@ -94,7 +94,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	}
 	
 	private Block getSuffixedBlock(Block ogBlock, String suffix) {
-		ResourceLocation resloc = Registry.BLOCK.getKey(ogBlock);
+		ResourceLocation resloc = ForgeRegistries.BLOCKS.getKey(ogBlock);
 		String namespace = resloc.getNamespace();
 		String name = resloc.getPath();
 		
@@ -128,7 +128,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 		
 		String targetStr = String.format("%s:%s_%s", namespace, name, suffix);
 		ResourceLocation target = new ResourceLocation(targetStr);
-		Block ret = Registry.BLOCK.get(target);
+		Block ret = ForgeRegistries.BLOCKS.getValue(target);
 		
 		if(ret == Blocks.AIR)
 			return null;

@@ -1,6 +1,5 @@
 package vazkii.quark.content.tweaks.module;
 
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.Item;
@@ -28,7 +27,7 @@ public class SlimesToMagmaCubesModule extends QuarkModule {
 	
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event) {
-		if(event.getEntity().getType() == EntityType.SLIME && event.getSource() == DamageSource.HOT_FLOOR)
+		if(event.getEntity().getType() == EntityType.SLIME && event.getEntity().getLevel().damageSources().hotFloor().equals(event.getSource()))
 			event.getEntity().getPersistentData().putBoolean(TAG_MAGMAED, true);
 	}
 	

@@ -57,7 +57,7 @@ public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntit
 
 		ChestTextureBatch batch = new ChestTextureBatch(atlas, resNormal, resLeft, resRight);
 		chestTextures.put(chest, batch);
-		// TODO: 1.19.4
+		// TODO: 1.19.4 texture atlas
 //
 //		event.addSprite(resNormal);
 //		event.addSprite(resLeft);

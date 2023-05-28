@@ -2,24 +2,20 @@ package vazkii.quark.content.tweaks.client.emote;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.IoSupplier;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
@@ -28,11 +24,8 @@ import vazkii.quark.content.tweaks.module.EmotesModule;
 @OnlyIn(Dist.CLIENT)
 public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
-	private final List<String> verifiedNames = new ArrayList<>();
-	private final List<String> existingNames = new ArrayList<>();
-
 	public CustomEmoteIconResourcePack() {
-		super(EmotesModule.emotesDir);
+		super("quark-emotes", true);
 	}
 
 	@Nonnull
@@ -43,44 +36,52 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 		return ImmutableSet.of();
 	}
 
-	@Nonnull
+
 	@Override
-	protected InputStream getResource(@Nonnull String name) throws IOException {
-		if(name.equals("pack.mcmeta"))
-			return Quark.class.getResourceAsStream("/proxypack.mcmeta");
+	@Nullable
+	public IoSupplier<InputStream> getRootResource(String... p_252049_) {
+		for(String name : p_252049_) {
+			if(name.equals("pack.mcmeta"))
+				return () -> Quark.class.getResourceAsStream("/proxypack.mcmeta");
 
-		if(name.equals("pack.png"))
-			return Quark.class.getResourceAsStream("/proxypack.png");
+			if(name.equals("pack.png"))
+				return () -> Quark.class.getResourceAsStream("/proxypack.png");
+		}
+		 
+		return null;
+	}
 
-		File file = getFile(name);
-		if(!file.exists())
-			throw new FileNotFoundException(name);
-
-		return new FileInputStream(file);
+	// TODO: 1.19.4 resource packs
+	
+	@Override
+	@Nullable
+	public IoSupplier<InputStream> getResource(PackType type, ResourceLocation res) {
+		if(type == PackType.CLIENT_RESOURCES)
+			return stream(getFile(res.getPath()));
+			
+		return null;
 	}
 
 	@Nonnull
 	@Override
-	public Collection<ResourceLocation> getResources(@Nonnull PackType type, @Nonnull String pathIn, @Nonnull String idk, @Nonnull Predicate<ResourceLocation> filter) {
-		File rootPath = new File(this.file, type.getDirectory());
-		List<ResourceLocation> allResources = Lists.newArrayList();
+	public void listResources(@Nonnull PackType type, @Nonnull String pathIn, @Nonnull String idk, PackResources.ResourceOutput output) {
+		File rootPath = new File(EmotesModule.emotesDir, type.getDirectory());
 
 		for (String namespace : this.getNamespaces(type))
-			this.crawl(new File(new File(rootPath, namespace), pathIn), 32, namespace, allResources, pathIn + "/", filter);
-
-		return allResources;
+			this.crawl(new File(new File(rootPath, namespace), pathIn), 32, namespace, pathIn + "/", output);
 	}
 
-	private void crawl(File rootPath, int maxDepth, String namespace, List<ResourceLocation> allResources, String path, Predicate<ResourceLocation> filter) {
+	private void crawl(File rootPath, int maxDepth, String namespace, String path, PackResources.ResourceOutput output) {
 		File[] files = rootPath.listFiles();
 		if (files != null) {
 			for (File file : files) {
 				if (file.isDirectory()) {
 					if (maxDepth > 0)
-						this.crawl(file, maxDepth - 1, namespace, allResources, path + file.getName() + "/", filter);
-				} else if (!file.getName().endsWith(".mcmeta") && filter.test(new ResourceLocation(namespace, path + file.getName()))) {
+						this.crawl(file, maxDepth - 1, namespace, path + file.getName() + "/", output);
+				} else if (!file.getName().endsWith(".mcmeta")) {
 					try {
-						allResources.add(new ResourceLocation(namespace, path + file.getName()));
+						ResourceLocation res = new ResourceLocation(namespace, path + file.getName());
+						output.accept(res, stream(file));
 					} catch (ResourceLocationException e) {
 						Quark.LOG.error(e.getMessage());
 					}
@@ -94,37 +95,22 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 		// NO-OP
 	}
 
-	@Override
-	protected boolean hasResource(@Nonnull String name) {
-		if(!verifiedNames.contains(name)) {
-			File file = getFile(name);
-			if(file.exists())
-				existingNames.add(name);
-			verifiedNames.add(name);
-		}
-
-		return existingNames.contains(name);
-	}
-
 	private File getFile(String name) {
 		String filename = name.substring(name.indexOf(":") + 1) + ".png";
 		filename = filename.replaceAll("(.+/)+", "");
-		
+
 		return new File(EmotesModule.emotesDir, filename);
+	}
+	
+	private IoSupplier<InputStream> stream(File file) {
+		if(!file.exists())
+			return null;
+		return () -> new FileInputStream(file);
 	}
 
 	@Override
 	public boolean isHidden() {
 		return true;
 	}
-
-	@Nonnull
-	@Override
-	public String getName() {
-		return "quark-emote-pack";
-	}
-
-
-
 
 }

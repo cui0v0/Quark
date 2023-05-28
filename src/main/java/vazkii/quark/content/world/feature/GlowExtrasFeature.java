@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
-import vazkii.quark.content.world.module.GlimmeringWealdModule;
 
 public class GlowExtrasFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -56,8 +55,9 @@ public class GlowExtrasFeature extends Feature<NoneFeatureConfiguration> {
 					if(rng.nextFloat() < chance && worldgenlevel.isStateAtPosition(setPos, BlockState::isAir)) {
 						double res = rng.nextDouble();
 						if(res > 0.85) { // try to place shrub
-							if(worldgenlevel.isStateAtPosition(setPos.below(), s -> s.getBlock() == Blocks.DEEPSLATE))
-								worldgenlevel.setBlock(setPos, GlimmeringWealdModule.glow_lichen_growth.defaultBlockState(), 2);
+							// TODO: 1.19.4: worldgen
+//							if(worldgenlevel.isStateAtPosition(setPos.below(), s -> s.getBlock() == Blocks.DEEPSLATE))
+//								worldgenlevel.setBlock(setPos, GlimmeringWealdModule.glow_lichen_growth.defaultBlockState(), 2);
 						}
 
 						else if(res > 0.35) { // try to place lichen

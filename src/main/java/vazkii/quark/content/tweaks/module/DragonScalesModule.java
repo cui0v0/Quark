@@ -2,13 +2,14 @@ package vazkii.quark.content.tweaks.module;
 
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
@@ -26,7 +27,8 @@ public class DragonScalesModule extends QuarkModule {
 	public void register() {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":elytra_duplication", ElytraDuplicationRecipe.SERIALIZER);
 
-		dragon_scale = new QuarkItem("dragon_scale", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		dragon_scale = new QuarkItem("dragon_scale", this, new Item.Properties());
+		RegistryHelper.setCreativeTab(dragon_scale, CreativeModeTabs.TOOLS_AND_UTILITIES);
 	}
 
 	@SubscribeEvent

@@ -3,24 +3,26 @@ package vazkii.quark.content.tweaks.recipe;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
 import vazkii.quark.content.tweaks.module.DragonScalesModule;
 
 public class ElytraDuplicationRecipe extends CustomRecipe {
 
-	public static final SimpleRecipeSerializer<?> SERIALIZER = new SimpleRecipeSerializer<>(ElytraDuplicationRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<?> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ElytraDuplicationRecipe::new);
 
-	public ElytraDuplicationRecipe(ResourceLocation id) {
-		super(id);
+	public ElytraDuplicationRecipe(ResourceLocation id, CraftingBookCategory cat) {
+		super(id, cat);
 	}
 
 	@Override
@@ -48,13 +50,13 @@ public class ElytraDuplicationRecipe extends CustomRecipe {
 
 	@Nonnull
 	@Override
-	public ItemStack assemble(@Nonnull CraftingContainer var1) {
-		return getResultItem();
+	public ItemStack assemble(@Nonnull CraftingContainer var1, RegistryAccess access) {
+		return getResultItem(access);
 	}
 
 	@Nonnull
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		ItemStack stack = new ItemStack(Items.ELYTRA);
 //		if(EnderdragonScales.dyeBlack && ModuleLoader.isFeatureEnabled(DyableElytra.class))
 //			ItemNBTHelper.setInt(stack, DyableElytra.TAG_ELYTRA_DYE, 0);

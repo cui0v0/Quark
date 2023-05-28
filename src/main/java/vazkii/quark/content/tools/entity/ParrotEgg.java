@@ -1,12 +1,13 @@
 package vazkii.quark.content.tools.entity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Parrot;
@@ -19,8 +20,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.content.tools.module.ParrotEggsModule;
-
-import javax.annotation.Nonnull;
 
 public class ParrotEgg extends ThrowableItemProjectile {
 	public static final int VARIANTS = 5;
@@ -77,7 +76,7 @@ public class ParrotEgg extends ThrowableItemProjectile {
 	@Override
 	protected void onHitEntity(@Nonnull EntityHitResult entityHitResult) {
 		super.onHitEntity(entityHitResult);
-		entityHitResult.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), 0.0F);
+		entityHitResult.getEntity().hurt(level.damageSources().thrown(this, this.getOwner()), 0.0F);
 	}
 
 	@Override
@@ -86,7 +85,7 @@ public class ParrotEgg extends ThrowableItemProjectile {
 		if (!this.level.isClientSide) {
 			Parrot parrot = EntityType.PARROT.create(level);
 			if (parrot != null) {
-				parrot.setVariant(getVariant());
+				parrot.setVariant(Parrot.Variant.values()[getVariant()]);
 				parrot.setAge(-24000);
 				parrot.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				level.addFreshEntity(parrot);

@@ -3,7 +3,7 @@ package vazkii.quark.content.world.block;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -16,7 +16,7 @@ import vazkii.quark.base.module.QuarkModule;
 public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColorProvider {
 
 	public MyaliteCrystalBlock(QuarkModule module) {
-		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
+		super("myalite_crystal", module, CreativeModeTabs.FUNCTIONAL_BLOCKS, true,
 				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE)
 				.strength(0.5F, 1200F)
 				.sound(SoundType.GLASS)

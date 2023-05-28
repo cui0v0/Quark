@@ -23,10 +23,13 @@ public class EmoteButton extends TranslucentButton {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partial) {
-		super.renderButton(matrix, mouseX, mouseY, partial);
+	public void renderWidget(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partial) {
+		super.renderWidget(matrix, mouseX, mouseY, partial);
 
 		if(visible) {
+			int x = getX();
+			int y = getY();
+			
 			Minecraft mc = Minecraft.getInstance();
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

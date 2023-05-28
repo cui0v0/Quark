@@ -2,10 +2,11 @@ package vazkii.quark.content.tools.module;
 
 import java.util.List;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -60,6 +61,8 @@ public class AbacusModule extends QuarkModule {
 		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()) {
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
+			PoseStack pose = event.getPoseStack();
+			
 			if(player != null) {
 				ItemStack stack = player.getMainHandItem();
 				if(!(stack.getItem() instanceof AbacusItem))
@@ -72,7 +75,7 @@ public class AbacusModule extends QuarkModule {
 						int x = window.getGuiScaledWidth() / 2 + 10;
 						int y = window.getGuiScaledHeight() / 2 - 7;
 
-						mc.getItemRenderer().renderAndDecorateItem(stack, x, y);
+						mc.getItemRenderer().renderAndDecorateItem(pose, stack, x, y);
 
 						String distStr = distance < AbacusItem.MAX_COUNT ? Integer.toString(distance + 1) : (AbacusItem.MAX_COUNT + "+");
 						mc.font.drawShadow(event.getPoseStack(), distStr, x + 17, y + 5, 0xFFFFFF);

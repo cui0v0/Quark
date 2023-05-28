@@ -1,13 +1,12 @@
 package vazkii.quark.content.tweaks.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -19,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,8 +60,8 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 		Vec3 vec3 = this.getRenderOffset(p_115076_, p_115078_);
 		p_115079_.translate(-vec3.x(), -vec3.y(), -vec3.z());
 		p_115079_.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
-		p_115079_.mulPose(Vector3f.XP.rotationDegrees(p_115076_.getXRot()));
-		p_115079_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115076_.getYRot()));
+		p_115079_.mulPose(Axis.XP.rotationDegrees(p_115076_.getXRot()));
+		p_115079_.mulPose(Axis.YP.rotationDegrees(180.0F - p_115076_.getYRot()));
 		boolean flag = p_115076_.isInvisible();
 		ItemStack itemstack = p_115076_.getItem();
 		if (!flag) {
@@ -90,9 +90,9 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 			}
 
 			int j = mapitemsaveddata != null ? p_115076_.getRotation() % 4 * 2 : p_115076_.getRotation();
-			p_115079_.mulPose(Vector3f.ZP.rotationDegrees((float)j * 360.0F / 8.0F));
+			p_115079_.mulPose(Axis.ZP.rotationDegrees((float)j * 360.0F / 8.0F));
 			if (mapitemsaveddata != null) {
-				p_115079_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+				p_115079_.mulPose(Axis.ZP.rotationDegrees(180.0F));
 				p_115079_.scale(0.0078125F, 0.0078125F, 0.0078125F);
 				p_115079_.translate(-64.0D, -64.0D, 0.0D);
 				p_115079_.translate(0.0D, 0.0D, -1.0D);
@@ -103,7 +103,7 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 			} else {
 				int k = this.getLightVal(p_115076_, 15728880, p_115081_);
 				p_115079_.scale(0.5F, 0.5F, 0.5F);
-				this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, k, OverlayTexture.NO_OVERLAY, p_115079_, p_115080_, p_115076_.getId());
+				this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, k, OverlayTexture.NO_OVERLAY, p_115079_, p_115080_, p_115076_.getLevel(), p_115076_.getId());
 			}
 		}
 

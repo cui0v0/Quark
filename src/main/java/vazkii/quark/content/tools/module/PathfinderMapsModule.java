@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -135,7 +136,7 @@ public class PathfinderMapsModule extends QuarkModule {
 		loadTradeInfo(Biomes.ICE_SPIKES, true, 5, 20, 26, 0x1EC0C9);
 
 		inBiomeConditionType = new LootItemConditionType(new InBiomeCondition.InBiomeSerializer());
-		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
+		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
 		
 		pathfinderMapTrigger = QuarkAdvancementHandler.registerGenericTrigger("pathfinder_map_center");
 		
@@ -182,7 +183,7 @@ public class PathfinderMapsModule extends QuarkModule {
 				qx += (int) offX;
 				qy += (int) offY;
 				
-				mc.getItemRenderer().renderGuiItem(quill, qx, qy);
+				mc.getItemRenderer().renderGuiItem(ps, quill, qx, qy);
 			}
 		}
 	}

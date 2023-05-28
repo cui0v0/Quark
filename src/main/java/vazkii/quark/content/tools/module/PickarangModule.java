@@ -5,23 +5,22 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -94,7 +93,7 @@ public class PickarangModule extends QuarkModule {
 				.updateInterval(10)
 				.setCustomClientFactory((t, l) -> entityFactory.create(type.getEntityType(), l))
 				.build(name);
-		RegistryHelper.register(entityType, name, Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(entityType, name, ForgeRegistries.ENTITY_TYPES);
 
 		knownTypes.add(type);
 		type.setEntityType(entityType, thrownFactory);
@@ -103,8 +102,7 @@ public class PickarangModule extends QuarkModule {
 
 	private Item.Properties propertiesFor(int durability, boolean fireResist) {
 		Item.Properties properties = new Item.Properties()
-				.stacksTo(1)
-				.tab(CreativeModeTab.TAB_TOOLS);
+				.stacksTo(1);
 
 		if (durability > 0)
 			properties.durability(durability);
@@ -118,7 +116,7 @@ public class PickarangModule extends QuarkModule {
 	@Override
 	public void setup() {
 		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
-		echorangCanListenTag = TagKey.create(Registry.GAME_EVENT_REGISTRY, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
+		echorangCanListenTag = TagKey.create(Registries.GAME_EVENT, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
 	}
 
 	@Override
@@ -145,7 +143,7 @@ public class PickarangModule extends QuarkModule {
 		if (pickarang == null)
 			return null;
 
-		return new IndirectEntityDamageSource("player", pickarang, player).setProjectile();
+		return player.level.damageSources().mobProjectile(pickarang, player);
 	}
 
 	public static boolean getIsFireResistant(boolean vanillaVal, Entity entity) {

@@ -1,6 +1,13 @@
 package vazkii.quark.content.tweaks.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
@@ -10,6 +17,7 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,8 +36,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.*;
 
 @LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
 public class AutomaticRecipeUnlockModule extends QuarkModule {
@@ -58,12 +64,14 @@ public class AutomaticRecipeUnlockModule extends QuarkModule {
 			MinecraftServer server = spe.getServer();
 			if (server != null) {
 				List<Recipe<?>> recipes = new ArrayList<>(server.getRecipeManager().getRecipes());
+				RegistryAccess access = server.registryAccess();
+				
 				recipes.removeIf(
 						(recipe) ->
 						recipe == null
-						|| recipe.getResultItem() == null
+						|| recipe.getResultItem(access) == null
 						|| ignoredRecipes.contains(Objects.toString(recipe.getId()))
-						|| recipe.getResultItem().isEmpty());
+						|| recipe.getResultItem(access).isEmpty());
 
 				int idx = 0;
 				int maxShift = 1000;

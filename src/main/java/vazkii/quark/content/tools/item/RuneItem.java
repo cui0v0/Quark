@@ -5,12 +5,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.item.QuarkItem;
@@ -26,7 +27,9 @@ public class RuneItem extends QuarkItem implements IRuneColorProvider {
 	private final boolean glow;
 
 	public RuneItem(String regname, QuarkModule module, int color, boolean glow) {
-		super(regname, module, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		super(regname, module, new Item.Properties());
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.TOOLS_AND_UTILITIES);
+		
 		this.color = color;
 		this.glow = glow;
 	}

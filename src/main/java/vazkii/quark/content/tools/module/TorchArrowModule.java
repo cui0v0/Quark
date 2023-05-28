@@ -1,12 +1,12 @@
 package vazkii.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.item.QuarkArrowItem;
 import vazkii.quark.base.module.LoadModule;
@@ -35,7 +35,7 @@ public class TorchArrowModule extends QuarkModule {
 				.clientTrackingRange(4)
 				.updateInterval(20) // update interval
 				.build("torch_arrow");
-		RegistryHelper.register(torchArrowType, "torch_arrow", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(torchArrowType, "torch_arrow", ForgeRegistries.ENTITY_TYPES);
 	}
 	
 	@Override

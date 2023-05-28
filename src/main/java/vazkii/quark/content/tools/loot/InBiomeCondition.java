@@ -22,7 +22,7 @@ public record InBiomeCondition(ResourceLocation target) implements LootItemCondi
 	@Override
 	public boolean test(LootContext lootContext) {
 		Vec3 pos = lootContext.getParam(LootContextParams.ORIGIN);
-		return lootContext.getLevel().getBiome(new BlockPos(pos)).is(target);
+		return lootContext.getLevel().getBiome(BlockPos.containing(pos)).is(target);
 	}
 
 	@Override
