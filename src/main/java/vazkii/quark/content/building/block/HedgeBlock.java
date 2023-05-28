@@ -14,9 +14,9 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -34,10 +34,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.interf.IBlockColorProvider;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
@@ -69,14 +69,14 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 		this.module = module;
 		this.leaf = leaf;
 
-		ResourceLocation leafRes = RegistryHelper.getRegistryName(leaf, Registry.BLOCK);
+		ResourceLocation leafRes = RegistryHelper.getRegistryName(leaf, ForgeRegistries.BLOCKS);
 		if (leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			RegistryHelper.registerBlock(this, colorName + "_blossom_hedge");
 		} else {
 			RegistryHelper.registerBlock(this, leafRes.getPath().replaceAll("_leaves", "_hedge"));
 		}
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.BUILDING_BLOCKS);
 
 		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.CUTOUT);
 
@@ -186,12 +186,6 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 	public ItemColor getItemColor() {
 		final ItemStack leafStack = new ItemStack(leaf);
 		return (stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(leafStack, tintIndex);
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

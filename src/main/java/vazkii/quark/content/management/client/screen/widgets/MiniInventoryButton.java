@@ -11,7 +11,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,9 +18,10 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.client.util.Button2;
 import vazkii.quark.base.handler.MiscUtil;
 
-public class MiniInventoryButton extends Button {
+public class MiniInventoryButton extends Button2 {
 
 	private final Consumer<List<String>> tooltip;
 	private final int type;
@@ -50,13 +50,13 @@ public class MiniInventoryButton extends Button {
 	@Override
 	public void render(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		if(parent instanceof RecipeUpdateListener)
-			x = parent.getGuiLeft() + startX;
+			setX(parent.getGuiLeft() + startX);
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
@@ -70,7 +70,7 @@ public class MiniInventoryButton extends Button {
 		if(shiftTexture.getAsBoolean())
 			v += (height * 2);
 
-		blit(matrix, x, y, u, v, width, height);
+		blit(matrix, getX(), getY(), u, v, width, height);
 
 		if(isHovered)
 			TopLayerTooltipHandler.setTooltip(getTooltip(), mouseX, mouseY);

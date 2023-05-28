@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,7 +24,7 @@ public class MudBrickLatticeBlock extends QuarkGlassBlock implements SimpleWater
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
 	public MudBrickLatticeBlock(QuarkModule module, Properties properties) {
-		super("mud_brick_lattice", module, CreativeModeTab.TAB_BUILDING_BLOCKS, false, properties);
+		super("mud_brick_lattice", module, CreativeModeTabs.BUILDING_BLOCKS, false, properties);
 		
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}

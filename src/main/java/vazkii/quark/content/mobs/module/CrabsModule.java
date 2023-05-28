@@ -3,7 +3,6 @@ package vazkii.quark.content.mobs.module;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
@@ -16,13 +15,14 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
@@ -72,23 +72,25 @@ public class CrabsModule extends QuarkModule {
 	@Override
 	public void register() {
 		crab_leg = new QuarkItem("crab_leg", this, new Item.Properties()
-				.tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder()
 						.meat()
 						.nutrition(1)
 						.saturationMod(0.3F)
 						.build()));
 
-		Item cookedCrabLeg = new QuarkItem("cooked_crab_leg", this, new Item.Properties()
-				.tab(CreativeModeTab.TAB_FOOD)
+		Item cooked_crab_leg = new QuarkItem("cooked_crab_leg", this, new Item.Properties()
 				.food(new FoodProperties.Builder()
 						.meat()
 						.nutrition(8)
 						.saturationMod(0.8F)
 						.build()));
 
-		crab_shell = new QuarkItem("crab_shell", this, new Item.Properties().tab(CreativeModeTab.TAB_BREWING))
+		crab_shell = new QuarkItem("crab_shell", this, new Item.Properties())
 				.setCondition(() -> enableBrewing);
+		
+		RegistryHelper.setCreativeTab(crab_leg, CreativeModeTabs.FOOD_AND_DRINKS);
+		RegistryHelper.setCreativeTab(cooked_crab_leg, CreativeModeTabs.FOOD_AND_DRINKS);
+		RegistryHelper.setCreativeTab(crab_shell, CreativeModeTabs.INGREDIENTS);
 
 		resilience = new QuarkEffect("resilience", MobEffectCategory.BENEFICIAL, 0x5b1a04);
 		resilience.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "2ddf3f0a-f386-47b6-aeb0-6bd32851f215", 0.5, AttributeModifier.Operation.ADDITION);
@@ -101,7 +103,7 @@ public class CrabsModule extends QuarkModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Crab(crabType, world))
 				.build("crab");
-		RegistryHelper.register(crabType, "crab", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(crabType, "crab", ForgeRegistries.ENTITY_TYPES);
 
 		EntitySpawnHandler.registerSpawn(this, crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(crabType, 0x893c22, 0x916548, spawnConfig);
@@ -111,7 +113,7 @@ public class CrabsModule extends QuarkModule {
 		QuarkAdvancementHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> enableResillienceEffect));
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
-		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
+		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cooked_crab_leg)));
 	}
 
 	@Override

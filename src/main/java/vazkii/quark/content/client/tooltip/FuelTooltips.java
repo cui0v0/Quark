@@ -54,7 +54,7 @@ public class FuelTooltips {
 	public record FuelComponent(ItemStack stack, int width, int count) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer) {
 			pose.pushPose();
 			pose.translate(tooltipX, tooltipY, 500);
 		

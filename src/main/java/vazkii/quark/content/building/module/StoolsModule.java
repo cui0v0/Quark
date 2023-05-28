@@ -2,7 +2,6 @@ package vazkii.quark.content.building.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -16,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
@@ -45,7 +45,7 @@ public class StoolsModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new Stool(stoolEntity, world))
 				.build("stool");
-		RegistryHelper.register(stoolEntity, "stool", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(stoolEntity, "stool", ForgeRegistries.ENTITY_TYPES);
 	}
 	
 	@Override

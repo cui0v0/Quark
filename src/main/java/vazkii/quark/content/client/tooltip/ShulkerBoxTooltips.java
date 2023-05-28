@@ -1,9 +1,15 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -33,10 +39,6 @@ import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.content.client.module.ChestSearchingModule;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShulkerBoxTooltips {
 
@@ -95,7 +97,7 @@ public class ShulkerBoxTooltips {
 
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer) {
 			Minecraft mc = Minecraft.getInstance();
 
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
@@ -158,8 +160,8 @@ public class ShulkerBoxTooltips {
 							int yp = currentY + 6 + (i / 9) * 18;
 
 							if (!itemstack.isEmpty()) {
-								render.renderAndDecorateItem(itemstack, xp, yp);
-								render.renderGuiItemDecorations(mc.font, itemstack, xp, yp);
+								render.renderAndDecorateItem(pose, itemstack, xp, yp);
+								render.renderGuiItemDecorations(pose, mc.font, itemstack, xp, yp);
 							}
 
 							if (!ChestSearchingModule.namesMatch(itemstack)) {

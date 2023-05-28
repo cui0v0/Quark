@@ -1,5 +1,8 @@
 package vazkii.quark.content.building.client.render.be;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
@@ -10,9 +13,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.render.GenericChestBERenderer;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntity> {
 
@@ -37,7 +37,7 @@ public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntit
 		};
 	}
 
-	public static void accept(TextureStitchEvent.Pre event, Block chest) {
+	public static void accept(TextureStitchEvent.Post event, Block chest) {
 		ResourceLocation atlas = event.getAtlas().location();
 
 		if(chest instanceof IChestTextureProvider prov) {
@@ -50,17 +50,18 @@ public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntit
 		}
 	}
 
-	private static void add(TextureStitchEvent.Pre event, ResourceLocation atlas, Block chest, String path, String normal, String left, String right) {
+	private static void add(TextureStitchEvent.Post event, ResourceLocation atlas, Block chest, String path, String normal, String left, String right) {
 		ResourceLocation resNormal = new ResourceLocation(Quark.MOD_ID, path + normal);
 		ResourceLocation resLeft = new ResourceLocation(Quark.MOD_ID, path + left);
 		ResourceLocation resRight = new ResourceLocation(Quark.MOD_ID, path + right);
 
 		ChestTextureBatch batch = new ChestTextureBatch(atlas, resNormal, resLeft, resRight);
 		chestTextures.put(chest, batch);
-
-		event.addSprite(resNormal);
-		event.addSprite(resLeft);
-		event.addSprite(resRight);
+		// TODO: 1.19.4
+//
+//		event.addSprite(resNormal);
+//		event.addSprite(resLeft);
+//		event.addSprite(resRight);
 	}
 
 	private static class ChestTextureBatch {

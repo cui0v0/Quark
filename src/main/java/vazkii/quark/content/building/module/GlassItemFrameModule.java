@@ -2,13 +2,13 @@ package vazkii.quark.content.building.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
@@ -46,7 +46,7 @@ public class GlassItemFrameModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new GlassItemFrame(glassFrameEntity, world))
 				.build("glass_frame");
-		RegistryHelper.register(glassFrameEntity, "glass_frame", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(glassFrameEntity, "glass_frame", ForgeRegistries.ENTITY_TYPES);
 
 		glassFrame = new QuarkItemFrameItem("glass_item_frame", this, GlassItemFrame::new);
 		glowingGlassFrame = new QuarkItemFrameItem("glowing_glass_item_frame", this, 

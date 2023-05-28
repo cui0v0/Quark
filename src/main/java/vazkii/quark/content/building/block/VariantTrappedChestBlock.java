@@ -1,16 +1,20 @@
 package vazkii.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -24,15 +28,9 @@ import net.minecraftforge.fml.ModList;
 import vazkii.arl.interf.IBlockItemProvider;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IBlockItemProvider.class)
 public class VariantTrappedChestBlock extends ChestBlock implements IBlockItemProvider, IQuarkBlock, IChestTextureProvider {
@@ -46,8 +44,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IBlockItemPr
 	public VariantTrappedChestBlock(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
 		RegistryHelper.registerBlock(this, type + "_trapped_chest");
-
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_REDSTONE);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
 		this.type = type;
 		this.module = module;
@@ -63,12 +60,6 @@ public class VariantTrappedChestBlock extends ChestBlock implements IBlockItemPr
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

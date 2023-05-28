@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -24,7 +25,7 @@ public class PaperLanternBlock extends QuarkBlock {
 	private static final VoxelShape SHAPE = Shapes.or(POST_SHAPE, LANTERN_SHAPE);
 
 	public PaperLanternBlock(String regname, QuarkModule module) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
+		super(regname, module, CreativeModeTabs.BUILDING_BLOCKS,
 				Block.Properties.of(Material.WOOD, MaterialColor.SNOW)
 						.sound(SoundType.WOOD)
 						.lightLevel(b -> 15)

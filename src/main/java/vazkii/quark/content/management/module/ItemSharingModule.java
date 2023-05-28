@@ -185,7 +185,7 @@ public class ItemSharingModule extends QuarkModule {
 
 				poseStack.translate(shift + x, y, 0);
 				poseStack.scale(0.5f, 0.5f, 0.5f);
-				mc.getItemRenderer().renderGuiItem(stack, 0, 0);
+				mc.getItemRenderer().renderGuiItem(poseStack, stack, 0, 0);
 				poseStack.popPose();
 
 				RenderSystem.applyModelViewMatrix();

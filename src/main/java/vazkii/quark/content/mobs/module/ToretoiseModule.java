@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -67,7 +67,7 @@ public class ToretoiseModule extends QuarkModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Toretoise(toretoiseType, world))
 				.build("toretoise");
 
-		RegistryHelper.register(toretoiseType, "toretoise", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(toretoiseType, "toretoise", ForgeRegistries.ENTITY_TYPES);
 
 		EntitySpawnHandler.registerSpawn(this, toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(toretoiseType, 0x55413b, 0x383237, spawnConfig);

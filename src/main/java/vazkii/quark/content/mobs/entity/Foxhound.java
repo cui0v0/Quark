@@ -26,6 +26,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -139,7 +140,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
-		Holder<Biome> biome = worldIn.getBiome(new BlockPos(position()));
+		Holder<Biome> biome = worldIn.getBiome(BlockPos.containing(position()));
 		if(biome.is(Biomes.SOUL_SAND_VALLEY.location()))
 			setBlue(true);
 
@@ -285,8 +286,8 @@ public class Foxhound extends Wolf implements Enemy {
 			return super.doHurtTarget(entityIn);
 		}
 
-		boolean flag = entityIn.hurt(DamageSource.mobAttack(this).setIsFire(),
-				((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+		DamageSource source = level.damageSources().mobAttack(this);
+		boolean flag = entityIn.hurt(source, ((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 
 		if (flag) {
 			entityIn.setSecondsOnFire(5);
@@ -450,7 +451,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	private void setWoke() {
 		SleepGoal sleep = getSleepGoal();
-		if(sleep != null) {
+		if(sleep != null) {	
 			setInSittingPose(false);
 			sleep.setSleeping(false);
 		}
@@ -458,7 +459,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

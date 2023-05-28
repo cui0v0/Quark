@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -176,7 +177,7 @@ public class Forgotten extends Skeleton {
 		EnchantmentHelper.enchantItem(random, sheathed, 20, false);
 
 		if(ModuleLoader.INSTANCE.isModuleEnabled(ColorRunesModule.class) && random.nextBoolean()) {
-			List<Item> items = MiscUtil.getTagValues(level.registryAccess(), ColorRunesModule.runesLootableTag);
+			List<Item> items = MiscUtil.getTagValues(ColorRunesModule.runesLootableTag);
 			if (!items.isEmpty()) {
 				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
 				CompoundTag runeNbt = item.serializeNBT();
@@ -210,7 +211,7 @@ public class Forgotten extends Skeleton {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

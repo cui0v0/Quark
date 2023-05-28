@@ -26,6 +26,7 @@ import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -66,15 +67,16 @@ public class MicrocraftingHelperModule extends QuarkModule {
 				GhostRecipe ghost = pair.getLeft();
 				GhostIngredient ghostIngr = pair.getRight();
 				Ingredient ingr = ghostIngr.ingredient;
+				RegistryAccess access = mc.level.registryAccess();
 
-				Recipe<?> recipeToSet = getRecipeToSet(recipeBook, ingr, true);
+				Recipe<?> recipeToSet = getRecipeToSet(access, recipeBook, ingr, true);
 				if(recipeToSet == null)
-					recipeToSet = getRecipeToSet(recipeBook, ingr, false);
+					recipeToSet = getRecipeToSet(access, recipeBook, ingr, false);
 
 				if(recipeToSet != null) {
 					int ourCount = 0;
 
-					ItemStack testStack = recipeToSet.getResultItem();
+					ItemStack testStack = recipeToSet.getResultItem(access);
 					for(int j = 1; j < ghost.size(); j++) { // start at 1 to skip output
 						GhostIngredient testGhostIngr = ghost.get(j);
 						Ingredient testIngr = testGhostIngr.ingredient;
@@ -95,7 +97,7 @@ public class MicrocraftingHelperModule extends QuarkModule {
 						boolean stackIt = true;
 
 						if(recipes.isEmpty()) {
-							ItemStack rootDisplayStack = ghostRecipe.getResultItem();
+							ItemStack rootDisplayStack = ghostRecipe.getResultItem(access);
 							StackedRecipe rootRecipe = new StackedRecipe(null, rootDisplayStack, rootDisplayStack.getCount(), () -> recipes.size() == 1);
 							recipes.add(rootRecipe);
 						}
@@ -154,8 +156,8 @@ public class MicrocraftingHelperModule extends QuarkModule {
 					int y = top + 2;
 
 					ItemStack drawStack = recipe.displayItem;
-					render.renderGuiItem(drawStack, x, y);
-					render.renderGuiItemDecorations(mc.font, drawStack, x, y);
+					render.renderGuiItem(mstack, drawStack, x, y);
+					render.renderGuiItemDecorations(mstack, mc.font, drawStack, x, y);
 
 					if(index > 0)
 						mc.font.draw(mstack, "<", x - 6, y + 4, 0x3f3f3f);
@@ -217,7 +219,7 @@ public class MicrocraftingHelperModule extends QuarkModule {
 			compoundCount = 1;
 	}
 
-	private Recipe<?> getRecipeToSet(RecipeBookComponent recipeBook, Ingredient ingr, boolean craftableOnly) {
+	private Recipe<?> getRecipeToSet(RegistryAccess access, RecipeBookComponent recipeBook, Ingredient ingr, boolean craftableOnly) {
 		EditBox text = recipeBook.searchBox;
 
 		for(ItemStack stack : ingr.getItems()) {
@@ -254,7 +256,7 @@ public class MicrocraftingHelperModule extends QuarkModule {
 						recipeList.sort(this::compareRecipes);
 
 						for (Recipe<?> recipe : recipeList)
-							if (ingr.test(recipe.getResultItem()))
+							if (ingr.test(recipe.getResultItem(access)))
 								return recipe;
 					}
 				}

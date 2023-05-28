@@ -324,7 +324,7 @@ public class AttributeTooltips {
 		}
 		
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer) {
 			if (!Screen.hasShiftDown()) {
 				pose.pushPose();
 				pose.translate(0, 0, 500);
@@ -333,7 +333,7 @@ public class AttributeTooltips {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 				Minecraft mc = Minecraft.getInstance();
-				pose.translate(0F, 0F, mc.getItemRenderer().blitOffset);
+				pose.translate(0F, 0F, 0F);
 
 				int y = tooltipY - 1;
 

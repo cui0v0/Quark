@@ -12,7 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -63,7 +63,7 @@ public class StoolBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty SAT_IN = BooleanProperty.create("sat_in");
 
 	public StoolBlock(QuarkModule module, DyeColor color) {
-		super(color.getName() + "_stool", module, CreativeModeTab.TAB_DECORATIONS,
+		super(color.getName() + "_stool", module, CreativeModeTabs.BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOL, color.getMaterialColor())
 				.sound(SoundType.WOOD)
 				.strength(0.2F)

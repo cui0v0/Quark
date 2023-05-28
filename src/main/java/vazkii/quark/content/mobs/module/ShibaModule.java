@@ -3,7 +3,6 @@ package vazkii.quark.content.mobs.module;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -13,6 +12,7 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -47,7 +47,7 @@ public class ShibaModule extends QuarkModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Shiba(shibaType, world))
 				.build("shiba");
-		RegistryHelper.register(shibaType, "shiba", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(shibaType, "shiba", ForgeRegistries.ENTITY_TYPES);
 		
 		EntitySpawnHandler.registerSpawn(this, shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(shibaType, 0xa86741, 0xe8d5b6, spawnConfig);

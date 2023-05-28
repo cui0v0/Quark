@@ -11,7 +11,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -53,7 +53,7 @@ public class VerticalSlabBlock extends QuarkBlock implements SimpleWaterloggedBl
 
 	public VerticalSlabBlock(Block parent, QuarkModule module) {
 		super(IQuarkBlock.inherit(parent, s -> s.replace("_slab", "_vertical_slab")), 
-				module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(parent));
+				module, CreativeModeTabs.BUILDING_BLOCKS, Block.Properties.copy(parent));
 		this.parent = parent;
 
 		if(!(parent instanceof SlabBlock))

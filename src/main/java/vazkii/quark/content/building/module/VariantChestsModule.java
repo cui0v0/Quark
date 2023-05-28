@@ -12,7 +12,6 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -243,8 +242,8 @@ public class VariantChestsModule extends QuarkModule {
 		chestTEType = registerChests(VariantChestBlockEntity::new, chestTypes);
 		trappedChestTEType = registerChests(VariantTrappedChestBlockEntity::new, trappedChestTypes);
 
-		RegistryHelper.register(chestTEType, "variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-		RegistryHelper.register(trappedChestTEType, "variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(chestTEType, "variant_chest", ForgeRegistries.BLOCK_ENTITY_TYPES);
+		RegistryHelper.register(trappedChestTEType, "variant_trapped_chest", ForgeRegistries.BLOCK_ENTITY_TYPES);
 	}
 
 	@Override
@@ -325,7 +324,7 @@ public class VariantChestsModule extends QuarkModule {
 	}
 
 	@Override
-	public void textureStitch(TextureStitchEvent event) {
+	public void textureStitch(TextureStitchEvent.Post event) {
 		if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
 			for (Block b : allChests)
 				VariantChestRenderer.accept(event, b);

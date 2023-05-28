@@ -1,9 +1,14 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -23,9 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class FoodTooltips {
 
@@ -95,7 +97,7 @@ public class FoodTooltips {
 								int height) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer) {
 			if (stack.isEdible()) {
 				FoodProperties food = stack.getItem().getFoodProperties();
 				if (food != null) {

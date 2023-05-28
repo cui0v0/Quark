@@ -1,6 +1,6 @@
 package vazkii.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -20,10 +20,10 @@ public class FramedGlassModule extends QuarkModule {
 				.strength(3F, 10F)
 				.sound(SoundType.GLASS);
 		
-		new QuarkInheritedPaneBlock(new QuarkGlassBlock("framed_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS, false, props));
+		new QuarkInheritedPaneBlock(new QuarkGlassBlock("framed_glass", this, CreativeModeTabs.BUILDING_BLOCKS, false, props));
 		
 		for(DyeColor dye : DyeColor.values())
-			new QuarkInheritedPaneBlock(new QuarkGlassBlock(dye.getName() + "_framed_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS, true, props));
+			new QuarkInheritedPaneBlock(new QuarkGlassBlock(dye.getName() + "_framed_glass", this, CreativeModeTabs.BUILDING_BLOCKS, true, props));
 	}
 
 }

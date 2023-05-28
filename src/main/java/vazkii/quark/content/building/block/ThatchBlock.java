@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -19,7 +20,7 @@ import javax.annotation.Nonnull;
 public class ThatchBlock extends QuarkFlammableBlock {
 
 	public ThatchBlock(QuarkModule module) {
-		super("thatch", module, CreativeModeTab.TAB_BUILDING_BLOCKS, 300,
+		super("thatch", module, CreativeModeTabs.BUILDING_BLOCKS, 300,
 				Block.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
 				.strength(0.5F)
 				.sound(SoundType.GRASS));
@@ -27,7 +28,7 @@ public class ThatchBlock extends QuarkFlammableBlock {
 
 	@Override
 	public void fallOn(@Nonnull Level worldIn, @Nonnull BlockState state, @Nonnull BlockPos pos, Entity entityIn, float fallDistance) {
-		entityIn.causeFallDamage(fallDistance, (float) ThatchModule.fallDamageMultiplier, DamageSource.FALL);
+		entityIn.causeFallDamage(fallDistance, (float) ThatchModule.fallDamageMultiplier, worldIn.damageSources().fall());
 	}
 
 }

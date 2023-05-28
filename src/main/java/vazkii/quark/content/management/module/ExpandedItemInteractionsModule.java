@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +24,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,7 +85,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 	@Override
 	public void register() {
 		heldShulkerBoxMenuType = IForgeMenuType.create(HeldShulkerBoxMenu::fromNetwork);
-		RegistryHelper.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
+		RegistryHelper.register(heldShulkerBoxMenuType, "held_shulker_box", ForgeRegistries.MENU_TYPES);
 	}
 
 	@Override
@@ -169,7 +167,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 		Screen gui = mc.screen;
 		if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 			Slot under = containerGui.getSlotUnderMouse();
-			if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getSelectedTab() != CreativeModeTab.TAB_INVENTORY.getId())
+			if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.isInventoryOpen())
 				return;
 
 			if (under != null) {
@@ -193,7 +191,7 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 			EquipmentSlot equipSlot = null;
 
 			if (stack.getItem() instanceof ArmorItem armor) {
-				equipSlot = armor.getSlot();
+				equipSlot = armor.getEquipmentSlot();
 			} else if (stack.getItem() instanceof ElytraItem)
 				equipSlot = EquipmentSlot.CHEST;
 

@@ -1,11 +1,18 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -28,11 +35,6 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.module.AncientTomesModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class EnchantedBookTooltips {
 
@@ -164,7 +166,7 @@ public class EnchantedBookTooltips {
 										 Enchantment enchantment) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack basePose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack basePose, @Nonnull ItemRenderer itemRenderer) {
 			PoseStack modelviewPose = RenderSystem.getModelViewStack();
 
 			modelviewPose.pushPose();
@@ -174,7 +176,7 @@ public class EnchantedBookTooltips {
 			List<ItemStack> items = getItemsForEnchantment(enchantment);
 			int drawn = 0;
 			for (ItemStack testStack : items) {
-				mc.getItemRenderer().renderGuiItem(testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
+				mc.getItemRenderer().renderGuiItem(modelviewPose, testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
 				drawn++;
 			}
 

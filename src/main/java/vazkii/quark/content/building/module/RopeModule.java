@@ -7,7 +7,7 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -36,7 +36,7 @@ public class RopeModule extends QuarkModule {
 
 	@Override
 	public void register() {
-		rope = new RopeBlock("rope", this, CreativeModeTab.TAB_DECORATIONS,
+		rope = new RopeBlock("rope", this, CreativeModeTabs.FUNCTIONAL_BLOCKS,
 				Block.Properties.of(Material.WOOL, MaterialColor.COLOR_BROWN)
 						.strength(0.5f)
 						.sound(SoundType.WOOL));

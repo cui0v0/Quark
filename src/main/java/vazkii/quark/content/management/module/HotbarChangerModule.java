@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -137,7 +138,7 @@ public class HotbarChangerModule extends QuarkModule {
 				matrix.pushPose();
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.75F);
 				matrix.translate(xStart, yStart + i * 21, 0);
-				mc.gui.blit(matrix, 0, 0, 0, 0, 182, 22);
+				Screen.blit(matrix, 0, 0, 0, 0, 182, 22);
 				matrix.popPose();
 			}
 
@@ -160,8 +161,8 @@ public class HotbarChangerModule extends QuarkModule {
 				int x = (int) (xStart + (i % 9) * 20 + 3);
 				int y = (int) (yStart + (i / 9) * 21 + 3);
 
-				render.renderAndDecorateItem(invStack, x, y);
-				render.renderGuiItemDecorations(mc.font, invStack, x, y);
+				render.renderAndDecorateItem(matrix, invStack, x, y);
+				render.renderGuiItemDecorations(matrix, mc.font, invStack, x, y);
 			}
 		}
 	}

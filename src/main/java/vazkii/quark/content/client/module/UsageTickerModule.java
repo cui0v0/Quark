@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
@@ -83,11 +84,12 @@ public class UsageTickerModule extends QuarkModule {
 		if(event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
 			Window window = event.getWindow();
 			Player player = Minecraft.getInstance().player;
+			PoseStack pose = event.getPoseStack();
 			float partial = event.getPartialTick();
 
 			for(TickerElement ticker : elements)
 				if(ticker != null)
-					ticker.render(window, player, invert, partial);
+					ticker.render(window, pose, player, invert, partial);
 		}
 	}
 
@@ -135,7 +137,7 @@ public class UsageTickerModule extends QuarkModule {
 		}
 
 		@OnlyIn(Dist.CLIENT)
-		public void render(Window window, Player player, boolean invert, float partialTicks) {
+		public void render(Window window, PoseStack pose, Player player, boolean invert, float partialTicks) {
 			if(liveTicks > 0) {
 				float animProgress;
 
@@ -170,8 +172,8 @@ public class UsageTickerModule extends QuarkModule {
 
 				ItemStack stack = getRenderedStack(player);
 
-				mc.getItemRenderer().renderAndDecorateItem(stack, (int) x, (int) y);
-				mc.getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, stack, (int) x, (int) y);
+				mc.getItemRenderer().renderAndDecorateItem(pose, stack, (int) x, (int) y);
+				mc.getItemRenderer().renderGuiItemDecorations(pose, Minecraft.getInstance().font, stack, (int) x, (int) y);
 			}
 		}
 

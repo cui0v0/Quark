@@ -12,12 +12,16 @@ import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
 import com.google.common.collect.Lists;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -34,7 +38,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.InventoryIIH;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 import vazkii.quark.api.event.GatherToolClassesEvent;
-import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
@@ -262,7 +265,7 @@ public class AutomaticToolRestockModule extends QuarkModule {
 
 		List<String> strings = new ArrayList<>();
 		for(Enchantment e : enchants) 
-			strings.add(Registry.ENCHANTMENT.getKey(e).toString());
+			strings.add(ForgeRegistries.ENCHANTMENTS.getKey(e).toString());
 
 		return strings;
 	}

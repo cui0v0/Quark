@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
@@ -92,7 +93,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Wraith(wraithType, world))
 				.build("wraith");
-		RegistryHelper.register(wraithType, "wraith", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(wraithType, "wraith", ForgeRegistries.ENTITY_TYPES);
 
 		soulBeadType = EntityType.Builder.of(SoulBead::new, MobCategory.MISC)
 				.sized(0F, 0F)
@@ -101,7 +102,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new SoulBead(soulBeadType, world))
 				.build("soul_bead");
-		RegistryHelper.register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(soulBeadType, "soul_bead", ForgeRegistries.ENTITY_TYPES);
 
 		EntitySpawnHandler.registerSpawn(this, wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(wraithType, 0xececec, 0xbdbdbd, spawnConfig);
@@ -114,7 +115,7 @@ public class WraithModule extends QuarkModule {
 	@Override
 	public void setup() {
 		wraithSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "wraith_spawnable"));
-		soulBeadTargetTag = TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
+		soulBeadTargetTag = TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
 	}
 
 	@Override

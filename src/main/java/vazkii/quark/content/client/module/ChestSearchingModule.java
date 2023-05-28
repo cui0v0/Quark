@@ -1,7 +1,16 @@
 package vazkii.quark.content.client.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.regex.Pattern;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
@@ -10,14 +19,12 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -38,6 +45,7 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.ItemNBTHelper;
 import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
@@ -52,10 +60,6 @@ import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
 import vazkii.quark.content.management.client.screen.widgets.MiniInventoryButton;
-
-import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.regex.Pattern;
 
 @LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class ChestSearchingModule extends QuarkModule {
@@ -78,7 +82,7 @@ public class ChestSearchingModule extends QuarkModule {
 				new MiniInventoryButton(parent, 3, x, y, "quark.gui.button.filter", (b) -> {
 					searchEnabled = !searchEnabled;
 					updateSearchStatus();
-					searchBar.setFocus(true);
+					searchBar.setFocused(true);
 				}).setTextureShift(() -> searchEnabled),
 				null);
 	}
@@ -113,7 +117,7 @@ public class ChestSearchingModule extends QuarkModule {
 			searchBar.setVisible(searchEnabled);
 
 			if(!searchEnabled)
-				searchBar.setFocus(false);
+				searchBar.setFocused(false);
 		}
 	}
 
@@ -162,7 +166,7 @@ public class ChestSearchingModule extends QuarkModule {
 
 			matrix.pushPose();
 
-			drawBackground(matrix, gui, searchBar.x - 11, searchBar.y - 3);
+			drawBackground(matrix, gui, searchBar.getX() - 11, searchBar.getY() - 3);
 
 			if(!text.isEmpty()) {
 				AbstractContainerMenu container = gui.getMenu();
@@ -213,7 +217,7 @@ public class ChestSearchingModule extends QuarkModule {
 			return false;
 
 		Item item = stack.getItem();
-		ResourceLocation res = Registry.ITEM.getKey(item);
+		ResourceLocation res = ForgeRegistries.ITEMS.getKey(item);
 		if(SimilarBlockTypeHandler.isShulkerBox(res)) {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
 			if (cmp != null) {
@@ -272,14 +276,10 @@ public class ChestSearchingModule extends QuarkModule {
 				return true;
 		}
 
-		CreativeModeTab tab = item.getItemCategory();
-		if(tab != null && matcher.test(tab.getDisplayName().getString().toLowerCase(Locale.ROOT), search))
-			return true;
-
 		//		if(search.matches("favou?rites?") && FavoriteItems.isItemFavorited(stack))
 		//			return true;
 
-		ResourceLocation itemName = Registry.ITEM.getKey(item);
+		ResourceLocation itemName = ForgeRegistries.ITEMS.getKey(item);
 		Optional<? extends ModContainer> mod = ModList.get().getModContainerById(itemName.getPath());
 		if(mod.isPresent() && matcher.test(mod.orElse(null).getModInfo().getDisplayName().toLowerCase(Locale.ROOT), search))
 			return true;

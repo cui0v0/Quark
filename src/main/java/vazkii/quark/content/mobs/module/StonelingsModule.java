@@ -1,17 +1,17 @@
 package vazkii.quark.content.mobs.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements.Type;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -64,14 +64,15 @@ public class StonelingsModule extends QuarkModule {
 	@Override
 	public void register() {
 		this.registered = true;
-		diamondHeart = new DiamondHeartItem("diamond_heart", this, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
+		diamondHeart = new DiamondHeartItem("diamond_heart", this, new Item.Properties());
+		RegistryHelper.setCreativeTab(diamondHeart, CreativeModeTabs.INGREDIENTS);
 
 		stonelingType = EntityType.Builder.of(Stoneling::new, MobCategory.CREATURE)
 				.sized(0.5F, 0.9F)
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Stoneling(stonelingType, world))
 				.build("stoneling");
-		RegistryHelper.register(stonelingType, "stoneling", Registry.ENTITY_TYPE_REGISTRY);
+		RegistryHelper.register(stonelingType, "stoneling", ForgeRegistries.ENTITY_TYPES);
 
 		EntitySpawnHandler.registerSpawn(this, stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(stonelingType, 0xA1A1A1, 0x505050, spawnConfig);

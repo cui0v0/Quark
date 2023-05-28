@@ -3,6 +3,7 @@ package vazkii.quark.content.building.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -20,7 +21,7 @@ public class BambooMatBlock extends QuarkBlock {
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
 	
 	public BambooMatBlock(String name, QuarkModule module) {
-		this(name, module, Material.BAMBOO, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		this(name, module, Material.BAMBOO, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 	
 	public BambooMatBlock(String name, QuarkModule module, Material material, CreativeModeTab tab) {

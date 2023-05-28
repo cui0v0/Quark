@@ -1,8 +1,10 @@
 package vazkii.quark.content.mobs.client.model;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -13,8 +15,6 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import vazkii.quark.content.mobs.entity.Foxhound;
-
-import javax.annotation.Nonnull;
 
 /**
  * ModelFoxhound - McVinnyq
@@ -197,7 +197,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 	public void renderToBuffer(PoseStack matrix, @Nonnull VertexConsumer vb, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		matrix.pushPose();
 		if(entity.isSleeping()) {
-			matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
+			matrix.mulPose(Axis.XP.rotationDegrees(90F));
 			matrix.translate(0, -1.5, -1.5);
 		}
 

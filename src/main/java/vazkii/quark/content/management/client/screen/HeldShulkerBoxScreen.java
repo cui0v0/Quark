@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
@@ -43,7 +43,7 @@ public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBox
 		RenderSystem.setShaderTexture(0, CONTAINER_TEXTURE);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		this.blit(p_99244_, i, j, 0, 0, this.imageWidth, this.imageHeight);
+		Screen.blit(p_99244_, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
@@ -54,7 +54,7 @@ public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBox
 			int x = getGuiLeft() + (8 + (s % 9) * 18);
 			int y = getGuiTop() + (s < 9 ? 142 : 84 + ((s - 9) / 9) * 18);
 
-			mc.getItemRenderer().renderGuiItem(stack, x, y);
+			mc.getItemRenderer().renderGuiItem(p_99244_, stack, x, y);
 
 			fill(p_99244_, x, y, x + 16, y + 16, 0x88000000);
 		}

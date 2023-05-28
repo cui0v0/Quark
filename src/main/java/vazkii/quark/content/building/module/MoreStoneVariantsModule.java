@@ -2,7 +2,7 @@ package vazkii.quark.content.building.module;
 
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -72,13 +72,13 @@ public class MoreStoneVariantsModule extends QuarkModule {
 				.sound(sound)
 				.strength(1.5F, 6.0F);
 		
-		QuarkBlock bricks = constr.make(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		QuarkBlock bricks = constr.make(name + "_bricks", this, CreativeModeTabs.BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks);
 		VariantHandler.addSlabStairsWall(bricks);
 		
-		constr.make("chiseled_" + name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		constr.make("chiseled_" + name + "_bricks", this, CreativeModeTabs.BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks && enableChiseledBricks);
-		pillarConstr.make(name + "_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		pillarConstr.make(name + "_pillar", this, CreativeModeTabs.BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enablePillar);
 	}
 	

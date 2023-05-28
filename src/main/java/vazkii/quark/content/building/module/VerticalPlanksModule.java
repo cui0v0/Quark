@@ -1,6 +1,6 @@
 package vazkii.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.LoadModule;
@@ -19,7 +19,7 @@ public class VerticalPlanksModule extends QuarkModule {
 	}
 	
 	public static QuarkBlock add(String name, Block base, QuarkModule module) {
-		return new QuarkBlock("vertical_" + name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(base));
+		return new QuarkBlock("vertical_" + name + "_planks", module, CreativeModeTabs.BUILDING_BLOCKS, Block.Properties.copy(base));
 	}
 	
 }

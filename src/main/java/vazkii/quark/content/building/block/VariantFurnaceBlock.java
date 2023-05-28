@@ -1,9 +1,13 @@
 package vazkii.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -13,13 +17,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.block.be.VariantFurnaceBlockEntity;
 import vazkii.quark.content.building.module.VariantFurnacesModule;
-
-import javax.annotation.Nonnull;
-import java.util.function.BooleanSupplier;
 
 public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 
@@ -29,7 +29,7 @@ public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 		super(props);
 
 		RegistryHelper.registerBlock(this, type + "_furnace");
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
 		this.module = module;
 	}

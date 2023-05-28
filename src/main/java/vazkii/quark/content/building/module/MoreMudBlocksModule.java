@@ -1,6 +1,6 @@
 package vazkii.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -18,8 +18,8 @@ public class MoreMudBlocksModule extends QuarkModule {
 	public void register() {
 		BlockBehaviour.Properties props = Properties.copy(Blocks.MUD_BRICKS);
 		
-		new QuarkBlock("carved_mud_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
-		new QuarkPillarBlock("mud_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
+		new QuarkBlock("carved_mud_bricks", this, CreativeModeTabs.BUILDING_BLOCKS, props);
+		new QuarkPillarBlock("mud_pillar", this, CreativeModeTabs.BUILDING_BLOCKS, props);
 		new MudBrickLatticeBlock(this, props);
 	}
 	

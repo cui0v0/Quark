@@ -8,7 +8,6 @@ import java.util.UUID;
 import com.mojang.serialization.Dynamic;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -38,6 +37,7 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
@@ -105,7 +105,7 @@ public class GameNerfsModule extends QuarkModule {
 		if(!enableSelectiveMobGriefing || event.getEntity() == null)
 			return;
 		
-		String name = Registry.ENTITY_TYPE.getKey(event.getEntity().getType()).toString();
+		String name = ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString();
 		if(nonGriefingEntities.contains(name))
 			event.setResult(Result.DENY);
 	}

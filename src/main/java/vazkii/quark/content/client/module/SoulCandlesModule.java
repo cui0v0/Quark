@@ -23,7 +23,7 @@ public class SoulCandlesModule extends QuarkModule {
 
 	public static ParticleOptions getParticleOptions(ParticleOptions prev, Level level, double x, double y, double z) {
 		if(staticEnabled) {
-			BlockPos testPos = new BlockPos(x, y - 1, z);
+			BlockPos testPos = BlockPos.containing(x, y - 1, z);
 			BlockState testState = level.getBlockState(testPos);
 			if (!testState.is(BlockTags.SOUL_FIRE_BASE_BLOCKS) && testState.getEnchantPowerBonus(level, testPos) > 0) {
 				testPos = testPos.below();

@@ -1,5 +1,8 @@
 package vazkii.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import it.unimi.dsi.fastutil.floats.Float2ObjectArrayMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +15,7 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,9 +44,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock {
 	private static final VoxelShape TRUE_SHAPE = box(0, 15, 0, 16, 16, 16);
 	private static final Float2ObjectArrayMap<VoxelShape> WALK_BLOCK_CACHE = new Float2ObjectArrayMap<>();
@@ -52,7 +52,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock {
 	public static final BooleanProperty LAVALOGGED = BooleanProperty.create("lavalogged");
 
 	public GrateBlock(QuarkModule module) {
-		super("grate", module, CreativeModeTab.TAB_DECORATIONS,
+		super("grate", module, CreativeModeTabs.BUILDING_BLOCKS,
 				Block.Properties.of(Material.METAL)
 						.strength(5, 10)
 						.sound(SoundType.METAL)

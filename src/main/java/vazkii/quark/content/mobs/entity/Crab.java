@@ -20,12 +20,14 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -212,7 +214,7 @@ public class Crab extends Animal implements IEntityAdditionalSpawnData {
 		}
 
 		Vec3 pos = position();
-		if(isRaving() && (jukeboxPosition == null || jukeboxPosition.distSqr(new Vec3i(pos.x, pos.y, pos.z)) > 24.0D || level.getBlockState(jukeboxPosition).getBlock() != Blocks.JUKEBOX))
+		if(isRaving() && (jukeboxPosition == null || jukeboxPosition.distSqr(new Vec3i((int) pos.x, (int) pos.y, (int) pos.z)) > 24.0D || level.getBlockState(jukeboxPosition).getBlock() != Blocks.JUKEBOX))
 			party(null, false);
 
 		if(isRaving() && level.isClientSide && tickCount % 10 == 0) {
@@ -242,8 +244,8 @@ public class Crab extends Animal implements IEntityAdditionalSpawnData {
 	@Override
 	public boolean isInvulnerableTo(@Nonnull DamageSource source) {
 		return super.isInvulnerableTo(source) ||
-				source == DamageSource.LIGHTNING_BOLT ||
-				getSizeModifier() > 1 && source.isFire();
+				level.damageSources().lightningBolt().equals(source) ||
+				getSizeModifier() > 1 && source.is(DamageTypeTags.IS_FIRE);
 	}
 
 	@Override
@@ -282,7 +284,7 @@ public class Crab extends Animal implements IEntityAdditionalSpawnData {
 		super.doPush(entityIn);
 		if (level.getDifficulty() != Difficulty.PEACEFUL && !noSpike) {
 			if (entityIn instanceof LivingEntity && !(entityIn instanceof Crab))
-				entityIn.hurt(DamageSource.CACTUS, 1f);
+				entityIn.hurt(level.damageSources().cactus(), 1f);
 		}
 	}
 
@@ -343,7 +345,7 @@ public class Crab extends Animal implements IEntityAdditionalSpawnData {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

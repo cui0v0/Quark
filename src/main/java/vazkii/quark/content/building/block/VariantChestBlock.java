@@ -12,12 +12,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -33,8 +32,6 @@ import net.minecraftforge.fml.ModList;
 import vazkii.arl.interf.IBlockItemProvider;
 import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.block.be.VariantChestBlockEntity;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
@@ -50,7 +47,7 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 	public VariantChestBlock(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
 		RegistryHelper.registerBlock(this, type + "_chest");
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		RegistryHelper.setCreativeTab(this, CreativeModeTabs.FUNCTIONAL_BLOCKS);
 
 		this.module = module;
 
@@ -65,12 +62,6 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override
@@ -130,7 +121,7 @@ public class VariantChestBlock extends ChestBlock implements IBlockItemProvider,
 						private final BlockEntity tile = new VariantChestBlockEntity(BlockPos.ZERO, getBlock().defaultBlockState());
 
 						@Override
-						public void renderByItem(@Nonnull ItemStack stack, @Nonnull TransformType transformType, @Nonnull PoseStack pose, @Nonnull MultiBufferSource buffer, int x, int y) {
+						public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemDisplayContext transformType, @Nonnull PoseStack pose, @Nonnull MultiBufferSource buffer, int x, int y) {
 							mc.getBlockEntityRenderDispatcher().renderItem(tile, pose, buffer, x, y);
 						}
 

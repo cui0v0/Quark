@@ -1,7 +1,12 @@
 package vazkii.quark.content.experimental.module;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,10 +18,6 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false)
 public class SpawnerReplacerModule extends QuarkModule {
@@ -52,11 +53,11 @@ public class SpawnerReplacerModule extends QuarkModule {
 			return;
 
 		BaseSpawner spawner = be.getSpawner();
-		Entity example = spawner.getOrCreateDisplayEntity(level);
+		Entity example = spawner.getOrCreateDisplayEntity(level, level.random, pos);
 		if (example != null) {
 			EntityType<?> present = example.getType();
 			if (spawnerReplacements.containsKey(present)) {
-				spawner.setEntityId(spawnerReplacements.get(present));
+				spawner.setEntityId(spawnerReplacements.get(present), level, level.random, pos);
 
 				be.setChanged();
 				level.sendBlockUpdated(pos, state, state, 3);

@@ -1,7 +1,9 @@
 package vazkii.quark.content.building.module;
 
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -15,8 +17,6 @@ import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.VariantLadderBlock;
-
-import java.util.function.BooleanSupplier;
 
 @LoadModule(category = ModuleCategory.BUILDING)
 public class IndustrialPaletteModule extends QuarkModule {
@@ -41,10 +41,10 @@ public class IndustrialPaletteModule extends QuarkModule {
 		BooleanSupplier ironPlateCond = () -> enableIronPlates;
 		BooleanSupplier ironLadderCond = () -> enableIronLadder;
 
-		VariantHandler.addSlabAndStairs(new QuarkBlock("iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
-		VariantHandler.addSlabAndStairs(new QuarkBlock("rusty_iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
+		VariantHandler.addSlabAndStairs(new QuarkBlock("iron_plate", this, CreativeModeTabs.BUILDING_BLOCKS, props).setCondition(ironPlateCond));
+		VariantHandler.addSlabAndStairs(new QuarkBlock("rusty_iron_plate", this, CreativeModeTabs.BUILDING_BLOCKS, props).setCondition(ironPlateCond));
 
-		new QuarkPillarBlock("iron_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond);
+		new QuarkPillarBlock("iron_pillar", this, CreativeModeTabs.BUILDING_BLOCKS, props).setCondition(ironPlateCond);
 
 		new VariantLadderBlock("iron", this, Block.Properties.of(Material.DECORATION)
 				.strength(0.8F)

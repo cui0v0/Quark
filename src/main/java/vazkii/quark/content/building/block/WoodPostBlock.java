@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -50,7 +50,7 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 
 	public WoodPostBlock(QuarkModule module, Block parent, String prefix, boolean nether) {
 		super(IQuarkBlock.inherit(parent, s -> prefix + s.replace("_fence", "_post")), 
-				module, CreativeModeTab.TAB_DECORATIONS,
+				module, CreativeModeTabs.BUILDING_BLOCKS,
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);

@@ -19,12 +19,14 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -101,8 +103,8 @@ public class Stoneling extends PathfinderMob {
 
 	public Stoneling(EntityType<? extends Stoneling> type, Level worldIn) {
 		super(type, worldIn);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_CACTUS, 1.0F);
-		this.setPathfindingMalus(BlockPathTypes.DANGER_CACTUS, 1.0F);
+		this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 1.0F);
+		this.setPathfindingMalus(BlockPathTypes.DANGER_OTHER, 1.0F);
 	}
 
 	@Override
@@ -288,13 +290,13 @@ public class Stoneling extends PathfinderMob {
 
 	@Override
 	public boolean isInvulnerableTo(@Nonnull DamageSource source) {
-		return source == DamageSource.CACTUS ||
+		return level.damageSources().cactus().equals(source) ||
 				isProjectileWithoutPiercing(source) ||
 				super.isInvulnerableTo(source);
 	}
 
 	private static boolean isProjectileWithoutPiercing(DamageSource source) {
-		if (!source.isProjectile())
+		if (!source.is(DamageTypeTags.IS_PROJECTILE))
 			return false;
 
 		Entity sourceEntity = source.getDirectEntity();
@@ -447,7 +449,7 @@ public class Stoneling extends PathfinderMob {
 
 	@Override
 	public boolean checkSpawnRules(@Nonnull LevelAccessor world, @Nonnull MobSpawnType reason) {
-		BlockState state = world.getBlockState(new BlockPos(position()).below());
+		BlockState state = world.getBlockState(BlockPos.containing(position()).below());
 		if (state.getMaterial() != Material.STONE)
 			return false;
 
@@ -492,7 +494,7 @@ public class Stoneling extends PathfinderMob {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

@@ -2,7 +2,7 @@ package vazkii.quark.content.building.module;
 
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import vazkii.quark.base.block.QuarkBlock;
@@ -51,7 +51,7 @@ public class MoreBrickTypesModule extends QuarkModule {
 	}
 	
 	private void add(String name, Block parent, BooleanSupplier cond) {
-		VariantHandler.addSlabStairsWall(new QuarkBlock(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, 
+		VariantHandler.addSlabStairsWall(new QuarkBlock(name + "_bricks", this, CreativeModeTabs.BUILDING_BLOCKS, 
 				Block.Properties.copy(parent)
 				.requiresCorrectToolForDrops())
 				.setCondition(cond));

@@ -7,7 +7,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -37,7 +37,7 @@ public class LeafCarpetBlock extends QuarkBlock implements IBlockColorProvider {
 	private ItemStack baseStack;
 
 	public LeafCarpetBlock(String name, Block base, QuarkModule module) {
-		super(name, module, CreativeModeTab.TAB_DECORATIONS,
+		super(name, module, CreativeModeTabs.BUILDING_BLOCKS,
 				Block.Properties.of(Material.CLOTH_DECORATION, base.defaultBlockState().materialColor)
 						.strength(0F)
 						.sound(SoundType.GRASS)
