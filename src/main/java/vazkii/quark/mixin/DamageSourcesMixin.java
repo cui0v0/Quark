@@ -6,11 +6,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.player.Player;
 import vazkii.quark.content.tools.module.PickarangModule;
 
-@Mixin(DamageSource.class)
-public class DamageSourceMixin {
+@Mixin(DamageSources.class)
+public class DamageSourcesMixin {
 
 	@Inject(method = "playerAttack", at = @At("HEAD"), cancellable = true)
 	private static void playerAttack(Player player, CallbackInfoReturnable<DamageSource> callbackInfoReturnable) {
