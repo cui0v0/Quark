@@ -17,12 +17,12 @@ public class BaseCoralPlantTypeBlockMixin {
 
 	@Inject(method = "scanForWater", at = @At("RETURN"), cancellable = true)
 	private static void scanForWater(BlockState state, BlockGetter getter, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue((Boolean) CoralOnCactusModule.scanForWater(state, getter, pos, cir.getReturnValueZ()));
+		cir.setReturnValue(CoralOnCactusModule.scanForWater(state, getter, pos, cir.getReturnValueZ()));
 	}
 	
 	@Inject(method = "canSurvive", at = @At("RETURN"), cancellable = true)
 	private void canSurvive(BlockState state, LevelReader getter, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue((Boolean) CoralOnCactusModule.scanForWater(state, getter, pos, cir.getReturnValueZ()));
+		cir.setReturnValue(CoralOnCactusModule.scanForWater(state, getter, pos, cir.getReturnValueZ()));
 	}
 	
 }
