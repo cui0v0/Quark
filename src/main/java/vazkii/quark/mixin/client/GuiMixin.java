@@ -1,5 +1,6 @@
 package vazkii.quark.mixin.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,7 @@ import vazkii.quark.content.client.module.UsesForCursesModule;
 public class GuiMixin {
 
 	@Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
-	public void changeArmorItem(ResourceLocation location, float alpha, CallbackInfo ci) {
+	public void changeArmorItem(PoseStack poseStack, ResourceLocation location, float alpha, CallbackInfo ci) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null) {
 			if (UsesForCursesModule.shouldHidePumpkinOverlay(location, player))
