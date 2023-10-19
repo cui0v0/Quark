@@ -7,6 +7,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
+@Deprecated(forRemoval = true)
 public interface IExternalCategory extends IConfigCategory {
 
 	void commit();

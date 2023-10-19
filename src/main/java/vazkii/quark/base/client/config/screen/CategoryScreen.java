@@ -11,7 +11,6 @@ import net.minecraft.client.resources.language.I18n;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.ConfigObject;
-import vazkii.quark.base.client.config.external.ExternalCategory;
 import vazkii.quark.base.client.config.screen.widgets.ConfigElementList;
 import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 
@@ -33,7 +32,7 @@ public class CategoryScreen extends AbstractScrollingWidgetScreen {
 
 		breadcrumbs = category.getName();
 		IConfigCategory currCategory = category.getParent();
-		while(currCategory != null && !(currCategory instanceof ExternalCategory)) {
+		while(currCategory != null) {
 			breadcrumbs = String.format("%s > %s", currCategory.getName(), breadcrumbs);
 			currCategory = currCategory.getParent();
 		}
@@ -49,7 +48,7 @@ public class CategoryScreen extends AbstractScrollingWidgetScreen {
 		// change name for externals
 		String modName = WordUtils.capitalizeFully(Quark.MOD_ID);
 		IConfigCategory currCategory = category;
-		while(currCategory != null && !(currCategory instanceof ExternalCategory))
+		while(currCategory != null)
 			currCategory = currCategory.getParent();
 
 		if(currCategory != null) {

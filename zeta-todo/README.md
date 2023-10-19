@@ -26,14 +26,15 @@ So tl;dr for zeta-fying a module:
 
 * swap LoadModule to ZetaLoadModule, remove hasSubscriptions/subscribeOn, and if the module is truly client-only add `side = ModuleSide.CLIENT_ONLY`,
 * change the superclass from `QuarkModule` to `ZetaModule`,
-* change `@Override pubilc void setup()` to `@LoadEvent public void setup(ZCommonSetup event)`,
 * move everything marked `@OnlyIn(Dist.CLIENT)` (and all `@SubscribeEvent`s if subscribeOn was formerly `Dist.CLIENT` only) into a client module replacement,
 * create cross-platform versions of any missing `@SubscribeEvent`s in Zeta and subscribe to them with `@PlayEvent`,
 * remove all other mentions of Forge and add an appropriate indirection layer in Zeta.
 
 Repeat 160x.
 
-# The initial Zeta sketch
+# The initial Zeta pitch
+
+Zeta is a framework for writing *modular*, *configurable*, and *portable* mods. Zeta helps with the more menial parts of mod-development so you can let your creativity flow.
 
 The entrypoint, `Zeta`, is an abstract class that must be implemented per-loader. Initialize a `Zeta` then stick it somewhere global.
 
@@ -106,48 +107,43 @@ its literally autoreglib
 * Keep the components of Zeta relatively loosely coupled if at all possible
   * I'm still deciding how many fields should go in `Zeta`. Like does the module system belong there (probably). Does the registry belong there (maybe?)
 
-## figuring out how quark hints work
+# notes from vazkii
 
-Hints pipeline
+quark as a lot of floating "BlahBlahHandler" classes. Some can stay singletons, others should be made non-static; some are more "utilities" than "handlers".
 
-* `HintManager.loadHints` is called from uhh, somewhere deep in config code
-* It iterates over all `@Hint` fields and adds them to `module.hints`
-* `ModuleLoader.INSTANCE.addStackInfo` is called from JEI integration, calls `addStackInfo` on all enabled quark modules
-* QuarkModule `addStackInfo` then appends hints from `module.hints` (which is the only usage of this field)
+> I think for these singleton Util type classes (VariantHandler, ToolInteractionHandler, etc) they should be named in a very clear way and all moved to a single package so someone can just look at the package tree and get at a glance a very quick birds eye view of what zeta's structure allows them to do
 
-Some things that might make this easier?
+Some of these fit nicer as event arguments too, instead of singletons that need to be accessed at the right time.
 
-* Modules could be in charge of loading their own hints. This'd let `module.hints` be a private field
-* It could be moved from "module step that only looks at enabled modules" to an event on Zeta's play bus
+Bring to zeta:
 
-## figuring out how quark module discovery works
+* "If the feature exists only to interact with a specific quark feature it stays in quark, otherwise it goes in zeta"
+* Piston logic override in zeta? :eyes:
+* Recipe crawler -> zeta
+* Advancement modification system
+* "ig the worldgen shim?"
+* "pretty much everything in `block` is viable to pull out"
+* some stuff wrt to module loader - anti overlap
+* ItemOverrideHandler is used by variant bookshelves/ladders but it's pretty standalone
+* ToolInteractionHandler is "literally only used for waxing" but it's important
+* QuarkBlock and QuarkItem are really for "disableable/enablable blocks"
+* WoodSetHandler is important, but there are some quark uniques in there
+* VanillaWoods is used in a few modules, could be moved out since it's useful
 
-entrypoint: ModuleLoader.start
+Keep in quark/reform:
 
-A forge modloader service finds all `LoadModule` annotations, these end up in `ModuleLoader.foundModules`. `construct` is called on each of them (theyre already constructed actually, `construct` is just a method)
+* ContributorRewardHandler (ofc)
+* CreativeTabHandler will need rethinking for the new creative tab scheme in 1.19.4
+* EntityAttributeHandler is "essentially just a bridge"
+* DyeHandler -> some simple utilities fit in Zeta, others not so much
+* capabilities: pain point. Some can be made non-capabilities
+* InventoryTransferHandler is quark specific so it can stay
+* MiscUtil should probably be dissolved (addToLootTable is very important though -> maybe into a LootTableLoadEvent shim)
+* SimilarBlockTypeHandler is for quark shulker box stuff
+* UndergroundBiomeHandler is overengineered
 
-Config stuff happens, it's a maze of global singletons, i dont get it tbh. On the first registry event (big hack to avoid registry freeze nonsense) REGISTER and POST_REGISTER is dispatched, CreativeTabHandler.finalizeTabs is called, more config stuff.
+Obsolete things:
 
-Many Forge lifecycle/loading events are threaded through the dispatching system. Moooost of these are dispatched unconditionally to every module, but there are a few that check `enabled` first. Gameplay events are subscribed to using the regular `@SubscribeEvent`/`MinecraftForge.EVENT_BUS` system, and the `QuarkModule.setEnabledAndManageSubscriptions` function ensures only enabled modules are still subscribed to the bus.
-
-## How does RegistryHelper work anyway
-
-RegistryHelper is a singleton, everything is static.
-
-* A mapping from Object -> ResourceLocation, for querying registry names before the object is actually registered
-* A mapping from modid -> ModData, which holdsa list of all objects to register
-
-You don't explicity provide a mod ID, the "current" modid is read out from Forge.  
--> I think this could be fixed by making everything non-static and requiring you to provide a modid when you create the RegistryHelper - so, closer to Forge's DeferredRegistry system
-
-### Handle-based registration system ??
-
-This would be a large overhaul of the registration system (and it would make constructor registration impossible), but given the registry-freezing shenanigans Quark is just *barely* working around I think it might be a good change in the long run.
-
-Right now `register` takes `Object`, but ideally it would take `Supplier<Object>` and return a "handle" type.
-
-The handle provides access to the registered object only after it's been registered, but immediately provides access to the `ResourceLocation` since it's handy.
-
-## Sidedness
-
-There will probably need to be more attention paid to client/server-ness (ex RenderLayerHandler). Fabric does not do any side-stripping.
+* "External config" stuff can be removed and does not work anyway
+* RenderLayerHandler might be different
+* worldgen can be simplified a bit - just need a way to add a Singular feature to a biome in every step, then everything works itself out

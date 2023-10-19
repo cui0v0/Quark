@@ -22,7 +22,6 @@ import net.minecraftforge.fml.ModList;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.IngameConfigHandler;
-import vazkii.quark.base.client.config.external.ExternalConfigHandler;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
 import vazkii.quark.base.client.config.screen.widgets.IconButton;
 import vazkii.quark.base.client.config.screen.widgets.SocialButton;
@@ -45,7 +44,6 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		super.init();
 
 		final int perLine = 3;
-		boolean addExternal = ExternalConfigHandler.instance.hasAny();
 
 		int pad = 10;
 		int vpad = 23;
@@ -58,8 +56,6 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		List<ZetaCategory> categories = Quark.ZETA.modules.getInhabitedCategories();
 
 		int catCount = categories.size() + 1;
-		if(addExternal)
-			catCount++;
 
 		boolean shiftedLeft = false;
 		int useLeft = left;
@@ -93,11 +89,6 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		IConfigCategory cat = IngameConfigHandler.INSTANCE.getConfigCategory(null);
 		addRenderableWidget(new Button(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
 		i++;
-
-		if(addExternal) {
-			cat = ExternalConfigHandler.instance.mockCategory;
-			addRenderableWidget(new Button(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
-		}
 
 		bWidth = 200;
 		addRenderableWidget(new Button(width / 2 - bWidth / 2, height - 30, bWidth, 20, Component.translatable("quark.gui.config.save"), this::commit));

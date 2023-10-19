@@ -16,7 +16,6 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.api.config.IConfigObject;
-import vazkii.quark.base.client.config.external.ExternalCategory;
 import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
@@ -38,7 +37,7 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 		super(name, comment, parent);
 
 		this.holderObject = holderObject;
-		if(parent == null || (parent instanceof ExternalCategory)) {
+		if(parent == null) {
 			path = name;
 			depth = 0;
 		} else {

@@ -14,14 +14,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.QButtonHandler;
-import vazkii.quark.base.client.config.external.ExternalConfigHandler;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.ModelHandler;
@@ -83,8 +81,6 @@ public class ClientProxy extends CommonProxy {
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class, () -> new ConfigScreenFactory((minecraft, screen) -> new QuarkConfigHomeScreen(screen)));
 
 		copyProgrammerArtIfMissing();
-
-		(new ExternalConfigHandler()).setAPIHandler();
 	}
 
 	@Override
