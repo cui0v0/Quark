@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.block.be.VariantFurnaceBlockEntity;
 import vazkii.quark.content.building.module.VariantFurnacesModule;
 
@@ -23,9 +23,9 @@ import java.util.function.BooleanSupplier;
 
 public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 
-	public VariantFurnaceBlock(String type, QuarkModule module, Properties props) {
+	public VariantFurnaceBlock(String type, ZetaModule module, Properties props) {
 		super(props);
 
 		Quark.ZETA.registry.registerBlock(this, type + "_furnace", true);
@@ -54,7 +54,7 @@ public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

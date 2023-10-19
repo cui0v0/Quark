@@ -2,11 +2,11 @@ package vazkii.quark.content.tweaks.module;
 
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 
 @LoadModule(category = "tweaks")
-public class SpongesBetterModule extends QuarkModule {
+public class SpongesBetterModule extends ZetaModule {
 
 	@Config(description = "The maximum number of water tiles that a sponge can soak up. Vanilla default is 64.")
 	@Config.Min(64)

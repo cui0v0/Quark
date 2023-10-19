@@ -12,9 +12,8 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.content.building.block.MyalitePillarBlock;
 import vazkii.quark.content.world.block.MyaliteBlock;
 import vazkii.quark.content.world.module.NewStoneTypesModule;
@@ -22,7 +21,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class MoreStoneVariantsModule extends QuarkModule {
+public class MoreStoneVariantsModule extends ZetaModule {
 
 	@Config(flag = "stone_bricks") public boolean enableBricks = true;
 	@Config(flag = "stone_chiseled") public boolean enableChiseledBricks = true;
@@ -49,7 +48,7 @@ public class MoreStoneVariantsModule extends QuarkModule {
 		add("myalite", MaterialColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
 	}
 	
-	public static void expandVanillaStone(QuarkModule module, Block raw, String name) {
+	public static void expandVanillaStone(ZetaModule module, Block raw, String name) {
 		NewStoneTypesModule.makeStone(module, raw, name, null, null, () -> true, null, QuarkBlock::new);
 	}
 	

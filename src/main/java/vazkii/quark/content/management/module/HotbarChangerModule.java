@@ -26,14 +26,14 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.ChangeHotbarMessage;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 @LoadModule(category = "management", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class HotbarChangerModule extends QuarkModule {
+public class HotbarChangerModule extends ZetaModule {
 
 	@OnlyIn(Dist.CLIENT)
 	private static KeyMapping changeHotbarKey;

@@ -14,7 +14,6 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.commons.lang3.text.WordUtils;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModule;
 
@@ -24,7 +23,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ConfigResolver {

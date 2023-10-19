@@ -26,7 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.block.be.CloudBlockEntity;
 import vazkii.quark.content.tools.module.BottledCloudModule;
 
@@ -34,7 +34,7 @@ import javax.annotation.Nonnull;
 
 public class CloudBlock extends QuarkBlock implements EntityBlock {
 
-	public CloudBlock(QuarkModule module) {
+	public CloudBlock(ZetaModule module) {
 		super("cloud", module, null,
 				Block.Properties.of(Material.CLAY)
 				.sound(SoundType.WOOL)

@@ -27,7 +27,7 @@ import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -55,7 +55,7 @@ public abstract class BasePipeBlock extends QuarkBlock implements EntityBlock {
 		};
 	}
 
-	protected BasePipeBlock(String name, QuarkModule module) {
+	protected BasePipeBlock(String name, ZetaModule module) {
 		super(name, module, CreativeModeTab.TAB_REDSTONE,
 				Block.Properties.of(Material.GLASS)
 						.strength(3F, 10F)

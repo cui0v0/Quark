@@ -26,7 +26,7 @@ import vazkii.quark.api.event.GatherToolClassesEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.zeta.event.ZConfigChanged;
@@ -36,7 +36,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @LoadModule(category = "management", hasSubscriptions = true, antiOverlap = "inventorytweaks")
-public class AutomaticToolRestockModule extends QuarkModule {
+public class AutomaticToolRestockModule extends ZetaModule {
 
 	private static final Map<ToolAction, String> ACTION_TO_CLASS = new HashMap<>();
 

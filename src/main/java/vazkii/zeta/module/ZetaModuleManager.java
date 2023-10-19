@@ -16,7 +16,6 @@ import java.util.Set;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZModulesReady;
 import vazkii.zeta.util.ZetaSide;

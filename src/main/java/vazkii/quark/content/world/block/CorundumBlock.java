@@ -21,7 +21,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkGlassBlock;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.CorundumModule;
 import vazkii.quark.content.world.module.SpiralSpiresModule;
 
@@ -36,7 +36,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 
 	public CorundumClusterBlock cluster;
 
-	public CorundumBlock(String regname, int color, QuarkModule module, MaterialColor materialColor, boolean waxed) {
+	public CorundumBlock(String regname, int color, ZetaModule module, MaterialColor materialColor, boolean waxed) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
 				Block.Properties.of(Material.GLASS, materialColor)
 				.strength(0.3F, 0F)

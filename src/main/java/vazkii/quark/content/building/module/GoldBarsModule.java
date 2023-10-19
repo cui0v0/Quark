@@ -11,14 +11,14 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class GoldBarsModule extends QuarkModule {
+public class GoldBarsModule extends ZetaModule {
 
 	@Config public static boolean generateInNetherFortress = true;
 

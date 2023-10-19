@@ -5,13 +5,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkFlammableBlock extends QuarkBlock {
 
 	private final int flammability;
 
-	public QuarkFlammableBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, int flamability, Properties properties) {
+	public QuarkFlammableBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, int flamability, Properties properties) {
 		super(regname, module, creativeTab, properties);
 		this.flammability = flamability;
 	}

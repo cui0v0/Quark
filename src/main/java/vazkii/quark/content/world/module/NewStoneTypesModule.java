@@ -17,7 +17,7 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkBlockWrapper;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.module.hint.Hint;
@@ -34,7 +34,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaLoadModule;
 
 @ZetaLoadModule(category = "world")
-public class NewStoneTypesModule extends QuarkModule {
+public class NewStoneTypesModule extends ZetaModule {
 
 	@Config(flag = "limestone") public static boolean enableLimestone = true;
 	@Config(flag = "jasper") public static boolean enableJasper = true;
@@ -65,11 +65,11 @@ public class NewStoneTypesModule extends QuarkModule {
 		myaliteBlock = makeStone(this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MaterialColor.COLOR_PURPLE, MyaliteBlock::new);
 	}
 
-	public static Block makeStone(QuarkModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
+	public static Block makeStone(ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
 		return makeStone(module, null, name, config, bigConfig, enabledCond, color, QuarkBlock::new);
 	}
 
-	public static Block makeStone(QuarkModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, QuarkBlock.Constructor<QuarkBlock> constr) {
+	public static Block makeStone(ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, QuarkBlock.Constructor<QuarkBlock> constr) {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !ModuleLoader.INSTANCE.isModuleEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
 		Block.Properties props;

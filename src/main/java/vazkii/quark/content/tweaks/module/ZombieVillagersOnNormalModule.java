@@ -13,10 +13,10 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class ZombieVillagersOnNormalModule extends QuarkModule {
+public class ZombieVillagersOnNormalModule extends ZetaModule {
 
 	@SubscribeEvent
 	public void onConversion(LivingConversionEvent.Pre event) {

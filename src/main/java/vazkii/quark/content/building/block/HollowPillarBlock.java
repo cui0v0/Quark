@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.api.ICrawlSpaceBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 
@@ -43,7 +43,7 @@ public class HollowPillarBlock extends QuarkPillarBlock implements SimpleWaterlo
     private static final VoxelShape SHAPE_Y = Shapes.or(SHAPE_NORTH, SHAPE_SOUTH, SHAPE_EAST, SHAPE_WEST);
     private static final VoxelShape SHAPE_Z = Shapes.or(SHAPE_BOTTOM, SHAPE_TOP, SHAPE_NORTH, SHAPE_SOUTH);
 
-    public HollowPillarBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+    public HollowPillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
         super(regname, module, creativeTab, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

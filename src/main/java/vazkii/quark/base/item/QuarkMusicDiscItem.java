@@ -14,7 +14,6 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.tools.module.AmbientDiscsModule;
 import vazkii.zeta.module.ZetaModule;
 

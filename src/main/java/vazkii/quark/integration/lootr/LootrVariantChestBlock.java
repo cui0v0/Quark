@@ -44,7 +44,7 @@ import noobanidus.mods.lootr.LootrTags;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.block.VariantChestBlock;
 import vazkii.zeta.registry.IZetaItemPropertiesFiller;
 
@@ -58,7 +58,7 @@ import java.util.function.Supplier;
  * All modifications are made purely to integrate with VariantChestBlock/quark
  */
 public class LootrVariantChestBlock extends VariantChestBlock implements IZetaItemPropertiesFiller {
-	public LootrVariantChestBlock(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
+	public LootrVariantChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
 
@@ -226,7 +226,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 
 	public static class Compat extends LootrVariantChestBlock {
 
-		public Compat(String type, String mod, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 			super(type, module, supplier, props);
 			setCondition(() -> ModList.get().isLoaded(mod));
 		}

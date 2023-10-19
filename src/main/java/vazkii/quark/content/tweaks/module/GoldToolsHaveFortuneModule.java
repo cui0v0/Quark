@@ -14,7 +14,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Max;
 import vazkii.quark.base.module.config.Config.Min;
@@ -25,7 +25,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import java.util.*;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class GoldToolsHaveFortuneModule extends QuarkModule {
+public class GoldToolsHaveFortuneModule extends ZetaModule {
 
 	private static final Tier[] TIERS = new Tier[] {
 			Tiers.WOOD, Tiers.STONE, Tiers.IRON, Tiers.DIAMOND, Tiers.NETHERITE

@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.ChorusVegetationModule;
 
 public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlock, IForgeShearable {
@@ -43,7 +43,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 
 	private final boolean simple;
 
-	public ChorusVegetationBlock(String regname, QuarkModule module, boolean simple) {
+	public ChorusVegetationBlock(String regname, ZetaModule module, boolean simple) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
 				BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
 				.noCollission()

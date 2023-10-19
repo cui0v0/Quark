@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.building.block.SoulFurnaceBlock;
 import vazkii.quark.content.building.block.VariantFurnaceBlock;
@@ -20,7 +20,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class VariantFurnacesModule extends QuarkModule {
+public class VariantFurnacesModule extends ZetaModule {
 
 	public static BlockEntityType<VariantFurnaceBlockEntity> blockEntityType;
 

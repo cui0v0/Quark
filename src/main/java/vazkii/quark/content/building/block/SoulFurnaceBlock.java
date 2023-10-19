@@ -17,13 +17,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class SoulFurnaceBlock extends VariantFurnaceBlock {
 
 	public static final BooleanProperty SOUL = BooleanProperty.create("soul");
 
-	public SoulFurnaceBlock(String type, QuarkModule module, Properties props) {
+	public SoulFurnaceBlock(String type, ZetaModule module, Properties props) {
 		super(type, module, props);
 
 		registerDefaultState(defaultBlockState().setValue(SOUL, false));

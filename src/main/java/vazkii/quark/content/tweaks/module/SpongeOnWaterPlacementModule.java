@@ -15,11 +15,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class SpongeOnWaterPlacementModule extends QuarkModule {
+public class SpongeOnWaterPlacementModule extends ZetaModule {
 
 	@Hint Item sponge = Items.SPONGE;
 	

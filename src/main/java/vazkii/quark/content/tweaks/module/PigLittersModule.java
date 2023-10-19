@@ -25,11 +25,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class PigLittersModule extends QuarkModule {
+public class PigLittersModule extends ZetaModule {
 
 	private static final String GOLDEN_CARROT_TAG = "quark:AteGoldenCarrot";
 

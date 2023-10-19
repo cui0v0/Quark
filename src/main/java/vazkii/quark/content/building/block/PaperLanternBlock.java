@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class PaperLanternBlock extends QuarkBlock {
 
@@ -23,7 +23,7 @@ public class PaperLanternBlock extends QuarkBlock {
 	private static final VoxelShape LANTERN_SHAPE = box(2, 2, 2, 14, 14, 14);
 	private static final VoxelShape SHAPE = Shapes.or(POST_SHAPE, LANTERN_SHAPE);
 
-	public PaperLanternBlock(String regname, QuarkModule module) {
+	public PaperLanternBlock(String regname, ZetaModule module) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.WOOD, MaterialColor.SNOW)
 						.sound(SoundType.WOOD)

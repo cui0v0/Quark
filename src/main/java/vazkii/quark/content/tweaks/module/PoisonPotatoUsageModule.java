@@ -19,14 +19,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class PoisonPotatoUsageModule extends QuarkModule {
+public class PoisonPotatoUsageModule extends ZetaModule {
 
 	private static final String TAG_POISONED = "quark:poison_potato_applied";
 

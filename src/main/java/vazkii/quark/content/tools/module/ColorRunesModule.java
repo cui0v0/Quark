@@ -20,7 +20,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -35,11 +34,10 @@ import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -57,7 +55,7 @@ import java.util.function.Supplier;
  * Created at 1:52 PM on 8/17/19.
  */
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class ColorRunesModule extends QuarkModule {
+public class ColorRunesModule extends ZetaModule {
 
 	public static final String TAG_RUNE_ATTACHED = Quark.MOD_ID + ":RuneAttached";
 	public static final String TAG_RUNE_COLOR = Quark.MOD_ID + ":RuneColor";

@@ -17,13 +17,13 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class MudBrickLatticeBlock extends QuarkGlassBlock implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public MudBrickLatticeBlock(QuarkModule module, Properties properties) {
+	public MudBrickLatticeBlock(ZetaModule module, Properties properties) {
 		super("mud_brick_lattice", module, CreativeModeTab.TAB_BUILDING_BLOCKS, false, properties);
 		
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

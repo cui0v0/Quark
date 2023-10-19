@@ -15,7 +15,7 @@ import vazkii.zeta.event.client.ZRegisterReloadListeners;
 import vazkii.zeta.event.client.ZTooltipComponents;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.client.resources.AttributeTooltipManager;
 import vazkii.quark.content.client.tooltip.AttributeTooltips;
@@ -30,7 +30,7 @@ import vazkii.quark.content.client.tooltip.ShulkerBoxTooltips;
  * Created at 6:19 PM on 8/31/19.
  */
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class ImprovedTooltipsModule extends QuarkModule {
+public class ImprovedTooltipsModule extends ZetaModule {
 
 	@Config public static boolean attributeTooltips = true;
 	@Config public static boolean foodTooltips = true;

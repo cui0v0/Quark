@@ -14,14 +14,14 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public abstract class QuarkSaplingBlock extends SaplingBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 	
-	public QuarkSaplingBlock(String name, QuarkModule module, AbstractTreeGrower tree) {
+	public QuarkSaplingBlock(String name, ZetaModule module, AbstractTreeGrower tree) {
 		super(tree, Block.Properties.copy(Blocks.OAK_SAPLING));
 		this.module = module;
 
@@ -38,7 +38,7 @@ public abstract class QuarkSaplingBlock extends SaplingBlock implements IQuarkBl
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

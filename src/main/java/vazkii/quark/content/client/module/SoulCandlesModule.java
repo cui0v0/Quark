@@ -10,13 +10,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "client")
-public class SoulCandlesModule extends QuarkModule {
+public class SoulCandlesModule extends ZetaModule {
 
 	private static boolean staticEnabled;
 	

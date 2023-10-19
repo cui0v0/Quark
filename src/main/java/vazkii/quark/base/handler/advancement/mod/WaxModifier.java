@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class WaxModifier  extends AdvancementModifier {
 
@@ -22,7 +22,7 @@ public class WaxModifier  extends AdvancementModifier {
 	private final Set<Block> unwaxed;
 	private final Set<Block> waxed;
 	
-	public WaxModifier(QuarkModule module, Set<Block> unwaxed, Set<Block> waxed) {
+	public WaxModifier(ZetaModule module, Set<Block> unwaxed, Set<Block> waxed) {
 		super(module);
 		
 		this.unwaxed = unwaxed;

@@ -17,7 +17,7 @@ import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.module.TrowelModule;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ public class TrowelItem extends QuarkItem implements IUsageTickerOverride {
 	private static final String TAG_PLACING_SEED = "placing_seed";
 	private static final String TAG_LAST_STACK = "last_stack";
 
-	public TrowelItem(QuarkModule module) {
+	public TrowelItem(ZetaModule module) {
 		super("trowel", module, new Item.Properties()
 				.durability(255)
 				.tab(CreativeModeTab.TAB_TOOLS));

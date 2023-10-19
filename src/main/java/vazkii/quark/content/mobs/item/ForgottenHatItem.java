@@ -19,7 +19,7 @@ import net.minecraftforge.common.ForgeMod;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModelHandler;
 import vazkii.quark.base.item.IQuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
@@ -29,10 +29,10 @@ public class ForgottenHatItem extends ArmorItem implements IQuarkItem {
 
 	private static final String TEXTURE = Quark.MOD_ID + ":textures/misc/forgotten_hat_worn.png";
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private Multimap<Attribute, AttributeModifier> attributes;
 
-	public ForgottenHatItem(QuarkModule module) {
+	public ForgottenHatItem(ZetaModule module) {
 		super(ArmorMaterials.LEATHER, EquipmentSlot.HEAD,
 				new Item.Properties()
 				.stacksTo(1)
@@ -45,7 +45,7 @@ public class ForgottenHatItem extends ArmorItem implements IQuarkItem {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

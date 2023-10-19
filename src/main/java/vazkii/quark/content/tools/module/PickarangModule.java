@@ -16,13 +16,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.client.render.entity.PickarangRenderer;
@@ -43,7 +41,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class PickarangModule extends QuarkModule {
+public class PickarangModule extends ZetaModule {
 
 	@Config(name = "pickarang")
 	public static PickarangType<Pickarang> pickarangType = new PickarangType<>(Items.DIAMOND, Items.DIAMOND_PICKAXE, 20, 3, 800, 20.0, 2, 10);

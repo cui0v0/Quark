@@ -31,7 +31,7 @@ import vazkii.quark.api.IUsageTickerOverride;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.module.SeedPouchModule;
 
 import javax.annotation.Nonnull;
@@ -46,7 +46,7 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 
 	private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
 
-	public SeedPouchItem(QuarkModule module) {
+	public SeedPouchItem(ZetaModule module) {
 		super("seed_pouch", module,
 				new Item.Properties()
 				.stacksTo(1)

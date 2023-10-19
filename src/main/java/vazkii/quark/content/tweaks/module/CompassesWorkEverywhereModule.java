@@ -14,7 +14,7 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.client.item.ClockTimeGetter;
@@ -25,7 +25,7 @@ import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class CompassesWorkEverywhereModule extends QuarkModule {
+public class CompassesWorkEverywhereModule extends ZetaModule {
 
 	@Config public static boolean enableCompassNerf = true;
 	@Config(flag = "clock_nerf") 

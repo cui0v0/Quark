@@ -18,11 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.*;
 import vazkii.quark.base.client.render.QuarkBoatRenderer;
@@ -32,7 +28,7 @@ import vazkii.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
 import vazkii.quark.base.item.boat.QuarkBoatItem;
 import vazkii.quark.base.item.boat.QuarkChestBoat;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.block.*;
 import vazkii.quark.content.building.module.*;
 import vazkii.zeta.event.ZCommonSetup;
@@ -82,11 +78,11 @@ public class WoodSetHandler {
 		});
 	}
 
-	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean flammable) {
+	public static WoodSet addWoodSet(ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean flammable) {
 		return addWoodSet(module, name, color, barkColor, true, true, flammable);
 	}
 
-	public static WoodSet addWoodSet(QuarkModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
+	public static WoodSet addWoodSet(ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
 		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
 		WoodSet set = new WoodSet(name, module, type);
 
@@ -165,7 +161,7 @@ public class WoodSetHandler {
 		BlockEntityType.SIGN.validBlocks = ImmutableSet.copyOf(validBlocks);
 	}
 
-	private static RotatedPillarBlock log(String name, QuarkModule module, MaterialColor topColor, MaterialColor sideColor) {
+	private static RotatedPillarBlock log(String name, ZetaModule module, MaterialColor topColor, MaterialColor sideColor) {
 		return new QuarkPillarBlock(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
 				.strength(2.0F).sound(SoundType.WOOD));
@@ -187,7 +183,7 @@ public class WoodSetHandler {
 
 		public final String name;
 		public final WoodType type;
-		public final QuarkModule module;
+		public final ZetaModule module;
 
 		public Block log, wood, planks, strippedLog, strippedWood,
 		slab, stairs, fence, fenceGate,
@@ -197,7 +193,7 @@ public class WoodSetHandler {
 
 		public Item signItem, boatItem, chestBoatItem;
 
-		public WoodSet(String name, QuarkModule module, WoodType type) {
+		public WoodSet(String name, ZetaModule module, WoodType type) {
 			this.name = name;
 			this.module = module;
 			this.type = type;

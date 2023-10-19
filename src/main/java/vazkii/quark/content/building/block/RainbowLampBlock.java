@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.module.RainbowLampsModule;
 
 import javax.annotation.Nonnull;
@@ -34,7 +34,7 @@ public class RainbowLampBlock extends QuarkGlassBlock {
 
 	private String corundumDescriptionId;
 
-	public RainbowLampBlock(String regname, int color, QuarkModule module, MaterialColor materialColor) {
+	public RainbowLampBlock(String regname, int color, ZetaModule module, MaterialColor materialColor) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE, true,
 				Properties.of(Material.GLASS, materialColor)
 				.strength(0.3F, 0F)

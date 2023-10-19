@@ -9,13 +9,13 @@ import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class NoDurabilityOnCosmeticsModule extends QuarkModule {
+public class NoDurabilityOnCosmeticsModule extends ZetaModule {
 
 	@Config(description = "Allow applying cosmetic items such as color runes with no anvil durability usage? Cosmetic items are defined in the quark:cosmetic_anvil_items tag") 
 	private boolean allowCosmeticItems = true;

@@ -32,12 +32,12 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import vazkii.quark.base.block.QuarkSaplingBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.AncientWoodModule;
 
 public class AncientSaplingBlock extends QuarkSaplingBlock {
 
-	public AncientSaplingBlock(QuarkModule module) {
+	public AncientSaplingBlock(ZetaModule module) {
 		super("ancient", module, new AncientTree());
 	}
 

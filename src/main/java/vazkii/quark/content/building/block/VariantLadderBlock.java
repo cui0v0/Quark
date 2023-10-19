@@ -14,19 +14,19 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
 public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private final boolean flammable;
 
 	private BooleanSupplier condition = () -> true;
 
-	public VariantLadderBlock(String type, QuarkModule module, Block.Properties props, boolean flammable) {
+	public VariantLadderBlock(String type, ZetaModule module, Block.Properties props, boolean flammable) {
 		super(props);
 
 		Quark.ZETA.registry.registerBlock(this, type + "_ladder", true);
@@ -38,7 +38,7 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 		this.flammable = flammable;
 	}
 
-	public VariantLadderBlock(String type, QuarkModule module, boolean flammable) {
+	public VariantLadderBlock(String type, ZetaModule module, boolean flammable) {
 		this(type, module,
 				Block.Properties.copy(Blocks.LADDER),
 			flammable);
@@ -56,7 +56,7 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

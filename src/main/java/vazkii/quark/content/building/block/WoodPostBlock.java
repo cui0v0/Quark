@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -47,7 +47,7 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 			BooleanProperty.create("chain_east")
 	};
 
-	public WoodPostBlock(QuarkModule module, Block parent, String prefix, boolean nether) {
+	public WoodPostBlock(ZetaModule module, Block parent, String prefix, boolean nether) {
 		super(IQuarkBlock.inherit(parent, s -> prefix + s.replace("_fence", "_post")), 
 				module, CreativeModeTab.TAB_DECORATIONS,
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));

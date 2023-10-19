@@ -44,7 +44,7 @@ import vazkii.aurelienribon.tweenengine.Tween;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.RequestEmoteMessage;
@@ -62,7 +62,7 @@ import vazkii.zeta.event.client.ZConfigChangedClient;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class EmotesModule extends QuarkModule {
+public class EmotesModule extends ZetaModule {
 
 	private static final Set<String> DEFAULT_EMOTE_NAMES = ImmutableSet.of(
 			"no",

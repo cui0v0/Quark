@@ -45,7 +45,7 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ import java.util.List;
 import java.util.Map;
 
 @LoadModule(category = "oddities", hasSubscriptions = true)
-public class MatrixEnchantingModule extends QuarkModule {
+public class MatrixEnchantingModule extends ZetaModule {
 
 	public static BlockEntityType<MatrixEnchantingTableBlockEntity> blockEntityType;
 	public static MenuType<MatrixEnchantingMenu> menuType;

@@ -11,8 +11,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.handler.advancement.MutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class TacticalFishingModifier extends AdvancementModifier {
 
     final Set<BucketItem> bucketItems;
 
-    public TacticalFishingModifier(QuarkModule module, Set<BucketItem> buckets) {
+    public TacticalFishingModifier(ZetaModule module, Set<BucketItem> buckets) {
         super(module);
         this.bucketItems = buckets;
         Preconditions.checkArgument(!buckets.isEmpty(), "Advancement modifier list cant be empty");

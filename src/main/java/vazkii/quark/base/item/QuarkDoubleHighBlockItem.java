@@ -5,14 +5,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.ItemStack;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
 public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IQuarkItem {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 
 	private BooleanSupplier enabledSupplier = () -> true;
 
@@ -35,7 +35,7 @@ public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IQu
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

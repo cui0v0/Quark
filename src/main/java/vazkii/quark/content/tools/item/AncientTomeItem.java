@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 import vazkii.quark.content.tools.module.AncientTomesModule;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class AncientTomeItem extends QuarkItem {
 
-	public AncientTomeItem(QuarkModule module) {
+	public AncientTomeItem(ZetaModule module) {
 		super("ancient_tome", module,
 				new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	}

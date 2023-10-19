@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.config.PickarangType;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 import vazkii.quark.content.tools.module.PickarangModule;
@@ -39,7 +39,7 @@ public class PickarangItem extends QuarkItem {
 
 	public final PickarangType<?> type;
 
-	public PickarangItem(String regname, QuarkModule module, Properties properties, PickarangType<?> type) {
+	public PickarangItem(String regname, ZetaModule module, Properties properties, PickarangType<?> type) {
 		super(regname, module, properties);
 		this.type = type;
 	}

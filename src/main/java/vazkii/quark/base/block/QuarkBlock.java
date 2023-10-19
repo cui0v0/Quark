@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,10 +18,10 @@ import java.util.function.BooleanSupplier;
 
 public class QuarkBlock extends Block implements IQuarkBlock {
 
-    private final QuarkModule module;
+    private final ZetaModule module;
     private BooleanSupplier enabledSupplier = () -> true;
 
-    public QuarkBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+    public QuarkBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
         super(properties);
 
         Quark.ZETA.registry.registerBlock(this, regname);
@@ -52,7 +52,7 @@ public class QuarkBlock extends Block implements IQuarkBlock {
 
     @Nullable
     @Override
-    public QuarkModule getModule() {
+    public ZetaModule getModule() {
         return module;
     }
 
@@ -64,7 +64,7 @@ public class QuarkBlock extends Block implements IQuarkBlock {
 
     public interface Constructor<T extends Block> {
 
-        T make(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties);
+        T make(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties);
 
     }
 

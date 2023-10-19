@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColorProvider {
 
-	public MyaliteCrystalBlock(QuarkModule module) {
+	public MyaliteCrystalBlock(ZetaModule module) {
 		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
 				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE)
 				.strength(0.5F, 1200F)

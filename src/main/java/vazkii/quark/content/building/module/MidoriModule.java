@@ -11,13 +11,13 @@ import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class MidoriModule extends QuarkModule {
+public class MidoriModule extends ZetaModule {
 
 	private static Item moss_paste;
 	

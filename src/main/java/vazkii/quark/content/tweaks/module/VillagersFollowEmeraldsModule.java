@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 
 /**
@@ -17,7 +17,7 @@ import vazkii.quark.base.module.hint.Hint;
  * Created at 11:25 AM on 9/2/19.
  */
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class VillagersFollowEmeraldsModule extends QuarkModule {
+public class VillagersFollowEmeraldsModule extends ZetaModule {
 
 	@Hint Item emerald_block = Items.EMERALD_BLOCK;
 

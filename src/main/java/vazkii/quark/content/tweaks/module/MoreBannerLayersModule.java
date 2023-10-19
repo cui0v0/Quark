@@ -4,14 +4,14 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks")
-public class MoreBannerLayersModule extends QuarkModule {
+public class MoreBannerLayersModule extends ZetaModule {
 
 	@Config
 	@Config.Min(1)

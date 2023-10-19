@@ -1,11 +1,11 @@
 package vazkii.quark.base.world;
 
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.world.generator.IGenerator;
 
 import javax.annotation.Nonnull;
 
-public record WeightedGenerator(QuarkModule module,
+public record WeightedGenerator(ZetaModule module,
 								IGenerator generator,
 								int weight) implements Comparable<WeightedGenerator> {
 

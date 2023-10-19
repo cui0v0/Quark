@@ -13,7 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class MonsterHunterModifier extends AdvancementModifier {
 
@@ -22,7 +22,7 @@ public class MonsterHunterModifier extends AdvancementModifier {
 	
 	final Set<EntityType<?>> entityTypes;
 	
-	public MonsterHunterModifier(QuarkModule module, Set<EntityType<?>> entityTypes) {
+	public MonsterHunterModifier(ZetaModule module, Set<EntityType<?>> entityTypes) {
 		super(module);
 		
 		this.entityTypes = entityTypes;

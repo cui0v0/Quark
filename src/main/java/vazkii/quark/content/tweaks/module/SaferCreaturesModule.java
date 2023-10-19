@@ -6,11 +6,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class SaferCreaturesModule extends QuarkModule {
+public class SaferCreaturesModule extends ZetaModule {
 
 	@Config(description = "How many blocks should be subtracted from the rabbit fall height when calculating fall damage. 5 is the same value as vanilla frogs") 
 	public double heightReduction = 5.0;

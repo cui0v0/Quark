@@ -18,12 +18,12 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePla
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import vazkii.quark.base.block.QuarkSaplingBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.BlossomTreesModule;
 
 public class BlossomSaplingBlock extends QuarkSaplingBlock {
 
-	public BlossomSaplingBlock(String colorName, QuarkModule module, BlossomTree tree) {
+	public BlossomSaplingBlock(String colorName, ZetaModule module, BlossomTree tree) {
 		super(colorName + "_blossom", module, tree);
 		tree.sapling = this;
 	}

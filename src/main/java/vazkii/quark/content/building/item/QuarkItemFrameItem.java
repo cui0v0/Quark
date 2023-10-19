@@ -16,7 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.util.TriFunction;
 
 /**
@@ -26,7 +26,7 @@ import vazkii.quark.base.util.TriFunction;
 public class QuarkItemFrameItem extends QuarkItem {
 	private final TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider;
 
-	public QuarkItemFrameItem(String name, QuarkModule module, TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider) {
+	public QuarkItemFrameItem(String name, ZetaModule module, TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider) {
 		super(name, module, new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS));
 		this.entityProvider = entityProvider;
 	}

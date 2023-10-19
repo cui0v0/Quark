@@ -13,14 +13,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public abstract class QuarkArrowItem extends ArrowItem implements IQuarkItem {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkArrowItem(String name, QuarkModule module) {
+	public QuarkArrowItem(String name, ZetaModule module) {
 		super(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
 
 		Quark.ZETA.registry.registerItem(this, name);
@@ -40,7 +40,7 @@ public abstract class QuarkArrowItem extends ArrowItem implements IQuarkItem {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 
@@ -53,7 +53,7 @@ public abstract class QuarkArrowItem extends ArrowItem implements IQuarkItem {
 
 		private final ArrowCreator creator;
 		
-		public Impl(String name, QuarkModule module, ArrowCreator creator) {
+		public Impl(String name, ZetaModule module, ArrowCreator creator) {
 			super(name, module);
 			this.creator = creator;
 		}

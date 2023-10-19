@@ -8,13 +8,13 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class SlimesToMagmaCubesModule extends QuarkModule {
+public class SlimesToMagmaCubesModule extends ZetaModule {
 
 	private static final String TAG_MAGMAED = "quark:damaged_by_magma";
 

@@ -22,7 +22,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 import vazkii.zeta.registry.IZetaItemColorProvider;
 
@@ -62,7 +62,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return parent.getModule();
 	}
 

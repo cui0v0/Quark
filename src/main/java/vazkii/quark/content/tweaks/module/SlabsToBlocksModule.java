@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.event.RecipeCrawlEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tweaks.recipe.SlabToBlockRecipe;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class SlabsToBlocksModule extends QuarkModule {
+public class SlabsToBlocksModule extends ZetaModule {
 
 	public static Map<Item, Item> recipes = new HashMap<>();
 

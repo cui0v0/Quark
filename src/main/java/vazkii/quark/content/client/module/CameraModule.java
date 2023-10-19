@@ -28,7 +28,7 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.experimental.module.OverlayShaderModule;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.function.Predicate;
 
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class CameraModule extends QuarkModule {
+public class CameraModule extends ZetaModule {
 
 	@Config(description = "Date format that will be displayed in screenshots. Must be a valid one (i.e. MM/dd/yyyy)")
 	@Config.Condition(DatePredicate.class)

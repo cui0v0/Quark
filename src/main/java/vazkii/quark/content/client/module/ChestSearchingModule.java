@@ -49,7 +49,7 @@ import vazkii.quark.base.handler.InventoryTransferHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
 import vazkii.quark.content.management.client.screen.widgets.MiniInventoryButton;
@@ -59,7 +59,7 @@ import java.util.function.BiPredicate;
 import java.util.regex.Pattern;
 
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class ChestSearchingModule extends QuarkModule {
+public class ChestSearchingModule extends ZetaModule {
 
 	@Config
 	public RGBAColorConfig overlayColor = RGBAColorConfig.forColor(0, 0, 0, 0.67);

@@ -8,12 +8,12 @@ import net.minecraft.world.level.material.Material;
 import vazkii.quark.base.block.QuarkGlassBlock;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class FramedGlassModule extends QuarkModule {
+public class FramedGlassModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {

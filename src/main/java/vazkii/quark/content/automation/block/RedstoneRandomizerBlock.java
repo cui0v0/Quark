@@ -32,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.base.RandomizerPowerState;
 
 /**
@@ -47,7 +47,7 @@ public class RedstoneRandomizerBlock extends QuarkBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<RandomizerPowerState> POWERED = EnumProperty.create("powered", RandomizerPowerState.class);
 
-	public RedstoneRandomizerBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public RedstoneRandomizerBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 
 		registerDefaultState(defaultBlockState()

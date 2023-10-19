@@ -10,8 +10,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.handler.advancement.MutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class BalancedDietModifier extends AdvancementModifier {
 
     private final Set<ItemLike> items;
 
-    public BalancedDietModifier(QuarkModule module, Set<ItemLike> items) {
+    public BalancedDietModifier(ZetaModule module, Set<ItemLike> items) {
         super(module);
         this.items = items;
         Preconditions.checkArgument(!items.isEmpty(), "Advancement modifier list cant be empty");

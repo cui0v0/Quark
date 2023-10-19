@@ -30,7 +30,7 @@ import vazkii.quark.base.QuarkClient;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.mobs.module.StonelingsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
@@ -61,11 +61,11 @@ public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorPro
     protected static final String TAG_POS_LEG = "searchPosLeg";
     protected static final String TAG_POS_LEG_INDEX = "searchPosLegIndex";
 
-    public PathfindersQuillItem(QuarkModule module, Item.Properties properties) {
+    public PathfindersQuillItem(ZetaModule module, Item.Properties properties) {
         super("pathfinders_quill", module, properties);
     }
 
-    public PathfindersQuillItem(QuarkModule module) {
+    public PathfindersQuillItem(ZetaModule module) {
         this(module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
     }
 

@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.experimental.hax.PseudoAccessorMerchantOffer;
 import vazkii.quark.mixin.accessor.AccessorMerchantOffer;
@@ -20,7 +20,7 @@ import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "experimental", enabledByDefault = false, hasSubscriptions = true)
-public class VillagerRerollingReworkModule extends QuarkModule {
+public class VillagerRerollingReworkModule extends ZetaModule {
 
 	public static final String TAG_VILLAGER_SEED = "quark:MerchantInitialSeed";
 	public static final String TAG_ITEMS_REROLLED_TODAY = "quark:RerolledItemsToday";

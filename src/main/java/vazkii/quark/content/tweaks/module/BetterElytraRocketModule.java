@@ -10,10 +10,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class BetterElytraRocketModule extends QuarkModule {
+public class BetterElytraRocketModule extends ZetaModule {
 
 	@SubscribeEvent
 	public void onUseRocket(PlayerInteractEvent.RightClickItem event) {

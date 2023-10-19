@@ -38,7 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import vazkii.quark.addons.oddities.module.MagnetsModule;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -47,7 +47,7 @@ import vazkii.quark.base.module.QuarkModule;
 public class MovingMagnetizedBlock extends QuarkBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
 
-	public MovingMagnetizedBlock(QuarkModule module) {
+	public MovingMagnetizedBlock(ZetaModule module) {
 		super("magnetized_block", module, null, Block.Properties.of(Material.PISTON).strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}

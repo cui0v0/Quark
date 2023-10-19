@@ -25,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 
 public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvider {
@@ -35,7 +35,7 @@ public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvid
 	private final BlockState baseState;
 	private ItemStack baseStack;
 
-	public LeafCarpetBlock(String name, Block base, QuarkModule module) {
+	public LeafCarpetBlock(String name, Block base, ZetaModule module) {
 		super(name, module, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.CLOTH_DECORATION, base.defaultBlockState().materialColor)
 						.strength(0F)

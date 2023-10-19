@@ -27,7 +27,7 @@ import net.minecraftforge.fml.ModList;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.block.VariantTrappedChestBlock;
 import vazkii.zeta.registry.IZetaItemPropertiesFiller;
 
@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * All modifications are made purely to integrate with VariantTrappedChestBlock/quark
  */
 public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaItemPropertiesFiller {
-	public LootrVariantTrappedChestBlock(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
+	public LootrVariantTrappedChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
 
@@ -126,7 +126,7 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 
 	public static class Compat extends LootrVariantTrappedChestBlock {
 
-		public Compat(String type, String mod, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 			super(type, module, supplier, props);
 			setCondition(() -> ModList.get().isLoaded(mod));
 		}

@@ -14,14 +14,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.entity.ParrotEgg;
 import vazkii.quark.content.tools.module.ParrotEggsModule;
 
 public class ParrotEggItem extends QuarkItem {
 	private final int variant;
 
-	public ParrotEggItem(String suffix, int variant, QuarkModule module) {
+	public ParrotEggItem(String suffix, int variant, ZetaModule module) {
 		super("egg_parrot_" + suffix, module,
 				new Item.Properties()
 						.stacksTo(16)

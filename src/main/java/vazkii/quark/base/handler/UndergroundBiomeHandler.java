@@ -14,7 +14,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.bus.LoadEvent;
 
@@ -31,7 +31,7 @@ public final class UndergroundBiomeHandler {
 		proxy().addUndergroundBiomes(builder, consumer);
 	}
 
-	public static void addUndergroundBiome(QuarkModule module, Climate.ParameterPoint climate, ResourceLocation biome) {
+	public static void addUndergroundBiome(ZetaModule module, Climate.ParameterPoint climate, ResourceLocation biome) {
 		UndergroundBiomeSkeleton skeleton = new UndergroundBiomeSkeleton(module, climate, biome);
 		proxy().addUndergroundBiome(skeleton);
 	}
@@ -82,6 +82,6 @@ public final class UndergroundBiomeHandler {
 
 	}
 
-	public record UndergroundBiomeSkeleton(QuarkModule module, Climate.ParameterPoint climate, ResourceLocation biome) {}
+	public record UndergroundBiomeSkeleton(ZetaModule module, Climate.ParameterPoint climate, ResourceLocation biome) {}
 
 }

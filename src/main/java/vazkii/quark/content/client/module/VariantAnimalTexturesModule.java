@@ -18,7 +18,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class VariantAnimalTexturesModule extends QuarkModule {
+public class VariantAnimalTexturesModule extends ZetaModule {
 
 	private static ListMultimap<VariantTextureType, ResourceLocation> textures;
 	private static Map<VariantTextureType, ResourceLocation> shinyTextures;

@@ -43,7 +43,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.world.generator.IGenerator;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -84,7 +84,7 @@ public class WorldGenHandler {
 		}
 	}
 
-	public static void addGenerator(QuarkModule module, IGenerator generator, GenerationStep.Decoration stage, int weight) {
+	public static void addGenerator(ZetaModule module, IGenerator generator, GenerationStep.Decoration stage, int weight) {
 		WeightedGenerator weighted = new WeightedGenerator(module, generator, weight);
 		if(!generators.containsKey(stage))
 			generators.put(stage, new TreeSet<>());

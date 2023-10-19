@@ -26,7 +26,7 @@ import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Max;
 import vazkii.quark.base.module.config.Config.Min;
@@ -44,7 +44,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 
 @LoadModule(category = "world", hasSubscriptions = true)
-public class SpiralSpiresModule extends QuarkModule {
+public class SpiralSpiresModule extends ZetaModule {
 
 	@Config
 	public static DimensionConfig dimensions = DimensionConfig.end(false);

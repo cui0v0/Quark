@@ -4,17 +4,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Supplier;
 
-import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.api.IAdvancementModifier;
-import vazkii.quark.api.IMutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public abstract class AdvancementModifier implements IAdvancementModifier {
 
-	public final QuarkModule module;
+	public final ZetaModule module;
 	private Supplier<Boolean> cond;
 	
-	protected AdvancementModifier(@Nullable QuarkModule module) {
+	protected AdvancementModifier(@Nullable ZetaModule module) {
 		this.module = module;
 	}
 

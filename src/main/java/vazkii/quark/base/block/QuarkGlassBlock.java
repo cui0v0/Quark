@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -23,7 +23,7 @@ import vazkii.quark.base.module.QuarkModule;
  */
 public class QuarkGlassBlock extends QuarkBlock {
 
-	public QuarkGlassBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, boolean translucent, Properties properties) {
+	public QuarkGlassBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, boolean translucent, Properties properties) {
 		super(regname, module, creativeTab, properties
 				.noOcclusion()
 				.isValidSpawn((state, world, pos, entityType) -> false)

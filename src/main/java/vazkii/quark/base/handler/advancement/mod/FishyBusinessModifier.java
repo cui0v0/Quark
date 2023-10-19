@@ -7,13 +7,11 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.FishingRodHookedTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.handler.advancement.MutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import java.util.Set;
 
@@ -23,7 +21,7 @@ public class FishyBusinessModifier extends AdvancementModifier {
 
     final Set<ItemLike> fishes;
 
-    public FishyBusinessModifier(QuarkModule module, Set<ItemLike> fishes) {
+    public FishyBusinessModifier(ZetaModule module, Set<ItemLike> fishes) {
         super(module);
         this.fishes = fishes;
         Preconditions.checkArgument(!fishes.isEmpty(), "Advancement modifier list cant be empty");

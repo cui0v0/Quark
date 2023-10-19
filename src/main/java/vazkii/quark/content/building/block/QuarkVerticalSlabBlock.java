@@ -10,7 +10,7 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkSlabBlock;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,10 +18,10 @@ import java.util.function.BooleanSupplier;
 
 public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IQuarkBlock {
 
-    private final QuarkModule module;
+    private final ZetaModule module;
     private BooleanSupplier enabledSupplier = () -> true;
 
-    public QuarkVerticalSlabBlock(Block parent, QuarkModule module) {
+    public QuarkVerticalSlabBlock(Block parent, ZetaModule module) {
         super(() -> parent, Block.Properties.copy(parent));
 	    String resloc = IQuarkBlock.inherit(parent, s -> s.replace("_slab", "_vertical_slab"));
 	    Quark.ZETA.registry.registerBlock(this, resloc, true);
@@ -61,7 +61,7 @@ public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IQuarkB
 
     @Nullable
     @Override
-    public QuarkModule getModule() {
+    public ZetaModule getModule() {
         return module;
     }
 

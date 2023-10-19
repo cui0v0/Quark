@@ -11,10 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.quark.addons.oddities.inventory.slot.BackpackSlot;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class GlowAndBeholdModifier extends AdvancementModifier {
 
     final Set<Block> blocks;
 
-    public GlowAndBeholdModifier(QuarkModule module, Set<Block> buckets) {
+    public GlowAndBeholdModifier(ZetaModule module, Set<Block> buckets) {
         super(module);
         this.blocks = buckets;
         Preconditions.checkArgument(!blocks.isEmpty(), "Advancement modifier list cant be empty");

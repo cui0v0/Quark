@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.building.client.render.entity.GlassItemFrameRenderer;
@@ -26,7 +26,7 @@ import vazkii.zeta.event.client.ZClientSetup;
  * Created at 11:00 AM on 8/25/19.
  */
 @LoadModule(category = "building")
-public class GlassItemFrameModule extends QuarkModule {
+public class GlassItemFrameModule extends ZetaModule {
 
 	@Config public static boolean glassItemFramesUpdateMaps = true;
 	@Config(description = "Set to true for faster map updates. Default is every 3s")

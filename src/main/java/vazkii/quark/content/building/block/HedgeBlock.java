@@ -38,7 +38,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.module.HedgesModule;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
@@ -56,13 +56,13 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 	private final Object2IntMap<BlockState> hedgeStateToIndex;
 	private final VoxelShape[] hedgeShapes;
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private final Block leaf;
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public static final BooleanProperty EXTEND = BooleanProperty.create("extend");
 
-	public HedgeBlock(QuarkModule module, Block fence, Block leaf) {
+	public HedgeBlock(ZetaModule module, Block fence, Block leaf) {
 		super(Block.Properties.copy(fence));
 
 		this.module = module;
@@ -195,7 +195,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

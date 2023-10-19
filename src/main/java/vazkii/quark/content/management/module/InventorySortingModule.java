@@ -13,7 +13,7 @@ import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonProvider;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.SortInventoryMessage;
@@ -22,7 +22,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 @LoadModule(category = "management")
-public class InventorySortingModule extends QuarkModule {
+public class InventorySortingModule extends ZetaModule {
 
 	@Config
 	public static boolean enablePlayerInventory = true;

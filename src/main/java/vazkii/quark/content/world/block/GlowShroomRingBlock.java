@@ -25,7 +25,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class GlowShroomRingBlock extends QuarkBlock implements SimpleWaterlogged
 
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0.0D, 4.0D, 5.0D, 16.0D, 12.0D, 16.0D), Direction.SOUTH, Block.box(0.0D, 4.0D, 0.0D, 16.0D, 12.0D, 11.0D), Direction.WEST, Block.box(5.0D, 4.0D, 0.0D, 16.0D, 12.0D, 16.0D), Direction.EAST, Block.box(0.0D, 4.0D, 0.0D, 11.0D, 12.0D, 16.0D)));
 
-	public GlowShroomRingBlock(QuarkModule module) {
+	public GlowShroomRingBlock(ZetaModule module) {
 		super("glow_shroom_ring", module, CreativeModeTab.TAB_DECORATIONS,
 				BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_GRAY)
 				.noCollission()

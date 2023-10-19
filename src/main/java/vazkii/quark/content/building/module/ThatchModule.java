@@ -3,7 +3,7 @@ package vazkii.quark.content.building.module;
 import net.minecraft.world.level.block.ComposterBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.ThatchBlock;
 import vazkii.zeta.event.ZLoadComplete;
@@ -11,7 +11,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building", antiOverlap = {"goated", "environmental"})
-public class ThatchModule extends QuarkModule {
+public class ThatchModule extends ZetaModule {
 
 	@Config.Min(0)
 	@Config.Max(1)

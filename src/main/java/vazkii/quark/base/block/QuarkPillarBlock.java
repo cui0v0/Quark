@@ -11,14 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkPillarBlock extends RotatedPillarBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPillarBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public QuarkPillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 		Quark.ZETA.registry.registerBlock(this, regname, true);
@@ -34,7 +34,7 @@ public class QuarkPillarBlock extends RotatedPillarBlock implements IQuarkBlock 
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

@@ -24,7 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkBoatItem extends QuarkItem {
 
@@ -33,7 +33,7 @@ public class QuarkBoatItem extends QuarkItem {
 	public final String type;
 	private final boolean chest;
 
-	public QuarkBoatItem(String type, QuarkModule module, boolean chest) {
+	public QuarkBoatItem(String type, ZetaModule module, boolean chest) {
 		super(type + (chest ? "_chest" : "") + "_boat", module,
 				(new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_TRANSPORTATION));
 

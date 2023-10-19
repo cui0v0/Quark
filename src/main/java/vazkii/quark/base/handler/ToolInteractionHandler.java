@@ -22,7 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.WaxModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
 
@@ -33,9 +33,9 @@ public final class ToolInteractionHandler {
 	private static final Map<Block, Block> cleanToWaxMap = HashBiMap.create();
 	private static final Map<ToolAction, Map<Block, Block>> interactionMaps = new HashMap<>();
 
-	private static final Multimap<QuarkModule, Pair<Block, Block>> waxingByModule = HashMultimap.create();
+	private static final Multimap<ZetaModule, Pair<Block, Block>> waxingByModule = HashMultimap.create();
 
-	public static void registerWaxedBlock(QuarkModule module, Block clean, Block waxed) {
+	public static void registerWaxedBlock(ZetaModule module, Block clean, Block waxed) {
 		cleanToWaxMap.put(clean, waxed);
 		registerInteraction(ToolActions.AXE_WAX_OFF, waxed, clean);
 
@@ -52,7 +52,7 @@ public final class ToolInteractionHandler {
 
 	@LoadEvent
 	public static void addModifiers(ZCommonSetup event) {
-		for(QuarkModule module : waxingByModule.keySet()) {
+		for(ZetaModule module : waxingByModule.keySet()) {
 			Collection<Pair<Block, Block>> pairs = waxingByModule.get(module);
 			Set<Block> unwaxed = new HashSet<>();
 			Set<Block> waxed = new HashSet<>();

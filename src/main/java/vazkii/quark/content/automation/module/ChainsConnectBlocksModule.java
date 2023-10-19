@@ -14,14 +14,14 @@ import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.api.IIndirectConnector;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "automation")
-public class ChainsConnectBlocksModule extends QuarkModule {
+public class ChainsConnectBlocksModule extends ZetaModule {
 
 	@Hint Item chain = Items.CHAIN;
 	

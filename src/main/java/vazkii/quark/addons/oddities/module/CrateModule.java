@@ -14,7 +14,7 @@ import vazkii.quark.addons.oddities.client.screen.CrateScreen;
 import vazkii.quark.addons.oddities.inventory.CrateMenu;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZRegister;
@@ -22,7 +22,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "oddities")
-public class CrateModule extends QuarkModule {
+public class CrateModule extends ZetaModule {
 
     public static BlockEntityType<CrateBlockEntity> blockEntityType;
     public static MenuType<CrateMenu> menuType;

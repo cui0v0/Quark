@@ -3,7 +3,6 @@ package vazkii.quark.content.experimental.item;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,16 +13,14 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.experimental.module.VariantSelectorModule;
 import vazkii.quark.content.tweaks.module.LockRotationModule;
 
 public class HammerItem extends QuarkItem {
 
-	public HammerItem(QuarkModule module) {
+	public HammerItem(ZetaModule module) {
 		super("hammer", module, new Item.Properties()
 				.stacksTo(1)
 				.tab(CreativeModeTab.TAB_TOOLS));

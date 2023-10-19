@@ -36,14 +36,14 @@ import vazkii.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import vazkii.quark.addons.oddities.magnetsystem.MagnetSystem;
 import vazkii.quark.addons.oddities.module.MagnetsModule;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class MagnetBlock extends QuarkBlock implements EntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public MagnetBlock(QuarkModule module) {
+	public MagnetBlock(ZetaModule module) {
 		super("magnet", module, CreativeModeTab.TAB_REDSTONE, Properties.copy(Blocks.IRON_BLOCK));
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(POWERED, false));
 	}

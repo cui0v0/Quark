@@ -14,7 +14,7 @@ import java.util.function.BooleanSupplier;
 
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.BambooMatBlock;
 import vazkii.quark.content.building.block.BambooMatCarpetBlock;
@@ -24,7 +24,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class JapanesePaletteModule extends QuarkModule {
+public class JapanesePaletteModule extends ZetaModule {
 
 	@Config(flag = "paper_decor")
 	public static boolean enablePaperBlocks = true;

@@ -15,11 +15,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class EncasedPipeBlock extends BasePipeBlock {
 
-	public EncasedPipeBlock(QuarkModule module) {
+	public EncasedPipeBlock(ZetaModule module) {
 		super("encased_pipe", module);
 	}
 	

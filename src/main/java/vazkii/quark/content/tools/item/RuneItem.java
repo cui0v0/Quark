@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -25,7 +25,7 @@ public class RuneItem extends QuarkItem implements IRuneColorProvider {
 	private final int color;
 	private final boolean glow;
 
-	public RuneItem(String regname, QuarkModule module, int color, boolean glow) {
+	public RuneItem(String regname, ZetaModule module, int color, boolean glow) {
 		super(regname, module, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 		this.color = color;
 		this.glow = glow;

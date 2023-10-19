@@ -1,8 +1,6 @@
 package vazkii.quark.base.handler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
@@ -20,12 +18,11 @@ import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.recipe.DyeRecipe;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZAddItemColorHandlers;
-import vazkii.zeta.event.client.ZClientSetup;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -62,7 +59,7 @@ public final class DyeHandler {
 		addDyeable(item, () -> true);
 	}
 
-	public static void addDyeable(Item item, QuarkModule module) {
+	public static void addDyeable(Item item, ZetaModule module) {
 		addDyeable(item, () -> module.enabled);
 	}
 

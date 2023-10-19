@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.block.be.MonsterBoxBlockEntity;
 import vazkii.quark.content.world.module.MonsterBoxModule;
 
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 
 public class MonsterBoxBlock extends QuarkBlock implements EntityBlock {
 
-	public MonsterBoxBlock(QuarkModule module) {
+	public MonsterBoxBlock(ZetaModule module) {
 		super("monster_box", module, null,
 				Block.Properties.of(Material.METAL)
 				.strength(25F)

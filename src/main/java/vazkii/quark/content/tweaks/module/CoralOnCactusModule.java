@@ -6,12 +6,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CoralFanBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks")
-public class CoralOnCactusModule extends QuarkModule {
+public class CoralOnCactusModule extends ZetaModule {
 
 	private static boolean staticEnabled;
 	

@@ -21,8 +21,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.EntityAttributeHandler;
@@ -34,7 +32,7 @@ import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.item.QuarkMobBucketItem;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.EntitySpawnConfig;
@@ -53,7 +51,7 @@ import vazkii.zeta.event.client.ZClientSetup;
  * Created at 7:28 PM on 9/22/19.
  */
 @LoadModule(category = "mobs", hasSubscriptions = true)
-public class CrabsModule extends QuarkModule {
+public class CrabsModule extends ZetaModule {
 
 	public static EntityType<Crab> crabType;
 

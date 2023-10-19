@@ -16,7 +16,7 @@ import vazkii.quark.addons.oddities.block.pipe.PipeBlock;
 import vazkii.quark.addons.oddities.client.render.be.PipeRenderer;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZCommonSetup;
@@ -27,7 +27,7 @@ import vazkii.zeta.event.client.ZAddModels;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "oddities")
-public class PipesModule extends QuarkModule {
+public class PipesModule extends ZetaModule {
 
 	public static BlockEntityType<PipeBlockEntity> blockEntityType;
 

@@ -24,7 +24,7 @@ import vazkii.zeta.event.client.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.mobs.entity.Crab;
 import vazkii.quark.content.mobs.module.CrabsModule;
@@ -39,7 +39,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
 @LoadModule(category = "client")
-public class BucketsShowInhabitantsModule extends QuarkModule {
+public class BucketsShowInhabitantsModule extends ZetaModule {
 
 	@Config
 	public static boolean showAxolotls = true;

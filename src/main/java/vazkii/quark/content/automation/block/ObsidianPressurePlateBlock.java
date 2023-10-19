@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import vazkii.quark.base.block.QuarkPressurePlateBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -25,7 +25,7 @@ import vazkii.quark.base.module.QuarkModule;
 public class ObsidianPressurePlateBlock extends QuarkPressurePlateBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public ObsidianPressurePlateBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ObsidianPressurePlateBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(null /*Sensitivity is unused*/, regname, module, creativeTab, properties);
 		this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
 	}

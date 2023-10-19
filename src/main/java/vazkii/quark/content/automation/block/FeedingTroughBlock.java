@@ -28,7 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.common.util.ForgeSoundType;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.block.be.FeedingTroughBlockEntity;
 import vazkii.quark.content.automation.module.FeedingTroughModule;
 
@@ -50,7 +50,7 @@ public class FeedingTroughBlock extends QuarkBlock implements EntityBlock {
 	public static final VoxelShape FULL_SHAPE = Shapes.join(CUBOID_SHAPE, box(2, 6, 2, 14, 8, 14), BooleanOp.ONLY_FIRST);
 	public static final VoxelShape ANIMAL_SHAPE = box(0, 0, 0, 16, 24, 16);
 
-	public FeedingTroughBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public FeedingTroughBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 		registerDefaultState(defaultBlockState().setValue(FULL, false));
 	}

@@ -26,7 +26,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.ToolInteractionHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.QuarkVerticalSlabBlock;
 import vazkii.quark.content.building.block.WeatheringCopperVerticalSlabBlock;
@@ -36,7 +36,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class VerticalSlabsModule extends QuarkModule {
+public class VerticalSlabsModule extends ZetaModule {
 	
 	@Config(description = "Should Walls and Panes attempt to connect to the side of Vertical Slabs?")
 	public static boolean allowSideConnections = true;
@@ -163,7 +163,7 @@ public class VerticalSlabsModule extends QuarkModule {
 	}
 	
 	public interface IVerticalSlabProvider {
-		QuarkVerticalSlabBlock getVerticalSlab(Block block, QuarkModule module);
+		QuarkVerticalSlabBlock getVerticalSlab(Block block, ZetaModule module);
 
 	}
 

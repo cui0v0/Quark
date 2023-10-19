@@ -7,13 +7,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 
 public class SturdyStoneBlock extends QuarkBlock {
 
-	public SturdyStoneBlock(QuarkModule module) {
+	public SturdyStoneBlock(ZetaModule module) {
 		super("sturdy_stone", module, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.of(Material.STONE)
 				.requiresCorrectToolForDrops()

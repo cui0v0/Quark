@@ -49,7 +49,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.experimental.PlaceVariantUpdateMessage;
@@ -65,7 +65,7 @@ import vazkii.zeta.event.client.ZTooltipComponents;
 
 @LoadModule(category = "experimental", hasSubscriptions = true, enabledByDefault = false,
 		description = "Allows placing variant blocks automatically via a selector menu triggered from a keybind")
-public class VariantSelectorModule extends QuarkModule {
+public class VariantSelectorModule extends ZetaModule {
 
 	private static final String TAG_CURRENT_VARIANT = Quark.MOD_ID + ":CurrentSelectedVariant";
 

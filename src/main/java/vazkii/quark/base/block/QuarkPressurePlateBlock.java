@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -19,10 +19,10 @@ import vazkii.quark.base.module.QuarkModule;
  */
 public class QuarkPressurePlateBlock extends PressurePlateBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPressurePlateBlock(Sensitivity sensitivity, String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public QuarkPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(sensitivity, properties);
 		this.module = module;
 
@@ -49,7 +49,7 @@ public class QuarkPressurePlateBlock extends PressurePlateBlock implements IQuar
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

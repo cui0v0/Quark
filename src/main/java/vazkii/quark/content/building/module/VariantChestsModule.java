@@ -24,8 +24,6 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -38,7 +36,7 @@ import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.util.VanillaWoods;
 import vazkii.quark.base.util.VanillaWoods.Wood;
@@ -64,7 +62,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @LoadModule(category = "building", hasSubscriptions = true, antiOverlap = { "woodworks" })
-public class VariantChestsModule extends QuarkModule {
+public class VariantChestsModule extends ZetaModule {
 
 	private static final String DONK_CHEST = "Quark:DonkChest";
 
@@ -204,7 +202,7 @@ public class VariantChestsModule extends QuarkModule {
 		addChest(name, this, props, false);
 	}
 
-	public static void addChest(String name, QuarkModule module, Supplier<Block.Properties> props, boolean external) {
+	public static void addChest(String name, ZetaModule module, Supplier<Block.Properties> props, boolean external) {
 		BooleanSupplier cond = external ? (() -> ModuleLoader.INSTANCE.isModuleEnabled(VariantChestsModule.class)) : (() -> true);
 
 		chestTypes.add(new ChestInfo(name, module, props, cond, null));
@@ -317,7 +315,7 @@ public class VariantChestsModule extends QuarkModule {
 	}
 
 	private record ChestInfo(String type,
-							 QuarkModule module,
+							 ZetaModule module,
 							 Supplier<BlockBehaviour.Properties> props,
 							 @Nullable BooleanSupplier condition,
 							 @Nullable String mod) {
@@ -326,11 +324,11 @@ public class VariantChestsModule extends QuarkModule {
 
 	@FunctionalInterface
 	public interface ChestConstructor {
-		Block createChest(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
+		Block createChest(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
 	}
 
 	@FunctionalInterface
 	public interface CompatChestConstructor {
-		Block createChest(String type, String mod, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
+		Block createChest(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
 	}
 }

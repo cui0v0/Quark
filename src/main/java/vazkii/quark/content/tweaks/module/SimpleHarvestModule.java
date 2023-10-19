@@ -50,7 +50,7 @@ import vazkii.quark.api.event.SimpleHarvestEvent.ActionType;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.HarvestMessage;
@@ -65,7 +65,7 @@ import java.util.Map;
 import java.util.Set;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class SimpleHarvestModule extends QuarkModule {
+public class SimpleHarvestModule extends ZetaModule {
 
     @Config(description = "Can players harvest crops with empty hand clicks?")
     public static boolean emptyHandHarvest = true;

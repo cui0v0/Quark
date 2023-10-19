@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeBlock;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 public interface IQuarkBlock extends IForgeBlock {
 
 	@Nullable
-	QuarkModule getModule();
+	ZetaModule getModule();
 
 	IQuarkBlock setCondition(BooleanSupplier condition);
 
@@ -35,7 +35,7 @@ public interface IQuarkBlock extends IForgeBlock {
 	}
 
 	default boolean isEnabled() {
-		QuarkModule module = getModule();
+		ZetaModule module = getModule();
 		return module != null && module.enabled && !module.disabledByOverlap && doesConditionApply();
 	}
 

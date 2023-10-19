@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.world.WorldGenHandler;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @LoadModule(category = "world")
-public class FairyRingsModule extends QuarkModule {
+public class FairyRingsModule extends ZetaModule {
 
 	@Config public static double forestChance = 0.00625;
 	@Config public static double plainsChance = 0.0025;

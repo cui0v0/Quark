@@ -41,7 +41,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
@@ -50,7 +50,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class EnhancedLaddersModule extends QuarkModule {
+public class EnhancedLaddersModule extends ZetaModule {
 
 	@Config.Max(0)
 	@Config

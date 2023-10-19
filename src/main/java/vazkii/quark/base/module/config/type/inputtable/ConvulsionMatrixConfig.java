@@ -17,7 +17,7 @@ import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.inputtable.ConvulsionMatrixInputScreen;
 import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.content.client.module.GreenerGrassModule;
@@ -42,7 +42,7 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 	}
 
 	@Override
-	public void onReload(QuarkModule module, ConfigFlagManager flagManager) {
+	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
 		super.onReload(module, flagManager);
 		
 		try {

@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.*;
 import vazkii.quark.api.ICrawlSpaceBlock;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 
@@ -61,7 +61,7 @@ public abstract class HollowFrameBlock extends QuarkBlock implements SimpleWater
         }
     }
 
-    public HollowFrameBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+    public HollowFrameBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
         super(regname, module, creativeTab, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

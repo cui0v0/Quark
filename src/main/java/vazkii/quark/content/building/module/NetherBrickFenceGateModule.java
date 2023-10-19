@@ -7,7 +7,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkFenceGateBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
@@ -16,7 +16,7 @@ import vazkii.zeta.event.bus.LoadEvent;
  * Created at 10:51 AM on 10/9/19.
  */
 @LoadModule(category = "building")
-public class NetherBrickFenceGateModule extends QuarkModule {
+public class NetherBrickFenceGateModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		new QuarkFenceGateBlock("nether_brick_fence_gate", this, CreativeModeTab.TAB_REDSTONE,

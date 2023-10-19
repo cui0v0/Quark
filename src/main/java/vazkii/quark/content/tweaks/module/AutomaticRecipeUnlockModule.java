@@ -25,7 +25,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -33,7 +33,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import java.util.*;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class AutomaticRecipeUnlockModule extends QuarkModule {
+public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 	@Config(description = "A list of recipe names that should NOT be added in by default")
 	public static List<String> ignoredRecipes = Lists.newArrayList();

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 
@@ -40,11 +40,11 @@ public class HollowWoodBlock extends HollowFrameBlock {
 
     private final boolean flammable;
 
-    public HollowWoodBlock(Block sourceLog, QuarkModule module, boolean flammable) {
+    public HollowWoodBlock(Block sourceLog, ZetaModule module, boolean flammable) {
         this(IQuarkBlock.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
     }
 
-    public HollowWoodBlock(String name, Block sourceLog, QuarkModule module, boolean flammable) {
+    public HollowWoodBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {
         super(name, module, CreativeModeTab.TAB_DECORATIONS,
                 MiscUtil.copyPropertySafe(sourceLog)
                         .isSuffocating((s, g, p) -> false));

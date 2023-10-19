@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.block.CloudBlock;
@@ -25,7 +25,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class BottledCloudModule extends QuarkModule {
+public class BottledCloudModule extends ZetaModule {
 
 	public static BlockEntityType<CloudBlockEntity> blockEntityType;
 	public static Block cloud;

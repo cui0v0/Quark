@@ -13,11 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
 import vazkii.quark.base.block.QuarkVineBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class CutVineBlock extends QuarkVineBlock {
 
-	public CutVineBlock(QuarkModule module) {
+	public CutVineBlock(ZetaModule module) {
 		super(module, "cut_vine", false);
 	}
 

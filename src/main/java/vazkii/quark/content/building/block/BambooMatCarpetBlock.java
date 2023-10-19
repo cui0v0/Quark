@@ -16,7 +16,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class BambooMatCarpetBlock extends BambooMatBlock {
 
@@ -24,7 +24,7 @@ public class BambooMatCarpetBlock extends BambooMatBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public BambooMatCarpetBlock(String name, QuarkModule module) {
+	public BambooMatCarpetBlock(String name, ZetaModule module) {
 		super(name, module, BAMBOO_CARPET_MATERIAL, CreativeModeTab.TAB_DECORATIONS);
 	}
 

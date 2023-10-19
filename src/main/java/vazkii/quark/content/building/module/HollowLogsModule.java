@@ -19,7 +19,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.base.util.VanillaWoods;
@@ -30,7 +30,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building", hasSubscriptions = true)
-public class HollowLogsModule extends QuarkModule {
+public class HollowLogsModule extends ZetaModule {
 
 	private static final String TAG_TRYING_TO_CRAWL = "quark:trying_crawl";
 

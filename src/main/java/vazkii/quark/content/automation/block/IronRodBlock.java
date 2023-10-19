@@ -20,7 +20,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.module.IronRodModule;
 
 import javax.annotation.Nonnull;
@@ -29,12 +29,12 @@ import java.util.function.BooleanSupplier;
 
 public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
 
-	public IronRodBlock(QuarkModule module) {
+	public IronRodBlock(ZetaModule module) {
 		super(Block.Properties.of(Material.METAL, DyeColor.GRAY)
 				.strength(5F, 10F)
 				.sound(SoundType.METAL)
@@ -50,7 +50,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuar
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

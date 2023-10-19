@@ -9,13 +9,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class VariantBookshelfBlock extends QuarkBlock {
 
 	private final boolean flammable;
 	
-	public VariantBookshelfBlock(String type, QuarkModule module, boolean flammable) {
+	public VariantBookshelfBlock(String type, ZetaModule module, boolean flammable) {
 		super(type + "_bookshelf", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(Blocks.BOOKSHELF));
 		this.flammable = flammable;
 	}

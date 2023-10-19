@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.mobs.entity.SoulBead;
 import vazkii.quark.content.mobs.module.WraithModule;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 
 public class SoulBeadItem extends QuarkItem {
 
-	public SoulBeadItem(QuarkModule module) {
+	public SoulBeadItem(ZetaModule module) {
 		super("soul_bead", module, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
 	}
 

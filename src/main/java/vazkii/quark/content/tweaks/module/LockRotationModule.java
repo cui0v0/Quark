@@ -45,7 +45,7 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.SetLockProfileMessage;
 import vazkii.quark.content.building.block.QuarkVerticalSlabBlock;
@@ -61,7 +61,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class LockRotationModule extends QuarkModule {
+public class LockRotationModule extends ZetaModule {
 
 	private static final String TAG_LOCKED_ONCE = "quark:locked_once";
 

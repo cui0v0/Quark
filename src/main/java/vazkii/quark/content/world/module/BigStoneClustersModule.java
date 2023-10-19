@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.DimensionConfig;
@@ -33,7 +33,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 
 @LoadModule(category = "world")
-public class BigStoneClustersModule extends QuarkModule {
+public class BigStoneClustersModule extends ZetaModule {
 
 	@Config public static BigStoneClusterConfig calcite = new BigStoneClusterConfig(BiomeTags.IS_MOUNTAIN);
 	@Config public static BigStoneClusterConfig limestone = new BigStoneClusterConfig(Tags.Biomes.IS_SWAMP, BiomeTags.IS_OCEAN);

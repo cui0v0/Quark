@@ -7,7 +7,7 @@ import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -17,7 +17,7 @@ import vazkii.zeta.event.bus.LoadEvent;
  * Created at 7:34 PM on 9/28/19.
  */
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class UtilityRecipesModule extends QuarkModule {
+public class UtilityRecipesModule extends ZetaModule {
 
 	@Config(description = "Can any wool color be dyed?", flag = "dye_any_wool")
 	public static boolean dyeAnyWool = true;

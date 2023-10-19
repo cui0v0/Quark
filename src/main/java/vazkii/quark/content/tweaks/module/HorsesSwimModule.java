@@ -6,10 +6,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class HorsesSwimModule extends QuarkModule {
+public class HorsesSwimModule extends ZetaModule {
 
 	@SubscribeEvent
 	public void tick(LivingTickEvent event) {

@@ -49,7 +49,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
 import vazkii.quark.base.module.hint.Hint;
@@ -63,7 +63,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class PathfinderMapsModule extends QuarkModule {
+public class PathfinderMapsModule extends ZetaModule {
 
 	public static final String TAG_IS_PATHFINDER = "quark:is_pathfinder";
 	private static final String TAG_CHECKED_FOR_PATHFINDER = "quark:checked_pathfinder";

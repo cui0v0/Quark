@@ -17,8 +17,6 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.player.SleepingLocationCheckEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
@@ -30,7 +28,7 @@ import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.handler.advancement.mod.TwoByTwoModifier;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.CostSensitiveEntitySpawnConfig;
@@ -48,7 +46,7 @@ import vazkii.zeta.event.client.ZClientSetup;
  * Created at 5:00 PM on 9/26/19.
  */
 @LoadModule(category = "mobs", hasSubscriptions = true)
-public class FoxhoundModule extends QuarkModule {
+public class FoxhoundModule extends ZetaModule {
 
 	public static EntityType<Foxhound> foxhoundType;
 

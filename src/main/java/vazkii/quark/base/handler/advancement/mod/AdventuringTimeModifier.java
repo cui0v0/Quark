@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.handler.advancement.MutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class AdventuringTimeModifier extends AdvancementModifier {
 
@@ -21,7 +20,7 @@ public class AdventuringTimeModifier extends AdvancementModifier {
 	
 	private final Set<ResourceKey<Biome>> locations;
 	
-	public AdventuringTimeModifier(QuarkModule module, Set<ResourceKey<Biome>> locations) {
+	public AdventuringTimeModifier(ZetaModule module, Set<ResourceKey<Biome>> locations) {
 		super(module);
 		this.locations = locations;
 	}

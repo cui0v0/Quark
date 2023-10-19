@@ -25,7 +25,7 @@ import net.minecraftforge.fml.ModList;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.block.be.VariantChestBlockEntity;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
 import vazkii.zeta.registry.IZetaBlockItemProvider;
@@ -39,12 +39,12 @@ import java.util.function.Supplier;
 @OnlyIn(value = Dist.CLIENT, _interface = IZetaBlockItemProvider.class)
 public class VariantChestBlock extends ChestBlock implements IZetaBlockItemProvider, IQuarkBlock, IChestTextureProvider {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	private final String path;
 
-	public VariantChestBlock(String prefix, String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+	public VariantChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
 		Quark.ZETA.registry.registerBlock(this, resloc, true);
@@ -55,7 +55,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlockItemProvi
 		path = (isCompat() ? "compat/" : "") + type + "/";
 	}
 
-	public VariantChestBlock(String type, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+	public VariantChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		this(null, type, module, supplier, props);
 	}
 
@@ -92,7 +92,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlockItemProvi
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 
@@ -149,7 +149,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlockItemProvi
 
 	public static class Compat extends VariantChestBlock {
 
-		public Compat(String type, String mod, QuarkModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 			super(type, module, supplier, props);
 			setCondition(() -> ModList.get().isLoaded(mod));
 		}

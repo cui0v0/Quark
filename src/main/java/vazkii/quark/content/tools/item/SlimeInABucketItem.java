@@ -29,14 +29,14 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.phys.Vec3;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class SlimeInABucketItem extends QuarkItem {
 
 	public static final String TAG_ENTITY_DATA = "slime_nbt";
 	public static final String TAG_EXCITED = "excited";
 
-	public SlimeInABucketItem(QuarkModule module) {
+	public SlimeInABucketItem(ZetaModule module) {
 		super("slime_in_a_bucket", module,
 				new Item.Properties()
 				.stacksTo(1)

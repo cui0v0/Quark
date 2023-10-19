@@ -42,7 +42,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.automation.block.FeedingTroughBlock;
@@ -55,7 +55,7 @@ import vazkii.zeta.event.bus.LoadEvent;
  * Created at 9:48 AM on 9/20/19.
  */
 @LoadModule(category = "automation", hasSubscriptions = true)
-public class FeedingTroughModule extends QuarkModule {
+public class FeedingTroughModule extends ZetaModule {
 	
 	public static BlockEntityType<FeedingTroughBlockEntity> blockEntityType;
 	public static PoiType feedingTroughPoi;

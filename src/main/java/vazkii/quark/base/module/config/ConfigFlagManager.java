@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.quark.base.recipe.ingredient.FlagIngredient;
 import vazkii.quark.base.recipe.ingredient.PotionIngredient;

@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZClientSetup;
@@ -26,7 +26,7 @@ description = "This feature generates Resource Pack Item Model predicates on the
 		+ "Example: if 'minecraft:silk_touch' is added to 'Enchantments to Register', and 'minecraft:netherite_pickaxe'\n"
 		+ "is added to 'Items to Change', then a predicate named 'quark_has_enchant_minecraft_silk_touch' will be available\n"
 		+ "to the netherite_pickaxe.json item model, whose value will be the enchantment level.")
-public class EnchantmentPredicatesModule extends QuarkModule {
+public class EnchantmentPredicatesModule extends ZetaModule {
 
 	@Config
 	public static List<String> itemsToChange = Lists.newArrayList();

@@ -13,13 +13,13 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class CelebratoryLampsModule extends QuarkModule {
+public class CelebratoryLampsModule extends ZetaModule {
 
 	@Config
 	public static int lightLevel = 15;

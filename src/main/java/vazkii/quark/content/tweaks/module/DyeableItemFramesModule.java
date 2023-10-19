@@ -30,7 +30,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
 import vazkii.quark.content.tweaks.entity.DyedItemFrame;
@@ -40,7 +40,7 @@ import vazkii.zeta.event.client.ZAddModels;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class DyeableItemFramesModule extends QuarkModule {
+public class DyeableItemFramesModule extends ZetaModule {
 
 	public static EntityType<DyedItemFrame> entityType;
 	

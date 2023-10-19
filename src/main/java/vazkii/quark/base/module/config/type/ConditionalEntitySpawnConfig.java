@@ -1,6 +1,6 @@
 package vazkii.quark.base.module.config.type;
 
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 
@@ -17,7 +17,7 @@ public class ConditionalEntitySpawnConfig extends EntitySpawnConfig {
 	}
 	
 	@Override
-	public void onReload(QuarkModule module, ConfigFlagManager flagManager) {
+	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
 		if(module != null)
 			flagManager.putFlag(module, flag, enabled);
 	}

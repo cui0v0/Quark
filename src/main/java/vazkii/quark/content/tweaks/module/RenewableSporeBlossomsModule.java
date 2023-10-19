@@ -9,12 +9,12 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class RenewableSporeBlossomsModule extends QuarkModule {
+public class RenewableSporeBlossomsModule extends ZetaModule {
 	
 	@Config public double boneMealChance = 0.2;
 	

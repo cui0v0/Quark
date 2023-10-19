@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.ComposterBlock;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.util.VanillaWoods;
 import vazkii.quark.base.util.VanillaWoods.Wood;
 import vazkii.quark.content.building.block.LeafCarpetBlock;
@@ -21,7 +21,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building", antiOverlap = { "woodworks", "immersive_weathering" })
-public class LeafCarpetModule extends QuarkModule {
+public class LeafCarpetModule extends ZetaModule {
 
 	public static List<LeafCarpetBlock> carpets = new LinkedList<>();
 

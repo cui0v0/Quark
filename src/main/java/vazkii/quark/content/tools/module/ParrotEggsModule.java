@@ -42,7 +42,7 @@ import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.entity.ParrotEgg;
@@ -54,7 +54,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZClientSetup;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class ParrotEggsModule extends QuarkModule {
+public class ParrotEggsModule extends ZetaModule {
 
 	private static final ResourceLocation KOTO = new ResourceLocation("quark", "textures/model/entity/variants/kotobirb.png");
 	private static final String EGG_TIMER = "quark:parrot_egg_timer";

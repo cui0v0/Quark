@@ -7,14 +7,14 @@ import javax.annotation.Nullable;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkStandingSignBlock extends StandingSignBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkStandingSignBlock(String regname, QuarkModule module, WoodType type, Properties properties) {
+	public QuarkStandingSignBlock(String regname, ZetaModule module, WoodType type, Properties properties) {
 		super(properties, type);
 		this.module = module;
 
@@ -34,7 +34,7 @@ public class QuarkStandingSignBlock extends StandingSignBlock implements IQuarkB
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

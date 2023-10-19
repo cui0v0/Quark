@@ -12,14 +12,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class DragonScalesModule extends QuarkModule {
+public class DragonScalesModule extends ZetaModule {
 
 	@Hint public static Item dragon_scale;
 

@@ -13,14 +13,14 @@ import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 	
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 	
-	public QuarkLeavesBlock(String name, QuarkModule module, MaterialColor color) {
+	public QuarkLeavesBlock(String name, ZetaModule module, MaterialColor color) {
 		super(Block.Properties.of(Material.LEAVES, color)
 				.strength(0.2F)
 				.randomTicks()
@@ -40,7 +40,7 @@ public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 	
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

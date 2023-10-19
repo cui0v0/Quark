@@ -12,14 +12,14 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkSignItem extends SignItem implements IQuarkItem {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkSignItem(QuarkModule module, Block sign, Block wallSign) {
+	public QuarkSignItem(ZetaModule module, Block sign, Block wallSign) {
 		super(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_DECORATIONS), sign, wallSign);
 
 		String resloc = IQuarkBlock.inherit(sign, "%s");
@@ -40,7 +40,7 @@ public class QuarkSignItem extends SignItem implements IQuarkItem {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

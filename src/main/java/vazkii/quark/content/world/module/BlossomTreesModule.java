@@ -11,7 +11,7 @@ import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.base.world.WorldGenHandler;
@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @LoadModule(category = "world")
-public class BlossomTreesModule extends QuarkModule {
+public class BlossomTreesModule extends ZetaModule {
 
 	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
 	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);

@@ -6,10 +6,10 @@ import net.minecraft.world.entity.monster.Vex;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class VexesDieWithTheirMastersModule extends QuarkModule {
+public class VexesDieWithTheirMastersModule extends ZetaModule {
 
 	@SubscribeEvent // omae wa mou shindeiru
 	public void checkWhetherAlreadyDead(LivingEvent.LivingTickEvent event) {

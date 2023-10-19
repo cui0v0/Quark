@@ -14,7 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class TwoByTwoModifier extends AdvancementModifier {
 
@@ -22,7 +22,7 @@ public class TwoByTwoModifier extends AdvancementModifier {
 	
 	final Set<EntityType<?>> entityTypes;
 	
-	public TwoByTwoModifier(QuarkModule module, Set<EntityType<?>> entityTypes) {
+	public TwoByTwoModifier(ZetaModule module, Set<EntityType<?>> entityTypes) {
 		super(module);
 		
 		this.entityTypes = entityTypes;

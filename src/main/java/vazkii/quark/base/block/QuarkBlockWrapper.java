@@ -8,17 +8,17 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IPlantable;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 // Wrapper to allow vanilla blocks to be treated as quark blocks contextualized under a module
 public class QuarkBlockWrapper implements IQuarkBlock {
 
 	private final Block parent;
-	private final QuarkModule module;
+	private final ZetaModule module;
 	
 	private BooleanSupplier condition;
 	
-	public QuarkBlockWrapper(Block parent, QuarkModule module) {
+	public QuarkBlockWrapper(Block parent, ZetaModule module) {
 		this.parent = parent;
 		this.module = module;
 	}
@@ -29,7 +29,7 @@ public class QuarkBlockWrapper implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

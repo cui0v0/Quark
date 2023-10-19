@@ -10,12 +10,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.AncientWoodModule;
 
 public class AncientFruitItem extends QuarkItem {
 
-	public AncientFruitItem(QuarkModule module) {
+	public AncientFruitItem(ZetaModule module) {
 		super("ancient_fruit", module, new Item.Properties().tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).alwaysEat().build()));
 	}

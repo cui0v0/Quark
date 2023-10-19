@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import vazkii.quark.base.block.QuarkButtonBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
@@ -19,7 +19,7 @@ public class MetalButtonBlock extends QuarkButtonBlock {
 
 	private final int speed;
 
-	public MetalButtonBlock(String regname, QuarkModule module, int speed) {
+	public MetalButtonBlock(String regname, ZetaModule module, int speed) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE,
 				Block.Properties.of(Material.DECORATION)
 						.noCollission()

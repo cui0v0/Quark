@@ -21,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.mobs.entity.Foxhound;
 import vazkii.quark.content.tweaks.ai.NuzzleGoal;
@@ -34,7 +34,7 @@ import java.util.List;
  * Created at 11:25 AM on 9/2/19.
  */
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class PatTheDogsModule extends QuarkModule {
+public class PatTheDogsModule extends ZetaModule {
 	@Config(description = "How many ticks it takes for a dog to want affection after being pet/tamed; leave -1 to disable")
 	public static int dogsWantLove = -1;
 	@Config(description = "Whether you can pet all mobs")

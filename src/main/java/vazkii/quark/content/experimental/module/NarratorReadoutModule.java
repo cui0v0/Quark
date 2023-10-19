@@ -30,12 +30,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 @LoadModule(category = "experimental", enabledByDefault = false, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class NarratorReadoutModule extends QuarkModule {
+public class NarratorReadoutModule extends ZetaModule {
 
 	@OnlyIn(Dist.CLIENT)
 	private KeyMapping keybind;

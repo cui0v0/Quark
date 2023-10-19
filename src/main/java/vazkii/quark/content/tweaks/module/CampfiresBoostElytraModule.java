@@ -14,12 +14,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class CampfiresBoostElytraModule extends QuarkModule {
+public class CampfiresBoostElytraModule extends ZetaModule {
 	
 	@Config public double boostStrength = 0.5;
 	@Config public double maxSpeed = 1;

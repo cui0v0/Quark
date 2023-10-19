@@ -45,7 +45,7 @@ import vazkii.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import vazkii.quark.addons.oddities.item.TinyPotatoBlockItem;
 import vazkii.quark.addons.oddities.module.TinyPotatoModule;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockItemProvider;
 
 import javax.annotation.Nonnull;
@@ -68,7 +68,7 @@ public class TinyPotatoBlock extends QuarkBlock implements SimpleWaterloggedBloc
 		return ItemNBTHelper.getBoolean(stack, ANGRY, false);
 	}
 
-	public TinyPotatoBlock(QuarkModule module) {
+	public TinyPotatoBlock(ZetaModule module) {
 		super("tiny_potato", module, CreativeModeTab.TAB_DECORATIONS,
 				BlockBehaviour.Properties.of(Material.WOOL).strength(0.25F));
 		registerDefaultState(defaultBlockState()

@@ -18,7 +18,7 @@ import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Min;
 import vazkii.quark.base.module.hint.Hint;
@@ -32,7 +32,7 @@ import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaLoadModule;
 
 @ZetaLoadModule(category = "world")
-public class AncientWoodModule extends QuarkModule {
+public class AncientWoodModule extends ZetaModule {
 
 	@Config(flag = "ancient_fruit_xp")
 	public static boolean ancientFruitGivesExp = true;

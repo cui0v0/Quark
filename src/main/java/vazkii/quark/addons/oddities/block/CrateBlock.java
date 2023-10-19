@@ -31,13 +31,13 @@ import net.minecraftforge.network.NetworkHooks;
 import vazkii.quark.addons.oddities.block.be.CrateBlockEntity;
 import vazkii.quark.addons.oddities.module.CrateModule;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class CrateBlock extends QuarkBlock implements EntityBlock {
 
 	public static final BooleanProperty PROPERTY_OPEN = BlockStateProperties.OPEN;
 
-	public CrateBlock(QuarkModule module) {
+	public CrateBlock(ZetaModule module) {
 		super("crate", module, CreativeModeTab.TAB_DECORATIONS, Properties.copy(Blocks.BARREL));
 		registerDefaultState(stateDefinition.any().setValue(PROPERTY_OPEN, false));
 	}

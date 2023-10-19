@@ -17,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import vazkii.quark.base.handler.RayTraceHandler;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.module.BottledCloudModule;
 import vazkii.quark.integration.claim.IClaimIntegration;
 
@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 
 public class BottledCloudItem extends QuarkItem {
 
-	public BottledCloudItem(QuarkModule module) {
+	public BottledCloudItem(ZetaModule module) {
 		super("bottled_cloud", module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS));
 	}
 

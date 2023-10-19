@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.CustomWeatheringCopper;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class WeatheringCopperVerticalSlabBlock extends QuarkVerticalSlabBlock implements CustomWeatheringCopper {
 	private final WeatheringCopper.WeatherState weatherState;
@@ -19,7 +19,7 @@ public class WeatheringCopperVerticalSlabBlock extends QuarkVerticalSlabBlock im
 	public WeatheringCopperVerticalSlabBlock prev;
 	public WeatheringCopperVerticalSlabBlock next;
 
-	public WeatheringCopperVerticalSlabBlock(Block parent, QuarkModule module) {
+	public WeatheringCopperVerticalSlabBlock(Block parent, ZetaModule module) {
 		super(parent, module);
 		weatherState = ((WeatheringCopper) parent).getAge();
 	}

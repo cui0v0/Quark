@@ -3,13 +3,13 @@ package vazkii.quark.base.block;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 
 public class QuarkWoodenButtonBlock extends QuarkButtonBlock {
 
-	public QuarkWoodenButtonBlock(String regname, QuarkModule module, Properties properties) {
+	public QuarkWoodenButtonBlock(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE, properties);
 	}
 

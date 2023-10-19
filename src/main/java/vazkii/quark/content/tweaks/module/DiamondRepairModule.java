@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZGatherHints;
@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 @LoadModule(category = "tweaks")
-public class DiamondRepairModule extends QuarkModule {
+public class DiamondRepairModule extends ZetaModule {
 
 	@Config(name = "Repair Item Changes",
 			description = "List of changes to apply to repair items, format is \"<item>=<repair_item>\" as seen in the defualt.\n"

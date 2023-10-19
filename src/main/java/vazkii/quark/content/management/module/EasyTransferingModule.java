@@ -7,7 +7,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.InventoryTransferMessage;
@@ -16,7 +16,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 @LoadModule(category = "management")
-public class EasyTransferingModule extends QuarkModule {
+public class EasyTransferingModule extends ZetaModule {
 
 	public static boolean shiftLocked = false;
 

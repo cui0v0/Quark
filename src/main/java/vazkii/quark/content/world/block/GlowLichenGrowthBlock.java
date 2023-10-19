@@ -25,13 +25,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.block.QuarkBushBlock;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class GlowLichenGrowthBlock extends QuarkBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
-	public GlowLichenGrowthBlock(QuarkModule module) {
+	public GlowLichenGrowthBlock(ZetaModule module) {
 		super("glow_lichen_growth", module, CreativeModeTab.TAB_DECORATIONS,
 				Properties.copy(Blocks.GLOW_LICHEN)
 				.randomTicks()

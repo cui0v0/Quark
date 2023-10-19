@@ -40,14 +40,14 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public MatrixEnchantingTableBlock(QuarkModule module) {
+	public MatrixEnchantingTableBlock(ZetaModule module) {
 		super(Block.Properties.copy(Blocks.ENCHANTING_TABLE));
 
 		this.module = module;
@@ -80,7 +80,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

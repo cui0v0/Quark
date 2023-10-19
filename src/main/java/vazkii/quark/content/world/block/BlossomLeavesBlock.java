@@ -10,12 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkLeavesBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.BlossomTreesModule;
 
 public class BlossomLeavesBlock extends QuarkLeavesBlock {
 
-	public BlossomLeavesBlock(String colorName, QuarkModule module, MaterialColor color) {
+	public BlossomLeavesBlock(String colorName, ZetaModule module, MaterialColor color) {
 		super(colorName + "_blossom", module, color);
 	}
 

@@ -21,12 +21,12 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.client.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.item.SlimeInABucketItem;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
-public class SlimeInABucketModule extends QuarkModule {
+public class SlimeInABucketModule extends ZetaModule {
 
 	@Hint public static Item slime_in_a_bucket;
 

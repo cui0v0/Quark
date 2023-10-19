@@ -9,7 +9,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,10 +17,10 @@ import java.util.function.BooleanSupplier;
 
 public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 
-	public final QuarkModule module;
+	public final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPaneBlock(String name, QuarkModule module, Block.Properties properties, RenderTypeSkeleton renderType) {
+	public QuarkPaneBlock(String name, ZetaModule module, Block.Properties properties, RenderTypeSkeleton renderType) {
 		super(properties);
 
 		this.module = module;
@@ -39,7 +39,7 @@ public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

@@ -21,14 +21,14 @@ import net.minecraft.world.level.material.Material;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkVineBlock extends VineBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkVineBlock(QuarkModule module, String name, boolean creative) {
+	public QuarkVineBlock(ZetaModule module, String name, boolean creative) {
 		super(Block.Properties.of(Material.REPLACEABLE_PLANT).noCollission().randomTicks().strength(0.2F).sound(SoundType.GRASS));
 		this.module = module;
 
@@ -61,7 +61,7 @@ public class QuarkVineBlock extends VineBlock implements IQuarkBlock {
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

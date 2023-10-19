@@ -36,7 +36,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidUtil;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.module.PistonsMoveTileEntitiesModule;
 import vazkii.quark.content.building.module.RopeModule;
 import vazkii.zeta.registry.IZetaBlockItemProvider;
@@ -49,7 +49,7 @@ public class RopeBlock extends QuarkBlock implements IZetaBlockItemProvider, Sim
 
 	public static BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public RopeBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public RopeBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

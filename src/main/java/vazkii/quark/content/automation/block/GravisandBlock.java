@@ -14,12 +14,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.entity.Gravisand;
 
 public class GravisandBlock extends QuarkBlock {
 
-	public GravisandBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public GravisandBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 	}
 

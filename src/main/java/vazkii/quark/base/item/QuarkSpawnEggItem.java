@@ -7,7 +7,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
@@ -15,10 +15,10 @@ import java.util.function.Supplier;
 
 public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkSpawnEggItem(Supplier<EntityType<? extends Mob>> type, int primaryColor, int secondaryColor, String regname, QuarkModule module, Properties properties) {
+	public QuarkSpawnEggItem(Supplier<EntityType<? extends Mob>> type, int primaryColor, int secondaryColor, String regname, ZetaModule module, Properties properties) {
 		super(type, primaryColor, secondaryColor, properties);
 
 		Quark.ZETA.registry.registerItem(this, regname);
@@ -38,7 +38,7 @@ public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

@@ -2,18 +2,13 @@ package vazkii.quark.base.handler.advancement.mod;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.BredAnimalsTrigger;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.PlacedBlockTrigger;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.handler.advancement.MutableAdvancement;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import java.util.Set;
 
@@ -23,7 +18,7 @@ public class ASeedyPlaceModifier extends AdvancementModifier {
 
 	final Set<Block> seeds;
 
-	public ASeedyPlaceModifier(QuarkModule module, Set<Block> seeds) {
+	public ASeedyPlaceModifier(ZetaModule module, Set<Block> seeds) {
 		super(module);
 		this.seeds = seeds;
 

@@ -11,14 +11,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkFlammableBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.module.ThatchModule;
 
 import javax.annotation.Nonnull;
 
 public class ThatchBlock extends QuarkFlammableBlock {
 
-	public ThatchBlock(QuarkModule module) {
+	public ThatchBlock(ZetaModule module) {
 		super("thatch", module, CreativeModeTab.TAB_BUILDING_BLOCKS, 300,
 				Block.Properties.of(Material.GRASS, MaterialColor.COLOR_YELLOW)
 				.strength(0.5F)

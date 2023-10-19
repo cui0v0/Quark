@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ButtonBlock;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,10 +19,10 @@ import java.util.function.BooleanSupplier;
  */
 public abstract class QuarkButtonBlock extends ButtonBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkButtonBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public QuarkButtonBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(false, properties);
 		this.module = module;
 
@@ -56,7 +56,7 @@ public abstract class QuarkButtonBlock extends ButtonBlock implements IQuarkBloc
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

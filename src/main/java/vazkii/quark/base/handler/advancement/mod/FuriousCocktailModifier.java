@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import vazkii.quark.api.IMutableAdvancement;
 import vazkii.quark.base.handler.advancement.AdvancementModifier;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class FuriousCocktailModifier extends AdvancementModifier {
 	
@@ -21,7 +21,7 @@ public class FuriousCocktailModifier extends AdvancementModifier {
 	final BooleanSupplier isPotion;
 	final Set<MobEffect> effects;
 	
-	public FuriousCocktailModifier(QuarkModule module, BooleanSupplier isPotion, Set<MobEffect> effects) {
+	public FuriousCocktailModifier(ZetaModule module, BooleanSupplier isPotion, Set<MobEffect> effects) {
 		super(module);
 		
 		this.isPotion = isPotion;

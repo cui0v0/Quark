@@ -7,12 +7,12 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "building")
-public class BambooBackportModule extends QuarkModule {
+public class BambooBackportModule extends ZetaModule {
 
 	public static WoodSet woodSet;
 

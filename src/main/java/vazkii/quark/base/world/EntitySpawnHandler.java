@@ -20,7 +20,7 @@ import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkSpawnEggItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.type.CostSensitiveEntitySpawnConfig;
 import vazkii.quark.base.module.config.type.EntitySpawnConfig;
 
@@ -38,11 +38,11 @@ public class EntitySpawnHandler {
 		trackedSpawnConfigs.add(new TrackedSpawnConfig(entityType, classification, config, secondary));
 	}
 
-	public static void addEgg(QuarkModule module, EntityType<? extends Mob> entityType, int color1, int color2, EntitySpawnConfig config) {
+	public static void addEgg(ZetaModule module, EntityType<? extends Mob> entityType, int color1, int color2, EntitySpawnConfig config) {
 		addEgg(entityType, color1, color2, module, config::isEnabled);
 	}
 
-	public static void addEgg(EntityType<? extends Mob> entityType, int color1, int color2, QuarkModule module, BooleanSupplier enabledSupplier) {
+	public static void addEgg(EntityType<? extends Mob> entityType, int color1, int color2, ZetaModule module, BooleanSupplier enabledSupplier) {
 		new QuarkSpawnEggItem(() -> entityType, color1, color2, Quark.ZETA.registry.getInternalName(entityType) + "_spawn_egg", module,
 				new Item.Properties().tab(CreativeModeTab.TAB_MISC))
 		.setCondition(enabledSupplier);

@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @LoadModule(category = "experimental", enabledByDefault = false)
-public class SpawnerReplacerModule extends QuarkModule {
+public class SpawnerReplacerModule extends ZetaModule {
 
 	@Config(description = "Mobs to be replaced with other mobs.\n" +
 			"Format is: \"mob1,mob2\", i.e. \"minecraft:spider,minecraft:skeleton\"")

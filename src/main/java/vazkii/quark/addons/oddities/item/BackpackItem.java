@@ -39,7 +39,7 @@ import vazkii.quark.base.client.handler.ModelHandler;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.ProxiedItemStackHandler;
 import vazkii.quark.base.item.IQuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaItemColorProvider;
 
 import javax.annotation.Nonnull;
@@ -51,13 +51,13 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuPr
 	private static final String WORN_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn.png";
 	private static final String WORN_OVERLAY_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn_overlay.png";
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 
 	@OnlyIn(Dist.CLIENT)
 	@SuppressWarnings("rawtypes")
 	private HumanoidModel model;
 
-	public BackpackItem(QuarkModule module) {
+	public BackpackItem(ZetaModule module) {
 		super(ArmorMaterials.LEATHER, EquipmentSlot.CHEST,
 				new Item.Properties()
 				.stacksTo(1)
@@ -78,7 +78,7 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuPr
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

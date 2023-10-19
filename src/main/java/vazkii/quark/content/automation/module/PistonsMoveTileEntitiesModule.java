@@ -29,7 +29,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.module.SturdyStoneModule;
 import vazkii.zeta.event.ZConfigChanged;
@@ -43,7 +43,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @LoadModule(category = "automation", hasSubscriptions = true)
-public class PistonsMoveTileEntitiesModule extends QuarkModule {
+public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	private static final WeakHashMap<Level, Map<BlockPos, CompoundTag>> movements = new WeakHashMap<>();
 	private static final WeakHashMap<Level, List<Pair<BlockPos, CompoundTag>>> delayedUpdates = new WeakHashMap<>();

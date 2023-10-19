@@ -7,7 +7,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.automation.block.EnderWatcherBlock;
 import vazkii.quark.content.automation.block.be.EnderWatcherBlockEntity;
@@ -15,7 +15,7 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
 @LoadModule(category = "automation")
-public class EnderWatcherModule extends QuarkModule {
+public class EnderWatcherModule extends ZetaModule {
 
 	public static BlockEntityType<EnderWatcherBlockEntity> blockEntityType;
 	

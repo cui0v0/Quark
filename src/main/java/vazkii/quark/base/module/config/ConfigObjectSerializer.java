@@ -3,7 +3,7 @@ package vazkii.quark.base.module.config;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.module.ZetaModule;
 
@@ -119,9 +119,7 @@ public final class ConfigObjectSerializer {
 
 			builder.push(name, defaultValue);
 			serialize(builder, flagManager, callbacks, defaultValue, root);
-			//TODO, just needs to be pushed through tonnns of interfaces
-			if(rootModule instanceof QuarkModule qm)
-				callbacks.add(() -> configType.onReload(qm, flagManager));
+			callbacks.add(() -> configType.onReload(rootModule, flagManager));
 			builder.pop();
 
 			return;

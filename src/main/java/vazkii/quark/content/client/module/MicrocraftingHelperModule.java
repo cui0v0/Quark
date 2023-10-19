@@ -39,10 +39,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
-public class MicrocraftingHelperModule extends QuarkModule {
+public class MicrocraftingHelperModule extends ZetaModule {
 
 	@OnlyIn(Dist.CLIENT)
 	private static Screen currentScreen;

@@ -12,14 +12,14 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 public class QuarkTrapdoorBlock extends TrapDoorBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkTrapdoorBlock(String regname, QuarkModule module, CreativeModeTab creativeTab, Properties properties) {
+	public QuarkTrapdoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 
@@ -49,7 +49,7 @@ public class QuarkTrapdoorBlock extends TrapDoorBlock implements IQuarkBlock {
 
 	@Nullable
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

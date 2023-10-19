@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.block.be.EnderWatcherBlockEntity;
 import vazkii.quark.content.automation.module.EnderWatcherModule;
 
@@ -30,7 +30,7 @@ public class EnderWatcherBlock extends QuarkBlock implements EntityBlock {
 	public static final BooleanProperty WATCHED = BooleanProperty.create("watched");
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
-	public EnderWatcherBlock(QuarkModule module) {
+	public EnderWatcherBlock(ZetaModule module) {
 		super("ender_watcher", module, CreativeModeTab.TAB_REDSTONE,
 				Block.Properties.of(Material.METAL, MaterialColor.COLOR_GREEN)
 				.strength(3F, 10F)

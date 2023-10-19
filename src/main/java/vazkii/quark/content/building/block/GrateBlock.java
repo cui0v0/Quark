@@ -41,7 +41,7 @@ import vazkii.quark.api.ICrawlSpaceBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.SimpleFluidloggedBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,7 +53,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock, IC
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty LAVALOGGED = BooleanProperty.create("lavalogged");
 
-	public GrateBlock(QuarkModule module) {
+	public GrateBlock(ZetaModule module) {
 		super("grate", module, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.METAL)
 						.strength(5, 10)

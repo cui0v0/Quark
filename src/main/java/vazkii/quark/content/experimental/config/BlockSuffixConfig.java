@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
@@ -63,7 +63,7 @@ public class BlockSuffixConfig extends AbstractConfigType {
 	}
 	
 	@Override
-	public void onReload(QuarkModule module, ConfigFlagManager flagManager) {
+	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
 		blockVariants.clear();
 		visibleVariants.clear();
 		originals.clear();

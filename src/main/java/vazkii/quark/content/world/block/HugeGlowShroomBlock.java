@@ -22,15 +22,15 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
 
 public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBlock {
 
-	private final QuarkModule module;
+	private final ZetaModule module;
 	private final boolean glowing;
 
-	public HugeGlowShroomBlock(String name, QuarkModule module, final boolean glowing) {
+	public HugeGlowShroomBlock(String name, ZetaModule module, final boolean glowing) {
 		super(Block.Properties.copy(Blocks.RED_MUSHROOM_BLOCK)
 				.lightLevel(b -> glowing ? 12 : 0)
 				.hasPostProcess((a,b,c)-> glowing).emissiveRendering((a,b,c)-> glowing)
@@ -133,7 +133,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 	}
 
 	@Override
-	public QuarkModule getModule() {
+	public ZetaModule getModule() {
 		return module;
 	}
 

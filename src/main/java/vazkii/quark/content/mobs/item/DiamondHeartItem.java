@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.mobs.entity.Stoneling;
 import vazkii.quark.content.mobs.entity.Stoneling.StonelingVariant;
 import vazkii.quark.content.mobs.module.StonelingsModule;
@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 
 public class DiamondHeartItem extends QuarkItem {
 
-	public DiamondHeartItem(String regname, QuarkModule module, Properties properties) {
+	public DiamondHeartItem(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 	}
 

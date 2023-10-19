@@ -36,7 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.entity.Stool;
 import vazkii.quark.content.building.module.StoolsModule;
 
@@ -62,7 +62,7 @@ public class StoolBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty BIG = BooleanProperty.create("big");
 	public static final BooleanProperty SAT_IN = BooleanProperty.create("sat_in");
 
-	public StoolBlock(QuarkModule module, DyeColor color) {
+	public StoolBlock(ZetaModule module, DyeColor color) {
 		super(color.getName() + "_stool", module, CreativeModeTab.TAB_DECORATIONS,
 				BlockBehaviour.Properties.of(Material.WOOL, color.getMaterialColor())
 				.sound(SoundType.WOOD)

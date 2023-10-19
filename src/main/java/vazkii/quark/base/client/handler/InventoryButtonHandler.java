@@ -34,7 +34,7 @@ import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.InventoryTransferHandler;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.client.ZKeyMapping;
 
 public final class InventoryButtonHandler {
@@ -157,17 +157,17 @@ public final class InventoryButtonHandler {
 		return currentButtons.get(type);
 	}
 
-	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
 		providers.put(type, new ButtonProviderHolder(module, priority, provider, binding, onKeybind, enableCond));
 	}
 
-	public static void addButtonProvider(ZKeyMapping event, QuarkModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZKeyMapping event, ZetaModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
 		KeyMapping keybind = ModKeybindHandler.init(event, keybindName, null, ModKeybindHandler.INV_GROUP);
 		keybind.setKeyConflictContext(KeyConflictContext.GUI);
 		addButtonProvider(module, type, priority, keybind, onKeybind, provider, enableCond);
 	}
 
-	public static void addButtonProvider(QuarkModule module, ButtonTargetType type, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
 		providers.put(type, new ButtonProviderHolder(module, priority, provider, enableCond));
 	}
 
@@ -184,14 +184,14 @@ public final class InventoryButtonHandler {
 	private static class ButtonProviderHolder implements Comparable<ButtonProviderHolder> {
 
 		private final int priority;
-		private final QuarkModule module;
+		private final ZetaModule module;
 		private final ButtonProvider provider;
 
 		private final KeyMapping keybind;
 		private final Consumer<AbstractContainerScreen<?>> pressed;
 		private final Supplier<Boolean> enableCond;
 		
-		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, Supplier<Boolean> enableCond) {
+		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, Supplier<Boolean> enableCond) {
 			this.module = module;
 			this.priority = priority;
 			this.provider = provider;
@@ -200,7 +200,7 @@ public final class InventoryButtonHandler {
 			this.enableCond = enableCond;
 		}
 
-		public ButtonProviderHolder(QuarkModule module, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
 			this(module, priority, provider, null, (screen) -> {}, enableCond);
 		}
 

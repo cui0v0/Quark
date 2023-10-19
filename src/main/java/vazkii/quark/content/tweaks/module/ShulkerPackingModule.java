@@ -23,11 +23,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
-public class ShulkerPackingModule extends QuarkModule {
+public class ShulkerPackingModule extends ZetaModule {
 
 	@Hint Item shulker_shell = Items.SHULKER_SHELL;
 	

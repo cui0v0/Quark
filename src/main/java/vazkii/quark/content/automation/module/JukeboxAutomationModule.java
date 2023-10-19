@@ -27,7 +27,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -35,7 +35,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import javax.annotation.Nonnull;
 
 @LoadModule(category = "automation", hasSubscriptions = true)
-public class JukeboxAutomationModule extends QuarkModule {
+public class JukeboxAutomationModule extends ZetaModule {
 
 	@Hint Item jukebox = Items.JUKEBOX;
 
