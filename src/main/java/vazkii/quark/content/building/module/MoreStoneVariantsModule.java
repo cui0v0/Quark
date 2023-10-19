@@ -53,16 +53,6 @@ public class MoreStoneVariantsModule extends QuarkModule {
 		NewStoneTypesModule.makeStone(module, raw, name, null, null, () -> true, null, QuarkBlock::new);
 	}
 	
-	@Override
-	public void pushFlags(ConfigFlagManager manager) {
-		manager.putFlag(this, "granite", true);
-		manager.putFlag(this, "diorite", true);
-		manager.putFlag(this, "andesite", true);
-		manager.putFlag(this, "calcite", true);
-		manager.putFlag(this, "dripstone", true);
-		manager.putFlag(this, "tuff", true);
-	}
-	
 	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond) {
 		add(name, color, sound, cond, QuarkBlock::new, QuarkPillarBlock::new);
 	}

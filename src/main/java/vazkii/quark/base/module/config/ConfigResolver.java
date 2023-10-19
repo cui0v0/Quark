@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ConfigResolver {
@@ -193,9 +194,15 @@ public class ConfigResolver {
         }
 
         refreshRunnables.add(() -> {
-            //TODO ZETA: figure out how flags interact with modules
-            if(module instanceof QuarkModule qm)
-                qm.pushFlags(flagManager);
+            //TODO ZETA: cheap hack to remove QuarkModule, TODO figure out what to do with this
+            if(module.getClass().getName().contains("MoreStoneVariantsModule")) {
+                flagManager.putFlag(module, "granite", true);
+                flagManager.putFlag(module, "diorite", true);
+                flagManager.putFlag(module, "andesite", true);
+                flagManager.putFlag(module, "calcite", true);
+                flagManager.putFlag(module, "dripstone", true);
+                flagManager.putFlag(module, "tuff", true);
+            }
         });
 
         builder.pop();

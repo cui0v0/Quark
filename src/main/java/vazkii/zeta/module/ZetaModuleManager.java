@@ -15,6 +15,7 @@ import java.util.Set;
 
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
+import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZModulesReady;
@@ -144,23 +145,26 @@ public class ZetaModuleManager {
 	}
 
 	private ZetaModule constructAndSetup(TentativeModule t) {
-		if(QuarkModule.class.isAssignableFrom(t.clazz()))
-			z.log.info("Constructing module {}... (is a QuarkModule)", t.displayName());
+		boolean isLegacy = t.clazz().isAnnotationPresent(LoadModule.class); //as opposed to ZetaLoadModule
+		if(isLegacy)
+			z.log.info("Constructing module {}... (LEGACY MODULE)", t.displayName());
 		else
 			z.log.info("Constructing module {}...", t.displayName());
-
 
 		//construct, set properties
 		ZetaModule module = construct(t.clazz());
 
-		//TODO: Cheap hack for managing QuarkModule's Forge event bus subscriptions.
-		// The main purpose of these is preventing client modules from trying to subscribe to events on the server.
-		// Once Zeta has real client-only modules, there is not much purpose for this feature anymore, i dont think
-		boolean LEGACY_actuallySubscribe = true;
-		if(module instanceof QuarkModule qm) {
-			qm.hasSubscriptions = t.LEGACY_hasSubscriptions();
-			qm.subscriptionTarget = t.LEGACY_subscribeOn();
-			LEGACY_actuallySubscribe = qm.subscriptionTarget.contains(FMLEnvironment.dist);
+		//TODO: Cheap hacks to keep non-Zeta Quark modules on life support.
+		// When all the Forge events are removed, this can be removed too.
+		boolean LEGACY_actuallySubscribe;
+		if(isLegacy) {
+			module.LEGACY_hasSubscriptions = t.LEGACY_hasSubscriptions();
+			module.LEGACY_subscriptionTarget = t.LEGACY_subscribeOn();
+			LEGACY_actuallySubscribe = module.LEGACY_subscriptionTarget.contains(FMLEnvironment.dist);
+		} else {
+			module.LEGACY_hasSubscriptions = false;
+			module.LEGACY_subscriptionTarget = null;
+			LEGACY_actuallySubscribe = true;
 		}
 
 		module.category = t.category();

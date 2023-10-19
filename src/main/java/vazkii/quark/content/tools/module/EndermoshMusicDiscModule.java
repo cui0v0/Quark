@@ -59,8 +59,6 @@ public class EndermoshMusicDiscModule extends ZetaModule {
 
 		@PlayEvent
 		public void tick(ZEndClientTickEvent event) {
-			System.out.println(playEndermoshDuringEnderdragonFight);
-
 			if(playEndermoshDuringEnderdragonFight) {
 				boolean wasFightingDragon = isFightingDragon;
 
