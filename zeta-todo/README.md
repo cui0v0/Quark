@@ -147,3 +147,9 @@ Obsolete things:
 * "External config" stuff can be removed and does not work anyway
 * RenderLayerHandler might be different
 * worldgen can be simplified a bit - just need a way to add a Singular feature to a biome in every step, then everything works itself out
+
+# can you add a note to the todo about datagen
+
+Sure I can do that
+
+quark datagen should be real
