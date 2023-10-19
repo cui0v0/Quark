@@ -61,8 +61,10 @@ import vazkii.quark.content.tools.loot.EnchantTome;
 import vazkii.quark.content.world.module.MonsterBoxModule;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -183,8 +185,8 @@ public class AncientTomesModule extends QuarkModule {
 		initialized = true;
 	}
 
-	@SubscribeEvent
-	public void onLootTableLoad(LootTableLoadEvent event) {
+	@PlayEvent
+	public void onLootTableLoad(ZLootTableLoad event) {
 		ResourceLocation res = event.getName();
 		int weight = lootTableWeights.getOrDefault(res, 0);
 
@@ -195,7 +197,7 @@ public class AncientTomesModule extends QuarkModule {
 					.apply(() -> new EnchantTome(new LootItemCondition[0]))
 					.build();
 
-			MiscUtil.addToLootTable(event.getTable(), entry);
+			event.add(entry);
 		}
 	}
 

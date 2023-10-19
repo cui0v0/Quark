@@ -16,7 +16,6 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkBlockWrapper;
 import vazkii.quark.base.handler.VariantHandler;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
@@ -32,8 +31,9 @@ import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 
-@LoadModule(category = "world", hasSubscriptions = true)
+@ZetaLoadModule(category = "world")
 public class NewStoneTypesModule extends QuarkModule {
 
 	@Config(flag = "limestone") public static boolean enableLimestone = true;

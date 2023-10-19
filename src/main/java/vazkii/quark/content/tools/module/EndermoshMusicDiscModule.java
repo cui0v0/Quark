@@ -20,8 +20,10 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
 public class EndermoshMusicDiscModule extends QuarkModule {
@@ -43,8 +45,8 @@ public class EndermoshMusicDiscModule extends QuarkModule {
 		endermosh = new QuarkMusicDiscItem(14, () -> QuarkSounds.MUSIC_ENDERMOSH, "endermosh", this, 3783); // Tick length calculated from endermosh.ogg - 3:09.150
 	}
 
-	@SubscribeEvent
-	public void onLootTableLoad(LootTableLoadEvent event) {
+	@PlayEvent
+	public void onLootTableLoad(ZLootTableLoad event) {
 		if(addToEndCityLoot) {
 			ResourceLocation res = event.getName();
 			if(res.equals(BuiltInLootTables.END_CITY_TREASURE)) {
@@ -53,7 +55,7 @@ public class EndermoshMusicDiscModule extends QuarkModule {
 						.setQuality(lootQuality)
 						.build();
 
-				MiscUtil.addToLootTable(event.getTable(), entry);
+				event.add(entry);
 			}
 		}
 	}

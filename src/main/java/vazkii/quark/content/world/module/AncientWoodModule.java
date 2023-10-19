@@ -10,18 +10,14 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkLeavesBlock;
-import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Min;
@@ -29,10 +25,13 @@ import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.world.block.AncientSaplingBlock;
 import vazkii.quark.content.world.item.AncientFruitItem;
 import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 
-@LoadModule(category = "world", hasSubscriptions = true)
+@ZetaLoadModule(category = "world")
 public class AncientWoodModule extends QuarkModule {
 
 	@Config(flag = "ancient_fruit_xp")
@@ -80,8 +79,8 @@ public class AncientWoodModule extends QuarkModule {
 		ancientFruitTrigger = QuarkAdvancementHandler.registerGenericTrigger("ancient_fruit_overlevel");
 	}
 
-	@SubscribeEvent
-	public void onLootTableLoad(LootTableLoadEvent event) {
+	@PlayEvent
+	public void onLootTableLoad(ZLootTableLoad event) {
 		int weight = 0;
 
 		if(event.getName().equals(BuiltInLootTables.ANCIENT_CITY))
@@ -92,7 +91,7 @@ public class AncientWoodModule extends QuarkModule {
 					.setWeight(weight)
 					.setQuality(ancientCityLootQuality)
 					.build();
-			MiscUtil.addToLootTable(event.getTable(), entry);
+			event.add(entry);
 		}
 	}
 

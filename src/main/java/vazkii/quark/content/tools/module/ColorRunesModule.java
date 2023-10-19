@@ -27,8 +27,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkDirection;
 import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
@@ -194,8 +196,8 @@ public class ColorRunesModule extends QuarkModule {
 		runesLootableTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "runes_lootable"));
 	}
 
-	@SubscribeEvent
-	public void onLootTableLoad(LootTableLoadEvent event) {
+	@PlayEvent
+	public void onLootTableLoad(ZLootTableLoad event) {
 		int weight = 0;
 
 		if(event.getName().equals(BuiltInLootTables.SIMPLE_DUNGEON))
@@ -212,7 +214,7 @@ public class ColorRunesModule extends QuarkModule {
 					.setWeight(weight)
 					.setQuality(itemQuality)
 					.build();
-			MiscUtil.addToLootTable(event.getTable(), entry);
+			event.add(entry);
 		}
 	}
 

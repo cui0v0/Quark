@@ -159,20 +159,6 @@ public class MiscUtil {
 		matrix.popPose();
 	}
 
-	public static void addToLootTable(LootTable table, LootPoolEntryContainer entry) {
-		List<LootPool> pools = ((AccessorLootTable) table).quark$getPools();
-		if (pools != null && !pools.isEmpty()) {
-			LootPool firstPool = pools.get(0);
-			LootPoolEntryContainer[] entries = firstPool.entries;
-
-			LootPoolEntryContainer[] newEntries = new LootPoolEntryContainer[entries.length + 1];
-			System.arraycopy(entries, 0, newEntries, 0, entries.length);
-
-			newEntries[entries.length] = entry;
-			firstPool.entries = newEntries;
-		}
-	}
-
 	public static void damageStack(Player player, InteractionHand hand, ItemStack stack, int dmg) {
 		stack.hurtAndBreak(dmg, player, (p) -> p.broadcastBreakEvent(hand));
 	}
