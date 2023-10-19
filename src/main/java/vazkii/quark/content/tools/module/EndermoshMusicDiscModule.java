@@ -7,38 +7,28 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkMusicDiscItem;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.event.client.ZEndClientTickEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
 
-@LoadModule(category = "tools", hasSubscriptions = true)
-public class EndermoshMusicDiscModule extends QuarkModule {
+@ZetaLoadModule(category = "tools")
+public class EndermoshMusicDiscModule extends ZetaModule {
 
-	@Config private boolean playEndermoshDuringEnderdragonFight = false;
+	@Config protected boolean playEndermoshDuringEnderdragonFight = false;
 
-	@Config private boolean addToEndCityLoot = true;
-	@Config private int lootWeight = 5;
-	@Config private int lootQuality = 1;
+	@Config protected boolean addToEndCityLoot = true;
+	@Config protected int lootWeight = 5;
+	@Config protected int lootQuality = 1;
 
-	@Hint public static QuarkMusicDiscItem endermosh;
-
-	@OnlyIn(Dist.CLIENT) private boolean isFightingDragon;
-	@OnlyIn(Dist.CLIENT) private int delay;
-	@OnlyIn(Dist.CLIENT) private SimpleSoundInstance sound;
+	@Hint public QuarkMusicDiscItem endermosh;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -60,38 +50,46 @@ public class EndermoshMusicDiscModule extends QuarkModule {
 		}
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void tick(ClientTickEvent event) {
-		if(event.phase == Phase.END && playEndermoshDuringEnderdragonFight) {
-			boolean wasFightingDragon = isFightingDragon;
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends EndermoshMusicDiscModule {
 
-			Minecraft mc = Minecraft.getInstance();
-			isFightingDragon = mc.level != null
+		private boolean isFightingDragon;
+		private int delay;
+		private SimpleSoundInstance sound;
+
+		@PlayEvent
+		public void tick(ZEndClientTickEvent event) {
+			System.out.println(playEndermoshDuringEnderdragonFight);
+
+			if(playEndermoshDuringEnderdragonFight) {
+				boolean wasFightingDragon = isFightingDragon;
+
+				Minecraft mc = Minecraft.getInstance();
+				isFightingDragon = mc.level != null
 					&& mc.level.dimension().location().equals(LevelStem.END.location())
 					&& mc.gui.getBossOverlay().shouldPlayMusic();
 
-			final int targetDelay = 50;
+				final int targetDelay = 50;
 
-			if(isFightingDragon) {
-				if(delay == targetDelay) {
-					sound = SimpleSoundInstance.forMusic(QuarkSounds.MUSIC_ENDERMOSH);
-					mc.getSoundManager().playDelayed(sound, 0);
-					mc.gui.setNowPlaying(endermosh.getDisplayName());
+				if(isFightingDragon) {
+					if(delay == targetDelay) {
+						sound = SimpleSoundInstance.forMusic(QuarkSounds.MUSIC_ENDERMOSH);
+						mc.getSoundManager().playDelayed(sound, 0);
+						mc.gui.setNowPlaying(endermosh.getDisplayName());
+					}
+
+					double x = mc.player.getX();
+					double z = mc.player.getZ();
+
+					if(mc.screen == null && ((x*x) + (z*z)) < 3000) // is not in screen and within island
+						delay++;
+
+				} else if(wasFightingDragon && sound != null) {
+					mc.getSoundManager().stop(sound);
+					delay = 0;
+					sound = null;
 				}
-
-				double x = mc.player.getX();
-				double z = mc.player.getZ();
-
-				if(mc.screen == null && ((x*x) + (z*z)) < 3000) // is not in screen and within island
-					delay++;
-
-			} else if(wasFightingDragon && sound != null) {
-				mc.getSoundManager().stop(sound);
-				delay = 0;
-				sound = null;
 			}
 		}
 	}
-
 }

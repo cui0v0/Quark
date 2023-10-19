@@ -34,6 +34,7 @@ public final class ConfigObjectSerializer {
 		}
 	}
 
+	//TODO: Probably shouldn't walk all the way up into ZetaModule
 	public static List<Field> recursivelyGetFields(Class<?> clazz) {
 		List<Field> list = new LinkedList<>();
 		while(clazz != Object.class) {

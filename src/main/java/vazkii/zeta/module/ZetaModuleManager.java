@@ -2,6 +2,7 @@ package vazkii.zeta.module;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZModulesReady;
@@ -186,11 +188,52 @@ public class ZetaModuleManager {
 	}
 
 	private <Z extends ZetaModule> Z construct(Class<Z> clazz) {
+		Z zeroArg = constructWithZeroArguments(clazz);
+		if(zeroArg != null)
+			return zeroArg;
+
+		Z oneArg = constructWithOneArgument(clazz);
+		if(oneArg != null)
+			return oneArg;
+
+		throw new RuntimeException("ZetaModule " + clazz.getName() + " should have a public zero or one-argument constructor");
+	}
+
+	private <Z extends ZetaModule> @Nullable Z constructWithZeroArguments(Class<Z> clazz) {
 		try {
 			Constructor<Z> cons = clazz.getConstructor();
 			return cons.newInstance();
 		} catch (NoSuchMethodException e) {
-			throw new RuntimeException("Module class " + clazz.getName() + " should have a public zero-argument constructor", e);
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException("Could not construct ZetaModule " + clazz.getName(), e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <Z extends ZetaModule> @Nullable Z constructWithOneArgument(Class<Z> clazz) {
+		try {
+			//find the one-argument constructor
+			Optional<Constructor<?>> oneOpt = Arrays.stream(clazz.getConstructors())
+				.filter(c -> c.getParameterCount() == 1)
+				.findFirst();
+			if(oneOpt.isEmpty())
+				return null;
+			Constructor<?> one = oneOpt.get();
+
+			//find the argument type of that constructor
+			Class<?> paramType = one.getParameters()[0].getType();
+
+			//check it
+			if(!ZetaModule.class.isAssignableFrom(paramType))
+				throw new RuntimeException("ZetaModule " + clazz.getName() + " should take a ZetaModule as contructor parameter");
+			Class<? extends ZetaModule> checkedParamType = (Class<? extends ZetaModule>) paramType;
+
+			//construct it
+			ZetaModule parent = construct(checkedParamType);
+
+			//call my one-arg constructor with this module
+			return (Z) one.newInstance(parent);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not construct ZetaModule " + clazz.getName(), e);
 		}

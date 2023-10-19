@@ -17,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
+import vazkii.zeta.event.client.ZEndClientTickEvent;
 import vazkii.zeta.event.client.ZFirstClientTick;
 import vazkii.zeta.event.client.ZRegisterReloadListeners;
 import vazkii.zetaimplforge.event.client.ForgeZAddBlockColorHandlers;
@@ -118,6 +119,8 @@ public class ForgeZetaClient extends ZetaClient {
 				loadBus.fire(new ZFirstClientTick());
 				clientTicked = true;
 			}
+
+			playBus.fire(new ZEndClientTickEvent());
 		}
 	}
 
