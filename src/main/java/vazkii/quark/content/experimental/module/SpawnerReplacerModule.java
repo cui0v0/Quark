@@ -10,15 +10,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false)
+@LoadModule(category = "experimental", enabledByDefault = false)
 public class SpawnerReplacerModule extends QuarkModule {
 
 	@Config(description = "Mobs to be replaced with other mobs.\n" +
@@ -29,8 +30,8 @@ public class SpawnerReplacerModule extends QuarkModule {
 
 	private static final Map<EntityType<?>, EntityType<?>> spawnerReplacements = Maps.newHashMap();
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
 		spawnerReplacements.clear();

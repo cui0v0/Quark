@@ -12,13 +12,14 @@ import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.experimental.hax.PseudoAccessorMerchantOffer;
 import vazkii.quark.mixin.accessor.AccessorMerchantOffer;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false, hasSubscriptions = true)
+@LoadModule(category = "experimental", enabledByDefault = false, hasSubscriptions = true)
 public class VillagerRerollingReworkModule extends QuarkModule {
 
 	public static final String TAG_VILLAGER_SEED = "quark:MerchantInitialSeed";
@@ -50,8 +51,8 @@ public class VillagerRerollingReworkModule extends QuarkModule {
 	@Config(description = "If enabled, villagers will be able to reroll any trade that has been used AT ALL since the last restock.")
 	public static boolean rerollEvenIfNotOutOfStock = false;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 

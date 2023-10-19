@@ -30,7 +30,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.ItemNBTHelper;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.client.screen.CrateScreen;
@@ -162,24 +163,47 @@ public class QuarkJeiPlugin implements IModPlugin {
 			registerCustomAnvilRecipes(registration, factory);
 
 		if(GeneralConfig.enableJeiItemInfo) {
-			MutableComponent hint = Component.translatable("quark.jei.hint_preamble");
-			hint.setStyle(hint.getStyle().withColor(0x0b5d4b));
+			MutableComponent externalPreamble = Component.translatable("quark.jei.hint_preamble");
+			externalPreamble.setStyle(externalPreamble.getStyle().withColor(0x0b5d4b));
 
 			List<Item> blacklist = MiscUtil.massRegistryGet(GeneralConfig.suppressedInfo, ForgeRegistries.ITEMS);
 
-			ModuleLoader.INSTANCE.addStackInfo((i, c) -> {
-				if(blacklist.contains(i))
-					return;
+			//ZetaEventBus can't handle lambdas :(
+			//noinspection Convert2Lambda
+			Quark.ZETA.playBus.fire(new ZGatherHints() {
+				@Override
+				public void accept(Item i, Component c) {
+					if(blacklist.contains(i))
+						return;
 
-				MutableComponent compound = Component.literal("");
-				if(!ForgeRegistries.ITEMS.getKey(i).getNamespace().equals(Quark.MOD_ID))
-					compound = compound.append(hint);
-				compound = compound.append(c);
+					MutableComponent compound = Component.literal("");
+					if(!ForgeRegistries.ITEMS.getKey(i).getNamespace().equals(Quark.MOD_ID))
+						compound = compound.append(externalPreamble);
+					compound = compound.append(c);
 
-				registration.addItemStackInfo(new ItemStack(i), compound);
+					registration.addItemStackInfo(new ItemStack(i), compound);
+				}
 			});
 		}
 	}
+
+	//TODO: it;s awkward to have this, but resolving the type of generics is apparently Not Easy
+	// Forge EventBus can do it but it uses a library called typetools, that apparently needs Unsafe lmao
+	// So I've broken it out into this "lambda" that manually captures arguments... good enough
+//	private static class GatherHintsEventThing implements ZGatherHints {
+//		@Override
+//		public void accept(Item i, Component c) {
+//			if(blacklist.contains(i))
+//				return;
+//
+//			MutableComponent compound = Component.literal("");
+//			if(!ForgeRegistries.ITEMS.getKey(i).getNamespace().equals(Quark.MOD_ID))
+//				compound = compound.append(externalPreamble);
+//			compound = compound.append(c);
+//
+//			registration.addItemStackInfo(new ItemStack(i), compound);
+//		}
+//	}
 
 	@Override
 	public void registerRecipeCatalysts(@Nonnull IRecipeCatalystRegistration registration) {

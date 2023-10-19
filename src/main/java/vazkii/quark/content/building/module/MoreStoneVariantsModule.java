@@ -12,23 +12,24 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.content.building.block.MyalitePillarBlock;
 import vazkii.quark.content.world.block.MyaliteBlock;
 import vazkii.quark.content.world.module.NewStoneTypesModule;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.BUILDING)
+@LoadModule(category = "building")
 public class MoreStoneVariantsModule extends QuarkModule {
 
 	@Config(flag = "stone_bricks") public boolean enableBricks = true;
 	@Config(flag = "stone_chiseled") public boolean enableChiseledBricks = true;
 	@Config(flag = "stone_pillar") public boolean enablePillar = true;
 	
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		expandVanillaStone(this, Blocks.CALCITE, "calcite");
 		expandVanillaStone(this, Blocks.DRIPSTONE_BLOCK, "dripstone");
 		expandVanillaStone(this, Blocks.TUFF, "tuff");

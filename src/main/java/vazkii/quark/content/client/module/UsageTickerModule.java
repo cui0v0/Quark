@@ -24,15 +24,16 @@ import vazkii.quark.api.event.UsageTickerEvent;
 import vazkii.quark.api.event.UsageTickerEvent.GetCount;
 import vazkii.quark.api.event.UsageTickerEvent.GetStack;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-@LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class UsageTickerModule extends QuarkModule {
 
 	public static List<TickerElement> elements = new ArrayList<>();
@@ -47,8 +48,8 @@ public class UsageTickerModule extends QuarkModule {
 	@Config public static boolean enableOffHand = true;
 	@Config public static boolean enableArmor = true;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		elements = new ArrayList<>();
 
 		if(enableMainHand)

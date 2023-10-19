@@ -17,12 +17,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.ItemNBTHelper;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZAddItemColorHandlers;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.mobs.entity.Crab;
@@ -37,7 +38,7 @@ import java.util.UUID;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
-@LoadModule(category = ModuleCategory.CLIENT)
+@LoadModule(category = "client")
 public class BucketsShowInhabitantsModule extends QuarkModule {
 
 	@Config
@@ -49,10 +50,10 @@ public class BucketsShowInhabitantsModule extends QuarkModule {
 	@Config
 	public static boolean showShinySlime = true;
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		enqueue(() -> {
+	public void clientSetup(ZClientSetup e) {
+		e.enqueueWork(() -> {
 			ItemProperties.register(Items.AXOLOTL_BUCKET, new ResourceLocation(Quark.MOD_ID, "variant"),
 				new MobBucketVariantProperty(Axolotl.Variant.BY_ID.length, () -> showAxolotls));
 			ItemProperties.register(CrabsModule.crab_bucket, new ResourceLocation(Quark.MOD_ID, "variant"),
@@ -68,9 +69,9 @@ public class BucketsShowInhabitantsModule extends QuarkModule {
 		});
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerItemColors(RegisterColorHandlersEvent.Item evt) {
+	public void registerItemColors(ZAddItemColorHandlers evt) {
 		Holder.Reference<Item> tropicalBucket = ForgeRegistries.ITEMS.getDelegateOrThrow(Items.TROPICAL_FISH_BUCKET);
 		ItemColor parent = ((AccessorItemColors) evt.getItemColors()).quark$getItemColors().get(tropicalBucket);
 		evt.register(new TropicalFishBucketColor(parent, () -> showTropicalFish), Items.TROPICAL_FISH_BUCKET);

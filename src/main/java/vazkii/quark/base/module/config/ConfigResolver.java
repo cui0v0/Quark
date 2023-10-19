@@ -14,8 +14,9 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.commons.lang3.text.WordUtils;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.module.ZetaCategory;
+import vazkii.zeta.module.ZetaModule;
 
 import java.io.Serial;
 import java.lang.reflect.Method;
@@ -31,7 +32,8 @@ public class ConfigResolver {
     private static final Method SETUP_CONFIG_FILE = ObfuscationReflectionHelper.findMethod(ConfigFileTypeHandler.class,
             "setupConfigFile", ModConfig.class, Path.class, ConfigFormat.class);
 
-    private final ConfigFlagManager flagManager;
+    //TODO ZETA: made this public (sorry) to simplify hints
+    public final ConfigFlagManager flagManager;
 
     private final List<Runnable> refreshRunnables = new LinkedList<>();
     private ModConfig config;
@@ -133,44 +135,50 @@ public class ConfigResolver {
         buildCategoryList(builder);
         builder.pop();
 
-        for (ModuleCategory category : ModuleCategory.values())
+        for (ZetaCategory category : Quark.ZETA.modules.getCategories())
             buildCategory(builder, category);
 
         return null;
     }
 
     private void buildCategoryList(IConfigBuilder builder) {
-        for (ModuleCategory category : ModuleCategory.values()) {
-            ForgeConfigSpec.ConfigValue<Boolean> value = builder.defineBool(WordUtils.capitalizeFully(category.name), () -> category.enabled, true);
-            refreshRunnables.add(() -> category.enabled = value.get());
+        for(ZetaCategory category : Quark.ZETA.modules.getCategories()) {
+            ForgeConfigSpec.ConfigValue<Boolean> value = builder.defineBool(
+              WordUtils.capitalizeFully(category.name),
+              () -> Quark.ZETA.modules.MOVE_TO_CONFIG_categoryIsEnabled(category),
+              true
+            );
+            refreshRunnables.add(() -> Quark.ZETA.modules.MOVE_TO_CONFIG_setCategoryEnabled(category, value.get()));
         }
     }
 
-    private void buildCategory(IConfigBuilder builder, ModuleCategory category) {
+    private void buildCategory(IConfigBuilder builder, ZetaCategory category) {
         builder.push(category.name, category);
 
-        List<QuarkModule> modules = category.getOwnedModules();
-        Map<QuarkModule, Runnable> setEnabledRunnables = new HashMap<>();
+        List<ZetaModule> modules = Quark.ZETA.modules.modulesInCategory(category);
+        Map<ZetaModule, Runnable> setEnabledRunnables = new HashMap<>();
 
-        for (QuarkModule module : modules) {
+        for (ZetaModule module : modules) {
             if (!module.description.isEmpty())
                 builder.comment(module.description);
 
             ForgeConfigSpec.ConfigValue<Boolean> value = builder.defineBool(module.displayName, () -> module.configEnabled, module.enabledByDefault);
 
             setEnabledRunnables.put(module, () -> {
-                module.setEnabled(value.get() && category.enabled);
+                module.setEnabled(Quark.ZETA, value.get() && Quark.ZETA.modules.MOVE_TO_CONFIG_categoryIsEnabled(category));
+
+                //TODO: zetamodule flags and stuff
                 flagManager.putEnabledFlag(module);
             });
         }
 
-        for (QuarkModule module : modules)
+        for (ZetaModule module : modules)
             buildModule(builder, module, setEnabledRunnables.get(module));
 
         builder.pop();
     }
 
-    private void buildModule(IConfigBuilder builder, QuarkModule module, Runnable setEnabled) {
+    private void buildModule(IConfigBuilder builder, ZetaModule module, Runnable setEnabled) {
         builder.push(module.lowercaseName, module);
 
         if (module.antiOverlap != null && module.antiOverlap.size() > 0)
@@ -180,17 +188,20 @@ public class ConfigResolver {
 
         try {
             ConfigObjectSerializer.serialize(builder, flagManager, refreshRunnables, module);
-            ConfigObjectSerializer.loadHints(flagManager, module);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to create config spec for module " + module.displayName, e);
         }
 
-        refreshRunnables.add(() -> module.pushFlags(flagManager));
+        refreshRunnables.add(() -> {
+            //TODO ZETA: figure out how flags interact with modules
+            if(module instanceof QuarkModule qm)
+                qm.pushFlags(flagManager);
+        });
 
         builder.pop();
     }
 
-    private void addModuleAntiOverlap(IConfigBuilder builder, QuarkModule module) {
+    private void addModuleAntiOverlap(IConfigBuilder builder, ZetaModule module) {
         StringBuilder desc = new StringBuilder("This feature disables itself if any of the following mods are loaded: \n");
         for (String s : module.antiOverlap)
             desc.append(" - ").append(s).append("\n");

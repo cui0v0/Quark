@@ -8,8 +8,8 @@ import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.external.ExternalConfigHandler;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.config.IConfigCallback;
+import vazkii.zeta.module.ZetaCategory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,11 +52,11 @@ public final class IngameConfigHandler implements IConfigCallback {
 			currCategory.addEntry(value, default_, getter, comment, restriction);
 	}
 
-	public IConfigObject<Boolean> getCategoryEnabledObject(ModuleCategory category) {
+	public IConfigObject<Boolean> getCategoryEnabledObject(ZetaCategory category) {
 		return topLevelCategories.get("categories").getModuleOption(category);
 	}
 
-	public IConfigCategory getConfigCategory(ModuleCategory category) {
+	public IConfigCategory getConfigCategory(ZetaCategory category) {
 		return topLevelCategories.get(category == null ? "general" : category.name);
 	}
 

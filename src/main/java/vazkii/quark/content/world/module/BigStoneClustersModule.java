@@ -1,17 +1,14 @@
 package vazkii.quark.content.world.module;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +16,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
@@ -30,8 +26,13 @@ import vazkii.quark.base.world.WorldGenWeights;
 import vazkii.quark.content.world.config.AirStoneClusterConfig;
 import vazkii.quark.content.world.config.BigStoneClusterConfig;
 import vazkii.quark.content.world.gen.BigStoneClusterGenerator;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
-@LoadModule(category = ModuleCategory.WORLD)
+@LoadModule(category = "world")
 public class BigStoneClustersModule extends QuarkModule {
 
 	@Config public static BigStoneClusterConfig calcite = new BigStoneClusterConfig(BiomeTags.IS_MOUNTAIN);
@@ -52,8 +53,8 @@ public class BigStoneClustersModule extends QuarkModule {
 	
 	public static BiPredicate<Level, Block> blockReplacePredicate = (w, b) -> false;
 	
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		BooleanSupplier alwaysTrue = () -> true;
 		add(calcite, Blocks.CALCITE, alwaysTrue);
 		
@@ -62,9 +63,9 @@ public class BigStoneClustersModule extends QuarkModule {
 		add(shale, NewStoneTypesModule.shaleBlock, () -> NewStoneTypesModule.enabledWithShale);
 		add(myalite, NewStoneTypesModule.myaliteBlock, () -> NewStoneTypesModule.enabledWithMyalite);
 	}
-	
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		if(calcite.enabled)
 			HintManager.hintItem(consumer, Items.CALCITE);
 	}
@@ -73,8 +74,8 @@ public class BigStoneClustersModule extends QuarkModule {
 		WorldGenHandler.addGenerator(this, new BigStoneClusterGenerator(config, block.defaultBlockState(), condition), Decoration.UNDERGROUND_DECORATION, WorldGenWeights.BIG_STONE_CLUSTERS);
 	}
 	
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		blockReplacePredicate = (b, w) -> false;
 		
 		for(String s : blocksToReplace) {

@@ -10,7 +10,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -27,8 +26,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.ItemNBTHelper;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.MatrixEnchantingTableBlock;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.client.render.be.MatrixEnchantingTableRenderer;
@@ -41,7 +45,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 
@@ -49,9 +52,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
-@LoadModule(category = ModuleCategory.ODDITIES, hasSubscriptions = true)
+@LoadModule(category = "oddities", hasSubscriptions = true)
 public class MatrixEnchantingModule extends QuarkModule {
 
 	public static BlockEntityType<MatrixEnchantingTableBlockEntity> blockEntityType;
@@ -164,21 +166,21 @@ public class MatrixEnchantingModule extends QuarkModule {
 
 	public static QuarkGenericTrigger influenceTrigger;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		matrixEnchanter = new MatrixEnchantingTableBlock(this);
 
 		menuType = IForgeMenuType.create(MatrixEnchantingMenu::fromNetwork);
-		RegistryHelper.register(menuType, "matrix_enchanting", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(menuType, "matrix_enchanting", Registry.MENU_REGISTRY);
 
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
-		RegistryHelper.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
 		influenceTrigger = QuarkAdvancementHandler.registerGenericTrigger("influence");
 	}
 
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.matrix_enchanting");
 		if(allowInfluencing)
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.matrix_influencing"));
@@ -187,9 +189,8 @@ public class MatrixEnchantingModule extends QuarkModule {
 		consumer.accept(matrixEnchanter.asItem(), comp);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		MenuScreens.register(menuType, MatrixEnchantingScreen::new);
 		BlockEntityRenderers.register(blockEntityType, MatrixEnchantingTableRenderer::new);
 	}
@@ -217,8 +218,8 @@ public class MatrixEnchantingModule extends QuarkModule {
 			event.getLevel().setBlock(event.getPos(), matrixEnchanter.defaultBlockState(), 3);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		parseInfluences();
 	}
 

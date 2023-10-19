@@ -52,7 +52,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
@@ -60,6 +59,10 @@ import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.loot.EnchantTome;
 import vazkii.quark.content.world.module.MonsterBoxModule;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -68,7 +71,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
+@LoadModule(category = "tools", hasSubscriptions = true)
 public class AncientTomesModule extends QuarkModule {
 
 	private static final Object mutex = new Object();
@@ -130,8 +133,8 @@ public class AncientTomesModule extends QuarkModule {
 	public static QuarkGenericTrigger overlevelTrigger;
 	public static QuarkGenericTrigger instamineDeepslateTrigger;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public void register(ZRegister event) {
 		ancient_tome = new AncientTomeItem(this);
 
 		tomeEnchantType = new LootItemFunctionType(new EnchantTome.Serializer());
@@ -151,8 +154,8 @@ public class AncientTomesModule extends QuarkModule {
 		}
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public void configChanged(ZConfigChanged event) {
 		lootTableWeights.clear();
 		for (String table : lootTables) {
 			String[] split = table.split(",");
@@ -173,8 +176,8 @@ public class AncientTomesModule extends QuarkModule {
 			setupEnchantList();
 	}
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public void setup(ZCommonSetup event) {
 		setupEnchantList();
 		setupCursesList();
 		initialized = true;

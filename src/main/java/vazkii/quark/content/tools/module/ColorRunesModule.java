@@ -26,7 +26,10 @@ import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkDirection;
-import vazkii.arl.util.ItemNBTHelper;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
@@ -34,7 +37,6 @@ import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
@@ -52,7 +54,7 @@ import java.util.function.Supplier;
  * Hacked by svenhjol
  * Created at 1:52 PM on 8/17/19.
  */
-@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
+@LoadModule(category = "tools", hasSubscriptions = true)
 public class ColorRunesModule extends QuarkModule {
 
 	public static final String TAG_RUNE_ATTACHED = Quark.MOD_ID + ":RuneAttached";
@@ -175,8 +177,8 @@ public class ColorRunesModule extends QuarkModule {
 		return withRune(stack, new ItemStack(runes.get(color.getId())));
 	}
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		runes = Arrays.stream(DyeColor.values()).map(color -> new RuneItem(color.getSerializedName() + "_rune", this, color.getId(), true)).toList();
 
 		rainbow_rune = new RuneItem("rainbow_rune", this, 16, true);
@@ -186,8 +188,8 @@ public class ColorRunesModule extends QuarkModule {
 		fullRainbowTrigger = QuarkAdvancementHandler.registerGenericTrigger("full_rainbow");
 	}
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		runesTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "runes"));
 		runesLootableTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "runes_lootable"));
 	}

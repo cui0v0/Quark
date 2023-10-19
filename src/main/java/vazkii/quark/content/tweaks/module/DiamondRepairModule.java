@@ -10,16 +10,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiConsumer;
 
-@LoadModule(category = ModuleCategory.TWEAKS)
+@LoadModule(category = "tweaks")
 public class DiamondRepairModule extends QuarkModule {
 
 	@Config(name = "Repair Item Changes",
@@ -48,8 +50,8 @@ public class DiamondRepairModule extends QuarkModule {
 	public static Multimap<Item, Item> repairChanges = HashMultimap.create();
 	public static List<Item> unrepairableItems;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
 		repairChanges.clear();
@@ -77,8 +79,8 @@ public class DiamondRepairModule extends QuarkModule {
 		unrepairableItems = MiscUtil.massRegistryGet(unrepairableItemsList, ForgeRegistries.ITEMS);
 	}
 
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		if(!enableJeiHints)
 			return;
 

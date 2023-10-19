@@ -17,10 +17,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.recipe.ingredient.FlagIngredient;
 import vazkii.quark.mixin.accessor.AccessorPotionBrewing;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -50,7 +51,7 @@ public class BrewingHandler {
 
 	public static void addPotionMix(String flag, Supplier<Ingredient> reagent, MobEffect effect,
 									@Nullable MobEffect negation, int normalTime, int longTime, int strongTime) {
-		ResourceLocation loc = RegistryHelper.getRegistryName(effect, Registry.MOB_EFFECT);
+		ResourceLocation loc = Quark.ZETA.registry.getRegistryName(effect, Registry.MOB_EFFECT);
 
 		if (loc != null) {
 			String baseName = loc.getPath();
@@ -63,7 +64,7 @@ public class BrewingHandler {
 			addPotionMix(flag, reagent, normalType, longType, strongType);
 
 			if (negation != null) {
-				ResourceLocation negationLoc = RegistryHelper.getRegistryName(negation, Registry.MOB_EFFECT);
+				ResourceLocation negationLoc = Quark.ZETA.registry.getRegistryName(negation, Registry.MOB_EFFECT);
 				if (negationLoc != null) {
 					String negationBaseName = negationLoc.getPath();
 
@@ -115,7 +116,8 @@ public class BrewingHandler {
 	private static boolean isInjectionPrepared = false;
 	private static final List<Triple<Potion, Supplier<Ingredient>, Potion>> toRegister = Lists.newArrayList();
 
-	public static void setup() {
+	@LoadEvent
+	public static void setup(ZCommonSetup event) {
 		isInjectionPrepared = true;
 		for (Triple<Potion, Supplier<Ingredient>, Potion> triple : toRegister)
 			addBrewingRecipe(triple.getLeft(), triple.getMiddle().get(), triple.getRight());
@@ -137,7 +139,7 @@ public class BrewingHandler {
 
 	private static Potion addPotion(MobEffectInstance eff, String baseName, String name) {
 		Potion effect = new Potion(Quark.MOD_ID + "." + baseName, eff);
-		RegistryHelper.register(effect, name, Registry.POTION_REGISTRY);
+		Quark.ZETA.registry.register(effect, name, Registry.POTION_REGISTRY);
 
 		return effect;
 	}

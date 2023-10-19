@@ -3,7 +3,7 @@ package vazkii.quark.base.client.config;
 import org.apache.commons.lang3.text.WordUtils;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigObject;
-import vazkii.quark.base.module.ModuleCategory;
+import vazkii.zeta.module.ZetaCategory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class TopLevelCategory extends ConfigCategory {
 			moduleOptions.put(obj.getName(), (IConfigObject<Boolean>) obj);
 	}
 
-	public IConfigObject<Boolean> getModuleOption(ModuleCategory category) {
+	public IConfigObject<Boolean> getModuleOption(ZetaCategory category) {
 		return moduleOptions.get(WordUtils.capitalizeFully(category.name));
 	}
 

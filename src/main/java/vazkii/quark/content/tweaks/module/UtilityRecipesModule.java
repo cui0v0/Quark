@@ -7,15 +7,16 @@ import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
 /**
  * @author WireSegal
  * Created at 7:34 PM on 9/28/19.
  */
-@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
+@LoadModule(category = "tweaks", hasSubscriptions = true)
 public class UtilityRecipesModule extends QuarkModule {
 
 	@Config(description = "Can any wool color be dyed?", flag = "dye_any_wool")
@@ -72,8 +73,8 @@ public class UtilityRecipesModule extends QuarkModule {
 	
 	private boolean needsChange = false;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		// This has to be defered to a safer thread, making these changes in this thread can result in concurrency errors
 		needsChange = true;
 	}

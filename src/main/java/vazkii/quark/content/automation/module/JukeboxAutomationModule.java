@@ -27,23 +27,24 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import javax.annotation.Nonnull;
 
-@LoadModule(category = ModuleCategory.AUTOMATION, hasSubscriptions = true)
+@LoadModule(category = "automation", hasSubscriptions = true)
 public class JukeboxAutomationModule extends QuarkModule {
 
 	@Hint Item jukebox = Items.JUKEBOX;
 
 	private static final ResourceLocation JUKEBOX_ITEM_HANDLER = new ResourceLocation(Quark.MOD_ID, "jukebox_item_handler");
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public void setup(ZCommonSetup e) {
 		MusicDiscBehaviour behaviour = new MusicDiscBehaviour();
-		enqueue(() -> ForgeRegistries.ITEMS.forEach(i -> {
+		e.enqueueWork(() -> ForgeRegistries.ITEMS.forEach(i -> {
 			if (i instanceof RecordItem)
 				DispenserBlock.DISPENSER_REGISTRY.put(i, behaviour);
 		}));

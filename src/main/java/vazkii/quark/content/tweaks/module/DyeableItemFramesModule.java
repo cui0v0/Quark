@@ -25,20 +25,21 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
 import vazkii.quark.content.tweaks.entity.DyedItemFrame;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZAddModels;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
+@LoadModule(category = "tweaks", hasSubscriptions = true)
 public class DyeableItemFramesModule extends QuarkModule {
 
 	public static EntityType<DyedItemFrame> entityType;
@@ -46,8 +47,8 @@ public class DyeableItemFramesModule extends QuarkModule {
 	@Hint(key = "item_frame_dyeing") 
 	List<Item> itemFrames = Arrays.asList(Items.ITEM_FRAME, Items.GLOW_ITEM_FRAME);
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		entityType = EntityType.Builder.<DyedItemFrame>of(DyedItemFrame::new, MobCategory.MISC)
 				.sized(0.5F, 0.5F)
 				.clientTrackingRange(10)
@@ -55,22 +56,21 @@ public class DyeableItemFramesModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new DyedItemFrame(entityType, world))
 				.build("dyed_item_frame");
-		RegistryHelper.register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
 
 		DyeHandler.addDyeable(Items.ITEM_FRAME, this);
 		DyeHandler.addDyeable(Items.GLOW_ITEM_FRAME, this);
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)	
-	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+	public void registerAdditionalModels(ZAddModels event) {
 		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame", "inventory"));
 		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame_map", "inventory"));
 	}
 	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		EntityRenderers.register(entityType, DyedItemFrameRenderer::new);
 	}
 

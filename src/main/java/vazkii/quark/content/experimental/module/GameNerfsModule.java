@@ -29,9 +29,10 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +40,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false, hasSubscriptions = true)
+@LoadModule(category = "experimental", enabledByDefault = false, hasSubscriptions = true)
 public class GameNerfsModule extends QuarkModule {
 
 	private static final String TAG_TRADES_ADJUSTED = "quark:zombie_trades_adjusted";
@@ -90,8 +91,8 @@ public class GameNerfsModule extends QuarkModule {
 
 	private static boolean staticEnabled;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 

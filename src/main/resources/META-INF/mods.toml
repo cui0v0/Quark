@@ -11,13 +11,6 @@ authors="Vazkii, WireSegal, MCVinnyq, Sully"
 description='''Small things, improving Minecraft bit by bit.'''
 
 [[dependencies.quark]]
-    modId="autoreglib"
-    mandatory=true
-    versionRange="[1.8-54,)"
-    ordering="AFTER"
-    side="BOTH"
-
-[[dependencies.quark]]
     modId="forge"
     mandatory=true
     versionRange="[43.0.8,)"

@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
@@ -14,8 +13,11 @@ import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.world.WorldGenWeights;
 import vazkii.quark.content.world.block.ChorusVegetationBlock;
 import vazkii.quark.content.world.gen.ChorusVegetationGenerator;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.WORLD)
+@LoadModule(category = "world")
 public class ChorusVegetationModule extends QuarkModule {
 
 	@Config public static int rarity = 150;
@@ -32,8 +34,8 @@ public class ChorusVegetationModule extends QuarkModule {
 	@Hint public static Block chorus_weeds;
 	@Hint(key = "chorus_weeds") public static Block chorus_twist;
 	
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		chorus_weeds = new ChorusVegetationBlock("chorus_weeds", this, true);
 		chorus_twist = new ChorusVegetationBlock("chorus_twist", this, false);
 		
@@ -41,8 +43,8 @@ public class ChorusVegetationModule extends QuarkModule {
 		VariantHandler.addFlowerPot(chorus_twist, "chorus_twist", Functions.identity());
 	}
 	
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		WorldGenHandler.addGenerator(this, new ChorusVegetationGenerator(), Decoration.VEGETAL_DECORATION, WorldGenWeights.CHORUS_VEGETATION);
 	}
 	

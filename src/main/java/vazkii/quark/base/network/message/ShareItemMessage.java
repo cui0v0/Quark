@@ -4,14 +4,15 @@ import net.minecraft.network.chat.LastSeenMessages;
 import net.minecraft.network.chat.MessageSignature;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent.Context;
-import vazkii.arl.network.IMessage;
+
 import vazkii.quark.content.management.module.ItemSharingModule;
+import vazkii.zeta.network.IZetaMessage;
+import vazkii.zeta.network.IZetaNetworkEventContext;
 
 import java.io.Serial;
 import java.time.Instant;
 
-public class ShareItemMessage implements IMessage {
+public class ShareItemMessage implements IZetaMessage {
 
 	@Serial
 	private static final long serialVersionUID = 3550769853533388357L;
@@ -24,7 +25,7 @@ public class ShareItemMessage implements IMessage {
 	public boolean signedPreview;
 	public LastSeenMessages.Update lastSeenMessages;
 
-	public ShareItemMessage() { }
+	public ShareItemMessage() {}
 
 	public ShareItemMessage(ItemStack stack, String message, Instant timeStamp, long salt, MessageSignature signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
 		this.stack = stack;
@@ -37,9 +38,9 @@ public class ShareItemMessage implements IMessage {
 	}
 
 	@Override
-	public boolean receive(Context context) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		ServerPlayer player = context.getSender();
-		if (player != null && player.server != null)
+		if(player != null && player.server != null)
 			context.enqueueWork(() -> ItemSharingModule.shareItem(player, message, stack, timeStamp, salt, signature, signedPreview, lastSeenMessages));
 
 		return true;

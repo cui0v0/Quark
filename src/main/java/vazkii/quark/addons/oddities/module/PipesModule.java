@@ -10,20 +10,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.block.pipe.EncasedPipeBlock;
 import vazkii.quark.addons.oddities.block.pipe.PipeBlock;
 import vazkii.quark.addons.oddities.client.render.be.PipeRenderer;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZAddModels;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.ODDITIES)
+@LoadModule(category = "oddities")
 public class PipesModule extends QuarkModule {
 
 	public static BlockEntityType<PipeBlockEntity> blockEntityType;
@@ -51,34 +54,33 @@ public class PipesModule extends QuarkModule {
 	
 	public static int effectivePipeSpeed;
 	
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		pipe = new PipeBlock(this);
 		encasedPipe = new EncasedPipeBlock(this);
 		
 		blockEntityType = BlockEntityType.Builder.of(PipeBlockEntity::new, pipe, encasedPipe).build(null);
-		RegistryHelper.register(blockEntityType, "pipe", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "pipe", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 	
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		pipesTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pipes"));
 	}
 	
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		effectivePipeSpeed = pipeSpeed * 2;
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		BlockEntityRenderers.register(blockEntityType, PipeRenderer::new);
 	}
-	
-	@Override
+
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerAdditionalModels(RegisterAdditional event) {
+	public void registerAdditionalModels(ZAddModels event) {
 		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/pipe_flare", "inventory"));
 	}
 	

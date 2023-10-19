@@ -20,21 +20,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.InventoryIIH;
+import vazkii.quark.base.util.InventoryIIH;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 import vazkii.quark.api.event.GatherToolClassesEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-@LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true, antiOverlap = "inventorytweaks")
+@LoadModule(category = "management", hasSubscriptions = true, antiOverlap = "inventorytweaks")
 public class AutomaticToolRestockModule extends QuarkModule {
 
 	private static final Map<ToolAction, String> ACTION_TO_CLASS = new HashMap<>();
@@ -80,8 +81,8 @@ public class AutomaticToolRestockModule extends QuarkModule {
 
 	private Object mutex = new Object();
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		importantEnchants = MiscUtil.massRegistryGet(enchantNames, ForgeRegistries.ENCHANTMENTS);
 		itemsToIgnore = MiscUtil.massRegistryGet(ignoredItems, ForgeRegistries.ITEMS);
 	}

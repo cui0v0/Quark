@@ -8,20 +8,20 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonProvider;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.SortInventoryMessage;
 import vazkii.quark.content.management.client.screen.widgets.MiniInventoryButton;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZKeyMapping;
 
-@LoadModule(category = ModuleCategory.MANAGEMENT)
+@LoadModule(category = "management")
 public class InventorySortingModule extends QuarkModule {
 
 	@Config
@@ -33,9 +33,9 @@ public class InventorySortingModule extends QuarkModule {
 	@Config(description = "Play a click when sorting inventories using keybindings")
 	public static boolean satisfyingClick = true;
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+	public void registerKeybinds(ZKeyMapping event) {
 		KeyMapping sortPlayer = ModKeybindHandler.init(event, "sort_player", null, ModKeybindHandler.INV_GROUP);
 
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.PLAYER_INVENTORY, 0,

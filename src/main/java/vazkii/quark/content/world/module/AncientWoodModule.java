@@ -12,7 +12,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkLeavesBlock;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.VariantHandler;
@@ -22,15 +22,17 @@ import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Min;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.world.block.AncientSaplingBlock;
 import vazkii.quark.content.world.item.AncientFruitItem;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.WORLD, hasSubscriptions = true)
+@LoadModule(category = "world", hasSubscriptions = true)
 public class AncientWoodModule extends QuarkModule {
 
 	@Config(flag = "ancient_fruit_xp")
@@ -55,23 +57,23 @@ public class AncientWoodModule extends QuarkModule {
 
 	public static QuarkGenericTrigger ancientFruitTrigger;
 
-	@Override
-	public void setup() {
-		enqueue(() -> {
+	@LoadEvent
+	public void setup(ZCommonSetup e) {
+		e.enqueueWork(() -> {
 			ComposterBlock.COMPOSTABLES.put(ancient_sapling.asItem(), 0.3F);
 			ComposterBlock.COMPOSTABLES.put(ancient_leaves.asItem(), 0.3F);
 			ComposterBlock.COMPOSTABLES.put(ancient_fruit.asItem(), 0.65F);
 		});
 	}
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public void register(ZRegister event) {
 		woodSet = WoodSetHandler.addWoodSet(this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, true);
 		ancient_leaves = new QuarkLeavesBlock(woodSet.name, this, MaterialColor.PLANT);
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 
-		VariantHandler.addFlowerPot(ancient_sapling, RegistryHelper.getInternalName(ancient_sapling).getPath(), Functions.identity());
+		VariantHandler.addFlowerPot(ancient_sapling, Quark.ZETA.registry.getInternalName(ancient_sapling).getPath(), Functions.identity());
 
 		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 

@@ -6,13 +6,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkEvent;
-import vazkii.arl.network.IMessage;
+
 import vazkii.quark.content.tweaks.module.SimpleHarvestModule;
+import vazkii.zeta.network.IZetaMessage;
+import vazkii.zeta.network.IZetaNetworkEventContext;
 
 import java.io.Serial;
 
-public class HarvestMessage implements IMessage {
+public class HarvestMessage implements IZetaMessage {
 
 	@Serial
 	private static final long serialVersionUID = -51788488328591145L;
@@ -20,7 +21,7 @@ public class HarvestMessage implements IMessage {
 	public BlockPos pos;
 	public InteractionHand hand;
 
-	public HarvestMessage() { }
+	public HarvestMessage() {}
 
 	public HarvestMessage(BlockPos pos, InteractionHand hand) {
 		this.pos = pos;
@@ -28,10 +29,10 @@ public class HarvestMessage implements IMessage {
 	}
 
 	@Override
-	public boolean receive(NetworkEvent.Context context) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		context.enqueueWork(() -> {
 			Player player = context.getSender();
-			if (player != null) {
+			if(player != null) {
 				BlockHitResult pick = Item.getPlayerPOVHitResult(player.getLevel(), player, ClipContext.Fluid.ANY);
 				SimpleHarvestModule.click(context.getSender(), hand, pos, pick);
 			}

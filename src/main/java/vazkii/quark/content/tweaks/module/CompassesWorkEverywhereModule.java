@@ -1,7 +1,5 @@
 package vazkii.quark.content.tweaks.module;
 
-import java.util.function.BiConsumer;
-
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,14 +14,17 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.client.item.ClockTimeGetter;
 import vazkii.quark.content.tweaks.client.item.CompassAngleGetter;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true)
+@LoadModule(category = "tweaks", hasSubscriptions = true)
 public class CompassesWorkEverywhereModule extends QuarkModule {
 
 	@Config public static boolean enableCompassNerf = true;
@@ -35,19 +36,19 @@ public class CompassesWorkEverywhereModule extends QuarkModule {
 	
 	@Hint("clock_nerf") Item clock = Items.CLOCK;
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	public void clientSetup(ZClientSetup e) {
 		// register = addPropertyOverride
 		if(enabled && (enableCompassNerf || enableNether || enableEnd))
-			enqueue(() -> ItemProperties.register(Items.COMPASS, new ResourceLocation("angle"), new CompassAngleGetter.Impl()));
+			e.enqueueWork(() -> ItemProperties.register(Items.COMPASS, new ResourceLocation("angle"), new CompassAngleGetter.Impl()));
 
 		if(enabled && enableClockNerf)
-			enqueue(() -> ItemProperties.register(Items.CLOCK, new ResourceLocation("time"), new ClockTimeGetter.Impl()));
+			e.enqueueWork(() -> ItemProperties.register(Items.CLOCK, new ResourceLocation("time"), new ClockTimeGetter.Impl()));
 	}
-	
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		if(!enableNether && !enableEnd && !enableCompassNerf)
 			return;
 		

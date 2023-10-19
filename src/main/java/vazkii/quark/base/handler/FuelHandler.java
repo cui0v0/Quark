@@ -12,13 +12,12 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.block.VerticalSlabBlock;
+import vazkii.zeta.event.ZLoadComplete;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@EventBusSubscriber(modid = Quark.MOD_ID)
 public class FuelHandler {
 
 	private static final Map<Item, Integer> fuelValues = new HashMap<>();
@@ -33,7 +32,7 @@ public class FuelHandler {
 	}
 
 	public static void addWood(Block block) {
-		String regname = Objects.toString(RegistryHelper.getRegistryName(block, Registry.BLOCK));
+		String regname = Objects.toString(Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK));
 		if(regname.contains("crimson") || regname.contains("warped"))
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
@@ -41,9 +40,10 @@ public class FuelHandler {
 		else addFuel(block, 300);
 	}
 
-	public static void addAllWoods() {
+	@LoadEvent
+	public static void addAllWoods(ZLoadComplete event) {
 		for(Block block : ForgeRegistries.BLOCKS) {
-			ResourceLocation regname = RegistryHelper.getRegistryName(block, Registry.BLOCK);
+			ResourceLocation regname = Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK);
 			if(block != null && regname.getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
 				addWood(block);
 		}

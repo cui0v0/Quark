@@ -2,14 +2,15 @@ package vazkii.quark.base.network.message.oddities;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.network.NetworkEvent;
-import vazkii.arl.network.IMessage;
+
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.inventory.MatrixEnchantingMenu;
+import vazkii.zeta.network.IZetaMessage;
+import vazkii.zeta.network.IZetaNetworkEventContext;
 
 import java.io.Serial;
 
-public class MatrixEnchanterOperationMessage implements IMessage {
+public class MatrixEnchanterOperationMessage implements IZetaMessage {
 
 	@Serial
 	private static final long serialVersionUID = 2272401655489445173L;
@@ -17,7 +18,7 @@ public class MatrixEnchanterOperationMessage implements IMessage {
 	public int operation;
 	public int arg0, arg1, arg2;
 
-	public MatrixEnchanterOperationMessage() { }
+	public MatrixEnchanterOperationMessage() {}
 
 	public MatrixEnchanterOperationMessage(int operation, int arg0, int arg1, int arg2) {
 		this.operation = operation;
@@ -27,7 +28,7 @@ public class MatrixEnchanterOperationMessage implements IMessage {
 	}
 
 	@Override
-	public boolean receive(NetworkEvent.Context context) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		context.enqueueWork(() -> {
 			ServerPlayer player = context.getSender();
 			AbstractContainerMenu container = player.containerMenu;

@@ -33,7 +33,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -45,7 +44,6 @@ import vazkii.aurelienribon.tweenengine.Tween;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -57,8 +55,13 @@ import vazkii.quark.content.tweaks.client.emote.EmoteHandler;
 import vazkii.quark.content.tweaks.client.emote.ModelAccessor;
 import vazkii.quark.content.tweaks.client.screen.widgets.EmoteButton;
 import vazkii.quark.content.tweaks.client.screen.widgets.TranslucentButton;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientModulesReady;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.event.client.ZConfigChangedClient;
+import vazkii.zeta.event.client.ZKeyMapping;
 
-@LoadModule(category = ModuleCategory.TWEAKS, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@LoadModule(category = "tweaks", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class EmotesModule extends QuarkModule {
 
 	private static final Set<String> DEFAULT_EMOTE_NAMES = ImmutableSet.of(
@@ -107,8 +110,8 @@ public class EmotesModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	private static Map<KeyMapping, String> emoteKeybinds;
 
-	@Override
-	public void constructClient() {
+	@LoadEvent
+	public void constructClient(ZClientModulesReady e) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc == null)
 			return; // Mojang datagen has no client instance available
@@ -130,14 +133,14 @@ public class EmotesModule extends QuarkModule {
 		});
 	}
 
-	@Override
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		Tween.registerAccessor(HumanoidModel.class, ModelAccessor.INSTANCE);
 	}
-	
-	@Override
+
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+	public void registerKeybinds(ZKeyMapping event) {
 		int sortOrder = 0;
 
 		emoteKeybinds = new HashMap<>();
@@ -147,9 +150,9 @@ public class EmotesModule extends QuarkModule {
 			emoteKeybinds.put(ModKeybindHandler.init(event, "patreon_emote." + s, null, ModKeybindHandler.EMOTE_GROUP, sortOrder++), s);
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void configChangedClient() {
+	public void configChangedClient(ZConfigChangedClient e) {
 		EmoteHandler.clearEmotes();
 
 		for(String s : enabledEmotes) {

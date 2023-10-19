@@ -2,7 +2,6 @@ package vazkii.quark.content.experimental.module;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -39,8 +38,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent.Key;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -52,7 +49,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -61,8 +57,13 @@ import vazkii.quark.content.experimental.client.screen.VariantSelectorScreen;
 import vazkii.quark.content.experimental.client.tooltip.VariantsComponent;
 import vazkii.quark.content.experimental.config.BlockSuffixConfig;
 import vazkii.quark.content.experimental.item.HammerItem;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.event.client.ZTooltipComponents;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, hasSubscriptions = true, enabledByDefault = false,
+@LoadModule(category = "experimental", hasSubscriptions = true, enabledByDefault = false,
 		description = "Allows placing variant blocks automatically via a selector menu triggered from a keybind")
 public class VariantSelectorModule extends QuarkModule {
 
@@ -96,18 +97,18 @@ public class VariantSelectorModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	private static KeyMapping variantSelectorKey;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		hammer = new HammerItem(this).setCondition(() -> enableHammer);
 	}
 
-	@Override
-	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+	@LoadEvent
+	public void registerKeybinds(ZKeyMapping event) {
 		variantSelectorKey = ModKeybindHandler.init(event, "variant_selector", "r", ModKeybindHandler.MISC_GROUP);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 
@@ -188,11 +189,11 @@ public class VariantSelectorModule extends QuarkModule {
 			}
 		}
 	}
-	
-	@Override
+
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-		event.register(VariantsComponent.class, Function.identity());
+	public void registerClientTooltipComponentFactories(ZTooltipComponents event) {
+		event.register(VariantsComponent.class);
 	}
 	
 	@SubscribeEvent

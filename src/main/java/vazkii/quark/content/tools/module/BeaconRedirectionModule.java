@@ -3,7 +3,6 @@ package vazkii.quark.content.tools.module;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.function.BiConsumer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +26,6 @@ import net.minecraft.world.phys.AABB;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
@@ -35,8 +33,13 @@ import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.module.CorundumModule;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
-@LoadModule(category = ModuleCategory.TOOLS)
+@LoadModule(category = "tools")
 public class BeaconRedirectionModule extends QuarkModule {
 
 	private static final TagKey<Block> BEACON_TRANSPARENT = BlockTags.create(new ResourceLocation("quark:beacon_transparent"));
@@ -53,18 +56,18 @@ public class BeaconRedirectionModule extends QuarkModule {
 
 	public static QuarkGenericTrigger redirectTrigger;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		redirectTrigger = QuarkAdvancementHandler.registerGenericTrigger("redirect_beacon");
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		final String redirectHint = "beacon_redirect_item";
 		String type = "amethyst";
 

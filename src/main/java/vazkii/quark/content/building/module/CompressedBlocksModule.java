@@ -19,12 +19,14 @@ import vazkii.quark.base.block.QuarkFlammablePillarBlock;
 import vazkii.quark.base.handler.FuelHandler;
 import vazkii.quark.base.handler.ToolInteractionHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZLoadComplete;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.BUILDING)
+@LoadModule(category = "building")
 public class CompressedBlocksModule extends QuarkModule {
 
 	@Config(name = "Charcoal Block and Blaze Lantern Stay On Fire Forever", flag = "compressed_blocks_burn_forever")
@@ -79,8 +81,8 @@ public class CompressedBlocksModule extends QuarkModule {
 
 	private final List<Block> compostable = Lists.newArrayList();
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		charcoal_block = new QuarkBlock("charcoal_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
 						.requiresCorrectToolForDrops()
@@ -128,9 +130,9 @@ public class CompressedBlocksModule extends QuarkModule {
 		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, bamboo, stripped_bamboo);
 	}
 
-	@Override
-	public void loadComplete() {
-		enqueue(() -> {
+	@LoadEvent
+	public void loadComplete(ZLoadComplete event) {
+		event.enqueueWork(() -> {
 			for(Block block : compostable)
 				if(block.asItem() != null)
 					ComposterBlock.COMPOSTABLES.put(block.asItem(), 1F);

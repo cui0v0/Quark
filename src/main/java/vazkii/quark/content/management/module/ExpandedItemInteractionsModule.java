@@ -43,14 +43,16 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.ItemNBTHelper;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
@@ -62,7 +64,7 @@ import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
 
 import java.util.List;
 
-@LoadModule(category = ModuleCategory.MANAGEMENT, hasSubscriptions = true)
+@LoadModule(category = "management", hasSubscriptions = true)
 public class ExpandedItemInteractionsModule extends QuarkModule {
 
 	@Config
@@ -85,19 +87,19 @@ public class ExpandedItemInteractionsModule extends QuarkModule {
 
 	public static MenuType<HeldShulkerBoxMenu> heldShulkerBoxMenuType;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		heldShulkerBoxMenuType = IForgeMenuType.create(HeldShulkerBoxMenu::fromNetwork);
-		RegistryHelper.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
 	}
 
-	@Override
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		MenuScreens.register(heldShulkerBoxMenuType, HeldShulkerBoxScreen::new);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = configEnabled;
 
 		shulkers = MiscUtil.massRegistryGet(GeneralConfig.shulkerBoxes, ForgeRegistries.ITEMS);

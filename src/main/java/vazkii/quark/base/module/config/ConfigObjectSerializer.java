@@ -5,7 +5,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.type.IConfigType;
-import vazkii.quark.base.module.hint.HintManager;
+import vazkii.zeta.module.ZetaModule;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -34,11 +34,6 @@ public final class ConfigObjectSerializer {
 		}
 	}
 
-	public static void loadHints(ConfigFlagManager flagManager, QuarkModule module) {
-		List<Field> fields = recursivelyGetFields(module.getClass());
-		HintManager.loadHints(fields, flagManager, module);
-	}
-
 	public static List<Field> recursivelyGetFields(Class<?> clazz) {
 		List<Field> list = new LinkedList<>();
 		while(clazz != Object.class) {
@@ -62,7 +57,7 @@ public final class ConfigObjectSerializer {
 		Config.Min min = field.getDeclaredAnnotation(Config.Min.class);
 		Config.Max max = field.getDeclaredAnnotation(Config.Max.class);
 		Config.Condition condition = field.getDeclaredAnnotation(Config.Condition.class);
-		QuarkModule rootModule = (root instanceof QuarkModule ? (QuarkModule) root : null);
+		ZetaModule rootModule = (root instanceof ZetaModule ? (ZetaModule) root : null);
 
 		String nl = "";
 		Class<?> type = field.getType();
@@ -123,14 +118,16 @@ public final class ConfigObjectSerializer {
 
 			builder.push(name, defaultValue);
 			serialize(builder, flagManager, callbacks, defaultValue, root);
-			callbacks.add(() -> configType.onReload(rootModule, flagManager));
+			//TODO, just needs to be pushed through tonnns of interfaces
+			if(rootModule instanceof QuarkModule qm)
+				callbacks.add(() -> configType.onReload(qm, flagManager));
 			builder.pop();
 
 			return;
 		}
 
 		String flag = config.flag();
-		boolean useFlag = object instanceof QuarkModule && !flag.isEmpty();
+		boolean useFlag = object instanceof ZetaModule && !flag.isEmpty();
 
 		ForgeConfigSpec.ConfigValue<?> value;
 		if (defaultValue instanceof List) {
@@ -147,7 +144,7 @@ public final class ConfigObjectSerializer {
 				else field.set(object, setObj);
 
 				if(useFlag)
-					flagManager.putFlag((QuarkModule) object, flag, (boolean) setObj);
+					flagManager.putFlag((ZetaModule) object, flag, (boolean) setObj);
 			} catch(IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}

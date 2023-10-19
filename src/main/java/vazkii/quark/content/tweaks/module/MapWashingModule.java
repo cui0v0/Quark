@@ -6,10 +6,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.TWEAKS, antiOverlap = "supplementaries")
+@LoadModule(category = "tweaks", antiOverlap = "supplementaries")
 public class MapWashingModule extends QuarkModule {
 	private final CauldronInteraction WASHING_MAP = (state, level, pos, player, hand, stack) -> {
 		if (!enabled)
@@ -27,8 +28,8 @@ public class MapWashingModule extends QuarkModule {
 		}
 	};
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		CauldronInteraction.WATER.put(Items.FILLED_MAP, WASHING_MAP);
 	}
 }

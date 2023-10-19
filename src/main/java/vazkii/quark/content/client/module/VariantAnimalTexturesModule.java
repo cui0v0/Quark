@@ -18,15 +18,17 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
-@LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class VariantAnimalTexturesModule extends QuarkModule {
 
 	private static ListMultimap<VariantTextureType, ResourceLocation> textures;
@@ -55,8 +57,8 @@ public class VariantAnimalTexturesModule extends QuarkModule {
 
 	private static boolean isEnabled;
 
-	@Override
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		if(!enabled)
 			return;
 
@@ -72,8 +74,8 @@ public class VariantAnimalTexturesModule extends QuarkModule {
 		registerShiny(VariantTextureType.SLIME);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		// Pass over to a static reference for easier computing the coremod hook
 		isEnabled = this.enabled;
 	}

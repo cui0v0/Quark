@@ -1,21 +1,16 @@
 package vazkii.quark.content.tweaks.module;
 
-import java.util.List;
-import java.util.function.BiConsumer;
-
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.TWEAKS)
+@LoadModule(category = "tweaks")
 public class MoreBannerLayersModule extends QuarkModule {
 
 	@Config
@@ -28,8 +23,8 @@ public class MoreBannerLayersModule extends QuarkModule {
 
 	private static boolean staticEnabled;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 

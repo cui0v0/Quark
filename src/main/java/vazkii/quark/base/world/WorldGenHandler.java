@@ -38,31 +38,31 @@ import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.common.world.ModifiableBiomeInfo.BiomeInfo.Builder;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.world.generator.IGenerator;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@EventBusSubscriber(modid = Quark.MOD_ID)
 public class WorldGenHandler {
 
 	private static final Map<GenerationStep.Decoration, Holder<PlacedFeature>> defers = new HashMap<>();
 	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
 
-	public static void register() {
+	@LoadEvent
+	public static void register(ZRegister event) {
 		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
 
 			// Always do .toLowerCase(Locale.ENGLISH) with that locale. If you leave it off, computers in
 			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
 			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
-			RegistryHelper.register(deferredFeature, name, Registry.FEATURE_REGISTRY);
-			
+			Quark.ZETA.registry.register(deferredFeature, name, Registry.FEATURE_REGISTRY);
+
 			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
 
 			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));

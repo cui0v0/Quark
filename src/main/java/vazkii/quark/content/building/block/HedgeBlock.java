@@ -34,17 +34,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
-import vazkii.arl.interf.IBlockColorProvider;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.content.building.module.HedgesModule;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
+import vazkii.zeta.registry.IZetaBlockColorProvider;
 
-public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorProvider {
+public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockColorProvider {
 	
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);
 	private static final VoxelShape HEDGE_CENTER_SHAPE = box(2F, 1F, 2F, 14F, 16F, 14F);
@@ -69,16 +68,17 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IBlockColorPr
 		this.module = module;
 		this.leaf = leaf;
 
-		ResourceLocation leafRes = RegistryHelper.getRegistryName(leaf, Registry.BLOCK);
+		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, Registry.BLOCK);
 		if (leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
-			RegistryHelper.registerBlock(this, colorName + "_blossom_hedge");
+			Quark.ZETA.registry.registerBlock(this, colorName + "_blossom_hedge", true);
 		} else {
-			RegistryHelper.registerBlock(this, leafRes.getPath().replaceAll("_leaves", "_hedge"));
+			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
+			Quark.ZETA.registry.registerBlock(this, resloc, true);
 		}
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		RenderLayerHandler.setRenderType(this, RenderTypeSkeleton.CUTOUT);
+		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
 
 		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
 		

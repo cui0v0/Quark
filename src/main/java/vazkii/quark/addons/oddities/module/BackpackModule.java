@@ -32,7 +32,6 @@ import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.item.BackpackItem;
@@ -40,14 +39,17 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.oddities.HandleBackpackMessage;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.ODDITIES, hasSubscriptions = true)
+@LoadModule(category = "oddities", hasSubscriptions = true)
 public class BackpackModule extends QuarkModule {
 
 	@Config(description = "Set this to true to allow the backpacks to be unequipped even with items in them")
@@ -75,13 +77,13 @@ public class BackpackModule extends QuarkModule {
 	@OnlyIn(Dist.CLIENT)
 	private static boolean backpackRequested;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		backpack = new BackpackItem(this);
 		ravager_hide = new QuarkItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
-		RegistryHelper.register(menyType, "backpack", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(menyType, "backpack", Registry.MENU_REGISTRY);
 
 		bonded_ravager_hide = new QuarkBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
 				.strength(1F)
@@ -91,17 +93,17 @@ public class BackpackModule extends QuarkModule {
 		CauldronInteraction.WATER.put(backpack, CauldronInteraction.DYED_ITEM);
 	}
 	
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		backpackBlockedTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "backpack_blocked"));
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	public void clientSetup(ZClientSetup e) {
 		MenuScreens.register(menyType, BackpackInventoryScreen::new);
 
-		enqueue(() -> ItemProperties.register(backpack, new ResourceLocation("has_items"),
+		e.enqueueWork(() -> ItemProperties.register(backpack, new ResourceLocation("has_items"),
 				(stack, world, entity, i) -> (!BackpackModule.superOpMode && BackpackItem.doesBackpackHaveItems(stack)) ? 1 : 0));
 	}
 

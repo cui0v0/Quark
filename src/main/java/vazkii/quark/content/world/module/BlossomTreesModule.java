@@ -1,19 +1,16 @@
 package vazkii.quark.content.world.module;
 
 import com.google.common.base.Functions;
-import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.HintManager;
@@ -24,12 +21,16 @@ import vazkii.quark.content.world.block.BlossomSaplingBlock;
 import vazkii.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import vazkii.quark.content.world.config.BlossomTreeConfig;
 import vazkii.quark.content.world.gen.BlossomTreeGenerator;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
-@LoadModule(category = ModuleCategory.WORLD)
+@LoadModule(category = "world")
 public class BlossomTreesModule extends QuarkModule {
 
 	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
@@ -45,8 +46,8 @@ public class BlossomTreesModule extends QuarkModule {
 
 	public static WoodSet woodSet;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		woodSet = WoodSetHandler.addWoodSet(this, "blossom", MaterialColor.COLOR_RED, MaterialColor.COLOR_BROWN, true);
 
 		add("blue", MaterialColor.COLOR_LIGHT_BLUE, blue);
@@ -57,12 +58,12 @@ public class BlossomTreesModule extends QuarkModule {
 		add("red", MaterialColor.COLOR_RED, red);
 	}
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public void setup(ZCommonSetup e) {
 		for(BlossomTree tree : trees.keySet())
 			WorldGenHandler.addGenerator(this, new BlossomTreeGenerator(trees.get(tree), tree), Decoration.TOP_LAYER_MODIFICATION, WorldGenWeights.BLOSSOM_TREES);
 
-		enqueue(() -> {
+		e.enqueueWork(() -> {
 			for(BlossomTree tree : trees.keySet()) {
 				if(tree.leaf.getBlock().asItem() != null)
 					ComposterBlock.COMPOSTABLES.put(tree.leaf.getBlock().asItem(), 0.3F);
@@ -72,8 +73,8 @@ public class BlossomTreesModule extends QuarkModule {
 		});
 	}
 
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		for(BlossomTree tree : trees.keySet())
 			HintManager.hintItem(consumer, tree.sapling.asItem());
 	}
@@ -82,7 +83,7 @@ public class BlossomTreesModule extends QuarkModule {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
 		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
-		VariantHandler.addFlowerPot(sapling, RegistryHelper.getInternalName(sapling).getPath(), Functions.identity());
+		VariantHandler.addFlowerPot(sapling, Quark.ZETA.registry.getInternalName(sapling).getPath(), Functions.identity());
 
 		trees.put(tree, config);
 	}

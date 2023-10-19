@@ -39,13 +39,16 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.ClientTicker;
-import vazkii.arl.util.ItemNBTHelper;
+import vazkii.quark.base.QuarkClient;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.AbstractConfigType;
@@ -59,7 +62,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@LoadModule(category = ModuleCategory.TOOLS, hasSubscriptions = true)
+@LoadModule(category = "tools", hasSubscriptions = true)
 public class PathfinderMapsModule extends QuarkModule {
 
 	public static final String TAG_IS_PATHFINDER = "quark:is_pathfinder";
@@ -118,8 +121,8 @@ public class PathfinderMapsModule extends QuarkModule {
 	@Config public static boolean drawHud = true;
 	@Config public static boolean hudOnTop = false;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		loadTradeInfo(Biomes.SNOWY_PLAINS, true, 4, 8, 14, 0x7FE4FF);
 		loadTradeInfo(Biomes.WINDSWEPT_HILLS, true, 4, 8, 14, 0x8A8A8A);
 		loadTradeInfo(Biomes.DARK_FOREST, true, 4, 8, 14, 0x00590A);
@@ -143,10 +146,10 @@ public class PathfinderMapsModule extends QuarkModule {
 		pathfinders_quill = new PathfindersQuillItem(this);
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
-		enqueue(() -> ItemProperties.register(pathfinders_quill, new ResourceLocation("has_biome"),
+	public void clientSetup(ZClientSetup e) {
+		e.enqueueWork(() -> ItemProperties.register(pathfinders_quill, new ResourceLocation("has_biome"),
 				(stack, world, entity, i) -> (PathfindersQuillItem.getTargetBiome(stack) != null) ? 1 : 0));
 	}
 
@@ -172,7 +175,7 @@ public class PathfinderMapsModule extends QuarkModule {
 				int qy = y - 15;
 
 				float speed = 0.1F;
-				float total = ClientTicker.total * speed;
+				float total = QuarkClient.ticker.total * speed;
 
 				float offX = (float) (Math.sin(total) + 1) * 20;
 				float offY = (float) (Math.sin(total * 8) - 1);
@@ -283,8 +286,8 @@ public class PathfinderMapsModule extends QuarkModule {
 		return false;
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		synchronized (mutex) {
 			tradeList.clear();
 			customTrades.clear();

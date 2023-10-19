@@ -10,14 +10,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.ConfigFlagManager;
+import vazkii.quark.base.module.config.ConfigObjectSerializer;
+import vazkii.zeta.module.ZetaModule;
 
 public class HintManager {
 
-	public static void loadHints(List<Field> fields, ConfigFlagManager flagManager, QuarkModule module) {
+	public static List<HintObject> gatherHintAnnotations(ConfigFlagManager flagManager, ZetaModule module) {
+		List<Field> fields = ConfigObjectSerializer.recursivelyGetFields(module.getClass()); //getDeclaredFields also gets non-public fields... yeah
+		List<HintObject> loadedHints = new ArrayList<>();
+
 		for(Field f : fields) {
 			f.setAccessible(true);
 			Hint hint = f.getDeclaredAnnotation(Hint.class);
@@ -53,14 +56,16 @@ public class HintManager {
 					}
 				});
 
-				module.hints.add(hintObj);
+				loadedHints.add(hintObj);
 			}
 		}
+
+		return loadedHints;
 	}
 
 	public static void hintItem(BiConsumer<Item, Component> consumer, ItemLike itemLike, Object... extraContent) {
 		Item item = itemLike.asItem();
-		ResourceLocation res = RegistryHelper.getRegistryName(item, Registry.ITEM);
+		ResourceLocation res = Quark.ZETA.registry.getRegistryName(item, Registry.ITEM);
 		String ns = res.getNamespace();
 		String path = res.getPath();
 

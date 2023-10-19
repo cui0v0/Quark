@@ -18,24 +18,25 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.client.render.entity.TotemOfHoldingRenderer;
 import vazkii.quark.addons.oddities.entity.TotemOfHoldingEntity;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZAddModels;
+import vazkii.zeta.event.client.ZClientSetup;
 
 /**
  * @author WireSegal
  * Created at 1:21 PM on 3/30/20.
  */
-@LoadModule(category = ModuleCategory.ODDITIES, hasSubscriptions = true)
+@LoadModule(category = "oddities", hasSubscriptions = true)
 public class TotemOfHoldingModule extends QuarkModule {
 	private static final String TAG_LAST_TOTEM = "quark:lastTotemOfHolding";
 
@@ -60,8 +61,8 @@ public class TotemOfHoldingModule extends QuarkModule {
 	@Config(flag = "soul_compass")
 	public static boolean enableSoulCompass = true;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		totemType = EntityType.Builder.of(TotemOfHoldingEntity::new, MobCategory.MISC)
 				.sized(0.5F, 1F)
 				.updateInterval(128) // update interval
@@ -69,18 +70,17 @@ public class TotemOfHoldingModule extends QuarkModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new TotemOfHoldingEntity(totemType, world))
 				.build("totem");
-		RegistryHelper.register(totemType, "totem", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(totemType, "totem", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		EntityRenderers.register(totemType, TotemOfHoldingRenderer::new);
 	}
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+	public void registerAdditionalModels(ZAddModels event) {
 		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/totem_of_holding", "inventory"));
 	}
 	

@@ -1,8 +1,6 @@
 # Quark
 Small things. Learn more at [the Mod's website](https://quarkmod.net).
 
-This mod requires [AutoRegLib](https://github.com/VazkiiMods/AutoRegLib).
-
 This mod makes use of the [Java Universal Tween Engine](https://github.com/AurelienRibon/universal-tween-engine) by Aurelien Ribon, licensed under the Apache 2.0 License.  
 
 ## Release Process

@@ -7,12 +7,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkSlabBlock;
 import vazkii.quark.base.block.QuarkStairsBlock;
 import vazkii.quark.base.block.QuarkWallBlock;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -56,12 +55,12 @@ public class VariantHandler {
 		props = propertiesFunc.apply(props);
 
 		FlowerPotBlock potted = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> block, props);
-		RenderLayerHandler.setRenderType(potted, RenderTypeSkeleton.CUTOUT);
-		ResourceLocation resLoc = RegistryHelper.getRegistryName(block, Registry.BLOCK);
+		RenderLayerHandler.setRenderType(potted, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		ResourceLocation resLoc = Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK);
 		if (resLoc == null)
 			resLoc = new ResourceLocation("missingno");
 
-		RegistryHelper.registerBlock(potted, "potted_" + name, false);
+		Quark.ZETA.registry.registerBlock(potted, "potted_" + name, false);
 		((FlowerPotBlock)Blocks.FLOWER_POT).addPlant(resLoc, () -> potted);
 
 		return potted;

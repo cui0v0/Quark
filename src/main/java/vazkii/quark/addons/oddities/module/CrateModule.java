@@ -8,18 +8,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.addons.oddities.block.CrateBlock;
 import vazkii.quark.addons.oddities.block.be.CrateBlockEntity;
 import vazkii.quark.addons.oddities.client.screen.CrateScreen;
 import vazkii.quark.addons.oddities.inventory.CrateMenu;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.ODDITIES)
+@LoadModule(category = "oddities")
 public class CrateModule extends QuarkModule {
 
     public static BlockEntityType<CrateBlockEntity> blockEntityType;
@@ -31,20 +33,20 @@ public class CrateModule extends QuarkModule {
     @Config
     public static int maxItems = 640;
 
-    @Override
-    public void register() {
+    @LoadEvent
+    public final void register(ZRegister event) {
         crate = new CrateBlock(this);
 
         menuType = IForgeMenuType.create(CrateMenu::fromNetwork);
-        RegistryHelper.register(menuType, "crate", Registry.MENU_REGISTRY);
+	    Quark.ZETA.registry.register(menuType, "crate", Registry.MENU_REGISTRY);
 
-        blockEntityType = BlockEntityType.Builder.of(CrateBlockEntity::new, crate).build(null);
-        RegistryHelper.register(blockEntityType, "crate", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+	    blockEntityType = BlockEntityType.Builder.of(CrateBlockEntity::new, crate).build(null);
+	    Quark.ZETA.registry.register(blockEntityType, "crate", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
     }
 
-    @Override
+    @LoadEvent
     @OnlyIn(Dist.CLIENT)
-    public void clientSetup() {
+    public final void clientSetup(ZClientSetup event) {
         MenuScreens.register(menuType, CrateScreen::new);
     }
 

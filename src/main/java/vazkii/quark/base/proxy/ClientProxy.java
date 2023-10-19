@@ -13,24 +13,32 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.config.IngameConfigHandler;
+import vazkii.quark.base.client.config.QButtonHandler;
 import vazkii.quark.base.client.config.external.ExternalConfigHandler;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
+import vazkii.quark.base.client.handler.InventoryButtonHandler;
+import vazkii.quark.base.client.handler.ModelHandler;
+import vazkii.quark.base.client.handler.NetworkProfilingHandler;
+import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
+import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.DyeHandler;
+import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.IConfigCallback;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
+import vazkii.zeta.event.client.ZClientModulesReady;
+import vazkii.zeta.event.client.ZConfigChangedClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,9 +58,27 @@ public class ClientProxy extends CommonProxy {
 		if(now.getMonth() == Month.DECEMBER && now.getDayOfMonth() >= 16 || now.getMonth() == Month.JANUARY && now.getDayOfMonth() <= 6)
 			jingleBellsMotherfucker = true;
 
-		super.start();
+		//initialize ZetaClient
+		QuarkClient.start();
 
-		ModuleLoader.INSTANCE.clientStart();
+		Quark.ZETA.loadBus
+			.subscribe(ContributorRewardHandler.Client.class)
+			.subscribe(DyeHandler.Client.class)
+			.subscribe(RenderLayerHandler.Client.class)
+			.subscribe(WoodSetHandler.Client.class);
+
+		//Formerly @EventBusSubscribers - gathered here to make them more visible
+		FMLJavaModLoadingContext.get().getModEventBus().register(ModelHandler.class);
+		MinecraftForge.EVENT_BUS.register(ContributorRewardHandler.Client.class);
+		MinecraftForge.EVENT_BUS.register(InventoryButtonHandler.class);
+		MinecraftForge.EVENT_BUS.register(MiscUtil.Client.class);
+		MinecraftForge.EVENT_BUS.register(NetworkProfilingHandler.class);
+		MinecraftForge.EVENT_BUS.register(QButtonHandler.class);
+		MinecraftForge.EVENT_BUS.register(RequiredModTooltipHandler.class);
+		MinecraftForge.EVENT_BUS.register(TopLayerTooltipHandler.class);
+
+		super.start(); //<- loads and initializes modules
+		Quark.ZETA.loadBus.fire(new ZClientModulesReady());
 
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class, () -> new ConfigScreenFactory((minecraft, screen) -> new QuarkConfigHomeScreen(screen)));
 
@@ -62,78 +88,11 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void registerListeners(IEventBus bus) {
-		super.registerListeners(bus);
-
-		bus.addListener(this::clientSetup);
-		bus.addListener(this::registerReloadListeners);
-		bus.addListener(this::modelBake);
-		bus.addListener(this::modelLayers);
-		bus.addListener(this::textureStitch);
-		bus.addListener(this::postTextureStitch);
-		bus.addListener(this::registerKeybinds);
-		bus.addListener(this::registerAdditionalModels);
-		bus.addListener(this::registerClientTooltipComponentFactories);
-		bus.addListener(this::registerItemColors);
-		bus.addListener(this::registerBlockColors);
-	}
-
-	public void clientSetup(FMLClientSetupEvent event) {
-		RenderLayerHandler.init();
-		WoodSetHandler.clientSetup(event);
-		DyeHandler.clientSetup(event);
-
-		ModuleLoader.INSTANCE.clientSetup(event);
-	}
-
-	public void registerReloadListeners(RegisterClientReloadListenersEvent event) {
-		ModuleLoader.INSTANCE.registerReloadListeners(event);
-	}
-
-	public void modelBake(BakingCompleted event) {
-		ModuleLoader.INSTANCE.modelBake(event);
-	}
-
-	public void modelLayers(EntityRenderersEvent.AddLayers event) {
-		ModuleLoader.INSTANCE.modelLayers(event);
-	}
-
-	public void textureStitch(TextureStitchEvent.Pre event) {
-		ModuleLoader.INSTANCE.textureStitch(event);
-	}
-
-	public void postTextureStitch(TextureStitchEvent.Post event) {
-		ModuleLoader.INSTANCE.postTextureStitch(event);
-	}
-
-	public void registerKeybinds(RegisterKeyMappingsEvent event) {
-		ModuleLoader.INSTANCE.registerKeybinds(event);
-	}
-
-	public void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-		ModuleLoader.INSTANCE.registerAdditionalModels(event);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-		ModuleLoader.INSTANCE.registerClientTooltipComponentFactories(event);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public void registerItemColors(RegisterColorHandlersEvent.Item event) {
-		ModuleLoader.INSTANCE.registerItemColors(event);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-		ModuleLoader.INSTANCE.registerBlockColors(event);
-	}
-
-	@Override
 	public void handleQuarkConfigChange() {
 		super.handleQuarkConfigChange();
 
-		ModuleLoader.INSTANCE.configChangedClient();
+		Quark.ZETA.loadBus.fire(new ZConfigChangedClient());
+
 		if (Minecraft.getInstance().getConnection() != null)
 			QuarkNetwork.sendToServer(C2SUpdateFlag.createPacket());
 		IngameConfigHandler.INSTANCE.refresh();
@@ -159,12 +118,6 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 		return InteractionResult.PASS;
-	}
-
-	@Override
-	protected void initContributorRewards() {
-		ContributorRewardHandler.getLocalName();
-		super.initContributorRewards();
 	}
 
 	@Override

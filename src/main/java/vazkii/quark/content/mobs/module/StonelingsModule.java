@@ -12,12 +12,11 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
@@ -28,8 +27,12 @@ import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.content.mobs.client.render.entity.StonelingRenderer;
 import vazkii.quark.content.mobs.entity.Stoneling;
 import vazkii.quark.content.mobs.item.DiamondHeartItem;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.MOBS, hasSubscriptions = true)
+@LoadModule(category = "mobs", hasSubscriptions = true)
 public class StonelingsModule extends QuarkModule {
 
 	public static EntityType<Stoneling> stonelingType;
@@ -54,15 +57,15 @@ public class StonelingsModule extends QuarkModule {
 	
 	@Hint("stoneling_drop_diamond_heart") public static Item diamondHeart;
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		makeStonelingTrigger = QuarkAdvancementHandler.registerGenericTrigger("make_stoneling");
 	}
 	
 	public boolean registered = false;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		this.registered = true;
 		diamondHeart = new DiamondHeartItem("diamond_heart", this, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
 
@@ -71,7 +74,7 @@ public class StonelingsModule extends QuarkModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Stoneling(stonelingType, world))
 				.build("stoneling");
-		RegistryHelper.register(stonelingType, "stoneling", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(stonelingType, "stoneling", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);
@@ -79,9 +82,8 @@ public class StonelingsModule extends QuarkModule {
 		EntityAttributeHandler.put(stonelingType, Stoneling::prepareAttributes);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		EntityRenderers.register(stonelingType, StonelingRenderer::new);
 	}
 

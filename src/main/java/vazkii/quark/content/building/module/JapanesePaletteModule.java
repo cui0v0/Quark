@@ -14,15 +14,16 @@ import java.util.function.BooleanSupplier;
 
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.BambooMatBlock;
 import vazkii.quark.content.building.block.BambooMatCarpetBlock;
 import vazkii.quark.content.building.block.PaperLanternBlock;
 import vazkii.quark.content.building.block.PaperWallBlock;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.BUILDING)
+@LoadModule(category = "building")
 public class JapanesePaletteModule extends QuarkModule {
 
 	@Config(flag = "paper_decor")
@@ -31,8 +32,8 @@ public class JapanesePaletteModule extends QuarkModule {
 	@Config(flag = "bamboo_mat")
 	public static boolean enableBambooMats = true;
 	
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		BooleanSupplier paperBlockCond = () -> enablePaperBlocks;
 		BooleanSupplier bambooMatCond = () -> enableBambooMats;
 

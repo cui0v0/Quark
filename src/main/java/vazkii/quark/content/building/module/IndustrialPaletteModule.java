@@ -11,14 +11,15 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.VariantLadderBlock;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.function.BooleanSupplier;
 
-@LoadModule(category = ModuleCategory.BUILDING)
+@LoadModule(category = "building")
 public class IndustrialPaletteModule extends QuarkModule {
 
 	private static final SoundType IRON_LADDER_SOUND_TYPE = new ForgeSoundType(1.0F, 1.0F,
@@ -34,8 +35,8 @@ public class IndustrialPaletteModule extends QuarkModule {
 	@Config(flag = "iron_ladder")
 	public static boolean enableIronLadder = true;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		Block.Properties props = Block.Properties.copy(Blocks.IRON_BLOCK);
 
 		BooleanSupplier ironPlateCond = () -> enableIronPlates;

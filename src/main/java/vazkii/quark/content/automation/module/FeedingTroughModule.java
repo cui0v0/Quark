@@ -39,21 +39,22 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.automation.block.FeedingTroughBlock;
 import vazkii.quark.content.automation.block.be.FeedingTroughBlockEntity;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
 /**
  * @author WireSegal
  * Created at 9:48 AM on 9/20/19.
  */
-@LoadModule(category = ModuleCategory.AUTOMATION, hasSubscriptions = true)
+@LoadModule(category = "automation", hasSubscriptions = true)
 public class FeedingTroughModule extends QuarkModule {
 	
 	public static BlockEntityType<FeedingTroughBlockEntity> blockEntityType;
@@ -157,16 +158,16 @@ public class FeedingTroughModule extends QuarkModule {
 		return null;
 	}
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		feeding_trough = new FeedingTroughBlock("feeding_trough", this, CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feeding_trough).build(null);
-		RegistryHelper.register(blockEntityType, "feeding_trough", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "feeding_trough", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
 		feedingTroughPoi = new PoiType(getBlockStates(feeding_trough), 1, 32);
-		RegistryHelper.register(feedingTroughPoi, "feeding_trough", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(feedingTroughPoi, "feeding_trough", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
 	}
 
 	private static Set<BlockState> getBlockStates(Block p_218074_) {

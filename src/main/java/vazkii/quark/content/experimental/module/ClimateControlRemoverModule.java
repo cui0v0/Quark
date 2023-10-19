@@ -1,11 +1,12 @@
 package vazkii.quark.content.experimental.module;
 
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.EXPERIMENTAL, enabledByDefault = false)
+@LoadModule(category = "experimental", enabledByDefault = false)
 public class ClimateControlRemoverModule extends QuarkModule {
 
 	public static boolean staticEnabled;
@@ -36,8 +37,8 @@ public class ClimateControlRemoverModule extends QuarkModule {
 		"WARNING: Enabling this will make rarer nether biomes more common.")
 	public static boolean disableOffset = false;
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 

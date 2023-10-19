@@ -18,15 +18,15 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.interf.IBlockColorProvider;
-import vazkii.arl.interf.IItemColorProvider;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.QuarkModule;
+import vazkii.zeta.registry.IZetaBlockColorProvider;
+import vazkii.zeta.registry.IZetaItemColorProvider;
 
-public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockColorProvider {
+public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBlockColorProvider {
 
 	private final IQuarkBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
@@ -35,7 +35,8 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockC
 		super(parent.getBlock()::defaultBlockState, VariantHandler.realStateCopy(parent));
 
 		this.parent = parent;
-		RegistryHelper.registerBlock(this, IQuarkBlock.inheritQuark(parent, "%s_stairs"));
+		String resloc = IQuarkBlock.inheritQuark(parent, "%s_stairs");
+		Quark.ZETA.registry.registerBlock(this, resloc, true);
 
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 
@@ -85,12 +86,12 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IBlockC
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BlockColor getBlockColor() {
-		return parent instanceof IBlockColorProvider provider ? provider.getBlockColor() : null;
+		return parent instanceof IZetaBlockColorProvider provider ? provider.getBlockColor() : null;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public ItemColor getItemColor() {
-		return parent instanceof IItemColorProvider provider ? provider.getItemColor() : null;
+		return parent instanceof IZetaItemColorProvider provider ? provider.getItemColor() : null;
 	}
 }

@@ -21,13 +21,11 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
@@ -40,8 +38,13 @@ import vazkii.quark.content.mobs.client.render.entity.WraithRenderer;
 import vazkii.quark.content.mobs.entity.SoulBead;
 import vazkii.quark.content.mobs.entity.Wraith;
 import vazkii.quark.content.mobs.item.SoulBeadItem;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.MOBS)
+@LoadModule(category = "mobs")
 public class WraithModule extends QuarkModule {
 
 	public static EntityType<Wraith> wraithType;
@@ -82,8 +85,8 @@ public class WraithModule extends QuarkModule {
 	
 	@Hint Item soul_bead;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		soul_bead = new SoulBeadItem(this);
 
 		wraithType = EntityType.Builder.of(Wraith::new, MobCategory.MONSTER)
@@ -92,7 +95,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Wraith(wraithType, world))
 				.build("wraith");
-		RegistryHelper.register(wraithType, "wraith", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(wraithType, "wraith", Registry.ENTITY_TYPE_REGISTRY);
 
 		soulBeadType = EntityType.Builder.of(SoulBead::new, MobCategory.MISC)
 				.sized(0F, 0F)
@@ -101,7 +104,7 @@ public class WraithModule extends QuarkModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new SoulBead(soulBeadType, world))
 				.build("soul_bead");
-		RegistryHelper.register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
@@ -111,21 +114,20 @@ public class WraithModule extends QuarkModule {
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
 	}
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public final void setup(ZCommonSetup event) {
 		wraithSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "wraith_spawnable"));
 		soulBeadTargetTag = TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, "soul_bead_target"));
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		EntityRenderers.register(wraithType, WraithRenderer::new);
 		EntityRenderers.register(soulBeadType, SoulBeadRenderer::new);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		validWraithSounds = wraithSounds.stream().filter((s) -> s.split("\\|").length == 3).collect(Collectors.toList());
 	}
 

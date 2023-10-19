@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +18,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
 import vazkii.quark.base.handler.ToolInteractionHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
@@ -30,11 +28,16 @@ import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.undergroundstyle.CorundumStyle;
 import vazkii.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import vazkii.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 
-@LoadModule(category = ModuleCategory.WORLD)
+@LoadModule(category = "world")
 public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle> {
 
 	@Config
@@ -71,21 +74,24 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	public static List<CorundumClusterBlock> clusters = Lists.newArrayList();
 	@Hint public static TagKey<Block> corundumTag;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		for (CorundumColor color : CorundumColor.values())
 			add(color.name, color.beaconColor, color.materialColor);
-
-		super.register();
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 
-	@Override
-	public void addAdditionalHints(BiConsumer<Item, Component> consumer) {
+	@LoadEvent
+	public final void mySetup(ZCommonSetup event) {
+		corundumTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "corundum"));
+	}
+
+	@PlayEvent
+	public void addAdditionalHints(ZGatherHints consumer) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.corundum_cluster_grow");
 
 		if(ModuleLoader.INSTANCE.isModuleEnabled(BeaconRedirectionModule.class))
@@ -108,12 +114,6 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 
 		ClusterConnection connection = new ClusterConnection(cluster);
 		IIndirectConnector.INDIRECT_STICKY_BLOCKS.add(Pair.of(connection::isValidState, connection));
-	}
-
-	@Override
-	public void setup() {
-		super.setup();
-		corundumTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "corundum"));
 	}
 
 	@Override

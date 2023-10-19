@@ -13,18 +13,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.ClientTicker;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZKeyMapping;
 
-@LoadModule(category = ModuleCategory.CLIENT, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class AutoWalkKeybindModule extends QuarkModule {
 
 	@Config public static boolean drawHud = true;
@@ -37,9 +37,9 @@ public class AutoWalkKeybindModule extends QuarkModule {
 	private boolean hadAutoJump;
 	private boolean shouldAccept;
 
-	@Override
+	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void registerKeybinds(RegisterKeyMappingsEvent event) {
+	public void registerKeybinds(ZKeyMapping event) {
 		keybind = ModKeybindHandler.init(event, "autorun", null, ModKeybindHandler.MISC_GROUP);
 	}
 
@@ -69,7 +69,7 @@ public class AutoWalkKeybindModule extends QuarkModule {
 			int y = hudHeight;
 
 			String displayMessage = message;
-			int dots = (ClientTicker.ticksInGame / 10) % 2;
+			int dots = (QuarkClient.ticker.ticksInGame / 10) % 2;
 			switch(dots) {
 			case 0 -> displayMessage = "OoO " + message + " oOo";
 			case 1 -> displayMessage = "oOo " + message + " OoO";

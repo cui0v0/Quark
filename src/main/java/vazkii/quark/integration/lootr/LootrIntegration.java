@@ -7,11 +7,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import noobanidus.mods.lootr.init.ModBlocks;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.module.VariantChestsModule;
 import vazkii.quark.integration.lootr.client.LootrVariantChestRenderer;
+import vazkii.zeta.event.client.ZPreTextureStitch;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -66,8 +66,8 @@ public class LootrIntegration implements ILootrIntegration {
 			lootrChests.put(VariantChestsModule.trappedChests.get(i), trappedChests.get(i));
 		}
 
-		RegistryHelper.register(chestTEType, "lootr_variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-		RegistryHelper.register(trappedChestTEType, "lootr_variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(chestTEType, "lootr_variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(trappedChestTEType, "lootr_variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class LootrIntegration implements ILootrIntegration {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void stitch(TextureStitchEvent.Pre event) {
+	public void stitch(ZPreTextureStitch event) {
 		for (Block b : allChests)
 			LootrVariantChestRenderer.accept(event, b);
 	}

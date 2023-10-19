@@ -3,26 +3,27 @@ package vazkii.quark.base.network.message;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
-import vazkii.arl.network.IMessage;
+
+import vazkii.zeta.network.IZetaMessage;
+import vazkii.zeta.network.IZetaNetworkEventContext;
 
 import java.io.Serial;
 
-public class ChangeHotbarMessage implements IMessage {
+public class ChangeHotbarMessage implements IZetaMessage {
 
 	@Serial
 	private static final long serialVersionUID = -3942423443215625756L;
 
 	public int bar;
 
-	public ChangeHotbarMessage() { }
+	public ChangeHotbarMessage() {}
 
 	public ChangeHotbarMessage(int bar) {
 		this.bar = bar;
 	}
 
 	@Override
-	public boolean receive(NetworkEvent.Context context) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		context.enqueueWork(() -> {
 			Player player = context.getSender();
 

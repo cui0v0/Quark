@@ -4,28 +4,29 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
-import vazkii.arl.network.IMessage;
+
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
+import vazkii.zeta.network.IZetaMessage;
+import vazkii.zeta.network.IZetaNetworkEventContext;
 
 import java.io.Serial;
 
-public class HandleBackpackMessage implements IMessage {
+public class HandleBackpackMessage implements IZetaMessage {
 
 	@Serial
 	private static final long serialVersionUID = 3474816381329541425L;
 
 	public boolean open;
 
-	public HandleBackpackMessage() { }
+	public HandleBackpackMessage() {}
 
 	public HandleBackpackMessage(boolean open) {
 		this.open = open;
 	}
 
 	@Override
-	public boolean receive(NetworkEvent.Context context) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		ServerPlayer player = context.getSender();
 		context.enqueueWork(() -> {
 			if(open) {

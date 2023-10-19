@@ -35,7 +35,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.UndergroundBiomeHandler;
@@ -43,7 +42,6 @@ import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.AdventuringTimeModifier;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
@@ -55,8 +53,11 @@ import vazkii.quark.content.world.block.GlowShroomRingBlock;
 import vazkii.quark.content.world.block.HugeGlowShroomBlock;
 import vazkii.quark.content.world.feature.GlowExtrasFeature;
 import vazkii.quark.content.world.feature.GlowShroomsFeature;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.WORLD)
+@LoadModule(category = "world")
 public class GlimmeringWealdModule extends QuarkModule {
 
 	private static final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
@@ -86,8 +87,8 @@ public class GlimmeringWealdModule extends QuarkModule {
 	@Config.Max(2)
 	public static double maxDepthRange = 2;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		glow_shroom = new GlowShroomBlock(this);
 		glow_lichen_growth = new GlowLichenGrowthBlock(this);
 		glow_shroom_block = new HugeGlowShroomBlock("glow_shroom_block", this, true);
@@ -102,9 +103,10 @@ public class GlimmeringWealdModule extends QuarkModule {
 
 	}
 
-	@Override
-	public void postRegister() {
-		RegistryHelper.register(makeBiome(), Registry.BIOME_REGISTRY);
+	@LoadEvent
+	public void postRegister(ZRegister.Post e) {
+		Biome obj = makeBiome();
+		Quark.ZETA.registry.register(obj, Registry.BIOME_REGISTRY);
 		float wmin = (float) minDepthRange;
 		float wmax = (float) maxDepthRange;
 		if(wmin >= wmax){
@@ -118,11 +120,11 @@ public class GlimmeringWealdModule extends QuarkModule {
 		QuarkAdvancementHandler.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY)));
 	}
 
-	@Override
-	public void setup() {
+	@LoadEvent
+	public void setup(ZCommonSetup e) {
 		glowShroomFeedablesTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "glow_shroom_feedables"));
 
-		enqueue(() -> {
+		e.enqueueWork(() -> {
 			ComposterBlock.COMPOSTABLES.put(glow_shroom.asItem(), 0.65F);
 			ComposterBlock.COMPOSTABLES.put(glow_shroom_block.asItem(), 0.65F);
 			ComposterBlock.COMPOSTABLES.put(glow_shroom_stem.asItem(), 0.65F);
@@ -140,7 +142,7 @@ public class GlimmeringWealdModule extends QuarkModule {
 	private static Holder<PlacedFeature> place(String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
 		String name = Quark.MOD_ID + ":" + featureName;
 
-		RegistryHelper.register(feature, name, Registry.FEATURE_REGISTRY);
+		Quark.ZETA.registry.register(feature, name, Registry.FEATURE_REGISTRY);
 		Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> configured = FeatureUtils.register(name, feature, NoneFeatureConfiguration.NONE);
 		return PlacementUtils.register(name, configured, placer);
 	}
@@ -169,7 +171,7 @@ public class GlimmeringWealdModule extends QuarkModule {
 
 		Music music = Musics.createGameMusic(QuarkSounds.MUSIC_GLIMMERING_WEALD);
 		Biome biome = OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, mobs, settings, music);
-		RegistryHelper.setInternalName(biome, BIOME_NAME);
+		Quark.ZETA.registry.setInternalName(biome, BIOME_NAME);
 
 		return biome;
 	}

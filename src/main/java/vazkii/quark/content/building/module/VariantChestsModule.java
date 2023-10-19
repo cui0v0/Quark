@@ -26,20 +26,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.arl.util.RegistryHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
@@ -53,6 +50,12 @@ import vazkii.quark.content.building.client.render.be.VariantChestRenderer;
 import vazkii.quark.content.building.recipe.MixedExclusionRecipe;
 import vazkii.quark.integration.lootr.ILootrIntegration;
 import vazkii.quark.mixin.accessor.AccessorAbstractChestedHorse;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZLoadComplete;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.event.client.ZPreTextureStitch;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -60,7 +63,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@LoadModule(category = ModuleCategory.BUILDING, hasSubscriptions = true, antiOverlap = { "woodworks" })
+@LoadModule(category = "building", hasSubscriptions = true, antiOverlap = { "woodworks" })
 public class VariantChestsModule extends QuarkModule {
 
 	private static final String DONK_CHEST = "Quark:DonkChest";
@@ -93,8 +96,8 @@ public class VariantChestsModule extends QuarkModule {
 	@Config(description = "Chests to put in structures. It's preferred to use worldgen tags for this. The format per entry is \"structure=chest\", where \"structure\" is a structure ID, and \"chest\" is a block ID, which must correspond to a standard chest block.")
 	public static List<String> structureChests = new ArrayList<>();
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":mixed_exclusion", MixedExclusionRecipe.SERIALIZER);
 
 		VANILLA_WOODS.forEach(s -> addChest(s.name(), Blocks.CHEST));
@@ -107,8 +110,8 @@ public class VariantChestsModule extends QuarkModule {
 		StructureBlockReplacementHandler.addReplacement(VariantChestsModule::getGenerationChestBlockState);
 	}
 
-	@Override
-	public void postRegister() {
+	@LoadEvent
+	public void postRegister(ZRegister.Post e) {
 		chestTEType = registerChests(VariantChestBlockEntity::new, () -> chestTEType,
 			VariantChestBlock::new, VariantChestBlock.Compat::new, chestMappings,
 			allChests::addAll, chests::addAll);
@@ -116,30 +119,27 @@ public class VariantChestsModule extends QuarkModule {
 			VariantTrappedChestBlock::new, VariantTrappedChestBlock.Compat::new, trappedChestMappings,
 			allChests::addAll, trappedChests::addAll);
 
-		RegistryHelper.register(chestTEType, "variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-		RegistryHelper.register(trappedChestTEType, "variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(chestTEType, "variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(trappedChestTEType, "variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
 		ILootrIntegration.INSTANCE.postRegister();
 	}
 
-	@Override
-	public void loadComplete() {
+	@LoadEvent
+	public void loadComplete(ZLoadComplete e) {
 		ILootrIntegration.INSTANCE.loadComplete();
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		BlockEntityRenderers.register(chestTEType, VariantChestRenderer::new);
 		BlockEntityRenderers.register(trappedChestTEType, VariantChestRenderer::new);
 
 		ILootrIntegration.INSTANCE.clientSetup();
 	}
 
-	@Override
-	public void configChanged() {
-		super.configChanged();
-
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
 		manualChestMappings.clear();
@@ -249,8 +249,8 @@ public class VariantChestsModule extends QuarkModule {
 		return BlockEntityType.Builder.<T>of(factory, blockTypes.toArray(new Block[0])).build(null);
 	}
 
-	@Override
-	public void textureStitch(TextureStitchEvent.Pre event) {
+	@LoadEvent
+	public void textureStitch(ZPreTextureStitch event) {
 		if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
 			for (Block b : allChests)
 				VariantChestRenderer.accept(event, b);

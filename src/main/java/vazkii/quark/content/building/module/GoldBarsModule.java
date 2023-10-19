@@ -7,15 +7,17 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import vazkii.quark.base.block.QuarkPaneBlock;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
+import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = ModuleCategory.BUILDING)
+@LoadModule(category = "building")
 public class GoldBarsModule extends QuarkModule {
 
 	@Config public static boolean generateInNetherFortress = true;
@@ -24,15 +26,15 @@ public class GoldBarsModule extends QuarkModule {
 
 	public static Block gold_bars;
 
-	@Override
-	public void register() {
-		gold_bars = new QuarkPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderTypeSkeleton.CUTOUT);
+	@LoadEvent
+	public final void register(ZRegister event) {
+		gold_bars = new QuarkPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
 
 		StructureBlockReplacementHandler.addReplacement(GoldBarsModule::getGenerationBarBlockState);
 	}
 
-	@Override
-	public void configChanged() {
+	@LoadEvent
+	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
 

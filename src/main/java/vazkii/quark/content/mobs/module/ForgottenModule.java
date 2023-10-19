@@ -20,12 +20,11 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.arl.util.RegistryHelper;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleCategory;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
@@ -33,8 +32,11 @@ import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.content.mobs.client.render.entity.ForgottenRenderer;
 import vazkii.quark.content.mobs.entity.Forgotten;
 import vazkii.quark.content.mobs.item.ForgottenHatItem;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.client.ZClientSetup;
 
-@LoadModule(category = ModuleCategory.MOBS, hasSubscriptions = true)
+@LoadModule(category = "mobs", hasSubscriptions = true)
 public class ForgottenModule extends QuarkModule {
 
 	public static EntityType<Forgotten> forgottenType;
@@ -46,8 +48,8 @@ public class ForgottenModule extends QuarkModule {
 
 	@Config public int maxHeightForSpawn = 0;
 
-	@Override
-	public void register() {
+	@LoadEvent
+	public final void register(ZRegister event) {
 		forgotten_hat = new ForgottenHatItem(this);
 
 		forgottenType = EntityType.Builder.of(Forgotten::new, MobCategory.MONSTER)
@@ -56,7 +58,7 @@ public class ForgottenModule extends QuarkModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Forgotten(forgottenType, world))
 				.build("forgotten");
 
-		RegistryHelper.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
 
 		EntityAttributeHandler.put(forgottenType, Forgotten::registerAttributes);
@@ -64,9 +66,8 @@ public class ForgottenModule extends QuarkModule {
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup() {
+	@LoadEvent
+	public final void clientSetup(ZClientSetup event) {
 		EntityRenderers.register(forgottenType, ForgottenRenderer::new);
 	}
 
