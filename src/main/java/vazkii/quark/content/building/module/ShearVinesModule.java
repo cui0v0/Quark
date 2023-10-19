@@ -2,6 +2,9 @@ package vazkii.quark.content.building.module;
 
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -18,17 +21,19 @@ import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.QuarkModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.building.block.CutVineBlock;
 import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.ZRightClickBlock;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.event.client.ZAddBlockColorHandlers;
+import vazkii.zeta.event.client.ZAddItemColorHandlers;
+import vazkii.zeta.module.ZetaLoadModule;
 
-@LoadModule(category = "building", hasSubscriptions = true)
+@ZetaLoadModule(category = "building")
 public class ShearVinesModule extends QuarkModule {
 
 	public static Block cut_vine;
@@ -40,10 +45,10 @@ public class ShearVinesModule extends QuarkModule {
 		cut_vine = new CutVineBlock(this);
 	}
 	
-	@SubscribeEvent
-	public void onRightClick(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent
+	public void onRightClick(ZRightClickBlock event) {
 		ItemStack stack = event.getItemStack();
-		if(stack.canPerformAction(ToolActions.SHEARS_CARVE)) {
+		if(stack.canPerformAction(ToolActions.SHEARS_CARVE)) { //TODO: forge only API
 			BlockPos pos = event.getPos();
 			Level world = event.getLevel();
 			BlockState state = world.getBlockState(pos);
@@ -76,5 +81,19 @@ public class ShearVinesModule extends QuarkModule {
 			}
 		}
 	}
-	
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ShearVinesModule {
+		@LoadEvent
+		public void blockColors(ZAddBlockColorHandlers event) {
+			BlockState vineState = Blocks.VINE.defaultBlockState();
+			event.register((state, world, pos, tintIndex) -> Minecraft.getInstance().getBlockColors().getColor(vineState, world, pos, tintIndex), cut_vine);
+		}
+
+		@LoadEvent
+		public void itemColors(ZAddItemColorHandlers event) {
+			ItemStack vineStack = new ItemStack(Items.VINE);
+			event.register((stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(vineStack, tintIndex), cut_vine);
+		}
+	}
 }

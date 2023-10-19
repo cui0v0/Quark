@@ -4,6 +4,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@Deprecated(forRemoval = true) //not side-safe
 public interface IZetaItemColorProvider {
 
 	@OnlyIn(Dist.CLIENT)

@@ -75,6 +75,7 @@ public class ForgeZeta extends Zeta {
 		modbus.addListener(this::commonSetup);
 		modbus.addListener(this::loadComplete);
 
+		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::rightClickBlockLow);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::livingDeathLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::playNoteBlock);
@@ -97,6 +98,10 @@ public class ForgeZeta extends Zeta {
 
 	public void loadComplete(FMLLoadCompleteEvent e) {
 		loadBus.fire(new ForgeZLoadComplete(e));
+	}
+
+	public void rightClickBlock(PlayerInteractEvent.RightClickBlock e) {
+		playBus.fire(new ForgeZRightClickBlock(e));
 	}
 
 	public void rightClickBlockLow(PlayerInteractEvent.RightClickBlock e) {

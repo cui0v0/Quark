@@ -19,6 +19,7 @@ import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.event.client.ZFirstClientTick;
 import vazkii.zeta.event.client.ZRegisterReloadListeners;
+import vazkii.zetaimplforge.event.client.ForgeZAddBlockColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddItemColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddModelLayers;
 import vazkii.zetaimplforge.event.client.ForgeZAddModels;
@@ -59,13 +60,14 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPost);
 	}
 
-	public void registerBlockColors(RegisterColorHandlersEvent.Block evt) {
-		z.registry.submitBlockColors(evt::register);
+	public void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+		loadBus.fire(new ForgeZAddBlockColorHandlers(event));
+		z.registry.submitBlockColors(event::register); //TODO: can be removed if IZetaBlockColorProvider goes
 	}
 
 	public void registerItemColors(RegisterColorHandlersEvent.Item event) {
 		loadBus.fire(new ForgeZAddItemColorHandlers(event));
-		z.registry.submitItemColors(event::register);
+		z.registry.submitItemColors(event::register); //TODO: can be removed if IZetaItemColorProvider goes
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
