@@ -2,7 +2,6 @@ package vazkii.quark.base.client.config;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.api.config.IConfigObject;
@@ -12,8 +11,6 @@ import vazkii.zeta.module.ZetaCategory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public final class IngameConfigHandler implements IConfigCallback {
@@ -43,12 +40,6 @@ public final class IngameConfigHandler implements IConfigCallback {
 			currCategory.close();
 			currCategory = currCategory.getParent();
 		}
-	}
-
-	@Override
-	public <T> void addEntry(ConfigValue<T> value, T default_, Supplier<T> getter, String comment, Predicate<Object> restriction) {
-		if(currCategory != null)
-			currCategory.addEntry(value, default_, getter, comment, restriction);
 	}
 
 	public IConfigObject<Boolean> getCategoryEnabledObject(ZetaCategory category) {

@@ -6,6 +6,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
 import vazkii.zeta.client.ClientTicker;
+import vazkii.zeta.config.IZetaConfigInternals;
+import vazkii.zeta.config.SectionDefinition;
+import vazkii.zeta.config.WeirdConfigSingleton;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -40,11 +43,15 @@ public abstract class Zeta {
 	public final ZetaModuleManager modules;
 	public final ZetaRegistry registry;
 
+	public final WeirdConfigSingleton weirdConfigSingleton = new WeirdConfigSingleton();
+
 	//TODO: move to ZetaClient. Some bits of the server *do* actually need this for some raisin (config code)
 	@Deprecated public final ClientTicker ticker_SHOULD_NOT_BE_HERE;
 
 	public abstract ZetaSide getSide();
 	public abstract boolean isModLoaded(String modid);
+
+	public abstract IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection);
 
 	public abstract ZetaRegistry createRegistry(String modid);
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);

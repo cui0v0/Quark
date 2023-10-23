@@ -45,20 +45,7 @@ public class CategoryScreen extends AbstractScrollingWidgetScreen {
 
 		int left = 20;
 
-		// change name for externals
 		String modName = WordUtils.capitalizeFully(Quark.MOD_ID);
-		IConfigCategory currCategory = category;
-		while(currCategory != null)
-			currCategory = currCategory.getParent();
-
-		if(currCategory != null) {
-			modName = currCategory.getName();
-			if(modName.matches("common|client")) {
-				currCategory = currCategory.getParent();
-				modName = currCategory.getName();
-			}
-		}
-
 		font.draw(mstack, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", modName), left, 10, 0x48ddbc);
 		font.draw(mstack, breadcrumbs, left, 20, 0xFFFFFF);
 	}

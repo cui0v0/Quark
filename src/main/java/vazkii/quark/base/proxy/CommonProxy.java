@@ -25,8 +25,11 @@ import vazkii.quark.base.recipe.*;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.module.LegacyQuarkModuleFinder;
+import vazkii.zeta.config.IZetaConfigInternals;
+import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModuleManager;
@@ -41,6 +44,9 @@ public class CommonProxy {
 	private int lastConfigChange = -11;
 	public static boolean jingleTheBells = false;
 	private boolean configGuiSaving = false;
+
+	//TODO: better spot
+	private IZetaConfigInternals iZetaConfigInternals;
 
 	public void start() {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
@@ -85,8 +91,9 @@ public class CommonProxy {
 		Quark.ZETA.modules.load(new ModFileScanDataModuleFinder(Quark.MOD_ID)
 			.and(new LegacyQuarkModuleFinder())); //TODO: no
 
-		//legacy stuff at this point (notably, all the configuration is in here)
-		ModuleLoader.INSTANCE.start();
+		//TODO: find somewhere better to put this
+		SectionDefinition rootConfig = Quark.ZETA.weirdConfigSingleton.makeRootConfig(GeneralConfig.INSTANCE, Quark.ZETA.modules);
+		iZetaConfigInternals = Quark.ZETA.makeConfigInternals(rootConfig);
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::configChanged);
@@ -101,6 +108,11 @@ public class CommonProxy {
 	@LoadEvent
 	public void setup(ZCommonSetup event) {
 		handleQuarkConfigChange();
+	}
+
+	@LoadEvent
+	public void register(ZRegister heck) {
+		Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().registerConfigBoundElements();
 	}
 
 	//forge event
@@ -118,9 +130,14 @@ public class CommonProxy {
 		lastConfigChange = Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame;
 	}
 
+	//TODO: mess
 	public void handleQuarkConfigChange() {
-		ModuleLoader.INSTANCE.configChanged();
+		//ModuleLoader.INSTANCE.configChanged();
+		Quark.ZETA.weirdConfigSingleton.onReload(iZetaConfigInternals); //refreshes all the @Config annotations with data from the config
+		//Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().clear();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
+		if(ModuleLoader.INSTANCE.onConfigReloadJEI != null)
+			ModuleLoader.INSTANCE.onConfigReloadJEI.run();
 		EntitySpawnHandler.refresh();
 		SyncedFlagHandler.sendFlagInfoToPlayers();
 	}

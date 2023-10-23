@@ -131,10 +131,9 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 	}
 
 	@Override
-	public <T> IConfigObject<T> addEntry(ConfigValue<T> value, T default_, Supplier<T> getter, @Nonnull String comment, @Nonnull Predicate<Object> restriction) {
+	public <T> void addEntry(ConfigValue<T> value, T default_, Supplier<T> getter, @Nonnull String comment, @Nonnull Predicate<Object> restriction) {
 		IConfigObject<T> obj = ConfigObject.create(value, comment, default_, getter, restriction, this);
 		addEntry(obj, default_);
-		return obj;
 	}
 
 	public <T> void addEntry(IConfigObject<T> obj, T default_) {

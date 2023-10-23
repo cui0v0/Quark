@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -12,7 +13,10 @@ import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -20,11 +24,15 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import vazkii.zeta.Zeta;
+import vazkii.zeta.config.IZetaConfigInternals;
+import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.ZResult;
 import vazkii.zeta.network.ZetaNetworkHandler;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
+import vazkii.zetaimplforge.config.ForgeBackedConfig;
+import vazkii.zetaimplforge.config.TerribleForgeConfigHackery;
 import vazkii.zetaimplforge.event.ForgeZCommonSetup;
 import vazkii.zetaimplforge.event.ForgeZLivingDeath;
 import vazkii.zetaimplforge.event.ForgeZLoadComplete;
@@ -53,6 +61,22 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public boolean isModLoaded(String modid) {
 		return ModList.get().isLoaded(modid);
+	}
+
+	@Override
+	public IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection) {
+		ForgeConfigSpec.Builder bob = new ForgeConfigSpec.Builder();
+
+		ForgeBackedConfig forge = new ForgeBackedConfig(rootSection, bob);
+		ForgeConfigSpec spec = bob.build();
+
+		ModContainer container = ModLoadingContext.get().getActiveContainer();
+		ModConfig modCfg = new ModConfig(ModConfig.Type.COMMON, spec, container);
+		container.addConfig(modCfg);
+
+		TerribleForgeConfigHackery.loadConfigEarly(modCfg);
+
+		return forge;
 	}
 
 	@Override

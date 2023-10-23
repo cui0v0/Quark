@@ -3,12 +3,9 @@ package vazkii.quark.base.client.config.screen;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.api.config.IConfigCategory;
-import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
