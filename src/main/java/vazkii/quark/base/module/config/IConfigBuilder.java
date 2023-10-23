@@ -14,10 +14,11 @@ public interface IConfigBuilder {
 	void pop();
 	void comment(String s);
 
-	ForgeConfigSpec.ConfigValue<List<?>> defineList(String name, List<?> default_, Supplier<List<?>> getter, Predicate<Object> predicate);
-	ForgeConfigSpec.ConfigValue<?> defineObj(String name, Object default_, Supplier<Object> getter, Predicate<Object> predicate);
+	<T> ForgeConfigSpec.ConfigValue<List<? extends T>> defineList(String name, List<? extends T> default_, Supplier<List<? extends T>> getter, Predicate<Object> predicate);
+	<T> ForgeConfigSpec.ConfigValue<T> defineObj(String name, T default_, Supplier<T> getter, Predicate<Object> predicate);
 
-	ForgeConfigSpec.ConfigValue<Boolean> defineBool(String name, Supplier<Boolean> getter, boolean default_);
-	ForgeConfigSpec.ConfigValue<Integer> defineInt(String name, Supplier<Integer> getter, int default_);
-	ForgeConfigSpec.ConfigValue<Double> defineDouble(String name, Supplier<Double> getter, double default_);
+	default ForgeConfigSpec.ConfigValue<Boolean> defineBool(String name, Supplier<Boolean> getter, boolean default_) {
+		return defineObj(name, default_, getter, x -> true);
+	}
+
 }

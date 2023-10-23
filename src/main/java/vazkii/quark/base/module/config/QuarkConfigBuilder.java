@@ -48,20 +48,20 @@ public class QuarkConfigBuilder implements IConfigBuilder {
 	}
 
 	@Override
-	public ConfigValue<List<?>> defineList(String name, List<?> default_, Supplier<List<?>> getter, Predicate<Object> predicate) {
+	public <T> ConfigValue<List<? extends T>> defineList(String name, List<? extends T> default_, Supplier<List<? extends T>> getter, Predicate<Object> predicate) {
 		beforeDefine();
-		ConfigValue<List<?>> value = parent.defineList(name, default_, predicate);
+		ConfigValue<List<? extends T>> value = parent.defineList(name, default_, predicate);
 		onDefine(value, default_, getter, predicate);
 		return value;
 	}
 
 	@Override
-	public ConfigValue<?> defineObj(String name, Object default_, Supplier<Object> getter, Predicate<Object> predicate) {
+	public <T> ConfigValue<T> defineObj(String name, T default_, Supplier<T> getter, Predicate<Object> predicate) {
 		if(default_ == null)
 			throw new RuntimeException("Can't define object " + name + " with null default @ " + layers.toString());
 		
 		beforeDefine();
-		ConfigValue<Object> value = parent.define(name, default_, predicate);
+		ConfigValue<T> value = parent.define(name, default_, predicate);
 		onDefine(value, default_, getter, predicate);
 		return value;
 	}
@@ -74,24 +74,8 @@ public class QuarkConfigBuilder implements IConfigBuilder {
 		return value;
 	}
 
-	@Override
-	public ConfigValue<Integer> defineInt(String name, Supplier<Integer> getter, int default_) {
-		beforeDefine();
-		ConfigValue<Integer> value = parent.define(name, default_);
-		onDefine(value, default_, getter, o -> true);
-		return value;
-	}
-	
-	@Override
-	public ConfigValue<Double> defineDouble(String name, Supplier<Double> getter, double default_) {
-		beforeDefine();
-		ConfigValue<Double> value = parent.define(name, default_);
-		onDefine(value, default_, getter, o -> true);
-		return value;
-	}
-
 	private void beforeDefine() {
-		if(currComment.length() > 0)
+		if(!currComment.isEmpty())
 			parent.comment(currComment);
 	}
 
