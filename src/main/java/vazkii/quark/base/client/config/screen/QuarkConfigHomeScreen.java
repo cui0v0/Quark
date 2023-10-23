@@ -1,9 +1,14 @@
 package vazkii.quark.base.client.config.screen;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,8 +23,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
 import vazkii.quark.api.config.IConfigCategory;
+import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
@@ -43,72 +48,75 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 	protected void init() {
 		super.init();
 
-		final int perLine = 3;
-
-		int pad = 10;
-		int vpad = 23;
-		int bWidth = 120;
-		int left = width / 2 - ((bWidth + pad) * perLine / 2) + 4;
-		int vStart = 70;
-
-		int i = 0;
-
 		List<ZetaCategory> categories = Quark.ZETA.modules.getInhabitedCategories();
+		int buttonCount = categories.size() + 1;
 
-		int catCount = categories.size() + 1;
+		final int perLine = 3;
+		List<Integer> categoryButtonXPositions = new ArrayList<>(buttonCount);
+		for(int i = 0; i < buttonCount; i += perLine)
+			categoryButtonXPositions.addAll(centeredRow(width / 2, 120, 10, Math.min(buttonCount - i, perLine)));
 
-		boolean shiftedLeft = false;
-		int useLeft = left;
+		for(int i = 0; i < buttonCount; i++) {
+			int row = i / perLine;
 
-		for(ZetaCategory category : categories) {
-			if(!shiftedLeft && catCount - i < perLine) {
-				useLeft = width / 2 - ((bWidth + pad) * (catCount - i) / 2);
-				shiftedLeft = true;
+			int x = categoryButtonXPositions.get(i);
+			int y = 70 + row * 23;
+			int bWidth = 120;
+
+			if(i < categories.size()) {
+				//a category button
+				ZetaCategory category = categories.get(i);
+				IConfigCategory ingameCategory = IngameConfigHandler.INSTANCE.getConfigCategory(category);
+
+				bWidth -= 20; //room for the checkbox
+				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(ingameCategory), category.icon.get(), categoryLink(ingameCategory)));
+				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, IngameConfigHandler.INSTANCE.getCategoryEnabledObject(category)));
+
+				boolean active = category.modsLoaded(Quark.ZETA);
+				mainButton.active = active;
+				checkButton.active = active;
+			} else {
+				//"General Settings"
+				IConfigCategory generalSettings = IngameConfigHandler.INSTANCE.getConfigCategory(null);
+				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSettings), categoryLink(generalSettings)));
 			}
-
-			int x = useLeft + (bWidth + pad) * (i % perLine);
-			int y = vStart + (i / perLine) * vpad;
-
-			IConfigCategory configCategory = IngameConfigHandler.INSTANCE.getConfigCategory(category);
-			Component comp = componentFor(configCategory);
-
-			Button icon = new IconButton(x, y, bWidth - 20, 20, comp, category.icon.get(), categoryLink(configCategory));
-			Button checkbox = new CheckboxButton(x + bWidth - 20, y, IngameConfigHandler.INSTANCE.getCategoryEnabledObject(category));
-
-			addRenderableWidget(icon);
-			addRenderableWidget(checkbox);
-
-			if(category.requiredMod != null && !ModList.get().isLoaded(category.requiredMod)) {
-				icon.active = false;
-				checkbox.active = false;
-			}
-
-			i++;
 		}
 
-		IConfigCategory cat = IngameConfigHandler.INSTANCE.getConfigCategory(null);
-		addRenderableWidget(new Button(useLeft + (bWidth + pad) * (i % perLine), vStart + (i / perLine) * vpad, bWidth, 20, componentFor(cat), categoryLink(cat)));
-		i++;
+		//save
+		addRenderableWidget(new Button(width / 2 - 100, height - 30, 200, 20, Component.translatable("quark.gui.config.save"), this::commit));
 
-		bWidth = 200;
-		addRenderableWidget(new Button(width / 2 - bWidth / 2, height - 30, bWidth, 20, Component.translatable("quark.gui.config.save"), this::commit));
+		//social buttons
+		List<Integer> socialButtonPlacements = centeredRow(width / 2, 20, 5, 5);
+		Iterator<Integer> iter = socialButtonPlacements.iterator();
+		addRenderableWidget(new SocialButton(iter.next(), height - 55, Component.translatable("quark.gui.config.social.website"), 0x48ddbc, 0, webLink("https://quarkmod.net")));
+		addRenderableWidget(new SocialButton(iter.next(), height - 55, Component.translatable("quark.gui.config.social.discord"), 0x7289da, 1, webLink("https://discord.gg/vm")));
+		addRenderableWidget(new SocialButton(iter.next(), height - 55, Component.translatable("quark.gui.config.social.patreon"), 0xf96854, 2, webLink("https://patreon.com/vazkii")));
+		addRenderableWidget(new SocialButton(iter.next(), height - 55, Component.translatable("quark.gui.config.social.forum"), 0xb650d8, 3, webLink("https://forum.violetmoon.org")));
+		addRenderableWidget(new SocialButton(iter.next(), height - 55, Component.translatable("quark.gui.config.social.twitter"), 0x1da1f2, 4, webLink("https://twitter.com/VazkiiMods")));
+	}
 
-		vStart = height - 55;
-		bWidth = 20;
-		pad = 5;
-		left = (width - (bWidth + pad) * 5) / 2;
-		addRenderableWidget(new SocialButton(left, vStart, Component.translatable("quark.gui.config.social.website"), 0x48ddbc, 0, webLink("https://quarkmod.net")));
-		addRenderableWidget(new SocialButton(left + bWidth + pad, vStart, Component.translatable("quark.gui.config.social.discord"), 0x7289da, 1, webLink("https://discord.gg/vm")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 2, vStart, Component.translatable("quark.gui.config.social.patreon"), 0xf96854, 2, webLink("https://patreon.com/vazkii")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 3, vStart, Component.translatable("quark.gui.config.social.forum"), 0xb650d8, 3, webLink("https://forum.violetmoon.org")));
-		addRenderableWidget(new SocialButton(left + (bWidth + pad) * 4, vStart, Component.translatable("quark.gui.config.social.twitter"), 0x1da1f2, 4, webLink("https://twitter.com/VazkiiMods")));
+	private static List<Integer> centeredRow(int centerX, int buttonWidth, int hpad, int count) {
+		// https://i.imgur.com/ozRA3xw.png
+
+		int slop = (count % 2 == 0 ? hpad : buttonWidth) / 2;
+		int fullButtonsLeftOfCenter = count / 2; //rounds down
+		int fullPaddingsLeftOfCenter = Math.max(0, (count - 1) / 2); //rounds down
+		int startX = centerX - slop - (fullButtonsLeftOfCenter * buttonWidth) - (fullPaddingsLeftOfCenter * hpad);
+
+		List<Integer> result = new ArrayList<>(count);
+		int x = startX;
+		for(int i = 0; i < count; i++) {
+			result.add(x);
+			x += buttonWidth + hpad;
+		}
+		return result;
 	}
 
 	private static Component componentFor(IConfigCategory c) {
 		MutableComponent comp = Component.translatable("quark.category." + c.getName());
 
 		if(c.isDirty())
-			comp.append(Component.translatable("*").withStyle(ChatFormatting.GOLD));
+			comp.append(Component.literal("*").withStyle(ChatFormatting.GOLD));
 
 		return comp;
 	}

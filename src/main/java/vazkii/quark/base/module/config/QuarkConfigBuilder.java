@@ -14,7 +14,7 @@ public class QuarkConfigBuilder implements IConfigBuilder {
 	private final ForgeConfigSpec.Builder parent;
 	private final IConfigCallback callback;
 	
-	private Stack<String> layers = new Stack<>();
+	private final Stack<String> layers = new Stack<>(); //Only for error reporting
 	private String currComment = "";
 	
 	public QuarkConfigBuilder(ForgeConfigSpec.Builder parent, IConfigCallback callback) {
@@ -63,14 +63,6 @@ public class QuarkConfigBuilder implements IConfigBuilder {
 		beforeDefine();
 		ConfigValue<T> value = parent.define(name, default_, predicate);
 		onDefine(value, default_, getter, predicate);
-		return value;
-	}
-
-	@Override
-	public ConfigValue<Boolean> defineBool(String name, Supplier<Boolean> getter, boolean default_) {
-		beforeDefine();
-		ForgeConfigSpec.BooleanValue value = parent.define(name, default_);
-		onDefine(value, default_, getter, o -> true);
 		return value;
 	}
 
