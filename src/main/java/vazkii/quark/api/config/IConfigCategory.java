@@ -15,14 +15,6 @@ public interface IConfigCategory extends IConfigElement {
 	IConfigCategory addCategory(String name, @Nonnull String comment, Object holderObject);
 	<T> IConfigElement addEntry(ConfigValue<T> value, T default_, Supplier<T> getter, @Nonnull String comment, @Nonnull Predicate<Object> restriction);
 
-	default <T> void addEntry(ConfigValue<T> forgeValue) {
-		addEntry(forgeValue, forgeValue.get(), forgeValue::get, "", o -> true);
-	}
-
-	default IConfigCategory addCategory(String name) {
-		return addCategory(name, "", null);
-	}
-
 	// getters you probably don't have any use for
 	String getPath();
 	int getDepth();

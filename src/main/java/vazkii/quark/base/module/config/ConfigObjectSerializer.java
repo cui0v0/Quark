@@ -5,7 +5,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.type.IConfigType;
-import vazkii.zeta.module.ZetaModule;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -54,7 +53,6 @@ public final class ConfigObjectSerializer {
 		if(name.isEmpty())
 			name = WordUtils.capitalizeFully(field.getName().replaceAll("(?<=.)([A-Z])", " $1"));
 
-		Config.Restriction restriction = field.getDeclaredAnnotation(Config.Restriction.class);
 		Config.Min min = field.getDeclaredAnnotation(Config.Min.class);
 		Config.Max max = field.getDeclaredAnnotation(Config.Max.class);
 		Config.Condition condition = field.getDeclaredAnnotation(Config.Condition.class);
@@ -65,33 +63,6 @@ public final class ConfigObjectSerializer {
 		if(!config.description().isEmpty()) {
 			builder.comment(config.description());
 			nl = "\n";
-		}
-
-		if (restriction != null) {
-			StringBuilder arrStr = new StringBuilder("[");
-
-			String[] values = restriction.value();
-			int lineLength = 0;
-
-			arrStr.append('[');
-			for (int i = 0; i < values.length; i++) {
-				String value = String.valueOf(values[i]);
-				arrStr.append(value);
-				lineLength += value.length();
-				if (i == values.length - 1)
-					arrStr.append(']');
-				else {
-					if (lineLength > 50) {
-						arrStr.append(",\n ");
-						lineLength = 0;
-					} else {
-						arrStr.append(", ");
-						lineLength += 2;
-					}
-				}
-			}
-
-			builder.comment(nl + "Allowed values: " + arrStr.toString());
 		}
 
 		if (min != null || max != null) {
@@ -131,9 +102,9 @@ public final class ConfigObjectSerializer {
 		ForgeConfigSpec.ConfigValue<?> value;
 		if (defaultValue instanceof List) {
 			Supplier<List<?>> listSupplier = () -> (List<?>) supplier.get();
-			value = builder.defineList(name, (List<?>) defaultValue, listSupplier, restrict(restriction, min, max, condition));
+			value = builder.defineList(name, (List<?>) defaultValue, listSupplier, restrict(min, max, condition));
 		} else
-			value = builder.defineObj(name, defaultValue, supplier, restrict(restriction, min, max, condition));
+			value = builder.defineObj(name, defaultValue, supplier, restrict(min, max, condition));
 
 		callbacks.add(() -> {
 			try {
@@ -150,15 +121,13 @@ public final class ConfigObjectSerializer {
 		});
 	}
 
-	private static Predicate<Object> restrict(@Nullable Config.Restriction restriction, @Nullable Config.Min min,
-											  @Nullable Config.Max max, @Nullable Config.Condition condition) {
-		String[] restrictions = restriction == null ? null : restriction.value();
+	private static Predicate<Object> restrict(@Nullable Config.Min min, @Nullable Config.Max max, @Nullable Config.Condition condition) {
 		double minVal = min == null ? -Double.MAX_VALUE : min.value();
 		double maxVal = max == null ? Double.MAX_VALUE : max.value();
 		boolean minExclusive = min != null && min.exclusive();
 		boolean maxExclusive = max != null && max.exclusive();
 
-		Predicate<Object> pred = (o) -> restrict(o, minVal, minExclusive, maxVal, maxExclusive, restrictions);
+		Predicate<Object> pred = (o) -> restrict(o, minVal, minExclusive, maxVal, maxExclusive);
 		if(condition != null){
 			try {
 				Constructor<? extends Predicate<Object>> constr = condition.value().getDeclaredConstructor();
@@ -172,7 +141,7 @@ public final class ConfigObjectSerializer {
 		return pred;
 	}
 
-	private static boolean restrict(Object o, double minVal, boolean minExclusive, double maxVal, boolean maxExclusive, String[] restrictions) {
+	private static boolean restrict(Object o, double minVal, boolean minExclusive, double maxVal, boolean maxExclusive) {
 		if (o == null)
 			return false;
 
@@ -189,15 +158,6 @@ public final class ConfigObjectSerializer {
 					return false;
 			} else if (maxVal < val)
 				return false;
-		}
-
-		if (o instanceof String && restrictions != null) {
-			for (String check : restrictions) {
-				if (o.equals(check))
-					return true;
-			}
-
-			return false;
 		}
 
 		return true;

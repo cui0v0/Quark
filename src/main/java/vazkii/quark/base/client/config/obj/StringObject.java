@@ -13,11 +13,6 @@ public class StringObject extends AbstractStringInputObject<String> {
 	}
 
 	@Override
-	protected String computeObjectString() {
-		return String.format("\"%s\"", currentObj.replaceAll("\"", "\\\""));
-	}
-
-	@Override
 	public String fromString(String s) {
 		return s;
 	}

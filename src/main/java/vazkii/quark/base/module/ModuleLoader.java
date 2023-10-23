@@ -38,10 +38,6 @@ public final class ModuleLoader {
 		config.makeSpec();
 	}
 
-	public ModConfig getConfig() {
-		return config.getConfig();
-	}
-
 	//TODO ZETA: bad hack that allows separating hints from the rest of the module system
 	public ConfigFlagManager getConfigFlagManager() {
 		return config.flagManager;

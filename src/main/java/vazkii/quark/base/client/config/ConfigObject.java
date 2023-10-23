@@ -1,6 +1,5 @@
 package vazkii.quark.base.client.config;
 
-import java.io.PrintStream;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -113,18 +112,6 @@ public abstract class ConfigObject<T> extends AbstractConfigElement implements I
 
 	public boolean wouldBeDirty(T testObject) {
 		return !loadedObj.equals(testObject);
-	}
-
-	@Override
-	public void print(String pad, PrintStream out) {
-		super.print(pad, out);
-
-		String objStr = computeObjectString();
-		out.printf("%s%s = %s%n", pad, displayName, objStr);
-	}
-
-	protected String computeObjectString() {
-		return currentObj.toString();
 	}
 
 	@Override

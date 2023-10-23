@@ -1,6 +1,5 @@
 package vazkii.quark.api.config;
 
-import java.io.PrintStream;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -21,6 +20,5 @@ public interface IConfigElement extends Comparable<IConfigElement> {
 
 	void refresh();
 	void reset(boolean hard);
-	void print(String pad, PrintStream out);
 
 }

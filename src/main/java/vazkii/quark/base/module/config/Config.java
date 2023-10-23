@@ -16,12 +16,6 @@ public @interface Config {
 
 	@Target(ElementType.FIELD)
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Restriction {
-		String[] value();
-	}
-
-	@Target(ElementType.FIELD)
-	@Retention(RetentionPolicy.RUNTIME)
 	@interface Condition {
 		Class<? extends Predicate<Object>> value();
 	}

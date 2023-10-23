@@ -1,6 +1,5 @@
 package vazkii.quark.base.client.config;
 
-import java.io.PrintStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,16 +152,6 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 		if(holderObject instanceof IWidgetProvider widgetProvider)
 			widgetProvider.addWidgets(parent, element, widgets);
 		else widgets.add(new WidgetWrapper(new PencilButton(230, 3, parent.categoryLink(this))));
-	}
-
-	@Override
-	public void print(String pad, PrintStream stream) {
-		stream.println();
-		super.print(pad, stream);
-		stream.printf("%s[%s]%n", pad, path);
-
-		final String newPad = String.format("\t%s", pad);
-		subElements.forEach(e -> e.print(newPad, stream));
 	}
 
 	@Override

@@ -41,10 +41,6 @@ public class ConfigResolver {
         this.flagManager = new ConfigFlagManager();
     }
 
-    public ModConfig getConfig() {
-        return config;
-    }
-
     public void registerConfigBoundElements() {
         flagManager.registerConfigBoundElements();
     }
@@ -60,10 +56,10 @@ public class ConfigResolver {
         this.config = new ModConfig(ModConfig.Type.COMMON, spec, container);
         container.addConfig(config);
         //load early for creative tabs
-		loadFromFile(config, container);
+        loadFromFile(config);
     }
 
-    private void loadFromFile(ModConfig modConfig, ModContainer container) {
+    private void loadFromFile(ModConfig modConfig) {
         //same stuff that forge config tracker does
 
         ConfigFileTypeHandler handler = modConfig.getHandler();
