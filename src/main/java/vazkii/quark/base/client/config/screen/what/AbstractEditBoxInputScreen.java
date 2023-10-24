@@ -24,6 +24,8 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 
 	@Override
 	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(mstack);
+
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
 		drawCenteredString(mstack, font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
@@ -41,7 +43,7 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 		input.setMaxLength(maxStringLength());
 		input.setResponder(this::onEdit);
 
-		setTo(changes.get(def));
+		forceUpdateWidgetsTo(get());
 
 		setInitialFocus(input);
 		addWidget(input);
@@ -50,7 +52,7 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 	protected void onEdit(String newString) {
 		T parsed = fromString(newString);
 		if(parsed != null && def.validate(parsed) && newString.length() < maxStringLength()) {
-			changes.set(def, parsed);
+			set(parsed);
 			input.setTextColor(VALID_COLOR);
 			updateButtonStatus(true);
 		} else {
@@ -60,7 +62,7 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 	}
 
 	@Override
-	protected void setTo(T value) {
+	protected void forceUpdateWidgetsTo(T value) {
 		//Test that the object isnt in some state where it'll be rejected
 		String asString = toString(value);
 		T roundtrip = fromString(asString);

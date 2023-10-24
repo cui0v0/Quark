@@ -1,8 +1,5 @@
 package vazkii.quark.base.client.config.screen.what;
 
-import javax.annotation.Nonnull;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import vazkii.quark.base.QuarkClient;
@@ -25,11 +22,12 @@ public abstract class AbstractInputScreen2<T> extends AbstractQScreen {
 		this.ext = QuarkClient.ZETA_CLIENT.clientConfigManager.getExt(def);
 	}
 
-	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(mstack);
+	protected T get() {
+		return changes.get(def);
+	}
 
-		super.render(mstack, mouseX, mouseY, partialTicks);
+	protected void set(T thing) {
+		changes.set(def, thing);
 	}
 
 	@Override
@@ -40,13 +38,13 @@ public abstract class AbstractInputScreen2<T> extends AbstractQScreen {
 			@Override
 			public void resetToDefault(Button b) {
 				super.resetToDefault(b);
-				setTo(changes.get(def));
+				forceUpdateWidgetsTo(changes.get(def));
 			}
 
 			@Override
 			public void discard(Button b) {
 				super.discard(b);
-				setTo(changes.get(def));
+				forceUpdateWidgetsTo(changes.get(def));
 			}
 		};
 		defaultDiscardDone.addWidgets(this::addRenderableWidget);
@@ -54,7 +52,7 @@ public abstract class AbstractInputScreen2<T> extends AbstractQScreen {
 		updateButtonStatus(true);
 	}
 
-	protected abstract void setTo(T value);
+	protected abstract void forceUpdateWidgetsTo(T value);
 
 	//call changes.set() first, so isDirty will return an up-to-date value
 	protected void updateButtonStatus(boolean valid) {

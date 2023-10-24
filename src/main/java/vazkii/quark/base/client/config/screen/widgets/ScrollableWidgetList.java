@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Deprecated
 public abstract class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetList.Entry<E>> extends ObjectSelectionList<E> {
 
 	public final S parent;

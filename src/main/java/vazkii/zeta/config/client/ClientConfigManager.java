@@ -1,5 +1,7 @@
 package vazkii.zeta.config.client;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import vazkii.zeta.config.Definition;
 import vazkii.zeta.config.SectionDefinition;
@@ -21,6 +23,8 @@ public class ClientConfigManager {
 				return (ClientDefinitionExt<D>) new IntegerClientDefinition();
 			else if(val.defaultValue instanceof Double)
 				return (ClientDefinitionExt<D>) new DoubleClientDefinition();
+			else if(val.defaultValue instanceof List<?>)
+				return (ClientDefinitionExt<D>) new StringListClientDefinition(); //Just hope it's a list of strings!!!11
 		}
 
 		//This cast is unsound, but Default never actually looks at its argument, so it's fineeeeee, right

@@ -1,6 +1,7 @@
 package vazkii.quark.base.client.config.screen.what;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,10 +23,33 @@ public class ScrollableWidgetList2<S extends Screen, E extends ScrollableWidgetL
 		this.parent = parent;
 	}
 
-	//making public
+	//protected -> public
 	@Override
 	public int addEntry(E entry) {
 		return super.addEntry(entry);
+	}
+
+	//protected -> public
+	@Override
+	protected void replaceEntries(Collection<E> newEntries) {
+		super.replaceEntries(newEntries);
+	}
+
+	//private -> public
+	public void scroll2(int amt) {
+		this.setScrollAmount(this.getScrollAmount() + (double)amt);
+	}
+
+	//protected -> public, and made more convenient (takes index instead of Entry)
+	public void ensureVisible2(int index) {
+		int i = this.getRowTop(index);
+		int j = i - this.y0 - 4 - this.itemHeight;
+		if (j < 0)
+			this.scroll2(j);
+
+		int k = this.y1 - i - this.itemHeight - this.itemHeight;
+		if (k < 0)
+			this.scroll2(-k);
 	}
 
 	@Override

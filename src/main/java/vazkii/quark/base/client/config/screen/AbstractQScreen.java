@@ -1,5 +1,7 @@
 package vazkii.quark.base.client.config.screen;
 
+import java.util.List;
+
 import net.minecraft.Util;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Button.OnPress;
@@ -10,6 +12,7 @@ import vazkii.quark.base.client.config.obj.AbstractStringInputObject;
 import vazkii.quark.base.client.config.obj.ListObject;
 import vazkii.quark.base.client.config.screen.what.DoubleInputScreen;
 import vazkii.quark.base.client.config.screen.what.IntegerInputScreen;
+import vazkii.quark.base.client.config.screen.what.StringListInputScreen;
 import vazkii.quark.base.client.config.screen.what.SectionScreen;
 import vazkii.quark.base.client.config.screen.what.StringInputScreen2;
 import vazkii.zeta.config.ChangeSet;
@@ -33,18 +36,8 @@ public abstract class AbstractQScreen extends Screen {
 		return b -> Util.getPlatform().openUri(url);
 	}
 
-	@Deprecated
-	public OnPress categoryLink(IConfigCategory category) {
-		return b -> minecraft.setScreen(new CategoryScreen(this, category));
-	}
-
 	public OnPress sectionLink(ChangeSet changes, SectionDefinition section) {
 		return b -> minecraft.setScreen(new SectionScreen(this, changes, section));
-	}
-
-	@Deprecated
-	public <T> OnPress stringInput(AbstractStringInputObject<T> object) {
-		return b -> minecraft.setScreen(new StringInputScreen<>(this, object));
 	}
 
 	public OnPress stringInput2(ChangeSet changes, ValueDefinition<String> def) {
@@ -57,6 +50,20 @@ public abstract class AbstractQScreen extends Screen {
 
 	public OnPress doubleInput(ChangeSet changes, ValueDefinition<Double> def) {
 		return b -> minecraft.setScreen(new DoubleInputScreen(this, changes, def));
+	}
+
+	public OnPress stringListInput(ChangeSet changes, ValueDefinition<List<String>> def) {
+		return b -> minecraft.setScreen(new StringListInputScreen(this, changes, def));
+	}
+
+	@Deprecated
+	public OnPress categoryLink(IConfigCategory category) {
+		return b -> minecraft.setScreen(new CategoryScreen(this, category));
+	}
+
+	@Deprecated
+	public <T> OnPress stringInput(AbstractStringInputObject<T> object) {
+		return b -> minecraft.setScreen(new StringInputScreen<>(this, object));
 	}
 
 	@Deprecated
