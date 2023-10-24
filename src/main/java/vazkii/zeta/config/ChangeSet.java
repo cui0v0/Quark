@@ -84,19 +84,21 @@ public class ChangeSet implements IZetaConfigInternals {
 			return internals.get(definition);
 	}
 
-	@Override
-	public void refresh(Definition thing) {
-		// NO-OP
-	}
-
 	// Application
 
 	public void applyAllChanges() {
 		changes.values().forEach(this::applyOneChange);
 		changes.clear();
+
+		flush();
 	}
 
 	private <T> void applyOneChange(Entry<T> entry) {
 		internals.set(entry.valueDef, entry.nextValue);
+	}
+
+	@Override
+	public void flush() {
+		internals.flush();
 	}
 }

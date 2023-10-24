@@ -59,10 +59,9 @@ public class ForgeBackedConfig implements IZetaConfigInternals {
 		forge.set(value);
 	}
 
-	//Not needed on Forge since the config auto refreshes
-	//TODO maybe not needed at all
 	@Override
-	public void refresh(Definition thing) {
-		// florp
+	public void flush() {
+		//they all point to the same FileConfig anyway
+		definitionsToValues.values().iterator().next().save();
 	}
 }

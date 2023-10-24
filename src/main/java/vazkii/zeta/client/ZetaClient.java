@@ -1,6 +1,7 @@
 package vazkii.zeta.client;
 
 import vazkii.zeta.Zeta;
+import vazkii.zeta.config.client.ClientConfigManager;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.ZetaEventBus;
@@ -13,6 +14,7 @@ public abstract class ZetaClient {
 
 		//this.ticker = new ClientTicker();
 		this.ticker = z.ticker_SHOULD_NOT_BE_HERE; //TODO, move ClientTicker into actual client code
+		this.clientConfigManager = new ClientConfigManager();
 	}
 
 	protected final Zeta z;
@@ -20,6 +22,7 @@ public abstract class ZetaClient {
 	protected final ZetaEventBus<IZetaPlayEvent> playBus;
 
 	public final ClientTicker ticker;
+	public final ClientConfigManager clientConfigManager;
 
 	public abstract void start();
 }

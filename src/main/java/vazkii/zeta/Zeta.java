@@ -60,6 +60,9 @@ public abstract class Zeta {
 
 		this.weirdConfigSingleton = new WeirdConfigSingleton(this, rootPojo);
 		this.configInternals = makeConfigInternals(weirdConfigSingleton.getRootConfig());
+
+		//the initial config load (TODO: might need to find a better spot for this)
+		weirdConfigSingleton.onReload(configInternals);
 	}
 
 	public abstract ZetaSide getSide();

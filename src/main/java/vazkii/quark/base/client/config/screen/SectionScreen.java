@@ -11,30 +11,20 @@ import org.apache.commons.lang3.text.WordUtils;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 import vazkii.quark.base.client.config.screen.widgets.SectionList;
+import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.SectionDefinition;
 
 public class SectionScreen extends AbstractScrollingWidgetScreen {
 
 	public final SectionDefinition section;
-	private String breadcrumbs;
+	protected final ChangeSet changes;
+	private final String breadcrumbs;
 
-	public SectionScreen(Screen parent, SectionDefinition section) {
+	public SectionScreen(Screen parent, ChangeSet changes, SectionDefinition section) {
 		super(parent);
 		this.section = section;
-	}
-
-	@Override
-	protected void init() {
-		super.init();
-
-//		breadcrumbs = section.getName();
-//		IConfigCategory currCategory = section.getParent();
-//		while(currCategory != null) {
-//			breadcrumbs = String.format("%s > %s", currCategory.getName(), breadcrumbs);
-//			currCategory = currCategory.getParent();
-//		}
-//		breadcrumbs = String.format("> %s", breadcrumbs);
-		breadcrumbs = section.name; //TODO readd breadcrumbs
+		this.changes = changes;
+		this.breadcrumbs = "> " + String.join(" > ", section.path);
 	}
 
 	@Override
@@ -55,17 +45,16 @@ public class SectionScreen extends AbstractScrollingWidgetScreen {
 
 	@Override
 	protected void onClickDefault(Button b) {
-		getChangeSet().resetToDefault(section);
+		changes.resetToDefault(section);
 	}
 
 	@Override
 	protected void onClickDiscard(Button b) {
-		getChangeSet().removeChange(section);
+		changes.removeChange(section);
 	}
 
 	@Override
 	protected boolean isDirty() {
-		return getChangeSet().isDirty(section);
+		return changes.isDirty(section);
 	}
-
 }

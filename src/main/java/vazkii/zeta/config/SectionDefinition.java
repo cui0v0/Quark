@@ -4,31 +4,36 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+
+import org.jetbrains.annotations.Nullable;
 
 public class SectionDefinition extends Definition {
 	public final Map<String, SectionDefinition> subsections = new LinkedHashMap<>();
 	public final Map<String, ValueDefinition<?>> values = new LinkedHashMap<>();
 
+	public SectionDefinition(String name, List<String> comment, @Nullable SectionDefinition parent) {
+		super(name, comment, parent);
+	}
+
 	public SectionDefinition(String name, List<String> comment) {
-		super(name, comment);
+		this(name, comment, null);
 	}
 
 	public SectionDefinition getOrCreateSubsection(String name, List<String> comment) {
-		return subsections.computeIfAbsent(name, __ -> new SectionDefinition(name, comment));
+		return subsections.computeIfAbsent(name, __ -> new SectionDefinition(name, comment, this));
 	}
 
 	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue) {
-		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue);
-		addValue(val);
+		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, this);
+		values.put(val.name, val);
 		return val;
 	}
 
-	public void addSubsection(SectionDefinition subsection) {
-		subsections.put(subsection.name, subsection);
-	}
-
-	public void addValue(ValueDefinition<?> value) {
-		values.put(value.name, value);
+	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue, Predicate<Object> validator) {
+		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, validator, this);
+		values.put(val.name, val);
+		return val;
 	}
 
 	public Collection<SectionDefinition> getSubsections() {

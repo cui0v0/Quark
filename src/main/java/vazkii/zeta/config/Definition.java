@@ -1,10 +1,14 @@
 package vazkii.zeta.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Common superclass of a... "thing" in a config definition (a value or section).
@@ -15,14 +19,25 @@ import java.util.stream.Collectors;
 public abstract class Definition {
 	public final String name;
 	public final List<String> comment;
+	public final @Nullable SectionDefinition parent;
+	public final Collection<String> path;
 
-	public Definition(String name, List<String> comment) {
+	public Definition(String name, List<String> comment, @Nullable SectionDefinition parent) {
 		this.name = name;
+		this.parent = parent;
 
 		//TODO lol
 		this.comment = comment.stream()
 			.flatMap(s -> Arrays.stream(s.split("\n")))
 			.filter(line -> !line.trim().isEmpty()).collect(Collectors.toList());
+
+		if(parent == null)
+			path = Collections.emptyList(); //TODO: skipping the "root" SectionDefinition
+		else {
+			path = new ArrayList<>(parent.path);
+			path.add(name);
+			((ArrayList<?>) path).trimToSize();
+		}
 	}
 
 	public String[] commentToArray() {
@@ -34,7 +49,7 @@ public abstract class Definition {
 	}
 
 	//TODO: weird, should probably be moved to GUI code - note this is SHARED code so i cant directly use i18n
-	public final String getGuiDisplayName(Collection<String> path, Function<String, String> i18nDotGet) {
+	public final String getGuiDisplayName(Function<String, String> i18nDotGet) {
 		String defName = this instanceof SectionDefinition ? name.replace("_", "") : name;
 		String transKey = "quark.config." + String.join(".", path) + "." + name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "") + ".name";
 

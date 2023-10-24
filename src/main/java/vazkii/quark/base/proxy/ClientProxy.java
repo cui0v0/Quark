@@ -18,7 +18,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.QButtonHandler;
 import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
@@ -90,7 +89,7 @@ public class ClientProxy extends CommonProxy {
 
 		if (Minecraft.getInstance().getConnection() != null)
 			QuarkNetwork.sendToServer(C2SUpdateFlag.createPacket());
-		IngameConfigHandler.INSTANCE.refresh();
+		//IngameConfigHandler.INSTANCE.refresh();
 
 		Minecraft mc = Minecraft.getInstance();
 		mc.submit(() -> {

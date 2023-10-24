@@ -76,13 +76,11 @@ public class ConfigObjectMapper {
 
 				//TODO: add a field updater for IConfigType (call its onReload)
 			} else {
-				ValueDefinition<?> def = new ValueDefinition<>(name, comment, defaultValue, restriction);
+				//add it to the config tree
+				ValueDefinition<?> def = sect.addValue(name, comment, defaultValue, restriction);
 
 				//register a field updater
 				fieldUpdaters.accept(z -> setField(obj, field, z.get(def)));
-
-				//add it to the config tree
-				sect.addValue(def);
 			}
 		}
 	}
