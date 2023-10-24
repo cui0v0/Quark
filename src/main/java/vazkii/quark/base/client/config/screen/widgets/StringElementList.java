@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import vazkii.quark.base.client.config.screen.ListInputScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 
+@Deprecated
 public class StringElementList extends ScrollableWidgetList<ListInputScreen, StringElementList.Entry>{
 
 	public StringElementList(ListInputScreen parent) {

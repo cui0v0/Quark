@@ -26,6 +26,7 @@ import vazkii.quark.base.client.config.screen.widgets.IconButton;
 import vazkii.quark.base.client.config.screen.widgets.SocialButton;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
+import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.config.ValueDefinition;
 import vazkii.zeta.module.ZetaCategory;
@@ -35,6 +36,8 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 	private static final CubeMap CUBE_MAP = new CubeMap(new ResourceLocation(Quark.MOD_ID, "textures/misc/panorama/panorama"));
 	private static final PanoramaRenderer PANORAMA = new PanoramaRenderer(CUBE_MAP);
 	private float time;
+
+	private final ChangeSet changeSet = new ChangeSet(Quark.ZETA.configInternals);
 
 	public QuarkConfigHomeScreen(Screen parent) {
 		super(parent);
@@ -66,8 +69,8 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 				SectionDefinition categorySection = Quark.ZETA.weirdConfigSingleton.getCategorySection(category);
 
 				bWidth -= 20; //room for the checkbox
-				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(categorySection), category.icon.get(), sectionLink(categorySection)));
-				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, categoryEnabled, getChangeSet()));
+				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(categorySection), category.icon.get(), sectionLink(changeSet, categorySection)));
+				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, changeSet, categoryEnabled));
 
 				boolean active = category.modsLoaded(Quark.ZETA);
 				mainButton.active = active;
@@ -75,7 +78,7 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 			} else {
 				//"General Settings"
 				SectionDefinition generalSection = Quark.ZETA.weirdConfigSingleton.getGeneralSection();
-				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSection), sectionLink(generalSection)));
+				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSection), sectionLink(changeSet, generalSection)));
 			}
 		}
 
@@ -112,7 +115,7 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 	private Component componentFor(SectionDefinition section) {
 		MutableComponent comp = Component.translatable("quark.category." + section.name);
 
-		if(getChangeSet().isDirty(section))
+		if(changeSet.isDirty(section))
 			comp.append(Component.literal("*").withStyle(ChatFormatting.GOLD));
 
 		return comp;
@@ -120,7 +123,7 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 
 	public void commit(Button button) {
 		//IngameConfigHandler.INSTANCE.commit();
-		getChangeSet().applyAllChanges();
+		changeSet.applyAllChanges();
 		returnToParent(button);
 	}
 
@@ -153,7 +156,7 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		drawCenteredString(mstack, font, I18n.get("quark.gui.config.subheader2"), width / 2, 38, 0x9EFFFE);
 
 		//TODO TODO TODO, flesh this out !
-		int changeCount = getChangeSet().changeCount();
+		int changeCount = changeSet.changeCount();
 		if(changeCount != 0)
 			drawCenteredString(mstack, font, changeCount + " unsaved change" + (changeCount > 1 ? "s" : ""), width/2 - 150, height-30, 0xFF8800);
 	}

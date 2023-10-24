@@ -7,6 +7,7 @@ import net.minecraft.client.resources.language.I18n;
 import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.api.config.IConfigElement;
 
+@Deprecated
 public abstract class AbstractConfigElement implements IConfigElement {
 
 	public final String name;

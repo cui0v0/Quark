@@ -16,6 +16,7 @@ import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 
 import javax.annotation.Nonnull;
 
+@Deprecated
 public class CategoryScreen extends AbstractScrollingWidgetScreen {
 
 	public final IConfigCategory category;

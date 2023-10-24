@@ -5,8 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.ValueDefinition;
 
-public class IntegerInputScreen2 extends AbstractEditBoxInputScreen<Integer> {
-	public IntegerInputScreen2(Screen parent, ChangeSet changes, ValueDefinition<Integer> valueDef) {
+public class IntegerInputScreen extends AbstractEditBoxInputScreen<Integer> {
+	public IntegerInputScreen(Screen parent, ChangeSet changes, ValueDefinition<Integer> valueDef) {
 		super(parent, changes, valueDef);
 	}
 

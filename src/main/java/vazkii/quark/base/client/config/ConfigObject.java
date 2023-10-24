@@ -16,6 +16,7 @@ import vazkii.quark.base.client.config.obj.ListObject;
 import vazkii.quark.base.client.config.obj.StringObject;
 import vazkii.quark.base.client.config.screen.widgets.IWidgetProvider;
 
+@Deprecated
 public abstract class ConfigObject<T> extends AbstractConfigElement implements IConfigObject<T>, IWidgetProvider {
 
 	public final T defaultObj;

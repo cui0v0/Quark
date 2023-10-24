@@ -13,7 +13,10 @@ import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.ValueDefinition;
 
 public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2<T> {
-	private EditBox input;
+	protected EditBox input;
+
+	protected int VALID_COLOR = 0xE0E0E0; //EditBox.textColor
+	protected int INVALID_COLOR = 0xDD3322;
 
 	public AbstractEditBoxInputScreen(Screen parent, ChangeSet changes, ValueDefinition<T> valueDef) {
 		super(parent, changes, valueDef);
@@ -48,10 +51,10 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 		T parsed = fromString(newString);
 		if(parsed != null && def.validate(parsed) && newString.length() < maxStringLength()) {
 			changes.set(def, parsed);
-			input.setTextColor(0xE0_E0_E0);
+			input.setTextColor(VALID_COLOR);
 			updateButtonStatus(true);
 		} else {
-			input.setTextColor(0xDD_33_22);
+			input.setTextColor(INVALID_COLOR);
 			updateButtonStatus(false);
 		}
 	}
@@ -65,6 +68,8 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen2
 			input.setValue(toString(def.defaultValue));
 		else
 			input.setValue(asString);
+
+		setInitialFocus(input);
 	}
 
 	protected String toString(T thing) {

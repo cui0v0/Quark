@@ -2,7 +2,7 @@ package vazkii.zeta.config.client;
 
 import java.util.List;
 
-import vazkii.quark.base.client.config.screen.SectionScreen;
+import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.widgets.PencilButton;
 import vazkii.zeta.config.ChangeSet;
@@ -15,7 +15,7 @@ public class DoubleClientDefinition implements ClientDefinitionExt<ValueDefiniti
 	}
 
 	@Override
-	public void addWidgets(SectionScreen parent, ChangeSet changes, ValueDefinition<Double> def, List<WidgetWrapper> widgets) {
-		widgets.add(new WidgetWrapper(new PencilButton(230, 3, parent.doubleInput2(changes, def))));
+	public void addWidgets(AbstractQScreen parent, ChangeSet changes, ValueDefinition<Double> def, List<WidgetWrapper> widgets) {
+		widgets.add(new WidgetWrapper(new PencilButton(230, 3, parent.doubleInput(changes, def))));
 	}
 }

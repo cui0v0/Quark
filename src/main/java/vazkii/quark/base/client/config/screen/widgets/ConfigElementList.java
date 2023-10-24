@@ -17,6 +17,7 @@ import vazkii.quark.base.client.config.ConfigCategory;
 import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 
+@Deprecated
 public class ConfigElementList<T extends IConfigElement & IWidgetProvider> extends ScrollableWidgetList<CategoryScreen, ConfigElementList.Entry<T>> {
 
 	public ConfigElementList(CategoryScreen parent) {

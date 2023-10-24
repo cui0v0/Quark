@@ -1,10 +1,12 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
+import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import vazkii.quark.base.client.config.screen.AbstractScrollingWidgetScreen;
+import net.minecraft.client.gui.screens.Screen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 
 import javax.annotation.Nonnull;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class ScrollableWidgetList<S extends AbstractScrollingWidgetScreen, E extends ScrollableWidgetList.Entry<E>> extends ObjectSelectionList<E> {
+public abstract class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetList.Entry<E>> extends ObjectSelectionList<E> {
 
 	public final S parent;
 
@@ -42,11 +44,6 @@ public abstract class ScrollableWidgetList<S extends AbstractScrollingWidgetScre
 		return super.getRowWidth() + 50;
 	}
 
-	@Override
-	protected boolean isFocused() {
-		return false;
-	}
-
 	public static abstract class Entry<E extends Entry<E>> extends ObjectSelectionList.Entry<E> {
 
 		public List<WidgetWrapper> children = new ArrayList<>();
@@ -57,7 +54,13 @@ public abstract class ScrollableWidgetList<S extends AbstractScrollingWidgetScre
 
 		@Override
 		public void render(@Nonnull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-			children.forEach(c -> c.updatePosition(rowLeft, rowTop));
+			children.forEach(c -> {
+				c.updatePosition(rowLeft, rowTop);
+
+				//TODO: be smart about whether the widget is within the view frustim
+				c.widget.visible = true;
+				c.widget.render(mstack, mouseX, mouseY, partialTicks);
+			});
 		}
 
 		public void drawBackground(PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered) {

@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.screen.widgets;
+package vazkii.quark.base.client.config.screen.what;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.config.screen.SectionScreen;
+import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.Definition;
@@ -20,33 +20,29 @@ import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.config.ValueDefinition;
 import vazkii.zeta.config.client.ClientDefinitionExt;
 
-public class SectionList<T extends Definition> extends ScrollableWidgetList<SectionScreen, SectionList.Entry<T>> {
-
-	public SectionList(SectionScreen parent) {
+//weird ass generic, i don't think this is sound but it seems to work
+public class ScrollableSectionList<S extends AbstractQScreen> extends ScrollableWidgetList2<S, ScrollableSectionList.Entry> {
+	public ScrollableSectionList(S parent, ChangeSet changes, SectionDefinition section) {
 		super(parent);
-	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void findEntries() {
-		for(ValueDefinition<?> value : parent.section.getValues()) {
-			addEntry((Entry<T>) new ValueDefinitionEntry<>(this.parent, this.parent.getChangeSet(), value));
+		for(ValueDefinition<?> value : section.getValues()) {
+			addEntry(new ValueDefinitionEntry<>(parent, changes, value));
 		}
 
-		Collection<SectionDefinition> subsections = parent.section.getSubsections();
+		Collection<SectionDefinition> subsections = section.getSubsections();
 		if(!subsections.isEmpty()) {
-			addEntry((Entry<T>) new Divider()); //divider
+			addEntry(new Divider());
 
-			for(SectionDefinition section : parent.section.getSubsections())
-				addEntry((Entry<T>) new SectionDefinitionEntry(this.parent, this.parent.getChangeSet(), section));
+			for(SectionDefinition subsection : section.getSubsections())
+				addEntry(new SectionDefinitionEntry(parent, changes, subsection));
 		}
 	}
 
-	public static abstract class Entry<T extends Definition> extends ScrollableWidgetList.Entry<Entry<T>> {
+	public static abstract class Entry extends ScrollableWidgetList2.Entry<Entry> {
 		protected final Minecraft mc = Minecraft.getInstance();
 	}
 
-	public static class Divider extends Entry<Definition> {
+	public static class Divider extends Entry {
 		@Override
 		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 			String s = I18n.get("quark.gui.config.subcategories");
@@ -59,14 +55,12 @@ public class SectionList<T extends Definition> extends ScrollableWidgetList<Sect
 		}
 	}
 
-	public static class DefinitionEntry<T extends Definition> extends Entry<T> {
-		private final SectionScreen parent;
+	public static class DefinitionEntry<T extends Definition> extends Entry {
 		private final ChangeSet changes;
 		private final T def;
 		private final ClientDefinitionExt<T> ext;
 
-		public DefinitionEntry(SectionScreen parent, ChangeSet changes, T def) {
-			this.parent = parent;
+		public DefinitionEntry(AbstractQScreen parent, ChangeSet changes, T def) {
 			this.changes = changes;
 			this.def = def;
 
@@ -76,8 +70,6 @@ public class SectionList<T extends Definition> extends ScrollableWidgetList<Sect
 
 		@Override
 		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
-			super.render(mstack, index, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered, partialTicks);
-
 			int left = rowLeft + 10;
 			int top = rowTop + 4;
 
@@ -86,8 +78,10 @@ public class SectionList<T extends Definition> extends ScrollableWidgetList<Sect
 				effIndex--; // compensate for the divider
 			drawBackground(mstack, effIndex, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered);
 
+			super.render(mstack, index, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered, partialTicks);
+
 			String name = def.getGuiDisplayName(I18n::get);
-			if(parent.getChangeSet().isDirty(def))
+			if(changes.isDirty(def))
 				name += ChatFormatting.GOLD + "*";
 
 			int len = mc.font.width(name);
@@ -135,13 +129,13 @@ public class SectionList<T extends Definition> extends ScrollableWidgetList<Sect
 	}
 
 	public static class ValueDefinitionEntry<X> extends DefinitionEntry<ValueDefinition<X>> {
-		public ValueDefinitionEntry(SectionScreen parent, ChangeSet changes, ValueDefinition<X> def) {
+		public ValueDefinitionEntry(AbstractQScreen parent, ChangeSet changes, ValueDefinition<X> def) {
 			super(parent, changes, def);
 		}
 	}
 
 	public static class SectionDefinitionEntry extends DefinitionEntry<SectionDefinition> {
-		public SectionDefinitionEntry(SectionScreen parent, ChangeSet changes, SectionDefinition def) {
+		public SectionDefinitionEntry(AbstractQScreen parent, ChangeSet changes, SectionDefinition def) {
 			super(parent, changes, def);
 		}
 	}

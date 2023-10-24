@@ -12,6 +12,7 @@ import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
 
+@Deprecated
 public class BooleanObject extends ConfigObject<Boolean> {
 
 	public BooleanObject(ConfigValue<Boolean> value, String comment, Boolean defaultObj, Supplier<Boolean> objGetter, Predicate<Object> restriction, ConfigCategory parent) {

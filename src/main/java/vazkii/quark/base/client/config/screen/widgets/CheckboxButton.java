@@ -17,7 +17,7 @@ public class CheckboxButton extends Button {
 	private final ValueDefinition<Boolean> value;
 	private final ChangeSet changes;
 
-	public CheckboxButton(int x, int y, ValueDefinition<Boolean> value, ChangeSet changes) {
+	public CheckboxButton(int x, int y, ChangeSet changes, ValueDefinition<Boolean> value) {
 		super(x, y, 20, 20, Component.literal(""), CheckboxButton::toggle);
 		this.value = value;
 		this.changes = changes;

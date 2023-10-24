@@ -14,6 +14,7 @@ import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.widgets.PencilButton;
 
+@Deprecated
 public abstract class AbstractStringInputObject<T> extends ConfigObject<T> {
 
 	public AbstractStringInputObject(ConfigValue<T> value, String comment, T defaultObj, Supplier<T> objGetter, Predicate<Object> restriction, ConfigCategory parent) {

@@ -2,8 +2,9 @@ package vazkii.zeta.config.client;
 
 import java.util.List;
 
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import vazkii.quark.base.client.config.screen.SectionScreen;
+import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.Definition;
@@ -23,7 +24,7 @@ public interface ClientDefinitionExt<T extends Definition> {
 
 	String getSubtitle(ChangeSet changes, T def);
 
-	void addWidgets(SectionScreen parent, ChangeSet changes, T def, List<WidgetWrapper> widgets);
+	void addWidgets(AbstractQScreen parent, ChangeSet changes, T def, List<WidgetWrapper> widgets);
 
 	default String truncate(String in) {
 		if(in.length() > 30)
@@ -39,7 +40,7 @@ public interface ClientDefinitionExt<T extends Definition> {
 		}
 
 		@Override
-		public void addWidgets(SectionScreen parent, ChangeSet changes, Definition def, List<WidgetWrapper> widgets) {
+		public void addWidgets(AbstractQScreen parent, ChangeSet changes, Definition def, List<WidgetWrapper> widgets) {
 
 		}
 	}

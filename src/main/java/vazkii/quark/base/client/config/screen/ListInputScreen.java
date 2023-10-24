@@ -15,6 +15,7 @@ import vazkii.quark.base.client.config.obj.ListObject;
 import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 import vazkii.quark.base.client.config.screen.widgets.StringElementList;
 
+@Deprecated
 public class ListInputScreen extends AbstractScrollingWidgetScreen {
 
 	private final ListObject object;

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import vazkii.quark.base.client.config.ConfigCategory;
 
+@Deprecated
 public class DoubleObject extends AbstractStringInputObject<Double> {
 
 	public DoubleObject(ConfigValue<Double> value, String comment, Double defaultObj, Supplier<Double> objGetter, Predicate<Object> restriction, ConfigCategory parent) {

@@ -12,6 +12,7 @@ import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.widgets.PencilButton;
 
+@Deprecated
 public class ListObject extends ConfigObject<List<String>> {
 
 	public ListObject(ConfigValue<List<String>> value, String comment, List<String> defaultObj, Supplier<List<String>> objGetter, Predicate<Object> restriction, ConfigCategory parent) {

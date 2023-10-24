@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import vazkii.quark.base.client.config.ConfigCategory;
 
+@Deprecated
 public class StringObject extends AbstractStringInputObject<String> {
 
 	public StringObject(ConfigValue<String> value, String comment, String defaultObj, Supplier<String> objGetter, Predicate<Object> restriction, ConfigCategory parent) {

@@ -8,6 +8,7 @@ import vazkii.quark.api.config.IConfigElement;
 import vazkii.quark.base.client.config.screen.CategoryScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 
+@Deprecated
 public interface IWidgetProvider {
 
 	@OnlyIn(Dist.CLIENT)

@@ -1,7 +1,5 @@
 package vazkii.quark.base.client.config.screen;
 
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -10,18 +8,18 @@ import net.minecraft.network.chat.Component;
 import vazkii.quark.base.client.config.screen.widgets.ScrollableWidgetList;
 
 import javax.annotation.Nonnull;
+
 import java.util.LinkedList;
 import java.util.List;
 
+//widgets are a vanilla concept, lists are a vanilla concept, but the two don't mesh very well
+@Deprecated
 public abstract class AbstractScrollingWidgetScreen extends AbstractQScreen {
 
 	private final List<AbstractWidget> scrollingWidgets = new LinkedList<>();
 	private ScrollableWidgetList<?, ?> elementList;
 
 	private Button resetButton;
-
-	private boolean needsScrollUpdate = false;
-	private double currentScroll = 0;
 
 	public AbstractScrollingWidgetScreen(Screen parent) {
 		super(parent);
@@ -43,7 +41,6 @@ public abstract class AbstractScrollingWidgetScreen extends AbstractQScreen {
 		elementList = createWidgetList();
 		addWidget(elementList);
 		refresh();
-		needsScrollUpdate = true;
 	}
 
 	@Override
@@ -68,41 +65,20 @@ public abstract class AbstractScrollingWidgetScreen extends AbstractQScreen {
 
 	@Override
 	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		if(needsScrollUpdate) {
-			elementList.setScrollAmount(currentScroll);
-			needsScrollUpdate = false;
-		}
-
-		currentScroll = elementList.getScrollAmount();
-
-		scrollingWidgets.forEach(w -> w.visible = false);
-
 		renderBackground(mstack);
+
+		//render the element list. each element in the list draws its own widgets
 		elementList.render(mstack, mouseX, mouseY, partialTicks);
 
-		List<AbstractWidget> visibleWidgets = new LinkedList<>();
-		scrollingWidgets.forEach(w -> {
-			if(w.visible)
-				visibleWidgets.add(w);
-			w.visible = false;
-		});
+		//make all scrolling widgets invisible so super.render won't draw them again
+		scrollingWidgets.forEach(w -> w.visible = false);
 
+		//call super.render, which renders all visible widgets
+		//it *would* render the scrolling widgets too, but we just disabled their visibility
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
-		Window main = minecraft.getWindow();
-		int res = (int) main.getGuiScale();
-
-		RenderSystem.enableScissor(0, 40 * res, width * res, (height - 80) * res);
-		visibleWidgets.forEach(w -> {
-			w.visible = true;
-			w.render(mstack, mouseX, mouseY, partialTicks);
-		});
-		RenderSystem.disableScissor();
-	}
-
-	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		return super.mouseClicked(x, y, button);
+		//make all scrolling widgets visible so they can be clicked on
+		scrollingWidgets.forEach(w -> w.visible = true);
 	}
 
 	protected abstract ScrollableWidgetList<?, ?> createWidgetList();

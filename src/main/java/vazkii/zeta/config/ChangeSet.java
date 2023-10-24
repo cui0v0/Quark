@@ -60,15 +60,31 @@ public class ChangeSet implements IZetaConfigInternals {
 			sectionDefinition.getSubsections().stream().anyMatch(this::isDirty);
 	}
 
+	public int changeCount() {
+		return changes.size();
+	}
+
+	// Conveniences
+
+	public void removeChange(Definition def) {
+		if(def instanceof ValueDefinition<?> val)
+			removeChange(val);
+		else
+			removeChange((SectionDefinition) def);
+	}
+
+	public void resetToDefault(Definition def) {
+		if(def instanceof ValueDefinition<?> val)
+			resetToDefault(val);
+		else
+			resetToDefault((SectionDefinition) def);
+	}
+
 	public boolean isDirty(Definition def) {
 		if(def instanceof ValueDefinition<?> val)
 			return isDirty(val);
 		else
 			return isDirty((SectionDefinition) def);
-	}
-
-	public int changeCount() {
-		return changes.size();
 	}
 
 	// Getting data as if the changes were applied

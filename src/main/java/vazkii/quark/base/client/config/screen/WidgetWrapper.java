@@ -6,6 +6,8 @@ public class WidgetWrapper {
 
 	public final AbstractWidget widget;
 	public final int relativeX, relativeY;
+
+	public boolean wasOnScreen = false;
 	
 	public WidgetWrapper(AbstractWidget widget) {
 		this.widget = widget;

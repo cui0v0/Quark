@@ -3,7 +3,7 @@ package vazkii.zeta.config.client;
 import java.util.List;
 
 import net.minecraft.client.resources.language.I18n;
-import vazkii.quark.base.client.config.screen.SectionScreen;
+import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.quark.base.client.config.screen.WidgetWrapper;
 import vazkii.quark.base.client.config.screen.widgets.PencilButton;
 import vazkii.zeta.config.ChangeSet;
@@ -18,7 +18,7 @@ public class SectionClientDefinition implements ClientDefinitionExt<SectionDefin
 	}
 
 	@Override
-	public void addWidgets(SectionScreen parent, ChangeSet changes, SectionDefinition def, List<WidgetWrapper> widgets) {
-		widgets.add(new WidgetWrapper(new PencilButton(230, 3, parent.sectionLink(def))));
+	public void addWidgets(AbstractQScreen parent, ChangeSet changes, SectionDefinition def, List<WidgetWrapper> widgets) {
+		widgets.add(new WidgetWrapper(new PencilButton(230, 3, parent.sectionLink(changes, def))));
 	}
 }

@@ -22,6 +22,7 @@ import vazkii.quark.base.client.config.screen.widgets.IWidgetProvider;
 import vazkii.quark.base.client.config.screen.widgets.PencilButton;
 import vazkii.quark.base.module.config.type.IConfigType;
 
+@Deprecated
 public class ConfigCategory extends AbstractConfigElement implements IConfigCategory, IWidgetProvider {
 
 	public final List<IConfigElement> subElements = new LinkedList<>();

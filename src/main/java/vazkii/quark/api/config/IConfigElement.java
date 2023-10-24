@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@Deprecated
 @OnlyIn(Dist.CLIENT)
 public interface IConfigElement extends Comparable<IConfigElement> {
 
