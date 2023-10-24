@@ -3,10 +3,8 @@ package vazkii.zetaimplforge.config;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import vazkii.quark.base.Quark;
 import vazkii.zeta.config.Definition;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
@@ -36,21 +34,13 @@ public class ForgeBackedConfig implements IZetaConfigInternals {
 	}
 
 	private <T> void addValue(ValueDefinition<T> val, ForgeConfigSpec.Builder builder) {
-		Predicate<Object> validator = obj -> {
-			try {
-				return val.validator.test(obj);
-			} catch (Exception e) {
-				return false;
-			}
-		};
-
 		builder.comment(val.commentToArray());
 
 		ForgeConfigSpec.ConfigValue<?> forge;
 		if(val.defaultValue instanceof List<?> list)
-			forge = builder.defineList(val.name, list, validator);
+			forge = builder.defineList(val.name, list, val::validate);
 		else
-			forge = builder.define(val.name, val.defaultValue, validator);
+			forge = builder.define(List.of(val.name), () -> val.defaultValue, val::validate, val.defaultValue.getClass()); //forge is weird
 
 		definitionsToValues.put(val, forge);
 	}

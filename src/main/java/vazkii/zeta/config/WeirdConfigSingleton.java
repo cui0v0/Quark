@@ -53,8 +53,7 @@ public class WeirdConfigSingleton {
 
 		for(ZetaCategory category : modules.getInhabitedCategories()) {
 			//category enablement option
-			//TODO: why aren't these showing up?
-			ValueDefinition<Boolean> categoryEnabled = rootConfig.getOrCreateSubsection("categories", List.of("cateogyr enabled :O")).addValue(category.name, List.of("is it enabed"), true);
+			ValueDefinition<Boolean> categoryEnabled = rootConfig.getOrCreateSubsection("categories", List.of()).addValue(category.name, List.of(), true);
 			categoryEnabledOptions.put(category, categoryEnabled);
 			fieldUpdaters.add(i -> setCategoryEnabled(category, i.get(categoryEnabled)));
 
