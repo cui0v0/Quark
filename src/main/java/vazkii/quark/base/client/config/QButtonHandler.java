@@ -1,7 +1,6 @@
 package vazkii.quark.base.client.config;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.Util;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -11,7 +10,6 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.loading.FMLPaths;
 import vazkii.quark.base.client.config.screen.widgets.QButton;
 import vazkii.quark.base.handler.GeneralConfig;
 
@@ -38,10 +36,6 @@ public class QButtonHandler {
 					}
 				}
 		}
-	}
-
-	public static void openFile() {
-		Util.getPlatform().openFile(FMLPaths.CONFIGDIR.get().toFile());
 	}
 
 }

@@ -31,7 +31,6 @@ import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
-import vazkii.quark.base.module.config.IConfigCallback;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
@@ -114,11 +113,6 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 		return InteractionResult.PASS;
-	}
-
-	@Override
-	public IConfigCallback getConfigCallback() {
-		return IngameConfigHandler.INSTANCE;
 	}
 
 	@Override

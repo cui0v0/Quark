@@ -1,7 +1,5 @@
 package vazkii.quark.base.client.config.screen.widgets;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -10,20 +8,25 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import vazkii.quark.api.config.IConfigObject;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.zeta.config.ChangeSet;
+import vazkii.zeta.config.ValueDefinition;
 
 public class CheckboxButton extends Button {
 
-	private final Supplier<Boolean> checkedSupplier;
+	private final ValueDefinition<Boolean> value;
+	private final ChangeSet changes;
 
-	public CheckboxButton(int x, int y, Supplier<Boolean> checkedSupplier, OnPress onClick) {
-		super(x, y, 20, 20, Component.literal(""), onClick);
-		this.checkedSupplier = checkedSupplier;
+	public CheckboxButton(int x, int y, ValueDefinition<Boolean> value, ChangeSet changes) {
+		super(x, y, 20, 20, Component.literal(""), CheckboxButton::toggle);
+		this.value = value;
+		this.changes = changes;
 	}
 
-	public CheckboxButton(int x, int y, IConfigObject<Boolean> configObj) {
-		this(x, y, configObj::getCurrentObj, (b) -> configObj.setCurrentObj(!configObj.getCurrentObj()));
+	private static void toggle(Button press) {
+		if(press instanceof CheckboxButton checkbox) {
+			checkbox.changes.toggle(checkbox.value);
+		}
 	}
 
 	@Override
@@ -33,7 +36,7 @@ public class CheckboxButton extends Button {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-		boolean enabled = checkedSupplier.get() && active;
+		boolean enabled = changes.get(value) && active;
 		int u = enabled ? 0 : 16;
 		int v = 93;
 

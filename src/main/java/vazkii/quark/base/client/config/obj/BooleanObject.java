@@ -20,7 +20,7 @@ public class BooleanObject extends ConfigObject<Boolean> {
 
 	@Override
 	public void addWidgets(CategoryScreen parent, IConfigElement element, List<WidgetWrapper> widgets) {
-		widgets.add(new WidgetWrapper(new CheckboxButton(230, 3, this)));		
+		//widgets.add(new WidgetWrapper(new CheckboxButton(230, 3, this))); //TODO
 	}
 	
 

@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -32,7 +31,6 @@ import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaCategory;
-import vazkii.zeta.module.ZetaModuleManager;
 import vazkii.zetaimplforge.module.ModFileScanDataModuleFinder;
 
 import java.time.LocalDateTime;
@@ -44,9 +42,6 @@ public class CommonProxy {
 	private int lastConfigChange = -11;
 	public static boolean jingleTheBells = false;
 	private boolean configGuiSaving = false;
-
-	//TODO: better spot
-	private IZetaConfigInternals iZetaConfigInternals;
 
 	public void start() {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
@@ -75,25 +70,22 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(RecipeCrawlHandler.class);
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);
 
-		ZetaModuleManager modules = Quark.ZETA.modules;
-		modules.initCategories(List.of(
-			new ZetaCategory("automation", Items.REDSTONE),
-			new ZetaCategory("building", Items.BRICKS),
-			new ZetaCategory("management", Items.CHEST),
-			new ZetaCategory("tools", Items.IRON_PICKAXE),
-			new ZetaCategory("tweaks", Items.NAUTILUS_SHELL),
-			new ZetaCategory("world", Items.GRASS_BLOCK),
-			new ZetaCategory("mobs", Items.PIG_SPAWN_EGG),
-			new ZetaCategory("client", Items.ENDER_EYE),
-			new ZetaCategory("experimental", Items.TNT),
-			new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
-		));
-		Quark.ZETA.modules.load(new ModFileScanDataModuleFinder(Quark.MOD_ID)
-			.and(new LegacyQuarkModuleFinder())); //TODO: no
-
-		//TODO: find somewhere better to put this
-		SectionDefinition rootConfig = Quark.ZETA.weirdConfigSingleton.makeRootConfig(GeneralConfig.INSTANCE, Quark.ZETA.modules);
-		iZetaConfigInternals = Quark.ZETA.makeConfigInternals(rootConfig);
+		Quark.ZETA.loadModules(
+			List.of(
+				new ZetaCategory("automation", Items.REDSTONE),
+				new ZetaCategory("building", Items.BRICKS),
+				new ZetaCategory("management", Items.CHEST),
+				new ZetaCategory("tools", Items.IRON_PICKAXE),
+				new ZetaCategory("tweaks", Items.NAUTILUS_SHELL),
+				new ZetaCategory("world", Items.GRASS_BLOCK),
+				new ZetaCategory("mobs", Items.PIG_SPAWN_EGG),
+				new ZetaCategory("client", Items.ENDER_EYE),
+				new ZetaCategory("experimental", Items.TNT),
+				new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
+			),
+			new ModFileScanDataModuleFinder(Quark.MOD_ID).and(new LegacyQuarkModuleFinder()),
+			GeneralConfig.INSTANCE
+		);
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::configChanged);
@@ -130,10 +122,10 @@ public class CommonProxy {
 		lastConfigChange = Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame;
 	}
 
-	//TODO: mess
+	//TODO: mess, find a better spot for this
 	public void handleQuarkConfigChange() {
 		//ModuleLoader.INSTANCE.configChanged();
-		Quark.ZETA.weirdConfigSingleton.onReload(iZetaConfigInternals); //refreshes all the @Config annotations with data from the config
+		Quark.ZETA.weirdConfigSingleton.onReload(Quark.ZETA.configInternals);
 		//Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().clear();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
 		if(ModuleLoader.INSTANCE.onConfigReloadJEI != null)
@@ -152,10 +144,6 @@ public class CommonProxy {
 	 */
 	public InteractionResult clientUseItem(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
 		return InteractionResult.PASS;
-	}
-
-	public IConfigCallback getConfigCallback() {
-		return new IConfigCallback.Dummy();
 	}
 
 	public boolean isClientPlayerHoldingShift() {

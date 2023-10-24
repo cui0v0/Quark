@@ -30,11 +30,6 @@ public class ZetaModuleManager {
 	private final Map<String, ZetaCategory> categoriesById = new LinkedHashMap<>();
 	private final Map<ZetaCategory, List<ZetaModule>> modulesInCategory = new HashMap<>();
 
-	//TODO ZETA (Very important): move this state to some sort of "config" area
-	// It's only here since it's stored *on* the category *enum* in current Quark
-	@Deprecated
-	private final Set<ZetaCategory> MOVE_TO_CONFIG_enabledCategoires = new HashSet<>();
-
 	public ZetaModuleManager(Zeta z) {
 		this.z = z;
 	}
@@ -78,19 +73,6 @@ public class ZetaModuleManager {
 
 	public List<ZetaModule> modulesInCategory(ZetaCategory cat) {
 		return modulesInCategory.computeIfAbsent(cat, __ -> new ArrayList<>());
-	}
-
-	@Deprecated
-	public boolean MOVE_TO_CONFIG_categoryIsEnabled(ZetaCategory cat) {
-		return MOVE_TO_CONFIG_enabledCategoires.contains(cat);
-	}
-
-	@Deprecated
-	public void MOVE_TO_CONFIG_setCategoryEnabled(ZetaCategory cat, boolean enabled) {
-		if(enabled)
-			MOVE_TO_CONFIG_enabledCategoires.add(cat);
-		else
-			MOVE_TO_CONFIG_enabledCategoires.remove(cat);
 	}
 
 	// Loading //

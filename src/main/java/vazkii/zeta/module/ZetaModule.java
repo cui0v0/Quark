@@ -44,6 +44,10 @@ public class ZetaModule {
 	public final void setEnabled(Zeta z, boolean willEnable) {
 		configEnabled = willEnable;
 
+		//TODO: i messed up the category enabled stuff, Its Weird now
+		if(z.weirdConfigSingleton != null && !z.weirdConfigSingleton.isCategoryEnabled(category))
+			willEnable = false;
+
 		disabledByOverlap = false;
 		if(missingDep)
 			willEnable = false;
@@ -56,7 +60,7 @@ public class ZetaModule {
 		firstLoad = false;
 	}
 
-	public final void setEnabledAndManageSubscriptions(Zeta z, boolean nowEnabled) {
+	private void setEnabledAndManageSubscriptions(Zeta z, boolean nowEnabled) {
 		if(firstLoad || (this.enabled != nowEnabled)) {
 
 			//TODO: Cheap hacks to keep non-Zeta Quark modules on life support.

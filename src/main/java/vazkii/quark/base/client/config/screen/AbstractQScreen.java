@@ -10,8 +10,11 @@ import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.api.config.IConfigCategory;
+import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.obj.AbstractStringInputObject;
 import vazkii.quark.base.client.config.obj.ListObject;
+import vazkii.zeta.config.ChangeSet;
+import vazkii.zeta.config.SectionDefinition;
 
 public abstract class AbstractQScreen extends Screen {
 
@@ -20,11 +23,6 @@ public abstract class AbstractQScreen extends Screen {
 	public AbstractQScreen(Screen parent) {
 		super(Component.literal(""));
 		this.parent = parent;
-	}
-
-	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.render(mstack, mouseX, mouseY, partialTicks);
 	}
 
 	public void returnToParent(Button button) {
@@ -39,6 +37,10 @@ public abstract class AbstractQScreen extends Screen {
 		return b -> minecraft.setScreen(new CategoryScreen(this, category));
 	}
 
+	public OnPress sectionLink(SectionDefinition section) {
+		return b -> minecraft.setScreen(new SectionScreen(this, section));
+	}
+
 	public <T> OnPress stringInput(AbstractStringInputObject<T> object) {
 		return b -> minecraft.setScreen(new StringInputScreen<>(this, object));
 	}
@@ -47,4 +49,12 @@ public abstract class AbstractQScreen extends Screen {
 		return b -> minecraft.setScreen(new ListInputScreen(this, object));
 	}
 
+	public OnPress nothing_TODO_STUB() {
+		return b -> {};
+	}
+
+	//it's recommended to access it through here for now, since I dunno if this should be a singleton
+	public ChangeSet getChangeSet() {
+		return IngameConfigHandler.INSTANCE.changeSet;
+	}
 }

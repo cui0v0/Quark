@@ -41,6 +41,6 @@ public class SectionDefinition extends Definition {
 
 	@Override
 	public String toString() {
-		return "SectionDefinition{name='" + name + "'}";
+		return "SectionDefinition{" + name + " (" + subsections.size() + " subsections, " + values.size() + " values)}";
 	}
 }

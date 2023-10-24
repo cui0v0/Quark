@@ -3,6 +3,7 @@ package vazkii.zeta.config;
 import java.util.List;
 import java.util.function.Predicate;
 
+//TODO: maybe we need "boolean equals(T thing1, T thing2)"
 public class ValueDefinition<T> extends Definition {
 	public final T defaultValue;
 
@@ -20,6 +21,6 @@ public class ValueDefinition<T> extends Definition {
 
 	@Override
 	public String toString() {
-		return "ValueDefinition{name='" + name + "'}";
+		return "ValueDefinition{" + name + "}";
 	}
 }

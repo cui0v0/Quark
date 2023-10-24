@@ -20,14 +20,14 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import vazkii.quark.api.config.IConfigCategory;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.client.config.IngameConfigHandler;
 import vazkii.quark.base.client.config.screen.widgets.CheckboxButton;
 import vazkii.quark.base.client.config.screen.widgets.IconButton;
 import vazkii.quark.base.client.config.screen.widgets.SocialButton;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
+import vazkii.zeta.config.SectionDefinition;
+import vazkii.zeta.config.ValueDefinition;
 import vazkii.zeta.module.ZetaCategory;
 
 public class QuarkConfigHomeScreen extends AbstractQScreen {
@@ -62,19 +62,20 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 			if(i < categories.size()) {
 				//a category button
 				ZetaCategory category = categories.get(i);
-				IConfigCategory ingameCategory = IngameConfigHandler.INSTANCE.getConfigCategory(category);
+				ValueDefinition<Boolean> categoryEnabled = Quark.ZETA.weirdConfigSingleton.getCategoryEnabledOption(category);
+				SectionDefinition categorySection = Quark.ZETA.weirdConfigSingleton.getCategorySection(category);
 
 				bWidth -= 20; //room for the checkbox
-				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(ingameCategory), category.icon.get(), categoryLink(ingameCategory)));
-				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, IngameConfigHandler.INSTANCE.getCategoryEnabledObject(category)));
+				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(categorySection), category.icon.get(), sectionLink(categorySection)));
+				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, categoryEnabled, getChangeSet()));
 
 				boolean active = category.modsLoaded(Quark.ZETA);
 				mainButton.active = active;
 				checkButton.active = active;
 			} else {
 				//"General Settings"
-				IConfigCategory generalSettings = IngameConfigHandler.INSTANCE.getConfigCategory(null);
-				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSettings), categoryLink(generalSettings)));
+				SectionDefinition generalSection = Quark.ZETA.weirdConfigSingleton.getGeneralSection();
+				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSection), sectionLink(generalSection)));
 			}
 		}
 
@@ -108,17 +109,18 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		return result;
 	}
 
-	private static Component componentFor(IConfigCategory c) {
-		MutableComponent comp = Component.translatable("quark.category." + c.getName());
+	private Component componentFor(SectionDefinition section) {
+		MutableComponent comp = Component.translatable("quark.category." + section.name);
 
-		if(c.isDirty())
+		if(getChangeSet().isDirty(section))
 			comp.append(Component.literal("*").withStyle(ChatFormatting.GOLD));
 
 		return comp;
 	}
 
 	public void commit(Button button) {
-		IngameConfigHandler.INSTANCE.commit();
+		//IngameConfigHandler.INSTANCE.commit();
+		getChangeSet().applyAllChanges();
 		returnToParent(button);
 	}
 
@@ -149,6 +151,11 @@ public class QuarkConfigHomeScreen extends AbstractQScreen {
 		drawCenteredString(mstack, font, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", WordUtils.capitalizeFully(Quark.MOD_ID)), width / 2, 15, 0x48ddbc);
 		drawCenteredString(mstack, font, I18n.get("quark.gui.config.subheader1", ChatFormatting.LIGHT_PURPLE, ContributorRewardHandler.featuredPatron, ChatFormatting.RESET), width / 2, 28, 0x9EFFFE);
 		drawCenteredString(mstack, font, I18n.get("quark.gui.config.subheader2"), width / 2, 38, 0x9EFFFE);
+
+		//TODO TODO TODO flesh this out
+		int changeCount = getChangeSet().changeCount();
+		if(changeCount != 0)
+			drawCenteredString(mstack, font, changeCount + " unsaved change" + (changeCount > 1 ? "s" : ""), width/2 - 150, height-30, 0xFF8800);
 	}
 
 }

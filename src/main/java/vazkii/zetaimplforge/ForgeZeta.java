@@ -13,10 +13,7 @@ import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -66,15 +63,10 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection) {
 		ForgeConfigSpec.Builder bob = new ForgeConfigSpec.Builder();
-
 		ForgeBackedConfig forge = new ForgeBackedConfig(rootSection, bob);
 		ForgeConfigSpec spec = bob.build();
 
-		ModContainer container = ModLoadingContext.get().getActiveContainer();
-		ModConfig modCfg = new ModConfig(ModConfig.Type.COMMON, spec, container);
-		container.addConfig(modCfg);
-
-		TerribleForgeConfigHackery.loadConfigEarly(modCfg);
+		TerribleForgeConfigHackery.registerAndLoadConfigEarlierThanUsual(spec);
 
 		return forge;
 	}
