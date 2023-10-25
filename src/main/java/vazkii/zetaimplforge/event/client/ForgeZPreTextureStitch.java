@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 @FiredAs(ZPreTextureStitch.class)
 public record ForgeZPreTextureStitch(TextureStitchEvent.Pre e) implements ZPreTextureStitch {

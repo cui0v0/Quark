@@ -6,14 +6,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.Getter;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.render.GenericChestBERenderer;
 import vazkii.quark.content.building.module.VariantChestsModule;
 import vazkii.quark.integration.lootr.LootrVariantChestBlockEntity;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -18,8 +18,8 @@ import vazkii.quark.content.building.entity.GlassItemFrame;
 import vazkii.quark.content.building.item.QuarkItemFrameItem;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZAddModels;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZAddModels;
+import vazkii.zeta.client.event.ZClientSetup;
 
 /**
  * @author WireSegal

@@ -56,10 +56,10 @@ import vazkii.quark.content.tweaks.client.emote.ModelAccessor;
 import vazkii.quark.content.tweaks.client.screen.widgets.EmoteButton;
 import vazkii.quark.content.tweaks.client.screen.widgets.TranslucentButton;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientModulesReady;
-import vazkii.zeta.event.client.ZClientSetup;
-import vazkii.zeta.event.client.ZConfigChangedClient;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZClientModulesReady;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.client.event.ZConfigChangedClient;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class EmotesModule extends ZetaModule {

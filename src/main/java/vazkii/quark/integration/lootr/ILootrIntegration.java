@@ -6,9 +6,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.ModList;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 import javax.annotation.Nullable;
 

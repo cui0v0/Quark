@@ -22,7 +22,7 @@ import vazkii.quark.content.tools.client.render.be.CloudRenderer;
 import vazkii.quark.content.tools.item.BottledCloudItem;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
 public class BottledCloudModule extends ZetaModule {

@@ -5,7 +5,7 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZAddItemColorHandlers;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 
 @FiredAs(ZAddItemColorHandlers.class)
 public record ForgeZAddItemColorHandlers(RegisterColorHandlersEvent.Item e) implements ZAddItemColorHandlers {

@@ -30,7 +30,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.ChangeHotbarMessage;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "management", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class HotbarChangerModule extends ZetaModule {

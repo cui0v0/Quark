@@ -52,8 +52,8 @@ import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 import javax.annotation.Nullable;
 import java.util.*;

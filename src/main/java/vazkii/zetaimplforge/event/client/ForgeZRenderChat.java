@@ -3,7 +3,7 @@ package vazkii.zetaimplforge.event.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZRenderChat;
+import vazkii.zeta.client.event.ZRenderChat;
 
 @FiredAs(ZRenderChat.class)
 public abstract class ForgeZRenderChat implements ZRenderChat {

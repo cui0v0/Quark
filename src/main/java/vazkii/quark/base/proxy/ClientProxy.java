@@ -33,8 +33,8 @@ import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
-import vazkii.zeta.event.client.ZClientModulesReady;
-import vazkii.zeta.event.client.ZConfigChangedClient;
+import vazkii.zeta.client.event.ZClientModulesReady;
+import vazkii.zeta.client.event.ZConfigChangedClient;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -18,7 +18,7 @@ import vazkii.quark.content.tools.client.render.entity.TorchArrowRenderer;
 import vazkii.quark.content.tools.entity.TorchArrow;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "tools")
 public class TorchArrowModule extends ZetaModule {

@@ -19,7 +19,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "building")
 public class MorePottedPlantsModule extends ZetaModule {

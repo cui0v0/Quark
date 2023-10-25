@@ -35,7 +35,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.InventoryTransferHandler;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 public final class InventoryButtonHandler {
 

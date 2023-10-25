@@ -53,7 +53,7 @@ import vazkii.quark.content.building.block.VerticalSlabBlock;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

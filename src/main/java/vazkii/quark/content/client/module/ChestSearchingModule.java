@@ -39,7 +39,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;

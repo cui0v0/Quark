@@ -30,9 +30,9 @@ import vazkii.quark.content.tools.item.AbacusItem;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZClientSetup;
-import vazkii.zeta.event.client.ZHighlightBlock;
-import vazkii.zeta.event.client.ZRenderCrosshair;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.client.event.ZHighlightBlock;
+import vazkii.zeta.client.event.ZRenderCrosshair;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 

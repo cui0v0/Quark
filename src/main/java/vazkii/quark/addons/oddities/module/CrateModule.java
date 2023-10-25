@@ -19,7 +19,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "oddities")
 public class CrateModule extends ZetaModule {

@@ -22,7 +22,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.recipe.DyeRecipe;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZAddItemColorHandlers;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

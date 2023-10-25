@@ -1,4 +1,4 @@
-package vazkii.zeta.event.client;
+package vazkii.zeta.client.event;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;

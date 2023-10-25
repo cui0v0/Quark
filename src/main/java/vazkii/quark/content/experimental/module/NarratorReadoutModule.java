@@ -32,7 +32,7 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "experimental", enabledByDefault = false, hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class NarratorReadoutModule extends ZetaModule {

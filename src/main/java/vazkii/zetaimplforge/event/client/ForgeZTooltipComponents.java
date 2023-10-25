@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZTooltipComponents;
+import vazkii.zeta.client.event.ZTooltipComponents;
 
 @FiredAs(ZTooltipComponents.class)
 public record ForgeZTooltipComponents(RegisterClientTooltipComponentFactoriesEvent e) implements ZTooltipComponents {

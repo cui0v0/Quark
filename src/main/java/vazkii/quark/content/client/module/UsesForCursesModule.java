@@ -21,7 +21,7 @@ import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tweaks.client.layer.ArmorStandFakePlayerLayer;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZAddModelLayers;
+import vazkii.zeta.client.event.ZAddModelLayers;
 
 @LoadModule(category = "client")
 public class UsesForCursesModule extends ZetaModule {

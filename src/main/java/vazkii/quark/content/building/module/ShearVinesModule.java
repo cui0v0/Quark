@@ -27,8 +27,8 @@ import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.ZRightClickBlock;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZAddBlockColorHandlers;
-import vazkii.zeta.event.client.ZAddItemColorHandlers;
+import vazkii.zeta.client.event.ZAddBlockColorHandlers;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.module.ZetaLoadModule;
 
 @ZetaLoadModule(category = "building")

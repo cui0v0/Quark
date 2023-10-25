@@ -36,8 +36,8 @@ import vazkii.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
 import vazkii.quark.content.tweaks.entity.DyedItemFrame;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZAddModels;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZAddModels;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
 public class DyeableItemFramesModule extends ZetaModule {

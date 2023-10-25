@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZAddModelLayers;
+import vazkii.zeta.client.event.ZAddModelLayers;
 
 @FiredAs(ZAddModelLayers.class)
 public record ForgeZAddModelLayers(EntityRenderersEvent.AddLayers e) implements ZAddModelLayers {

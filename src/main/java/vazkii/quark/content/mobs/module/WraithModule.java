@@ -40,7 +40,7 @@ import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "mobs")
 public class WraithModule extends ZetaModule {

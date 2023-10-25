@@ -13,7 +13,7 @@ import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.InventoryTransferMessage;
 import vazkii.quark.content.management.client.screen.widgets.MiniInventoryButton;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "management")
 public class EasyTransferingModule extends ZetaModule {

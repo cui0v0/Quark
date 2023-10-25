@@ -8,12 +8,11 @@ import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyModifier;
 import vazkii.quark.base.client.util.PredicatedKeyBinding;
 import vazkii.quark.base.client.util.SortedKeyBinding;
 import vazkii.quark.base.client.util.SortedPredicatedKeyBinding;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @OnlyIn(Dist.CLIENT)
 public class ModKeybindHandler {

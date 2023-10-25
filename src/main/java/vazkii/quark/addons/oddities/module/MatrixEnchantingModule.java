@@ -31,7 +31,7 @@ import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.MatrixEnchantingTableBlock;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;

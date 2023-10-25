@@ -29,9 +29,9 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZAddModels;
-import vazkii.zeta.event.client.ZClientSetup;
-import vazkii.zeta.event.client.ZModelBakingCompleted;
+import vazkii.zeta.client.event.ZAddModels;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.client.event.ZModelBakingCompleted;
 
 @LoadModule(category = "oddities", antiOverlap = "botania", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class TinyPotatoModule extends ZetaModule {

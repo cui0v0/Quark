@@ -18,7 +18,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;

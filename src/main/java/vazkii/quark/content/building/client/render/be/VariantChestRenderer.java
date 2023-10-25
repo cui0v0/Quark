@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.render.GenericChestBERenderer;
 import vazkii.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 import java.util.HashMap;
 import java.util.Map;

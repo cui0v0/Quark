@@ -11,7 +11,7 @@ import noobanidus.mods.lootr.init.ModBlocks;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.module.VariantChestsModule;
 import vazkii.quark.integration.lootr.client.LootrVariantChestRenderer;
-import vazkii.zeta.event.client.ZPreTextureStitch;
+import vazkii.zeta.client.event.ZPreTextureStitch;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

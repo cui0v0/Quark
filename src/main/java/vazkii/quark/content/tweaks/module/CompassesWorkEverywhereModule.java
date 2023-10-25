@@ -22,7 +22,7 @@ import vazkii.quark.content.tweaks.client.item.CompassAngleGetter;
 import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
 public class CompassesWorkEverywhereModule extends ZetaModule {

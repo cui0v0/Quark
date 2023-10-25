@@ -2,7 +2,7 @@ package vazkii.quark.content.experimental.module;
 
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZRenderChat;
+import vazkii.zeta.client.event.ZRenderChat;
 import vazkii.zeta.module.ModuleSide;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;

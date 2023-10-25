@@ -22,7 +22,7 @@ import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
 public class BackButtonKeybindModule extends ZetaModule {

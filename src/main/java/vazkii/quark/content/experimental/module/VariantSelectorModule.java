@@ -60,8 +60,8 @@ import vazkii.quark.content.experimental.item.HammerItem;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
-import vazkii.zeta.event.client.ZTooltipComponents;
+import vazkii.zeta.client.event.ZKeyMapping;
+import vazkii.zeta.client.event.ZTooltipComponents;
 
 @LoadModule(category = "experimental", hasSubscriptions = true, enabledByDefault = false,
 		description = "Allows placing variant blocks automatically via a selector menu triggered from a keybind")

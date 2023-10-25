@@ -1,4 +1,4 @@
-package vazkii.zeta.event.client;
+package vazkii.zeta.client.event;
 
 import java.util.function.Consumer;
 

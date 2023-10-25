@@ -23,7 +23,7 @@ import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
 import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZFirstClientTick;
+import vazkii.zeta.client.event.ZFirstClientTick;
 
 @LoadModule(category = "client")
 public class GreenerGrassModule extends ZetaModule {

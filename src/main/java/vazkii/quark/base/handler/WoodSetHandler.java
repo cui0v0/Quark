@@ -34,7 +34,7 @@ import vazkii.quark.content.building.module.*;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZClientSetup;
+import vazkii.zeta.client.event.ZClientSetup;
 
 import java.util.*;
 import java.util.stream.Stream;

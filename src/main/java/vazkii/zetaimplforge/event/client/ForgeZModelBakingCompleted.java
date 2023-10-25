@@ -6,7 +6,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ModelEvent;
 import vazkii.zeta.event.bus.FiredAs;
-import vazkii.zeta.event.client.ZModelBakingCompleted;
+import vazkii.zeta.client.event.ZModelBakingCompleted;
 
 @FiredAs(ZModelBakingCompleted.class)
 public record ForgeZModelBakingCompleted(ModelEvent.BakingCompleted e) implements ZModelBakingCompleted {

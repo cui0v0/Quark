@@ -15,7 +15,7 @@ import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.event.client.ZEndClientTickEvent;
+import vazkii.zeta.client.event.ZEndClientTickEvent;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 

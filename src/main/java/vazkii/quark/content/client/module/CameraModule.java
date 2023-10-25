@@ -32,7 +32,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.experimental.module.OverlayShaderModule;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.client.ZKeyMapping;
+import vazkii.zeta.client.event.ZKeyMapping;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package vazkii.zeta.event.client;
+package vazkii.zeta.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import vazkii.zeta.event.bus.Cancellable;
