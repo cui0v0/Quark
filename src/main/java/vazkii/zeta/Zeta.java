@@ -28,6 +28,7 @@ public abstract class Zeta {
 	public Zeta(String modid, Logger log) {
 		this.log = log;
 
+		this.modid = modid;
 		this.side = getSide();
 		this.loadBus = new ZetaEventBus<>(LoadEvent.class, IZetaLoadEvent.class, log);
 		this.playBus = new ZetaEventBus<>(PlayEvent.class, IZetaPlayEvent.class, null);
@@ -39,6 +40,7 @@ public abstract class Zeta {
 
 	public final Logger log;
 
+	public final String modid;
 	public final ZetaSide side;
 	public final ZetaEventBus<IZetaLoadEvent> loadBus;
 	public final ZetaEventBus<IZetaPlayEvent> playBus;

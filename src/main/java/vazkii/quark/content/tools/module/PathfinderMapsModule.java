@@ -40,6 +40,7 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.QuarkClient;
+import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -51,7 +52,6 @@ import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.tools.item.PathfindersQuillItem;
 import vazkii.quark.content.tools.loot.InBiomeCondition;
@@ -365,7 +365,7 @@ public class PathfinderMapsModule extends ZetaModule {
 		}
 	}
 
-	public static class TradeInfo extends AbstractConfigType implements Predicate<Holder<Biome>> {
+	public static class TradeInfo implements Predicate<Holder<Biome>>, IConfigType  {
 
 		public final ResourceLocation biome;
 		public final int color;

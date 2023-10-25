@@ -3,11 +3,11 @@ package vazkii.quark.content.world.config;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.DimensionConfig;
+import vazkii.quark.base.module.config.type.IConfigType;
 
-public class BlossomTreeConfig extends AbstractConfigType {
+public class BlossomTreeConfig implements IConfigType {
 
 	@Config
 	public DimensionConfig dimensions = DimensionConfig.overworld(false);

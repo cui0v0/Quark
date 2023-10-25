@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BiomeTagConfig extends AbstractConfigType implements IBiomeConfig {
+public class BiomeTagConfig implements IBiomeConfig, IConfigType {
 
 	private final Object mutex = new Object();
 

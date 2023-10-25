@@ -4,25 +4,18 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.quark.api.config.IConfigElement;
-import vazkii.quark.base.client.config.screen.CategoryScreen;
-import vazkii.quark.base.client.config.screen.WidgetWrapper;
-import vazkii.quark.base.client.config.screen.inputtable.ConvulsionMatrixInputScreen;
-import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
+import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.content.client.module.GreenerGrassModule;
 
-public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMatrixConfig> {
+public class ConvulsionMatrixConfig implements IConfigType {
 
 	@Config public List<Double> r;
 	@Config public List<Double> g;
@@ -41,16 +34,8 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		updateRGB();
 	}
 
-	//TODO: config stuff, only so i can get at convolve()
-	public ConvulsionMatrixConfig(double[] colorMatrix) {
-		this.params = null;
-		this.colorMatrix = colorMatrix;
-	}
-
 	@Override
 	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
-		super.onReload(module, flagManager);
-		
 		try {
 			colorMatrix = new double[] {
 					r.get(0), r.get(1), r.get(2),
@@ -62,12 +47,6 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 			colorMatrix = Arrays.copyOf(params.defaultMatrix, params.defaultMatrix.length);
 		}
 	}
-
-	@Override
-	public void inherit(ConvulsionMatrixConfig other, boolean committing) {
-		colorMatrix = Arrays.copyOf(other.colorMatrix, other.colorMatrix.length);
-		updateRGB();
-	}
 	
 	private void updateRGB() {
 		r = Arrays.asList(colorMatrix[0], colorMatrix[1], colorMatrix[2]);
@@ -75,19 +54,7 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		b = Arrays.asList(colorMatrix[6], colorMatrix[7], colorMatrix[8]);
 	}
 
-	@Override
-	public void inheritDefaults(ConvulsionMatrixConfig other) {
-		colorMatrix = Arrays.copyOf(other.params.defaultMatrix, other.params.defaultMatrix.length);
-	}
-
-	@Override
-	public ConvulsionMatrixConfig copy() {
-		ConvulsionMatrixConfig newMatrix = new ConvulsionMatrixConfig(params.cloneWithNewDefault(colorMatrix));
-		newMatrix.inherit(this, false);
-		return newMatrix;
-	}
-
-	//pade public static for the benefit of the config screen :/
+	//made public static for the benefit of the config screen :/
 	public static int convolve(double[] colorMatrix, int color) {
 		int r = color >> 16 & 0xFF;
 		int g = color >> 8 & 0xFF;
@@ -118,18 +85,6 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		return Arrays.hashCode(colorMatrix);
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addWidgets(CategoryScreen parent, IConfigElement element, List<WidgetWrapper> widgets) {
-		IInputtableConfigType.addPencil(parent, element, widgets, () -> new ConvulsionMatrixInputScreen(parent, this, element, parent.category));
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public String getSubtitle() {
-		return "[" + Arrays.stream(colorMatrix).boxed().map(d -> String.format("%.1f", d)).collect(Collectors.joining(", ")) + "]";
-	}
-	
 	public static class Params {
 		
 		private static final String IDENTITY_NAME = "Vanilla";

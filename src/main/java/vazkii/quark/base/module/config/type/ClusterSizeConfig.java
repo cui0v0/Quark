@@ -4,7 +4,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
 
-public class ClusterSizeConfig extends AbstractConfigType {
+public class ClusterSizeConfig implements IConfigType {
 
 	@Config
 	public DimensionConfig dimensions = DimensionConfig.overworld(false);

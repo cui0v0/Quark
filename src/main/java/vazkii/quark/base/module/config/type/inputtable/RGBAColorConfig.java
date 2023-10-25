@@ -1,7 +1,5 @@
 package vazkii.quark.base.module.config.type.inputtable;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.module.config.Config;
 
 import java.util.Objects;
@@ -39,31 +37,6 @@ public class RGBAColorConfig extends RGBColorConfig {
 	}
 
 	@Override
-	public void inherit(RGBColorConfig other, boolean committing) {
-		if(other instanceof RGBAColorConfig rgba) {
-			a = rgba.a;
-
-			if(!committing)
-				da = rgba.a;
-		}
-
-		super.inherit(other, committing);
-	}
-
-	@Override
-	public void inheritDefaults(RGBColorConfig target) {
-		a = (target instanceof RGBAColorConfig rgba) ? rgba.da : 1F;
-		super.inheritDefaults(target);
-	}
-
-	@Override
-	public RGBAColorConfig copy() {
-		RGBAColorConfig newMatrix = new RGBAColorConfig(r, g, b, a);
-		newMatrix.inherit(this, false);
-		return newMatrix;
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -74,12 +47,6 @@ public class RGBAColorConfig extends RGBColorConfig {
 	@Override
 	public int hashCode() {
 		return Objects.hash(r, g, b, a);
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public String getSubtitle() {
-		return String.format("[%.1f, %.1f, %.1f, %.1f]", r, g, b, a);
 	}
 
 }

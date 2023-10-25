@@ -5,10 +5,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
+import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.quark.content.tools.entity.rang.AbstractPickarang;
 
-public class PickarangType<T extends AbstractPickarang<T>> extends AbstractConfigType {
+public class PickarangType<T extends AbstractPickarang<T>> implements IConfigType {
 
 	public final Item repairMaterial;
 	public final Item pickaxeEquivalent;

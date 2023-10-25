@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import vazkii.quark.base.module.config.Config;
 
-public class OrePocketConfig extends AbstractConfigType {
+public class OrePocketConfig implements IConfigType {
 
 	@Config
 	@Config.Min(-64)

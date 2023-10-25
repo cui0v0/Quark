@@ -364,7 +364,7 @@ public class VariantSelectorModule extends ZetaModule {
 					posX += width * 2;
 				} 
 				else {
-					final ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/widgets.png");
+					final ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/widget.png");
 					
 					if(alignHudToHotbar) {
 						RenderSystem.enableBlend();

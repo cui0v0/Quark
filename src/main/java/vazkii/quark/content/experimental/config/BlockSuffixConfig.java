@@ -16,12 +16,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-import vazkii.quark.base.module.config.type.AbstractConfigType;
 
-public class BlockSuffixConfig extends AbstractConfigType {
+public class BlockSuffixConfig implements IConfigType {
 
 	private static final VariantMap EMPTY_VARIANT_MAP = new VariantMap(new HashMap<>());
 	

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DimensionConfig extends AbstractConfigType {
+public class DimensionConfig implements IConfigType {
 
 	@Config
 	private boolean isBlacklist;

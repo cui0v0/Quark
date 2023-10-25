@@ -7,7 +7,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 
-public class CompoundBiomeConfig extends AbstractConfigType implements IBiomeConfig {
+public class CompoundBiomeConfig implements IBiomeConfig, IConfigType {
 
 	@Config(description = "Biome tags for which this should spawn in. Must match both this and 'biomes' to spawn.")
 	public BiomeTagConfig tags;

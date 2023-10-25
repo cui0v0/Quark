@@ -38,7 +38,7 @@ public class HotbarChangerModule extends ZetaModule {
 	@OnlyIn(Dist.CLIENT)
 	private static KeyMapping changeHotbarKey;
 
-	private static final ResourceLocation WIDGETS = new ResourceLocation("textures/gui/widgets.png");
+	private static final ResourceLocation WIDGETS = new ResourceLocation("textures/gui/widget.png");
 
 	private static final int ANIMATION_TIME = 10;
 	private static final int MAX_HEIGHT = 90;

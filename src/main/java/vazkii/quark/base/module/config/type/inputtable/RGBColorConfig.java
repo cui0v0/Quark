@@ -1,21 +1,14 @@
 package vazkii.quark.base.module.config.type.inputtable;
 
-import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.quark.api.config.IConfigElement;
-import vazkii.quark.base.client.config.screen.CategoryScreen;
-import vazkii.quark.base.client.config.screen.WidgetWrapper;
-import vazkii.quark.base.client.config.screen.inputtable.IInputtableConfigType;
-import vazkii.quark.base.client.config.screen.inputtable.RGBColorInputScreen;
+import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 
-public class RGBColorConfig extends AbstractInputtableType<RGBColorConfig> {
+public class RGBColorConfig implements IConfigType {
 
 	@Config public double r;
 	@Config public double g;
@@ -70,17 +63,7 @@ public class RGBColorConfig extends AbstractInputtableType<RGBColorConfig> {
 	}
 
 	@Override
-	public void inheritDefaults(RGBColorConfig target) {
-		r = target.dr;
-		g = target.dg;
-		b = target.db;
-		color = calculateColor();
-	}
-
-	@Override
 	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
-		super.onReload(module, flagManager);
-		
 		color = calculateColor();
 	}
 
@@ -99,28 +82,6 @@ public class RGBColorConfig extends AbstractInputtableType<RGBColorConfig> {
 	void setAlphaComponent(double c) {
 		// NO-OP
 	}
-
-	@Override
-	public void inherit(RGBColorConfig other, boolean committing) {
-		r = other.r;
-		g = other.g;
-		b = other.b;
-		color = other.color;
-
-		if(!committing) {
-			dr = other.r;
-			dg = other.g;
-			db = other.b;
-		}
-	}
-
-	@Override
-	public RGBColorConfig copy() {
-		RGBColorConfig newMatrix = new RGBColorConfig(r, g, b);
-		newMatrix.inherit(this, false);
-		return newMatrix;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -132,18 +93,6 @@ public class RGBColorConfig extends AbstractInputtableType<RGBColorConfig> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(r, g, b);
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addWidgets(CategoryScreen parent, IConfigElement element, List<WidgetWrapper> widgets) {
-		IInputtableConfigType.addPencil(parent, element, widgets, () -> new RGBColorInputScreen(parent, this, element, parent.category));
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public String getSubtitle() {
-		return String.format("[%.1f, %.1f, %.1f]", r, g, b);
 	}
 
 	private static int clamp(double val) {

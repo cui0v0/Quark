@@ -47,9 +47,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -66,9 +63,8 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.client.config.screen.AbstractQScreen;
+import vazkii.zeta.client.config.screen.ZetaScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
-import vazkii.quark.mixin.accessor.AccessorLootTable;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -317,7 +313,7 @@ public class MiscUtil {
 				"GEo5bmUKFvI","b6li05zh3Kg", "_EEo-iE5u_A", "SPYX2y4NzTU"
 			};
 			final int[] keys = new int[] { 265, 265, 264, 264, 263, 262, 263, 262, 66, 65 };
-			if(event.getScreen() instanceof AbstractQScreen) {
+			if(event.getScreen() instanceof ZetaScreen) {
 				if(keys[progress] == event.getKeyCode()) {
 					progress++;
 

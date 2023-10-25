@@ -4,7 +4,7 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 
-public class EntitySpawnConfig extends AbstractConfigType {
+public class EntitySpawnConfig implements IConfigType {
 
 	private boolean enabled = false;
 
@@ -32,8 +32,6 @@ public class EntitySpawnConfig extends AbstractConfigType {
 
 	@Override
 	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
-		super.onReload(module, flagManager);
-		
 		enabled = (module != null && module.enabled);
 	}
 	

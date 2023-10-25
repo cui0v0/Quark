@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.zeta.Zeta;
@@ -25,14 +26,14 @@ public class WeirdConfigSingleton {
 	private final List<Consumer<IZetaConfigInternals>> databindings = new ArrayList<>();
 
 	//ummmmmmm i think my abstraction isn't very good
-	private final SectionDefinition generalSection;
+	private final @Nullable SectionDefinition generalSection;
 	private final Map<ZetaCategory, SectionDefinition> categoriesToSections = new HashMap<>();
 
 	private final Map<ZetaCategory, ValueDefinition<Boolean>> categoryEnabledOptions = new HashMap<>();
 	private final Map<ZetaModule, ValueDefinition<Boolean>> ignoreAntiOverlapOptions = new HashMap<>();
 	private final Map<ZetaModule, ValueDefinition<Boolean>> moduleEnabledOptions = new HashMap<>();
 
-	//state (TODO: unused)
+	//state
 	private final Set<ZetaCategory> enabledCategories = new HashSet<>();
 
 	public WeirdConfigSingleton(Zeta z, Object rootPojo) {
@@ -99,7 +100,7 @@ public class WeirdConfigSingleton {
 
 	// bad bad bad
 
-	public SectionDefinition getGeneralSection() {
+	public @Nullable SectionDefinition getGeneralSection() {
 		return generalSection;
 	}
 

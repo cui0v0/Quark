@@ -8,7 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import vazkii.quark.base.module.config.Config;
 
-public class StrictBiomeConfig extends AbstractConfigType implements IBiomeConfig {
+public class StrictBiomeConfig implements IBiomeConfig, IConfigType {
 
 	@Config(name = "Biomes")
 	private List<String> biomeStrings;
