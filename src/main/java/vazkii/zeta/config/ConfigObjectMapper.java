@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.module.config.Config;
+import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.zeta.module.ZetaModule;
 
@@ -31,8 +32,15 @@ public class ConfigObjectMapper {
 		return list;
 	}
 
+	public static void readInto(SectionDefinition sect, Object obj, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
+		if(obj instanceof ZetaModule zm)
+			readInto(sect, obj, zm, databindings, cfm);
+		else
+			readInto(sect, obj, null, databindings, cfm);
+	}
+
 	//TODO: interaction with ConfigFlagManager
-	public static void readInto(SectionDefinition sect, Object obj, Consumer<Consumer<IZetaConfigInternals>> fieldUpdaters) {
+	public static void readInto(SectionDefinition sect, Object obj, @Nullable ZetaModule enclosingModule, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
 		for(Field field : walkModuleFields(obj.getClass())) {
 			Config config = field.getAnnotation(Config.class);
 
@@ -69,18 +77,24 @@ public class ConfigObjectMapper {
 			Predicate<Object> restriction = restrict(min, max, condition);
 
 			if(defaultValue instanceof IConfigType configType) {
+				//it's a subtree
 				String asSectionName = name.toLowerCase(Locale.ROOT).replace(" ", "_");
 				SectionDefinition subsection = sect.getOrCreateSubsection(asSectionName, comment);
+				subsection.hint = configType;
 
-				readInto(subsection, configType, fieldUpdaters);
+				//walk inside the ConfigType and look for its @Config annotations, add databinders, etc
+				readInto(subsection, configType, enclosingModule, databindings, cfm);
 
-				//TODO: add a field updater for IConfigType (call its onReload)
+				//since databinders are called in order, this will run after the configtype's @Config-annotated
+				//fields have been brought up-to-date
+				databindings.add(z -> configType.onReload(enclosingModule, cfm));
 			} else {
+				//it's a leaf node
 				//add it to the config tree
 				ValueDefinition<?> def = sect.addValue(name, comment, defaultValue, restriction);
 
-				//register a field updater
-				fieldUpdaters.accept(z -> setField(obj, field, z.get(def)));
+				//register a data binder
+				databindings.add(z -> setField(obj, field, z.get(def)));
 			}
 		}
 	}

@@ -1,6 +1,8 @@
 package vazkii.zeta.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,6 +27,7 @@ public class ChangeSet implements IZetaConfigInternals {
 			changes.put(valueDef, new Entry<>(valueDef, currentValue, nextValue));
 	}
 
+	//convenience
 	public void toggle(ValueDefinition<Boolean> boolDef) {
 		set(boolDef, !get(boolDef));
 	}
@@ -85,6 +88,18 @@ public class ChangeSet implements IZetaConfigInternals {
 			return isDirty(val);
 		else
 			return isDirty((SectionDefinition) def);
+	}
+
+	public <T> List<T> getExactSizeCopy(ValueDefinition<List<T>> def, int size, T filler) {
+		List<T> value = get(def);
+		if(value.size() > size)
+			return new ArrayList<>(value.subList(0, size));
+
+		value = new ArrayList<>(value);
+		while(value.size() < size)
+			value.add(filler);
+
+		return value;
 	}
 
 	// Getting data as if the changes were applied

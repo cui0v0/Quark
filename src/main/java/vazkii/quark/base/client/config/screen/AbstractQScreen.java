@@ -12,6 +12,7 @@ import vazkii.quark.base.client.config.obj.AbstractStringInputObject;
 import vazkii.quark.base.client.config.obj.ListObject;
 import vazkii.quark.base.client.config.screen.what.DoubleInputScreen;
 import vazkii.quark.base.client.config.screen.what.IntegerInputScreen;
+import vazkii.quark.base.client.config.screen.what.RGBInputScreen2;
 import vazkii.quark.base.client.config.screen.what.StringListInputScreen;
 import vazkii.quark.base.client.config.screen.what.SectionScreen;
 import vazkii.quark.base.client.config.screen.what.StringInputScreen2;
@@ -36,6 +37,8 @@ public abstract class AbstractQScreen extends Screen {
 		return b -> Util.getPlatform().openUri(url);
 	}
 
+	//TODO: these are getting out of hand
+
 	public OnPress sectionLink(ChangeSet changes, SectionDefinition section) {
 		return b -> minecraft.setScreen(new SectionScreen(this, changes, section));
 	}
@@ -54,6 +57,10 @@ public abstract class AbstractQScreen extends Screen {
 
 	public OnPress stringListInput(ChangeSet changes, ValueDefinition<List<String>> def) {
 		return b -> minecraft.setScreen(new StringListInputScreen(this, changes, def));
+	}
+
+	public OnPress rgbInput(ChangeSet changes, SectionDefinition section) {
+		return b -> minecraft.setScreen(new RGBInputScreen2(this, changes, section));
 	}
 
 	@Deprecated

@@ -36,6 +36,21 @@ public class SectionDefinition extends Definition {
 		return val;
 	}
 
+	public @Nullable ValueDefinition<?> getValue(String name) {
+		return values.get(name);
+	}
+
+	public <T> @Nullable ValueDefinition<T> getValue(String name, Class<T> type) {
+		ValueDefinition<?> value = getValue(name);
+		return value == null ? null : value.downcast(type);
+	}
+
+	//ugh
+	@SuppressWarnings("unchecked")
+	public <T> @Nullable ValueDefinition<T> getValueErased(String name, Class<?> type) {
+		return (ValueDefinition<T>) getValue(name, type);
+	}
+
 	public Collection<SectionDefinition> getSubsections() {
 		return subsections.values();
 	}

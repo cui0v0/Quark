@@ -22,12 +22,14 @@ public class WeirdConfigSingleton {
 	private final SectionDefinition rootConfig;
 
 	//for updating the values of @Config annotations to match the current state of the config
-	private final List<Consumer<IZetaConfigInternals>> fieldUpdaters = new ArrayList<>();
+	private final List<Consumer<IZetaConfigInternals>> databindings = new ArrayList<>();
 
 	//ummmmmmm i think my abstraction isn't very good
 	private final SectionDefinition generalSection;
 	private final Map<ZetaCategory, SectionDefinition> categoriesToSections = new HashMap<>();
+
 	private final Map<ZetaCategory, ValueDefinition<Boolean>> categoryEnabledOptions = new HashMap<>();
+	private final Map<ZetaModule, ValueDefinition<Boolean>> ignoreAntiOverlapOptions = new HashMap<>();
 	private final Map<ZetaModule, ValueDefinition<Boolean>> moduleEnabledOptions = new HashMap<>();
 
 	//state (TODO: unused)
@@ -48,14 +50,12 @@ public class WeirdConfigSingleton {
 			generalSection = null;
 		else {
 			generalSection = rootConfig.getOrCreateSubsection("general", List.of());
-			ConfigObjectMapper.readInto(generalSection, rootPojo, fieldUpdaters::add);
+			ConfigObjectMapper.readInto(generalSection, rootPojo, databindings, cfm);
 		}
 
 		for(ZetaCategory category : modules.getInhabitedCategories()) {
 			//category enablement option
-			ValueDefinition<Boolean> categoryEnabled = rootConfig.getOrCreateSubsection("categories", List.of()).addValue(category.name, List.of(), true);
-			categoryEnabledOptions.put(category, categoryEnabled);
-			fieldUpdaters.add(i -> setCategoryEnabled(category, i.get(categoryEnabled)));
+			categoryEnabledOptions.put(category, rootConfig.getOrCreateSubsection("categories", List.of()).addValue(category.name, List.of(), true));
 
 			//per-category options:
 			SectionDefinition categorySection = rootConfig.getOrCreateSubsection(category.name, List.of());
@@ -63,26 +63,34 @@ public class WeirdConfigSingleton {
 
 			for(ZetaModule module : modules.modulesInCategory(category)) {
 				//module enablement option
-				ValueDefinition<Boolean> moduleEnabled = categorySection.addValue(module.displayName, List.of(module.description), module.enabledByDefault);
-				moduleEnabledOptions.put(module, moduleEnabled);
-				fieldUpdaters.add(i -> setModuleEnabled(module, i.get(moduleEnabled)));
+				moduleEnabledOptions.put(module, categorySection.addValue(module.displayName, List.of(module.description), module.enabledByDefault));
 
 				//module @Config options
 				SectionDefinition moduleSection = categorySection.getOrCreateSubsection(module.lowercaseName, List.of(module.description));
-				ConfigObjectMapper.readInto(moduleSection, module, fieldUpdaters::add);
+				ConfigObjectMapper.readInto(moduleSection, module, databindings, cfm);
 
 				//anti overlap
 				if(!module.antiOverlap.isEmpty()) {
-					StringBuilder desc = new StringBuilder("This feature disables itself if any of the following mods are loaded: \n");
+					List<String> antiOverlapComment = new ArrayList<>(module.antiOverlap.size() + 3);
+					antiOverlapComment.add("This feature disables itself if any of the following mods are loaded:");
 					for (String s : module.antiOverlap)
-						desc.append(" - ").append(s).append("\n");
-					desc.append("This is done to prevent content overlap.\nYou can turn this on to force the feature to be loaded even if the above mods are also loaded.");
+						antiOverlapComment.add(" - " + s);
+					antiOverlapComment.add("This is done to prevent content overlap.");
+					antiOverlapComment.add("You can turn this on to force the feature to be loaded even if the above mods are also loaded.");
 
-					ValueDefinition<Boolean> ignoreAntiOverlap = moduleSection.addValue("Ignore Anti Overlap", List.of(desc.toString()), false);
-					fieldUpdaters.add(i -> module.ignoreAntiOverlap = !GeneralConfig.useAntiOverlap || i.get(ignoreAntiOverlap));
+					ignoreAntiOverlapOptions.put(module, moduleSection.addValue("Ignore Anti Overlap", antiOverlapComment, false));
 				}
 			}
 		}
+
+		//managing module enablement in one go
+		//adding this to the *start* of the list so modules are enabled before anything else runs
+		//Its Janky !
+		databindings.add(0, i -> {
+			categoryEnabledOptions.forEach((category, option) -> setCategoryEnabled(category, i.get(option)));
+			ignoreAntiOverlapOptions.forEach((module, option) -> module.ignoreAntiOverlap = !GeneralConfig.useAntiOverlap || i.get(option));
+			moduleEnabledOptions.forEach((module, option) -> setModuleEnabled(module, i.get(option)));
+		});
 	}
 
 	public SectionDefinition getRootConfig() {
@@ -115,7 +123,7 @@ public class WeirdConfigSingleton {
 		else
 			enabledCategories.remove(cat);
 
-		//TODO TODO bad bad bad
+		//TODO TODO bad bad bad, just forcing setEnabled to rerun since it checks category enablement
 		for(ZetaModule mod : z.modules.modulesInCategory(cat)) {
 			mod.setEnabled(z, mod.enabled);
 		}
@@ -135,7 +143,7 @@ public class WeirdConfigSingleton {
 		return cfm;
 	}
 
-	public void onReload(IZetaConfigInternals internals) {
-		fieldUpdaters.forEach(c -> c.accept(internals));
+	public void runDatabindings(IZetaConfigInternals internals) {
+		databindings.forEach(c -> c.accept(internals));
 	}
 }

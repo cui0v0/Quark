@@ -1,13 +1,10 @@
 package vazkii.zeta;
 
-import java.util.Collection;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
-import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.zeta.client.ClientTicker;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
@@ -62,7 +59,7 @@ public abstract class Zeta {
 		this.configInternals = makeConfigInternals(weirdConfigSingleton.getRootConfig());
 
 		//the initial config load (TODO: might need to find a better spot for this)
-		weirdConfigSingleton.onReload(configInternals);
+		weirdConfigSingleton.runDatabindings(configInternals);
 	}
 
 	public abstract ZetaSide getSide();

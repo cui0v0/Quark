@@ -17,15 +17,12 @@ import vazkii.quark.base.capability.CapabilityHandler;
 import vazkii.quark.base.handler.*;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.quark.base.module.config.IConfigCallback;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.recipe.*;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.module.LegacyQuarkModuleFinder;
-import vazkii.zeta.config.IZetaConfigInternals;
-import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
@@ -125,7 +122,7 @@ public class CommonProxy {
 	//TODO: mess, find a better spot for this
 	public void handleQuarkConfigChange() {
 		//ModuleLoader.INSTANCE.configChanged();
-		Quark.ZETA.weirdConfigSingleton.onReload(Quark.ZETA.configInternals);
+		Quark.ZETA.weirdConfigSingleton.runDatabindings(Quark.ZETA.configInternals);
 		//Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().clear();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
 		if(ModuleLoader.INSTANCE.onConfigReloadJEI != null)

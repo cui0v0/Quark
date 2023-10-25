@@ -41,6 +41,12 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		updateRGB();
 	}
 
+	//TODO: config stuff, only so i can get at convolve()
+	public ConvulsionMatrixConfig(double[] colorMatrix) {
+		this.params = null;
+		this.colorMatrix = colorMatrix;
+	}
+
 	@Override
 	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
 		super.onReload(module, flagManager);
@@ -81,7 +87,8 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		return newMatrix;
 	}
 
-	public int convolve(int color) {
+	//pade public static for the benefit of the config screen :/
+	public static int convolve(double[] colorMatrix, int color) {
 		int r = color >> 16 & 0xFF;
 		int g = color >> 8 & 0xFF;
 		int b = color & 0xFF;
@@ -93,8 +100,12 @@ public class ConvulsionMatrixConfig extends AbstractInputtableType<ConvulsionMat
 		return 0xFF000000 | (((outR & 0xFF) << 16) + ((outG & 0xFF) << 8) + (outB & 0xFF));
 	}
 
-	private int clamp(int val) {
+	private static int clamp(int val) {
 		return Math.min(0xFF, Math.max(0, val));
+	}
+
+	public int convolve(int color) {
+		return convolve(this.colorMatrix, color);
 	}
 
 	@Override

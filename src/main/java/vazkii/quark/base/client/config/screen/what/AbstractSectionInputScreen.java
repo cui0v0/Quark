@@ -5,34 +5,24 @@ import net.minecraft.client.gui.screens.Screen;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.config.screen.AbstractQScreen;
 import vazkii.zeta.config.ChangeSet;
-import vazkii.zeta.config.ValueDefinition;
+import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.config.client.ClientDefinitionExt;
 
-//TODO: assumes the thing your editing has a direct ValueDefinition, which isn't true for certain types of config screens
-// like, RGBA color inputs actually correspond to SectionDefinitions in the config
-public abstract class AbstractInputScreen2<T> extends AbstractQScreen {
+public abstract class AbstractSectionInputScreen extends AbstractQScreen {
 	protected final ChangeSet changes;
-	protected final ValueDefinition<T> def;
-	protected final ClientDefinitionExt<ValueDefinition<T>> ext;
+	protected final SectionDefinition def;
+	protected final ClientDefinitionExt<SectionDefinition> ext;
 
 	protected DefaultDiscardDone defaultDiscardDone;
 
-	public AbstractInputScreen2(Screen parent, ChangeSet changes, ValueDefinition<T> def) {
+	public AbstractSectionInputScreen(Screen parent, ChangeSet changes, SectionDefinition def) {
 		super(parent);
 		this.changes = changes;
 		this.def = def;
 		this.ext = QuarkClient.ZETA_CLIENT.clientConfigManager.getExt(def);
 	}
 
-	protected T get() {
-		return changes.get(def);
-	}
-
-	protected void set(T thing) {
-		changes.set(def, thing);
-	}
-
-	protected abstract void forceUpdateWidgetsTo(T value);
+	protected abstract void forceUpdateWidgets();
 
 	@Override
 	protected void init() {
@@ -42,13 +32,13 @@ public abstract class AbstractInputScreen2<T> extends AbstractQScreen {
 			@Override
 			public void resetToDefault(Button b) {
 				super.resetToDefault(b);
-				forceUpdateWidgetsTo(get());
+				forceUpdateWidgets();
 			}
 
 			@Override
 			public void discard(Button b) {
 				super.discard(b);
-				forceUpdateWidgetsTo(get());
+				forceUpdateWidgets();
 			}
 		};
 		defaultDiscardDone.addWidgets(this::addRenderableWidget);

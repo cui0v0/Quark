@@ -11,8 +11,19 @@ import vazkii.zeta.config.ValueDefinition;
 public class StringListClientDefinition implements ClientDefinitionExt<ValueDefinition<List<String>>> {
 	@Override
 	public String getSubtitle(ChangeSet changes, ValueDefinition<List<String>> def) {
-		//TODO: localizable
-		return changes.get(def).size() + " strings";
+		List<String> list = changes.get(def);
+
+		if(list.isEmpty())
+			return "[]";
+
+		StringBuilder bob = new StringBuilder("[").append(list.get(0));
+		for(int i = 1; i < list.size() && bob.length() < 30; i++)
+			bob.append(", ").append(list.get(i));
+
+		if(bob.length() > 30)
+			return truncate(bob.toString());
+		else
+			return bob.append(']').toString();
 	}
 
 	@Override

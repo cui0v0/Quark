@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
+import vazkii.quark.base.module.config.type.IConfigType;
 
 /**
  * Common superclass of a... "thing" in a config definition (a value or section).
@@ -21,6 +22,10 @@ public abstract class Definition {
 	public final List<String> comment;
 	public final @Nullable SectionDefinition parent;
 	public final Collection<String> path;
+
+	//TODO: awkward, set from ConfigObjectMapper
+	// Treat this as immutable and for reference only !!!!
+	public @Nullable Object hint;
 
 	public Definition(String name, List<String> comment, @Nullable SectionDefinition parent) {
 		this.name = name;

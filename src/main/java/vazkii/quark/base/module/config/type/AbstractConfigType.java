@@ -11,10 +11,4 @@ public class AbstractConfigType implements IConfigType {
 
 	public AbstractConfigType() { }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void setCategory(ConfigCategory category) {
-		this.category = category;
-	}
-
 }

@@ -120,8 +120,8 @@ public class ConfigCategory extends AbstractConfigElement implements IConfigCate
 	@Override
 	public IConfigCategory addCategory(String name, @Nonnull String comment, Object holderObject) {
 		ConfigCategory newCategory = new ConfigCategory(name, comment, this, holderObject); 
-		if(holderObject instanceof IConfigType configType)
-			configType.setCategory(newCategory);
+		//if(holderObject instanceof IConfigType configType)
+			//configType.setCategory(newCategory);
 
 		return addCategory(newCategory);
 	}

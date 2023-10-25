@@ -2,6 +2,8 @@ package vazkii.zeta.config.client;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import vazkii.quark.base.client.config.screen.AbstractQScreen;
@@ -26,9 +28,13 @@ public interface ClientDefinitionExt<T extends Definition> {
 
 	void addWidgets(AbstractQScreen parent, ChangeSet changes, T def, List<WidgetWrapper> widgets);
 
+	default Button.OnPress open(Screen newScreen) {
+		return b -> Minecraft.getInstance().setScreen(newScreen);
+	}
+
 	default String truncate(String in) {
 		if(in.length() > 30)
-			return in.substring(27) + "...";
+			return in.substring(0, 27) + "...";
 		else
 			return in;
 	}

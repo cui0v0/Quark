@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 //TODO: maybe we need "boolean equals(T thing1, T thing2)"
 public class ValueDefinition<T> extends Definition {
 	public final T defaultValue;
-
 	public final @Nullable Predicate<Object> validator;
 
 	public ValueDefinition(String name, List<String> comment, T defaultValue, @Nullable Predicate<Object> validator, @Nullable SectionDefinition parent) {
@@ -27,6 +26,19 @@ public class ValueDefinition<T> extends Definition {
 
 	public ValueDefinition(String name, List<String> comment, T defaultValue) {
 		this(name, comment, defaultValue, null, null);
+	}
+
+	public boolean isOfType(Class<?> clazz) {
+		//TODO: have "type" as a field, so that defaultValue can be null
+		return clazz.isAssignableFrom(defaultValue.getClass());
+	}
+
+	@SuppressWarnings("unchecked")
+	public <X> @Nullable ValueDefinition<X> downcast(Class<X> newType) {
+		if(isOfType(newType))
+			return (ValueDefinition<X>) this;
+		else
+			return null;
 	}
 
 	public boolean validate(Object underTest) {
