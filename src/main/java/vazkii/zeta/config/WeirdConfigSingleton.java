@@ -92,6 +92,8 @@ public class WeirdConfigSingleton {
 			ignoreAntiOverlapOptions.forEach((module, option) -> module.ignoreAntiOverlap = !GeneralConfig.useAntiOverlap || i.get(option));
 			moduleEnabledOptions.forEach((module, option) -> setModuleEnabled(module, i.get(option)));
 		});
+
+		rootConfig.trimEmptySubsections();
 	}
 
 	public SectionDefinition getRootConfig() {

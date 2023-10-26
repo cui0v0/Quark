@@ -59,6 +59,11 @@ public class SectionDefinition extends Definition {
 		return values.values();
 	}
 
+	public void trimEmptySubsections() {
+		getSubsections().removeIf(sub -> sub.getSubsections().isEmpty() && sub.getValues().isEmpty());
+		getSubsections().forEach(SectionDefinition::trimEmptySubsections);
+	}
+
 	@Override
 	public String toString() {
 		return "SectionDefinition{" + name + " (" + subsections.size() + " subsections, " + values.size() + " values)}";
