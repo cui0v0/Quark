@@ -3,24 +3,23 @@ package vazkii.quark.content.experimental.module;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ModuleSide;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.util.RegistryUtil;
 
 import java.util.List;
 
-@LoadModule(category = "experimental", enabledByDefault = false,
+@ZetaLoadModule(category = "experimental", enabledByDefault = false, side = ModuleSide.CLIENT_ONLY,
 description = "This feature generates Resource Pack Item Model predicates on the items defined in 'Items to Change'\n"
 		+ "for the Enchantments defined in 'Enchantments to Register'.\n\n"
 		+ "Example: if 'minecraft:silk_touch' is added to 'Enchantments to Register', and 'minecraft:netherite_pickaxe'\n"
@@ -35,15 +34,14 @@ public class EnchantmentPredicatesModule extends ZetaModule {
 	public static List<String> enchantmentsToRegister = Lists.newArrayList();
 
 	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
 	public void clientSetup(ZClientSetup e) {
 		if(enabled) {
 			e.enqueueWork(() -> {
-				List<Item> items = MiscUtil.massRegistryGet(itemsToChange, ForgeRegistries.ITEMS);
-				List<Enchantment> enchants = MiscUtil.massRegistryGet(enchantmentsToRegister, ForgeRegistries.ENCHANTMENTS);
+				List<Item> items = RegistryUtil.massRegistryGet(itemsToChange, Registry.ITEM);
+				List<Enchantment> enchants = RegistryUtil.massRegistryGet(enchantmentsToRegister, Registry.ENCHANTMENT);
 
 				for(Enchantment enchant : enchants) {
-					ResourceLocation enchantRes = ForgeRegistries.ENCHANTMENTS.getKey(enchant);
+					ResourceLocation enchantRes = Registry.ENCHANTMENT.getKey(enchant);
 					ResourceLocation name = new ResourceLocation(Quark.MOD_ID + "_has_enchant_" + enchantRes.getNamespace() + "_" + enchantRes.getPath());
 					ItemPropertyFunction fun = (stack, level, entity, i) -> EnchantmentHelper.getTagEnchantmentLevel(enchant, stack);
 

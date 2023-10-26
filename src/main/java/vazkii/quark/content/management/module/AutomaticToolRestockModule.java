@@ -31,6 +31,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.util.RegistryUtil;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -83,8 +84,8 @@ public class AutomaticToolRestockModule extends ZetaModule {
 
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
-		importantEnchants = MiscUtil.massRegistryGet(enchantNames, ForgeRegistries.ENCHANTMENTS);
-		itemsToIgnore = MiscUtil.massRegistryGet(ignoredItems, ForgeRegistries.ITEMS);
+		importantEnchants = RegistryUtil.massRegistryGet(enchantNames, Registry.ENCHANTMENT);
+		itemsToIgnore = RegistryUtil.massRegistryGet(ignoredItems, Registry.ITEM);
 	}
 
 	@SubscribeEvent

@@ -1,9 +1,5 @@
 package vazkii.quark.base.handler;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
@@ -20,7 +16,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -61,14 +56,12 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import vazkii.quark.base.Quark;
 import vazkii.zeta.client.config.screen.ZetaScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MiscUtil {
 
@@ -201,10 +194,6 @@ public class MiscUtil {
 		return state.getMaterial() == Material.STONE && state.isValidSpawn(world, below, type);
 	}
 
-	public static <T> List<T> massRegistryGet(Collection<String> coll, IForgeRegistry<T> registry) {
-		return coll.stream().map(ResourceLocation::new).map(registry::getValue).filter(Objects::nonNull).collect(Collectors.toList());
-	}
-
 	public static void syncTE(BlockEntity tile) {
 		Packet<ClientGamePacketListener> packet = tile.getUpdatePacket();
 
@@ -245,42 +234,6 @@ public class MiscUtil {
 		HolderSet<T> holderSet = registry.getTag(tag).orElse(new HolderSet.Named<>(registry, tag));
 
 		return holderSet.stream().map(Holder::value).toList();
-	}
-
-	public static String toColorString(int color) {
-		String colorString = Integer.toHexString(color);
-		int targetLength = colorString.length() > 6 ? 8 : 6;
-		String zeroes = colorString.length() < targetLength ? "0".repeat(targetLength - colorString.length()) : "";
-		return "#" + zeroes + colorString;
-	}
-
-	public static int getAsColor(JsonObject object, String key) {
-		if (object.has(key)) {
-			return convertToColor(object.get(key), key);
-		} else {
-			throw new JsonSyntaxException("Missing " + key + ", expected to find an item");
-		}
-	}
-
-	public static int convertToColor(JsonElement element, String key) {
-		if (element.isJsonPrimitive()) {
-			JsonPrimitive primitive = element.getAsJsonPrimitive();
-			if (primitive.isNumber())
-				return primitive.getAsInt();
-			else if (primitive.isString()) {
-				String s = element.getAsString();
-				if (s.matches("#[0-9a-f]{6}")) {
-					try {
-						return Integer.parseInt(s.substring(1), 16);
-					} catch (NumberFormatException e) {
-						// NO-OP, should be impossible to reach, but fall through to below if so
-					}
-				}
-			}
-
-		}
-
-		throw new JsonSyntaxException("Expected " + key + " to be a color, was " + GsonHelper.getType(element));
 	}
 
 	public static BlockState fromString(String key) {

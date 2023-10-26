@@ -15,6 +15,7 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -56,6 +57,7 @@ import vazkii.quark.content.tools.module.PickarangModule;
 import vazkii.quark.content.tweaks.module.DiamondRepairModule;
 import vazkii.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 import vazkii.quark.content.tweaks.recipe.SlabToBlockRecipe;
+import vazkii.zeta.util.RegistryUtil;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -166,7 +168,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			MutableComponent externalPreamble = Component.translatable("quark.jei.hint_preamble");
 			externalPreamble.setStyle(externalPreamble.getStyle().withColor(0x0b5d4b));
 
-			List<Item> blacklist = MiscUtil.massRegistryGet(GeneralConfig.suppressedInfo, ForgeRegistries.ITEMS);
+			List<Item> blacklist = RegistryUtil.massRegistryGet(GeneralConfig.suppressedInfo, Registry.ITEM);
 
 			//ZetaEventBus can't handle lambdas :(
 			//noinspection Convert2Lambda

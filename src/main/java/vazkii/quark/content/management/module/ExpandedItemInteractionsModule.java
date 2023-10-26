@@ -61,6 +61,7 @@ import vazkii.quark.base.network.message.ScrollOnBundleMessage;
 import vazkii.quark.content.management.client.screen.HeldShulkerBoxScreen;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxContainer;
 import vazkii.quark.content.management.inventory.HeldShulkerBoxMenu;
+import vazkii.zeta.util.RegistryUtil;
 
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = configEnabled;
 
-		shulkers = MiscUtil.massRegistryGet(GeneralConfig.shulkerBoxes, ForgeRegistries.ITEMS);
+		shulkers = RegistryUtil.massRegistryGet(GeneralConfig.shulkerBoxes, Registry.ITEM);
 	}
 
 	public static boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {

@@ -2,6 +2,7 @@ package vazkii.quark.content.tweaks.module;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +17,7 @@ import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.util.RegistryUtil;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -76,7 +78,7 @@ public class DiamondRepairModule extends ZetaModule {
 			}
 		}
 
-		unrepairableItems = MiscUtil.massRegistryGet(unrepairableItemsList, ForgeRegistries.ITEMS);
+		unrepairableItems = RegistryUtil.massRegistryGet(unrepairableItemsList, Registry.ITEM);
 	}
 
 	@PlayEvent
