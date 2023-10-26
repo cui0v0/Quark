@@ -3,12 +3,9 @@ package vazkii.zetaimplforge.module;
 import java.util.stream.Stream;
 
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.moddiscovery.ModAnnotation;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
-import vazkii.quark.base.module.LegacyQuarkModuleFinder;
 import vazkii.zeta.module.ModuleFinder;
-import vazkii.zeta.module.ModuleSide;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaLoadModuleAnnotationData;
 import vazkii.zeta.module.ZetaModule;
@@ -33,15 +30,12 @@ public class ModFileScanDataModuleFinder implements ModuleFinder {
 			.map(ad -> {
 				Class<? extends ZetaModule> clazz;
 				try {
-					clazz = (Class<? extends ZetaModule>) Class.forName(ad.clazz().getClassName(), false, LegacyQuarkModuleFinder.class.getClassLoader());
+					clazz = (Class<? extends ZetaModule>) Class.forName(ad.clazz().getClassName(), false, ModFileScanDataModuleFinder.class.getClassLoader());
 				} catch (ReflectiveOperationException e) {
 					throw new RuntimeException("Exception getting QuarkModule (legacy)", e);
 				}
 
-				ModAnnotation.EnumHolder pls = (ModAnnotation.EnumHolder) ad.annotationData().get("side");
-				ModuleSide weird = pls == null ? ModuleSide.ANY : ModuleSide.valueOf(pls.getValue());
-
-				return ZetaLoadModuleAnnotationData.fromForgeThing(clazz, ad.annotationData(), weird);
+				return ZetaLoadModuleAnnotationData.fromForgeThing(clazz, ad.annotationData());
 			});
 	}
 }

@@ -72,6 +72,7 @@ public class ChestSearchingModule extends ZetaModule {
 	private static long lastClick;
 	private static int matched;
 
+	@OnlyIn(Dist.CLIENT)
 	@LoadEvent
 	public final void clientSetup(ZClientSetup event) {
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_INVENTORY, 1, (parent, x, y) ->

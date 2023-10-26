@@ -17,7 +17,6 @@ public record TentativeModule(
 	Class<? extends ZetaModule> keyClass,
 
 	ZetaCategory category,
-	ModuleSide side,
 	String displayName,
 	String lowercaseName,
 	String description,
@@ -44,19 +43,16 @@ public record TentativeModule(
 		String lowercaseName = displayName.toLowerCase(Locale.ROOT).replace(" ", "_");
 
 		boolean clientReplacement = data.clientReplacement();
+
 		Class<? extends ZetaModule> keyClass;
-		ModuleSide side;
 		if(clientReplacement) {
 			Class<?> sup = clazz.getSuperclass();
 			if(ZetaModule.class.isAssignableFrom(sup) && ZetaModule.class != sup)
 				keyClass = (Class<? extends ZetaModule>) clazz.getSuperclass();
 			else
 				throw new RuntimeException("Client extension module " + clazz.getName() + " should `extend` the module it's an extension of");
-
-			side = ModuleSide.CLIENT_ONLY;
 		} else {
 			keyClass = clazz;
-			side = data.side();
 
 			//leaving the category out of the annotation is only valid for client replacements
 			//TODO: maybe guess the category from the package name isntead ^^
@@ -68,7 +64,6 @@ public record TentativeModule(
 			clazz,
 			keyClass,
 			categoryResolver.apply(data.category()),
-			side,
 			displayName,
 			lowercaseName,
 			data.description(),
@@ -85,7 +80,6 @@ public record TentativeModule(
 			replacement.clazz,
 			this.keyClass,
 			this.category,
-			replacement.side,
 			this.displayName,
 			this.lowercaseName,
 			this.description,
@@ -98,6 +92,9 @@ public record TentativeModule(
 	}
 
 	public boolean appliesTo(ZetaSide side) {
-		return this.side.appliesTo(side);
+		return switch(side) {
+			case CLIENT -> true;
+			case SERVER -> !clientReplacement;
+		};
 	}
 }

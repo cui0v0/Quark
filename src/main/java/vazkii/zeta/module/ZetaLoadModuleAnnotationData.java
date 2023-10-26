@@ -16,7 +16,6 @@ public record ZetaLoadModuleAnnotationData(
 
 	//and the rest is from ZetaLoadModule
 	String category,
-	ModuleSide side,
 	String name,
 	String description,
 	String[] antiOverlap,
@@ -31,7 +30,6 @@ public record ZetaLoadModuleAnnotationData(
 		return new ZetaLoadModuleAnnotationData(
 			clazz,
 			annotation.category(),
-			annotation.side(),
 			annotation.name(),
 			annotation.description(),
 			annotation.antiOverlap(),
@@ -44,11 +42,10 @@ public record ZetaLoadModuleAnnotationData(
 
 	//clunky
 	@SuppressWarnings("unchecked")
-	public static ZetaLoadModuleAnnotationData fromForgeThing(Class<?> clazz, Map<String, Object> data, ModuleSide enumPls) {
+	public static ZetaLoadModuleAnnotationData fromForgeThing(Class<?> clazz, Map<String, Object> data) {
 		return new ZetaLoadModuleAnnotationData(
 			clazz,
 			(String) data.get("category"),
-			enumPls,
 			(String) data.getOrDefault("name", ""),
 			(String) data.getOrDefault("description", ""),
 			((List<String>) data.getOrDefault("antiOverlap", new ArrayList<String>())).toArray(new String[0]),

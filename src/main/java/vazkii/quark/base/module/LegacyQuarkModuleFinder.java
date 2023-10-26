@@ -8,7 +8,6 @@ import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 import vazkii.quark.base.Quark;
 import vazkii.zeta.module.ModuleFinder;
-import vazkii.zeta.module.ModuleSide;
 import vazkii.zeta.module.ZetaLoadModuleAnnotationData;
 import vazkii.zeta.module.ZetaModule;
 
@@ -31,9 +30,7 @@ public class LegacyQuarkModuleFinder implements ModuleFinder {
 					throw new RuntimeException("Exception getting QuarkModule (legacy)", e);
 				}
 
-				//quark doesnt have client-only modules so just load everything on the server too
-				//its hasSubscriptions/subscribeOn behavior is emulated to not break the dedi server for now
-				return ZetaLoadModuleAnnotationData.fromForgeThing(clazz, ad.annotationData(), ModuleSide.ANY);
+				return ZetaLoadModuleAnnotationData.fromForgeThing(clazz, ad.annotationData());
 			});
 	}
 }

@@ -8,10 +8,6 @@ The first module ported to `@ZetaLoadModule` is `DoubleDoorOpeningModule` if you
   * There are two event busses - a "load bus" for lifecycle events, and a "play bus" for gameplay events.
     * This loosely corresponds to the fml mod bus and MinecraftForge.EVENT_BUS, but the more important distinction is that *all* modules receive load events but only *enabled* modules receive play events.
   * Zeta modules are automatically subscribed to both busses. Mark event handlers with `@LoadEvent` and `@PlayEvent`.
-* **Client-only modules**.
-  * If a `@ZetaLoadModule` is annotated with `side = ModuleSide.CLIENT_ONLY`, it will not load at *all* on the server. It's like it's not even there.
-  * Yes this causes problems when you open the client and server at the same time on your computer, they disagree on what the config should be. Arguably client-only options shouldn't even be *in* the common config, but that will come later.
-  * This *replaces* Quark's `hasSubscriptions`/`subscribeOn` system.
 * **Client module replacements**.
   * On the client, if a class is annotated with `@ZetaLoadModule(clientReplacement = true)`, and the class extends another `ZetaModule`, the replacement module will load *instead* of its superclass.
   * Since Fabric doesn't do side-stripping (the removal of things flagged `@OnlyIn(Dist.CLIENT)`), a client replacement module is the best place to put client-only code.
@@ -24,7 +20,7 @@ In the interim period `QuarkModule` extends `ZetaModule`, and some of the remain
 
 So tl;dr for zeta-fying a module:
 
-* swap LoadModule to ZetaLoadModule, remove hasSubscriptions/subscribeOn, and if the module is truly client-only add `side = ModuleSide.CLIENT_ONLY`,
+* swap LoadModule to ZetaLoadModule, remove hasSubscriptions/subscribeOn
 * change the superclass from `QuarkModule` to `ZetaModule`,
 * move everything marked `@OnlyIn(Dist.CLIENT)` (and all `@SubscribeEvent`s if subscribeOn was formerly `Dist.CLIENT` only) into a client module replacement,
 * create cross-platform versions of any missing `@SubscribeEvent`s in Zeta and subscribe to them with `@PlayEvent`,

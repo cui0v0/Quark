@@ -18,11 +18,6 @@ public @interface ZetaLoadModule {
 	String category() default "";
 
 	/**
-	 * Which physical side this module will be loaded on.
-	 */
-	ModuleSide side() default ModuleSide.ANY;
-
-	/**
 	 * The name of this module. If unspecified, defaults to de-camelcasing the module's class name.
 	 * Ex "MyCoolModule"'s name defaults to "My Cool Module".
 	 */

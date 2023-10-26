@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
@@ -47,6 +49,7 @@ public class BottledCloudModule extends ZetaModule {
 	}
 	
 	@LoadEvent
+	@OnlyIn(Dist.CLIENT)
 	public final void clientSetup(ZClientSetup event) {
 		BlockEntityRenderers.register(blockEntityType, CloudRenderer::new);
 	}
