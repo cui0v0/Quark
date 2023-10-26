@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import vazkii.zeta.client.config.screen.AbstractSectionInputScreen;
-import vazkii.quark.base.client.config.widget.PencilButton;
+import vazkii.zeta.client.config.widget.PencilButton;
 import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
@@ -62,7 +62,7 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 	@Override
 	public void addWidgets(ZetaClient zc, Screen parent, ChangeSet changes, SectionDefinition def, Consumer<AbstractWidget> widgets) {
 		Screen newScreen = new ConvulsionMatrixInputScreen(zc, parent, changes, def);
-		widgets.accept(new PencilButton(230, 3, b1 -> Minecraft.getInstance().setScreen(newScreen)));
+		widgets.accept(new PencilButton(zc, 230, 3, b1 -> Minecraft.getInstance().setScreen(newScreen)));
 	}
 
 	class ConvulsionMatrixInputScreen extends AbstractSectionInputScreen {

@@ -15,8 +15,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.apache.commons.lang3.text.WordUtils;
-import vazkii.quark.base.client.config.widget.CheckboxButton;
-import vazkii.quark.base.client.config.widget.IconButton;
+import vazkii.zeta.client.config.widget.CheckboxButton;
+import vazkii.zeta.client.config.widget.CategoryButton;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.SectionDefinition;
@@ -61,9 +61,9 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 				SectionDefinition categorySection = z.weirdConfigSingleton.getCategorySection(category);
 
 				bWidth -= 20; //room for the checkbox
-				Button mainButton = addRenderableWidget(new IconButton(x, y, bWidth, 20, componentFor(categorySection), category.icon.get(),
+				Button mainButton = addRenderableWidget(new CategoryButton(zc, x, y, bWidth, 20, componentFor(categorySection), category.icon.get(),
 					b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, this, changeSet, categorySection))));
-				Button checkButton = addRenderableWidget(new CheckboxButton(x + bWidth, y, changeSet, categoryEnabled));
+				Button checkButton = addRenderableWidget(new CheckboxButton(zc, x + bWidth, y, changeSet, categoryEnabled));
 
 				boolean active = category.modsLoaded(z);
 				mainButton.active = active;

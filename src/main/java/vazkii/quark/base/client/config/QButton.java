@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.widget;
+package vazkii.quark.base.client.config;
 
 import java.awt.*;
 import java.io.File;
@@ -19,8 +19,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.config.screen.QuarkConfigHomeScreen;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
@@ -144,7 +143,7 @@ public class QButton extends Button {
 
 				boolean hovered = mouseX >= x && mouseY >= y && mouseX < (x + width) && mouseY < (y + height);
 				if(hovered)
-					TopLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.celebration." + celebrating.name)), mouseX, mouseY);
+					QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.celebration." + celebrating.name)), mouseX, mouseY);
 			}
 
 			int u = 256 - iconIndex * w;

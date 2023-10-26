@@ -36,7 +36,8 @@ import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.QuarkClient;
+import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
@@ -165,7 +166,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 			if(pair != null) {
 				GhostIngredient ingr = pair.getRight();
 				if(ingr != null)
-					TopLayerTooltipHandler.setTooltip(Lists.newArrayList(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
+					QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(Lists.newArrayList(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
 			}
 		}
 	}

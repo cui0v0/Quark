@@ -18,7 +18,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.QuarkClient;
+import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.MiscUtil;
 
 public class MiniInventoryButton extends Button {
@@ -73,7 +74,7 @@ public class MiniInventoryButton extends Button {
 		blit(matrix, x, y, u, v, width, height);
 
 		if(isHovered)
-			TopLayerTooltipHandler.setTooltip(getTooltip(), mouseX, mouseY);
+			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(getTooltip(), mouseX, mouseY);
 	}
 
 	@Nonnull

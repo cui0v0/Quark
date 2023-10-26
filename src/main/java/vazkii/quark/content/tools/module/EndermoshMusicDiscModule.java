@@ -15,7 +15,7 @@ import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.client.event.ZEndClientTickEvent;
+import vazkii.zeta.client.event.ZEndClientTick;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 
@@ -58,7 +58,7 @@ public class EndermoshMusicDiscModule extends ZetaModule {
 		private SimpleSoundInstance sound;
 
 		@PlayEvent
-		public void tick(ZEndClientTickEvent event) {
+		public void tick(ZEndClientTick event) {
 			if(playEndermoshDuringEnderdragonFight) {
 				boolean wasFightingDragon = isFightingDragon;
 

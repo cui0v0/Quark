@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.client.config.screen.AbstractEditBoxInputScreen;
-import vazkii.quark.base.client.config.widget.PencilButton;
+import vazkii.zeta.client.config.widget.PencilButton;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.ValueDefinition;
@@ -35,6 +35,6 @@ public class DoubleClientDefinition implements ClientDefinitionExt<ValueDefiniti
 				}
 			}
 		};
-		widgets.accept(new PencilButton(230, 3, b -> Minecraft.getInstance().setScreen(newScreen)));
+		widgets.accept(new PencilButton(zc, 230, 3, b -> Minecraft.getInstance().setScreen(newScreen)));
 	}
 }

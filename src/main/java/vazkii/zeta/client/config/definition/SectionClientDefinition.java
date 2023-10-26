@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import vazkii.zeta.client.config.screen.SectionScreen;
-import vazkii.quark.base.client.config.widget.PencilButton;
+import vazkii.zeta.client.config.widget.PencilButton;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.SectionDefinition;
@@ -22,6 +22,6 @@ public class SectionClientDefinition implements ClientDefinitionExt<SectionDefin
 
 	@Override
 	public void addWidgets(ZetaClient zc, Screen parent, ChangeSet changes, SectionDefinition def, Consumer<AbstractWidget> widgets) {
-		widgets.accept(new PencilButton(230, 3, b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, parent, changes, def))));
+		widgets.accept(new PencilButton(zc, 230, 3, b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, parent, changes, def))));
 	}
 }

@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.widget;
+package vazkii.zeta.client.config.widget;
 
 import javax.annotation.Nonnull;
 
@@ -7,12 +7,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import vazkii.quark.base.handler.MiscUtil;
+import net.minecraft.resources.ResourceLocation;
+import vazkii.zeta.client.ZetaClient;
 
 public class PencilButton extends Button {
 
-	public PencilButton(int x, int y, OnPress pressable) {
+	//pencil: u32 v0 to u48 v16
+	private final ResourceLocation iconsTexture;
+
+	public PencilButton(ResourceLocation iconsTexture, int x, int y, OnPress pressable) {
 		super(x, y, 20, 20, Component.literal(""), pressable);
+		this.iconsTexture = iconsTexture;
+	}
+
+	public PencilButton(ZetaClient zc, int x, int y, OnPress pressable) {
+		this(zc.generalIcons, x, y, pressable);
 	}
 
 	@Override
@@ -21,10 +30,10 @@ public class PencilButton extends Button {
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
+		RenderSystem.setShaderTexture(0, iconsTexture);
 
 		int u = 32;
-		int v = 93;
+		int v = 0;
 
 		blit(mstack, x + 2, y + 1, u, v, 16, 16);
 	}

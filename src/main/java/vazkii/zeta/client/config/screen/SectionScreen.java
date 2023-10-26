@@ -16,7 +16,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import vazkii.zeta.client.config.widget.DefaultDiscardDone;
 import vazkii.zeta.client.config.widget.ScrollableWidgetList;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.Definition;
@@ -163,7 +163,7 @@ public class SectionScreen extends ZetaScreen {
 
 				name += (ChatFormatting.AQUA + " (?)");
 				if(mouseX >= hoverLeft && mouseX < hoverRight && mouseY >= top && mouseY < (top + 10))
-					TopLayerTooltipHandler.setTooltip(tooltip, mouseX, mouseY);
+					zc.topLayerTooltipHandler.setTooltip(tooltip, mouseX, mouseY);
 			}
 
 			minecraft.font.drawShadow(mstack, name, left, top, 0xFFFFFF);

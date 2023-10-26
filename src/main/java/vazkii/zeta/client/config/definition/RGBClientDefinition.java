@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.client.config.screen.AbstractSectionInputScreen;
-import vazkii.quark.base.client.config.widget.PencilButton;
+import vazkii.zeta.client.config.widget.PencilButton;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
@@ -55,7 +55,7 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 	@Override
 	public void addWidgets(ZetaClient zc, Screen parent, ChangeSet changes, SectionDefinition def, Consumer<AbstractWidget> widgets) {
 		Screen newScreen = new RGBInputScreen(zc, parent, changes, def);
-		widgets.accept(new PencilButton(230, 3, b1 -> Minecraft.getInstance().setScreen(newScreen)));
+		widgets.accept(new PencilButton(zc, 230, 3, b1 -> Minecraft.getInstance().setScreen(newScreen)));
 	}
 
 	class RGBInputScreen extends AbstractSectionInputScreen {

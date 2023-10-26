@@ -17,7 +17,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
-import vazkii.zeta.client.event.ZEndClientTickEvent;
+import vazkii.zeta.client.event.ZEndClientTick;
+import vazkii.zeta.client.event.ZEndRenderTick;
 import vazkii.zeta.client.event.ZFirstClientTick;
 import vazkii.zeta.client.event.ZRegisterReloadListeners;
 import vazkii.zetaimplforge.event.client.ForgeZAddBlockColorHandlers;
@@ -103,11 +104,14 @@ public class ForgeZetaClient extends ZetaClient {
 		loadBus.fire(new ForgeZTooltipComponents(event));
 	}
 
+	//TODO: move ticker stuff out of forge event handlers, subscribe to them from zeta
 	public void renderTick(TickEvent.RenderTickEvent e) {
 		if(e.phase == TickEvent.Phase.START)
 			ticker.startRenderTick(e.renderTickTime);
-		else
+		else {
+			playBus.fire(new ZEndRenderTick());
 			ticker.endRenderTick();
+		}
 	}
 
 	boolean clientTicked = false;
@@ -120,7 +124,7 @@ public class ForgeZetaClient extends ZetaClient {
 				clientTicked = true;
 			}
 
-			playBus.fire(new ZEndClientTickEvent());
+			playBus.fire(new ZEndClientTick());
 		}
 	}
 

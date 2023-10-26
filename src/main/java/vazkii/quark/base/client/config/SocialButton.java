@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.widget;
+package vazkii.quark.base.client.config;
 
 import java.util.List;
 
@@ -12,7 +12,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.quark.base.QuarkClient;
+import vazkii.zeta.client.TopLayerTooltipHandler;
 
 public class SocialButton extends Button {
 
@@ -49,7 +50,7 @@ public class SocialButton extends Button {
 		blit(mstack, x, y, u, v, 20, 20, 128, 64);
 
 		if(isHovered)
-			TopLayerTooltipHandler.setTooltip(List.of(text.getString()), mouseX, mouseY);
+			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(text.getString()), mouseX, mouseY);
 	}
 
 	@Override

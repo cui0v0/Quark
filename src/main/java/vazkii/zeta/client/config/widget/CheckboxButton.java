@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.widget;
+package vazkii.zeta.client.config.widget;
 
 import javax.annotation.Nonnull;
 
@@ -7,19 +7,28 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import vazkii.quark.base.handler.MiscUtil;
+import net.minecraft.resources.ResourceLocation;
+import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.ValueDefinition;
 
 public class CheckboxButton extends Button {
 
+	//checked:   u0 v0  to u16 v16
+	//unchecked: u16 v0 to u32 v16
+	private final ResourceLocation iconsTexture;
 	private final ValueDefinition<Boolean> value;
 	private final ChangeSet changes;
 
-	public CheckboxButton(int x, int y, ChangeSet changes, ValueDefinition<Boolean> value) {
+	public CheckboxButton(ResourceLocation iconsTexture, int x, int y, ChangeSet changes, ValueDefinition<Boolean> value) {
 		super(x, y, 20, 20, Component.literal(""), CheckboxButton::toggle);
+		this.iconsTexture = iconsTexture;
 		this.value = value;
 		this.changes = changes;
+	}
+
+	public CheckboxButton(ZetaClient zc, int x, int y, ChangeSet changes, ValueDefinition<Boolean> value) {
+		this(zc.generalIcons, x, y, changes, value);
 	}
 
 	private static void toggle(Button press) {
@@ -34,10 +43,10 @@ public class CheckboxButton extends Button {
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
+		RenderSystem.setShaderTexture(0, iconsTexture);
 		boolean enabled = changes.get(value) && active;
 		int u = enabled ? 0 : 16;
-		int v = 93;
+		int v = 0;
 
 		blit(mstack, x + 2, y + 1, u, v, 15, 15);
 	}

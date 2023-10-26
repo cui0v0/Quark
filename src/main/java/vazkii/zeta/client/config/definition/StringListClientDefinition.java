@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import vazkii.zeta.client.config.screen.StringListInputScreen;
-import vazkii.quark.base.client.config.widget.PencilButton;
+import vazkii.zeta.client.config.widget.PencilButton;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.config.ChangeSet;
 import vazkii.zeta.config.ValueDefinition;
@@ -33,6 +33,6 @@ public class StringListClientDefinition implements ClientDefinitionExt<ValueDefi
 	@Override
 	public void addWidgets(ZetaClient zc, Screen parent, ChangeSet changes, ValueDefinition<List<String>> def, Consumer<AbstractWidget> widgets) {
 		Screen newScreen = new StringListInputScreen(zc, parent, changes, def);
-		widgets.accept(new PencilButton(230, 3, b -> Minecraft.getInstance().setScreen(newScreen)));
+		widgets.accept(new PencilButton(zc, 230, 3, b -> Minecraft.getInstance().setScreen(newScreen)));
 	}
 }

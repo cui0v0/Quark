@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.screen;
+package vazkii.quark.base.client.config;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.config.widget.SocialButton;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.zeta.client.config.screen.ZetaConfigHomeScreen;

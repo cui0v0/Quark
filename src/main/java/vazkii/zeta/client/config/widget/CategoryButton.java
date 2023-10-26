@@ -1,4 +1,4 @@
-package vazkii.quark.base.client.config.widget;
+package vazkii.zeta.client.config.widget;
 
 import java.util.List;
 
@@ -10,15 +10,17 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import vazkii.quark.base.client.handler.TopLayerTooltipHandler;
+import vazkii.zeta.client.ZetaClient;
 
-public class IconButton extends Button {
+public class CategoryButton extends Button {
 
+	private final ZetaClient zc;
 	private final ItemStack icon;
 	private final Component text;
 
-	public IconButton(int x, int y, int w, int h, Component text, ItemStack icon, OnPress onClick) {
+	public CategoryButton(ZetaClient zc, int x, int y, int w, int h, Component text, ItemStack icon, OnPress onClick) {
 		super(x, y, w, h, Component.literal(""), onClick);
+		this.zc = zc;
 		this.icon = icon;
 		this.text = text;
 	}
@@ -28,7 +30,7 @@ public class IconButton extends Button {
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
 		if(!active && mouseX >= x && mouseY >= y && mouseX < (x + width) && mouseY < (y + height))
-			TopLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.config.missingaddon")), mouseX, mouseY);
+			zc.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.config.missingaddon")), mouseX, mouseY);
 
 		Minecraft mc = Minecraft.getInstance();
 		mc.getItemRenderer().renderGuiItem(icon, x + 5, y + 2);
