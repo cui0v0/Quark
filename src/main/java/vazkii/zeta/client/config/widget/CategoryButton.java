@@ -29,7 +29,7 @@ public class CategoryButton extends Button {
 	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		super.render(mstack, mouseX, mouseY, partialTicks);
 
-		if(!active && mouseX >= x && mouseY >= y && mouseX < (x + width) && mouseY < (y + height))
+		if(!active && isHovered)
 			zc.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.config.missingaddon")), mouseX, mouseY);
 
 		Minecraft mc = Minecraft.getInstance();
