@@ -26,7 +26,6 @@ import vazkii.quark.base.client.handler.NetworkProfilingHandler;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
-import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
@@ -59,7 +58,6 @@ public class ClientProxy extends CommonProxy {
 
 		Quark.ZETA.loadBus
 			.subscribe(ContributorRewardHandler.Client.class)
-			.subscribe(DyeHandler.Client.class)
 			.subscribe(RenderLayerHandler.Client.class)
 			.subscribe(WoodSetHandler.Client.class);
 

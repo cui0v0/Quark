@@ -47,7 +47,6 @@ public class CommonProxy {
 			.subscribe(BrewingHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(CreativeTabHandler.class)
-			.subscribe(DyeHandler.class)
 			.subscribe(ModuleLoader.INSTANCE)
 			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)

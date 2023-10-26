@@ -56,10 +56,14 @@ public abstract class ZetaRegistry {
 	}
 
 	public <T> void register(T obj, String resloc, ResourceKey<Registry<T>> registry) {
+		register(obj, newResourceLocation(resloc), registry);
+	}
+
+	public <T> void register(T obj, ResourceLocation id, ResourceKey<Registry<T>> registry) {
 		if(obj == null)
 			throw new IllegalArgumentException("Can't register null object.");
 
-		setInternalName(obj, newResourceLocation(resloc));
+		setInternalName(obj, id);
 		defers.put(registry.location(), () -> obj);
 	}
 

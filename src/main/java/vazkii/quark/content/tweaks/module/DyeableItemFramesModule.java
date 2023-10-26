@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.DyeHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
@@ -56,10 +55,10 @@ public class DyeableItemFramesModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new DyedItemFrame(entityType, world))
 				.build("dyed_item_frame");
-		Quark.ZETA.registry.register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
+		event.getRegistry().register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
 
-		DyeHandler.addDyeable(Items.ITEM_FRAME, this);
-		DyeHandler.addDyeable(Items.GLOW_ITEM_FRAME, this);
+		Quark.ZETA.dyeables.register(Items.ITEM_FRAME, this);
+		Quark.ZETA.dyeables.register(Items.GLOW_ITEM_FRAME, this);
 	}
 
 	@LoadEvent
@@ -80,7 +79,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 		InteractionHand hand = event.getHand();
 		ItemStack stack = player.getItemInHand(hand);
 
-		if((stack.is(Items.ITEM_FRAME) || stack.is(Items.GLOW_ITEM_FRAME)) && DyeHandler.isDyed(stack)) {
+		if((stack.is(Items.ITEM_FRAME) || stack.is(Items.GLOW_ITEM_FRAME)) && Quark.ZETA.dyeables.isDyed(stack)) {
 			BlockHitResult blockhit = event.getHitVec();
 			UseOnContext context = new UseOnContext(player, hand, blockhit);
 
@@ -111,7 +110,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 			return InteractionResult.FAIL;
 		
 		Level level = context.getLevel();
-		HangingEntity hangingentity = new DyedItemFrame(level, blockpos1, direction, DyeHandler.getDye(itemstack), itemstack.is(Items.GLOW_ITEM_FRAME));
+		HangingEntity hangingentity = new DyedItemFrame(level, blockpos1, direction, Quark.ZETA.dyeables.getDye(itemstack), itemstack.is(Items.GLOW_ITEM_FRAME));
 
 		CompoundTag compoundtag = itemstack.getTag();
 		if(compoundtag != null)

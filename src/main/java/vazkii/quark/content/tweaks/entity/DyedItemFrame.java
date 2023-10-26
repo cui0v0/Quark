@@ -13,7 +13,7 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import vazkii.quark.base.handler.DyeHandler;
+import vazkii.quark.base.Quark;
 import vazkii.quark.content.tweaks.module.DyeableItemFramesModule;
 
 public class DyedItemFrame extends ItemFrame {
@@ -94,7 +94,7 @@ public class DyedItemFrame extends ItemFrame {
 	@Override
 	protected ItemStack getFrameItemStack() {
 		ItemStack stack = new ItemStack(isGlow() ? Items.GLOW_ITEM_FRAME : Items.ITEM_FRAME);
-		DyeHandler.applyDye(stack, getColor());
+		Quark.ZETA.dyeables.applyDye(stack, getColor());
 		
 		return stack;
 	}

@@ -6,6 +6,7 @@ import vazkii.zeta.client.config.ClientConfigManager;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.ZetaEventBus;
+import vazkii.zeta.registry.DyeablesRegistry;
 
 public abstract class ZetaClient {
 	public ZetaClient(Zeta zeta) {
@@ -17,6 +18,7 @@ public abstract class ZetaClient {
 		this.ticker = zeta.ticker_SHOULD_NOT_BE_HERE; //TODO, move ClientTicker into actual client code
 		this.clientConfigManager = new ClientConfigManager();
 		this.topLayerTooltipHandler = new TopLayerTooltipHandler();
+		this.clientDyeablesRegistry = zeta.dyeables.new Client(this);
 
 		playBus.subscribe(topLayerTooltipHandler);
 	}
@@ -30,6 +32,7 @@ public abstract class ZetaClient {
 	public final ClientTicker ticker;
 	public final ClientConfigManager clientConfigManager;
 	public final TopLayerTooltipHandler topLayerTooltipHandler;
+	public final DyeablesRegistry.Client clientDyeablesRegistry;
 
 	public abstract void start();
 }

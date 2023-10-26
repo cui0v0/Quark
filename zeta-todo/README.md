@@ -150,6 +150,30 @@ Obsolete things:
 
 # can you add a note to the todo about datagen
 
-Sure I can do that
+Sure I can do that. quark datagen should be real
 
-quark datagen should be real
+# (quat) ok more notes page
+
+## handler vs util
+
+in my head "handler" implies its main purpose is to subscribe to events, and "util" is a collection of static methods
+
+handlers can be stateful. ideally util classes should be entirely static methods with no static fields. because we're trying to be more careful about `static` usage (so multiple instances of Zeta can be initialized by different uncooperating mods)
+
+## config
+
+the config reloading situation is not great imo. There's `IConfigType`, at this point all of the GUI stuff has been ditched and it means exactly two things:
+
+* The `@Config` annotation scanner should descend into me and make a subcategory with my @Config fields
+* Give me a call back when the config gets reloaded (also give me the module i belong to).
+
+This is nice since the callback is guaranteed to run immediately after all the `@Config` fields have been updated. But the `ZetaModule`/`ConfigFlagManager` arguments are sorta indicative of a leaky abstraction (why don't config subsections already get access to the module they belong to?), and it's a system only available to these special `IConfigType` subsections but not to modules or other bits of code.
+
+Everything else is relegated to the `ZConfigChanged` event, which doesn't have as strong of an ordering guarantee.
+
+## Event bus ordering, in general
+
+Zeta takes a very event-bus-centric approach to things, but:
+
+* there is a big risk of hidden dependencies, where handler A has to run before handler B but nobody notices
+* when you *do* need strong ordering guarantees, it is pretty hard to express them (you need pre/post events, or to cram multiple tasks into a single event handler)

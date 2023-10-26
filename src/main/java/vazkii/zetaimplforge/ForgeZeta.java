@@ -105,7 +105,7 @@ public class ForgeZeta extends Zeta {
 		if(registerDone)
 			return;
 
-		loadBus.fire(new ZRegister());
+		loadBus.fire(new ZRegister(registry));
 		loadBus.fire(new ZRegister.Post());
 
 		registerDone = true;

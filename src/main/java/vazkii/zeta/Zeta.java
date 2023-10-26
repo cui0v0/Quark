@@ -18,6 +18,7 @@ import vazkii.zeta.module.ModuleFinder;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModuleManager;
 import vazkii.zeta.network.ZetaNetworkHandler;
+import vazkii.zeta.registry.DyeablesRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
 
@@ -34,6 +35,7 @@ public abstract class Zeta {
 		this.playBus = new ZetaEventBus<>(PlayEvent.class, IZetaPlayEvent.class, null);
 		this.modules = new ZetaModuleManager(this);
 		this.registry = createRegistry(modid);
+		this.dyeables = new DyeablesRegistry(this);
 
 		this.ticker_SHOULD_NOT_BE_HERE = new ClientTicker();
 	}
@@ -45,7 +47,9 @@ public abstract class Zeta {
 	public final ZetaEventBus<IZetaLoadEvent> loadBus;
 	public final ZetaEventBus<IZetaPlayEvent> playBus;
 	public final ZetaModuleManager modules;
+
 	public final ZetaRegistry registry;
+	public final DyeablesRegistry dyeables; //TODO: move into ZetaRegistry?
 
 	public WeirdConfigSingleton weirdConfigSingleton; //Should probably split this up into various parts
 	public IZetaConfigInternals configInternals;
