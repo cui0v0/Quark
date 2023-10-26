@@ -16,14 +16,15 @@ import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.module.ZetaModuleManager;
 
-//TODO: find somewhere better to put this, better data structure etc
-public class WeirdConfigSingleton {
+public class ConfigManager {
 	private final Zeta z;
 	private final ConfigFlagManager cfm = new ConfigFlagManager();
 	private final SectionDefinition rootConfig;
 
 	//for updating the values of @Config annotations to match the current state of the config
+	// and other "listening for config load" purposes
 	private final List<Consumer<IZetaConfigInternals>> databindings = new ArrayList<>();
+	private Consumer<IZetaConfigInternals> onConfigReloadJEI;
 
 	//ummmmmmm i think my abstraction isn't very good
 	private final @Nullable SectionDefinition generalSection;
@@ -36,7 +37,7 @@ public class WeirdConfigSingleton {
 	//state
 	private final Set<ZetaCategory> enabledCategories = new HashSet<>();
 
-	public WeirdConfigSingleton(Zeta z, Object rootPojo) {
+	public ConfigManager(Zeta z, Object rootPojo) {
 		this.z = z;
 
 		ZetaModuleManager modules = z.modules;
@@ -100,7 +101,7 @@ public class WeirdConfigSingleton {
 		return rootConfig;
 	}
 
-	// bad bad bad
+	// mapping between internal and external representations of the config (?)
 
 	public @Nullable SectionDefinition getGeneralSection() {
 		return generalSection;
@@ -140,13 +141,21 @@ public class WeirdConfigSingleton {
 		return enabledCategories.contains(cat);
 	}
 
-	//ummm
+	// ummm
 
 	public ConfigFlagManager getConfigFlagManager() {
 		return cfm;
 	}
 
-	public void runDatabindings(IZetaConfigInternals internals) {
+	public void onReload() {
+		IZetaConfigInternals internals = z.configInternals;
 		databindings.forEach(c -> c.accept(internals));
+
+		if(onConfigReloadJEI != null)
+			onConfigReloadJEI.accept(internals);
+	}
+
+	public void setJeiReloadListener(Consumer<IZetaConfigInternals> consumer) {
+		this.onConfigReloadJEI = consumer;
 	}
 }

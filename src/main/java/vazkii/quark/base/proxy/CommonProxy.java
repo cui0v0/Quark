@@ -100,7 +100,7 @@ public class CommonProxy {
 
 	@LoadEvent
 	public void register(ZRegister heck) {
-		Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().registerConfigBoundElements();
+		Quark.ZETA.configManager.getConfigFlagManager().registerConfigBoundElements();
 	}
 
 	//forge event
@@ -118,14 +118,13 @@ public class CommonProxy {
 		lastConfigChange = Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame;
 	}
 
-	//TODO: mess, find a better spot for this
+	//TODO: probably find a better spot for this? It's not *only* fired when the
+	// config file is externally changed, but also when it's changed through config GUI,
+	// which means we roundtrip through the on-disk representation for no good reason
 	public void handleQuarkConfigChange() {
 		//ModuleLoader.INSTANCE.configChanged();
-		Quark.ZETA.weirdConfigSingleton.runDatabindings(Quark.ZETA.configInternals);
-		//Quark.ZETA.weirdConfigSingleton.getConfigFlagManager().clear();
+		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
-		if(ModuleLoader.INSTANCE.onConfigReloadJEI != null)
-			ModuleLoader.INSTANCE.onConfigReloadJEI.run();
 		EntitySpawnHandler.refresh();
 		SyncedFlagHandler.sendFlagInfoToPlayers();
 	}

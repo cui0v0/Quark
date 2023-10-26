@@ -36,7 +36,7 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 		super.init();
 
 		List<ZetaCategory> categories = z.modules.getInhabitedCategories();
-		@Nullable SectionDefinition generalSection = z.weirdConfigSingleton.getGeneralSection();
+		@Nullable SectionDefinition generalSection = z.configManager.getGeneralSection();
 
 		int buttonCount = categories.size();
 		if(generalSection != null)
@@ -57,8 +57,8 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 			if(i < categories.size()) {
 				//a category button
 				ZetaCategory category = categories.get(i);
-				ValueDefinition<Boolean> categoryEnabled = z.weirdConfigSingleton.getCategoryEnabledOption(category);
-				SectionDefinition categorySection = z.weirdConfigSingleton.getCategorySection(category);
+				ValueDefinition<Boolean> categoryEnabled = z.configManager.getCategoryEnabledOption(category);
+				SectionDefinition categorySection = z.configManager.getCategorySection(category);
 
 				bWidth -= 20; //room for the checkbox
 				Button mainButton = addRenderableWidget(new CategoryButton(zc, x, y, bWidth, 20, componentFor(categorySection), category.icon.get(),

@@ -6,9 +6,6 @@ import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.item.IQuarkItem;
-import vazkii.quark.base.module.config.ConfigFlagManager;
-import vazkii.zeta.event.ZRegister;
-import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaModule;
 
 //TODO ZETA: im in the process of stripping this class for parts
@@ -17,29 +14,7 @@ public final class ModuleLoader {
 
 	public static final ModuleLoader INSTANCE = new ModuleLoader();
 
-	//private ConfigResolver config;
-	public Runnable onConfigReloadJEI;
-
 	private ModuleLoader() { }
-
-	public void start() {
-		//config = new ConfigResolver();
-		//config.makeSpec();
-	}
-
-	public ConfigFlagManager getConfigFlagManager() {
-		return Quark.ZETA.weirdConfigSingleton.getConfigFlagManager();
-	}
-
-	@LoadEvent
-	public void register(ZRegister event) {
-	}
-
-	public void configChanged() {
-		//if (onConfigReloadJEI != null)
-		//	onConfigReloadJEI.run();
-		//config.configChanged();
-	}
 
 	//tempting to push this method directly through to Quark.ZETA.modules...
 	//but i think it's more appropriate to have this stored in a configuration class
@@ -69,14 +44,6 @@ public final class ModuleLoader {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Meant only to be called internally.
-	 */
-	public void initJEICompat(Runnable jeiRunnable) {
-		onConfigReloadJEI = jeiRunnable;
-		onConfigReloadJEI.run();
 	}
 
 }

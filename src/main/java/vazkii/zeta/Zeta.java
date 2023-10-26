@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import vazkii.zeta.client.ClientTicker;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
-import vazkii.zeta.config.WeirdConfigSingleton;
+import vazkii.zeta.config.ConfigManager;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -51,7 +51,7 @@ public abstract class Zeta {
 	public final ZetaRegistry registry;
 	public final DyeablesRegistry dyeables; //TODO: move into ZetaRegistry?
 
-	public WeirdConfigSingleton weirdConfigSingleton; //Should probably split this up into various parts
+	public ConfigManager configManager; //This could do with being split up into various pieces
 	public IZetaConfigInternals configInternals;
 
 	//TODO: move to ZetaClient. Some bits of the server *do* actually need this for some raisin (config code)
@@ -61,11 +61,14 @@ public abstract class Zeta {
 		modules.initCategories(categories);
 		modules.load(finder);
 
-		this.weirdConfigSingleton = new WeirdConfigSingleton(this, rootPojo);
-		this.configInternals = makeConfigInternals(weirdConfigSingleton.getRootConfig());
+		//The reason why there's a circular dependency between configManager and configInternals:
+		// - ConfigManager determines the shape and layout of the config file
+		// - The platform-specific configInternals loads the actual values, from the platform-specfic config file
+		// - Only then can ConfigManager do the initial config load
 
-		//the initial config load (TODO: might need to find a better spot for this)
-		weirdConfigSingleton.runDatabindings(configInternals);
+		this.configManager = new ConfigManager(this, rootPojo);
+		this.configInternals = makeConfigInternals(configManager.getRootConfig());
+		this.configManager.onReload();
 	}
 
 	public abstract ZetaSide getSide();

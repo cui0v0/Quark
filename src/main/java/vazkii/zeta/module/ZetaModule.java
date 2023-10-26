@@ -3,11 +3,9 @@ package vazkii.zeta.module;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.base.module.hint.HintObject;
 import vazkii.zeta.Zeta;
@@ -15,6 +13,7 @@ import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.bus.PlayEvent;
 
 public class ZetaModule {
+	public Zeta zeta;
 	public ZetaCategory category = null;
 
 	public String displayName = "";
@@ -45,7 +44,7 @@ public class ZetaModule {
 		configEnabled = willEnable;
 
 		//TODO: i messed up the category enabled stuff, Its Weird now
-		if(z.weirdConfigSingleton != null && !z.weirdConfigSingleton.isCategoryEnabled(category))
+		if(z.configManager != null && !z.configManager.isCategoryEnabled(category))
 			willEnable = false;
 
 		disabledByOverlap = false;
@@ -80,7 +79,7 @@ public class ZetaModule {
 	@PlayEvent
 	public final void addAnnotationHints(ZGatherHints event) {
 		if(annotationHints == null)
-			annotationHints = HintManager.gatherHintAnnotations(ModuleLoader.INSTANCE.getConfigFlagManager(), this);
+			annotationHints = HintManager.gatherHintAnnotations(zeta.configManager.getConfigFlagManager(), this);
 
 		for(HintObject hint : annotationHints)
 			hint.apply(event);

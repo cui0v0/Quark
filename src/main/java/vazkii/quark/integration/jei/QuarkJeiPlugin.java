@@ -88,7 +88,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 		if (!disabledItems.isEmpty())
 			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 
-		ModuleLoader.INSTANCE.initJEICompat(() -> {
+		Quark.ZETA.configManager.setJeiReloadListener(z -> {
 			if(ModuleLoader.INSTANCE.isModuleEnabled(DiamondRepairModule.class))
 				Minecraft.getInstance().submitAsync(() -> hideAnvilRepairRecipes(jeiRuntime.getRecipeManager()));
 

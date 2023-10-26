@@ -148,6 +148,7 @@ public class ZetaModuleManager {
 			LEGACY_actuallySubscribe = true;
 		}
 
+		module.zeta = z;
 		module.category = t.category();
 
 		module.displayName = t.displayName();
