@@ -27,7 +27,7 @@ public record FlagAdvancementCondition(ConfigFlagManager manager, String flag,
 			throw new RuntimeException("Illegal flag: " + flag);
 
 		if (!manager.isValidFlag(flag))
-			Quark.LOG.warn("Non-existant flag " + flag + " being used");
+			Quark.LOG.warn("Non-existent flag " + flag + " being used");
 
 		return GeneralConfig.enableQuarkAdvancements && manager.getFlag(flag);
 	}

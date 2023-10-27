@@ -95,6 +95,27 @@ public class ConfigObjectMapper {
 
 				//register a data binder
 				databindings.add(z -> setField(obj, field, z.get(def)));
+
+				//does this config option also bind to a flag?
+				String flag = config.flag();
+				if(!flag.isEmpty()) {
+					if(enclosingModule == null)
+						throw new IllegalArgumentException("Only ZetaModules can have `@Config(flag = ...)` annotations." +
+						"\nClass: " + obj.getClass() +
+						"\nField: " + field);
+
+					ValueDefinition<Boolean> defBool = def.downcast(Boolean.class);
+					if(defBool == null)
+						throw new IllegalArgumentException("Only boolean fields can be annotated with `@Config(flag = ...)`." +
+						"\nClass: " + obj.getClass() +
+						"\nField: " + field);
+
+					//add the flag now
+					cfm.putFlag(enclosingModule, flag, true);
+
+					//and add a reloader for it later
+					databindings.add(z -> cfm.putFlag(enclosingModule, flag, z.get(defBool)));
+				}
 			}
 		}
 	}

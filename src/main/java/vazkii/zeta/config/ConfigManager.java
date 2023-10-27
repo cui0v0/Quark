@@ -64,6 +64,9 @@ public class ConfigManager {
 			categoriesToSections.put(category, categorySection);
 
 			for(ZetaModule module : modules.modulesInCategory(category)) {
+				//module flag
+				cfm.putModuleFlag(module);
+
 				//module enablement option
 				moduleEnabledOptions.put(module, categorySection.addValue(module.displayName, List.of(module.description), module.enabledByDefault));
 
@@ -91,7 +94,10 @@ public class ConfigManager {
 		databindings.add(0, i -> {
 			categoryEnabledOptions.forEach((category, option) -> setCategoryEnabled(category, i.get(option)));
 			ignoreAntiOverlapOptions.forEach((module, option) -> module.ignoreAntiOverlap = !GeneralConfig.useAntiOverlap || i.get(option));
-			moduleEnabledOptions.forEach((module, option) -> setModuleEnabled(module, i.get(option)));
+			moduleEnabledOptions.forEach((module, option) -> {
+				setModuleEnabled(module, i.get(option));
+				cfm.putModuleFlag(module);
+			});
 		});
 
 		rootConfig.trimEmptySubsections();

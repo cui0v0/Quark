@@ -26,7 +26,7 @@ public record FlagRecipeCondition(ConfigFlagManager manager, String flag,
 			throw new RuntimeException("Illegal flag: " + flag);
 
 		if (!manager.isValidFlag(flag))
-			Quark.LOG.warn("Non-existant flag " + flag + " being used");
+			Quark.LOG.warn("Non-existent flag " + flag + " being used");
 
 		return manager.getFlag(flag);
 	}

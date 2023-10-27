@@ -13,34 +13,34 @@ import java.util.*;
 
 public class SyncedFlagHandler {
 	private static ConfigFlagManager flagManager;
-	private static List<String> allFlags;
+	private static List<String> sortedFlags;
 
-	public static void setupFlagManager(ConfigFlagManager manager, List<String> flags) {
+	public static void setupFlagManager(ConfigFlagManager manager, Set<String> flags) {
 		flagManager = manager;
-		allFlags = flags;
+		sortedFlags = flags.stream().sorted().toList();
 	}
 
 	public static BitSet compileFlagInfo() {
 		BitSet set = new BitSet();
 		int i = 0;
-		for (String flag : allFlags) set.set(i++, flagManager.getFlag(flag));
+		for (String flag : sortedFlags) set.set(i++, flagManager.getFlag(flag));
 
 		return set;
 	}
 
 	public static int expectedLength() {
-		return allFlags.size();
+		return sortedFlags.size();
 	}
 
 	public static int expectedHash() {
-		return allFlags.hashCode();
+		return sortedFlags.hashCode();
 	}
 
 	private static Set<String> decodeFlags(BitSet bitSet) {
 		Set<String> enabledFlags = new HashSet<>();
 
 		for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i + 1)) {
-			enabledFlags.add(allFlags.get(i));
+			enabledFlags.add(sortedFlags.get(i));
 		}
 
 		return enabledFlags;

@@ -16,7 +16,6 @@ public final class ConfigFlagManager {
 
 	public static LootItemConditionType flagLootConditionType;
 
-	private final List<String> orderedFlags = new ArrayList<>();
 	private final Set<String> allFlags = new HashSet<>();
 	private final Map<String, Boolean> flags = new HashMap<>();
 	private boolean registered = false;
@@ -37,7 +36,7 @@ public final class ConfigFlagManager {
 		CraftingHelper.register(new ResourceLocation(Quark.MOD_ID, "potion"), PotionIngredient.Serializer.INSTANCE);
 		CraftingHelper.register(new ResourceLocation(Quark.MOD_ID, "flag"), new FlagIngredient.Serializer(this));
 
-		SyncedFlagHandler.setupFlagManager(this, orderedFlags);
+		SyncedFlagHandler.setupFlagManager(this, allFlags);
 	}
 
 	public void clear() {
@@ -47,12 +46,11 @@ public final class ConfigFlagManager {
 	public void putFlag(ZetaModule module, String flag, boolean value) {
 		flags.put(flag, value && module.enabled);
 		if (!allFlags.contains(flag)) {
-			orderedFlags.add(flag);
 			allFlags.add(flag);
 		}
 	}
 
-	public void putEnabledFlag(ZetaModule module) {
+	public void putModuleFlag(ZetaModule module) {
 		putFlag(module, module.lowercaseName, true);
 	}
 
