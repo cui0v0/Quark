@@ -1,5 +1,6 @@
 package vazkii.zeta.event;
 
+import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
@@ -19,6 +20,10 @@ public class ZRegister implements IZetaLoadEvent {
 
 	public CraftingExtensionsRegistry getCraftingExtensionsRegistry() {
 		return zeta.craftingExtensions;
+	}
+
+	public BrewingRegistry getBrewingRegistry() {
+		return zeta.brewingRegistry;
 	}
 
 	public static class Post implements IZetaLoadEvent { }

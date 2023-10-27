@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.EntityAttributeHandler;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -98,7 +97,7 @@ public class CrabsModule extends ZetaModule {
 		resilience = new QuarkEffect("resilience", MobEffectCategory.BENEFICIAL, 0x5b1a04);
 		resilience.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "2ddf3f0a-f386-47b6-aeb0-6bd32851f215", 0.5, AttributeModifier.Operation.ADDITION);
 
-		BrewingHandler.addPotionMix("crab_brewing", () -> Ingredient.of(crab_shell), resilience);
+		event.getBrewingRegistry().addPotionMix("crab_brewing", () -> Ingredient.of(crab_shell), resilience);
 
 		crabType = EntityType.Builder.<Crab>of(Crab::new, MobCategory.CREATURE)
 				.sized(0.9F, 0.5F)

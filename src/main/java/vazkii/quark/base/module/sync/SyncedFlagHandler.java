@@ -10,14 +10,17 @@ import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.S2CUpdateFlag;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SyncedFlagHandler {
 	private static ConfigFlagManager flagManager;
 	private static List<String> sortedFlags;
 
-	public static void setupFlagManager(ConfigFlagManager manager, Set<String> flags) {
+	public static void setupFlagManager(ConfigFlagManager manager) {
 		flagManager = manager;
-		sortedFlags = flags.stream().sorted().toList();
+
+		//specifying the type of collection explicitly, since a hashCode is done over it and I don't want surprises
+		sortedFlags = manager.getAllFlags().stream().sorted().collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	public static BitSet compileFlagInfo() {

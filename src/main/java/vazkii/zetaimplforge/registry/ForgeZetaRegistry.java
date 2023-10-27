@@ -13,14 +13,14 @@ import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zetaimplforge.ForgeZeta;
 
 public class ForgeZetaRegistry extends ZetaRegistry {
-	public ForgeZetaRegistry(ForgeZeta z, String modid) {
-		super(z, modid);
+	public ForgeZetaRegistry(ForgeZeta z) {
+		super(z);
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener((RegisterEvent e) ->
 			register(e.getRegistryKey(), e.getForgeRegistry()));
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings("unchecked")
 	private <T> void register(ResourceKey<? extends Registry<?>> key, IForgeRegistry<T> registry) {
 		ResourceLocation registryRes = key.location();
 

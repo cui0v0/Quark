@@ -5,6 +5,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
+import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.client.ClientTicker;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
@@ -27,17 +28,19 @@ import vazkii.zeta.util.ZetaSide;
  * do not touch forge OR quark from this package, it will later be split off
  */
 public abstract class Zeta {
-	public Zeta(String modid, Logger log) {
+	public Zeta(String modid, Logger log, ZetaSide side) {
 		this.log = log;
 
 		this.modid = modid;
-		this.side = getSide();
+		this.side = side;
 		this.loadBus = new ZetaEventBus<>(LoadEvent.class, IZetaLoadEvent.class, log);
 		this.playBus = new ZetaEventBus<>(PlayEvent.class, IZetaPlayEvent.class, null);
-		this.modules = new ZetaModuleManager(this);
-		this.registry = createRegistry(modid);
-		this.dyeables = new DyeablesRegistry(this);
+
+		this.modules = createModuleManager();
+		this.registry = createRegistry();
+		this.dyeables = createDyeablesRegistry();
 		this.craftingExtensions = createCraftingExtensionsRegistry();
+		this.brewingRegistry = createBrewingRegistry();
 
 		this.ticker_SHOULD_NOT_BE_HERE = new ClientTicker();
 	}
@@ -51,10 +54,11 @@ public abstract class Zeta {
 	public final ZetaModuleManager modules;
 
 	public final ZetaRegistry registry;
-	public final DyeablesRegistry dyeables; //TODO: move into ZetaRegistry?
+	public final DyeablesRegistry dyeables;
 	public final CraftingExtensionsRegistry craftingExtensions;
+	public final BrewingRegistry brewingRegistry;
 
-	public ConfigManager configManager; //This could do with being split up into various pieces
+	public ConfigManager configManager; //This could do with being split up into various pieces?
 	public IZetaConfigInternals configInternals;
 
 	//TODO: move to ZetaClient. Some bits of the server *do* actually need this for some raisin (config code)
@@ -74,13 +78,19 @@ public abstract class Zeta {
 		this.configManager.onReload();
 	}
 
-	public abstract ZetaSide getSide();
 	public abstract boolean isModLoaded(String modid);
 
 	public abstract IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection);
 
-	public abstract ZetaRegistry createRegistry(String modid);
+	public ZetaModuleManager createModuleManager() {
+		return new ZetaModuleManager(this);
+	}
+	public abstract ZetaRegistry createRegistry();
 	public abstract CraftingExtensionsRegistry createCraftingExtensionsRegistry();
+	public DyeablesRegistry createDyeablesRegistry() {
+		return new DyeablesRegistry(this);
+	}
+	public abstract BrewingRegistry createBrewingRegistry();
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
 
 	//time for JANK - "fire this on the forge event bus and tell me whether it was cancelled"

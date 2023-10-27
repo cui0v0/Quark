@@ -20,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
+import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
@@ -38,6 +39,7 @@ import vazkii.zetaimplforge.event.ForgeZLootTableLoad;
 import vazkii.zetaimplforge.event.ForgeZPlayNoteBlock;
 import vazkii.zetaimplforge.event.ForgeZRightClickBlock;
 import vazkii.zetaimplforge.network.ForgeZetaNetworkHandler;
+import vazkii.zetaimplforge.registry.ForgeBrewingRegistry;
 import vazkii.zetaimplforge.registry.ForgeCraftingExtensionsRegistry;
 import vazkii.zetaimplforge.registry.ForgeZetaRegistry;
 
@@ -46,15 +48,7 @@ import vazkii.zetaimplforge.registry.ForgeZetaRegistry;
  */
 public class ForgeZeta extends Zeta {
 	public ForgeZeta(String modid, Logger log) {
-		super(modid, log);
-	}
-
-	@Override
-	public ZetaSide getSide() {
-		return switch(FMLEnvironment.dist) {
-			case CLIENT -> ZetaSide.CLIENT;
-			case DEDICATED_SERVER -> ZetaSide.SERVER;
-		};
+		super(modid, log, ZetaSide.fromClient(FMLEnvironment.dist.isClient()));
 	}
 
 	@Override
@@ -74,13 +68,18 @@ public class ForgeZeta extends Zeta {
 	}
 
 	@Override
-	public ZetaRegistry createRegistry(String modid) {
-		return new ForgeZetaRegistry(this, modid);
+	public ZetaRegistry createRegistry() {
+		return new ForgeZetaRegistry(this);
 	}
 
 	@Override
 	public CraftingExtensionsRegistry createCraftingExtensionsRegistry() {
-		return new ForgeCraftingExtensionsRegistry();
+		return new ForgeCraftingExtensionsRegistry(this);
+	}
+
+	@Override
+	public BrewingRegistry createBrewingRegistry() {
+		return new ForgeBrewingRegistry(this);
 	}
 
 	@Override

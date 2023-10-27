@@ -16,7 +16,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
 import vazkii.quark.base.handler.*;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.recipe.*;
@@ -25,7 +24,6 @@ import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.module.LegacyQuarkModuleFinder;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
-import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zetaimplforge.module.ModFileScanDataModuleFinder;
@@ -44,7 +42,6 @@ public class CommonProxy {
 		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
 
 		Quark.ZETA.loadBus
-			.subscribe(BrewingHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(CreativeTabHandler.class)
 			.subscribe(QuarkNetwork.class)
@@ -94,6 +91,7 @@ public class CommonProxy {
 
 	@LoadEvent
 	public void setup(ZCommonSetup event) {
+		//TODO: zeta already loads its config once in loadModules, so this is only for calling the legacy handlers
 		handleQuarkConfigChange();
 	}
 

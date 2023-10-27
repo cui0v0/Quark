@@ -6,22 +6,23 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.quark.mixin.accessor.AccessorPotionBrewing;
 import vazkii.zeta.recipe.IZetaCondition;
 import vazkii.zeta.recipe.IZetaConditionSerializer;
 import vazkii.zeta.recipe.IZetaIngredientSerializer;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
+import vazkii.zetaimplforge.ForgeZeta;
 
 public class ForgeCraftingExtensionsRegistry implements CraftingExtensionsRegistry {
 	public final Map<IZetaIngredientSerializer<?>, IIngredientSerializer<?>> toForgeIngredientSerializers = new HashMap<>();
+
+	public ForgeCraftingExtensionsRegistry(ForgeZeta z) {
+		z.loadBus.subscribe(this);
+	}
 
 	@Override
 	public IZetaConditionSerializer<?> registerConditionSerializer(IZetaConditionSerializer<?> serializer) {
@@ -42,11 +43,6 @@ public class ForgeCraftingExtensionsRegistry implements CraftingExtensionsRegist
 	@Override
 	public ResourceLocation getID(IZetaIngredientSerializer<?> serializer) {
 		return CraftingHelper.getID(toForgeIngredientSerializers.get(serializer));
-	}
-
-	@Override
-	public void addBrewingRecipe(Potion input, Ingredient reagent, Potion output) {
-		AccessorPotionBrewing.quark$getPotionMixes().add(new PotionBrewing.Mix<>(ForgeRegistries.POTIONS, input, reagent, output));
 	}
 
 	protected ICondition.IContext toForgeContext(IZetaCondition.IContext mine) {

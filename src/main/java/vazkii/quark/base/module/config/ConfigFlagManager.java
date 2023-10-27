@@ -2,10 +2,9 @@ package vazkii.quark.base.module.config;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
-import vazkii.quark.base.recipe.ingredient.FlagIngredient;
+import vazkii.zeta.recipe.FlagIngredient;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -20,6 +19,9 @@ public final class ConfigFlagManager {
 
 	private final Set<String> allFlags = new HashSet<>();
 	private final Map<String, Boolean> flags = new HashMap<>();
+
+	//TODO augh; needed for BrewingRegistry
+	public final FlagIngredient.Serializer flagIngredientSerializer = new FlagIngredient.Serializer(this);
 
 	public ConfigFlagManager(Zeta zeta) {
 		this.zeta = zeta;
@@ -39,12 +41,10 @@ public final class ConfigFlagManager {
 		FlagLootCondition.FlagSerializer flagSerializer = new FlagLootCondition.FlagSerializer(this);
 		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(zeta.modid, "flag"), flagSerializer.selfType);
 
-		//some shit i need to fix
-		BrewingHandler.DONT_MIND_ME = this;
-		BrewingHandler.LA_DE_DA = ext.registerIngredientSerializer(new ResourceLocation(zeta.modid, "flag"), new FlagIngredient.Serializer(this));
+		ext.registerIngredientSerializer(new ResourceLocation(zeta.modid, "flag"), flagIngredientSerializer);
 
 		//TODO: make this Quark-independent
-		SyncedFlagHandler.setupFlagManager(this, allFlags);
+		SyncedFlagHandler.setupFlagManager(this);
 	}
 
 	public void clear() {
@@ -69,6 +69,10 @@ public final class ConfigFlagManager {
 	public boolean getFlag(String flag) {
 		Boolean obj = flags.get(flag);
 		return obj != null && obj;
+	}
+
+	public Set<String> getAllFlags() {
+		return allFlags;
 	}
 
 }

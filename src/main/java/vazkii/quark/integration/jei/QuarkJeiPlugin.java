@@ -41,7 +41,6 @@ import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
-import vazkii.quark.base.handler.BrewingHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.IQuarkItem;
@@ -99,7 +98,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			for (Potion potion : ForgeRegistries.POTIONS.getValues()) {
 				ResourceLocation loc = ForgeRegistries.POTIONS.getKey(potion);
 				if (loc != null && loc.getNamespace().equals("quark")) {
-					if (!BrewingHandler.isEnabled(potion)) {
+					if (!Quark.ZETA.brewingRegistry.isEnabled(potion)) {
 						hidePotions.add(potion);
 					}
 				}

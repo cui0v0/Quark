@@ -1,4 +1,4 @@
-package vazkii.quark.base.recipe.ingredient;
+package vazkii.zeta.recipe;
 
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -8,8 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.zeta.Zeta;
-import vazkii.zeta.recipe.IZetaIngredient;
-import vazkii.zeta.recipe.IZetaIngredientSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

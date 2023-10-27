@@ -26,7 +26,6 @@ import vazkii.zeta.Zeta;
 //TODO: Tidy up this API a bit - it might be nice to use a "proper" deferredregister on Forge
 public abstract class ZetaRegistry {
 	protected final Zeta z;
-	protected final String modid;
 
 	//the keys of this are things like "minecraft:block", "minecraft:item" and so on
 	private final Multimap<ResourceLocation, Supplier<Object>> defers = ArrayListMultimap.create();
@@ -35,9 +34,8 @@ public abstract class ZetaRegistry {
 	private final Map<Block, IZetaBlockColorProvider> blockColors = new IdentityHashMap<>();
 	private final Map<ResourceLocation, CreativeModeTab> groups = new LinkedHashMap<>();
 
-	public ZetaRegistry(Zeta z, String modid) {
+	public ZetaRegistry(Zeta z) {
 		this.z = z;
-		this.modid = modid;
 	}
 
 	public <T> ResourceLocation getRegistryName(T obj, Registry<T> registry) {
@@ -70,7 +68,7 @@ public abstract class ZetaRegistry {
 	//You know how `new ResourceLocation(String)` prepends "minecraft" if there's no prefix?
 	//This method is like that, except it prepends *your* modid
 	public ResourceLocation newResourceLocation(String in) {
-		if(in.indexOf(':') == -1) return new ResourceLocation(modid, in);
+		if(in.indexOf(':') == -1) return new ResourceLocation(z.modid, in);
 		else return new ResourceLocation(in);
 	}
 
