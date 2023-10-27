@@ -2,40 +2,48 @@ package vazkii.quark.base.module.config;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import vazkii.quark.base.Quark;
+import vazkii.quark.base.handler.BrewingHandler;
+import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.quark.base.recipe.ingredient.FlagIngredient;
-import vazkii.quark.base.recipe.ingredient.PotionIngredient;
+import vazkii.zeta.Zeta;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.CraftingExtensionsRegistry;
 
 import java.util.*;
 
 public final class ConfigFlagManager {
 
-	public static LootItemConditionType flagLootConditionType;
+	public final Zeta zeta;
 
 	private final Set<String> allFlags = new HashSet<>();
 	private final Map<String, Boolean> flags = new HashMap<>();
-	private boolean registered = false;
 
-	public ConfigFlagManager() { }
+	public ConfigFlagManager(Zeta zeta) {
+		this.zeta = zeta;
 
-	public void registerConfigBoundElements() {
-		if(registered)
-			throw new RuntimeException("Can't register twice.");
-		registered = true;
+		zeta.loadBus.subscribe(this);
+	}
 
-		CraftingHelper.register(new FlagRecipeCondition.Serializer(this, new ResourceLocation(Quark.MOD_ID, "flag")));
-		CraftingHelper.register(new FlagAdvancementCondition.Serializer(this, new ResourceLocation(Quark.MOD_ID, "advancement_flag")));
+	@LoadEvent
+	public void onRegister(ZRegister event) {
+		CraftingExtensionsRegistry ext = event.getCraftingExtensionsRegistry();
 
-		flagLootConditionType = new LootItemConditionType(new FlagLootCondition.FlagSerializer(this));
-		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "flag"), flagLootConditionType);
+		//TODO: make these Quark-independent
+		ext.registerConditionSerializer(new FlagCondition.Serializer(this, new ResourceLocation(zeta.modid, "flag")));
+		//Especially this one, which requires quark advancement config option :/
+		ext.registerConditionSerializer(new FlagCondition.Serializer(this, new ResourceLocation(zeta.modid, "advancement_flag"), () -> GeneralConfig.enableQuarkAdvancements));
 
-		CraftingHelper.register(new ResourceLocation(Quark.MOD_ID, "potion"), PotionIngredient.Serializer.INSTANCE);
-		CraftingHelper.register(new ResourceLocation(Quark.MOD_ID, "flag"), new FlagIngredient.Serializer(this));
+		FlagLootCondition.FlagSerializer flagSerializer = new FlagLootCondition.FlagSerializer(this);
+		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(zeta.modid, "flag"), flagSerializer.selfType);
 
+		//some shit i need to fix
+		BrewingHandler.DONT_MIND_ME = this;
+		BrewingHandler.LA_DE_DA = ext.registerIngredientSerializer(new ResourceLocation(zeta.modid, "flag"), new FlagIngredient.Serializer(this));
+
+		//TODO: make this Quark-independent
 		SyncedFlagHandler.setupFlagManager(this, allFlags);
 	}
 

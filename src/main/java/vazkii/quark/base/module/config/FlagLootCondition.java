@@ -14,23 +14,29 @@ import javax.annotation.Nonnull;
  * @author WireSegal
  * Created at 1:23 PM on 8/24/19.
  */
-public record FlagLootCondition(ConfigFlagManager manager,
-								String flag) implements LootItemCondition {
+public record FlagLootCondition(ConfigFlagManager manager, String flag, LootItemConditionType selfType) implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext lootContext) {
 		return manager.getFlag(flag);
 	}
 
-
 	@Nonnull
 	@Override
 	public LootItemConditionType getType() {
-		return ConfigFlagManager.flagLootConditionType;
+		return selfType;
 	}
 
+	public static final class FlagSerializer implements Serializer<FlagLootCondition> {
+		private final ConfigFlagManager manager;
+		public final LootItemConditionType selfType;
 
-	public record FlagSerializer(ConfigFlagManager manager) implements Serializer<FlagLootCondition> {
+		public FlagSerializer(ConfigFlagManager manager) {
+			this.manager = manager;
+
+			//The LootItemCondition stuff has a circular dependency :/
+			this.selfType = new LootItemConditionType(this);
+		}
 
 		@Override
 		public void serialize(@Nonnull JsonObject json, @Nonnull FlagLootCondition value, @Nonnull JsonSerializationContext context) {
@@ -41,7 +47,7 @@ public record FlagLootCondition(ConfigFlagManager manager,
 		@Override
 		public FlagLootCondition deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
 			String flag = json.getAsJsonPrimitive("flag").getAsString();
-			return new FlagLootCondition(manager, flag);
+			return new FlagLootCondition(manager, flag, selfType);
 		}
 	}
 

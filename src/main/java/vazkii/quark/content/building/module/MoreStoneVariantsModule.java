@@ -12,6 +12,9 @@ import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkPillarBlock;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.LoadModule;
+import vazkii.quark.base.module.config.ConfigFlagManager;
+import vazkii.zeta.event.ZGatherAdditionalFlags;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.block.MyalitePillarBlock;
@@ -46,6 +49,17 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		add("shale", MaterialColor.ICE, SoundType.STONE, () -> NewStoneTypesModule.enableShale);
 		
 		add("myalite", MaterialColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
+	}
+
+	@PlayEvent
+	public final void moreFlags(ZGatherAdditionalFlags event) {
+		ConfigFlagManager manager = event.flagManager();
+		manager.putFlag(this, "granite", true);
+		manager.putFlag(this, "diorite", true);
+		manager.putFlag(this, "andesite", true);
+		manager.putFlag(this, "calcite", true);
+		manager.putFlag(this, "dripstone", true);
+		manager.putFlag(this, "tuff", true);
 	}
 	
 	public static void expandVanillaStone(ZetaModule module, Block raw, String name) {

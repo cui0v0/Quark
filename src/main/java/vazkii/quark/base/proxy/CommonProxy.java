@@ -47,7 +47,6 @@ public class CommonProxy {
 			.subscribe(BrewingHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(CreativeTabHandler.class)
-			.subscribe(ModuleLoader.INSTANCE)
 			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)
 			.subscribe(ToolInteractionHandler.class)
@@ -98,11 +97,6 @@ public class CommonProxy {
 		handleQuarkConfigChange();
 	}
 
-	@LoadEvent
-	public void register(ZRegister heck) {
-		Quark.ZETA.configManager.getConfigFlagManager().registerConfigBoundElements();
-	}
-
 	//forge event
 	public void configChanged(ModConfigEvent event) {
 		if(event.getConfig().getModId().equals(Quark.MOD_ID)
@@ -125,6 +119,8 @@ public class CommonProxy {
 		//ModuleLoader.INSTANCE.configChanged();
 		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
+
+		//TODO: these should be made quark-independent and subscribe to the ZConfigChanged event
 		EntitySpawnHandler.refresh();
 		SyncedFlagHandler.sendFlagInfoToPlayers();
 	}

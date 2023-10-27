@@ -26,6 +26,7 @@ import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.ZResult;
 import vazkii.zeta.network.ZetaNetworkHandler;
+import vazkii.zeta.registry.CraftingExtensionsRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
 import vazkii.zetaimplforge.config.ForgeBackedConfig;
@@ -37,6 +38,7 @@ import vazkii.zetaimplforge.event.ForgeZLootTableLoad;
 import vazkii.zetaimplforge.event.ForgeZPlayNoteBlock;
 import vazkii.zetaimplforge.event.ForgeZRightClickBlock;
 import vazkii.zetaimplforge.network.ForgeZetaNetworkHandler;
+import vazkii.zetaimplforge.registry.ForgeCraftingExtensionsRegistry;
 import vazkii.zetaimplforge.registry.ForgeZetaRegistry;
 
 /**
@@ -77,6 +79,11 @@ public class ForgeZeta extends Zeta {
 	}
 
 	@Override
+	public CraftingExtensionsRegistry createCraftingExtensionsRegistry() {
+		return new ForgeCraftingExtensionsRegistry();
+	}
+
+	@Override
 	public ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion) {
 		return new ForgeZetaNetworkHandler(modid, protocolVersion);
 	}
@@ -105,7 +112,7 @@ public class ForgeZeta extends Zeta {
 		if(registerDone)
 			return;
 
-		loadBus.fire(new ZRegister(registry));
+		loadBus.fire(new ZRegister(this));
 		loadBus.fire(new ZRegister.Post());
 
 		registerDone = true;

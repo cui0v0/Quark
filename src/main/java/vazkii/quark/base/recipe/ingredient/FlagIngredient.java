@@ -6,8 +6,10 @@ import it.unimi.dsi.fastutil.ints.IntLists;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IIngredientSerializer;
 import vazkii.quark.base.module.config.ConfigFlagManager;
+import vazkii.zeta.Zeta;
+import vazkii.zeta.recipe.IZetaIngredient;
+import vazkii.zeta.recipe.IZetaIngredientSerializer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,26 +19,26 @@ import java.util.stream.Stream;
  * @author WireSegal
  * Created at 3:44 PM on 10/20/19.
  */
-public class FlagIngredient extends Ingredient {
-	private final Ingredient parent;
-	private final String flag;
+public class FlagIngredient extends Ingredient implements IZetaIngredient<FlagIngredient> {
 
-	public FlagIngredient(Ingredient parent, String flag) {
+	private final Ingredient parent;
+
+	private final ConfigFlagManager cfm;
+	private final String flag;
+	private final IZetaIngredientSerializer<FlagIngredient> serializer;
+
+	public FlagIngredient(Ingredient parent, String flag, ConfigFlagManager cfm, IZetaIngredientSerializer<FlagIngredient> serializer) {
 		super(Stream.of());
 		this.parent = parent;
+		this.cfm = cfm;
 		this.flag = flag;
-	}
-
-	private boolean isEnabled() {
-		if (Serializer.INSTANCE == null)
-			return false;
-		return Serializer.INSTANCE.flagManager.getFlag(flag);
+		this.serializer = serializer;
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack[] getItems() {
-		if (!isEnabled())
+		if (!cfm.getFlag(flag))
 			return new ItemStack[0];
 		return parent.getItems();
 	}
@@ -44,14 +46,14 @@ public class FlagIngredient extends Ingredient {
 	@Override
 	@Nonnull
 	public IntList getStackingIds() {
-		if (!isEnabled())
+		if (!cfm.getFlag(flag))
 			return IntLists.EMPTY_LIST;
 		return parent.getStackingIds();
 	}
 
 	@Override
 	public boolean test(@Nullable ItemStack target) {
-		if (target == null || !isEnabled())
+		if (target == null || !cfm.getFlag(flag))
 			return false;
 
 		return parent.test(target);
@@ -67,25 +69,20 @@ public class FlagIngredient extends Ingredient {
 		return parent.isSimple();
 	}
 
-	@Nonnull
 	@Override
-	public IIngredientSerializer<? extends Ingredient> getSerializer() {
-		return Serializer.INSTANCE;
+	public IZetaIngredientSerializer<FlagIngredient> zetaGetSerializer() {
+		return serializer;
 	}
 
-	public record Serializer(ConfigFlagManager flagManager) implements IIngredientSerializer<FlagIngredient> {
+	public record Serializer(ConfigFlagManager cfm) implements IZetaIngredientSerializer<FlagIngredient> {
 
+		@Deprecated(forRemoval = true)
 		public static Serializer INSTANCE;
-
-		public Serializer(ConfigFlagManager flagManager) {
-			this.flagManager = flagManager;
-			INSTANCE = this;
-		}
 
 		@Nonnull
 		@Override
 		public FlagIngredient parse(@Nonnull FriendlyByteBuf buffer) {
-			return new FlagIngredient(Ingredient.fromNetwork(buffer), buffer.readUtf());
+			return new FlagIngredient(Ingredient.fromNetwork(buffer), buffer.readUtf(), cfm, this);
 		}
 
 		@Nonnull
@@ -93,7 +90,7 @@ public class FlagIngredient extends Ingredient {
 		public FlagIngredient parse(@Nonnull JsonObject json) {
 			Ingredient value = Ingredient.fromJson(json.get("value"));
 			String flag = json.getAsJsonPrimitive("flag").getAsString();
-			return new FlagIngredient(value, flag);
+			return new FlagIngredient(value, flag, cfm, this);
 		}
 
 		@Override
@@ -102,5 +99,9 @@ public class FlagIngredient extends Ingredient {
 			buffer.writeUtf(ingredient.flag);
 		}
 
+		@Override
+		public Zeta getZeta() {
+			return cfm.zeta;
+		}
 	}
 }

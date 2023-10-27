@@ -73,7 +73,9 @@
     "accessor.AccessorMerchantOffer",
     "accessor.AccessorPistonStructureResolver",
     "accessor.AccessorPotionBrewing",
-    "accessor.AccessorServerGamePacketListenerImpl"
+    "accessor.AccessorServerGamePacketListenerImpl",
+    
+    "zeta_forge.IngredientMixin"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",

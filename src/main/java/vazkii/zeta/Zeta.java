@@ -18,6 +18,7 @@ import vazkii.zeta.module.ModuleFinder;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModuleManager;
 import vazkii.zeta.network.ZetaNetworkHandler;
+import vazkii.zeta.registry.CraftingExtensionsRegistry;
 import vazkii.zeta.registry.DyeablesRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
@@ -36,6 +37,7 @@ public abstract class Zeta {
 		this.modules = new ZetaModuleManager(this);
 		this.registry = createRegistry(modid);
 		this.dyeables = new DyeablesRegistry(this);
+		this.craftingExtensions = createCraftingExtensionsRegistry();
 
 		this.ticker_SHOULD_NOT_BE_HERE = new ClientTicker();
 	}
@@ -50,6 +52,7 @@ public abstract class Zeta {
 
 	public final ZetaRegistry registry;
 	public final DyeablesRegistry dyeables; //TODO: move into ZetaRegistry?
+	public final CraftingExtensionsRegistry craftingExtensions;
 
 	public ConfigManager configManager; //This could do with being split up into various pieces
 	public IZetaConfigInternals configInternals;
@@ -77,6 +80,7 @@ public abstract class Zeta {
 	public abstract IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection);
 
 	public abstract ZetaRegistry createRegistry(String modid);
+	public abstract CraftingExtensionsRegistry createCraftingExtensionsRegistry();
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
 
 	//time for JANK - "fire this on the forge event bus and tell me whether it was cancelled"

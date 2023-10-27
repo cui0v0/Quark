@@ -10,18 +10,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.recipe.ingredient.FlagIngredient;
-import vazkii.quark.mixin.accessor.AccessorPotionBrewing;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.recipe.IZetaIngredientSerializer;
+import vazkii.zeta.util.ZetaPotionUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -105,10 +105,9 @@ public class BrewingHandler {
 
 	}
 
+	@Deprecated //moved
 	public static ItemStack of(Item potionType, Potion potion) {
-		ItemStack stack = new ItemStack(potionType);
-		PotionUtils.setPotion(stack, potion);
-		return stack;
+		return ZetaPotionUtil.of(potionType, potion);
 	}
 
 	private static final Map<Potion, String> flags = Maps.newHashMap();
@@ -128,13 +127,13 @@ public class BrewingHandler {
 	private static void add(String flag, Potion potion, Supplier<Ingredient> reagent, Potion to) {
 		flags.put(to, flag);
 		if (isInjectionPrepared)
-			addBrewingRecipe(potion, new FlagIngredient(reagent.get(), flag), to);
+			addBrewingRecipe(potion, new FlagIngredient(reagent.get(), flag, DONT_MIND_ME, LA_DE_DA), to);
 		else
-			toRegister.add(new ImmutableTriple<>(potion, () -> new FlagIngredient(reagent.get(), flag), to));
+			toRegister.add(new ImmutableTriple<>(potion, () -> new FlagIngredient(reagent.get(), flag, DONT_MIND_ME, LA_DE_DA), to));
 	}
 
 	private static void addBrewingRecipe(Potion input, Ingredient reagent, Potion output) {
-		AccessorPotionBrewing.quark$getPotionMixes().add(new PotionBrewing.Mix<>(ForgeRegistries.POTIONS, input, reagent, output));
+		Quark.ZETA.craftingExtensions.addBrewingRecipe(input, reagent, output);
 	}
 
 	private static Potion addPotion(MobEffectInstance eff, String baseName, String name) {
@@ -159,6 +158,12 @@ public class BrewingHandler {
 	public static boolean isEnabled(Potion potion) {
 		if (!flags.containsKey(potion))
 			return true;
-		return FlagIngredient.Serializer.INSTANCE.flagManager().getFlag(flags.get(potion));
+		return DONT_MIND_ME.getFlag(flags.get(potion));
 	}
+
+	//TODO: This needs to be removed and BrewingHandler made a non-singleton
+	@Deprecated
+	public static ConfigFlagManager DONT_MIND_ME;
+	@Deprecated
+	public static IZetaIngredientSerializer<FlagIngredient> LA_DE_DA;
 }

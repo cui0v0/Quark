@@ -12,13 +12,14 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.zeta.Zeta;
+import vazkii.zeta.event.ZGatherAdditionalFlags;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.module.ZetaModuleManager;
 
 public class ConfigManager {
 	private final Zeta z;
-	private final ConfigFlagManager cfm = new ConfigFlagManager();
+	private final ConfigFlagManager cfm;
 	private final SectionDefinition rootConfig;
 
 	//for updating the values of @Config annotations to match the current state of the config
@@ -39,6 +40,7 @@ public class ConfigManager {
 
 	public ConfigManager(Zeta z, Object rootPojo) {
 		this.z = z;
+		this.cfm = new ConfigFlagManager(z);
 
 		ZetaModuleManager modules = z.modules;
 
@@ -88,6 +90,9 @@ public class ConfigManager {
 			}
 		}
 
+		//update extra flags
+		z.playBus.fire(new ZGatherAdditionalFlags(cfm));
+
 		//managing module enablement in one go
 		//adding this to the *start* of the list so modules are enabled before anything else runs
 		//Its Janky !
@@ -98,6 +103,9 @@ public class ConfigManager {
 				setModuleEnabled(module, i.get(option));
 				cfm.putModuleFlag(module);
 			});
+
+			//update extra flags
+			z.playBus.fire(new ZGatherAdditionalFlags(cfm));
 		});
 
 		rootConfig.trimEmptySubsections();
