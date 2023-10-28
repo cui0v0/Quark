@@ -25,6 +25,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -47,9 +48,6 @@ import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.MiscUtil;
@@ -82,7 +80,7 @@ public class AttributeTooltips {
 
 	@Nullable
 	private static AttributeIconEntry getIconForAttribute(Attribute attribute) {
-		ResourceLocation loc = ForgeRegistries.ATTRIBUTES.getKey(attribute);
+		ResourceLocation loc = Registry.ATTRIBUTE.getKey(attribute);
 		if (loc != null) return attributes.get(loc);
 		return null;
 	}
@@ -110,7 +108,6 @@ public class AttributeTooltips {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 
@@ -154,7 +151,7 @@ public class AttributeTooltips {
 		}
 	}
 
-	public static Multimap<Attribute, AttributeModifier> getModifiersOnEquipped(Player player, ItemStack stack, Multimap<Attribute, AttributeModifier> attributes, AttributeSlot slot) {
+	private static Multimap<Attribute, AttributeModifier> getModifiersOnEquipped(Player player, ItemStack stack, Multimap<Attribute, AttributeModifier> attributes, AttributeSlot slot) {
 		if (ImprovedTooltipsModule.showUpgradeStatus && slot.hasCanonicalSlot()) {
 			ItemStack equipped = player.getItemBySlot(slot.getCanonicalSlot());
 			if (!equipped.equals(stack) && !equipped.isEmpty()) {
@@ -166,7 +163,7 @@ public class AttributeTooltips {
 		return ImmutableMultimap.of();
 	}
 
-	public static Multimap<Attribute, AttributeModifier> getModifiers(ItemStack stack, AttributeSlot slot) {
+	private static Multimap<Attribute, AttributeModifier> getModifiers(ItemStack stack, AttributeSlot slot) {
 		var capturedModifiers = ((PseudoAccessorItemStack) (Object) stack).quark$getCapturedAttributes();
 
 		if (capturedModifiers.containsKey(slot)) {
@@ -186,7 +183,7 @@ public class AttributeTooltips {
 		return ImmutableMultimap.of();
 	}
 
-	public static boolean extractAttributeValues(ItemStack stack, Map<AttributeSlot, MutableComponent> attributeTooltips, boolean onlyInvalid, AttributeSlot slot, Multimap<Attribute, AttributeModifier> slotAttributes) {
+	private static boolean extractAttributeValues(ItemStack stack, Map<AttributeSlot, MutableComponent> attributeTooltips, boolean onlyInvalid, AttributeSlot slot, Multimap<Attribute, AttributeModifier> slotAttributes) {
 		boolean anyInvalid = false;
 		for(Attribute attr : slotAttributes.keySet()) {
 			AttributeIconEntry entry = getIconForAttribute(attr);
@@ -209,7 +206,6 @@ public class AttributeTooltips {
 		return onlyInvalid;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private static int renderAttribute(PoseStack matrix, Attribute attribute, AttributeSlot slot, int x, int y, ItemStack stack, Multimap<Attribute, AttributeModifier> slotAttributes, Minecraft mc, boolean forceRenderIfZero, Multimap<Attribute, AttributeModifier> equippedSlotAttributes, @Nullable Set<Attribute> equippedAttrsToRender) {
 		AttributeIconEntry entry = getIconForAttribute(attribute);
 		if (entry != null) {
@@ -337,12 +333,6 @@ public class AttributeTooltips {
 		return value;
 	}
 
-	public static boolean shouldHideAttributes() {
-		return ImprovedTooltipsModule.staticEnabled && ImprovedTooltipsModule.attributeTooltips && !Quark.proxy.isClientPlayerHoldingShift();
-	}
-
-
-	@OnlyIn(Dist.CLIENT)
 	public record AttributeComponent(ItemStack stack,
 									 AttributeSlot slot) implements ClientTooltipComponent, TooltipComponent {
 

@@ -16,22 +16,19 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
 public class FuelTooltips {
 
-	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 		if(!stack.isEmpty()) {
 			Screen screen = Minecraft.getInstance().screen;
 			if(screen != null && screen instanceof AbstractFurnaceScreen<?>) {
-				int count = ForgeHooks.getBurnTime(stack, RecipeType.SMELTING);
+				int count = Quark.ZETA.getBurnTime(stack, RecipeType.SMELTING);
 				if(count > 0) {
 					Font font = Minecraft.getInstance().font;
 					
@@ -47,9 +44,7 @@ public class FuelTooltips {
 		String time = String.format(((items - (int) items) == 0) ? "x%.0f" : "x%.1f", items);
 		return time;
 	}
-	
-	
-	@OnlyIn(Dist.CLIENT)
+
 	public record FuelComponent(ItemStack stack, int width, int count) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override

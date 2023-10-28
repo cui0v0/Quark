@@ -41,6 +41,8 @@ public class AbacusModule extends ZetaModule {
 
 	@Hint public Item abacus;
 
+	@Config RGBAColorConfig highlightColor = RGBAColorConfig.forColor(0, 0, 0, 0.4);
+
 	@LoadEvent
 	public void register(ZRegister event) {
 		abacus = new AbacusItem(this);
@@ -48,8 +50,6 @@ public class AbacusModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends AbacusModule {
-
-		@Config RGBAColorConfig highlightColor = RGBAColorConfig.forColor(0, 0, 0, 0.4);
 
 		@LoadEvent
 		public void clientSetup(ZClientSetup e) {

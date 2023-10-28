@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -107,6 +108,7 @@ public abstract class Zeta {
 		//forge has a funky little extension for this
 		return stack.getItem() instanceof ElytraItem && ElytraItem.isFlyEnabled(stack);
 	}
+	public abstract int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType);
 
 	// Let's Jump
 	public abstract void start();

@@ -18,7 +18,6 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import vazkii.quark.content.client.resources.AttributeIconEntry.CompareType;
 
 public record AttributeIconEntry(
 	 Map<AttributeSlot, AttributeDisplayType> displayTypes,

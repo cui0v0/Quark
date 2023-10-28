@@ -22,9 +22,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
@@ -39,7 +36,6 @@ public class FoodTooltips {
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(ZGatherTooltipComponents event, boolean showFood, boolean showSaturation) {
 		ItemStack stack = event.getItemStack();
 		if(stack.isEdible()) {
@@ -90,8 +86,6 @@ public class FoodTooltips {
 		}
 	}
 
-
-	@OnlyIn(Dist.CLIENT)
 	public record FoodComponent(ItemStack stack, int width,
 								int height) implements ClientTooltipComponent, TooltipComponent {
 
@@ -126,7 +120,7 @@ public class FoodTooltips {
 					pose.translate(0, 0, 500);
 					RenderSystem.setShader(GameRenderer::getPositionTexShader);
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-					RenderSystem.setShaderTexture(0, ForgeGui.GUI_ICONS_LOCATION);
+					RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 
 					for (int i = 0; i < renderCount; i++) {
 						int x = tooltipX + i * 9 - 1;

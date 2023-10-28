@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.item.ItemStack;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.client.event.ZGatherTooltipComponents;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -72,6 +73,11 @@ public class ImprovedTooltipsModule extends ZetaModule {
 	private static final String IGNORE_TAG = "quark:no_tooltip";
 
 	public static boolean staticEnabled;
+
+	//put out here for itemstack mixin haxx required for this to work
+	public static boolean shouldHideAttributes() {
+		return staticEnabled && attributeTooltips && !Quark.proxy.isClientPlayerHoldingShift();
+	}
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ImprovedTooltipsModule {

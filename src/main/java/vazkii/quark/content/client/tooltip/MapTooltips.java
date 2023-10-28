@@ -24,8 +24,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
@@ -33,7 +31,6 @@ public class MapTooltips {
 
 	private static final ResourceLocation RES_MAP_BACKGROUND = new ResourceLocation("textures/map/map_background.png");
 
-	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 		if(!stack.isEmpty() && stack.getItem() instanceof MapItem) {
@@ -46,7 +43,6 @@ public class MapTooltips {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record MapComponent(ItemStack stack) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override

@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vazkii.quark.content.client.hax.PseudoAccessorItemStack;
+import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.client.resources.AttributeSlot;
 import vazkii.quark.content.client.tooltip.AttributeTooltips;
 import vazkii.quark.content.management.module.ItemSharingModule;
@@ -107,7 +108,7 @@ public class ItemStackMixin implements PseudoAccessorItemStack {
 
 	@ModifyReceiver(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Multimap;isEmpty()Z", remap = false))
 	private Multimap<Attribute, AttributeModifier> overrideAttributeTooltips(Multimap<Attribute, AttributeModifier> attributes, @Local EquipmentSlot slot) {
-		if (AttributeTooltips.shouldHideAttributes()) {
+		if (ImprovedTooltipsModule.shouldHideAttributes()) {
 			capturedAttributes.put(AttributeSlot.fromCanonicalSlot(slot), LinkedHashMultimap.create(attributes));
 			return ImmutableMultimap.of();
 		}

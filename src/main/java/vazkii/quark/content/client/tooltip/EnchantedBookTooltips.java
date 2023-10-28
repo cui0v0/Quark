@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
@@ -26,9 +26,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.tools.item.AncientTomeItem;
@@ -48,7 +45,6 @@ public class EnchantedBookTooltips {
 		testItems = null;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void makeTooltip(ZGatherTooltipComponents event) {
 		Minecraft mc = Minecraft.getInstance();
 		if(mc.player == null)
@@ -87,7 +83,7 @@ public class EnchantedBookTooltips {
 
 	private static ItemStack BOOK;
 
-	public static List<ItemStack> getItemsForEnchantment(Enchantment e, boolean onlyForTable) {
+	private static List<ItemStack> getItemsForEnchantment(Enchantment e, boolean onlyForTable) {
 		List<ItemStack> list = new ArrayList<>();
 
 		for(ItemStack stack : getTestItems()) {
@@ -114,7 +110,7 @@ public class EnchantedBookTooltips {
 		return list;
 	}
 
-	public static List<EnchantmentInstance> getEnchantedBookEnchantments(ItemStack stack) {
+	private static List<EnchantmentInstance> getEnchantedBookEnchantments(ItemStack stack) {
 		Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
 
 		List<EnchantmentInstance> retList = new ArrayList<>(enchantments.size());
@@ -142,13 +138,12 @@ public class EnchantedBookTooltips {
 	}
 
 	private static void computeTestItems() {
-		testItems = Lists.newArrayList();
-
-		for (String loc : ImprovedTooltipsModule.enchantingStacks) {
-			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(loc));
-			if (item != null)
-				testItems.add(new ItemStack(item));
-		}
+		testItems = ImprovedTooltipsModule.enchantingStacks.stream()
+			.map(ResourceLocation::new)
+			.map(Registry.ITEM::get)
+			.filter(i -> i != Items.AIR)
+			.map(ItemStack::new)
+			.toList();
 	}
 
 	private static void computeAdditionalStacks() {
@@ -162,20 +157,16 @@ public class EnchantedBookTooltips {
 			String left = tokens[0];
 			String right = tokens[1];
 
-			Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(left));
-			if(ench != null) {
-				tokens = right.split(",");
-
-				for(String itemId : tokens) {
-					Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
-					if (item != null)
-						additionalStacks.put(ench, new ItemStack(item));
-				}
-			}
+			Registry.ENCHANTMENT.getOptional(new ResourceLocation(left))
+				.ifPresent(ench -> {
+					for(String itemId : right.split(",")) {
+						Registry.ITEM.getOptional(new ResourceLocation(itemId)).ifPresent(item ->
+							additionalStacks.put(ench, new ItemStack(item)));
+					}
+				});
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public record EnchantedBookComponent(int width, int height,
 										 Enchantment enchantment, boolean tableOnly) implements ClientTooltipComponent, TooltipComponent {
 
