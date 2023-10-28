@@ -270,7 +270,7 @@ public class ZetaEventBus<E> {
 	}
 
 	private static RuntimeException methodProblem(String problem, Method method, @Nullable Throwable cause) {
-		return new RuntimeException("%s%nMethod class:%s%nMethod name:%s".formatted(
+		return new RuntimeException("%s%nMethod class: %s%nMethod name: %s".formatted(
 			problem, method.getDeclaringClass().getName(), method.getName()), cause);
 	}
 }

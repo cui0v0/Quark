@@ -1,7 +1,9 @@
 package vazkii.zetaimplforge.client;
 
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -25,13 +27,15 @@ import vazkii.zetaimplforge.event.client.ForgeZAddBlockColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddItemColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddModelLayers;
 import vazkii.zetaimplforge.event.client.ForgeZAddModels;
+import vazkii.zetaimplforge.event.client.ForgeZClick;
 import vazkii.zetaimplforge.event.client.ForgeZClientSetup;
 import vazkii.zetaimplforge.event.client.ForgeZHighlightBlock;
+import vazkii.zetaimplforge.event.client.ForgeZInputUpdate;
+import vazkii.zetaimplforge.event.client.ForgeZKey;
 import vazkii.zetaimplforge.event.client.ForgeZKeyMapping;
 import vazkii.zetaimplforge.event.client.ForgeZModelBakingCompleted;
 import vazkii.zetaimplforge.event.client.ForgeZPreTextureStitch;
-import vazkii.zetaimplforge.event.client.ForgeZRenderChat;
-import vazkii.zetaimplforge.event.client.ForgeZRenderCrosshair;
+import vazkii.zetaimplforge.event.client.ForgeZRenderOverlay;
 import vazkii.zetaimplforge.event.client.ForgeZTooltipComponents;
 
 public class ForgeZetaClient extends ZetaClient {
@@ -56,6 +60,9 @@ public class ForgeZetaClient extends ZetaClient {
 
 		MinecraftForge.EVENT_BUS.addListener(this::renderTick);
 		MinecraftForge.EVENT_BUS.addListener(this::clientTick);
+		MinecraftForge.EVENT_BUS.addListener(this::clicc);
+		MinecraftForge.EVENT_BUS.addListener(this::prece);
+		MinecraftForge.EVENT_BUS.addListener(this::movementInputUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlay);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPre);
@@ -128,6 +135,18 @@ public class ForgeZetaClient extends ZetaClient {
 		}
 	}
 
+	public void clicc(InputEvent.MouseButton e) {
+		playBus.fire(new ForgeZClick(e));
+	}
+
+	public void prece(InputEvent.Key e) {
+		playBus.fire(new ForgeZKey(e));
+	}
+
+	public void movementInputUpdate(MovementInputUpdateEvent e) {
+		playBus.fire(new ForgeZInputUpdate(e));
+	}
+
 	public void renderBlockHighlight(RenderHighlightEvent.Block e) {
 		playBus.fire(new ForgeZHighlightBlock(e));
 	}
@@ -135,16 +154,18 @@ public class ForgeZetaClient extends ZetaClient {
 	//TODO: This probably should have been a PRE/POST event (just copying quark here)
 	public void renderGameOverlay(RenderGuiOverlayEvent e) {
 		if(e.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type())
-			playBus.fire(new ForgeZRenderCrosshair(e));
+			playBus.fire(new ForgeZRenderOverlay.Crosshair(e));
+		else if(e.getOverlay() == VanillaGuiOverlay.HOTBAR.type())
+			playBus.fire(new ForgeZRenderOverlay.Hotbar(e));
 	}
 
 	public void renderGameOverlayPre(RenderGuiOverlayEvent.Pre e) {
 		if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
-			playBus.fire(new ForgeZRenderChat.Pre(e));
+			playBus.fire(new ForgeZRenderOverlay.Chat.Pre(e));
 	}
 
 	public void renderGameOverlayPost(RenderGuiOverlayEvent.Post e) {
 		if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
-			playBus.fire(new ForgeZRenderChat.Post(e));
+			playBus.fire(new ForgeZRenderOverlay.Chat.Post(e));
 	}
 }

@@ -1,8 +1,8 @@
 package vazkii.quark.content.experimental.module;
 
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.client.event.ZRenderOverlay;
 import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.client.event.ZRenderChat;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 
@@ -16,12 +16,12 @@ public class AdjustableChatModule extends ZetaModule {
 	public static class Client extends AdjustableChatModule {
 
 		@PlayEvent
-		public void pre(ZRenderChat.Pre event) {
+		public void pre(ZRenderOverlay.Chat.Pre event) {
 			event.getPoseStack().translate(horizontalShift, verticalShift, 0);
 		}
 
 		@PlayEvent
-		public void post(ZRenderChat.Post event) {
+		public void post(ZRenderOverlay.Chat.Post event) {
 			event.getPoseStack().translate(-horizontalShift, -verticalShift, 0);
 		}
 	}

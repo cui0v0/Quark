@@ -9,116 +9,110 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZClick;
+import vazkii.zeta.client.event.ZInputUpdate;
+import vazkii.zeta.client.event.ZKey;
+import vazkii.zeta.client.event.ZRenderOverlay;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZKeyMapping;
 
-@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@ZetaLoadModule(category = "client")
 public class AutoWalkKeybindModule extends ZetaModule {
 
 	@Config public static boolean drawHud = true;
 	@Config public static int hudHeight = 10;
 
-	@OnlyIn(Dist.CLIENT)
-	private KeyMapping keybind;
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends AutoWalkKeybindModule {
 
-	private boolean autorunning;
-	private boolean hadAutoJump;
-	private boolean shouldAccept;
+		private KeyMapping keybind;
 
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void registerKeybinds(ZKeyMapping event) {
-		keybind = event.init("quark.keybind.autorun", null, QuarkClient.MISC_GROUP);
-	}
+		private boolean autorunning;
+		private boolean hadAutoJump;
+		private boolean shouldAccept;
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onMouseInput(InputEvent.MouseButton event) {
-		acceptInput();
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.Key event) {
-		acceptInput();
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(RenderGuiOverlayEvent.Post event) {
-		if(drawHud && autorunning && event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
-			String message = I18n.get("quark.misc.autowalking");
-
-			Minecraft mc = Minecraft.getInstance();
-			int w = mc.font.width("OoO" + message + "oOo");
-
-			Window window = event.getWindow();
-			int x = (window.getGuiScaledWidth() - w) / 2;
-			int y = hudHeight;
-
-			String displayMessage = message;
-			int dots = (QuarkClient.ticker.ticksInGame / 10) % 2;
-			switch(dots) {
-			case 0 -> displayMessage = "OoO " + message + " oOo";
-			case 1 -> displayMessage = "oOo " + message + " OoO";
-			}
-
-			mc.font.drawShadow(event.getPoseStack(), displayMessage, x, y, 0xFFFFFFFF);
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private void acceptInput() {
-		Minecraft mc = Minecraft.getInstance();
-
-		OptionInstance<Boolean> opt = mc.options.autoJump();
-		if(mc.options.keyUp.isDown()) {
-			if(autorunning)
-				opt.set(hadAutoJump);
-
-			autorunning = false;
+		@LoadEvent
+		public void registerKeybinds(ZKeyMapping event) {
+			keybind = event.init("quark.keybind.autorun", null, QuarkClient.MISC_GROUP);
 		}
 
-		else {
-			if(keybind.isDown()) {
-				if(shouldAccept) {
-					shouldAccept = false;
-					Player player = mc.player;
-					float height = player.getStepHeight();
+		@PlayEvent
+		public void onMouseInput(ZClick event) {
+			acceptInput();
+		}
 
-					autorunning = !autorunning;
+		@PlayEvent
+		public void onKeyInput(ZKey event) {
+			acceptInput();
+		}
 
-					if(autorunning) {
-						hadAutoJump = opt.get();
+		@PlayEvent
+		public void drawHUD(ZRenderOverlay.Hotbar event) {
+			if(drawHud && autorunning) {
+				String message = I18n.get("quark.misc.autowalking");
 
-						if(height < 1)
-							opt.set(true);
-					} else opt.set(hadAutoJump);	
+				Minecraft mc = Minecraft.getInstance();
+				int w = mc.font.width("OoO" + message + "oOo");
+
+				Window window = event.getWindow();
+				int x = (window.getGuiScaledWidth() - w) / 2;
+				int y = hudHeight;
+
+				String displayMessage = message;
+				int dots = (QuarkClient.ticker.ticksInGame / 10) % 2;
+				switch(dots) {
+					case 0 -> displayMessage = "OoO " + message + " oOo";
+					case 1 -> displayMessage = "oOo " + message + " OoO";
 				}
-			} else shouldAccept = true;
-		}
-	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onInput(MovementInputUpdateEvent event) {
-		Minecraft mc = Minecraft.getInstance();
-		if(mc.player != null && autorunning) {
-			Input input = event.getInput();
-			input.up = true;
-			input.forwardImpulse = ((LocalPlayer) event.getEntity()).isMovingSlowly() ? 0.3F : 1F;
+				mc.font.drawShadow(event.getPoseStack(), displayMessage, x, y, 0xFFFFFFFF);
+			}
 		}
+
+		private void acceptInput() {
+			Minecraft mc = Minecraft.getInstance();
+
+			OptionInstance<Boolean> opt = mc.options.autoJump();
+			if(mc.options.keyUp.isDown()) {
+				if(autorunning)
+					opt.set(hadAutoJump);
+
+				autorunning = false;
+			} else {
+				if(keybind.isDown()) {
+					if(shouldAccept) {
+						shouldAccept = false;
+						Player player = mc.player;
+						float height = player.getStepHeight();
+
+						autorunning = !autorunning;
+
+						if(autorunning) {
+							hadAutoJump = opt.get();
+
+							if(height < 1)
+								opt.set(true);
+						} else opt.set(hadAutoJump);
+					}
+				} else shouldAccept = true;
+			}
+		}
+
+		@PlayEvent
+		public void onInput(ZInputUpdate event) {
+			Minecraft mc = Minecraft.getInstance();
+			if(mc.player != null && autorunning) {
+				Input input = event.getInput();
+				input.up = true;
+				input.forwardImpulse = ((LocalPlayer) event.getEntity()).isMovingSlowly() ? 0.3F : 1F;
+			}
+		}
+
 	}
 
 }
