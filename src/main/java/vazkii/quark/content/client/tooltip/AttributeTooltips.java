@@ -1,5 +1,15 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -23,7 +33,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -34,11 +49,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.quark.base.QuarkClient;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.content.client.hax.PseudoAccessorItemStack;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
@@ -46,10 +59,8 @@ import vazkii.quark.content.client.resources.AttributeDisplayType;
 import vazkii.quark.content.client.resources.AttributeIconEntry;
 import vazkii.quark.content.client.resources.AttributeIconEntry.CompareType;
 import vazkii.quark.content.client.resources.AttributeSlot;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
+import vazkii.zeta.util.ItemNBTHelper;
 
 /**
  * @author WireSegal
@@ -100,7 +111,7 @@ public class AttributeTooltips {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
+	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 
 		if(!Screen.hasShiftDown()) {

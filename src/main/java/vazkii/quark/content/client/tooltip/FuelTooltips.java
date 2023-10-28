@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -19,15 +18,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.ForgeHooks;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
 public class FuelTooltips {
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
+	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 		if(!stack.isEmpty()) {
 			Screen screen = Minecraft.getInstance().screen;

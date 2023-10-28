@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.Minecraft;
+import vazkii.quark.base.Quark;
 import vazkii.quark.content.client.module.LongRangePickBlockModule;
 
 import javax.annotation.Nullable;
@@ -23,7 +24,7 @@ public class MinecraftMixin {
 	private void pickBlockHead(CallbackInfo ci, @Share("hitResult") LocalRef<HitResult> hitResult) {
 		Minecraft self = (Minecraft) (Object) this;
 		hitResult.set(self.hitResult);
-		self.hitResult = LongRangePickBlockModule.transformHitResult(self.hitResult);
+		self.hitResult = Quark.ZETA.modules.get(LongRangePickBlockModule.class).transformHitResult(self.hitResult);
 	}
 
 	@Inject(method = "pickBlock", at = @At("RETURN"))

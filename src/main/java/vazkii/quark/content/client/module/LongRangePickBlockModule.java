@@ -9,27 +9,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.handler.RayTraceHandler;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.event.ZConfigChanged;
-import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "client")
+@ZetaLoadModule(category = "client")
 public class LongRangePickBlockModule extends ZetaModule {
 
-	public static boolean staticEnabled;
-
-	@LoadEvent
-	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = enabled;
+	public HitResult transformHitResult(HitResult orig) {
+		return orig;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public static HitResult transformHitResult(HitResult hitResult) {
-		if(staticEnabled) {
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends LongRangePickBlockModule {
+
+		public HitResult transformHitResult(HitResult hitResult) {
+			if(!enabled)
+				return hitResult;
+
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
 			Level level = mc.level;
@@ -38,16 +35,17 @@ public class LongRangePickBlockModule extends ZetaModule {
 				if(hitResult instanceof BlockHitResult bhr && !level.getBlockState(bhr.getBlockPos()).isAir())
 					return hitResult;
 
-				if(hitResult instanceof EntityHitResult ehr)
+				if(hitResult instanceof EntityHitResult)
 					return hitResult;
 			}
 
 			HitResult result = RayTraceHandler.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 200);
 			if(result != null && result.getType() == Type.BLOCK)
 				return result;
+
+			return hitResult;
 		}
 
-		return hitResult;
 	}
 
 }

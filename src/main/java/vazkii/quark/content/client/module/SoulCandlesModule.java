@@ -9,13 +9,13 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "client")
+@ZetaLoadModule(category = "client") // Not using a client module replacement b/c everything here happens to be side-safe
 public class SoulCandlesModule extends ZetaModule {
 
 	private static boolean staticEnabled;

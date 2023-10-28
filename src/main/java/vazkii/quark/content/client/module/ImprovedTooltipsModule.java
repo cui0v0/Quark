@@ -5,16 +5,14 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZRegisterReloadListeners;
 import vazkii.zeta.client.event.ZTooltipComponents;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.util.ItemNBTHelper;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.client.resources.AttributeTooltipManager;
@@ -29,7 +27,7 @@ import vazkii.quark.content.client.tooltip.ShulkerBoxTooltips;
  * @author WireSegal
  * Created at 6:19 PM on 8/31/19.
  */
-@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@ZetaLoadModule(category = "client")
 public class ImprovedTooltipsModule extends ZetaModule {
 
 	@Config public static boolean attributeTooltips = true;
@@ -75,50 +73,51 @@ public class ImprovedTooltipsModule extends ZetaModule {
 
 	public static boolean staticEnabled;
 
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void registerClientTooltipComponentFactories(ZTooltipComponents event) {
-		event.register(AttributeTooltips.AttributeComponent.class);
-		event.register(FoodTooltips.FoodComponent.class);
-		event.register(ShulkerBoxTooltips.ShulkerComponent.class);
-		event.register(MapTooltips.MapComponent.class);
-		event.register(EnchantedBookTooltips.EnchantedBookComponent.class);
-		event.register(FuelTooltips.FuelComponent.class);
-	}
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ImprovedTooltipsModule {
 
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void registerReloadListeners(ZRegisterReloadListeners registry) {
-		registry.accept(new AttributeTooltipManager());
-	}
+		@LoadEvent
+		public void registerClientTooltipComponentFactories(ZTooltipComponents event) {
+			event.register(AttributeTooltips.AttributeComponent.class);
+			event.register(FoodTooltips.FoodComponent.class);
+			event.register(ShulkerBoxTooltips.ShulkerComponent.class);
+			event.register(MapTooltips.MapComponent.class);
+			event.register(EnchantedBookTooltips.EnchantedBookComponent.class);
+			event.register(FuelTooltips.FuelComponent.class);
+		}
 
-	@LoadEvent
-	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = enabled;
-		EnchantedBookTooltips.reloaded();
-	}
+		@LoadEvent
+		public void registerReloadListeners(ZRegisterReloadListeners registry) {
+			registry.accept(new AttributeTooltipManager());
+		}
 
-	private static boolean ignore(ItemStack stack) {
-		return ItemNBTHelper.getBoolean(stack, IGNORE_TAG, false);
-	}
+		@LoadEvent
+		public final void configChanged(ZConfigChanged event) {
+			staticEnabled = enabled;
+			EnchantedBookTooltips.reloaded();
+		}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void makeTooltip(RenderTooltipEvent.GatherComponents event) {
-		if(ignore(event.getItemStack()))
-			return;
+		private static boolean ignore(ItemStack stack) {
+			return ItemNBTHelper.getBoolean(stack, IGNORE_TAG, false);
+		}
 
-		if (attributeTooltips)
-			AttributeTooltips.makeTooltip(event);
-		if (foodTooltips || showSaturation)
-			FoodTooltips.makeTooltip(event, foodTooltips, showSaturation);
-		if (shulkerTooltips)
-			ShulkerBoxTooltips.makeTooltip(event);
-		if (mapTooltips)
-			MapTooltips.makeTooltip(event);
-		if (enchantingTooltips)
-			EnchantedBookTooltips.makeTooltip(event);
-		if(fuelTimeTooltips)
-			FuelTooltips.makeTooltip(event);
+		@PlayEvent
+		public void makeTooltip(ZGatherTooltipComponents event) {
+			if(ignore(event.getItemStack()))
+				return;
+
+			if(attributeTooltips)
+				AttributeTooltips.makeTooltip(event);
+			if(foodTooltips || showSaturation)
+				FoodTooltips.makeTooltip(event, foodTooltips, showSaturation);
+			if(shulkerTooltips)
+				ShulkerBoxTooltips.makeTooltip(event);
+			if(mapTooltips)
+				MapTooltips.makeTooltip(event);
+			if(enchantingTooltips)
+				EnchantedBookTooltips.makeTooltip(event);
+			if(fuelTimeTooltips)
+				FuelTooltips.makeTooltip(event);
+		}
 	}
 }

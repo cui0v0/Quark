@@ -1,5 +1,9 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -20,12 +24,9 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
 public class FoodTooltips {
 
@@ -39,7 +40,7 @@ public class FoodTooltips {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event, boolean showFood, boolean showSaturation) {
+	public static void makeTooltip(ZGatherTooltipComponents event, boolean showFood, boolean showSaturation) {
 		ItemStack stack = event.getItemStack();
 		if(stack.isEdible()) {
 			FoodProperties food = stack.getItem().getFoodProperties();

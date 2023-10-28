@@ -1,5 +1,11 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -22,18 +28,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.module.AncientTomesModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
+import vazkii.zeta.util.ItemNBTHelper;
 
 public class EnchantedBookTooltips {
 
@@ -48,7 +49,7 @@ public class EnchantedBookTooltips {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
+	public static void makeTooltip(ZGatherTooltipComponents event) {
 		Minecraft mc = Minecraft.getInstance();
 		if(mc.player == null)
 			return;

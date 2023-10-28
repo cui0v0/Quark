@@ -1,5 +1,9 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,18 +26,15 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.List;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
 
 public class MapTooltips {
 
 	private static final ResourceLocation RES_MAP_BACKGROUND = new ResourceLocation("textures/map/map_background.png");
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
+	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 		if(!stack.isEmpty() && stack.getItem() instanceof MapItem) {
 			List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();

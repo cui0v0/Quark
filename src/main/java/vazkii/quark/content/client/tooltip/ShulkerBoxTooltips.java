@@ -1,5 +1,10 @@
 package vazkii.quark.content.client.tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,26 +30,22 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import vazkii.quark.base.Quark;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.content.client.module.ChestSearchingModule;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import vazkii.zeta.client.event.ZGatherTooltipComponents;
+import vazkii.zeta.util.ItemNBTHelper;
 
 public class ShulkerBoxTooltips {
 
 	public static final ResourceLocation WIDGET_RESOURCE = new ResourceLocation("quark", "textures/misc/shulker_widget.png");
 
 	@OnlyIn(Dist.CLIENT)
-	public static void makeTooltip(RenderTooltipEvent.GatherComponents event) {
+	public static void makeTooltip(ZGatherTooltipComponents event) {
 		ItemStack stack = event.getItemStack();
 		if(SimilarBlockTypeHandler.isShulkerBox(stack)) {
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", false);

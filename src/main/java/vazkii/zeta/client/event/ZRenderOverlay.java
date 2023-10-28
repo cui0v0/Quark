@@ -7,6 +7,7 @@ import vazkii.zeta.event.bus.IZetaPlayEvent;
 public interface ZRenderOverlay extends IZetaPlayEvent {
 	Window getWindow();
 	PoseStack getPoseStack();
+	float getPartialTick();
 
 	boolean shouldDrawSurvivalElements();
 	int getLeftHeight(); //weird ForgeGui stuff
@@ -20,5 +21,8 @@ public interface ZRenderOverlay extends IZetaPlayEvent {
 		interface Post extends Chat { }
 	}
 	interface Crosshair extends ZRenderOverlay { }
-	interface Hotbar extends ZRenderOverlay { }
+	interface Hotbar extends ZRenderOverlay {
+		interface Pre extends Chat { }
+		interface Post extends Chat { }
+	}
 }

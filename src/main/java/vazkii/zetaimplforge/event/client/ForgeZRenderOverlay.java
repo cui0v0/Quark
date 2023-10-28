@@ -25,6 +25,11 @@ public class ForgeZRenderOverlay implements ZRenderOverlay {
 	}
 
 	@Override
+	public float getPartialTick() {
+		return e.getPartialTick();
+	}
+
+	@Override
 	public boolean shouldDrawSurvivalElements() {
 		return Minecraft.getInstance().gui instanceof ForgeGui fgui && fgui.shouldDrawSurvivalElements();
 	}
@@ -79,6 +84,18 @@ public class ForgeZRenderOverlay implements ZRenderOverlay {
 	public static class Hotbar extends ForgeZRenderOverlay implements ZRenderOverlay.Hotbar {
 		public Hotbar(RenderGuiOverlayEvent e) {
 			super(e);
+		}
+
+		public static class Pre extends ForgeZRenderOverlay.Hotbar implements ZRenderOverlay.Hotbar.Pre {
+			public Pre(RenderGuiOverlayEvent.Pre e) {
+				super(e);
+			}
+		}
+
+		public static class Post extends ForgeZRenderOverlay.Hotbar implements ZRenderOverlay.Hotbar.Post {
+			public Post(RenderGuiOverlayEvent.Post e) {
+				super(e);
+			}
 		}
 	}
 }

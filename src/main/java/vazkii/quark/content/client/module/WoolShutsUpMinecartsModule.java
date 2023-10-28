@@ -5,15 +5,13 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "client")
+@ZetaLoadModule(category = "client")
 public class WoolShutsUpMinecartsModule extends ZetaModule {
 
 	private static boolean staticEnabled;
@@ -24,8 +22,7 @@ public class WoolShutsUpMinecartsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 	}
-	
-	@OnlyIn(Dist.CLIENT)
+
 	public static boolean canPlay(AbstractMinecart cart) {
 		return !staticEnabled || !cart.level.getBlockState(cart.blockPosition().below()).is(BlockTags.DAMPENS_VIBRATIONS);
 	}
