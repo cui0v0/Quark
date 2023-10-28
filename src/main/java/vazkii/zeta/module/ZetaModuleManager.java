@@ -6,12 +6,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
@@ -122,14 +120,22 @@ public class ZetaModuleManager {
 		for(TentativeModule t : tentative)
 			modulesByKey.put(t.keyClass(), constructAndSetup(t));
 
+		//Just for fun
+		int count = modulesByKey.size();
+		int nonLegacyCount = count - legacyModuleCount;
+		String percentNonLegacy = String.format("%.2f", ((float) nonLegacyCount / count) * 100f);
+		z.log.info("Constructed {} modules, of which {} are legacy @LoadModules. Module porting is {}% done.", modulesByKey.size(), legacyModuleCount, percentNonLegacy);
+
 		z.loadBus.fire(new ZModulesReady());
 	}
 
+	int legacyModuleCount = 0;
 	private ZetaModule constructAndSetup(TentativeModule t) {
 		boolean isLegacy = t.clazz().isAnnotationPresent(LoadModule.class); //as opposed to ZetaLoadModule
-		if(isLegacy)
+		if(isLegacy) {
 			z.log.info("Constructing module {}... (LEGACY MODULE)", t.displayName());
-		else
+			legacyModuleCount++;
+		} else
 			z.log.info("Constructing module {}...", t.displayName());
 
 		//construct, set properties
