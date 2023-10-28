@@ -32,14 +32,14 @@ public class ForgeZRenderOverlay implements ZRenderOverlay {
 
 		@FiredAs(ZRenderOverlay.Chat.Pre.class)
 		public static class Pre extends ForgeZRenderOverlay.Chat implements ZRenderOverlay.Chat.Pre {
-			public Pre(RenderGuiOverlayEvent e) {
+			public Pre(RenderGuiOverlayEvent.Pre e) {
 				super(e);
 			}
 		}
 
 		@FiredAs(ZRenderOverlay.Chat.Post.class)
 		public static class Post extends ForgeZRenderOverlay.Chat implements ZRenderOverlay.Chat.Post {
-			public Post(RenderGuiOverlayEvent e) {
+			public Post(RenderGuiOverlayEvent.Post e) {
 				super(e);
 			}
 		}

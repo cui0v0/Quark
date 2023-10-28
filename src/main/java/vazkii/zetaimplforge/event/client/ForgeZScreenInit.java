@@ -1,0 +1,53 @@
+package vazkii.zetaimplforge.event.client;
+
+import java.util.List;
+
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraftforge.client.event.ScreenEvent;
+import vazkii.zeta.client.event.ZScreenInit;
+import vazkii.zeta.event.bus.FiredAs;
+
+@FiredAs(ZScreenInit.class)
+public class ForgeZScreenInit implements ZScreenInit {
+
+	private final ScreenEvent.Init e;
+
+	public ForgeZScreenInit(ScreenEvent.Init e) {
+		this.e = e;
+	}
+
+	@Override
+	public Screen getScreen() {
+		return e.getScreen();
+	}
+
+	@Override
+	public List<GuiEventListener> getListenersList() {
+		return e.getListenersList();
+	}
+
+	@Override
+	public void addListener(GuiEventListener listener) {
+		e.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(GuiEventListener listener) {
+		e.removeListener(listener);
+	}
+
+	@FiredAs(ZScreenInit.Pre.class)
+	public static class Pre extends ForgeZScreenInit implements ZScreenInit.Pre {
+		public Pre(ScreenEvent.Init.Pre e) {
+			super(e);
+		}
+	}
+
+	@FiredAs(ZScreenInit.Post.class)
+	public static class Post extends ForgeZScreenInit implements ZScreenInit.Post {
+		public Post(ScreenEvent.Init.Post e) {
+			super(e);
+		}
+	}
+}

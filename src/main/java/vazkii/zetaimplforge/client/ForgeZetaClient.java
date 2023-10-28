@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,12 +31,15 @@ import vazkii.zetaimplforge.event.client.ForgeZAddModels;
 import vazkii.zetaimplforge.event.client.ForgeZClick;
 import vazkii.zetaimplforge.event.client.ForgeZClientSetup;
 import vazkii.zetaimplforge.event.client.ForgeZHighlightBlock;
+import vazkii.zetaimplforge.event.client.ForgeZScreenInit;
 import vazkii.zetaimplforge.event.client.ForgeZInputUpdate;
 import vazkii.zetaimplforge.event.client.ForgeZKey;
 import vazkii.zetaimplforge.event.client.ForgeZKeyMapping;
 import vazkii.zetaimplforge.event.client.ForgeZModelBakingCompleted;
 import vazkii.zetaimplforge.event.client.ForgeZPreTextureStitch;
 import vazkii.zetaimplforge.event.client.ForgeZRenderOverlay;
+import vazkii.zetaimplforge.event.client.ForgeZScreenKeyPressed;
+import vazkii.zetaimplforge.event.client.ForgeZScreenMousePressed;
 import vazkii.zetaimplforge.event.client.ForgeZTooltipComponents;
 
 public class ForgeZetaClient extends ZetaClient {
@@ -64,6 +68,12 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::prece);
 		MinecraftForge.EVENT_BUS.addListener(this::movementInputUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
+		MinecraftForge.EVENT_BUS.addListener(this::screenInitPre);
+		MinecraftForge.EVENT_BUS.addListener(this::screenInitPost);
+		MinecraftForge.EVENT_BUS.addListener(this::screenKeyPressedPre);
+		MinecraftForge.EVENT_BUS.addListener(this::screenKeyPressedPost);
+		MinecraftForge.EVENT_BUS.addListener(this::screenMousePressedPre);
+		MinecraftForge.EVENT_BUS.addListener(this::screenMousePressedPost);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlay);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPre);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPost);
@@ -149,6 +159,30 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void renderBlockHighlight(RenderHighlightEvent.Block e) {
 		playBus.fire(new ForgeZHighlightBlock(e));
+	}
+
+	public void screenInitPre(ScreenEvent.Init.Pre e) {
+		playBus.fire(new ForgeZScreenInit.Pre(e));
+	}
+
+	public void screenInitPost(ScreenEvent.Init.Post e) {
+		playBus.fire(new ForgeZScreenInit.Post(e));
+	}
+	
+	public void screenKeyPressedPre(ScreenEvent.KeyPressed.Pre e) {
+		playBus.fire(new ForgeZScreenKeyPressed.Pre(e));
+	}
+
+	public void screenKeyPressedPost(ScreenEvent.KeyPressed.Post e) {
+		playBus.fire(new ForgeZScreenKeyPressed.Post(e));
+	}
+
+	public void screenMousePressedPre(ScreenEvent.MouseButtonPressed.Pre e) {
+		playBus.fire(new ForgeZScreenMousePressed.Pre(e));
+	}
+
+	public void screenMousePressedPost(ScreenEvent.MouseButtonPressed.Post e) {
+		playBus.fire(new ForgeZScreenMousePressed.Post(e));
 	}
 
 	//TODO: This probably should have been a PRE/POST event (just copying quark here)
