@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import vazkii.zeta.client.event.ZEndRenderTick;
+import vazkii.zeta.client.event.ZRenderTick;
 import vazkii.zeta.event.bus.PlayEvent;
 
 public class TopLayerTooltipHandler {
@@ -19,8 +19,8 @@ public class TopLayerTooltipHandler {
 	private int tooltipX, tooltipY;
 
 	@PlayEvent
-	public void endRenderTick(ZEndRenderTick event) {
-		if(tooltip != null) {
+	public void renderTick(ZRenderTick event) {
+		if(tooltip != null && event.isEndPhase()) {
 			Minecraft mc = Minecraft.getInstance();
 			Screen screen = Minecraft.getInstance().screen;
 

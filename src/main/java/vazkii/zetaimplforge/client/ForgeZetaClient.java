@@ -11,6 +11,7 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHighlightEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,9 +22,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.client.event.ZEndClientTick;
-import vazkii.zeta.client.event.ZEndRenderTick;
 import vazkii.zeta.client.event.ZFirstClientTick;
 import vazkii.zeta.client.event.ZRegisterReloadListeners;
+import vazkii.zeta.client.event.ZScreenshot;
 import vazkii.zetaimplforge.event.client.ForgeZAddBlockColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddItemColorHandlers;
 import vazkii.zetaimplforge.event.client.ForgeZAddModelLayers;
@@ -31,6 +32,7 @@ import vazkii.zetaimplforge.event.client.ForgeZAddModels;
 import vazkii.zetaimplforge.event.client.ForgeZClick;
 import vazkii.zetaimplforge.event.client.ForgeZClientSetup;
 import vazkii.zetaimplforge.event.client.ForgeZHighlightBlock;
+import vazkii.zetaimplforge.event.client.ForgeZRenderTick;
 import vazkii.zetaimplforge.event.client.ForgeZScreenInit;
 import vazkii.zetaimplforge.event.client.ForgeZInputUpdate;
 import vazkii.zetaimplforge.event.client.ForgeZKey;
@@ -66,6 +68,7 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::clientTick);
 		MinecraftForge.EVENT_BUS.addListener(this::clicc);
 		MinecraftForge.EVENT_BUS.addListener(this::prece);
+		MinecraftForge.EVENT_BUS.addListener(this::screenshot);
 		MinecraftForge.EVENT_BUS.addListener(this::movementInputUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
 		MinecraftForge.EVENT_BUS.addListener(this::screenInitPre);
@@ -123,10 +126,11 @@ public class ForgeZetaClient extends ZetaClient {
 
 	//TODO: move ticker stuff out of forge event handlers, subscribe to them from zeta
 	public void renderTick(TickEvent.RenderTickEvent e) {
+		playBus.fire(new ForgeZRenderTick(e));
+
 		if(e.phase == TickEvent.Phase.START)
 			ticker.startRenderTick(e.renderTickTime);
 		else {
-			playBus.fire(new ZEndRenderTick());
 			ticker.endRenderTick();
 		}
 	}
@@ -151,6 +155,10 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void prece(InputEvent.Key e) {
 		playBus.fire(new ForgeZKey(e));
+	}
+
+	public void screenshot(ScreenshotEvent e) {
+		playBus.fire(new ZScreenshot());
 	}
 
 	public void movementInputUpdate(MovementInputUpdateEvent e) {
