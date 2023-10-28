@@ -57,7 +57,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 					new MobBucketVariantProperty(Crab.COLORS, () -> showCrabs));
 
 				ItemProperties.register(SlimeInABucketModule.slime_in_a_bucket, new ResourceLocation(Quark.MOD_ID, "shiny"),
-					new ShinyMobBucketProperty(() -> showShinySlime && VariantAnimalTexturesModule.enabled() && VariantAnimalTexturesModule.enableShinySlime));
+					new ShinyMobBucketProperty(() -> showShinySlime && VariantAnimalTexturesModule.staticEnabled && VariantAnimalTexturesModule.enableShinySlime));
 
 				ItemProperties.register(Items.TROPICAL_FISH_BUCKET, new ResourceLocation(Quark.MOD_ID, "base"),
 					new TropicalFishBucketVariantProperty(TropicalFish::getBaseVariant, () -> showTropicalFish));
@@ -107,7 +107,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 				CompoundTag data = ItemNBTHelper.getCompound(stack, SlimeInABucketItem.TAG_ENTITY_DATA, true);
 				if(data != null && data.hasUUID("UUID")) {
 					UUID uuid = data.getUUID("UUID");
-					if(VariantAnimalTexturesModule.isShiny(uuid))
+					if(VariantAnimalTexturesModule.Client.isShiny(uuid))
 						return 1;
 				}
 

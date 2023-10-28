@@ -13,7 +13,7 @@ import vazkii.quark.content.client.module.VariantAnimalTexturesModule;
 public class CowRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/Cow;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Cow cow, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = VariantAnimalTexturesModule.getCowTexture(cow);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getCowTexture(cow);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

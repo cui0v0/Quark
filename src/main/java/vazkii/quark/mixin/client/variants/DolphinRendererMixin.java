@@ -13,7 +13,7 @@ import vazkii.quark.content.client.module.VariantAnimalTexturesModule;
 public class DolphinRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/Dolphin;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Dolphin dolphin, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = VariantAnimalTexturesModule.getDolphinTexture(dolphin);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getDolphinTexture(dolphin);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

@@ -13,7 +13,7 @@ import vazkii.quark.content.client.module.VariantAnimalTexturesModule;
 public class BeeRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/Bee;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Bee bee, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = VariantAnimalTexturesModule.getBeeTexture(bee);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getBeeTexture(bee);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

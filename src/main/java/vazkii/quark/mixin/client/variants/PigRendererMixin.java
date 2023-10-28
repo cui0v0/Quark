@@ -13,7 +13,7 @@ import vazkii.quark.content.client.module.VariantAnimalTexturesModule;
 public class PigRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/Pig;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Pig pig, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = VariantAnimalTexturesModule.getPigTexture(pig);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getPigTexture(pig);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

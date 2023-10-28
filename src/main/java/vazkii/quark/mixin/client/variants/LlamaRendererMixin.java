@@ -13,7 +13,7 @@ import vazkii.quark.content.client.module.VariantAnimalTexturesModule;
 public class LlamaRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/horse/Llama;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Llama llama, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = VariantAnimalTexturesModule.getLlamaTexture(llama);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getLlamaTexture(llama);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

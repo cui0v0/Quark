@@ -21,7 +21,7 @@ public class ChickenRendererMixin {
 		ChickenModel<Chicken> model = render.getModel();
 		GrabChickensModule.setRenderChickenFeetStatus(chicken, model);
 		
-		ResourceLocation loc = VariantAnimalTexturesModule.getChickenTexture(chicken);
+		ResourceLocation loc = VariantAnimalTexturesModule.Client.getChickenTexture(chicken);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

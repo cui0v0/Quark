@@ -10,6 +10,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -25,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZLivingDeath;
+import vazkii.zeta.event.ZLivingTick;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZPlayNoteBlock;
@@ -43,6 +45,7 @@ import vazkii.zetaimplforge.config.ForgeBackedConfig;
 import vazkii.zetaimplforge.config.TerribleForgeConfigHackery;
 import vazkii.zetaimplforge.event.ForgeZCommonSetup;
 import vazkii.zetaimplforge.event.ForgeZLivingDeath;
+import vazkii.zetaimplforge.event.ForgeZLivingTick;
 import vazkii.zetaimplforge.event.ForgeZLoadComplete;
 import vazkii.zetaimplforge.event.ForgeZLootTableLoad;
 import vazkii.zetaimplforge.event.ForgeZPlayNoteBlock;
@@ -123,6 +126,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::rightClickBlockLow);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::livingDeathLowest);
+		MinecraftForge.EVENT_BUS.addListener(this::livingTick);
 		MinecraftForge.EVENT_BUS.addListener(this::playNoteBlock);
 		MinecraftForge.EVENT_BUS.addListener(this::lootTableLoad);
 	}
@@ -156,6 +160,10 @@ public class ForgeZeta extends Zeta {
 
 	public void livingDeathLowest(LivingDeathEvent e) {
 		playBus.fire(new ForgeZLivingDeath.Lowest(e), ZLivingDeath.Lowest.class);
+	}
+
+	public void livingTick(LivingEvent.LivingTickEvent e) {
+		playBus.fire(new ForgeZLivingTick(e), ZLivingTick.class);
 	}
 
 	public void playNoteBlock(NoteBlockEvent.Play e) {
