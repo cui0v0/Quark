@@ -17,7 +17,6 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -40,7 +39,7 @@ public class AutoWalkKeybindModule extends ZetaModule {
 	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
 	public void registerKeybinds(ZKeyMapping event) {
-		keybind = ModKeybindHandler.init(event, "autorun", null, ModKeybindHandler.MISC_GROUP);
+		keybind = event.init("quark.keybind.autorun", null, QuarkClient.MISC_GROUP);
 	}
 
 	@SubscribeEvent

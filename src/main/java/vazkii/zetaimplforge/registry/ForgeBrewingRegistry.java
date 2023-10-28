@@ -29,6 +29,7 @@ public class ForgeBrewingRegistry extends BrewingRegistry {
 	private List<DelayedPotion> delayedPotions = new ArrayList<>();
 	private boolean okToRegisterImmediately = false;
 
+	@Override
 	public void addBrewingRecipe(Potion input, Supplier<Ingredient> reagentSupplier, Potion output) {
 		DelayedPotion d = new DelayedPotion(input, reagentSupplier, output);
 

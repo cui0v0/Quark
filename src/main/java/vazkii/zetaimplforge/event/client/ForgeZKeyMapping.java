@@ -8,7 +8,8 @@ import vazkii.zeta.client.event.ZKeyMapping;
 @FiredAs(ZKeyMapping.class)
 public record ForgeZKeyMapping(RegisterKeyMappingsEvent e) implements ZKeyMapping {
 	@Override
-	public void register(KeyMapping key) {
+	public KeyMapping register(KeyMapping key) {
 		e.register(key);
+		return key;
 	}
 }

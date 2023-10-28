@@ -18,7 +18,7 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
 import net.minecraftforge.client.event.ScreenEvent.MouseButtonPressed;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -36,7 +36,8 @@ public class BackButtonKeybindModule extends ZetaModule {
 	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
 	public void registerKeybinds(ZKeyMapping event) {
-		backKey = ModKeybindHandler.initMouse(event, "back", 4, ModKeybindHandler.MISC_GROUP, (modifier, key) -> key.getType() != Type.MOUSE || key.getValue() != 0);
+		//TODO ZETA: dunno if this predicate works lol
+		backKey = event.initMouse("quark.keybind.back", 4, QuarkClient.MISC_GROUP, (key) -> key.getType() != Type.MOUSE || key.getValue() != 0);
 	}
 	
 	@SubscribeEvent

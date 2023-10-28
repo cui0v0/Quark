@@ -41,7 +41,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.quark.api.IRotationLockable;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
@@ -87,7 +87,7 @@ public class LockRotationModule extends ZetaModule {
 	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
 	public void registerKeybinds(ZKeyMapping event) {
-		keybind = ModKeybindHandler.init(event, "lock_rotation", "k", ModKeybindHandler.MISC_GROUP);
+		keybind = event.init("quark.keybind.lock_rotation", "k", QuarkClient.MISC_GROUP);
 	}
 
 	public static BlockState fixBlockRotation(BlockState state, BlockPlaceContext ctx) {

@@ -41,7 +41,7 @@ import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.aurelienribon.tweenengine.Tween;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
@@ -145,9 +145,9 @@ public class EmotesModule extends ZetaModule {
 
 		emoteKeybinds = new HashMap<>();
 		for (String s : DEFAULT_EMOTE_NAMES)
-			emoteKeybinds.put(ModKeybindHandler.init(event, "quark.emote." + s, null, "", ModKeybindHandler.EMOTE_GROUP, sortOrder++, false), s);
+			emoteKeybinds.put(event.init("quark.emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
 		for (String s : PATREON_EMOTES)
-			emoteKeybinds.put(ModKeybindHandler.init(event, "patreon_emote." + s, null, ModKeybindHandler.EMOTE_GROUP, sortOrder++), s);
+			emoteKeybinds.put(event.init("quark.keybind.patreon_emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
 	}
 
 	@LoadEvent

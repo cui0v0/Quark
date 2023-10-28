@@ -28,7 +28,6 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.QuarkClient;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -49,8 +48,8 @@ public class NarratorReadoutModule extends ZetaModule {
 	@OnlyIn(Dist.CLIENT)
 	public void registerKeybinds(ZKeyMapping event) {
 		if(enabled) {
-			keybind = ModKeybindHandler.init(event, "narrator_readout", null, ModKeybindHandler.MISC_GROUP);
-			keybindFull = ModKeybindHandler.init(event, "narrator_full_readout", null, ModKeybindHandler.MISC_GROUP);
+			keybind = event.init("quark.keybind.narrator_readout", null, QuarkClient.MISC_GROUP);
+			keybindFull = event.init("quark.keybind.narrator_full_readout", null, QuarkClient.MISC_GROUP);
 		}
 	}
 

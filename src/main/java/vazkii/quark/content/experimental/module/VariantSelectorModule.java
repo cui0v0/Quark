@@ -46,7 +46,7 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
@@ -104,7 +104,7 @@ public class VariantSelectorModule extends ZetaModule {
 
 	@LoadEvent
 	public void registerKeybinds(ZKeyMapping event) {
-		variantSelectorKey = ModKeybindHandler.init(event, "variant_selector", "r", ModKeybindHandler.MISC_GROUP);
+		variantSelectorKey = event.init("quark.keybind.variant_selector", "r", QuarkClient.MISC_GROUP);
 	}
 
 	@LoadEvent

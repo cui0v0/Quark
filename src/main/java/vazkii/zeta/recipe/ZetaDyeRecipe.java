@@ -25,6 +25,7 @@ public class ZetaDyeRecipe extends CustomRecipe {
 		this.serializer = new SimpleRecipeSerializer<>(id_ -> new ZetaDyeRecipe(id_, dyeablesRegistry));
 	}
 
+	@Override
 	public boolean matches(CraftingContainer p_43769_, Level p_43770_) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		List<ItemStack> list = Lists.newArrayList();

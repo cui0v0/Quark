@@ -24,7 +24,7 @@ import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
@@ -116,7 +116,7 @@ public class CameraModule extends ZetaModule {
 
 	@LoadEvent
 	public void registerKeybinds(ZKeyMapping event) {
-		cameraModeKey = ModKeybindHandler.init(event, "camera_mode", "f12", ModKeybindHandler.MISC_GROUP);
+		cameraModeKey = event.init("quark.keybind.camera_mode", "f12", QuarkClient.MISC_GROUP);
 	}
 
 	@SubscribeEvent

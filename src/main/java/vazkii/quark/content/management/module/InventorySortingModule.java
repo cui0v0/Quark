@@ -8,10 +8,10 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.handler.InventoryButtonHandler;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonProvider;
 import vazkii.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -36,7 +36,7 @@ public class InventorySortingModule extends ZetaModule {
 	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
 	public void registerKeybinds(ZKeyMapping event) {
-		KeyMapping sortPlayer = ModKeybindHandler.init(event, "sort_player", null, ModKeybindHandler.INV_GROUP);
+		KeyMapping sortPlayer = event.init("quark.keybind.sort_player", null, QuarkClient.INV_GROUP);
 
 		InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.PLAYER_INVENTORY, 0,
 				sortPlayer,
@@ -63,7 +63,7 @@ public class InventorySortingModule extends ZetaModule {
 				() -> enablePlayerInventoryInChests);
 		
 		InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_INVENTORY, 0,
-				"sort_container",
+				"quark.keybind.sort_container",
 				(screen) -> {
 					if (enableChests) {
 						if (satisfyingClick)

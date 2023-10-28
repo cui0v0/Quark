@@ -5,8 +5,6 @@ import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.util.ZetaSide;
 import vazkii.zetaimplforge.client.ForgeZetaClient;
 
-//ngl this is mainly a place to hold ZetaClient... which has side effect in constructor
-//this is kludgy, i dont like it
 public class QuarkClient {
 
 	static {
@@ -18,6 +16,10 @@ public class QuarkClient {
 
 	public static final ZetaClient ZETA_CLIENT = new ForgeZetaClient(Quark.ZETA);
 	public static final ClientTicker ticker = ZETA_CLIENT.ticker;
+
+	public static final String MISC_GROUP = "quark.gui.keygroup.misc";
+	public static final String INV_GROUP = "quark.gui.keygroup.inv";
+	public static final String EMOTE_GROUP = "quark.gui.keygroup.emote";
 
 	public static void start() {
 		instance = new QuarkClient();

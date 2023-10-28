@@ -32,6 +32,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.base.Quark;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.InventoryTransferHandler;
 import vazkii.zeta.module.ZetaModule;
@@ -162,7 +163,7 @@ public final class InventoryButtonHandler {
 	}
 
 	public static void addButtonProvider(ZKeyMapping event, ZetaModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
-		KeyMapping keybind = ModKeybindHandler.init(event, keybindName, null, ModKeybindHandler.INV_GROUP);
+		KeyMapping keybind = event.init(keybindName, null, QuarkClient.INV_GROUP);
 		keybind.setKeyConflictContext(KeyConflictContext.GUI);
 		addButtonProvider(module, type, priority, keybind, onKeybind, provider, enableCond);
 	}

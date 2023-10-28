@@ -24,7 +24,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.client.handler.ModKeybindHandler;
+import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -52,7 +52,7 @@ public class HotbarChangerModule extends ZetaModule {
 
 	@LoadEvent
 	public void registerKeybinds(ZKeyMapping event) {
-		changeHotbarKey = ModKeybindHandler.init(event, "change_hotbar", "z", ModKeybindHandler.MISC_GROUP);
+		changeHotbarKey = event.init("quark.keybind.change_hotbar", "z", QuarkClient.MISC_GROUP);
 	}
 
 	@SubscribeEvent

@@ -29,7 +29,7 @@ public class EasyTransferingModule extends ZetaModule {
 		addButton(event, 2, "extract", true);
 
 			InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 3,
-					"shift_lock",
+					"quark.keybind.shift_lock",
 					(screen) -> shiftLocked = !shiftLocked,
 					(parent, x, y) -> new MiniInventoryButton(parent, 4, x, y, "quark.gui.button.shift_lock",
 							(b) -> shiftLocked = !shiftLocked)
@@ -40,7 +40,7 @@ public class EasyTransferingModule extends ZetaModule {
 	@OnlyIn(Dist.CLIENT)
 	private void addButton(ZKeyMapping event, int priority, String name, boolean restock) {
 		InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, priority,
-				"transfer_" + name,
+				"quark.keybind.transfer_" + name,
 				(screen) -> QuarkNetwork.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)),
 				(parent, x, y) -> new MiniInventoryButton(parent, priority, x, y, 
 						(t) -> t.add(I18n.get("quark.gui.button." + name + (Screen.hasShiftDown() ? "_filtered" : ""))),

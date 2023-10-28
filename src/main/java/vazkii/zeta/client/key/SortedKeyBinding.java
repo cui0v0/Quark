@@ -1,16 +1,13 @@
-package vazkii.quark.base.client.util;
+package vazkii.zeta.client.key;
 
 import com.mojang.blaze3d.platform.InputConstants.Type;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author WireSegal
  * Created at 12:19 PM on 10/6/19.
  */
-@OnlyIn(Dist.CLIENT)
 public class SortedKeyBinding extends KeyMapping {
 	private final int priority;
 
