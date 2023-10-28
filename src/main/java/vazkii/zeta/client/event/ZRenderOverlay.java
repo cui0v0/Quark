@@ -8,10 +8,17 @@ public interface ZRenderOverlay extends IZetaPlayEvent {
 	Window getWindow();
 	PoseStack getPoseStack();
 
-	interface Chat extends ZRenderOverlay, IZetaPlayEvent {
-		interface Pre extends Chat, IZetaPlayEvent { }
-		interface Post extends Chat, IZetaPlayEvent { }
+	boolean shouldDrawSurvivalElements();
+	int getLeftHeight(); //weird ForgeGui stuff
+
+	interface ArmorLevel extends ZRenderOverlay {
+		interface Pre extends Chat { }
+		interface Post extends Chat { }
 	}
-	interface Crosshair extends ZRenderOverlay, IZetaPlayEvent { }
-	interface Hotbar extends ZRenderOverlay, IZetaPlayEvent { }
+	interface Chat extends ZRenderOverlay {
+		interface Pre extends Chat { }
+		interface Post extends Chat { }
+	}
+	interface Crosshair extends ZRenderOverlay { }
+	interface Hotbar extends ZRenderOverlay { }
 }

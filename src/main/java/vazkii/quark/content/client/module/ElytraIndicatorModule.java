@@ -9,75 +9,71 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZRenderOverlay;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.event.ZConfigChanged;
-import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "client", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@ZetaLoadModule(category = "client")
 public class ElytraIndicatorModule extends ZetaModule {
 
-	private static int shift = 0;
-	private static boolean staticEnabled;
-	
-	@LoadEvent
-	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = enabled;
+	public int getArmorLimit(int curr) {
+		return curr;
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void hudPre(RenderGuiOverlayEvent.Pre event) {
-		Minecraft mc = Minecraft.getInstance();
-		Player player = mc.player;
-		
-		if(event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type() && mc.gui instanceof ForgeGui fg && fg.shouldDrawSurvivalElements()) {
-	         ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
-	         
-	         if(itemstack.canElytraFly(player)) {
-	 			int armor = player.getArmorValue();
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ElytraIndicatorModule {
+
+		private int shift = 0;
+
+		@PlayEvent
+		public void hudPre(ZRenderOverlay.ArmorLevel.Pre event) {
+			if(!event.shouldDrawSurvivalElements())
+				return;
+
+			Minecraft mc = Minecraft.getInstance();
+			Player player = mc.player;
+			ItemStack itemstack = player.getItemBySlot(EquipmentSlot.CHEST);
+
+			if(itemstack.canElytraFly(player)) {
+				int armor = player.getArmorValue();
 				shift = (armor >= 20 ? 0 : 9);
-				
+
 				PoseStack pose = event.getPoseStack();
 				Window window = event.getWindow();
-				
+
 				pose.translate(shift, 0, 0);
-				
+
 				pose.pushPose();
 				pose.translate(0, 0, 100);
 				RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				
-				int x = window.getGuiScaledWidth() / 2 - 100;
-				int y = window.getGuiScaledHeight() - fg.leftHeight;
-				Screen.blit(pose, x, y, 184, 35, 9, 9, 256, 256);
-				
-				pose.popPose();
-	         }
-		}
-	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void hudPost(RenderGuiOverlayEvent.Post event) {
-		if(shift != 0) {
-			event.getPoseStack().translate(-shift, 0, 0);
-			shift = 0;
+				int x = window.getGuiScaledWidth() / 2 - 100;
+				int y = window.getGuiScaledHeight() - event.getLeftHeight();
+				Screen.blit(pose, x, y, 184, 35, 9, 9, 256, 256);
+
+				pose.popPose();
+			}
 		}
-	}
-	
-	public static int getArmorLimit(int curr) {
-		if(!staticEnabled)
-			return curr;
-		
-		return 20 - ((shift / 9) * 2);
+
+		@PlayEvent
+		public void hudPost(ZRenderOverlay.ArmorLevel.Post event) {
+			if(shift != 0) {
+				event.getPoseStack().translate(-shift, 0, 0);
+				shift = 0;
+			}
+		}
+
+		@Override
+		public int getArmorLimit(int curr) {
+			if(!enabled)
+				return curr;
+
+			return 20 - ((shift / 9) * 2);
+		}
+
 	}
 	
 }

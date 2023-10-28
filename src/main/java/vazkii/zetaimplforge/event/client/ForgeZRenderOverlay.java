@@ -2,7 +2,10 @@ package vazkii.zetaimplforge.event.client;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import vazkii.zeta.client.event.ZRenderOverlay;
 import vazkii.zeta.event.bus.FiredAs;
 
@@ -22,6 +25,37 @@ public class ForgeZRenderOverlay implements ZRenderOverlay {
 	@Override
 	public PoseStack getPoseStack() {
 		return e.getPoseStack();
+	}
+
+	@Override
+	public boolean shouldDrawSurvivalElements() {
+		return Minecraft.getInstance().gui instanceof ForgeGui fgui && fgui.shouldDrawSurvivalElements();
+	}
+
+	@Override
+	public int getLeftHeight() {
+		return Minecraft.getInstance().gui instanceof ForgeGui fgui ? fgui.leftHeight : 39;
+	}
+
+	@FiredAs(ZRenderOverlay.ArmorLevel.class)
+	public static class ArmorLevel extends ForgeZRenderOverlay implements ZRenderOverlay.ArmorLevel {
+		public ArmorLevel(RenderGuiOverlayEvent e) {
+			super(e);
+		}
+
+		@FiredAs(ZRenderOverlay.ArmorLevel.Pre.class)
+		public static class Pre extends ForgeZRenderOverlay.ArmorLevel implements ZRenderOverlay.ArmorLevel.Pre {
+			public Pre(RenderGuiOverlayEvent.Pre e) {
+				super(e);
+			}
+		}
+
+		@FiredAs(ZRenderOverlay.ArmorLevel.Post.class)
+		public static class Post extends ForgeZRenderOverlay.ArmorLevel implements ZRenderOverlay.ArmorLevel.Post {
+			public Post(RenderGuiOverlayEvent.Post e) {
+				super(e);
+			}
+		}
 	}
 
 	@FiredAs(ZRenderOverlay.Chat.class)

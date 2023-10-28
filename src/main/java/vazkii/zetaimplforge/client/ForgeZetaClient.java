@@ -227,12 +227,16 @@ public class ForgeZetaClient extends ZetaClient {
 	}
 
 	public void renderGameOverlayPre(RenderGuiOverlayEvent.Pre e) {
-		if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
+		if(e.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type())
+			playBus.fire(new ForgeZRenderOverlay.ArmorLevel.Pre(e));
+		else if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
 			playBus.fire(new ForgeZRenderOverlay.Chat.Pre(e));
 	}
 
 	public void renderGameOverlayPost(RenderGuiOverlayEvent.Post e) {
-		if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
+		if(e.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type())
+			playBus.fire(new ForgeZRenderOverlay.ArmorLevel.Post(e));
+		else if(e.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type())
 			playBus.fire(new ForgeZRenderOverlay.Chat.Post(e));
 	}
 }
