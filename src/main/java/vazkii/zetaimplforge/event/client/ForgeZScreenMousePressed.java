@@ -23,6 +23,16 @@ public class ForgeZScreenMousePressed implements ZScreenMousePressed {
 		return e.getButton();
 	}
 
+	@Override
+	public double getMouseX() {
+		return e.getMouseX();
+	}
+
+	@Override
+	public double getMouseY() {
+		return e.getMouseY();
+	}
+
 	@FiredAs(ZScreenMousePressed.Pre.class)
 	public static class Pre extends ForgeZScreenMousePressed implements ZScreenMousePressed.Pre {
 		public Pre(ScreenEvent.MouseButtonPressed.Pre e) {

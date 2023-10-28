@@ -4,12 +4,11 @@ import net.minecraft.client.gui.screens.Screen;
 import vazkii.zeta.event.bus.Cancellable;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 
-public interface ZScreenKeyPressed extends IZetaPlayEvent, Cancellable {
+public interface ZScreenCharacterTyped extends IZetaPlayEvent, Cancellable {
 	Screen getScreen();
-	int getKeyCode();
-	int getScanCode();
+	char getCodePoint();
 	int getModifiers();
 
-	interface Pre extends ZScreenKeyPressed { }
-	interface Post extends ZScreenKeyPressed { }
+	interface Pre extends ZScreenCharacterTyped { }
+	interface Post extends ZScreenCharacterTyped { }
 }

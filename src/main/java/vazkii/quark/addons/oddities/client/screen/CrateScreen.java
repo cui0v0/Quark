@@ -150,7 +150,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 		int by = j + 18 + scrollOffs;
 		blit(matrixStack, i + imageWidth, by, u, 0, 12, 15);
 
-		if(!ChestSearchingModule.searchEnabled) {
+		if(!Quark.ZETA.modules.get(ChestSearchingModule.class).searchBarShown()) {
 			String s = menu.getTotal() + "/" + CrateModule.maxItems;
 
 			int color = MiscUtil.Client.getGuiTextColor("crate_count");

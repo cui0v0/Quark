@@ -5,6 +5,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.client.ClientTicker;
 import vazkii.zeta.config.IZetaConfigInternals;
@@ -79,6 +80,7 @@ public abstract class Zeta {
 	}
 
 	public abstract boolean isModLoaded(String modid);
+	public abstract @Nullable String getModDisplayName(String modid);
 
 	public abstract IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection);
 

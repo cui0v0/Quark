@@ -33,6 +33,16 @@ public class ForgeZScreenKeyPressed implements ZScreenKeyPressed {
 		return e.getModifiers();
 	}
 
+	@Override
+	public boolean isCanceled() {
+		return e.isCanceled();
+	}
+
+	@Override
+	public void setCanceled(boolean cancel) {
+		e.setCanceled(true);
+	}
+
 	@FiredAs(ZScreenKeyPressed.Pre.class)
 	public static class Pre extends ForgeZScreenKeyPressed implements ZScreenKeyPressed.Pre {
 		public Pre(ScreenEvent.KeyPressed.Pre e) {

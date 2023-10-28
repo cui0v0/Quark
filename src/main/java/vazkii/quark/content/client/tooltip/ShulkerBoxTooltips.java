@@ -29,6 +29,7 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.handler.SimilarBlockTypeHandler;
 import vazkii.quark.content.client.module.ChestSearchingModule;
@@ -162,7 +163,7 @@ public class ShulkerBoxTooltips {
 								render.renderGuiItemDecorations(mc.font, itemstack, xp, yp);
 							}
 
-							if (!ChestSearchingModule.namesMatch(itemstack)) {
+							if (!Quark.ZETA.modules.get(ChestSearchingModule.class).namesMatch(itemstack)) {
 								RenderSystem.disableDepthTest();
 								GuiComponent.fill(pose, xp, yp, xp + 16, yp + 16, 0xAA000000);
 							}

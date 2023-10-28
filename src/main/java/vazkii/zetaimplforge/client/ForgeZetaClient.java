@@ -1,5 +1,6 @@
 package vazkii.zetaimplforge.client;
 
+import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
@@ -32,7 +33,9 @@ import vazkii.zetaimplforge.event.client.ForgeZAddModels;
 import vazkii.zetaimplforge.event.client.ForgeZClick;
 import vazkii.zetaimplforge.event.client.ForgeZClientSetup;
 import vazkii.zetaimplforge.event.client.ForgeZHighlightBlock;
+import vazkii.zetaimplforge.event.client.ForgeZRenderContainerScreen;
 import vazkii.zetaimplforge.event.client.ForgeZRenderTick;
+import vazkii.zetaimplforge.event.client.ForgeZScreenCharacterTyped;
 import vazkii.zetaimplforge.event.client.ForgeZScreenInit;
 import vazkii.zetaimplforge.event.client.ForgeZInputUpdate;
 import vazkii.zetaimplforge.event.client.ForgeZKey;
@@ -71,12 +74,18 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::screenshot);
 		MinecraftForge.EVENT_BUS.addListener(this::movementInputUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
+
+		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenForeground);
+		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenBackground);
+		MinecraftForge.EVENT_BUS.addListener(this::screenCharacterTypedPre);
+		MinecraftForge.EVENT_BUS.addListener(this::screenCharacterTypedPost);
 		MinecraftForge.EVENT_BUS.addListener(this::screenInitPre);
 		MinecraftForge.EVENT_BUS.addListener(this::screenInitPost);
 		MinecraftForge.EVENT_BUS.addListener(this::screenKeyPressedPre);
 		MinecraftForge.EVENT_BUS.addListener(this::screenKeyPressedPost);
 		MinecraftForge.EVENT_BUS.addListener(this::screenMousePressedPre);
 		MinecraftForge.EVENT_BUS.addListener(this::screenMousePressedPost);
+
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlay);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPre);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPost);
@@ -167,6 +176,22 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void renderBlockHighlight(RenderHighlightEvent.Block e) {
 		playBus.fire(new ForgeZHighlightBlock(e));
+	}
+
+	public void renderContainerScreenForeground(ContainerScreenEvent.Render.Foreground e) {
+		playBus.fire(new ForgeZRenderContainerScreen.Foreground(e));
+	}
+
+	public void renderContainerScreenBackground(ContainerScreenEvent.Render.Background e) {
+		playBus.fire(new ForgeZRenderContainerScreen.Background(e));
+	}
+
+	public void screenCharacterTypedPre(ScreenEvent.CharacterTyped.Pre e) {
+		playBus.fire(new ForgeZScreenCharacterTyped.Pre(e));
+	}
+
+	public void screenCharacterTypedPost(ScreenEvent.CharacterTyped.Post e) {
+		playBus.fire(new ForgeZScreenCharacterTyped.Post(e));
 	}
 
 	public void screenInitPre(ScreenEvent.Init.Pre e) {

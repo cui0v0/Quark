@@ -1,5 +1,7 @@
 package vazkii.zetaimplforge;
 
+import java.util.Optional;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +15,7 @@ import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -20,6 +23,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.config.IZetaConfigInternals;
@@ -54,6 +58,13 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public boolean isModLoaded(String modid) {
 		return ModList.get().isLoaded(modid);
+	}
+
+	@Override
+	public @Nullable String getModDisplayName(String modid) {
+		return ModList.get().getModContainerById(modid)
+			.map(c -> c.getModInfo().getDisplayName())
+			.orElse(null);
 	}
 
 	@Override
