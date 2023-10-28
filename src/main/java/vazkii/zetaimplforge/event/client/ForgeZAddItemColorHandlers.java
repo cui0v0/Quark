@@ -9,10 +9,8 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.mixin.client.accessor.AccessorItemColors;
-import vazkii.zeta.event.bus.FiredAs;
 import vazkii.zeta.client.event.ZAddItemColorHandlers;
 
-@FiredAs(ZAddItemColorHandlers.class)
 public record ForgeZAddItemColorHandlers(RegisterColorHandlersEvent.Item e) implements ZAddItemColorHandlers {
 	@Override
 	public void register(ItemColor c, ItemLike... items) {

@@ -6,9 +6,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.event.ScreenEvent;
 import vazkii.zeta.client.event.ZScreenInit;
-import vazkii.zeta.event.bus.FiredAs;
 
-@FiredAs(ZScreenInit.class)
 public class ForgeZScreenInit implements ZScreenInit {
 
 	private final ScreenEvent.Init e;
@@ -37,14 +35,12 @@ public class ForgeZScreenInit implements ZScreenInit {
 		e.removeListener(listener);
 	}
 
-	@FiredAs(ZScreenInit.Pre.class)
 	public static class Pre extends ForgeZScreenInit implements ZScreenInit.Pre {
 		public Pre(ScreenEvent.Init.Pre e) {
 			super(e);
 		}
 	}
 
-	@FiredAs(ZScreenInit.Post.class)
 	public static class Post extends ForgeZScreenInit implements ZScreenInit.Post {
 		public Post(ScreenEvent.Init.Post e) {
 			super(e);

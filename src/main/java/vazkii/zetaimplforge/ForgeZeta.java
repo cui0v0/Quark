@@ -23,6 +23,12 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZLivingDeath;
+import vazkii.zeta.event.ZLoadComplete;
+import vazkii.zeta.event.ZLootTableLoad;
+import vazkii.zeta.event.ZPlayNoteBlock;
+import vazkii.zeta.event.ZRightClickBlock;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.config.IZetaConfigInternals;
@@ -133,31 +139,31 @@ public class ForgeZeta extends Zeta {
 	}
 
 	public void commonSetup(FMLCommonSetupEvent e) {
-		loadBus.fire(new ForgeZCommonSetup(e));
+		loadBus.fire(new ForgeZCommonSetup(e), ZCommonSetup.class);
 	}
 
 	public void loadComplete(FMLLoadCompleteEvent e) {
-		loadBus.fire(new ForgeZLoadComplete(e));
+		loadBus.fire(new ForgeZLoadComplete(e), ZLoadComplete.class);
 	}
 
 	public void rightClickBlock(PlayerInteractEvent.RightClickBlock e) {
-		playBus.fire(new ForgeZRightClickBlock(e));
+		playBus.fire(new ForgeZRightClickBlock(e), ZRightClickBlock.class);
 	}
 
 	public void rightClickBlockLow(PlayerInteractEvent.RightClickBlock e) {
-		playBus.fire(new ForgeZRightClickBlock.Low(e));
+		playBus.fire(new ForgeZRightClickBlock.Low(e), ZRightClickBlock.Low.class);
 	}
 
 	public void livingDeathLowest(LivingDeathEvent e) {
-		playBus.fire(new ForgeZLivingDeath.Lowest(e));
+		playBus.fire(new ForgeZLivingDeath.Lowest(e), ZLivingDeath.Lowest.class);
 	}
 
 	public void playNoteBlock(NoteBlockEvent.Play e) {
-		playBus.fire(new ForgeZPlayNoteBlock(e));
+		playBus.fire(new ForgeZPlayNoteBlock(e), ZPlayNoteBlock.class);
 	}
 
 	public void lootTableLoad(LootTableLoadEvent e) {
-		playBus.fire(new ForgeZLootTableLoad(e));
+		playBus.fire(new ForgeZLootTableLoad(e), ZLootTableLoad.class);
 	}
 
 	public static ZResult from(Event.Result r) {

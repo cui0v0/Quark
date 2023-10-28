@@ -6,9 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import vazkii.zeta.event.ZPlayNoteBlock;
-import vazkii.zeta.event.bus.FiredAs;
 
-@FiredAs(ZPlayNoteBlock.class)
 public record ForgeZPlayNoteBlock(NoteBlockEvent.Play e) implements ZPlayNoteBlock {
 	@Override
 	public LevelAccessor getLevel() {

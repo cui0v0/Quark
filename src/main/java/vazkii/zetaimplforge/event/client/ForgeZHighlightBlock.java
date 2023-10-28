@@ -4,10 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.event.RenderHighlightEvent;
-import vazkii.zeta.event.bus.FiredAs;
 import vazkii.zeta.client.event.ZHighlightBlock;
 
-@FiredAs(ZHighlightBlock.class)
 public record ForgeZHighlightBlock(RenderHighlightEvent.Block e) implements ZHighlightBlock {
 	@Override
 	public Camera getCamera() {

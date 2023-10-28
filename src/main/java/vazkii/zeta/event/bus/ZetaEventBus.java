@@ -18,18 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A polymorphic event bus.
- * <p>
- * If an event type B is annotated with @FiredAs(A), firing B on the event bus
- * will trigger event listeners for A. This is legal if B extends A.
- * <p>
- * This construction allows you to API/impl split your events.
- * here, A might be a "common" event, and B might be a Forge-only implementation of the event.
+ * A polymorphic event bus. Events can be fired under one of their supertypes, allowing a sort of API/impl split of events.
  */
 /*
  * TODO: No support for generic events (like forge's RegistryEvent<T>). It would be nice.
+ *  - Hellish to reflect these apparently
  * TODO: No support for Consumer events (like forge's addListener).
- * TODO: loader-only event subscribing? (subscribe to ForgeZWhatever directly)
+ *  - I also think these are hard to reflect
  */
 public class ZetaEventBus<E> {
 	private final Class<? extends Annotation> subscriberAnnotation;
@@ -37,7 +32,6 @@ public class ZetaEventBus<E> {
 	private final @Nullable Logger logSpam;
 
 	private final Map<Class<? extends E>, Listeners> listenerMap = new HashMap<>();
-	private final Map<Class<?>, Class<? extends E>> firedAsCache = new HashMap<>(); //Optimization for .fire()
 
 	/**
 	 * @param subscriberAnnotation The annotation that subscribe()/unsubscribe() will pay attention to.
@@ -98,15 +92,28 @@ public class ZetaEventBus<E> {
 	 * Fires an event on the event bus. Each subscriber will be visited in order.
 	 */
 	public <T extends E> T fire(@NotNull T event) {
-		Class<? extends E> firedAs = firedAsCache.computeIfAbsent(event.getClass(), this::getFiredAs);
+		Listeners subs = listenerMap.get(event.getClass());
+		if(subs != null) {
+			if(logSpam != null)
+				logSpam.info("Dispatching {} to {} listener{}", logspamSimpleName(event.getClass()), subs.size(), subs.size() > 1 ? "s" : "");
+
+			subs.doFire(event);
+		}
+
+		return event;
+	}
+
+	/**
+	 * Fires an event on the event bus. Each subscriber will be visited in order.
+	 * Listeners for "firedAs" will be invoked, instead of listeners for the event's own class.
+	 * <p>
+	 * (The generic should be Class&lt;? super T & ? extends E&gt;, but unfortunately, javac.)
+	 */
+	public <T extends E> T fire(@NotNull T event, Class<? super T> firedAs) {
 		Listeners subs = listenerMap.get(firedAs);
 		if(subs != null) {
-			if(logSpam != null) {
-				logSpam.info("Dispatching {} (as {}) to {} listener{}",
-					logspamSimpleName(event.getClass()),
-					logspamSimpleName(firedAs),
-					subs.size(), subs.size() > 1 ? "s" : "");
-			}
+			if(logSpam != null)
+				logSpam.info("Dispatching {} (as {}) to {} listeners", logspamSimpleName(event.getClass()), logspamSimpleName(firedAs), subs.size(), subs.size() > 1 ? "s" : "");
 
 			subs.doFire(event);
 		}
@@ -142,31 +149,6 @@ public class ZetaEventBus<E> {
 			throw typeERR(method);
 
 		return listenerMap.computeIfAbsent((Class<? extends E>) eventType, __ -> new Listeners());
-	}
-
-	/**
-	 * If this event type is @FiredAs something else, gets that type.
-	 */
-	@SuppressWarnings("unchecked")
-	private Class<? extends E> getFiredAs(Class<?> clazz) {
-		//hacky fix for "fire(new IEvent() { ... })"
-		//note - this can't handle lambdas (arrow functions)
-		//apparently it's possible to reify types from lambdas, but Forge needs a
-		//whole library to do it... sun.misc.Unsafe is involved... it's a mess
-		if(clazz.isAnonymousClass())
-			return getFiredAs(clazz.getInterfaces()[0]);
-
-		FiredAs annot = clazz.getAnnotation(FiredAs.class);
-		if(annot == null) {
-			//safety: this method's only called from fire(), which statically checks this invariant
-			return (Class<? extends E>) clazz;
-		}
-
-		Class<?> firedAs = annot.value();
-		if(!eventRoot.isAssignableFrom(firedAs) || !firedAs.isAssignableFrom(clazz))
-			throw weirdFiredAsERR(clazz, firedAs);
-
-		return (Class<? extends E>) firedAs;
 	}
 
 	/**
@@ -247,11 +229,6 @@ public class ZetaEventBus<E> {
 			for(MethodHandle handle : handles.values())
 				handle.invoke(event);
 		}
-	}
-
-	private RuntimeException weirdFiredAsERR(Class<?> clazz, Class<?> firedAs) {
-		return new RuntimeException(firedAs.getName() + " should be a subtype of " + clazz.getName() +
-			", which should be a subtype of this bus's event root, " + eventRoot.getName() + ".");
 	}
 
 	private RuntimeException arityERR(Method method) {
