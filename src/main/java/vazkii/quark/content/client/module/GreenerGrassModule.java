@@ -1,8 +1,6 @@
 package vazkii.quark.content.client.module;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
@@ -10,22 +8,19 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
-import vazkii.quark.base.module.LoadModule;
+import net.minecraft.world.level.block.Blocks;
+import vazkii.quark.base.QuarkClient;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.ConvulsionMatrixConfig;
-import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
-import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZFirstClientTick;
 
-@LoadModule(category = "client")
+@ZetaLoadModule(category = "client")
 public class GreenerGrassModule extends ZetaModule {
 
 	private static final String[] GRASS_PRESET_NAMES = { "Dreary", "Vibrant" };
@@ -73,11 +68,9 @@ public class GreenerGrassModule extends ZetaModule {
 			0.00, 0.00, 1.22
 	};
 	
-	private static ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, GRASS_PRESET_NAMES, GRASS_PRESETS);
-	private static ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, WATER_PRESET_NAMES, WATER_PRESETS);
+	private static final ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, GRASS_PRESET_NAMES, GRASS_PRESETS);
+	private static final ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, WATER_PRESET_NAMES, WATER_PRESETS);
 
-	private static boolean staticEnabled = false;
-	
 	@Config public static boolean affectLeaves = true;
 	@Config public static boolean affectWater = false;
 
@@ -110,56 +103,53 @@ public class GreenerGrassModule extends ZetaModule {
 	@Config public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(GRASS_PARAMS);
 	@Config public static ConvulsionMatrixConfig waterMatrix = new ConvulsionMatrixConfig(WATER_PARAMS);
 
-	@LoadEvent
-	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = enabled;
-	}
-	
-	@LoadEvent
-	public void firstClientTick(ZFirstClientTick event) {
-		registerGreenerColor(blockList, colorMatrix, () -> true);
-		registerGreenerColor(leavesList, colorMatrix,() -> affectLeaves);
+	public int getWaterColor(int orig) {
+		return orig;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private void registerGreenerColor(Iterable<String> ids, ConvulsionMatrixConfig config, Supplier<Boolean> condition) {
-		BlockColors colors = Minecraft.getInstance().getBlockColors();
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends GreenerGrassModule {
 
-		// Can't be AT'd as it's changed by forge
-		Map<Reference<Block>, BlockColor> map = ((AccessorBlockColors) colors).quark$getBlockColors();
+		// done late, to give other mods a chance to register their blocks
+		@LoadEvent
+		public void firstClientTick(ZFirstClientTick event) {
+			registerGreenerColor(blockList, () -> true);
+			registerGreenerColor(leavesList, () -> affectLeaves);
+		}
 
-		for(String id : ids) {
-			Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
-			if (block != null) {
-				Optional<Reference<Block>> optDelegate = ForgeRegistries.BLOCKS.getDelegate(block);
-				
-				if(optDelegate != null && optDelegate.isPresent()) {
-					Reference<Block> delegate = optDelegate.get();
-					
-					BlockColor color = map.get(delegate);
-					if(color != null)
-						colors.register(getConvulsedColor(config, color, condition), block);
-				}
+		private void registerGreenerColor(Iterable<String> ids, Supplier<Boolean> condition) {
+			BlockColors colors = Minecraft.getInstance().getBlockColors();
+
+			for(String id : ids) {
+				Block block = Registry.BLOCK.get(new ResourceLocation(id));
+				if(block == Blocks.AIR)
+					continue;
+
+				BlockColor original = QuarkClient.ZETA_CLIENT.getBlockColor(colors, block);
+
+				if(original != null)
+					colors.register(getConvulsedColor(original, condition), block);
 			}
 		}
-	}
 
-	@OnlyIn(Dist.CLIENT)
-	private BlockColor getConvulsedColor(ConvulsionMatrixConfig config, BlockColor color, Supplier<Boolean> condition) {
-		return (state, world, pos, tintIndex) -> {
-			int originalColor = color.getColor(state, world, pos, tintIndex);
-			if(!enabled || !condition.get())
-				return originalColor;
+		private BlockColor getConvulsedColor(BlockColor color, Supplier<Boolean> condition) {
+			return (state, world, pos, tintIndex) -> {
+				int originalColor = color.getColor(state, world, pos, tintIndex);
+				if(!enabled || !condition.get())
+					return originalColor;
 
-			return colorMatrix.convolve(originalColor);
-		};
-	}
-	
-	public static int getWaterColor(int currColor) {
-		if(!staticEnabled || !affectWater)
-			return currColor;
-		
-		return waterMatrix.convolve(currColor);
+				return colorMatrix.convolve(originalColor);
+			};
+		}
+
+		@Override
+		public int getWaterColor(int currColor) {
+			if(!enabled || !affectWater)
+				return currColor;
+
+			return waterMatrix.convolve(currColor);
+		}
+
 	}
 
 }

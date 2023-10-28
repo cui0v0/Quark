@@ -1,6 +1,13 @@
 package vazkii.zeta.client;
 
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.config.ClientConfigManager;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
@@ -33,6 +40,10 @@ public abstract class ZetaClient {
 	public final ClientConfigManager clientConfigManager;
 	public final TopLayerTooltipHandler topLayerTooltipHandler;
 	public final DyeablesRegistry.Client clientDyeablesRegistry;
+
+	//forge makes these weird
+	public abstract @Nullable BlockColor getBlockColor(BlockColors bcs, Block block);
+	public abstract @Nullable ItemColor getItemColor(ItemColors ics, ItemLike itemlike);
 
 	public abstract void start();
 }

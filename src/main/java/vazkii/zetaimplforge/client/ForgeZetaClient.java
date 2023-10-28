@@ -1,5 +1,12 @@
 package vazkii.zetaimplforge.client;
 
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -20,6 +27,10 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
+import vazkii.quark.mixin.client.accessor.AccessorItemColors;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
 import vazkii.zeta.client.event.ZAddBlockColorHandlers;
@@ -70,6 +81,20 @@ import vazkii.zetaimplforge.event.client.ForgeZTooltipComponents;
 public class ForgeZetaClient extends ZetaClient {
 	public ForgeZetaClient(Zeta z) {
 		super(z);
+	}
+
+	@Override
+	public @Nullable BlockColor getBlockColor(BlockColors bcs, Block block) {
+		return ForgeRegistries.BLOCKS.getDelegate(block)
+			.map(ref -> ((AccessorBlockColors) bcs).quark$getBlockColors().get(ref))
+			.orElse(null);
+	}
+
+	@Override
+	public @Nullable ItemColor getItemColor(ItemColors ics, ItemLike itemlike) {
+		return ForgeRegistries.ITEMS.getDelegate(itemlike.asItem())
+			.map(ref -> ((AccessorItemColors) ics).quark$getItemColors().get(ref))
+			.orElse(null);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import vazkii.quark.base.QuarkClient;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.client.event.ZClientSetup;
@@ -67,7 +68,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 
 		@LoadEvent
 		public void registerItemColors(ZAddItemColorHandlers evt) {
-			ItemColor parent = evt.getItemColor(Items.TROPICAL_FISH_BUCKET);
+			ItemColor parent = QuarkClient.ZETA_CLIENT.getItemColor(evt.getItemColors(), Items.TROPICAL_FISH_BUCKET);
 			evt.register(new TropicalFishBucketColor(parent, () -> showTropicalFish), Items.TROPICAL_FISH_BUCKET);
 		}
 
