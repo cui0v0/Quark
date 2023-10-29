@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.event.ScreenEvent;

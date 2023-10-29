@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import java.util.HashMap;
 import java.util.Map;

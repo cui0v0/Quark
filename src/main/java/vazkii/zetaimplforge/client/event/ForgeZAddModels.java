@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ModelEvent;

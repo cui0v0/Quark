@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;

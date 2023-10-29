@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;

@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraft.client.player.Input;
 import net.minecraft.world.entity.player.Player;

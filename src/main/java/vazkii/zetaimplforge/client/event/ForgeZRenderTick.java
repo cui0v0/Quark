@@ -1,4 +1,4 @@
-package vazkii.zetaimplforge.event.client;
+package vazkii.zetaimplforge.client.event;
 
 import net.minecraftforge.event.TickEvent;
 import vazkii.zeta.client.event.ZRenderTick;
