@@ -43,7 +43,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import vazkii.quark.api.event.SimpleHarvestEvent;
 import vazkii.quark.api.event.SimpleHarvestEvent.ActionType;
@@ -116,14 +115,14 @@ public class SimpleHarvestModule extends ZetaModule {
         staticEnabled = enabled;
 
         if (doHarvestingSearch) {
-            ForgeRegistries.BLOCKS.getValues().stream()
+            Registry.BLOCK.stream()
                     .filter(b -> !isVanilla(b) && b instanceof CropBlock)
                     .map(b -> (CropBlock) b)
                     //only grabbing blocks whose max age is acceptable
                     .filter(b -> b.isMaxAge(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues()))))
                     .forEach(b -> crops.put(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues())), b.defaultBlockState()));
 
-            ForgeRegistries.BLOCKS.getValues().stream()
+            Registry.BLOCK.stream()
                     .filter(b -> !isVanilla(b) && (b instanceof BushBlock || b instanceof GrowingPlantBlock) && b instanceof BonemealableBlock && !(b instanceof CropBlock))
                     .forEach(rightClickCrops::add);
         }
@@ -142,8 +141,8 @@ public class SimpleHarvestModule extends ZetaModule {
         }
 
         for (String blockName : rightClickableBlocks) {
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
-            if (block != null)
+            Block block = Registry.BLOCK.get(new ResourceLocation(blockName));
+            if (block != Blocks.AIR)
                 rightClickCrops.add(block);
         }
 

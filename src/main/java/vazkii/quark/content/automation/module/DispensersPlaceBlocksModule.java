@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -53,7 +52,7 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 		e.enqueueWork(() -> {
 			Map<Item, DispenseItemBehavior> registry = DispenserBlock.DISPENSER_REGISTRY;
 
-			for(Block b : ForgeRegistries.BLOCKS) {
+			for(Block b : Registry.BLOCK) {
 				ResourceLocation res = Registry.BLOCK.getKey(b);
 				if(!blacklist.contains(Objects.toString(res))) {
 					Item item = b.asItem();

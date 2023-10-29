@@ -30,7 +30,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
@@ -95,8 +94,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 				return;
 
 			Set<Potion> hidePotions = Sets.newHashSet();
-			for (Potion potion : ForgeRegistries.POTIONS.getValues()) {
-				ResourceLocation loc = ForgeRegistries.POTIONS.getKey(potion);
+			for (Potion potion : Registry.POTION) {
+				ResourceLocation loc = Registry.POTION.getKey(potion);
 				if (loc != null && loc.getNamespace().equals("quark")) {
 					if (!Quark.ZETA.brewingRegistry.isEnabled(potion)) {
 						hidePotions.add(potion);
@@ -105,8 +104,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 			}
 
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			for (Item item : ForgeRegistries.ITEMS.getValues()) {
-				ResourceLocation loc = ForgeRegistries.ITEMS.getKey(item);
+			for (Item item : Registry.ITEM) {
+				ResourceLocation loc = Registry.ITEM.getKey(item);
 				if (loc != null && loc.getNamespace().equals("quark")) {
 					if ((item instanceof IQuarkItem quarkItem && !quarkItem.isEnabled()) ||
 							(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IQuarkBlock quarkBlock && !quarkBlock.isEnabled())) {
@@ -174,7 +173,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 					return;
 
 				MutableComponent compound = Component.literal("");
-				if(!ForgeRegistries.ITEMS.getKey(item).getNamespace().equals(Quark.MOD_ID))
+				if(!Registry.ITEM.getKey(item).getNamespace().equals(Quark.MOD_ID))
 					compound = compound.append(externalPreamble);
 				compound = compound.append(component);
 

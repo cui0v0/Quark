@@ -1,6 +1,7 @@
 package vazkii.quark.content.mobs.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -42,7 +43,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
@@ -106,8 +106,8 @@ public class Toretoise extends Animal {
 
 	private void computeGoodFood() {
 		goodFood = Ingredient.of(ToretoiseModule.foods.stream()
-				.map(loc -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(loc)))
-				.filter(Objects::nonNull)
+				.map(loc -> Registry.ITEM.get(new ResourceLocation(loc)))
+				.filter(i -> i != Items.AIR)
 				.map(ItemStack::new));
 	}
 

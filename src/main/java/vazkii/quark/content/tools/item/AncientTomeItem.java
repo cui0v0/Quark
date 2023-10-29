@@ -2,6 +2,7 @@ package vazkii.quark.content.tools.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -9,7 +10,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
@@ -50,7 +50,7 @@ public class AncientTomeItem extends QuarkItem {
 	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
 		if (isEnabled() || group == CreativeModeTab.TAB_SEARCH) {
 			if (group == CreativeModeTab.TAB_SEARCH || group.getEnchantmentCategories().length != 0) {
-				ForgeRegistries.ENCHANTMENTS.forEach(ench -> {
+				Registry.ENCHANTMENT.forEach(ench -> {
 					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
 						if (!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
 							if (group == CreativeModeTab.TAB_SEARCH || group.hasEnchantmentCategory(ench.category)) {

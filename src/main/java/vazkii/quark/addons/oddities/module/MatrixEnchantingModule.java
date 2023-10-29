@@ -25,7 +25,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.ZRegister;
@@ -232,7 +231,7 @@ public class MatrixEnchantingModule extends ZetaModule {
 			if (damp)
 				enchStr = enchStr.substring(1);
 
-			Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchStr));
+			Enchantment ench = Registry.ENCHANTMENT.get(new ResourceLocation(enchStr));
 			if (ench != null) {
 				if (damp)
 					dampen.add(ench);

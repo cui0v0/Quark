@@ -1,5 +1,6 @@
 package vazkii.quark.base.proxy;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +12,6 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
 import vazkii.quark.base.handler.*;
@@ -24,6 +24,7 @@ import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.module.LegacyQuarkModuleFinder;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaCategory;
 import vazkii.zetaimplforge.module.ModFileScanDataModuleFinder;
@@ -39,8 +40,6 @@ public class CommonProxy {
 	private boolean configGuiSaving = false;
 
 	public void start() {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":exclusion", ExclusionRecipe.SERIALIZER);
-
 		Quark.ZETA.loadBus
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(CreativeTabHandler.class)
@@ -93,6 +92,12 @@ public class CommonProxy {
 	public void setup(ZCommonSetup event) {
 		//TODO: zeta already loads its config once in loadModules, so this is only for calling the legacy handlers
 		handleQuarkConfigChange();
+	}
+
+	//TODO find a better place for this little one-off thing, lol
+	@LoadEvent
+	public void recipe(ZRegister event) {
+		event.getRegistry().register(ExclusionRecipe.SERIALIZER, "exclusion", Registry.RECIPE_SERIALIZER_REGISTRY);
 	}
 
 	//forge event

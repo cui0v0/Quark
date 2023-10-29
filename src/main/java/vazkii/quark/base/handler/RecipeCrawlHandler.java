@@ -11,7 +11,6 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.event.RecipeCrawlEvent;
 import vazkii.quark.api.event.RecipeCrawlEvent.Visit;
 import vazkii.quark.base.Quark;

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.inventory.slot.CachedItemHandlerSlot;
 import vazkii.quark.api.ICustomSorting;
@@ -342,8 +341,8 @@ public final class SortingHandler {
 				else if (o instanceof ItemStack stack)
 					itemList.add(stack.getItem());
 				else if (o instanceof String s) {
-					Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));
-					if (item != null)
+					Item item = Registry.ITEM.get(new ResourceLocation(s));
+					if (item != Items.AIR)
 						itemList.add(item);
 				}
 			}

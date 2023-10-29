@@ -29,7 +29,6 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
@@ -96,7 +95,7 @@ public class VariantChestsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":mixed_exclusion", MixedExclusionRecipe.SERIALIZER);
+		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registry.RECIPE_SERIALIZER_REGISTRY);
 
 		VANILLA_WOODS.forEach(s -> addChest(s.name(), Blocks.CHEST));
 		MOD_WOODS.forEach(s -> addModChest(s, Blocks.CHEST));
@@ -150,8 +149,8 @@ public class VariantChestsModule extends ZetaModule {
 				String left = toks[0];
 				String right = toks[1];
 
-				Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(right));
-				if (block != null && block != Blocks.AIR) {
+				Block block = Registry.BLOCK.get(new ResourceLocation(right));
+				if (block != Blocks.AIR) {
 					manualChestMappings.put(new ResourceLocation(left), block);
 					if (chests.contains(block)) {
 						var trapped = trappedChests.get(chests.indexOf(block));

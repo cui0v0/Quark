@@ -1,5 +1,6 @@
 package vazkii.quark.content.tweaks.module;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -25,7 +26,7 @@ public class DragonScalesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":elytra_duplication", ElytraDuplicationRecipe.SERIALIZER);
+		event.getRegistry().register(ElytraDuplicationRecipe.SERIALIZER, "elytra_duplication", Registry.RECIPE_SERIALIZER_REGISTRY);
 
 		dragon_scale = new QuarkItem("dragon_scale", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 	}

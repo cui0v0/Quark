@@ -3,6 +3,7 @@ package vazkii.quark.content.mobs.entity;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.content.mobs.module.WraithModule;
 
 public class Wraith extends Zombie {
@@ -99,7 +99,7 @@ public class Wraith extends Zombie {
 
 	public SoundEvent getSound(EntityDataAccessor<String> param) {
 		ResourceLocation loc = new ResourceLocation(entityData.get(param));
-		return ForgeRegistries.SOUND_EVENTS.getValue(loc);
+		return Registry.SOUND_EVENT.get(loc);
 	}
 
 	@Override

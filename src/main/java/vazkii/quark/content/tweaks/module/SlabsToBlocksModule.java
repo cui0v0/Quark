@@ -1,14 +1,13 @@
 package vazkii.quark.content.tweaks.module;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.api.event.RecipeCrawlEvent;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tweaks.recipe.SlabToBlockRecipe;
@@ -25,7 +24,7 @@ public class SlabsToBlocksModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		ForgeRegistries.RECIPE_SERIALIZERS.register(Quark.MOD_ID + ":slab_to_block", SlabToBlockRecipe.SERIALIZER);
+		event.getRegistry().register(SlabToBlockRecipe.SERIALIZER, "slab_to_block", Registry.RECIPE_SERIALIZER_REGISTRY);
 	}
 
 	@SubscribeEvent

@@ -55,7 +55,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.Quark;
 import vazkii.zeta.client.config.screen.ZetaScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
@@ -155,7 +154,7 @@ public class MiscUtil {
 	public static void initializeEnchantmentList(Iterable<String> enchantNames, List<Enchantment> enchants) {
 		enchants.clear();
 		for(String s : enchantNames) {
-			Enchantment enchant = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(s));
+			Enchantment enchant = Registry.ENCHANTMENT.get(new ResourceLocation(s));
 			if (enchant != null && !EnchantmentsBegoneModule.shouldBegone(enchant))
 				enchants.add(enchant);
 		}

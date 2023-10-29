@@ -1,11 +1,12 @@
 package vazkii.quark.content.world.module;
 
 import com.google.common.collect.Lists;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -41,8 +42,8 @@ public class FairyRingsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		ores = new ArrayList<>();
 		for(String s : oresRaw) {
-			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
-			if (b != null) {
+			Block b = Registry.BLOCK.get(new ResourceLocation(s));
+			if (b != Blocks.AIR) {
 				ores.add(b.defaultBlockState());
 			}
 			else {
