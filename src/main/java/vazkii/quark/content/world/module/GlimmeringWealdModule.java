@@ -105,8 +105,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		Biome obj = makeBiome();
-		Quark.ZETA.registry.register(obj, Registry.BIOME_REGISTRY);
+		Quark.ZETA.registry.register(makeBiome(), BIOME_NAME, Registry.BIOME_REGISTRY);
 		float wmin = (float) minDepthRange;
 		float wmax = (float) maxDepthRange;
 		if(wmin >= wmax){
@@ -171,7 +170,6 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 		Music music = Musics.createGameMusic(QuarkSounds.MUSIC_GLIMMERING_WEALD);
 		Biome biome = OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, mobs, settings, music);
-		Quark.ZETA.registry.setInternalName(biome, BIOME_NAME);
 
 		return biome;
 	}

@@ -3,6 +3,7 @@ package vazkii.quark.content.world.module;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -72,7 +73,7 @@ public class AncientWoodModule extends ZetaModule {
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 
-		VariantHandler.addFlowerPot(ancient_sapling, Quark.ZETA.registry.getInternalName(ancient_sapling).getPath(), Functions.identity());
+		VariantHandler.addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, Registry.BLOCK).getPath(), Functions.identity());
 
 		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 

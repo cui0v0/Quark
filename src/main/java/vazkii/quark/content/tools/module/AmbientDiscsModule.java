@@ -49,7 +49,7 @@ public class AmbientDiscsModule extends ZetaModule {
 	}
 
 	private void disc(SoundEvent sound) {
-		String name = Quark.ZETA.registry.getRegistryName(sound, Registry.SOUND_EVENT).getPath().replaceAll(".+\\.", "");
+		String name = sound.getLocation().getPath().replaceAll(".+\\.", "");
 		discs.add(new QuarkMusicDiscItem(15, () -> sound, name, this, Integer.MAX_VALUE));
 	}
 

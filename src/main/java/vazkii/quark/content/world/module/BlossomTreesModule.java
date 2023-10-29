@@ -1,6 +1,7 @@
 package vazkii.quark.content.world.module;
 
 import com.google.common.base.Functions;
+import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -83,7 +84,7 @@ public class BlossomTreesModule extends ZetaModule {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
 		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
-		VariantHandler.addFlowerPot(sapling, Quark.ZETA.registry.getInternalName(sapling).getPath(), Functions.identity());
+		VariantHandler.addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, Registry.BLOCK).getPath(), Functions.identity());
 
 		trees.put(tree, config);
 	}

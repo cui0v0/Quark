@@ -99,14 +99,12 @@ public class QuarkSounds {
 	@LoadEvent
 	public static void start(ZRegister e) {
 		for (SoundEvent event : REGISTRY_DEFERENCE)
-			Quark.ZETA.registry.register(event, Registry.SOUND_EVENT_REGISTRY);
+			Quark.ZETA.registry.register(event, event.getLocation(), Registry.SOUND_EVENT_REGISTRY);
 		REGISTRY_DEFERENCE.clear();
 	}
 
 	public static SoundEvent register(String name) {
-		ResourceLocation loc = GameData.checkPrefix(name, false);
-		SoundEvent event = new SoundEvent(loc);
-		Quark.ZETA.registry.setInternalName(event, loc);
+		SoundEvent event = new SoundEvent(new ResourceLocation(Quark.MOD_ID, name));
 		REGISTRY_DEFERENCE.add(event);
 		return event;
 	}

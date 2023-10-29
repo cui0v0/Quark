@@ -33,7 +33,7 @@ public class ForgeZetaRegistry extends ZetaRegistry {
 
 			for(Supplier<Object> supplier : ourEntries) {
 				Object entry = supplier.get();
-				ResourceLocation name = getInternalName(entry);
+				ResourceLocation name = internalNames.get(entry);
 				z.log.debug("Registering to " + registryRes + " - " + name);
 				registry.register(name, (T) entry);
 			}
