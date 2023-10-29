@@ -105,9 +105,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			NonNullList<ItemStack> stacksToHide = NonNullList.create();
 			for (Item item : Registry.ITEM) {
 				ResourceLocation loc = Registry.ITEM.getKey(item);
-				Quark.LOG.info("examingin item {} for DELETE", loc);
 				if (loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
-					Quark.LOG.info("DELETE THAT SHIT!!!!!!!! {}", loc);
 					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
 				}
 
