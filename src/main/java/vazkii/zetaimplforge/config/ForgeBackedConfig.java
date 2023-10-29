@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import vazkii.zeta.config.Definition;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.config.ValueDefinition;
 
 public class ForgeBackedConfig implements IZetaConfigInternals {
 	private final Map<ValueDefinition<?>, ForgeConfigSpec.ConfigValue<?>> definitionsToValues = new HashMap<>();
+	private long debounceTime = System.currentTimeMillis();
 
 	public ForgeBackedConfig(SectionDefinition rootSection, ForgeConfigSpec.Builder forgeBuilder) {
 		walkSection(rootSection, forgeBuilder, true);
@@ -56,12 +56,20 @@ public class ForgeBackedConfig implements IZetaConfigInternals {
 	@SuppressWarnings("unchecked")
 	public <T> void set(ValueDefinition<T> definition, T value) {
 		ForgeConfigSpec.ConfigValue<T> forge = (ForgeConfigSpec.ConfigValue<T>) definitionsToValues.get(definition);
+		debounceTime = System.currentTimeMillis();
 		forge.set(value);
 	}
 
 	@Override
 	public void flush() {
-		//they all point to the same FileConfig anyway
+		debounceTime = 0; //force ConfigChangedEvent to not debounce this, it's important
+
+		//just pick one; they all point to the same FileConfig anyway
 		definitionsToValues.values().iterator().next().save();
+	}
+
+	@Override
+	public long debounceTime() {
+		return debounceTime;
 	}
 }

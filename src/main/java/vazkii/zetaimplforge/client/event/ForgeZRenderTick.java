@@ -5,6 +5,11 @@ import vazkii.zeta.client.event.ZRenderTick;
 
 public record ForgeZRenderTick(TickEvent.RenderTickEvent e) implements ZRenderTick {
 	@Override
+	public float getRenderTickTime() {
+		return e.renderTickTime;
+	}
+
+	@Override
 	public boolean isEndPhase() {
 		return e.phase == TickEvent.Phase.END;
 	}

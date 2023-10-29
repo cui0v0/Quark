@@ -44,6 +44,7 @@ import vazkii.aurelienribon.tweenengine.Tween;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -58,7 +59,6 @@ import vazkii.quark.content.tweaks.client.screen.widgets.TranslucentButton;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZClientModulesReady;
 import vazkii.zeta.client.event.ZClientSetup;
-import vazkii.zeta.client.event.ZConfigChangedClient;
 import vazkii.zeta.client.event.ZKeyMapping;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
@@ -152,7 +152,7 @@ public class EmotesModule extends ZetaModule {
 
 	@LoadEvent
 	@OnlyIn(Dist.CLIENT)
-	public void configChangedClient(ZConfigChangedClient e) {
+	public void configChangedClient(ZConfigChanged e) {
 		EmoteHandler.clearEmotes();
 
 		for(String s : enabledEmotes) {

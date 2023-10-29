@@ -183,31 +183,23 @@ public class ForgeZetaClient extends ZetaClient {
 	}
 
 	//TODO: move ticker stuff out of forge event handlers, subscribe to them from zeta
-	// Also these events are a mess lol
+	// Also these events are a mess lol; sometimes there's 2 start/end events, sometimes there's
+	// one event with multiple Phases... bad
 	public void renderTick(TickEvent.RenderTickEvent e) {
 		playBus.fire(new ForgeZRenderTick(e), ZRenderTick.class);
-
-		if(e.phase == TickEvent.Phase.START)
-			ticker.startRenderTick(e.renderTickTime);
-		else {
-			ticker.endRenderTick();
-		}
 	}
 
 	boolean clientTicked = false;
 	public void clientTick(TickEvent.ClientTickEvent event) {
-		if(event.phase == TickEvent.Phase.START) {
-			playBus.fire(new ZStartClientTick());
-		} else {
-			ticker.endClientTick();
-
-			if(!clientTicked) {
-				loadBus.fire(new ZFirstClientTick());
-				clientTicked = true;
-			}
-
-			playBus.fire(new ZEndClientTick());
+		if(!clientTicked) {
+			loadBus.fire(new ZFirstClientTick());
+			clientTicked = true;
 		}
+
+		if(event.phase == TickEvent.Phase.START)
+			playBus.fire(new ZStartClientTick());
+		else
+			playBus.fire(new ZEndClientTick());
 	}
 
 	public void clicc(InputEvent.MouseButton e) {

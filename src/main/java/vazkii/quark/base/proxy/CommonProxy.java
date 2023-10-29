@@ -35,9 +35,7 @@ import java.util.List;
 
 public class CommonProxy {
 
-	private int lastConfigChange = -11;
 	public static boolean jingleTheBells = false;
-	private boolean configGuiSaving = false;
 
 	public void start() {
 		Quark.ZETA.loadBus
@@ -50,6 +48,8 @@ public class CommonProxy {
 			.subscribe(WorldGenHandler.class)
 			.subscribe(FuelHandler.class)
 			.subscribe(UndergroundBiomeHandler.class)
+			.subscribe(EntitySpawnHandler.class)
+			.subscribe(SyncedFlagHandler.class)
 			.subscribe(this);
 
 		//Formerly @EventBusSubscribers - gathered here to make them more visible
@@ -90,7 +90,6 @@ public class CommonProxy {
 
 	@LoadEvent
 	public void setup(ZCommonSetup event) {
-		//TODO: zeta already loads its config once in loadModules, so this is only for calling the legacy handlers
 		handleQuarkConfigChange();
 	}
 
@@ -102,30 +101,23 @@ public class CommonProxy {
 
 	//forge event
 	public void configChanged(ModConfigEvent event) {
-		if(event.getConfig().getModId().equals(Quark.MOD_ID)
-			&& Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame - lastConfigChange > 10
-			&& !configGuiSaving) {
-			lastConfigChange = Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame;
-			handleQuarkConfigChange();
-		}
-	}
+		if(!event.getConfig().getModId().equals(Quark.MOD_ID) || Quark.ZETA.configInternals == null)
+			return;
 
-	public void setConfigGuiSaving(boolean saving) {
-		configGuiSaving = saving;
-		lastConfigChange = Quark.ZETA.ticker_SHOULD_NOT_BE_HERE.ticksInGame;
+		// https://github.com/VazkiiMods/Quark/commit/b0e00864f74539d8650cb349e88d0302a0fda8e4
+		// "The Forge config api writes to the config file on every single change
+		//  to the config, which would cause the file watcher to trigger
+		//  a config reload while the config gui is committing changes."
+		if(System.currentTimeMillis() - Quark.ZETA.configInternals.debounceTime() > 20)
+			handleQuarkConfigChange();
 	}
 
 	//TODO: probably find a better spot for this? It's not *only* fired when the
 	// config file is externally changed, but also when it's changed through config GUI,
 	// which means we roundtrip through the on-disk representation for no good reason
 	public void handleQuarkConfigChange() {
-		//ModuleLoader.INSTANCE.configChanged();
 		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
-
-		//TODO: these should be made quark-independent and subscribe to the ZConfigChanged event
-		EntitySpawnHandler.refresh();
-		SyncedFlagHandler.sendFlagInfoToPlayers();
 	}
 
 	//forge event

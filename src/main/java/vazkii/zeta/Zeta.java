@@ -46,8 +46,6 @@ public abstract class Zeta {
 		this.dyeables = createDyeablesRegistry();
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
-
-		this.ticker_SHOULD_NOT_BE_HERE = new ClientTicker();
 	}
 
 	public final Logger log;
@@ -65,9 +63,6 @@ public abstract class Zeta {
 
 	public ConfigManager configManager; //This could do with being split up into various pieces?
 	public IZetaConfigInternals configInternals;
-
-	//TODO: move to ZetaClient. Some bits of the server *do* actually need this for some raisin (config code)
-	@Deprecated public final ClientTicker ticker_SHOULD_NOT_BE_HERE;
 
 	public void loadModules(Iterable<ZetaCategory> categories, ModuleFinder finder, Object rootPojo) {
 		modules.initCategories(categories);

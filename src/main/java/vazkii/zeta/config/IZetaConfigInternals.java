@@ -5,4 +5,9 @@ public interface IZetaConfigInternals {
 	<T> void set(ValueDefinition<T> definition, T value);
 
 	void flush();
+
+	//for debouncing Forge ConfigChangedEvent cause its glitchy af
+	default long debounceTime() {
+		return 0;
+	}
 }

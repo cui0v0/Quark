@@ -21,6 +21,8 @@ import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkSpawnEggItem;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.type.CostSensitiveEntitySpawnConfig;
 import vazkii.quark.base.module.config.type.EntitySpawnConfig;
@@ -66,7 +68,8 @@ public class EntitySpawnHandler {
 		}
 	}
 
-	public static void refresh() {
+	@PlayEvent
+	public static void refresh(ZConfigChanged event) {
 		for(TrackedSpawnConfig c : trackedSpawnConfigs)
 			c.refresh();
 	}

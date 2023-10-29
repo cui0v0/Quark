@@ -33,7 +33,6 @@ import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
 import vazkii.zeta.client.event.ZClientModulesReady;
-import vazkii.zeta.client.event.ZConfigChangedClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -83,11 +82,8 @@ public class ClientProxy extends CommonProxy {
 	public void handleQuarkConfigChange() {
 		super.handleQuarkConfigChange();
 
-		Quark.ZETA.loadBus.fire(new ZConfigChangedClient());
-
 		if (Minecraft.getInstance().getConnection() != null)
 			QuarkNetwork.sendToServer(C2SUpdateFlag.createPacket());
-		//IngameConfigHandler.INSTANCE.refresh();
 
 		Minecraft mc = Minecraft.getInstance();
 		mc.submit(() -> {

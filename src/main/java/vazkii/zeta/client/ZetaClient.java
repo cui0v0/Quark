@@ -21,8 +21,7 @@ public abstract class ZetaClient {
 		this.loadBus = zeta.loadBus;
 		this.playBus = zeta.playBus;
 
-		//this.ticker = new ClientTicker();
-		this.ticker = zeta.ticker_SHOULD_NOT_BE_HERE; //TODO, move ClientTicker into actual client code
+		this.ticker = createClientTicker();
 		this.clientConfigManager = createClientConfigManager();
 		this.topLayerTooltipHandler = createTopLayerTooltipHandler();
 		this.clientDyeablesRegistry = createClientDyeablesRegistry();
@@ -42,6 +41,10 @@ public abstract class ZetaClient {
 	public final TopLayerTooltipHandler topLayerTooltipHandler;
 	public final DyeablesRegistry.Client clientDyeablesRegistry;
 	public final ClientRegistryExtension clientRegistryExtension;
+
+	public ClientTicker createClientTicker() {
+		return new ClientTicker(this);
+	}
 
 	public ClientConfigManager createClientConfigManager() {
 		return new ClientConfigManager();
