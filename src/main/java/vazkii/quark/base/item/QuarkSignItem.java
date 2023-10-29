@@ -12,9 +12,10 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
-public class QuarkSignItem extends SignItem implements IQuarkItem {
+public class QuarkSignItem extends SignItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

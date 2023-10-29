@@ -31,6 +31,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.module.IDisableable;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
@@ -38,11 +39,9 @@ import vazkii.quark.addons.oddities.client.screen.CrateScreen;
 import vazkii.quark.addons.oddities.module.MatrixEnchantingModule;
 import vazkii.quark.addons.oddities.util.Influence;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.item.IQuarkItem;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.building.module.VariantFurnacesModule;
@@ -86,7 +85,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 		if (!disabledItems.isEmpty())
 			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 
-		Quark.ZETA.configManager.setJeiReloadListener(z -> {
+		Quark.ZETA.configManager.setJeiReloadListener(configInternals -> {
 			if(ModuleLoader.INSTANCE.isModuleEnabled(DiamondRepairModule.class))
 				Minecraft.getInstance().submitAsync(() -> hideAnvilRepairRecipes(jeiRuntime.getRecipeManager()));
 
@@ -103,25 +102,24 @@ public class QuarkJeiPlugin implements IModPlugin {
 				}
 			}
 
-			NonNullList<ItemStack> stacks = NonNullList.create();
+			NonNullList<ItemStack> stacksToHide = NonNullList.create();
 			for (Item item : Registry.ITEM) {
 				ResourceLocation loc = Registry.ITEM.getKey(item);
-				if (loc != null && loc.getNamespace().equals("quark")) {
-					if ((item instanceof IQuarkItem quarkItem && !quarkItem.isEnabled()) ||
-							(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IQuarkBlock quarkBlock && !quarkBlock.isEnabled())) {
-						item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacks);
-					}
+				Quark.LOG.info("examingin item {} for DELETE", loc);
+				if (loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
+					Quark.LOG.info("DELETE THAT SHIT!!!!!!!! {}", loc);
+					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
 				}
 
 				if (item instanceof PotionItem || item instanceof TippedArrowItem) {
 					NonNullList<ItemStack> potionStacks = NonNullList.create();
 					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, potionStacks);
-					potionStacks.stream().filter(it -> hidePotions.contains(PotionUtils.getPotion(it))).forEach(stacks::add);
+					potionStacks.stream().filter(it -> hidePotions.contains(PotionUtils.getPotion(it))).forEach(stacksToHide::add);
 				}
 			}
 
-			if (!stacks.isEmpty())
-				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacks));
+			if (!stacksToHide.isEmpty())
+				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacksToHide));
 		});
 	}
 

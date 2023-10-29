@@ -35,6 +35,7 @@ import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
+import vazkii.zeta.module.IDisableable;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.util.VanillaWoods;
@@ -229,8 +230,8 @@ public class VariantChestsModule extends ZetaModule {
 				compatType.createChest(it.type, it.mod, it.module, tileType, it.props.get()) :
 				chestType.createChest(it.type, it.module, tileType, it.props.get());
 
-			if (it.condition != null && block instanceof IQuarkBlock quarkBlock)
-				quarkBlock.setCondition(it.condition);
+			if (it.condition != null && block instanceof IDisableable<?> disableable)
+				disableable.setCondition(it.condition);
 
 			if (structureMappings != null) {
 				TagKey<Structure> tag = structureTags.computeIfAbsent(it, (info) -> TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, info.type + "_chest_structures")));

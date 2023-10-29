@@ -5,12 +5,13 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.ItemStack;
 import vazkii.quark.base.block.IQuarkBlock;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
-public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IQuarkItem {
+public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IZetaItem {
 
 	private final ZetaModule module;
 

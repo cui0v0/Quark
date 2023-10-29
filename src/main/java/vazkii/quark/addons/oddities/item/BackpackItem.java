@@ -38,15 +38,16 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModelHandler;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.ProxiedItemStackHandler;
-import vazkii.quark.base.item.IQuarkItem;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaItemColorProvider_OLD;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuProvider, IZetaItemColorProvider_OLD {
+public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuProvider, IZetaItemColorProvider_OLD {
 
 	private static final String WORN_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn.png";
 	private static final String WORN_OVERLAY_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn_overlay.png";
@@ -80,6 +81,16 @@ public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuPr
 	@Override
 	public ZetaModule getModule() {
 		return module;
+	}
+
+	@Override
+	public IZetaItem setCondition(BooleanSupplier condition) {
+		return this;
+	}
+
+	@Override
+	public boolean doesConditionApply() {
+		return true;
 	}
 
 	public static boolean doesBackpackHaveItems(ItemStack stack) {

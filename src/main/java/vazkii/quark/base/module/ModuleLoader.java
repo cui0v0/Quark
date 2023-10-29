@@ -1,11 +1,6 @@
 package vazkii.quark.base.module;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.item.IQuarkItem;
 import vazkii.zeta.module.ZetaModule;
 
 //TODO ZETA: im in the process of stripping this class for parts
@@ -29,21 +24,6 @@ public final class ModuleLoader {
 	public boolean isModuleEnabledOrOverlapping(Class<? extends ZetaModule> moduleClazz) {
 		ZetaModule module = Quark.ZETA.modules.get(moduleClazz);
 		return module != null && (module.enabled || module.disabledByOverlap);
-	}
-
-	//and this
-	public boolean isItemEnabled(Item i) {
-		if(i instanceof IQuarkItem qi) {
-			return qi.isEnabled();
-		}
-		else if(i instanceof BlockItem bi) {
-			Block b = bi.getBlock();
-			if(b instanceof IQuarkBlock qb) {
-				return qb.isEnabled();
-			}
-		}
-
-		return true;
 	}
 
 }

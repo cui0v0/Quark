@@ -13,9 +13,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import vazkii.quark.base.Quark;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
-public abstract class QuarkArrowItem extends ArrowItem implements IQuarkItem {
+public abstract class QuarkArrowItem extends ArrowItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

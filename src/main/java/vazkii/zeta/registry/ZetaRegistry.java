@@ -72,21 +72,33 @@ public abstract class ZetaRegistry {
 		register(obj, newResourceLocation(resloc), registry);
 	}
 
+	public void registerItem(Item item, ResourceLocation id) {
+		register(item, id, Registry.ITEM_REGISTRY);
+	}
+
 	public void registerItem(Item item, String resloc) {
-		register(item, resloc, Registry.ITEM_REGISTRY);
+		register(item, newResourceLocation(resloc), Registry.ITEM_REGISTRY);
 	}
 
-	public void registerBlock(Block block, String resloc) {
-		registerBlock(block, resloc, true);
-	}
-
-	public void registerBlock(Block block, String resloc, boolean hasBlockItem) {
-		register(block, resloc, Registry.BLOCK_REGISTRY);
+	public void registerBlock(Block block, ResourceLocation id, boolean hasBlockItem) {
+		register(block, id, Registry.BLOCK_REGISTRY);
 
 		//TODO: this supplier is mostly a load-bearing way to defer calling groups.get(registryName),
 		// until after CreativeTabHandler.finalizeTabs is called
 		if(hasBlockItem)
 			defers.put(Registry.ITEM_REGISTRY.location(), () -> createItemBlock(block));
+	}
+
+	public void registerBlock(Block block, String resloc, boolean hasBlockItem) {
+		registerBlock(block, newResourceLocation(resloc), hasBlockItem);
+	}
+
+	public void registerBlock(Block block, ResourceLocation id) {
+		registerBlock(block, id, true);
+	}
+
+	public void registerBlock(Block block, String resloc) {
+		registerBlock(block, resloc, true);
 	}
 
 	public void setCreativeTab(Block block, CreativeModeTab group) {

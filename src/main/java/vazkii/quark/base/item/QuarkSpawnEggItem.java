@@ -7,13 +7,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import vazkii.quark.base.Quark;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IQuarkItem {
+public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

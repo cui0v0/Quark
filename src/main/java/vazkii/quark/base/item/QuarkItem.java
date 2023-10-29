@@ -6,12 +6,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 
-public class QuarkItem extends Item implements IQuarkItem {
+public class QuarkItem extends Item implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

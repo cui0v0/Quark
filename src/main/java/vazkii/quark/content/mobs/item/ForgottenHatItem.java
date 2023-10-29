@@ -18,14 +18,15 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.handler.ModelHandler;
-import vazkii.quark.base.item.IQuarkItem;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-public class ForgottenHatItem extends ArmorItem implements IQuarkItem {
+public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 
 	private static final String TEXTURE = Quark.MOD_ID + ":textures/misc/forgotten_hat_worn.png";
 
@@ -47,6 +48,16 @@ public class ForgottenHatItem extends ArmorItem implements IQuarkItem {
 	@Override
 	public ZetaModule getModule() {
 		return module;
+	}
+
+	@Override
+	public IZetaItem setCondition(BooleanSupplier condition) {
+		return this;
+	}
+
+	@Override
+	public boolean doesConditionApply() {
+		return true;
 	}
 
 	@Override

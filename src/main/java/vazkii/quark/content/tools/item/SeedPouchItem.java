@@ -25,6 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
+import vazkii.zeta.module.IDisableable;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
@@ -307,7 +308,7 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 			}
 
 			for(Item i : tagItems) {
-				if(!ModuleLoader.INSTANCE.isItemEnabled(i))
+				if(!IDisableable.isEnabled(i))
 					continue;
 
 				ItemStack stack = new ItemStack(this);

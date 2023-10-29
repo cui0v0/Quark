@@ -171,5 +171,6 @@ public class ConfigManager {
 
 	public void setJeiReloadListener(Consumer<IZetaConfigInternals> consumer) {
 		this.onConfigReloadJEI = consumer;
+		consumer.accept(z.configInternals); //run it now as well
 	}
 }

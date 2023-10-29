@@ -8,13 +8,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluid;
 import vazkii.quark.base.Quark;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class QuarkMobBucketItem extends MobBucketItem implements IQuarkItem {
+public class QuarkMobBucketItem extends MobBucketItem implements IZetaItem {
 
 	private final ZetaModule module;
 

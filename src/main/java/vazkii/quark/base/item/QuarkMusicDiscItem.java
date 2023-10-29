@@ -15,13 +15,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.tools.module.AmbientDiscsModule;
+import vazkii.zeta.item.IZetaItem;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class QuarkMusicDiscItem extends RecordItem implements IQuarkItem {
+public class QuarkMusicDiscItem extends RecordItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private final boolean isAmbient;

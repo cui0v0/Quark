@@ -11,32 +11,18 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeBlock;
 import vazkii.quark.base.Quark;
-import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.module.IDisableable;
 
-import javax.annotation.Nullable;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 /**
  * @author WireSegal
  * Created at 1:14 PM on 9/19/19.
  */
-public interface IQuarkBlock extends IForgeBlock {
-
-	@Nullable
-	ZetaModule getModule();
-
-	IQuarkBlock setCondition(BooleanSupplier condition);
-
-	boolean doesConditionApply();
+public interface IQuarkBlock extends IForgeBlock, IDisableable<IQuarkBlock> {
 
 	default Block getBlock() {
 		return (Block) this;
-	}
-
-	default boolean isEnabled() {
-		ZetaModule module = getModule();
-		return module != null && module.enabled && !module.disabledByOverlap && doesConditionApply();
 	}
 
 	@Override
