@@ -99,7 +99,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = configEnabled;
+		staticEnabled = enabled;
 
 		shulkers = RegistryUtil.massRegistryGet(GeneralConfig.shulkerBoxes, Registry.ITEM);
 	}

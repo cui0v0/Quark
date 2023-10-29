@@ -168,7 +168,6 @@ public class ZetaModuleManager {
 		module.antiOverlap = t.antiOverlap();
 
 		module.enabledByDefault = t.enabledByDefault();
-		module.missingDep = !t.category().modsLoaded(z);
 
 		//event busses
 		module.setEnabled(z, t.enabledByDefault());

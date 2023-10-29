@@ -38,7 +38,7 @@ public class ZetaCategory {
 		return requiredMod != null && !requiredMod.isEmpty();
 	}
 
-	public boolean modsLoaded(Zeta z) {
+	public boolean requiredModsLoaded(Zeta z) {
 		return !isAddon() || z.isModLoaded(requiredMod);
 	}
 

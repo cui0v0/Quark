@@ -14,7 +14,7 @@ import vazkii.zeta.event.bus.PlayEvent;
 
 public class ZetaModule {
 	public Zeta zeta;
-	public ZetaCategory category = null;
+	public ZetaCategory category;
 
 	public String displayName = "";
 	public String lowercaseName = "";
@@ -22,58 +22,48 @@ public class ZetaModule {
 
 	public Set<String> antiOverlap = Set.of();
 
-	public boolean enabledByDefault = true;
-	public boolean missingDep = false;
-
-	//TODO: Can I delete some of these flags? (maybe some sort of "DisabledReason"?)
-	// The config should probably be the source of *truth* for this state, but having flags here *is* convenient
-	private boolean firstLoad = true;
 	public boolean enabled = false;
+	public boolean enabledByDefault = false;
 	public boolean disabledByOverlap = false;
-	public boolean configEnabled = false;
 	public boolean ignoreAntiOverlap = false;
 
+	//TODO: move elsewhere
 	private List<HintObject> annotationHints = null;
 
 	public void postConstruct() {
 		// NO-OP
 	}
 
-	//TODO: tidy
 	public final void setEnabled(Zeta z, boolean willEnable) {
-		configEnabled = willEnable;
-
-		//TODO: i messed up the category enabled stuff, Its Weird now
+		//TODO: is this the right approach for handling category enablement :woozy_face:
 		if(z.configManager != null && !z.configManager.isCategoryEnabled(category))
 			willEnable = false;
 
-		disabledByOverlap = false;
-		if(missingDep)
+		if(category != null && !category.requiredModsLoaded(z))
 			willEnable = false;
-		else if(!ignoreAntiOverlap && antiOverlap != null && antiOverlap.stream().anyMatch(z::isModLoaded)) {
+
+		if(!ignoreAntiOverlap && antiOverlap.stream().anyMatch(z::isModLoaded)) {
 			disabledByOverlap = true;
 			willEnable = false;
-		}
+		} else
+			disabledByOverlap = false;
 
 		setEnabledAndManageSubscriptions(z, willEnable);
-		firstLoad = false;
 	}
 
 	private void setEnabledAndManageSubscriptions(Zeta z, boolean nowEnabled) {
-		if(firstLoad || (this.enabled != nowEnabled)) {
-
-			//TODO: Cheap hacks to keep non-Zeta Quark modules on life support.
-			// When all the Forge events are removed, this can be removed too.
-			boolean actuallySubscribe = LEGACY_doForgeEventBusSubscription(nowEnabled);
-			if(actuallySubscribe) {
-				if(nowEnabled)
-					z.playBus.subscribe(this.getClass()).subscribe(this);
-				else
-					z.playBus.unsubscribe(this.getClass()).unsubscribe(this);
-			}
-		}
-
+		if(this.enabled == nowEnabled)
+			return;
 		this.enabled = nowEnabled;
+
+		//TODO: Cheap hacks to keep non-Zeta Quark modules on life support.
+		// When all the Forge events are removed, this "if" can be unwrapped.
+		if(LEGACY_doForgeEventBusSubscription(nowEnabled)) {
+			if(nowEnabled)
+				z.playBus.subscribe(this.getClass()).subscribe(this);
+			else
+				z.playBus.unsubscribe(this.getClass()).unsubscribe(this);
+		}
 	}
 
 	@PlayEvent
