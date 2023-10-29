@@ -8,25 +8,24 @@ The first module ported to `@ZetaLoadModule` is `DoubleDoorOpeningModule` if you
   * There are two event busses - a "load bus" for lifecycle events, and a "play bus" for gameplay events.
     * This loosely corresponds to the fml mod bus and MinecraftForge.EVENT_BUS, but the more important distinction is that *all* modules receive load events but only *enabled* modules receive play events.
   * Zeta modules are automatically subscribed to both busses. Mark event handlers with `@LoadEvent` and `@PlayEvent`.
+  * Other classes can be subscribed to the event bus with `.subscribe`.
 * **Client module replacements**.
   * On the client, if a class is annotated with `@ZetaLoadModule(clientReplacement = true)`, and the class extends another `ZetaModule`, the replacement module will load *instead* of its superclass.
   * Since Fabric doesn't do side-stripping (the removal of things flagged `@OnlyIn(Dist.CLIENT)`), a client replacement module is the best place to put client-only code.
   * Yeah it's hard to explain. See `DoubleDoorOpeningModule`. On the server `DoubleDoorOpeningModule` loads, and on the client `DoubleDoorOpeningModule$Client` loads.
 * **General notes**.
   * It is recommended to make fewer things `static`. It's easy to obtain module instances with `Quark.ZETA.modules.get`.
-  * Some things (most importantly, anything and everything relating to config) are unchanged for now. In due time.
 
-In the interim period `QuarkModule` extends `ZetaModule`, and some of the remaining features (subscribing to `MinecraftForge.EVENT_BUS`, method-based lifecycle events) are implemented in terms of ZetaModule or in scattered `instanceof QuarkModule` blocks. This is just to keep the rest of the mod on life support and it *is* imperfect - many QuarkModules are broken on the dedicated server (it's not safe to subscribe *at all* to *any* annotation-based event bus - even Zeta's - if you have even one `@OnlyIn` method, so Zeta can't subscribe these modules to the *load* event bus either, so they don't receive lifecycle events or register blocks...)
+In the interim period, modules annotated with `@LoadModule` instead of the new `@ZetaLoadModule` are subscribed to the Forge event bus. This is just to keep the rest of the mod on life support and it *is* imperfect - many QuarkModules are broken on the dedicated server (it's not safe to subscribe *at all* to *any* annotation-based event bus - even Zeta's - if you have even one `@OnlyIn` method, so Zeta can't subscribe these modules to the *load* event bus either, so they don't receive lifecycle events or register blocks...)
 
 So tl;dr for zeta-fying a module:
 
 * swap LoadModule to ZetaLoadModule, remove hasSubscriptions/subscribeOn
-* change the superclass from `QuarkModule` to `ZetaModule`,
 * move everything marked `@OnlyIn(Dist.CLIENT)` (and all `@SubscribeEvent`s if subscribeOn was formerly `Dist.CLIENT` only) into a client module replacement,
 * create cross-platform versions of any missing `@SubscribeEvent`s in Zeta and subscribe to them with `@PlayEvent`,
 * remove all other mentions of Forge and add an appropriate indirection layer in Zeta.
 
-Repeat 160x.
+Repeat ~~164x~~ 136x.
 
 # The initial Zeta pitch
 
@@ -70,22 +69,9 @@ All Zeta Modules are automatically subscribed (statically and non-statically) to
 
 ### Firing events
 
-Call `bus.fire()`. Note that if the `@FireAs` annotation is applied to something fired over the event bus, it will actually look up the listener list corresponding to the type *inside the annotation*, rather than itself:
+Call `bus.fire()`.
 
-```java
-//if you have this setup
-class Supertype implements IZetaLoadEvent {}
-@FireAs(Supertype.class) class Subtype extends Supertype {}
-
-//and you subscribe to the supertype
-@LoadEvent
-public void blah(Supertype e) {}
-
-//you can fire with the subtype, and it'll trigger the event listener
-bus.fire(new Subtype());
-```
-
-This is a bit unusual, but allows for events to have a split API and implementation.
+The one-argument `.fire` looks for event listeners corresponding to the event's class. The two-argument `.fire` takes this class as an argument. This is a bit unusual, but allows for events to have a split API and implementation - you can fire `MyEventImpl` as `MyEvent.class` and listeners for `MyEvent` will be triggered.
 
 If an event implements `Cancellable`, calling `cancel` will stop its propagation to the rest of the event listeners.
 
@@ -173,3 +159,5 @@ Zeta takes a very event-bus-centric approach to things, but:
 
 * there is a big risk of hidden dependencies, where handler A has to run before handler B but nobody notices
 * when you *do* need strong ordering guarantees, it is pretty hard to express them (you need pre/post events, or to cram multiple tasks into a single event handler)
+
+Zeta's event bus doesn't have any "event priority" notion at all, so ive been cheating with `.Pre` and `.Lowest` variants of events.
