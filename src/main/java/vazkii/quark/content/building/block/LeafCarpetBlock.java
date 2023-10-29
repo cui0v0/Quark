@@ -2,9 +2,6 @@ package vazkii.quark.content.building.block;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,8 +18,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
@@ -32,7 +28,7 @@ public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvid
 
 	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 1, 16);
 
-	private final BlockState baseState;
+	public final BlockState baseState;
 	private ItemStack baseStack;
 
 	public LeafCarpetBlock(String name, Block base, ZetaModule module) {
@@ -45,6 +41,10 @@ public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvid
 		baseState = base.defaultBlockState();
 
 		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+	}
+
+	public BlockState getBaseState() {
+		return baseState;
 	}
 
 	@Override
@@ -77,18 +77,13 @@ public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvid
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		if (baseStack == null)
-			baseStack = new ItemStack(baseState.getBlock());
-
-		return (stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(baseStack, tintIndex);
+	public @Nullable String getBlockColorProviderName() {
+		return "leaf_carpet";
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		return (state, worldIn, pos, tintIndex) -> Minecraft.getInstance().getBlockColors().getColor(baseState, worldIn, pos, tintIndex);
+	public @Nullable String getItemColorProviderName() {
+		return "leaf_carpet";
 	}
 
 }

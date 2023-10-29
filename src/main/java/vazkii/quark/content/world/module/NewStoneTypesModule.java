@@ -7,16 +7,28 @@ import java.util.function.BooleanSupplier;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkBlockWrapper;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.module.ModuleLoader;
+import vazkii.quark.content.world.block.MyaliteColorLogic;
+import vazkii.zeta.client.event.ZAddBlockColorHandlers;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.DimensionConfig;
@@ -114,6 +126,46 @@ public class NewStoneTypesModule extends ZetaModule {
 	public final void setup(ZCommonSetup event) {
 		while(!defers.isEmpty())
 			defers.poll().run();
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends NewStoneTypesModule {
+
+		@LoadEvent
+		public void blockColorProviders(ZAddBlockColorHandlers event) {
+			event.registerNamed(block -> MyaliteColorHandler.INSTANCE, "myalite");
+		}
+
+		@LoadEvent
+		public void itemColorProviders(ZAddItemColorHandlers event) {
+			event.registerNamed(item -> MyaliteColorHandler.INSTANCE, "myalite");
+		}
+
+		private static class MyaliteColorHandler implements BlockColor, ItemColor {
+
+			static final MyaliteColorHandler INSTANCE = new MyaliteColorHandler();
+
+			@Override
+			public int getColor(BlockState state, BlockAndTintGetter level, BlockPos pos, int tintIndex) {
+				return MyaliteColorLogic.getColor(pos);
+			}
+
+			@Override
+			public int getColor(ItemStack stack, int tintIndex) {
+				Minecraft mc = Minecraft.getInstance();
+				if(mc.player == null)
+					return MyaliteColorLogic.getColor(BlockPos.ZERO);
+
+				BlockPos pos = mc.player.blockPosition();
+				HitResult res = mc.hitResult;
+				if(res != null && res.getType() == HitResult.Type.BLOCK)
+					pos = ((BlockHitResult) res).getBlockPos();
+
+				return MyaliteColorLogic.getColor(pos);
+			}
+
+		}
+
 	}
 
 }

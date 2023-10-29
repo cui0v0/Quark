@@ -45,6 +45,7 @@ import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;

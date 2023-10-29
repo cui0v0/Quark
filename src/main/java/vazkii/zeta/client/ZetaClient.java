@@ -23,9 +23,10 @@ public abstract class ZetaClient {
 
 		//this.ticker = new ClientTicker();
 		this.ticker = zeta.ticker_SHOULD_NOT_BE_HERE; //TODO, move ClientTicker into actual client code
-		this.clientConfigManager = new ClientConfigManager();
-		this.topLayerTooltipHandler = new TopLayerTooltipHandler();
-		this.clientDyeablesRegistry = zeta.dyeables.new Client(this);
+		this.clientConfigManager = createClientConfigManager();
+		this.topLayerTooltipHandler = createTopLayerTooltipHandler();
+		this.clientDyeablesRegistry = createClientDyeablesRegistry();
+		this.clientRegistryExtension = createClientRegistryExtension();
 
 		playBus.subscribe(topLayerTooltipHandler);
 	}
@@ -40,6 +41,23 @@ public abstract class ZetaClient {
 	public final ClientConfigManager clientConfigManager;
 	public final TopLayerTooltipHandler topLayerTooltipHandler;
 	public final DyeablesRegistry.Client clientDyeablesRegistry;
+	public final ClientRegistryExtension clientRegistryExtension;
+
+	public ClientConfigManager createClientConfigManager() {
+		return new ClientConfigManager();
+	}
+
+	public TopLayerTooltipHandler createTopLayerTooltipHandler() {
+		return new TopLayerTooltipHandler();
+	}
+
+	public DyeablesRegistry.Client createClientDyeablesRegistry() {
+		return zeta.dyeables.new Client(this);
+	}
+
+	public ClientRegistryExtension createClientRegistryExtension() {
+		return new ClientRegistryExtension(this.zeta);
+	}
 
 	//forge makes these weird
 	public abstract @Nullable BlockColor getBlockColor(BlockColors bcs, Block block);

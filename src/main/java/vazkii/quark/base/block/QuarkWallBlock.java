@@ -1,7 +1,5 @@
 package vazkii.quark.base.block;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
@@ -9,8 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
@@ -69,15 +65,13 @@ public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IZetaBlock
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		return parent instanceof IZetaBlockColorProvider provider ? provider.getBlockColor() : null;
+	public @Nullable String getBlockColorProviderName() {
+		return parent instanceof IZetaBlockColorProvider prov ? prov.getBlockColorProviderName() : null;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		return parent instanceof IZetaItemColorProvider provider ? provider.getItemColor() : null;
+	public @Nullable String getItemColorProviderName() {
+		return parent instanceof IZetaItemColorProvider prov ? prov.getItemColorProviderName() : null;
 	}
 
 }

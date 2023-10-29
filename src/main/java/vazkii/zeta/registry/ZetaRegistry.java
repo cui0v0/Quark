@@ -1,6 +1,7 @@
 package vazkii.zeta.registry;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,8 +10,6 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -30,8 +29,8 @@ public abstract class ZetaRegistry {
 	//the keys of this are things like "minecraft:block", "minecraft:item" and so on
 	private final Multimap<ResourceLocation, Supplier<Object>> defers = ArrayListMultimap.create();
 	private final Map<Object, ResourceLocation> internalNames = new IdentityHashMap<>();
-	private final Map<Item, IZetaItemColorProvider> itemColors = new IdentityHashMap<>();
-	private final Map<Block, IZetaBlockColorProvider> blockColors = new IdentityHashMap<>();
+	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
+	private final Map<Block, String> blocksToColorProviderName = new HashMap<>();
 	private final Map<ResourceLocation, CreativeModeTab> groups = new LinkedHashMap<>();
 
 	public ZetaRegistry(Zeta z) {
@@ -53,16 +52,18 @@ public abstract class ZetaRegistry {
 		return internalNames.get(obj);
 	}
 
-	public <T> void register(T obj, String resloc, ResourceKey<Registry<T>> registry) {
-		register(obj, newResourceLocation(resloc), registry);
-	}
-
+	//Root registration method
 	public <T> void register(T obj, ResourceLocation id, ResourceKey<Registry<T>> registry) {
 		if(obj == null)
 			throw new IllegalArgumentException("Can't register null object.");
 
+		handleColors(obj, obj);
 		setInternalName(obj, id);
 		defers.put(registry.location(), () -> obj);
+	}
+
+	public <T> void register(T obj, String resloc, ResourceKey<Registry<T>> registry) {
+		register(obj, newResourceLocation(resloc), registry);
 	}
 
 	//You know how `new ResourceLocation(String)` prepends "minecraft" if there's no prefix?
@@ -79,14 +80,11 @@ public abstract class ZetaRegistry {
 		if(getInternalName(obj) == null)
 			throw new IllegalArgumentException("Can't register object without registry name.");
 
-		defers.put(registry.location(), () -> obj);
+		register(obj, getInternalName(obj), registry);
 	}
 
 	public void registerItem(Item item, String resloc) {
 		register(item, resloc, Registry.ITEM_REGISTRY);
-
-		if(item instanceof IZetaItemColorProvider)
-			itemColors.put(item, (IZetaItemColorProvider) item);
 	}
 
 	public void registerBlock(Block block, String resloc) {
@@ -98,12 +96,8 @@ public abstract class ZetaRegistry {
 
 		//TODO: this supplier is mostly a load-bearing way to defer calling groups.get(registryName),
 		// until after CreativeTabHandler.finalizeTabs is called
-		if(hasBlockItem) {
+		if(hasBlockItem)
 			defers.put(Registry.ITEM_REGISTRY.location(), () -> createItemBlock(block));
-		}
-
-		if(block instanceof IZetaBlockColorProvider)
-			blockColors.put(block, (IZetaBlockColorProvider) block);
 	}
 
 	public void setCreativeTab(Block block, CreativeModeTab group) {
@@ -130,11 +124,23 @@ public abstract class ZetaRegistry {
 			blockitem = ((IZetaBlockItemProvider) block).provideItemBlock(block, props);
 		else blockitem = new BlockItem(block, props);
 
-		if(block instanceof IZetaItemColorProvider)
-			itemColors.put(blockitem, (IZetaItemColorProvider) block);
-
+		handleColors(blockitem, block);
 		setInternalName(blockitem, registryName);
 		return blockitem;
+	}
+
+	private void handleColors(Object thing, Object prov) {
+		if(thing instanceof Block block && prov instanceof IZetaBlockColorProvider provider) {
+			String blockColorProviderName = provider.getBlockColorProviderName();
+			if(blockColorProviderName != null)
+				blocksToColorProviderName.put(block, blockColorProviderName);
+		}
+
+		if(thing instanceof Item item && prov instanceof IZetaItemColorProvider provider) {
+			String itemColorProviderName = provider.getItemColorProviderName();
+			if(itemColorProviderName != null)
+				itemsToColorProviderName.put(item, itemColorProviderName);
+		}
 	}
 
 	/// performing registration ///
@@ -147,15 +153,13 @@ public abstract class ZetaRegistry {
 		defers.removeAll(resourceLocation);
 	}
 
-	//TODO: sided woes
-	public void submitBlockColors(BiConsumer<BlockColor, Block> consumer) {
-		blockColors.forEach((k, v) -> consumer.accept(v.getBlockColor(), k));
-		blockColors.clear();
+	public void submitBlockColors(BiConsumer<Block, String> consumer) {
+		blocksToColorProviderName.forEach(consumer);
+		blocksToColorProviderName.clear();
 	}
 
-	//TODO: sided woes
-	public void submitItemColors(BiConsumer<ItemColor, Item> consumer) {
-		itemColors.forEach((k, v) -> consumer.accept(v.getItemColor(), k));
-		itemColors.clear();
+	public void submitItemColors(BiConsumer<Item, String> consumer) {
+		itemsToColorProviderName.forEach(consumer);
+		itemsToColorProviderName.clear();
 	}
 }

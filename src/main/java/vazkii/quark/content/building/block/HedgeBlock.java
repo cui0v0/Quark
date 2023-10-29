@@ -8,9 +8,6 @@ import com.google.common.collect.ImmutableList;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -30,10 +27,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
@@ -43,6 +39,7 @@ import vazkii.quark.content.building.module.HedgesModule;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 
+//TODO ZETA: extend QuarkFenceBlock
 public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockColorProvider {
 	
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);
@@ -57,7 +54,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 	private final VoxelShape[] hedgeShapes;
 
 	private final ZetaModule module;
-	private final Block leaf;
+	public final BlockState leafState;
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public static final BooleanProperty EXTEND = BooleanProperty.create("extend");
@@ -66,7 +63,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 		super(Block.Properties.copy(fence));
 
 		this.module = module;
-		this.leaf = leaf;
+		this.leafState = leaf.defaultBlockState();
 
 		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, Registry.BLOCK);
 		if (leaf instanceof BlossomLeavesBlock) {
@@ -84,6 +81,10 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 		
 		hedgeStateToIndex = new Object2IntOpenHashMap<>();
 		hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
+	}
+
+	public BlockState getLeaf() {
+		return leafState;
 	}
 
 	@Override
@@ -133,7 +134,6 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 		});
 	}
 
-
 	@Override
 	public boolean connectsTo(BlockState state, boolean isSideSolid, @Nonnull Direction direction) {
 		return state.is(HedgesModule.hedgesTag);
@@ -175,17 +175,13 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		final BlockState leafState = leaf.defaultBlockState();
-		return (state, world, pos, tintIndex) -> Minecraft.getInstance().getBlockColors().getColor(leafState, world, pos, tintIndex);
+	public @Nullable String getBlockColorProviderName() {
+		return "hedge";
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		final ItemStack leafStack = new ItemStack(leaf);
-		return (stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(leafStack, tintIndex);
+	public @Nullable String getItemColorProviderName() {
+		return "hedge";
 	}
 
 	@Override

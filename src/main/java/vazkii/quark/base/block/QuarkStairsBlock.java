@@ -5,8 +5,6 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -16,8 +14,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
 import vazkii.quark.base.handler.RenderLayerHandler;
@@ -82,16 +78,15 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
 		return parent.getBlock().getBeaconColorMultiplier(parent.getBlock().defaultBlockState(), world, pos, beaconPos);
 	}
-	
+
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		return parent instanceof IZetaBlockColorProvider provider ? provider.getBlockColor() : null;
+	public @Nullable String getBlockColorProviderName() {
+		return parent instanceof IZetaBlockColorProvider prov ? prov.getBlockColorProviderName() : null;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		return parent instanceof IZetaItemColorProvider provider ? provider.getItemColor() : null;
+	public @Nullable String getItemColorProviderName() {
+		return parent instanceof IZetaItemColorProvider prov ? prov.getItemColorProviderName() : null;
 	}
+
 }

@@ -1,7 +1,5 @@
 package vazkii.quark.content.world.block;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.LevelReader;
@@ -10,10 +8,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.QuarkGlassBlock;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.IZetaBlockColorProvider;
 
-public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColorProvider {
+public class MyaliteCrystalBlock extends QuarkGlassBlock implements IZetaBlockColorProvider {
 
 	public MyaliteCrystalBlock(ZetaModule module) {
 		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
@@ -36,7 +36,16 @@ public class MyaliteCrystalBlock extends QuarkGlassBlock implements IMyaliteColo
 	@Nullable
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
-		return decompColor(IMyaliteColorProvider.getColor(pos, myaliteS(), myaliteB()));
+		return decompColor(MyaliteColorLogic.getColor(pos));
 	}
-	
+
+	@Override
+	public @Nullable String getBlockColorProviderName() {
+		return "myalite";
+	}
+
+	@Override
+	public @Nullable String getItemColorProviderName() {
+		return "myalite";
+	}
 }

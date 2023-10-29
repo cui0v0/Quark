@@ -12,10 +12,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.QuarkVineBlock;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.IZetaBlockColorProvider;
 
-public class CutVineBlock extends QuarkVineBlock {
+public class CutVineBlock extends QuarkVineBlock implements IZetaBlockColorProvider {
 
 	public CutVineBlock(ZetaModule module) {
 		super(module, "cut_vine", false);
@@ -35,5 +37,15 @@ public class CutVineBlock extends QuarkVineBlock {
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		return new ItemStack(Items.VINE);
+	}
+
+	@Override
+	public @Nullable String getBlockColorProviderName() {
+		return "vine";
+	}
+
+	@Override
+	public @Nullable String getItemColorProviderName() {
+		return "vine";
 	}
 }

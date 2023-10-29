@@ -7,8 +7,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
+import vazkii.zeta.client.AlikeColorHandler;
+import vazkii.zeta.client.event.ZAddBlockColorHandlers;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.util.VanillaWoods;
 import vazkii.quark.base.util.VanillaWoods.Wood;
@@ -20,7 +23,7 @@ import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "building", antiOverlap = { "woodworks", "immersive_weathering" })
+@ZetaLoadModule(category = "building", antiOverlap = { "woodworks", "immersive_weathering" })
 public class LeafCarpetModule extends ZetaModule {
 
 	public static List<LeafCarpetBlock> carpets = new LinkedList<>();
@@ -63,6 +66,21 @@ public class LeafCarpetModule extends ZetaModule {
 		LeafCarpetBlock carpet = new LeafCarpetBlock(IQuarkBlock.inherit(base, s -> s.replaceAll("_leaves", "_leaf_carpet")), base, this);
 		carpets.add(carpet);
 		return carpet;
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends LeafCarpetModule {
+
+		@LoadEvent
+		public void blockColorHandlers(ZAddBlockColorHandlers event) {
+			event.registerNamed(b -> new AlikeColorHandler((LeafCarpetBlock) b, LeafCarpetBlock::getBaseState), "leaf_carpet");
+		}
+
+		@LoadEvent
+		public void itemColorHandlers(ZAddItemColorHandlers event) {
+			event.registerNamed(i -> new AlikeColorHandler(i, LeafCarpetBlock::getBaseState), "leaf_carpet");
+		}
+
 	}
 
 }

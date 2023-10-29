@@ -141,13 +141,13 @@ public class ForgeZetaClient extends ZetaClient {
 	}
 
 	public void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-		loadBus.fire(new ForgeZAddBlockColorHandlers(event), ZAddBlockColorHandlers.class);
-		zeta.registry.submitBlockColors(event::register); //TODO: can be removed if IZetaBlockColorProvider goes
+		ZAddBlockColorHandlers e = loadBus.fire(new ForgeZAddBlockColorHandlers(event), ZAddBlockColorHandlers.class);
+		loadBus.fire(e.makePostEvent(), ZAddBlockColorHandlers.Post.class);
 	}
 
 	public void registerItemColors(RegisterColorHandlersEvent.Item event) {
-		loadBus.fire(new ForgeZAddItemColorHandlers(event), ZAddItemColorHandlers.class);
-		zeta.registry.submitItemColors(event::register); //TODO: can be removed if IZetaItemColorProvider goes
+		ZAddItemColorHandlers e = loadBus.fire(new ForgeZAddItemColorHandlers(event), ZAddItemColorHandlers.class);
+		loadBus.fire(e.makePostEvent(), ZAddItemColorHandlers.Post.class);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {

@@ -51,6 +51,10 @@ public class ZetaModuleManager {
 		return Optional.ofNullable(get(keyClass));
 	}
 
+	public boolean isEnabled(Class<? extends ZetaModule> keyClass) {
+		return get(keyClass).enabled;
+	}
+
 	// Categories //
 
 	public ZetaCategory getCategory(String id) {

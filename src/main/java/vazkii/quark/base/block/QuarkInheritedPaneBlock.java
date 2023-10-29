@@ -2,14 +2,10 @@ package vazkii.quark.base.block;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 import vazkii.zeta.registry.IZetaItemColorProvider;
@@ -49,14 +45,13 @@ public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlo
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		return parent instanceof IZetaBlockColorProvider provider ? provider.getBlockColor() : null;
+	public @Nullable String getBlockColorProviderName() {
+		return parent instanceof IZetaBlockColorProvider prov ? prov.getBlockColorProviderName() : null;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		return parent instanceof IZetaItemColorProvider provider ? provider.getItemColor() : null;
+	public @Nullable String getItemColorProviderName() {
+		return parent instanceof IZetaItemColorProvider prov ? prov.getItemColorProviderName() : null;
 	}
+
 }

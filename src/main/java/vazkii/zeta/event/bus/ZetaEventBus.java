@@ -113,7 +113,7 @@ public class ZetaEventBus<E> {
 		Listeners subs = listenerMap.get(firedAs);
 		if(subs != null) {
 			if(logSpam != null)
-				logSpam.info("Dispatching {} (as {}) to {} listeners", logspamSimpleName(event.getClass()), logspamSimpleName(firedAs), subs.size(), subs.size() > 1 ? "s" : "");
+				logSpam.info("Dispatching {} (as {}) to {} listener{}", logspamSimpleName(event.getClass()), logspamSimpleName(firedAs), subs.size(), subs.size() > 1 ? "s" : "");
 
 			subs.doFire(event);
 		}

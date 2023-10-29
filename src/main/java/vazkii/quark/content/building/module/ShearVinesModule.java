@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.handler.MiscUtil;
+import vazkii.zeta.client.AlikeColorHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.hint.Hint;
 import vazkii.quark.content.building.block.CutVineBlock;
@@ -82,16 +83,17 @@ public class ShearVinesModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ShearVinesModule {
+
+		private final AlikeColorHandler LIKE_VINE = new AlikeColorHandler(Blocks.VINE.defaultBlockState());
+
 		@LoadEvent
 		public void blockColors(ZAddBlockColorHandlers event) {
-			BlockState vineState = Blocks.VINE.defaultBlockState();
-			event.register((state, world, pos, tintIndex) -> Minecraft.getInstance().getBlockColors().getColor(vineState, world, pos, tintIndex), cut_vine);
+			event.registerNamed(b -> LIKE_VINE, "vine");
 		}
 
 		@LoadEvent
 		public void itemColors(ZAddItemColorHandlers event) {
-			ItemStack vineStack = new ItemStack(Items.VINE);
-			event.register((stack, tintIndex) -> Minecraft.getInstance().getItemColors().getColor(vineStack, tintIndex), cut_vine);
+			event.registerNamed(i -> LIKE_VINE, "vine");
 		}
 	}
 }

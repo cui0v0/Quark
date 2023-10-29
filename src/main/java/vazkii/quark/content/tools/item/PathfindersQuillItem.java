@@ -35,7 +35,7 @@ import vazkii.quark.content.mobs.module.StonelingsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
-import vazkii.zeta.registry.IZetaItemColorProvider;
+import vazkii.zeta.registry.IZetaItemColorProvider_OLD;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -45,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorProvider {
+public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorProvider_OLD {
 
     private static final Direction[] DIRECTIONS = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
 

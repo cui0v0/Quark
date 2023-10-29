@@ -1,7 +1,5 @@
 package vazkii.quark.content.building.block;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -30,8 +28,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 import vazkii.zeta.registry.IZetaItemColorProvider;
 
@@ -173,15 +169,13 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockColor getBlockColor() {
-		return parent.get() instanceof IZetaBlockColorProvider provider ? provider.getBlockColor() : null;
+	public @Nullable String getBlockColorProviderName() {
+		return parent.get() instanceof IZetaBlockColorProvider prov ? prov.getBlockColorProviderName() : null;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemColor getItemColor() {
-		return parent.get() instanceof IZetaItemColorProvider provider ? provider.getItemColor() : null;
+	public @Nullable String getItemColorProviderName() {
+		return parent.get() instanceof IZetaItemColorProvider prov ? prov.getItemColorProviderName() : null;
 	}
 
 	public enum VerticalSlabType implements StringRepresentable {

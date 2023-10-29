@@ -40,13 +40,13 @@ import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.ProxiedItemStackHandler;
 import vazkii.quark.base.item.IQuarkItem;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.registry.IZetaItemColorProvider;
+import vazkii.zeta.registry.IZetaItemColorProvider_OLD;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuProvider, IZetaItemColorProvider {
+public class BackpackItem extends DyeableArmorItem implements IQuarkItem, MenuProvider, IZetaItemColorProvider_OLD {
 
 	private static final String WORN_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn.png";
 	private static final String WORN_OVERLAY_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn_overlay.png";

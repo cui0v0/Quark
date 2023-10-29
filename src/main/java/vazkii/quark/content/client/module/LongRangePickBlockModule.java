@@ -23,6 +23,7 @@ public class LongRangePickBlockModule extends ZetaModule {
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends LongRangePickBlockModule {
 
+		@Override
 		public HitResult transformHitResult(HitResult hitResult) {
 			if(!enabled)
 				return hitResult;
