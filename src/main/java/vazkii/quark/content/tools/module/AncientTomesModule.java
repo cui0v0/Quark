@@ -53,7 +53,7 @@ import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.loot.EnchantTome;
 import vazkii.quark.content.world.module.MonsterBoxModule;

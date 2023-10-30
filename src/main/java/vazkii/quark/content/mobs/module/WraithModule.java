@@ -29,7 +29,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.CostSensitiveEntitySpawnConfig;
 import vazkii.quark.base.module.config.type.EntitySpawnConfig;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.base.world.EntitySpawnHandler;
 import vazkii.quark.content.mobs.client.render.entity.SoulBeadRenderer;
 import vazkii.quark.content.mobs.client.render.entity.WraithRenderer;

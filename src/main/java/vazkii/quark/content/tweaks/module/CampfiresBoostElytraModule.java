@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
 public class CampfiresBoostElytraModule extends ZetaModule {

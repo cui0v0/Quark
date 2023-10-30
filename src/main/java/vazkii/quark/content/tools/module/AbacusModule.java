@@ -25,7 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBAColorConfig;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.item.AbacusItem;
 import vazkii.zeta.client.event.ZRenderOverlay;
 import vazkii.zeta.event.ZRegister;

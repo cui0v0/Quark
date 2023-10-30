@@ -2,7 +2,6 @@ package vazkii.quark.content.building.module;
 
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -22,7 +21,7 @@ import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.zeta.client.AlikeColorHandler;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.building.block.CutVineBlock;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.ZRightClickBlock;

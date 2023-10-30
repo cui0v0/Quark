@@ -22,7 +22,7 @@ import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.item.SlimeInABucketItem;
 
 @LoadModule(category = "tools", hasSubscriptions = true)

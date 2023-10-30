@@ -17,7 +17,7 @@ import net.minecraft.world.level.ItemLike;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.config.ConfigFlagManager;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.zeta.config.ConfigObjectMapper;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.module.ZetaModule;

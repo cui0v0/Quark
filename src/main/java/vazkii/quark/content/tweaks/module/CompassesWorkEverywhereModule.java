@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tweaks.client.item.ClockTimeGetter;
 import vazkii.quark.content.tweaks.client.item.CompassAngleGetter;
 import vazkii.zeta.event.ZGatherHints;

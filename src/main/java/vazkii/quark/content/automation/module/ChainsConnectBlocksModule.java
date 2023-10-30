@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.api.IIndirectConnector;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;

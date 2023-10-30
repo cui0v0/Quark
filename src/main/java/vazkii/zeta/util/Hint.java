@@ -1,4 +1,4 @@
-package vazkii.quark.base.module.hint;
+package vazkii.zeta.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

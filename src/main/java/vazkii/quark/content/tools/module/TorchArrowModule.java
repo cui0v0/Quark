@@ -13,7 +13,7 @@ import vazkii.quark.base.item.QuarkArrowItem;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.client.render.entity.TorchArrowRenderer;
 import vazkii.quark.content.tools.entity.TorchArrow;
 import vazkii.zeta.event.ZRegister;

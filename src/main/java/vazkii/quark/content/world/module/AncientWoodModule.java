@@ -22,7 +22,7 @@ import vazkii.quark.base.handler.advancement.mod.BalancedDietModifier;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Min;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.world.block.AncientSaplingBlock;
 import vazkii.quark.content.world.item.AncientFruitItem;
 import vazkii.zeta.event.ZCommonSetup;

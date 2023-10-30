@@ -3,7 +3,7 @@ package vazkii.quark.content.building.module;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.content.building.block.GrateBlock;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;

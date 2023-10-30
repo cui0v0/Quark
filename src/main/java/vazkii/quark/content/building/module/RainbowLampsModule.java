@@ -8,7 +8,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.Hint;
+import vazkii.zeta.util.Hint;
 import vazkii.quark.base.util.CorundumColor;
 import vazkii.quark.content.building.block.RainbowLampBlock;
 import vazkii.quark.content.world.module.CorundumModule;
