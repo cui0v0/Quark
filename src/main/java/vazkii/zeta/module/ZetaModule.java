@@ -6,8 +6,6 @@ import java.util.Set;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import vazkii.quark.base.module.hint.HintManager;
-import vazkii.quark.base.module.hint.HintObject;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.bus.PlayEvent;
@@ -26,9 +24,6 @@ public class ZetaModule {
 	public boolean enabledByDefault = false;
 	public boolean disabledByOverlap = false;
 	public boolean ignoreAntiOverlap = false;
-
-	//TODO: move elsewhere
-	private List<HintObject> annotationHints = null;
 
 	public void postConstruct() {
 		// NO-OP
@@ -68,11 +63,7 @@ public class ZetaModule {
 
 	@PlayEvent
 	public final void addAnnotationHints(ZGatherHints event) {
-		if(annotationHints == null)
-			annotationHints = HintManager.gatherHintAnnotations(zeta.configManager.getConfigFlagManager(), this);
-
-		for(HintObject hint : annotationHints)
-			hint.apply(event);
+		event.gatherHintsFromModule(this, zeta.configManager.getConfigFlagManager());
 	}
 
 	@Deprecated public boolean LEGACY_hasSubscriptions = false;

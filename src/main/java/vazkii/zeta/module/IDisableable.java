@@ -30,7 +30,7 @@ public interface IDisableable<SELF> {
 	}
 
 	//Covers non-ZetaBlocks as well
-	@SuppressWarnings("SimplifiableConditionalExpression") //No u
+	@SuppressWarnings({"SimplifiableConditionalExpression", "PMD.SimplifiedTernary"}) //No u
 	static boolean isEnabled(Block b) {
 		return b instanceof IDisableable<?> dis ? dis.isEnabled() : true;
 	}

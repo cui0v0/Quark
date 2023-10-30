@@ -6,8 +6,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * For JEI integration. ItemLike objects with Hint applied in a QuarkModule will automatically
- * be added to JEI Information
+ * Annotate something with @Hint to add an information page to JEI.
+ * The Hint annotation will only appear when the module is enabled.
+ *
+ * You may annotate:
+ * <ul>
+ *   <li>ItemLike objects (blocks or items)
+ *   <li>TagKeys containing ItemLikes
+ *   <li>Iterables containing ItemLikes
+ * </ul>
+ *
+ * @see vazkii.zeta.event.ZGatherHints
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -25,7 +34,7 @@ public @interface Hint {
 	String key() default "";
 
 	/**
-	 * Extra content to put in the translation, reference with %s
+	 * These fields will be read and put into the translation; reference them with %s
 	 */
 	String[] content() default "";
 

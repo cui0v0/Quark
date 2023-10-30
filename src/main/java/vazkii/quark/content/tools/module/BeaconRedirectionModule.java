@@ -30,7 +30,6 @@ import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.hint.Hint;
-import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.module.CorundumModule;
 import vazkii.zeta.event.ZConfigChanged;
@@ -72,7 +71,7 @@ public class BeaconRedirectionModule extends ZetaModule {
 		String type = "amethyst";
 
 		if(!ModuleLoader.INSTANCE.isModuleEnabled(CorundumModule.class))
-			HintManager.hintItem(consumer, Items.AMETHYST_CLUSTER, redirectHint);
+			consumer.hintItem(Items.AMETHYST_CLUSTER, redirectHint);
 		else
 			type = "corundum";
 

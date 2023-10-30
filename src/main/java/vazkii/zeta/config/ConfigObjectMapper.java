@@ -32,6 +32,26 @@ public class ConfigObjectMapper {
 		return list;
 	}
 
+	public static Object getField(Object owner, Field field) {
+		Object receiver = Modifier.isStatic(field.getModifiers()) ? null : owner;
+
+		try {
+			return field.get(receiver);
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setField(Object owner, Field field, Object value) {
+		Object receiver = Modifier.isStatic(field.getModifiers()) ? null : owner;
+
+		try {
+			field.set(receiver, value);
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void readInto(SectionDefinition sect, Object obj, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
 		if(obj instanceof ZetaModule zm)
 			readInto(sect, obj, zm, databindings, cfm);
@@ -117,26 +137,6 @@ public class ConfigObjectMapper {
 					databindings.add(z -> cfm.putFlag(enclosingModule, flag, z.get(defBool)));
 				}
 			}
-		}
-	}
-
-	private static Object getField(Object owner, Field field) {
-		Object receiver = Modifier.isStatic(field.getModifiers()) ? null : owner;
-
-		try {
-			return field.get(receiver);
-		} catch (ReflectiveOperationException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static void setField(Object owner, Field field, Object value) {
-		Object receiver = Modifier.isStatic(field.getModifiers()) ? null : owner;
-
-		try {
-			field.set(receiver, value);
-		} catch (ReflectiveOperationException e) {
-			throw new RuntimeException(e);
 		}
 	}
 

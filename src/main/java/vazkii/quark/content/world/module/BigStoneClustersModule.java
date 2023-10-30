@@ -20,7 +20,6 @@ import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.CompoundBiomeConfig;
 import vazkii.quark.base.module.config.type.DimensionConfig;
-import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.world.WorldGenWeights;
 import vazkii.quark.content.world.config.AirStoneClusterConfig;
@@ -67,7 +66,7 @@ public class BigStoneClustersModule extends ZetaModule {
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints consumer) {
 		if(calcite.enabled)
-			HintManager.hintItem(consumer, Items.CALCITE);
+			consumer.hintItem(Items.CALCITE);
 	}
 	
 	private void add(BigStoneClusterConfig config, Block block, BooleanSupplier condition) {

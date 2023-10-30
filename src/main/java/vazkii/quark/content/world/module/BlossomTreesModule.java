@@ -7,14 +7,12 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.handler.WoodSetHandler.WoodSet;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.quark.base.module.hint.HintManager;
 import vazkii.quark.base.world.WorldGenHandler;
 import vazkii.quark.base.world.WorldGenWeights;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
@@ -77,7 +75,7 @@ public class BlossomTreesModule extends ZetaModule {
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints consumer) {
 		for(BlossomTree tree : trees.keySet())
-			HintManager.hintItem(consumer, tree.sapling.asItem());
+			consumer.hintItem(tree.sapling.asItem());
 	}
 
 	private void add(String colorName, MaterialColor color, BlossomTreeConfig config) {
