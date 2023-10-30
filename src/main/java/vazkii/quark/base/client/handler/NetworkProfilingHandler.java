@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.ChatFormatting;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.GeneralConfig;
+import vazkii.zeta.client.event.ZCustomizeDebugText;
+import vazkii.zeta.event.bus.PlayEvent;
 
 public class NetworkProfilingHandler {
 
@@ -24,9 +22,8 @@ public class NetworkProfilingHandler {
 		}
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void showF3(CustomizeGuiOverlayEvent.DebugText event) {
+	@PlayEvent
+	public static void showF3(ZCustomizeDebugText event) {
 		if(GeneralConfig.enableNetworkProfiling) {
 			event.getLeft().add("");
 

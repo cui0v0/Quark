@@ -9,6 +9,7 @@ import vazkii.quark.base.module.config.ConfigFlagManager;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.S2CUpdateFlag;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 
 import java.util.*;
@@ -60,7 +61,7 @@ public class SyncedFlagHandler {
 		flagsFromServer.put(Minecraft.getInstance().getConnection(), decodeFlags(bitSet));
 	}
 
-	@PlayEvent
+	@LoadEvent
 	public static void sendFlagInfoToPlayers(ZConfigChanged event) {
 		QuarkNetwork.sendToPlayers(S2CUpdateFlag.createPacket(), flagsFromPlayers.keySet());
 	}

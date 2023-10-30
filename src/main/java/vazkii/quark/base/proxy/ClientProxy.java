@@ -32,7 +32,6 @@ import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
-import vazkii.zeta.client.event.ZClientModulesReady;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,22 +55,21 @@ public class ClientProxy extends CommonProxy {
 		QuarkClient.start();
 
 		Quark.ZETA.loadBus
+			.subscribe(ModelHandler.class) //TODO: Make this especially not a singleton, move it into respective modules
 			.subscribe(ContributorRewardHandler.Client.class)
 			.subscribe(RenderLayerHandler.Client.class)
 			.subscribe(WoodSetHandler.Client.class);
 
-		//Formerly @EventBusSubscribers - gathered here to make them more visible
-		FMLJavaModLoadingContext.get().getModEventBus().register(ModelHandler.class);
-		MinecraftForge.EVENT_BUS.register(ContributorRewardHandler.Client.class);
-		MinecraftForge.EVENT_BUS.register(InventoryButtonHandler.class);
-		MinecraftForge.EVENT_BUS.register(MiscUtil.Client.class);
-		MinecraftForge.EVENT_BUS.register(NetworkProfilingHandler.class);
-		MinecraftForge.EVENT_BUS.register(QButtonHandler.class);
-		MinecraftForge.EVENT_BUS.register(RequiredModTooltipHandler.class);
-		MinecraftForge.EVENT_BUS.register(TopLayerTooltipHandler.class);
+		Quark.ZETA.playBus
+			.subscribe(NetworkProfilingHandler.class)
+			.subscribe(ContributorRewardHandler.Client.class)
+			.subscribe(MiscUtil.Client.class)
+			.subscribe(InventoryButtonHandler.class)
+			.subscribe(QButtonHandler.class)
+			.subscribe(TopLayerTooltipHandler.class)
+			.subscribe(new RequiredModTooltipHandler.Client(Quark.ZETA)); //TODO: I think this can be spread into ZetaItem/ZetaBlock and not a singleton
 
 		super.start(); //<- loads and initializes modules
-		Quark.ZETA.loadBus.fire(new ZClientModulesReady());
 
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class, () -> new ConfigScreenFactory((minecraft, screen) -> new QuarkConfigHomeScreen(screen)));
 

@@ -45,6 +45,7 @@ import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZModulesReady;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -57,7 +58,6 @@ import vazkii.quark.content.tweaks.client.emote.ModelAccessor;
 import vazkii.quark.content.tweaks.client.screen.widgets.EmoteButton;
 import vazkii.quark.content.tweaks.client.screen.widgets.TranslucentButton;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.client.event.ZClientModulesReady;
 import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.client.event.ZKeyMapping;
 
@@ -111,7 +111,7 @@ public class EmotesModule extends ZetaModule {
 	private static Map<KeyMapping, String> emoteKeybinds;
 
 	@LoadEvent
-	public void constructClient(ZClientModulesReady e) {
+	public void onReady(ZModulesReady e) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc == null)
 			return; // Mojang datagen has no client instance available

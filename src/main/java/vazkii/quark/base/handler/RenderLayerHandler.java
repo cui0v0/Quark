@@ -57,19 +57,16 @@ public class RenderLayerHandler {
 			ItemBlockRenderTypes.setRenderLayer(block, type);
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		private static void setRenderTypeClient(Block block, RenderTypeSkeleton skeleton) {
 			resolveRenderTypes();
 			mapping.put(block, skeleton);
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		private static void setInheritedClient(Block block, Block parent) {
 			resolveRenderTypes();
 			inheritances.put(block, parent);
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		private static void resolveRenderTypes() {
 			if(renderTypes == null) {
 				renderTypes = new HashMap<>();

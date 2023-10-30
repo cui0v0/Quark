@@ -14,6 +14,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.api.event.RecipeCrawlEvent;
 import vazkii.quark.api.event.RecipeCrawlEvent.Visit;
 import vazkii.quark.base.Quark;
+import vazkii.zeta.event.ZAddReloadListener;
+import vazkii.zeta.event.ZTagsUpdated;
+import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.util.RegistryUtil;
 
 import javax.annotation.Nullable;
@@ -34,8 +37,8 @@ public class RecipeCrawlHandler {
 	private static boolean needsCrawl = false;
 	private static boolean mayCrawl = false;
 
-	@SubscribeEvent
-	public static void addListener(AddReloadListenerEvent event) {
+	@LoadEvent
+	public static void addListener(ZAddReloadListener event) {
 		event.addListener((barrier, manager, prepFiller, applyFiller, prepExec, applyExec) -> {
 			return
 				CompletableFuture.runAsync(() -> {
@@ -50,8 +53,8 @@ public class RecipeCrawlHandler {
 		});
 	}
 
-	@SubscribeEvent
-	public static void tagsHaveUpdated(TagsUpdatedEvent event) {
+	@LoadEvent
+	public static void tagsHaveUpdated(ZTagsUpdated event) {
 		mayCrawl = true;
 	}
 

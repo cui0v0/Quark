@@ -22,14 +22,13 @@ import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
+import vazkii.zeta.client.event.ZRenderPlayer;
 import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZPlayerLoggedIn;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 public class ContributorRewardHandler {
 
@@ -55,9 +54,8 @@ public class ContributorRewardHandler {
 		init();
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.DEDICATED_SERVER)
-	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+	@PlayEvent
+	public static void onPlayerJoin(ZPlayerLoggedIn event) {
 		//refresh the contributor list on login
 		init();
 	}
@@ -131,9 +129,8 @@ public class ContributorRewardHandler {
 			name = Minecraft.getInstance().getUser().getName().toLowerCase(Locale.ROOT);
 		}
 
-		@SubscribeEvent
-		@OnlyIn(Dist.CLIENT)
-		public static void onRenderPlayer(RenderPlayerEvent.Post event) {
+		@PlayEvent
+		public static void onRenderPlayer(ZRenderPlayer.Post event) {
 			Player player = event.getEntity();
 			String uuid = player.getUUID().toString();
 			if(player instanceof AbstractClientPlayer clientPlayer && DEV_UUID.contains(uuid) && !done.contains(uuid)) {

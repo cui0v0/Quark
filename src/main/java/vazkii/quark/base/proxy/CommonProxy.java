@@ -39,26 +39,27 @@ public class CommonProxy {
 
 	public void start() {
 		Quark.ZETA.loadBus
+			.subscribe(EntityAttributeHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(CreativeTabHandler.class)
 			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)
+			.subscribe(QuarkAdvancementHandler.class)
+			.subscribe(RecipeCrawlHandler.class)
 			.subscribe(ToolInteractionHandler.class)
 			.subscribe(WoodSetHandler.class)
 			.subscribe(WorldGenHandler.class)
 			.subscribe(FuelHandler.class)
 			.subscribe(UndergroundBiomeHandler.class)
 			.subscribe(EntitySpawnHandler.class)
-			.subscribe(SyncedFlagHandler.class)
 			.subscribe(this);
 
-		//Formerly @EventBusSubscribers - gathered here to make them more visible
-		FMLJavaModLoadingContext.get().getModEventBus().register(EntityAttributeHandler.class);
+		Quark.ZETA.playBus
+			.subscribe(SyncedFlagHandler.class)
+			.subscribe(ContributorRewardHandler.class)
+			.subscribe(FuelHandler.class);
+
 		MinecraftForge.EVENT_BUS.register(CapabilityHandler.class);
-		MinecraftForge.EVENT_BUS.register(ContributorRewardHandler.class);
-		MinecraftForge.EVENT_BUS.register(FuelHandler.class);
-		MinecraftForge.EVENT_BUS.register(QuarkAdvancementHandler.class);
-		MinecraftForge.EVENT_BUS.register(RecipeCrawlHandler.class);
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);
 
 		Quark.ZETA.loadModules(

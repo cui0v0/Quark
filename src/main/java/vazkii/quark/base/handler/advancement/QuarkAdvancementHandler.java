@@ -29,6 +29,8 @@ import vazkii.quark.api.event.GatherAdvancementModifiersEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.advancement.mod.*;
+import vazkii.zeta.event.ZAddReloadListener;
+import vazkii.zeta.event.bus.LoadEvent;
 
 public final class QuarkAdvancementHandler {
 
@@ -55,8 +57,8 @@ public final class QuarkAdvancementHandler {
 		return trigger;
 	}
 
-	@SubscribeEvent
-	public static void addListener(AddReloadListenerEvent event) {
+	@LoadEvent
+	public static void addListener(ZAddReloadListener event) {
 		ReloadableServerResources resources = event.getServerResources();
 		ServerAdvancementManager advancementManager = resources.getAdvancements();
 

@@ -4,9 +4,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
-import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZFurnaceFuelBurnTime;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
@@ -99,8 +100,8 @@ public class UtilityRecipesModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void torchBurnTime(FurnaceFuelBurnTimeEvent event) {
+	@PlayEvent
+	public void torchBurnTime(ZFurnaceFuelBurnTime event) {
 		if (torchesBurn) {
 			Item item = event.getItemStack().getItem();
 			if (item == Items.TORCH || item == Items.SOUL_TORCH)

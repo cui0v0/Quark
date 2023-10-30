@@ -6,21 +6,6 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.event.ContainerScreenEvent;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderHighlightEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.ScreenshotEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -33,53 +18,10 @@ import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
 import vazkii.quark.mixin.client.accessor.AccessorItemColors;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
-import vazkii.zeta.client.event.ZAddBlockColorHandlers;
-import vazkii.zeta.client.event.ZAddItemColorHandlers;
-import vazkii.zeta.client.event.ZAddModelLayers;
-import vazkii.zeta.client.event.ZAddModels;
-import vazkii.zeta.client.event.ZClick;
-import vazkii.zeta.client.event.ZClientSetup;
-import vazkii.zeta.client.event.ZEndClientTick;
-import vazkii.zeta.client.event.ZFirstClientTick;
-import vazkii.zeta.client.event.ZGatherTooltipComponents;
-import vazkii.zeta.client.event.ZHighlightBlock;
-import vazkii.zeta.client.event.ZInputUpdate;
-import vazkii.zeta.client.event.ZKey;
-import vazkii.zeta.client.event.ZKeyMapping;
-import vazkii.zeta.client.event.ZModelBakingCompleted;
-import vazkii.zeta.client.event.ZPreTextureStitch;
-import vazkii.zeta.client.event.ZRegisterReloadListeners;
-import vazkii.zeta.client.event.ZRenderContainerScreen;
-import vazkii.zeta.client.event.ZRenderOverlay;
-import vazkii.zeta.client.event.ZRenderTick;
-import vazkii.zeta.client.event.ZScreenCharacterTyped;
-import vazkii.zeta.client.event.ZScreenInit;
-import vazkii.zeta.client.event.ZScreenKeyPressed;
-import vazkii.zeta.client.event.ZScreenMousePressed;
-import vazkii.zeta.client.event.ZScreenshot;
-import vazkii.zeta.client.event.ZStartClientTick;
-import vazkii.zeta.client.event.ZTooltipComponents;
-import vazkii.zetaimplforge.client.event.ForgeZAddBlockColorHandlers;
-import vazkii.zetaimplforge.client.event.ForgeZAddItemColorHandlers;
-import vazkii.zetaimplforge.client.event.ForgeZAddModelLayers;
-import vazkii.zetaimplforge.client.event.ForgeZAddModels;
-import vazkii.zetaimplforge.client.event.ForgeZClick;
-import vazkii.zetaimplforge.client.event.ForgeZClientSetup;
-import vazkii.zetaimplforge.client.event.ForgeZGatherTooltipComponents;
-import vazkii.zetaimplforge.client.event.ForgeZHighlightBlock;
-import vazkii.zetaimplforge.client.event.ForgeZRenderContainerScreen;
-import vazkii.zetaimplforge.client.event.ForgeZRenderTick;
-import vazkii.zetaimplforge.client.event.ForgeZScreenCharacterTyped;
-import vazkii.zetaimplforge.client.event.ForgeZScreenInit;
-import vazkii.zetaimplforge.client.event.ForgeZInputUpdate;
-import vazkii.zetaimplforge.client.event.ForgeZKey;
-import vazkii.zetaimplforge.client.event.ForgeZKeyMapping;
-import vazkii.zetaimplforge.client.event.ForgeZModelBakingCompleted;
-import vazkii.zetaimplforge.client.event.ForgeZPreTextureStitch;
-import vazkii.zetaimplforge.client.event.ForgeZRenderOverlay;
-import vazkii.zetaimplforge.client.event.ForgeZScreenKeyPressed;
-import vazkii.zetaimplforge.client.event.ForgeZScreenMousePressed;
-import vazkii.zetaimplforge.client.event.ForgeZTooltipComponents;
+
+import net.minecraftforge.client.event.*;
+import vazkii.zeta.client.event.*;
+import vazkii.zetaimplforge.client.event.*;
 
 public class ForgeZetaClient extends ZetaClient {
 	public ForgeZetaClient(Zeta z) {
@@ -114,6 +56,7 @@ public class ForgeZetaClient extends ZetaClient {
 		bus.addListener(this::registerKeybinds);
 		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientTooltipComponentFactories);
+		bus.addListener(this::registerLayerDefinitions);
 
 		MinecraftForge.EVENT_BUS.addListener(this::renderTick);
 		MinecraftForge.EVENT_BUS.addListener(this::clientTick);
@@ -123,6 +66,8 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::movementInputUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
 		MinecraftForge.EVENT_BUS.addListener(this::gatherTooltipComponents);
+
+		MinecraftForge.EVENT_BUS.addListener(this::customizeF3);
 
 		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenForeground);
 		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenBackground);
@@ -138,6 +83,8 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayNeitherPreNorPost);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPre);
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPost);
+		MinecraftForge.EVENT_BUS.addListener(this::renderPlayerPre);
+		MinecraftForge.EVENT_BUS.addListener(this::renderPlayerPost);
 	}
 
 	public void registerBlockColors(RegisterColorHandlersEvent.Block event) {
@@ -182,6 +129,10 @@ public class ForgeZetaClient extends ZetaClient {
 		loadBus.fire(new ForgeZTooltipComponents(event), ZTooltipComponents.class);
 	}
 
+	public void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions e) {
+		loadBus.fire(new ForgeZRegisterLayerDefinitions(e), ZRegisterLayerDefinitions.class);
+	}
+
 	//TODO: move ticker stuff out of forge event handlers, subscribe to them from zeta
 	// Also these events are a mess lol; sometimes there's 2 start/end events, sometimes there's
 	// one event with multiple Phases... bad
@@ -224,6 +175,10 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void gatherTooltipComponents(RenderTooltipEvent.GatherComponents e) {
 		playBus.fire(new ForgeZGatherTooltipComponents(e), ZGatherTooltipComponents.class);
+	}
+
+	public void customizeF3(CustomizeGuiOverlayEvent.DebugText e) {
+		playBus.fire(new ForgeZCustomizeDebugText(e), ZCustomizeDebugText.class);
 	}
 
 	public void renderContainerScreenForeground(ContainerScreenEvent.Render.Foreground e) {
@@ -290,5 +245,13 @@ public class ForgeZetaClient extends ZetaClient {
 			playBus.fire(new ForgeZRenderOverlay.Chat.Post(e), ZRenderOverlay.Chat.Post.class);
 		else if(e.getOverlay() == VanillaGuiOverlay.HOTBAR.type())
 			playBus.fire(new ForgeZRenderOverlay.Hotbar.Post(e), ZRenderOverlay.Hotbar.Post.class);
+	}
+
+	public void renderPlayerPre(RenderPlayerEvent.Pre e) {
+		playBus.fire(new ForgeZRenderPlayer.Pre(e), ZRenderPlayer.Pre.class);
+	}
+
+	public void renderPlayerPost(RenderPlayerEvent.Post e) {
+		playBus.fire(new ForgeZRenderPlayer.Post(e), ZRenderPlayer.Post.class);
 	}
 }

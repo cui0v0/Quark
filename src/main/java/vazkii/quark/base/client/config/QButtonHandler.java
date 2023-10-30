@@ -10,14 +10,14 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.GeneralConfig;
+import vazkii.zeta.client.event.ZScreenInit;
+import vazkii.zeta.event.bus.PlayEvent;
 
 public class QButtonHandler {
 
-	@SubscribeEvent
-	public static void onGuiInit(ScreenEvent.Init event) {
+	@PlayEvent
+	public static void onGuiInit(ZScreenInit.Pre event) {
 		Screen gui = event.getScreen();
 
 		if(GeneralConfig.enableQButton && (gui instanceof TitleScreen || gui instanceof PauseScreen)) {

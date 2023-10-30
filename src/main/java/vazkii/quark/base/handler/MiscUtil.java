@@ -44,12 +44,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.KeyPressed;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -58,6 +54,8 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import vazkii.quark.base.Quark;
 import vazkii.zeta.client.config.screen.ZetaScreen;
 import vazkii.quark.content.experimental.module.EnchantmentsBegoneModule;
+import vazkii.zeta.client.event.ZScreenKeyPressed;
+import vazkii.zeta.event.bus.PlayEvent;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -75,7 +73,6 @@ public class MiscUtil {
 			Direction.WEST,
 			Direction.EAST
 	};
-
 
 	public static BooleanProperty directionProperty(Direction direction) {
 		return switch (direction) {
@@ -117,34 +114,6 @@ public class MiscUtil {
 			if (wrappedGoal == latestWithPriority)
 				selector.addGoal(priority, goal);
 		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void drawChatBubble(PoseStack matrix, int x, int y, Font font, String text, float alpha, boolean extendRight) {
-		matrix.pushPose();
-		matrix.translate(0, 0, 200);
-		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-		int w = font.width(text);
-		int left = x - (extendRight ? 0 : w);
-		int top = y - 8;
-
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-
-		if(extendRight) {
-			Screen.blit(matrix, left, top, 227, 9, 6, 17, 256, 256);
-			for(int i = 0; i < w; i++)
-				Screen.blit(matrix, left + i + 6, top, 232, 9, 1, 17, 256, 256);
-			Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);
-		} else {
-			Screen.blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
-			for(int i = 0; i < w; i++)
-				Screen.blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
-			Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);
-		}
-
-		int alphaInt = (int) (256F * alpha) << 24;
-		font.draw(matrix, text, left + 5, top + 3, alphaInt);
-		matrix.popPose();
 	}
 
 	public static void damageStack(Player player, InteractionHand hand, ItemStack stack, int dmg) {
@@ -256,8 +225,9 @@ public class MiscUtil {
 
 	public static class Client {
 		private static int progress;
-		@SubscribeEvent
-		public static void onKeystroke(KeyPressed.Pre event) {
+
+		@PlayEvent
+		public static void onKeystroke(ZScreenKeyPressed.Pre event) {
 			final String[] ids = new String[] {
 				"-FCYE87P5L0","mybsDDymrsc","6a4BWpBJppI","thpTOAS1Vgg","ZNcBZM5SvbY","_qJEoSa3Ie0",
 				"RWeyOyY_puQ","VBbeuXW8Nko","LIDe-yTxda0","BVVfMFS3mgc","m5qwcYL8a0o","UkY8HvgvBJ8",
@@ -288,6 +258,33 @@ public class MiscUtil {
 			if(hex.matches("#[A-F0-9]{6}"))
 				ret = Integer.valueOf(hex.substring(1), 16);
 			return ret;
+		}
+
+		public static void drawChatBubble(PoseStack matrix, int x, int y, Font font, String text, float alpha, boolean extendRight) {
+			matrix.pushPose();
+			matrix.translate(0, 0, 200);
+			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
+			int w = font.width(text);
+			int left = x - (extendRight ? 0 : w);
+			int top = y - 8;
+
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+
+			if(extendRight) {
+				Screen.blit(matrix, left, top, 227, 9, 6, 17, 256, 256);
+				for(int i = 0; i < w; i++)
+					Screen.blit(matrix, left + i + 6, top, 232, 9, 1, 17, 256, 256);
+				Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);
+			} else {
+				Screen.blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
+				for(int i = 0; i < w; i++)
+					Screen.blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
+				Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);
+			}
+
+			int alphaInt = (int) (256F * alpha) << 24;
+			font.draw(matrix, text, left + 5, top + 3, alphaInt);
+			matrix.popPose();
 		}
 	}
 }

@@ -11,11 +11,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.block.VerticalSlabBlock;
+import vazkii.zeta.event.ZFurnaceFuelBurnTime;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
 
 public class FuelHandler {
 
@@ -48,8 +49,8 @@ public class FuelHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void getFuel(FurnaceFuelBurnTimeEvent event) {
+	@PlayEvent
+	public static void getFuel(ZFurnaceFuelBurnTime event) {
 		Item item = event.getItemStack().getItem();
 		if(fuelValues.containsKey(item))
 			event.setBurnTime(fuelValues.get(item));

@@ -17,8 +17,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.addons.oddities.client.model.BackpackModel;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.client.render.QuarkArmorModel;
@@ -29,7 +27,10 @@ import vazkii.quark.content.mobs.client.model.ShibaModel;
 import vazkii.quark.content.mobs.client.model.StonelingModel;
 import vazkii.quark.content.mobs.client.model.ToretoiseModel;
 import vazkii.quark.content.mobs.client.model.WraithModel;
+import vazkii.zeta.client.event.ZRegisterLayerDefinitions;
+import vazkii.zeta.event.bus.LoadEvent;
 
+//TODO ZETA: Move into respective modules so it's not a singleton
 public class ModelHandler {
 
 	private static final Map<ModelLayerLocation, Layer> layers = new HashMap<>();
@@ -84,8 +85,8 @@ public class ModelHandler {
 		return loc;
 	}
 
-	@SubscribeEvent
-	public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
+	@LoadEvent
+	public static void registerLayer(ZRegisterLayerDefinitions event) {
 		initModels();
 
 		for(ModelLayerLocation location : layers.keySet()) {

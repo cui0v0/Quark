@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import vazkii.quark.base.QuarkClient;
-import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
@@ -157,7 +156,7 @@ public class QButton extends Button {
 			if(QuarkClient.ticker.total % 20 > 10)
 				cy++;
 			
-			MiscUtil.drawChatBubble(mstack, x + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);			
+			MiscUtil.Client.drawChatBubble(mstack, x + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);
 		}
 	}
 	

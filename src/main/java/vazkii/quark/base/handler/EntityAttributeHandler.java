@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.zeta.event.ZEntityAttributeCreation;
+import vazkii.zeta.event.bus.LoadEvent;
 
 public final class EntityAttributeHandler {
 	
@@ -18,8 +18,8 @@ public final class EntityAttributeHandler {
 		attributeSuppliers.put(type, attrSupplier);
 	}
 	
-	@SubscribeEvent
-	public static void onAttributeCreation(EntityAttributeCreationEvent event) {
+	@LoadEvent
+	public static void onAttributeCreation(ZEntityAttributeCreation event) {
 		for(EntityType<? extends LivingEntity> type : attributeSuppliers.keySet()) {
 			Supplier<Builder> supplier = attributeSuppliers.get(type);
 			event.put(type, supplier.get().build());

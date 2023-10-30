@@ -10,9 +10,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -26,13 +30,17 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import vazkii.zeta.event.ZAddReloadListener;
 import vazkii.zeta.event.ZCommonSetup;
+import vazkii.zeta.event.ZEntityAttributeCreation;
 import vazkii.zeta.event.ZLivingDeath;
 import vazkii.zeta.event.ZLivingTick;
 import vazkii.zeta.event.ZLoadComplete;
 import vazkii.zeta.event.ZLootTableLoad;
 import vazkii.zeta.event.ZPlayNoteBlock;
+import vazkii.zeta.event.ZPlayerLoggedIn;
 import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.ZTagsUpdated;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.config.IZetaConfigInternals;
@@ -45,12 +53,15 @@ import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
 import vazkii.zetaimplforge.config.ForgeBackedConfig;
 import vazkii.zetaimplforge.config.TerribleForgeConfigHackery;
+import vazkii.zetaimplforge.event.ForgeZAddReloadListener;
 import vazkii.zetaimplforge.event.ForgeZCommonSetup;
+import vazkii.zetaimplforge.event.ForgeZEntityAttributeCreation;
 import vazkii.zetaimplforge.event.ForgeZLivingDeath;
 import vazkii.zetaimplforge.event.ForgeZLivingTick;
 import vazkii.zetaimplforge.event.ForgeZLoadComplete;
 import vazkii.zetaimplforge.event.ForgeZLootTableLoad;
 import vazkii.zetaimplforge.event.ForgeZPlayNoteBlock;
+import vazkii.zetaimplforge.event.ForgeZPlayerLoggedIn;
 import vazkii.zetaimplforge.event.ForgeZRightClickBlock;
 import vazkii.zetaimplforge.network.ForgeZetaNetworkHandler;
 import vazkii.zetaimplforge.registry.ForgeBrewingRegistry;
@@ -129,7 +140,11 @@ public class ForgeZeta extends Zeta {
 		modbus.addListener(EventPriority.HIGHEST, this::registerHighest);
 		modbus.addListener(this::commonSetup);
 		modbus.addListener(this::loadComplete);
+		modbus.addListener(this::entityAttributeCreation);
+		MinecraftForge.EVENT_BUS.addListener(this::addReloadListener);
+		MinecraftForge.EVENT_BUS.addListener(this::tagsUpdated);
 
+		MinecraftForge.EVENT_BUS.addListener(this::playerLoggedIn);
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::rightClickBlockLow);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::livingDeathLowest);
@@ -155,6 +170,22 @@ public class ForgeZeta extends Zeta {
 
 	public void loadComplete(FMLLoadCompleteEvent e) {
 		loadBus.fire(new ForgeZLoadComplete(e), ZLoadComplete.class);
+	}
+
+	public void entityAttributeCreation(EntityAttributeCreationEvent e) {
+		loadBus.fire(new ForgeZEntityAttributeCreation(e), ZEntityAttributeCreation.class);
+	}
+
+	public void addReloadListener(AddReloadListenerEvent e) {
+		loadBus.fire(new ForgeZAddReloadListener(e), ZAddReloadListener.class);
+	}
+
+	public void tagsUpdated(TagsUpdatedEvent e) {
+		loadBus.fire(new ZTagsUpdated());
+	}
+
+	public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
+		playBus.fire(new ForgeZPlayerLoggedIn(e), ZPlayerLoggedIn.class);
 	}
 
 	public void rightClickBlock(PlayerInteractEvent.RightClickBlock e) {
