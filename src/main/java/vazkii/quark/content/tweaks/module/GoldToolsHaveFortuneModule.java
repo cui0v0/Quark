@@ -13,7 +13,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Max;
@@ -24,7 +24,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.*;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class GoldToolsHaveFortuneModule extends ZetaModule {
 
 	private static final Tier[] TIERS = new Tier[] {

@@ -7,16 +7,16 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZRightClickItem;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class BetterElytraRocketModule extends ZetaModule {
 
-	@SubscribeEvent
-	public void onUseRocket(PlayerInteractEvent.RightClickItem event) {
+	@PlayEvent
+	public void onUseRocket(ZRightClickItem event) {
 		Player player = event.getEntity();
 		if(!player.isFallFlying() && player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)) {
 			Level world = player.level;

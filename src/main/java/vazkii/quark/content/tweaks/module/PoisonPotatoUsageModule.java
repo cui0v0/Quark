@@ -13,19 +13,19 @@ import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZEntityInteract;
+import vazkii.zeta.event.ZLivingTick;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class PoisonPotatoUsageModule extends ZetaModule {
 
 	private static final String TAG_POISONED = "quark:poison_potato_applied";
@@ -42,8 +42,8 @@ public class PoisonPotatoUsageModule extends ZetaModule {
 		poisonBabyTrigger = QuarkAdvancementHandler.registerGenericTrigger("poison_baby");
 	}
 
-	@SubscribeEvent
-	public void onInteract(EntityInteract event) {
+	@PlayEvent
+	public void onInteract(ZEntityInteract event) {
 		if(event.getItemStack().getItem() == Items.POISONOUS_POTATO && canPoison(event.getTarget())) {
 			LivingEntity entity = (LivingEntity) event.getTarget();
 			
@@ -78,8 +78,8 @@ public class PoisonPotatoUsageModule extends ZetaModule {
 				|| entity instanceof Tadpole);
 	}
 
-	@SubscribeEvent
-	public void onEntityUpdate(LivingTickEvent event) {
+	@PlayEvent
+	public void onEntityUpdate(ZLivingTick event) {
 		if(event.getEntity() instanceof Animal animal) {
 			if(animal.isBaby() && isEntityPoisoned(animal))
 				animal.setAge(-24000);

@@ -30,22 +30,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent.RenderTickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.aurelienribon.tweenengine.Tween;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.ContributorRewardHandler;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZRenderLiving;
+import vazkii.zeta.client.event.ZRenderOverlay;
+import vazkii.zeta.client.event.ZRenderTick;
+import vazkii.zeta.client.event.ZScreenInit;
 import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZInputEvent;
 import vazkii.zeta.event.ZModulesReady;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -61,7 +57,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.client.event.ZKeyMapping;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true, subscribeOn = Dist.CLIENT)
+@ZetaLoadModule(category = "tweaks")
 public class EmotesModule extends ZetaModule {
 
 	private static final Set<String> DEFAULT_EMOTE_NAMES = ImmutableSet.of(
@@ -97,145 +93,143 @@ public class EmotesModule extends ZetaModule {
 
 	@Config(description = "Enable this to make custom emotes read the file every time they're triggered so you can edit on the fly.\nDO NOT ship enabled this in a modpack, please.")
 	public static boolean customEmoteDebug = false;
-	
+
 	@Config public static int buttonShiftX = 0;
 	@Config public static int buttonShiftY = 0;
 
 	public static boolean emotesVisible = false;
 	public static File emotesDir;
 
-	@OnlyIn(Dist.CLIENT)
-	public static CustomEmoteIconResourcePack resourcePack;
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends EmotesModule {
 
-	@OnlyIn(Dist.CLIENT)
-	private static Map<KeyMapping, String> emoteKeybinds;
+		public static CustomEmoteIconResourcePack resourcePack;
 
-	@LoadEvent
-	public void onReady(ZModulesReady e) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc == null)
-			return; // Mojang datagen has no client instance available
+		private static Map<KeyMapping, String> emoteKeybinds;
 
-		emotesDir = new File(mc.gameDirectory, "/config/quark_emotes");
-		if(!emotesDir.exists())
-			emotesDir.mkdirs();
+		@LoadEvent
+		public void onReady(ZModulesReady e) {
+			Minecraft mc = Minecraft.getInstance();
+			if (mc == null)
+				return; // Mojang datagen has no client instance available
 
-		mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
+			emotesDir = new File(mc.gameDirectory, "/config/quark_emotes");
+			if(!emotesDir.exists())
+				emotesDir.mkdirs();
 
-			@Override
-			public void loadPacks(@Nonnull Consumer<Pack> packConsumer, @Nonnull Pack.PackConstructor packInfoFactory) {
-				resourcePack = new CustomEmoteIconResourcePack();
+			mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
 
-				String name = "quark:emote_resources";
-				Pack t = Pack.create(name, true, () -> resourcePack, packInfoFactory, Pack.Position.TOP, tx->tx);
-				packConsumer.accept(t);
-			}
-		});
-	}
+				@Override
+				public void loadPacks(@Nonnull Consumer<Pack> packConsumer, @Nonnull Pack.PackConstructor packInfoFactory) {
+					Client.resourcePack = new CustomEmoteIconResourcePack();
 
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		Tween.registerAccessor(HumanoidModel.class, ModelAccessor.INSTANCE);
-	}
-
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void registerKeybinds(ZKeyMapping event) {
-		int sortOrder = 0;
-
-		emoteKeybinds = new HashMap<>();
-		for (String s : DEFAULT_EMOTE_NAMES)
-			emoteKeybinds.put(event.init("quark.emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
-		for (String s : PATREON_EMOTES)
-			emoteKeybinds.put(event.init("quark.keybind.patreon_emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
-	}
-
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void configChangedClient(ZConfigChanged e) {
-		EmoteHandler.clearEmotes();
-
-		for(String s : enabledEmotes) {
-			if (DEFAULT_EMOTE_NAMES.contains(s))
-				EmoteHandler.addEmote(s);
+					String name = "quark:emote_resources";
+					Pack t = Pack.create(name, true, () -> Client.resourcePack, packInfoFactory, Pack.Position.TOP, tx->tx);
+					packConsumer.accept(t);
+				}
+			});
 		}
 
-		for(String s : PATREON_EMOTES)
-			EmoteHandler.addEmote(s);
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			Tween.registerAccessor(HumanoidModel.class, ModelAccessor.INSTANCE);
+		}
 
-		for(String s : customEmotes)
-			EmoteHandler.addCustomEmote(s);
-	}
+		@LoadEvent
+		public void registerKeybinds(ZKeyMapping event) {
+			int sortOrder = 0;
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void initGui(ScreenEvent.Init.Post event) {
-		Screen gui = event.getScreen();
-		if(gui instanceof ChatScreen) {
-			Map<Integer, List<EmoteDescriptor>> descriptorSorting = new TreeMap<>();
+			Client.emoteKeybinds = new HashMap<>();
+			for (String s : DEFAULT_EMOTE_NAMES)
+				Client.emoteKeybinds.put(event.init("quark.emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
+			for (String s : PATREON_EMOTES)
+				Client.emoteKeybinds.put(event.init("quark.keybind.patreon_emote." + s, null, QuarkClient.EMOTE_GROUP, sortOrder++), s);
+		}
 
-			for (EmoteDescriptor desc : EmoteHandler.emoteMap.values()) {
-				if (desc.getTier() <= ContributorRewardHandler.localPatronTier) {
-					List<EmoteDescriptor> descriptors = descriptorSorting.computeIfAbsent(desc.getTier(), k -> new LinkedList<>());
+		@LoadEvent
+		public void configChanged(ZConfigChanged e) {
+			EmoteHandler.clearEmotes();
 
-					descriptors.add(desc);
-				}
+			for(String s : enabledEmotes) {
+				if (DEFAULT_EMOTE_NAMES.contains(s))
+					EmoteHandler.addEmote(s);
 			}
 
-			int rows = 0;
-			int row = 0;
-			int tierRow, rowPos;
+			for(String s : PATREON_EMOTES)
+				EmoteHandler.addEmote(s);
 
-			Minecraft mc = Minecraft.getInstance();
-			boolean expandDown = mc.options.showSubtitles().get();
+			for(String s : customEmotes)
+				EmoteHandler.addCustomEmote(s);
+		}
 
-			Set<Integer> keys = descriptorSorting.keySet();
-			for(int tier : keys) {
-				List<EmoteDescriptor> descriptors = descriptorSorting.get(tier);
-				if (descriptors != null) {
-					rows += descriptors.size() / 3;
-					if (descriptors.size() % 3 != 0)
-						rows++;
-				}
-			}
+		@PlayEvent
+		public void initGui(ZScreenInit.Post event) {
+			Screen gui = event.getScreen();
+			if(gui instanceof ChatScreen) {
+				Map<Integer, List<EmoteDescriptor>> descriptorSorting = new TreeMap<>();
 
-			int buttonX = buttonShiftX;
-			int buttonY = (expandDown ? 2 : gui.height - 40) + buttonShiftY;
+				for (EmoteDescriptor desc : EmoteHandler.emoteMap.values()) {
+					if (desc.getTier() <= ContributorRewardHandler.localPatronTier) {
+						List<EmoteDescriptor> descriptors = descriptorSorting.computeIfAbsent(desc.getTier(), k -> new LinkedList<>());
 
-			List<Button> emoteButtons = new LinkedList<>();
-			for (int tier : keys) {
-				rowPos = 0;
-				tierRow = 0;
-				List<EmoteDescriptor> descriptors = descriptorSorting.get(tier);
-				if (descriptors != null) {
-					for (EmoteDescriptor desc : descriptors) {
-						int rowSize = Math.min(descriptors.size() - tierRow * EMOTES_PER_ROW, EMOTES_PER_ROW);
-
-						int x = buttonX + gui.width - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
-						int y = buttonY + (EMOTE_BUTTON_WIDTH * (rows - row)) * (expandDown ? 1 : -1);
-
-						Button button = new EmoteButton(x, y, desc, (b) -> {
-							String name = desc.getRegistryName();
-							QuarkNetwork.sendToServer(new RequestEmoteMessage(name));
-						});
-						emoteButtons.add(button);
-
-						button.visible = emotesVisible;
-						button.active = emotesVisible;
-						event.addListener(button);
-
-						if (++rowPos == EMOTES_PER_ROW) {
-							tierRow++;
-							row++;
-							rowPos = 0;
-						}
+						descriptors.add(desc);
 					}
 				}
-				if (rowPos != 0)
-					row++;
-			}
 
-			event.addListener(new TranslucentButton(buttonX + gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
+				int rows = 0;
+				int row = 0;
+				int tierRow, rowPos;
+
+				Minecraft mc = Minecraft.getInstance();
+				boolean expandDown = mc.options.showSubtitles().get();
+
+				Set<Integer> keys = descriptorSorting.keySet();
+				for(int tier : keys) {
+					List<EmoteDescriptor> descriptors = descriptorSorting.get(tier);
+					if (descriptors != null) {
+						rows += descriptors.size() / 3;
+						if (descriptors.size() % 3 != 0)
+							rows++;
+					}
+				}
+
+				int buttonX = buttonShiftX;
+				int buttonY = (expandDown ? 2 : gui.height - 40) + buttonShiftY;
+
+				List<Button> emoteButtons = new LinkedList<>();
+				for (int tier : keys) {
+					rowPos = 0;
+					tierRow = 0;
+					List<EmoteDescriptor> descriptors = descriptorSorting.get(tier);
+					if (descriptors != null) {
+						for (EmoteDescriptor desc : descriptors) {
+							int rowSize = Math.min(descriptors.size() - tierRow * EMOTES_PER_ROW, EMOTES_PER_ROW);
+
+							int x = buttonX + gui.width - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
+							int y = buttonY + (EMOTE_BUTTON_WIDTH * (rows - row)) * (expandDown ? 1 : -1);
+
+							Button button = new EmoteButton(x, y, desc, (b) -> {
+								String name = desc.getRegistryName();
+								QuarkNetwork.sendToServer(new RequestEmoteMessage(name));
+							});
+							emoteButtons.add(button);
+
+							button.visible = emotesVisible;
+							button.active = emotesVisible;
+							event.addListener(button);
+
+							if (++rowPos == EMOTES_PER_ROW) {
+								tierRow++;
+								row++;
+								rowPos = 0;
+							}
+						}
+					}
+					if (rowPos != 0)
+						row++;
+				}
+
+				event.addListener(new TranslucentButton(buttonX + gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
 					Component.translatable("quark.gui.button.emotes"),
 					(b) -> {
 						for(Button bt : emoteButtons)
@@ -246,28 +240,25 @@ public class EmotesModule extends ZetaModule {
 
 						emotesVisible = !emotesVisible;
 					}));
+			}
 		}
-	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onKeyInput(InputEvent.Key event) {
-		Minecraft mc = Minecraft.getInstance();
-		if(mc.isWindowActive()) {
-			for(KeyMapping key : emoteKeybinds.keySet()) {
-				if (key.isDown()) {
-					String emote = emoteKeybinds.get(key);
-					QuarkNetwork.sendToServer(new RequestEmoteMessage(emote));
-					return;
+		@PlayEvent
+		public void onKeyInput(ZInputEvent.Key event) {
+			Minecraft mc = Minecraft.getInstance();
+			if(mc.isWindowActive()) {
+				for(KeyMapping key : Client.emoteKeybinds.keySet()) {
+					if (key.isDown()) {
+						String emote = Client.emoteKeybinds.get(key);
+						QuarkNetwork.sendToServer(new RequestEmoteMessage(emote));
+						return;
+					}
 				}
 			}
 		}
-	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(RenderGuiOverlayEvent.Post event) {
-		if(event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()) {
+		@PlayEvent
+		public void drawCrosshair(ZRenderOverlay.Crosshair event) {
 			Minecraft mc = Minecraft.getInstance();
 			Window res = event.getWindow();
 			PoseStack stack = event.getPoseStack();
@@ -300,28 +291,24 @@ public class EmotesModule extends ZetaModule {
 				stack.popPose();
 			}
 		}
+
+		@PlayEvent
+		public void renderTick(ZRenderTick event) {
+			EmoteHandler.onRenderTick(Minecraft.getInstance());
+		}
+
+		@PlayEvent
+		public void preRenderLiving(ZRenderLiving.PreHighest event) {
+			if(event.getEntity() instanceof Player player)
+				EmoteHandler.preRender(event.getPoseStack(), player);
+		}
+
+		@PlayEvent
+		public void postRenderLiving(ZRenderLiving.PostLowest event) {
+			if(event.getEntity() instanceof Player player)
+				EmoteHandler.postRender(event.getPoseStack(), player);
+		}
+
 	}
-
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void renderTick(RenderTickEvent event) {
-		EmoteHandler.onRenderTick(Minecraft.getInstance());
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	@OnlyIn(Dist.CLIENT)
-	public void preRenderLiving(RenderLivingEvent.Pre<Player, ?> event) {
-		if(event.getEntity() instanceof Player player)
-			EmoteHandler.preRender(event.getPoseStack(), player);
-	}
-
-	@SubscribeEvent(priority = EventPriority.LOWEST)
-	@OnlyIn(Dist.CLIENT)
-	public void postRenderLiving(RenderLivingEvent.Post<Player, ?> event) {
-		if(event.getEntity() instanceof Player player)
-			EmoteHandler.postRender(event.getPoseStack(), player);
-	}
-
 
 }

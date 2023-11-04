@@ -14,7 +14,7 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tweaks.block.DirtyGlassBlock;
 import vazkii.zeta.event.ZCommonSetup;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @author WireSegal
  * Created at 12:26 PM on 8/24/19.
  */
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class GlassShardModule extends ZetaModule {
 
 	public static QuarkBlock dirtyGlass;

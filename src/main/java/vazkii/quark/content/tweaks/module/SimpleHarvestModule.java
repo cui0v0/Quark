@@ -41,14 +41,14 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import vazkii.quark.api.event.SimpleHarvestEvent;
 import vazkii.quark.api.event.SimpleHarvestEvent.ActionType;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
@@ -214,8 +214,8 @@ public class SimpleHarvestModule extends ZetaModule {
 
     private boolean isHarvesting = false;
 
-    @SubscribeEvent
-    public void onClick(PlayerInteractEvent.RightClickBlock event) {
+    @PlayEvent
+    public void onClick(ZRightClickBlock event) {
         if (isHarvesting)
             return;
         isHarvesting = true;

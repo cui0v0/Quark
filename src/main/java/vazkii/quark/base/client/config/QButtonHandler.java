@@ -17,7 +17,7 @@ import vazkii.zeta.event.bus.PlayEvent;
 public class QButtonHandler {
 
 	@PlayEvent
-	public static void onGuiInit(ZScreenInit.Pre event) {
+	public static void onGuiInit(ZScreenInit.Post event) {
 		Screen gui = event.getScreen();
 
 		if(GeneralConfig.enableQButton && (gui instanceof TitleScreen || gui instanceof PauseScreen)) {

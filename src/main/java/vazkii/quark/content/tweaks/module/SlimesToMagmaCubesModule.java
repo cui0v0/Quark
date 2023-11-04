@@ -5,15 +5,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZLivingDeath;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class SlimesToMagmaCubesModule extends ZetaModule {
 
 	private static final String TAG_MAGMAED = "quark:damaged_by_magma";
@@ -27,8 +27,8 @@ public class SlimesToMagmaCubesModule extends ZetaModule {
 		staticEnabled = enabled;
 	}
 
-	@SubscribeEvent
-	public void onDeath(LivingDeathEvent event) {
+	@PlayEvent
+	public void onDeath(ZLivingDeath event) {
 		if(event.getEntity().getType() == EntityType.SLIME && event.getSource() == DamageSource.HOT_FLOOR)
 			event.getEntity().getPersistentData().putBoolean(TAG_MAGMAED, true);
 	}

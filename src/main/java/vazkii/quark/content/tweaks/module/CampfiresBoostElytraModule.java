@@ -11,14 +11,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZPlayerTick;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class CampfiresBoostElytraModule extends ZetaModule {
 	
 	@Config public double boostStrength = 0.5;
@@ -27,9 +27,9 @@ public class CampfiresBoostElytraModule extends ZetaModule {
 	@Hint Item campfire = Items.CAMPFIRE;
 	@Hint Item soul_campfire = Items.SOUL_CAMPFIRE;
 
-	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event) {
-		Player player = event.player;
+	@PlayEvent
+	public void onPlayerTick(ZPlayerTick.Start event) {
+		Player player = event.getPlayer();
 		
 		if(player.isFallFlying()) {
 			Vec3 motion = player.getDeltaMovement();

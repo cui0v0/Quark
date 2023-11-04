@@ -23,7 +23,7 @@ public class EditSignMessage implements IZetaMessage {
 
 	@Override
 	public boolean receive(IZetaNetworkEventContext context) {
-		context.enqueueWork(() -> SignEditingModule.openSignGuiClient(pos));
+		context.enqueueWork(() -> SignEditingModule.Client.openSignGuiClient(pos));
 
 		return true;
 	}

@@ -13,18 +13,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.zeta.event.ZLivingDrops;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class SnowGolemPlayerHeadsModule extends ZetaModule {
 
 	public static QuarkGenericTrigger getOwnHeadTrigger;
@@ -37,8 +37,8 @@ public class SnowGolemPlayerHeadsModule extends ZetaModule {
 		getOwnHeadTrigger = QuarkAdvancementHandler.registerGenericTrigger("own_head");
 	}
 	
-	@SubscribeEvent
-	public void onDrops(LivingDropsEvent event) {
+	@PlayEvent
+	public void onDrops(ZLivingDrops event) {
 		Entity e = event.getEntity();
 
 		if(e.hasCustomName() && e instanceof SnowGolem snowman && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Witch) {

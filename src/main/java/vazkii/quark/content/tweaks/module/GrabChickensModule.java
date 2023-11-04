@@ -14,19 +14,17 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZEntityInteract;
+import vazkii.zeta.event.ZPlayerTick;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class GrabChickensModule extends ZetaModule {
 	
 	@Config
@@ -42,8 +40,8 @@ public class GrabChickensModule extends ZetaModule {
 		staticEnabled = enabled;
 	}
 	
-	@SubscribeEvent
-	public void playerInteract(PlayerInteractEvent.EntityInteract event) {
+	@PlayEvent
+	public void playerInteract(ZEntityInteract event) {
 		Entity target = event.getTarget();
 		Player player = event.getEntity();
 		Level level = event.getLevel();
@@ -79,9 +77,9 @@ public class GrabChickensModule extends ZetaModule {
 		}
 	}
 	
-	@SubscribeEvent
-	public void playerTick(PlayerTickEvent event) {
-		Player player = event.player;
+	@PlayEvent
+	public void playerTick(ZPlayerTick.Start event) {
+		Player player = event.getPlayer();
 		Level level = player.level;
 		
 		if(player.hasPassenger(e -> e.getType() == EntityType.CHICKEN)) {
@@ -103,14 +101,18 @@ public class GrabChickensModule extends ZetaModule {
 		return (!needsNoHelmet || player.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) && !player.isUnderWater();
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public static void setRenderChickenFeetStatus(Chicken entity, ChickenModel<Chicken> model) {
-		if(!staticEnabled)
-			return;
-		
-		boolean should = entity.getVehicle() == null || entity.getVehicle().getType() != EntityType.PLAYER;
-		model.leftLeg.visible = should;
-		model.rightLeg.visible = should;
+	public static class Client {
+
+		//not client-replacement module since it's just somewhere to stick this method
+		public static void setRenderChickenFeetStatus(Chicken entity, ChickenModel<Chicken> model) {
+			if(!staticEnabled)
+				return;
+
+			boolean should = entity.getVehicle() == null || entity.getVehicle().getType() != EntityType.PLAYER;
+			model.leftLeg.visible = should;
+			model.rightLeg.visible = should;
+		}
+
 	}
 	
 }

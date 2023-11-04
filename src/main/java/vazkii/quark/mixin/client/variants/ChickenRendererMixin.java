@@ -19,7 +19,7 @@ public class ChickenRendererMixin {
 	private void overrideTexture(Chicken chicken, CallbackInfoReturnable<ResourceLocation> cir) {
 		ChickenRenderer render = (ChickenRenderer) ((Object) this);
 		ChickenModel<Chicken> model = render.getModel();
-		GrabChickensModule.setRenderChickenFeetStatus(chicken, model);
+		GrabChickensModule.Client.setRenderChickenFeetStatus(chicken, model);
 		
 		ResourceLocation loc = VariantAnimalTexturesModule.Client.getChickenTexture(chicken);
 		if (loc != null)

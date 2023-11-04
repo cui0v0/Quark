@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.module.ZetaModule;
@@ -31,8 +31,8 @@ public class ShulkerPackingModule extends ZetaModule {
 
 	@Hint Item shulker_shell = Items.SHULKER_SHELL;
 	
-	@SubscribeEvent // It's like fedex but eldritch
-	public void callFedEnd(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent // It's like fedex but eldritch
+	public void callFedEnd(ZRightClickBlock event) {
 		BlockPos pos = event.getHitVec().getBlockPos();
 		Player player = event.getEntity();
 

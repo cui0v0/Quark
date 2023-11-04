@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -87,6 +88,8 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::renderGameOverlayPost);
 		MinecraftForge.EVENT_BUS.addListener(this::renderPlayerPre);
 		MinecraftForge.EVENT_BUS.addListener(this::renderPlayerPost);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::renderLivingPreHighest);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::renderLivingPostLowest);
 	}
 
 	public void registerBlockColors(RegisterColorHandlersEvent.Block event) {
@@ -255,5 +258,13 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void renderPlayerPost(RenderPlayerEvent.Post e) {
 		playBus.fire(new ForgeZRenderPlayer.Post(e), ZRenderPlayer.Post.class);
+	}
+
+	public void renderLivingPreHighest(RenderLivingEvent.Pre<?, ?> e) {
+		playBus.fire(new ForgeZRenderLiving.PreHighest(e), ZRenderLiving.PreHighest.class);
+	}
+
+	public void renderLivingPostLowest(RenderLivingEvent.Post<?, ?> e) {
+		playBus.fire(new ForgeZRenderLiving.PostLowest(e), ZRenderLiving.PostLowest.class);
 	}
 }

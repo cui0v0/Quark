@@ -17,41 +17,27 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.quark.base.module.ModuleLoader;
+import vazkii.quark.base.Quark;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.event.bus.ZResult;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.EditSignMessage;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class SignEditingModule extends ZetaModule {
 
 	@Hint(key = "sign_editing") TagKey<Item> signs = ItemTags.SIGNS;
 	
 	@Config public static boolean requiresEmptyHand = false;
 
-	@OnlyIn(Dist.CLIENT)
-	public static void openSignGuiClient(BlockPos pos) {
-		if(!ModuleLoader.INSTANCE.isModuleEnabled(SignEditingModule.class))
-			return;
-
-		Minecraft mc = Minecraft.getInstance();
-		BlockEntity tile = mc.level.getBlockEntity(pos);
-
-		if(tile instanceof SignBlockEntity sign)
-			mc.player.openTextEdit(sign);
-	}
-
-	@SubscribeEvent
-	public void onInteract(PlayerInteractEvent.RightClickBlock event) {
-		if(event.getUseBlock() == Result.DENY)
+	@PlayEvent
+	public void onInteract(ZRightClickBlock event) {
+		if(event.getUseBlock() == ZResult.DENY)
 			return;
 
 		BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
@@ -90,6 +76,21 @@ public class SignEditingModule extends ZetaModule {
 		}
 
 		return false;
+	}
+
+	//Not a client replacement module
+	public static class Client {
+
+		public static void openSignGuiClient(BlockPos pos) {
+			if(!Quark.ZETA.modules.isEnabled(SignEditingModule.class))
+				return;
+
+			Minecraft mc = Minecraft.getInstance();
+			BlockEntity tile = mc.level.getBlockEntity(pos);
+
+			if(tile instanceof SignBlockEntity sign)
+				mc.player.openTextEdit(sign);
+		}
 	}
 
 }

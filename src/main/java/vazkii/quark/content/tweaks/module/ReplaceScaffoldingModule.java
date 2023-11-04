@@ -19,15 +19,15 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class ReplaceScaffoldingModule extends ZetaModule {
 
 	@Config(description = "How many times the algorithm for finding out where a block would be placed is allowed to turn. If you set this to large values (> 3) it may start producing weird effects.")
@@ -35,8 +35,8 @@ public class ReplaceScaffoldingModule extends ZetaModule {
 	
 	@Hint Item scaffold = Items.SCAFFOLDING;
 
-	@SubscribeEvent
-	public void onInteract(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent
+	public void onInteract(ZRightClickBlock event) {
 		Level world = event.getLevel();
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);

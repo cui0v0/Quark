@@ -19,12 +19,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
+import vazkii.zeta.event.ZLivingTick;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 
@@ -85,8 +86,8 @@ public class PigLittersModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void onEntityUpdate(LivingEvent.LivingTickEvent event) {
+	@PlayEvent
+	public void onEntityUpdate(ZLivingTick event) {
 		LivingEntity entity = event.getEntity();
 		if (entity instanceof Animal animal && !animal.isInLove())
 			animal.getPersistentData().remove(GOLDEN_CARROT_TAG);

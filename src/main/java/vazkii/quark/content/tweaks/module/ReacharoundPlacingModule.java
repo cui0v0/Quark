@@ -28,18 +28,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.RayTraceHandler;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZEndClientTick;
+import vazkii.zeta.client.event.ZRenderOverlay;
+import vazkii.zeta.event.ZRightClickItem;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.inputtable.RGBColorConfig;
@@ -49,7 +45,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.List;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class ReacharoundPlacingModule extends ZetaModule {
 
 	@Config
@@ -63,8 +59,8 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	@Config public String displayHorizontal = "<  >";
 	@Config public RGBColorConfig color = RGBColorConfig.forColor(1, 1, 1);
 
-	private ReacharoundTarget currentTarget;
-	private int ticksDisplayed;
+	protected ReacharoundTarget currentTarget;
+	protected int ticksDisplayed;
 
 	public static TagKey<Item> reacharoundTag;
 
@@ -73,56 +69,8 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		reacharoundTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "reacharound_able"));
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onRender(RenderGuiOverlayEvent.Pre event) {
-		if(event.getOverlay() != VanillaGuiOverlay.CROSSHAIR.type())
-			return;
-
-		Minecraft mc = Minecraft.getInstance();
-		Player player = mc.player;
-
-		if (mc.options.hideGui)
-			return;
-
-		if(player != null && currentTarget != null) {
-			Window res = event.getWindow();
-			PoseStack matrix = event.getPoseStack();
-			String text = (currentTarget.dir.getAxis() == Axis.Y ? display : displayHorizontal);
-
-			matrix.pushPose();
-			matrix.translate(res.getGuiScaledWidth() / 2F, res.getGuiScaledHeight() / 2f - 4, 0);
-
-			float scale = Math.min(5, ticksDisplayed + event.getPartialTick()) / 5F;
-			scale *= scale;
-			int opacity = ((int) (255 * scale)) << 24;
-
-			matrix.scale(scale, 1F, 1F);
-			matrix.translate(-mc.font.width(text) / 2f, 0, 0);
-			mc.font.draw(matrix, text, 0, 0, color.getColor() | opacity);
-			matrix.popPose();
-		}
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void clientTick(ClientTickEvent event) {
-		if(event.phase == Phase.END) {
-			currentTarget = null;
-
-			Player player = Minecraft.getInstance().player;
-			if(player != null)
-				currentTarget = getPlayerReacharoundTarget(player);
-
-			if(currentTarget != null) {
-				if(ticksDisplayed < 5)
-					ticksDisplayed++;
-			} else ticksDisplayed = 0;
-		}
-	}
-
-	@SubscribeEvent
-	public void onRightClick(PlayerInteractEvent.RightClickItem event) {
+	@PlayEvent
+	public void onRightClick(ZRightClickItem event) {
 		Player player = event.getEntity();
 		ReacharoundTarget target = getPlayerReacharoundTarget(player);
 
@@ -162,7 +110,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		}
 	}
 
-	private ReacharoundTarget getPlayerReacharoundTarget(Player player) {
+	protected ReacharoundTarget getPlayerReacharoundTarget(Player player) {
 		InteractionHand hand = null;
 		if(validateReacharoundStack(player.getMainHandItem()))
 			hand = InteractionHand.MAIN_HAND;
@@ -235,6 +183,52 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		return item instanceof BlockItem || stack.is(reacharoundTag) || whitelist.contains(name);
 	}
 
-	private record ReacharoundTarget(BlockPos pos, Direction dir, InteractionHand hand) {}
+	protected record ReacharoundTarget(BlockPos pos, Direction dir, InteractionHand hand) {}
 
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ReacharoundPlacingModule {
+
+		@PlayEvent
+		public void onRender(ZRenderOverlay.Crosshair event) {
+
+			Minecraft mc = Minecraft.getInstance();
+			Player player = mc.player;
+
+			if (mc.options.hideGui)
+				return;
+
+			if(player != null && currentTarget != null) {
+				Window res = event.getWindow();
+				PoseStack matrix = event.getPoseStack();
+				String text = (currentTarget.dir.getAxis() == Axis.Y ? display : displayHorizontal);
+
+				matrix.pushPose();
+				matrix.translate(res.getGuiScaledWidth() / 2F, res.getGuiScaledHeight() / 2f - 4, 0);
+
+				float scale = Math.min(5, ticksDisplayed + event.getPartialTick()) / 5F;
+				scale *= scale;
+				int opacity = ((int) (255 * scale)) << 24;
+
+				matrix.scale(scale, 1F, 1F);
+				matrix.translate(-mc.font.width(text) / 2f, 0, 0);
+				mc.font.draw(matrix, text, 0, 0, color.getColor() | opacity);
+				matrix.popPose();
+			}
+		}
+
+		@PlayEvent
+		public void clientTick(ZEndClientTick event) {
+			currentTarget = null;
+
+			Player player = Minecraft.getInstance().player;
+			if(player != null)
+				currentTarget = getPlayerReacharoundTarget(player);
+
+			if(currentTarget != null) {
+				if(ticksDisplayed < 5)
+					ticksDisplayed++;
+			} else ticksDisplayed = 0;
+		}
+
+	}
 }

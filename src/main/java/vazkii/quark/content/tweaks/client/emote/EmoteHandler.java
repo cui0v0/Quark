@@ -26,15 +26,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 public final class EmoteHandler {
 
 	public static final String CUSTOM_EMOTE_NAMESPACE = "quark_custom";
@@ -64,14 +61,12 @@ public final class EmoteHandler {
 		emoteMap.put(reg, desc);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void putEmote(Entity player, String emoteName, int tier) {
 		if(player instanceof AbstractClientPlayer clientPlayer && emoteMap.containsKey(emoteName)) {
 			putEmote(clientPlayer, emoteMap.get(emoteName), tier);
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private static void putEmote(AbstractClientPlayer player, EmoteDescriptor desc, int tier) {
 		String name = player.getGameProfile().getName();
 		if(desc == null)

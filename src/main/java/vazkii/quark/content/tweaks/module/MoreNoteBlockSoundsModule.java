@@ -17,10 +17,10 @@ import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.event.level.NoteBlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZPlayNoteBlock;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
@@ -28,7 +28,7 @@ import vazkii.zeta.util.Hint;
 import java.util.Arrays;
 import java.util.List;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class MoreNoteBlockSoundsModule extends ZetaModule {
 
 	@Config(flag = "skull_note_block")
@@ -40,8 +40,8 @@ public class MoreNoteBlockSoundsModule extends ZetaModule {
 	@Hint(value = "skull_note_block", key = "head_sfx")
 	List<Item> skulls = Arrays.asList(Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL, Items.ZOMBIE_HEAD, Items.CREEPER_HEAD, Items.DRAGON_HEAD);
 
-	@SubscribeEvent
-	public void noteBlockPlayed(NoteBlockEvent.Play event) {
+	@PlayEvent
+	public void noteBlockPlayed(ZPlayNoteBlock event) {
 		LevelAccessor world = event.getLevel();
 		BlockPos pos = event.getPos();
 		if(world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK)

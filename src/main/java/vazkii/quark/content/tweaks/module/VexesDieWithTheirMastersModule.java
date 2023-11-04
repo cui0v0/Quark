@@ -3,16 +3,16 @@ package vazkii.quark.content.tweaks.module;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Vex;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZLivingTick;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 
 @LoadModule(category = "tweaks", hasSubscriptions = true)
 public class VexesDieWithTheirMastersModule extends ZetaModule {
 
-	@SubscribeEvent // omae wa mou shindeiru
-	public void checkWhetherAlreadyDead(LivingEvent.LivingTickEvent event) {
+	@PlayEvent // omae wa mou shindeiru
+	public void checkWhetherAlreadyDead(ZLivingTick event) {
 		if (event.getEntity() instanceof Vex vex) {
 			Mob owner = vex.getOwner();
 			if (owner != null && owner.isDeadOrDying() && !vex.isDeadOrDying())

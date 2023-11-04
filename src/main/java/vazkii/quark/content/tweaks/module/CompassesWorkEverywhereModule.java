@@ -8,12 +8,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZPlayerTick;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
@@ -24,7 +20,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.client.event.ZClientSetup;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class CompassesWorkEverywhereModule extends ZetaModule {
 
 	@Config public static boolean enableCompassNerf = true;
@@ -35,17 +31,6 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 	@Config public static boolean enableEnd = true;
 	
 	@Hint("clock_nerf") Item clock = Items.CLOCK;
-
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup(ZClientSetup e) {
-		// register = addPropertyOverride
-		if(enabled && (enableCompassNerf || enableNether || enableEnd))
-			e.enqueueWork(() -> ItemProperties.register(Items.COMPASS, new ResourceLocation("angle"), new CompassAngleGetter.Impl()));
-
-		if(enabled && enableClockNerf)
-			e.enqueueWork(() -> ItemProperties.register(Items.CLOCK, new ResourceLocation("time"), new ClockTimeGetter.Impl()));
-	}
 
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints consumer) {
@@ -68,18 +53,35 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 		consumer.accept(Items.COMPASS, comp);
 	}
 
-	@SubscribeEvent
-	public void onUpdate(PlayerTickEvent event) {
-		if(event.phase == Phase.START) {
-			Inventory inventory = event.player.getInventory();
-			for(int i = 0; i < inventory.getContainerSize(); i++) {
-				ItemStack stack = inventory.getItem(i);
-				if(stack.getItem() == Items.COMPASS)
-					CompassAngleGetter.tickCompass(event.player, stack);
-				else if(stack.getItem() == Items.CLOCK)
-					ClockTimeGetter.tickClock(stack);
-			}
+	@PlayEvent
+	public void onUpdate(ZPlayerTick.Start event) {
+		Inventory inventory = event.getPlayer().getInventory();
+		for(int i = 0; i < inventory.getContainerSize(); i++) {
+			ItemStack stack = inventory.getItem(i);
+			if(stack.getItem() == Items.COMPASS)
+				CompassAngleGetter.tickCompass(event.getPlayer(), stack);
+			else if(stack.getItem() == Items.CLOCK)
+				ClockTimeGetter.tickClock(stack);
 		}
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends CompassesWorkEverywhereModule {
+
+		@LoadEvent
+		public void clientSetup(ZClientSetup e) {
+			e.enqueueWork(() -> {
+				if(!enabled)
+					return;
+
+				if(enableCompassNerf || enableNether || enableEnd)
+					ItemProperties.register(Items.COMPASS, new ResourceLocation("angle"), new CompassAngleGetter.Impl());
+
+				if(enableClockNerf)
+					ItemProperties.register(Items.CLOCK, new ResourceLocation("time"), new ClockTimeGetter.Impl());
+			});
+		}
+
 	}
 
 }

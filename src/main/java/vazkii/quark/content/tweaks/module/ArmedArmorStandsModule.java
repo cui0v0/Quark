@@ -3,9 +3,9 @@ package vazkii.quark.content.tweaks.module;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZEntityConstruct;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 
@@ -13,13 +13,13 @@ import vazkii.zeta.util.Hint;
  * @author WireSegal
  * Created at 8:40 AM on 8/27/19.
  */
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class ArmedArmorStandsModule extends ZetaModule {
 
 	@Hint Item armor_stand = Items.ARMOR_STAND;
 
-	@SubscribeEvent
-	public void entityConstruct(EntityEvent.EntityConstructing event) {
+	@PlayEvent
+	public void entityConstruct(ZEntityConstruct event) {
 		if(event.getEntity() instanceof ArmorStand stand) {
 			if(!stand.isShowArms())
 				setShowArms(stand, true);

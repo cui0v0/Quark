@@ -17,14 +17,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ScreenEvent.Init;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZEndClientTick;
+import vazkii.zeta.client.event.ZScreenInit;
+import vazkii.zeta.event.ZPlayerLoggedIn;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
@@ -32,7 +30,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 
 import java.util.*;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 	@Config(description = "A list of recipe names that should NOT be added in by default")
@@ -51,8 +49,8 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 		staticEnabled = enabled;
 	}
 
-	@SubscribeEvent
-	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+	@PlayEvent
+	public void onPlayerLoggedIn(ZPlayerLoggedIn event) {
 		Player player = event.getEntity();
 
 		if(player instanceof ServerPlayer spe) {
@@ -86,40 +84,6 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onInitGui(Init.Post event) {
-		Screen gui = event.getScreen();
-		if(disableRecipeBook && gui instanceof RecipeUpdateListener) {
-			Minecraft.getInstance().player.getRecipeBook().getBookSettings().setOpen(RecipeBookType.CRAFTING, false);
-
-			List<GuiEventListener> widgets = event.getListenersList();
-			for(GuiEventListener w : widgets)
-				if(w instanceof ImageButton) {
-					event.removeListener(w);
-					return;
-				}
-		}
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void clientTick(ClientTickEvent event) {
-		Minecraft mc = Minecraft.getInstance();
-		if(mc.player != null && mc.player.tickCount < 20) {
-			ToastComponent toasts = mc.getToasts();
-			Queue<Toast> toastQueue = toasts.queued;
-			for(Toast toast : toastQueue)
-				if(toast instanceof RecipeToast recipeToast) {
-					List<Recipe<?>> stacks = recipeToast.recipes;
-					if(stacks.size() > 100) {
-						toastQueue.remove(toast);
-						return;
-					}
-				}
-		}
-	}
-
 	public static void removeRecipeAdvancements(Map<ResourceLocation, Advancement.Builder> builders) {
 		if (!staticEnabled || !filterRecipeAdvancements)
 			return;
@@ -133,5 +97,42 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 			}
 		}
 		Quark.LOG.info("[Automatic Recipe Unlock] Removed {} recipe advancements", i);
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends AutomaticRecipeUnlockModule {
+
+		@PlayEvent
+		public void onInitGui(ZScreenInit.Post event) {
+			Screen gui = event.getScreen();
+			if(disableRecipeBook && gui instanceof RecipeUpdateListener) {
+				Minecraft.getInstance().player.getRecipeBook().getBookSettings().setOpen(RecipeBookType.CRAFTING, false);
+
+				List<GuiEventListener> widgets = event.getListenersList();
+				for(GuiEventListener w : widgets)
+					if(w instanceof ImageButton) {
+						event.removeListener(w);
+						return;
+					}
+			}
+		}
+
+		@PlayEvent
+		public void clientTick(ZEndClientTick event) {
+			Minecraft mc = Minecraft.getInstance();
+			if(mc.player != null && mc.player.tickCount < 20) {
+				ToastComponent toasts = mc.getToasts();
+				Queue<Toast> toastQueue = toasts.queued;
+				for(Toast toast : toastQueue)
+					if(toast instanceof RecipeToast recipeToast) {
+						List<Recipe<?>> stacks = recipeToast.recipes;
+						if(stacks.size() > 100) {
+							toastQueue.remove(toast);
+							return;
+						}
+					}
+			}
+		}
+
 	}
 }

@@ -32,15 +32,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.client.event.ZInputUpdate;
+import vazkii.zeta.event.ZPlayerTick;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZCommonSetup;
@@ -49,7 +46,7 @@ import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class EnhancedLaddersModule extends ZetaModule {
 
 	@Config.Max(0)
@@ -135,8 +132,8 @@ public class EnhancedLaddersModule extends ZetaModule {
 		return canLadderSurvive(state, world, currentPos);
 	}
 
-	@SubscribeEvent
-	public void onInteract(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent
+	public void onInteract(ZRightClickBlock event) {
 		if(!allowDroppingDown)
 			return;
 
@@ -185,30 +182,47 @@ public class EnhancedLaddersModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if(!allowSliding)
-			return;
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends EnhancedLaddersModule {
 
-		if(event.phase == TickEvent.Phase.START) {
-			Player player = event.player;
+		@PlayEvent
+		public void onInput(ZInputUpdate event) {
+			if(!allowInventorySneak)
+				return;
+
+			Player player = event.getEntity();
+			if(player.onClimbable() && !player.getAbilities().flying &&
+				!player.level.getBlockState(player.blockPosition()).isScaffolding(player)
+				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.isOnGround()) {
+				Input input = event.getInput();
+				if(input != null)
+					input.shiftKeyDown = true; // sneaking
+			}
+		}
+
+		@PlayEvent
+		public void onPlayerTick(ZPlayerTick.Start event) {
+			if(!allowSliding)
+				return;
+
+			Player player = event.getPlayer();
 			if(player.onClimbable() && player.level.isClientSide) {
 				BlockPos playerPos = player.blockPosition();
 				BlockPos downPos = playerPos.below();
 
 				boolean scaffold = player.level.getBlockState(playerPos).isScaffolding(player);
 				if(player.isCrouching() == scaffold &&
-						player.zza == 0 &&
-						player.yya <= 0 &&
-						player.xxa == 0 &&
-						player.getXRot() > 70 &&
-						!player.jumping &&
-						!player.getAbilities().flying &&
-						player.level.getBlockState(downPos).isLadder(player.level, downPos, player)) {
+					player.zza == 0 &&
+					player.yya <= 0 &&
+					player.xxa == 0 &&
+					player.getXRot() > 70 &&
+					!player.jumping &&
+					!player.getAbilities().flying &&
+					player.level.getBlockState(downPos).isLadder(player.level, downPos, player)) {
 
 					Vec3 move = new Vec3(0, fallSpeed, 0);
 					AABB target = player.getBoundingBox().move(move);
-					
+
 					Iterable<VoxelShape> collisions = player.level.getBlockCollisions(player, target);
 					if(!collisions.iterator().hasNext()) {
 						player.setBoundingBox(target);
@@ -217,22 +231,8 @@ public class EnhancedLaddersModule extends ZetaModule {
 				}
 			}
 		}
+
 	}
 
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void onInput(MovementInputUpdateEvent event) {
-		if(!allowInventorySneak)
-			return;
-
-		Player player = event.getEntity();
-		if(player.onClimbable() && !player.getAbilities().flying &&
-				!player.level.getBlockState(player.blockPosition()).isScaffolding(player)
-				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.isOnGround()) {
-			Input input = event.getInput();
-			if(input != null)
-				input.shiftKeyDown = true; // sneaking
-		}
-	}
 
 }

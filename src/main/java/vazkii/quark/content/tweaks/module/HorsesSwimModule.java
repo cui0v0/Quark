@@ -3,16 +3,16 @@ package vazkii.quark.content.tweaks.module;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZLivingTick;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class HorsesSwimModule extends ZetaModule {
 
-	@SubscribeEvent
-	public void tick(LivingTickEvent event) {
+	@PlayEvent
+	public void tick(ZLivingTick event) {
 		if(event.getEntity() instanceof AbstractHorse honse) {
 			boolean ridden = !honse.getPassengers().isEmpty();
 			boolean water = honse.isInWater();

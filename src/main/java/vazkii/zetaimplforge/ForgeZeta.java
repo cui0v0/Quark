@@ -15,7 +15,9 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -122,6 +124,9 @@ public class ForgeZeta extends Zeta {
 	@SuppressWarnings("duplicates")
 	@Override
 	public void start() {
+		//TODO: sort these somehow lol
+
+		//load
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		modbus.addListener(EventPriority.HIGHEST, this::registerHighest);
 		modbus.addListener(this::commonSetup);
@@ -130,9 +135,11 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::addReloadListener);
 		MinecraftForge.EVENT_BUS.addListener(this::tagsUpdated);
 
+		//play
 		MinecraftForge.EVENT_BUS.addListener(this::playerLoggedIn);
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::rightClickBlockLow);
+		MinecraftForge.EVENT_BUS.addListener(this::rightClickItem);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::livingDeathLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::livingTick);
 		MinecraftForge.EVENT_BUS.addListener(this::playNoteBlock);
@@ -141,8 +148,12 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::livingConversionPost);
 		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdate);
 		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdateLowest);
+		MinecraftForge.EVENT_BUS.addListener(this::entityConstruct);
+		MinecraftForge.EVENT_BUS.addListener(this::entityInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::entityMobGriefing);
 		MinecraftForge.EVENT_BUS.addListener(this::livingDrops);
+		MinecraftForge.EVENT_BUS.addListener(this::playerTickStart);
+		MinecraftForge.EVENT_BUS.addListener(this::playerTickEnd);
 	}
 
 	boolean registerDone = false;
@@ -188,6 +199,10 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZRightClickBlock.Low(e), ZRightClickBlock.Low.class);
 	}
 
+	public void rightClickItem(PlayerInteractEvent.RightClickItem e) {
+		playBus.fire(new ForgeZRightClickItem(e), ZRightClickItem.class);
+	}
+
 	public void livingDeathLowest(LivingDeathEvent e) {
 		playBus.fire(new ForgeZLivingDeath.Lowest(e), ZLivingDeath.Lowest.class);
 	}
@@ -220,12 +235,30 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZAnvilUpdate.Lowest(e), ZAnvilUpdate.Lowest.class);
 	}
 
+	public void entityConstruct(EntityEvent.EntityConstructing e) {
+		playBus.fire(new ForgeZEntityConstruct(e), ZEntityConstruct.class);
+	}
+
+	public void entityInteract(PlayerInteractEvent.EntityInteract e) {
+		playBus.fire(new ForgeZEntityInteract(e), ZEntityInteract.class);
+	}
+
 	public void entityMobGriefing(EntityMobGriefingEvent e) {
 		playBus.fire(new ForgeZEntityMobGriefing(e), ZEntityMobGriefing.class);
 	}
 
 	public void livingDrops(LivingDropsEvent e) {
 		playBus.fire(new ForgeZLivingDrops(e), ZLivingDrops.class);
+	}
+
+	public void playerTickStart(TickEvent.PlayerTickEvent e) {
+		if(e.phase == TickEvent.Phase.START)
+			playBus.fire(new ForgeZPlayerTick.Start(e), ZPlayerTick.Start.class);
+	}
+
+	public void playerTickEnd(TickEvent.PlayerTickEvent e) {
+		if(e.phase == TickEvent.Phase.END)
+			playBus.fire(new ForgeZPlayerTick.End(e), ZPlayerTick.End.class);
 	}
 
 	public static ZResult from(Event.Result r) {

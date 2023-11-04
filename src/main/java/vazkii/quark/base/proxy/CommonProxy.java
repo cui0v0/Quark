@@ -57,7 +57,8 @@ public class CommonProxy {
 		Quark.ZETA.playBus
 			.subscribe(SyncedFlagHandler.class)
 			.subscribe(ContributorRewardHandler.class)
-			.subscribe(FuelHandler.class);
+			.subscribe(FuelHandler.class)
+			.subscribe(ToolInteractionHandler.class);
 
 		MinecraftForge.EVENT_BUS.register(CapabilityHandler.class);
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);

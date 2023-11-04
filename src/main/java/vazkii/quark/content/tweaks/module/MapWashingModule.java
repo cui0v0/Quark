@@ -5,12 +5,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
 
-@LoadModule(category = "tweaks", antiOverlap = "supplementaries")
+@ZetaLoadModule(category = "tweaks", antiOverlap = "supplementaries")
 public class MapWashingModule extends ZetaModule {
 	private final CauldronInteraction WASHING_MAP = (state, level, pos, player, hand, stack) -> {
 		if (!enabled)

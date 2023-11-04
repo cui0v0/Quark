@@ -23,12 +23,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
@@ -38,7 +36,7 @@ import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZAddModels;
 import vazkii.zeta.client.event.ZClientSetup;
 
-@LoadModule(category = "tweaks", hasSubscriptions = true)
+@ZetaLoadModule(category = "tweaks")
 public class DyeableItemFramesModule extends ZetaModule {
 
 	public static EntityType<DyedItemFrame> entityType;
@@ -61,20 +59,8 @@ public class DyeableItemFramesModule extends ZetaModule {
 		Quark.ZETA.dyeables.register(Items.GLOW_ITEM_FRAME, this);
 	}
 
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)	
-	public void registerAdditionalModels(ZAddModels event) {
-		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame", "inventory"));
-		event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame_map", "inventory"));
-	}
-	
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(entityType, DyedItemFrameRenderer::new);
-	}
-
-	@SubscribeEvent
-	public void onUse(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent
+	public void onUse(ZRightClickBlock event) {
 		Player player = event.getEntity();
 		InteractionHand hand = event.getHand();
 		ItemStack stack = player.getItemInHand(hand);
@@ -134,6 +120,22 @@ public class DyeableItemFramesModule extends ZetaModule {
 
 	protected boolean mayPlace(Player player, Direction direction, ItemStack stack, BlockPos pos) {
 		return !player.level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends DyeableItemFramesModule {
+
+		@LoadEvent
+		public void registerAdditionalModels(ZAddModels event) {
+			event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame", "inventory"));
+			event.register(new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame_map", "inventory"));
+		}
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			EntityRenderers.register(entityType, DyedItemFrameRenderer::new);
+		}
+
 	}
 
 }

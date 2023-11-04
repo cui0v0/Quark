@@ -1,11 +1,13 @@
 package vazkii.zetaimplforge.event;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import vazkii.zeta.event.ZRightClickBlock;
 import vazkii.zeta.event.bus.ZResult;
@@ -41,6 +43,16 @@ public class ForgeZRightClickBlock implements ZRightClickBlock {
 	@Override
 	public ItemStack getItemStack() {
 		return e.getItemStack();
+	}
+
+	@Override
+	public BlockHitResult getHitVec() {
+		return e.getHitVec();
+	}
+
+	@Override
+	public Direction getFace() {
+		return e.getFace();
 	}
 
 	@Override

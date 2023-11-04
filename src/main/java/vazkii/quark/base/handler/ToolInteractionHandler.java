@@ -22,6 +22,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.WaxModifier;
+import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -82,8 +84,8 @@ public final class ToolInteractionHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void itemUse(PlayerInteractEvent.RightClickBlock event) {
+	@PlayEvent
+	public static void itemUse(ZRightClickBlock event) {
 		ItemStack stack = event.getItemStack();
 
 		if(stack.getItem() == Items.HONEYCOMB) {
