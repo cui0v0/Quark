@@ -143,7 +143,6 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdateLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::entityMobGriefing);
 		MinecraftForge.EVENT_BUS.addListener(this::livingDrops);
-		MinecraftForge.EVENT_BUS.addListener(this::inputMouseButton);
 	}
 
 	boolean registerDone = false;
@@ -228,11 +227,6 @@ public class ForgeZeta extends Zeta {
 	public void livingDrops(LivingDropsEvent e) {
 		playBus.fire(new ForgeZLivingDrops(e), ZLivingDrops.class);
 	}
-
-	public void inputMouseButton(InputEvent.MouseButton e) {
-		playBus.fire(new ForgeZInputEvent.MouseButton(e), ZInputEvent.MouseButton.class);
-	}
-
 
 	public static ZResult from(Event.Result r) {
 		return switch(r) {

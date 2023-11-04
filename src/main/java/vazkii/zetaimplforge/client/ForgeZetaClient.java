@@ -21,7 +21,9 @@ import vazkii.zeta.client.ZetaClient;
 
 import net.minecraftforge.client.event.*;
 import vazkii.zeta.client.event.*;
+import vazkii.zeta.event.ZInputEvent;
 import vazkii.zetaimplforge.client.event.*;
+import vazkii.zetaimplforge.event.ForgeZInputEvent;
 
 public class ForgeZetaClient extends ZetaClient {
 	public ForgeZetaClient(Zeta z) {
@@ -154,11 +156,11 @@ public class ForgeZetaClient extends ZetaClient {
 	}
 
 	public void clicc(InputEvent.MouseButton e) {
-		playBus.fire(new ForgeZClick(e), ZClick.class);
+		playBus.fire(new ForgeZInputEvent.MouseButton(e), ZInputEvent.MouseButton.class);
 	}
 
 	public void prece(InputEvent.Key e) {
-		playBus.fire(new ForgeZKey(e), ZKey.class);
+		playBus.fire(new ForgeZInputEvent.Key(e), ZInputEvent.Key.class);
 	}
 
 	public void screenshot(ScreenshotEvent e) {
