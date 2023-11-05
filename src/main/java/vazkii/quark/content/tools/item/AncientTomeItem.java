@@ -35,6 +35,7 @@ public class AncientTomeItem extends QuarkItem {
 		return true;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;

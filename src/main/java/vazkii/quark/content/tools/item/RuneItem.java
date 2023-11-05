@@ -41,6 +41,7 @@ public class RuneItem extends QuarkItem implements IRuneColorProvider {
 		return color;
 	}
 
+	//TODO: IForgeItem
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

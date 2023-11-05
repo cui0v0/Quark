@@ -121,6 +121,7 @@ public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorPro
         return null;
     }
 
+    //TODO: IForgeItem
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return slotChanged || (oldStack.getItem() != newStack.getItem());

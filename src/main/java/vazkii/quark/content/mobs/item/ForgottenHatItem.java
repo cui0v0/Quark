@@ -60,6 +60,7 @@ public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 		return true;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return TEXTURE;
@@ -84,7 +85,7 @@ public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 	}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
 		if(attributes == null) {
 			Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 			UUID uuid = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");

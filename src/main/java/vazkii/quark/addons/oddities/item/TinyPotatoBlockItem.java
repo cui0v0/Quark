@@ -33,6 +33,7 @@ public class TinyPotatoBlockItem extends BlockItem implements IRuneColorProvider
 		super(block, properties);
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
 		return super.canEquip(stack, armorType, entity) ||

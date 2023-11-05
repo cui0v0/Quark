@@ -59,6 +59,7 @@ public class RopeBlock extends QuarkBlock implements IZetaBlockItemProvider, Sim
 	@Override
 	public BlockItem provideItemBlock(Block block, Item.Properties properties) {
 		return new BlockItem(block, properties) {
+			//TODO: IForgeItem
 			@Override
 			public boolean doesSneakBypassUse(ItemStack stack, LevelReader world, BlockPos pos, Player player) {
 				return world.getBlockState(pos).getBlock() instanceof RopeBlock;

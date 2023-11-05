@@ -77,6 +77,7 @@ public class PickarangItem extends QuarkItem {
 		};
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		return Math.max(type.durability, 0);
@@ -122,9 +123,10 @@ public class PickarangItem extends QuarkItem {
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
 	}
 
+	@SuppressWarnings("deprecation") //Avoiding FOrge extension
 	@Nonnull
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(@Nonnull EquipmentSlot slot, ItemStack stack) {
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@Nonnull EquipmentSlot slot) {
 		Multimap<Attribute, AttributeModifier> multimap = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 
 		if (slot == EquipmentSlot.MAINHAND) {
@@ -140,6 +142,7 @@ public class PickarangItem extends QuarkItem {
 		return 0F;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean isRepairable(@Nonnull ItemStack stack) {
 		return true;
@@ -150,16 +153,19 @@ public class PickarangItem extends QuarkItem {
 		return type.repairMaterial != null && repair.getItem() == type.repairMaterial;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public int getEnchantmentValue(ItemStack stack) {
 		return type.pickaxeEquivalent != null ? type.pickaxeEquivalent.getEnchantmentValue(stack) : 0;
 	}
 
+	@SuppressWarnings("deprecation") //Forge replacement
 	@Override
 	public int getEnchantmentValue() {
 		return type.pickaxeEquivalent != null ? type.pickaxeEquivalent.getEnchantmentValue() : 0;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return super.canApplyAtEnchantingTable(stack, enchantment) || ImmutableSet.of(Enchantments.BLOCK_FORTUNE, Enchantments.SILK_TOUCH, Enchantments.BLOCK_EFFICIENCY).contains(enchantment);

@@ -73,6 +73,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 			RequiredModTooltipHandler.map(this, module.category.requiredMod);
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public int getDefaultTooltipHideFlags(@Nonnull ItemStack stack) {
 		return stack.isEnchanted() ? ItemStack.TooltipPart.ENCHANTMENTS.getMask() : 0;
@@ -107,16 +108,19 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return false;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		return false;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public int getEnchantmentValue(ItemStack stack) {
 		return 0;
@@ -127,6 +131,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return false;
 	}
 
+	//TODO: IForgeITem
 	@Override
 	public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
 		return 0;
@@ -173,6 +178,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 			EnchantmentHelper.setEnchantments(enchants, stack);
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entityItem) {
 		if(BackpackModule.superOpMode || entityItem.level.isClientSide)
@@ -204,6 +210,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return false;
 	}
 
+	//TODO: IForgeItem
 	@Nonnull
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
@@ -224,10 +231,11 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 	}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot p_40390_) {
 		return ImmutableMultimap.of();
 	}
 
+	//TODO: IForgeItem
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return type != null && type.equals("overlay") ? WORN_OVERLAY_TEXTURE : WORN_TEXTURE;
