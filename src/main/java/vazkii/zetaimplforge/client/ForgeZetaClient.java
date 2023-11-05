@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.quark.mixin.zeta_forge.client.AccessorBlockColors;
 import vazkii.quark.mixin.zeta_forge.client.AccessorItemColors;
 import vazkii.zeta.Zeta;
+import vazkii.zeta.client.ClientRegistryExtension;
 import vazkii.zeta.client.ZetaClient;
 
 import net.minecraftforge.client.event.*;
@@ -43,6 +44,11 @@ public class ForgeZetaClient extends ZetaClient {
 		return ForgeRegistries.ITEMS.getDelegate(itemlike.asItem())
 			.map(ref -> ((AccessorItemColors) ics).zeta$getItemColors().get(ref))
 			.orElse(null);
+	}
+
+	@Override
+	public ClientRegistryExtension createClientRegistryExtension() {
+		return new ForgeClientRegistryExtension(zeta);
 	}
 
 	@Override

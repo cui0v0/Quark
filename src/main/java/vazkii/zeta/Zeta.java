@@ -58,6 +58,9 @@ public abstract class Zeta {
 		this.dyeables = createDyeablesRegistry();
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
+
+		loadBus.subscribe(craftingExtensions)
+			.subscribe(brewingRegistry);
 	}
 
 	public final Logger log;

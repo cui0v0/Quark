@@ -34,6 +34,7 @@ public abstract class ZetaRegistry {
 	protected final Map<Object, ResourceLocation> internalNames = new IdentityHashMap<>();
 	
 	// "named color provider" system allows blocks and items to choose their own color providers in a side-safe way
+	// TODO: should this go somewhere else and not be so tightly-integrated?
 	private final Map<Block, String> blocksToColorProviderName = new HashMap<>();
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
 
@@ -147,12 +148,12 @@ public abstract class ZetaRegistry {
 		defers.removeAll(resourceLocation);
 	}
 
-	public void submitBlockColors(BiConsumer<Block, String> consumer) {
+	public void finalizeBlockColors(BiConsumer<Block, String> consumer) {
 		blocksToColorProviderName.forEach(consumer);
 		blocksToColorProviderName.clear();
 	}
 
-	public void submitItemColors(BiConsumer<Item, String> consumer) {
+	public void finalizeItemColors(BiConsumer<Item, String> consumer) {
 		itemsToColorProviderName.forEach(consumer);
 		itemsToColorProviderName.clear();
 	}

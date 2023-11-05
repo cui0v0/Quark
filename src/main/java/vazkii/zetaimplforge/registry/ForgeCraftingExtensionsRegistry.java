@@ -15,14 +15,9 @@ import vazkii.zeta.recipe.IZetaCondition;
 import vazkii.zeta.recipe.IZetaConditionSerializer;
 import vazkii.zeta.recipe.IZetaIngredientSerializer;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
-import vazkii.zetaimplforge.ForgeZeta;
 
 public class ForgeCraftingExtensionsRegistry implements CraftingExtensionsRegistry {
 	public final Map<IZetaIngredientSerializer<?>, IIngredientSerializer<?>> toForgeIngredientSerializers = new HashMap<>();
-
-	public ForgeCraftingExtensionsRegistry(ForgeZeta z) {
-		z.loadBus.subscribe(this);
-	}
 
 	@Override
 	public IZetaConditionSerializer<?> registerConditionSerializer(IZetaConditionSerializer<?> serializer) {

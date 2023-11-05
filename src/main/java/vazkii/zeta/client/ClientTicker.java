@@ -12,10 +12,6 @@ public final class ClientTicker {
 	public float delta = 0;
 	public float total = 0;
 
-	public ClientTicker(ZetaClient zc) {
-		zc.playBus.subscribe(this);
-	}
-
 	@PlayEvent
 	public void onRenderTick(ZRenderTick event) {
 		if(event.isStartPhase())

@@ -17,8 +17,6 @@ import vazkii.zetaimplforge.ForgeZeta;
 public class ForgeBrewingRegistry extends BrewingRegistry {
 	public ForgeBrewingRegistry(ForgeZeta zeta) {
 		super(zeta);
-
-		zeta.loadBus.subscribe(this);
 	}
 
 	private record DelayedPotion(Potion input, Supplier<Ingredient> reagentSupplier, Potion output) {

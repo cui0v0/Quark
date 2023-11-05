@@ -13,7 +13,6 @@ import vazkii.zeta.client.config.ClientConfigManager;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.ZetaEventBus;
-import vazkii.zeta.registry.DyeablesRegistry;
 
 public abstract class ZetaClient {
 	public ZetaClient(Zeta zeta) {
@@ -24,9 +23,11 @@ public abstract class ZetaClient {
 		this.ticker = createClientTicker();
 		this.clientConfigManager = createClientConfigManager();
 		this.topLayerTooltipHandler = createTopLayerTooltipHandler();
-		this.clientDyeablesRegistry = createClientDyeablesRegistry();
 		this.clientRegistryExtension = createClientRegistryExtension();
 
+		loadBus.subscribe(clientRegistryExtension);
+
+		playBus.subscribe(ticker);
 		playBus.subscribe(topLayerTooltipHandler);
 	}
 
@@ -39,11 +40,10 @@ public abstract class ZetaClient {
 	public final ClientTicker ticker;
 	public final ClientConfigManager clientConfigManager;
 	public final TopLayerTooltipHandler topLayerTooltipHandler;
-	public final DyeablesRegistry.Client clientDyeablesRegistry;
 	public final ClientRegistryExtension clientRegistryExtension;
 
 	public ClientTicker createClientTicker() {
-		return new ClientTicker(this);
+		return new ClientTicker();
 	}
 
 	public ClientConfigManager createClientConfigManager() {
@@ -54,13 +54,8 @@ public abstract class ZetaClient {
 		return new TopLayerTooltipHandler();
 	}
 
-	public DyeablesRegistry.Client createClientDyeablesRegistry() {
-		return zeta.dyeables.new Client(this);
-	}
-
-	public ClientRegistryExtension createClientRegistryExtension() {
-		return new ClientRegistryExtension(this.zeta);
-	}
+	//kinda a grab bag of stuff that needs to happen client-only; hmm, not the best design
+	public abstract ClientRegistryExtension createClientRegistryExtension();
 
 	//forge makes these weird
 	public abstract @Nullable BlockColor getBlockColor(BlockColors bcs, Block block);

@@ -55,7 +55,6 @@ public class ClientProxy extends CommonProxy {
 		Quark.ZETA.loadBus
 			.subscribe(ModelHandler.class) //TODO: Make this especially not a singleton, move it into respective modules
 			.subscribe(ContributorRewardHandler.Client.class)
-			.subscribe(new RenderLayerRegistry.Client(Quark.ZETA.renderLayerRegistry))
 			.subscribe(WoodSetHandler.Client.class);
 
 		Quark.ZETA.playBus

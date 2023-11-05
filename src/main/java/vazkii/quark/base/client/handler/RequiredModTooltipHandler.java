@@ -44,7 +44,6 @@ public class RequiredModTooltipHandler {
 
 		public Client(Zeta z) {
 			this.z = z;
-			z.playBus.subscribe(this);
 		}
 
 		@PlayEvent

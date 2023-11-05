@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -23,13 +20,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.zeta.Zeta;
-import vazkii.zeta.client.ZetaClient;
-import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.recipe.ZetaDyeRecipe;
 
+/**
+ * @see vazkii.zeta.client.ClientRegistryExtension
+ */
 public class DyeablesRegistry {
 	protected final Zeta z;
 
@@ -158,26 +156,4 @@ public class DyeablesRegistry {
 		return ItemStack.EMPTY;
 	}
 
-	//TODO: uhhh i think this is good enough for classloading ...
-	public class Client {
-		protected final ZetaClient zc;
-
-		public Client(ZetaClient zc) {
-			this.zc = zc;
-		}
-
-		@LoadEvent
-		public void colorHandlers(ZAddItemColorHandlers event) {
-			ClampedItemPropertyFunction isDyed = (stack, level, entity, i) -> isDyed(stack) ? 1 : 0;
-			ItemColor color = (stack, layer) -> layer == 0 ? getColor(stack) : 0xFF_FF_FF;
-
-			//apparently ItemPropertyFunctions are weird and can only be assigned to the minecraft: namespace
-			ResourceLocation isDyedId = new ResourceLocation("minecraft", zc.zeta.modid + "_dyed");
-
-			for(Item item : dyeableConditions.keySet()) {
-				ItemProperties.register(item, isDyedId, isDyed);
-				event.register(color, item);
-			}
-		}
-	}
 }

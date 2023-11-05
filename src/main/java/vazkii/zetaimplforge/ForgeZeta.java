@@ -98,7 +98,7 @@ public class ForgeZeta extends Zeta {
 
 	@Override
 	public CraftingExtensionsRegistry createCraftingExtensionsRegistry() {
-		return new ForgeCraftingExtensionsRegistry(this);
+		return new ForgeCraftingExtensionsRegistry();
 	}
 
 	@Override
