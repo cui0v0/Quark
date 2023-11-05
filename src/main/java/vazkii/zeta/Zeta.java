@@ -34,6 +34,7 @@ import vazkii.zeta.module.ZetaModuleManager;
 import vazkii.zeta.network.ZetaNetworkHandler;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
 import vazkii.zeta.registry.DyeablesRegistry;
+import vazkii.zeta.registry.RenderLayerRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
 
@@ -53,6 +54,7 @@ public abstract class Zeta {
 
 		this.modules = createModuleManager();
 		this.registry = createRegistry();
+		this.renderLayerRegistry = createRenderLayerRegistry();
 		this.dyeables = createDyeablesRegistry();
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
@@ -67,6 +69,7 @@ public abstract class Zeta {
 	public final ZetaModuleManager modules;
 
 	public final ZetaRegistry registry;
+	public final RenderLayerRegistry renderLayerRegistry;
 	public final DyeablesRegistry dyeables;
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
@@ -100,6 +103,9 @@ public abstract class Zeta {
 		return new ZetaModuleManager(this);
 	}
 	public abstract ZetaRegistry createRegistry();
+	public RenderLayerRegistry createRenderLayerRegistry() {
+		return new RenderLayerRegistry();
+	}
 	public abstract CraftingExtensionsRegistry createCraftingExtensionsRegistry();
 	public DyeablesRegistry createDyeablesRegistry() {
 		return new DyeablesRegistry(this);

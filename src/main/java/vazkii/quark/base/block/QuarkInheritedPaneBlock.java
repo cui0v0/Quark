@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.quark.base.handler.RenderLayerHandler;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
 import vazkii.zeta.registry.IZetaItemColorProvider;
 
@@ -22,7 +22,7 @@ public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlo
 		super(name, parent.getModule(), properties, null);
 
 		this.parent = parent;
-		RenderLayerHandler.setInherited(this, parent.getBlock());
+		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	public QuarkInheritedPaneBlock(IQuarkBlock parent, Block.Properties properties) {

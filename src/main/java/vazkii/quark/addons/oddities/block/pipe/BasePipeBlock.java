@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.quark.addons.oddities.block.be.PipeBlockEntity;
 import vazkii.quark.addons.oddities.module.PipesModule;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -63,7 +63,7 @@ public abstract class BasePipeBlock extends QuarkBlock implements EntityBlock {
 						.noOcclusion());
 
 		registerDefaultState(getDefaultPipeState());
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	public BlockState getDefaultPipeState() {

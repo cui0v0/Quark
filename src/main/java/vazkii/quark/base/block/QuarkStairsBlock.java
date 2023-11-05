@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
@@ -36,7 +35,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 
-		RenderLayerHandler.setInherited(this, parent.getBlock());
+		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	@Override

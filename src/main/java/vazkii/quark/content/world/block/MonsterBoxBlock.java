@@ -13,10 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.block.be.MonsterBoxBlockEntity;
 import vazkii.quark.content.world.module.MonsterBoxModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +29,7 @@ public class MonsterBoxBlock extends QuarkBlock implements EntityBlock {
 				.sound(SoundType.METAL)
 				.noOcclusion());
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

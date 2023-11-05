@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import javax.annotation.Nonnull;
 import java.util.function.BooleanSupplier;
@@ -33,7 +33,7 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		this.module = module;
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
 		this.flammable = flammable;
 	}

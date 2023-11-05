@@ -4,6 +4,7 @@ import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.bus.IZetaLoadEvent;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
+import vazkii.zeta.registry.RenderLayerRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 
 @SuppressWarnings("ClassCanBeRecord")
@@ -24,6 +25,10 @@ public class ZRegister implements IZetaLoadEvent {
 
 	public BrewingRegistry getBrewingRegistry() {
 		return zeta.brewingRegistry;
+	}
+
+	public RenderLayerRegistry getRenderLayerRegistry() {
+		return zeta.renderLayerRegistry;
 	}
 
 	public static class Post implements IZetaLoadEvent { }

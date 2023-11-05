@@ -11,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BushBlock;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class QuarkBushBlock extends BushBlock implements IQuarkBlock {
 
@@ -27,7 +27,7 @@ public class QuarkBushBlock extends BushBlock implements IQuarkBlock {
 
 		CreativeTabHandler.addTab(this, creativeTab);
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

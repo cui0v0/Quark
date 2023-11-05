@@ -11,10 +11,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public abstract class QuarkSaplingBlock extends SaplingBlock implements IQuarkBlock {
 
@@ -25,10 +24,10 @@ public abstract class QuarkSaplingBlock extends SaplingBlock implements IQuarkBl
 		super(tree, Block.Properties.copy(Blocks.OAK_SAPLING));
 		this.module = module;
 
-		Quark.ZETA.registry.registerBlock(this, name + "_sapling", true);
+		module.zeta.registry.registerBlock(this, name + "_sapling", true);
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

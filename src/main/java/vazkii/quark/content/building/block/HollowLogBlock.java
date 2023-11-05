@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class HollowLogBlock extends HollowPillarBlock {
 
@@ -25,7 +25,7 @@ public class HollowLogBlock extends HollowPillarBlock {
                         .isSuffocating((s, g, p) -> false));
 
         this.flammable = flammable;
-        RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+        module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
     }
 
 

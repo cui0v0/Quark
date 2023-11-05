@@ -10,10 +10,9 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 	
@@ -32,10 +31,10 @@ public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 
 		this.module = module;
 
-		Quark.ZETA.registry.registerBlock(this, name + "_leaves", true);
+		module.zeta.registry.registerBlock(this, name + "_leaves", true);
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 	}
 	
 	@Nullable

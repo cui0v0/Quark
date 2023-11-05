@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
@@ -32,7 +31,7 @@ public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IZetaBlock
 		Quark.ZETA.registry.registerBlock(this, resloc, true);
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		RenderLayerHandler.setInherited(this, parent.getBlock());
+		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	@Override

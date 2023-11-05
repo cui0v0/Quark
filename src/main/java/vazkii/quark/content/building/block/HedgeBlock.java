@@ -33,11 +33,11 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.building.module.HedgesModule;
 import vazkii.quark.content.world.block.BlossomLeavesBlock;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 //TODO ZETA: extend QuarkFenceBlock
 public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockColorProvider {
@@ -75,7 +75,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 		}
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
 		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
 		

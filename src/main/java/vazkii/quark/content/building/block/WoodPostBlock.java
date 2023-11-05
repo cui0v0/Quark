@@ -26,8 +26,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -57,7 +57,7 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 			state = state.setValue(prop, false);
 		registerDefaultState(state);
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Nonnull

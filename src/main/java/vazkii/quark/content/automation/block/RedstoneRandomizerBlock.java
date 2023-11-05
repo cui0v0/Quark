@@ -31,9 +31,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.base.RandomizerPowerState;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 /**
  * @author WireSegal
@@ -54,7 +54,7 @@ public class RedstoneRandomizerBlock extends QuarkBlock {
 				.setValue(FACING, Direction.NORTH)
 				.setValue(POWERED, RandomizerPowerState.OFF));
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

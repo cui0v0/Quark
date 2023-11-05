@@ -13,9 +13,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.client.config.QButtonHandler;
@@ -27,11 +25,11 @@ import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.zeta.client.TopLayerTooltipHandler;
 import vazkii.quark.base.handler.ContributorRewardHandler;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.WoodSetHandler;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.structural.C2SUpdateFlag;
 import vazkii.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,7 +55,7 @@ public class ClientProxy extends CommonProxy {
 		Quark.ZETA.loadBus
 			.subscribe(ModelHandler.class) //TODO: Make this especially not a singleton, move it into respective modules
 			.subscribe(ContributorRewardHandler.Client.class)
-			.subscribe(RenderLayerHandler.Client.class)
+			.subscribe(new RenderLayerRegistry.Client(Quark.ZETA.renderLayerRegistry))
 			.subscribe(WoodSetHandler.Client.class);
 
 		Quark.ZETA.playBus

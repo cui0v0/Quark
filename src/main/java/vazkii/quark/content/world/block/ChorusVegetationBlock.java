@@ -33,9 +33,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.ChorusVegetationModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlock, IForgeShearable {
 
@@ -53,7 +53,7 @@ public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlo
 				.randomTicks());
 
 		this.simple = simple;
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

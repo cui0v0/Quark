@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import vazkii.quark.base.block.QuarkPaneBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import vazkii.quark.base.module.LoadModule;
@@ -16,6 +15,7 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 @LoadModule(category = "building")
 public class GoldBarsModule extends ZetaModule {
@@ -28,7 +28,7 @@ public class GoldBarsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		gold_bars = new QuarkPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		gold_bars = new QuarkPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderLayerRegistry.Layer.CUTOUT);
 
 		StructureBlockReplacementHandler.addReplacement(GoldBarsModule::getGenerationBarBlockState);
 	}

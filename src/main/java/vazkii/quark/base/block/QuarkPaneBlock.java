@@ -5,10 +5,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
-import vazkii.quark.base.handler.RenderLayerHandler.RenderTypeSkeleton;
+import vazkii.zeta.registry.RenderLayerRegistry.Layer;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
@@ -20,15 +18,15 @@ public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 	public final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPaneBlock(String name, ZetaModule module, Block.Properties properties, RenderTypeSkeleton renderType) {
+	public QuarkPaneBlock(String name, ZetaModule module, Block.Properties properties, Layer renderLayer) {
 		super(properties);
 
 		this.module = module;
-		Quark.ZETA.registry.registerBlock(this, name, true);
+		module.zeta.registry.registerBlock(this, name, true);
 		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		if(renderType != null)
-			RenderLayerHandler.setRenderType(this, renderType);
+		if(renderLayer != null)
+			module.zeta.renderLayerRegistry.put(this, renderLayer);
 	}
 
 	@Override

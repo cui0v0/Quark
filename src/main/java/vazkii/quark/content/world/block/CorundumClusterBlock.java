@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterloggedBlock {
 
@@ -61,7 +61,7 @@ public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterlogge
 		this.base = base;
 		base.cluster = this;
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		base.getModule().zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false));
 	}
 

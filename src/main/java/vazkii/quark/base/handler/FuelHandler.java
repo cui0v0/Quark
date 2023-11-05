@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.content.building.block.VerticalSlabBlock;
 import vazkii.zeta.event.ZFurnaceFuelBurnTime;

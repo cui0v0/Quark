@@ -19,9 +19,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.automation.block.be.ChuteBlockEntity;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class ChuteBlock extends QuarkBlock implements EntityBlock {
 
@@ -36,7 +36,7 @@ public class ChuteBlock extends QuarkBlock implements EntityBlock {
 		super(regname, module, creativeTab, properties);
 		registerDefaultState(defaultBlockState().setValue(ENABLED, true));
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 	}
 
 	@Override

@@ -12,12 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
-import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.quark.base.item.QuarkDoubleHighBlockItem;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockItemProvider;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlockItemProvider {
 
@@ -28,8 +27,8 @@ public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlock
 		super(properties);
 		this.module = module;
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
-		Quark.ZETA.registry.registerBlock(this, regname, true);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+		module.zeta.registry.registerBlock(this, regname, true);
 		CreativeTabHandler.addTab(this, creativeTab);
 	}
 

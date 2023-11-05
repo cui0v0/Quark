@@ -12,6 +12,7 @@ import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.block.QuarkSlabBlock;
 import vazkii.quark.base.block.QuarkStairsBlock;
 import vazkii.quark.base.block.QuarkWallBlock;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class VariantHandler {
 		props = propertiesFunc.apply(props);
 
 		FlowerPotBlock potted = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> block, props);
-		RenderLayerHandler.setRenderType(potted, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		Quark.ZETA.renderLayerRegistry.put(potted, RenderLayerRegistry.Layer.CUTOUT);
 		ResourceLocation resLoc = Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK);
 		if (resLoc == null)
 			resLoc = new ResourceLocation("missingno");

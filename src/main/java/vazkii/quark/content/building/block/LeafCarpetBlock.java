@@ -20,9 +20,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.QuarkBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.registry.IZetaBlockColorProvider;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvider {
 
@@ -40,7 +40,7 @@ public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvid
 
 		baseState = base.defaultBlockState();
 
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 	}
 
 	public BlockState getBaseState() {

@@ -19,8 +19,8 @@ import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import javax.annotation.Nonnull;
 
@@ -50,7 +50,7 @@ public class HollowWoodBlock extends HollowFrameBlock {
                         .isSuffocating((s, g, p) -> false));
 
         this.flammable = flammable;
-        RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT_MIPPED);
+        module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
         registerDefaultState(defaultBlockState()
             .setValue(DOWN, true)
             .setValue(UP, true)

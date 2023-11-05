@@ -14,8 +14,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 /**
  * @author WireSegal
@@ -30,8 +30,8 @@ public class QuarkGlassBlock extends QuarkBlock {
 				.isRedstoneConductor((state, world, pos) -> false)
 				.isSuffocating((state, world, pos) -> false)
 				.isViewBlocking((state, world, pos) -> false));
-		
-		RenderLayerHandler.setRenderType(this, translucent ? RenderLayerHandler.RenderTypeSkeleton.TRANSLUCENT : RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+
+		module.zeta.renderLayerRegistry.put(this, translucent ? RenderLayerRegistry.Layer.TRANSLUCENT : RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override

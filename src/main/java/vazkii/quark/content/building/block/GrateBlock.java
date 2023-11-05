@@ -8,7 +8,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.SpawnPlacements.Type;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -38,8 +38,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 import vazkii.quark.api.ICrawlSpaceBlock;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.block.SimpleFluidloggedBlock;
-import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.registry.RenderLayerRegistry;
 
 import javax.annotation.Nonnull;
 
@@ -58,7 +58,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock, IC
 						.noOcclusion());
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(LAVALOGGED, false));
-		RenderLayerHandler.setRenderType(this, RenderLayerHandler.RenderTypeSkeleton.CUTOUT);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	private static VoxelShape createNewBox(double stepHeight) {
@@ -151,7 +151,7 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock, IC
 	}
 
 	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter world, BlockPos pos, Type type, EntityType<?> entityType) {
+	public boolean isValidSpawn(BlockState state, BlockGetter world, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
 		return false;
 	}
 
