@@ -6,6 +6,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -16,7 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.Zeta;
 
 //Mash of arl's RegistryHelper and its ModData innerclass.
@@ -35,7 +38,8 @@ public abstract class ZetaRegistry {
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
 
 	// creative tab haxx
-	private final Map<ResourceLocation, CreativeModeTab> groups = new LinkedHashMap<>();
+	private final Map<Block, TabInfo> creativeTabInfos = new LinkedHashMap<>();
+	record TabInfo(@Nullable CreativeModeTab tab, BooleanSupplier enabled) { }
 
 	public ZetaRegistry(Zeta z) {
 		this.z = z;
@@ -101,21 +105,22 @@ public abstract class ZetaRegistry {
 		registerBlock(block, resloc, true);
 	}
 
-	public void setCreativeTab(Block block, CreativeModeTab group) {
-		ResourceLocation res = internalNames.get(block);
-		if(res == null)
-			throw new IllegalArgumentException("Can't set the creative tab for a block without a registry name yet");
+	public void setCreativeTab(Block block, CreativeModeTab tab, BooleanSupplier enabled) {
+		//creative tabs are set and finalized in Item.Properties, so if the item is already registered it's too late
+		//TODO all this creative tab stuff is changing in 1.20 anyway
+		if(Item.byBlock(block) != Items.AIR)
+			throw new IllegalStateException("Too late to register creative tab for " + block + " (" + block.getClass() + ")");
 
-		groups.put(res, group);
+		creativeTabInfos.put(block, new TabInfo(tab, enabled));
 	}
 
 	private Item createItemBlock(Block block) {
 		Item.Properties props = new Item.Properties();
 		ResourceLocation registryName = internalNames.get(block);
 
-		CreativeModeTab group = groups.get(registryName);
-		if(group != null)
-			props = props.tab(group);
+		TabInfo tabInfo = creativeTabInfos.remove(block); //"remove" because we don't need these in-memory anymore
+		if(tabInfo != null && tabInfo.enabled.getAsBoolean() && tabInfo.tab != null)
+			props = props.tab(tabInfo.tab);
 
 		if(block instanceof IZetaItemPropertiesFiller filler)
 			filler.fillItemProperties(props);
