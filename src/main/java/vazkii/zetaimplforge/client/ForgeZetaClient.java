@@ -15,8 +15,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-import vazkii.quark.mixin.client.accessor.AccessorBlockColors;
-import vazkii.quark.mixin.client.accessor.AccessorItemColors;
+import vazkii.quark.mixin.zeta_forge.client.AccessorBlockColors;
+import vazkii.quark.mixin.zeta_forge.client.AccessorItemColors;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.client.ZetaClient;
 
@@ -34,14 +34,14 @@ public class ForgeZetaClient extends ZetaClient {
 	@Override
 	public @Nullable BlockColor getBlockColor(BlockColors bcs, Block block) {
 		return ForgeRegistries.BLOCKS.getDelegate(block)
-			.map(ref -> ((AccessorBlockColors) bcs).quark$getBlockColors().get(ref))
+			.map(ref -> ((AccessorBlockColors) bcs).zeta$getBlockColors().get(ref))
 			.orElse(null);
 	}
 
 	@Override
 	public @Nullable ItemColor getItemColor(ItemColors ics, ItemLike itemlike) {
 		return ForgeRegistries.ITEMS.getDelegate(itemlike.asItem())
-			.map(ref -> ((AccessorItemColors) ics).quark$getItemColors().get(ref))
+			.map(ref -> ((AccessorItemColors) ics).zeta$getItemColors().get(ref))
 			.orElse(null);
 	}
 

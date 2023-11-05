@@ -42,11 +42,14 @@ public class ConfigManager {
 		this.z = z;
 		this.cfm = new ConfigFlagManager(z);
 
+		//TODO: where to put this lol
+		z.loadBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
+		z.playBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
+
 		ZetaModuleManager modules = z.modules;
 
 		//all modules are enabled by default
 		enabledCategories.addAll(modules.getCategories());
-		//TODO: track module enablement too with a hashset too?
 
 		this.rootConfig = new SectionDefinition("root", List.of());
 

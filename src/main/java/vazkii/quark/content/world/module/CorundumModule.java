@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MaterialColor;
 import org.apache.commons.lang3.tuple.Pair;
-import vazkii.quark.api.IIndirectConnector;
+import vazkii.zeta.api.IIndirectConnector;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
 import vazkii.quark.base.handler.ToolInteractionHandler;

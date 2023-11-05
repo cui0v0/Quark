@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.config.Config;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.piston.ZetaPistonStructureResolver;
 
 public class GeneralConfig {
 
@@ -49,10 +53,10 @@ public class GeneralConfig {
 	public static boolean useAntiOverlap = true;
 
 	@Config(name = "Use Piston Logic Replacement",
-			description = "Quark replaces the Piston logic to allow for its piston features to work. If you're having troubles, try turning this off.")
+			description = "Enable Zeta's piston structure resolver, needed for some Quark features. If you're having troubles, try turning this off, but be aware other Zeta-using mods can enable it too.")
 	public static boolean usePistonLogicRepl = true;
 
-	@Config
+	@Config(description = "Ask Zeta to set the piston push limit. Only has an effect if Zeta's piston structure resolver is in use.")
 	@Config.Min(value = 0, exclusive = true)
 	public static int pistonPushLimit = 12;
 
@@ -120,6 +124,12 @@ public class GeneralConfig {
 			return false;
 
 		return allowedScreens.contains(clazz) != useScreenListBlacklist;
+	}
+
+	@LoadEvent
+	public static void configChanged(ZConfigChanged e) {
+		ZetaPistonStructureResolver.GlobalSettings.requestEnabled(Quark.MOD_ID, usePistonLogicRepl);
+		ZetaPistonStructureResolver.GlobalSettings.requestPushLimit(Quark.MOD_ID, pistonPushLimit);
 	}
 
 }

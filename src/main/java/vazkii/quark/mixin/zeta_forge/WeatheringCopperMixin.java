@@ -1,4 +1,4 @@
-package vazkii.quark.mixin;
+package vazkii.quark.mixin.zeta_forge;
 
 import net.minecraft.world.level.block.WeatheringCopper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,4 +15,6 @@ import vazkii.quark.mixinsupport.DelegateReturnValueModifier;
 })
 public interface WeatheringCopperMixin {
 	// Delegated. Only valid because WeatheringCopper members are not refmapped.
+
+	//TODO ZETA: use a real interface mixin on Fabric
 }

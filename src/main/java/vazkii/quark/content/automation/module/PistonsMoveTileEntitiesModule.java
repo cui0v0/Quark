@@ -21,11 +21,10 @@ import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import vazkii.quark.api.IIndirectConnector;
+import vazkii.zeta.api.IIndirectConnector;
 import vazkii.quark.api.IPistonCallback;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
@@ -36,6 +35,7 @@ import vazkii.zeta.event.ZGatherHints;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.piston.ZetaPistonStructureResolver;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -96,8 +96,8 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 		if(ModuleLoader.INSTANCE.isModuleEnabled(SturdyStoneModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.piston_sturdy"));
 
-		if(GeneralConfig.pistonPushLimit != 12)
-			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.piston_max_blocks", GeneralConfig.pistonPushLimit));
+		if(ZetaPistonStructureResolver.GlobalSettings.getPushLimit() != 12)
+			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.piston_max_blocks", ZetaPistonStructureResolver.GlobalSettings.getPushLimit()));
 
 		consumer.accept(Items.PISTON, comp);
 		consumer.accept(Items.STICKY_PISTON, comp);

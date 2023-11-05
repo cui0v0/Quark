@@ -1,4 +1,4 @@
-package vazkii.quark.mixin.accessor;
+package vazkii.quark.mixin.zeta;
 
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -11,6 +11,6 @@ import java.util.List;
 public interface AccessorLootTable {
 
 	@Accessor("pools")
-	List<LootPool> quark$getPools();
+	List<LootPool> zeta$getPools();
 
 }

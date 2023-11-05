@@ -7,7 +7,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import vazkii.quark.mixin.accessor.AccessorLootTable;
+import vazkii.quark.mixin.zeta.AccessorLootTable;
 import vazkii.zeta.event.bus.Cancellable;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 
@@ -19,7 +19,7 @@ public interface ZLootTableLoad extends IZetaPlayEvent, Cancellable {
 	default void add(LootPoolEntryContainer entry) {
 		LootTable table = getTable();
 
-		List<LootPool> pools = ((AccessorLootTable) table).quark$getPools();
+		List<LootPool> pools = ((AccessorLootTable) table).zeta$getPools();
 		if (pools != null && !pools.isEmpty()) {
 			LootPool firstPool = pools.get(0);
 			LootPoolEntryContainer[] entries = firstPool.entries;

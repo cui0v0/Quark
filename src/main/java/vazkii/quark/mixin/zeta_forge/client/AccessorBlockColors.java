@@ -1,4 +1,4 @@
-package vazkii.quark.mixin.client.accessor;
+package vazkii.quark.mixin.zeta_forge.client;
 
 import java.util.Map;
 
@@ -14,6 +14,6 @@ import net.minecraft.world.level.block.Block;
 public interface AccessorBlockColors {
 
 	@Accessor("blockColors")
-	Map<Reference<Block>, BlockColor> quark$getBlockColors();
+	Map<Reference<Block>, BlockColor> zeta$getBlockColors();
 
 }

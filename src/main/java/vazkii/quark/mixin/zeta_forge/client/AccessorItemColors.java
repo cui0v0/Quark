@@ -1,4 +1,4 @@
-package vazkii.quark.mixin.client.accessor;
+package vazkii.quark.mixin.zeta_forge.client;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
@@ -13,6 +13,6 @@ import java.util.Map;
 public interface AccessorItemColors {
 
 	@Accessor("itemColors")
-	Map<Reference<Item>, ItemColor> quark$getItemColors();
+	Map<Reference<Item>, ItemColor> zeta$getItemColors();
 
 }

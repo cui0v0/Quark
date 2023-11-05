@@ -1,4 +1,4 @@
-package vazkii.quark.mixin.accessor;
+package vazkii.quark.mixin.zeta;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorPistonStructureResolver {
 
 	@Accessor("extending")
-	boolean quark$extending();
+	boolean zeta$extending();
 
 	@Accessor("level")
-	Level quark$level();
+	Level zeta$level();
 
 	@Accessor("pistonPos")
-	BlockPos quark$pistonPos();
+	BlockPos zeta$pistonPos();
 
 	@Accessor("pistonDirection")
-	Direction quark$pistonDirection();
+	Direction zeta$pistonDirection();
 }

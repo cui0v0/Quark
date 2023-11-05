@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.quark.base.block.CustomWeatheringCopper;
+import vazkii.zeta.block.CustomWeatheringCopper;
 import vazkii.zeta.module.ZetaModule;
 
 public class WeatheringCopperVerticalSlabBlock extends QuarkVerticalSlabBlock implements CustomWeatheringCopper {

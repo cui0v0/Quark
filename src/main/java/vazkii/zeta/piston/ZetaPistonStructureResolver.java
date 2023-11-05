@@ -1,6 +1,8 @@
-package vazkii.quark.base.handler;
+package vazkii.zeta.piston;
 
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -10,17 +12,67 @@ import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.tuple.Pair;
-import vazkii.quark.api.ICollateralMover;
-import vazkii.quark.api.ICollateralMover.MoveResult;
-import vazkii.quark.api.IConditionalSticky;
-import vazkii.quark.api.IIndirectConnector;
-import vazkii.quark.mixin.accessor.AccessorPistonStructureResolver;
+import vazkii.zeta.Zeta;
+import vazkii.zeta.api.ICollateralMover;
+import vazkii.zeta.api.ICollateralMover.MoveResult;
+import vazkii.zeta.api.IConditionalSticky;
+import vazkii.zeta.api.IIndirectConnector;
+import vazkii.quark.mixin.zeta.AccessorPistonStructureResolver;
 
 import javax.annotation.Nonnull;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
-public class QuarkPistonStructureResolver extends PistonStructureResolver {
+public class ZetaPistonStructureResolver extends PistonStructureResolver {
+
+	/**
+	 * The Zeta piston structure resolver is one of the few parts of Zeta that's truly static and affects everyone.
+	 * To that end, it's disabled by default. You can request it be enabled with this class.
+	 */
+	public static class GlobalSettings {
+		private static boolean enabled = false;
+		private static int pushLimit = 12;
+
+		private static final Set<String> wantsEnabled = new HashSet<>();
+		private static final Object2IntMap<String> wantsPushLimit = new Object2IntOpenHashMap<>();
+
+		public static boolean isEnabled() {
+			return enabled;
+		}
+
+		public static int getPushLimit() {
+			return pushLimit;
+		}
+
+		public static void requestEnabled(String modid, boolean enablePlease) {
+			boolean wasEnabled = enabled;
+
+			if(enablePlease)
+				wantsEnabled.add(modid);
+			else
+				wantsEnabled.remove(modid);
+
+			enabled = !wantsEnabled.isEmpty();
+
+			if(!wasEnabled && enabled)
+				Zeta.GLOBAL_LOG.info("'{}' is enabling Zeta's piston structure resolver.", modid);
+			else if(wasEnabled && !enabled)
+				Zeta.GLOBAL_LOG.info("Zeta's piston structure resolver is now disabled.");
+		}
+
+		public static void requestPushLimit(String modid, int pushLimitPlease) {
+			int wasPushLimit = pushLimit;
+
+			wantsPushLimit.put(modid, pushLimitPlease);
+			pushLimit = wantsPushLimit.values().intStream().max().orElse(12);
+
+			if(wasPushLimit < pushLimit)
+				Zeta.GLOBAL_LOG.info("'{}' is raising Zeta's piston structure resolver push limit to {} blocks.", modid, pushLimit);
+		}
+	}
 
 	private final PistonStructureResolver parent;
 
@@ -31,17 +83,17 @@ public class QuarkPistonStructureResolver extends PistonStructureResolver {
 	private final List<BlockPos> toMove = Lists.newArrayList();
 	private final List<BlockPos> toDestroy = Lists.newArrayList();
 
-	public QuarkPistonStructureResolver(PistonStructureResolver parent) {
-		super(((AccessorPistonStructureResolver) parent).quark$level(),
-			((AccessorPistonStructureResolver) parent).quark$pistonPos(),
-			((AccessorPistonStructureResolver) parent).quark$pistonDirection(),
-			((AccessorPistonStructureResolver) parent).quark$extending());
+	public ZetaPistonStructureResolver(PistonStructureResolver parent) {
+		super(((AccessorPistonStructureResolver) parent).zeta$level(),
+			((AccessorPistonStructureResolver) parent).zeta$pistonPos(),
+			((AccessorPistonStructureResolver) parent).zeta$pistonDirection(),
+			((AccessorPistonStructureResolver) parent).zeta$extending());
 		this.parent = parent;
 
-		this.world = ((AccessorPistonStructureResolver) parent).quark$level();
-		this.pistonPos = ((AccessorPistonStructureResolver) parent).quark$pistonPos();
-		Direction pistonFacing = ((AccessorPistonStructureResolver) parent).quark$pistonDirection();
-		if(((AccessorPistonStructureResolver) parent).quark$extending()) {
+		this.world = ((AccessorPistonStructureResolver) parent).zeta$level();
+		this.pistonPos = ((AccessorPistonStructureResolver) parent).zeta$pistonPos();
+		Direction pistonFacing = ((AccessorPistonStructureResolver) parent).zeta$pistonDirection();
+		if(((AccessorPistonStructureResolver) parent).zeta$extending()) {
 			this.moveDirection = pistonFacing;
 			this.blockToMove = this.pistonPos.relative(pistonFacing);
 		} else {
@@ -52,7 +104,7 @@ public class QuarkPistonStructureResolver extends PistonStructureResolver {
 
 	@Override
 	public boolean resolve() {
-		if(!GeneralConfig.usePistonLogicRepl)
+		if(!GlobalSettings.isEnabled())
 			return parent.resolve();
 
 		toMove.clear();
@@ -79,7 +131,7 @@ public class QuarkPistonStructureResolver extends PistonStructureResolver {
 	}
 
 	private boolean addBlockLine(BlockPos origin, Direction face) {
-		final int max = GeneralConfig.pistonPushLimit;
+		final int max = GlobalSettings.getPushLimit();
 
 		BlockPos target = origin;
 		BlockState state = world.getBlockState(target);
@@ -310,7 +362,7 @@ public class QuarkPistonStructureResolver extends PistonStructureResolver {
 	@Nonnull
 	@Override
 	public List<BlockPos> getToPush() {
-		if(!GeneralConfig.usePistonLogicRepl)
+		if(!GlobalSettings.isEnabled())
 			return parent.getToPush();
 
 		return toMove;
@@ -319,7 +371,7 @@ public class QuarkPistonStructureResolver extends PistonStructureResolver {
 	@Nonnull
 	@Override
 	public List<BlockPos> getToDestroy() {
-		if(!GeneralConfig.usePistonLogicRepl)
+		if(!GlobalSettings.isEnabled())
 			return parent.getToDestroy();
 
 		return toDestroy;

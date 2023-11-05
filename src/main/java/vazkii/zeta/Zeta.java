@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.BlockHitResult;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.registry.BrewingRegistry;
@@ -40,6 +41,8 @@ import vazkii.zeta.util.ZetaSide;
  * do not touch forge OR quark from this package, it will later be split off
  */
 public abstract class Zeta {
+	public static final Logger GLOBAL_LOG = LogManager.getLogger("zeta");
+
 	public Zeta(String modid, Logger log, ZetaSide side) {
 		this.log = log;
 
