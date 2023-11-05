@@ -8,7 +8,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -44,7 +42,6 @@ import vazkii.quark.base.handler.RenderLayerHandler;
 import vazkii.zeta.module.ZetaModule;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock, ICrawlSpaceBlock {
 	private static final VoxelShape TRUE_SHAPE = box(0, 15, 0, 16, 16, 16);
@@ -129,14 +126,6 @@ public class GrateBlock extends QuarkBlock implements SimpleFluidloggedBlock, IC
 		}
 
 		return TRUE_SHAPE;
-	}
-
-	@Nullable
-	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
-		if (entity instanceof Animal || entity instanceof WaterAnimal)
-			return BlockPathTypes.DAMAGE_OTHER;
-		return null;
 	}
 
 	@Override

@@ -34,8 +34,9 @@ public class CutVineBlock extends QuarkVineBlock implements IZetaBlockColorProvi
 		return super.canSupportAtFace(level, pos, dir);
 	}
 
+	@SuppressWarnings("deprecation") //Needless Forge extension
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return new ItemStack(Items.VINE);
 	}
 
