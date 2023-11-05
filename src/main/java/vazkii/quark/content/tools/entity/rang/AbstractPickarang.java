@@ -48,6 +48,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.content.mobs.entity.Toretoise;
 import vazkii.quark.content.tools.config.PickarangType;
@@ -579,11 +580,11 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	public int getEfficiencyModifier() {
-		return getStack().getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+		return Quark.ZETA.getEnchantmentLevel(getStack(), Enchantments.BLOCK_EFFICIENCY);
 	}
 
 	public int getPiercingModifier() {
-		return getStack().getEnchantmentLevel(Enchantments.PIERCING);
+		return Quark.ZETA.getEnchantmentLevel(getStack(), Enchantments.PIERCING);
 	}
 
 	public ItemStack getStack() {

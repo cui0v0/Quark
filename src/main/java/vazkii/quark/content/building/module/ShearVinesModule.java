@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.zeta.client.AlikeColorHandler;
 import vazkii.zeta.module.ZetaModule;
@@ -46,7 +45,7 @@ public class ShearVinesModule extends ZetaModule {
 	@PlayEvent
 	public void onRightClick(ZRightClickBlock event) {
 		ItemStack stack = event.getItemStack();
-		if(stack.canPerformAction(ToolActions.SHEARS_CARVE)) { //TODO: forge only API
+		if(zeta.canShear(stack)) {
 			BlockPos pos = event.getPos();
 			Level world = event.getLevel();
 			BlockState state = world.getBlockState(pos);

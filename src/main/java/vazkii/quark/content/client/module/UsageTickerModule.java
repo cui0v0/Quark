@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantments;
 import vazkii.quark.api.IUsageTickerOverride;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.client.event.ZRenderOverlay;
 import vazkii.zeta.client.event.ZStartClientTick;
 import vazkii.zeta.event.bus.PlayEvent;
@@ -226,7 +227,7 @@ public class UsageTickerModule extends ZetaModule {
 			}
 
 			private static boolean isProjectileWeapon(ItemStack stack) {
-				return (stack.getItem() instanceof ProjectileWeaponItem) && stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) == 0;
+				return (stack.getItem() instanceof ProjectileWeaponItem) && Quark.ZETA.getEnchantmentLevel(stack, Enchantments.INFINITY_ARROWS) == 0;
 			}
 
 			public ItemStack getRenderedStack(Player player) {

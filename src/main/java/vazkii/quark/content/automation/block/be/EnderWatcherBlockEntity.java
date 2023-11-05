@@ -18,6 +18,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.block.be.ZetaBlockEntity;
 import vazkii.quark.base.handler.RayTraceHandler;
 import vazkii.quark.content.automation.block.EnderWatcherBlock;
@@ -46,7 +47,7 @@ public class EnderWatcherBlockEntity extends ZetaBlockEntity {
 		for(Player player : players) {
 			ItemStack helm = player.getItemBySlot(EquipmentSlot.HEAD);
 			fakeEnderman.lookAt(player, 180, 180);
-			if(!helm.isEmpty() && helm.isEnderMask(player, fakeEnderman))
+			if(!helm.isEmpty() && Quark.ZETA.isEnderMask(helm, player, fakeEnderman))
 				continue;
 
 			HitResult result = RayTraceHandler.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 64);

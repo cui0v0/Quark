@@ -18,7 +18,7 @@ public class BetterElytraRocketModule extends ZetaModule {
 	@PlayEvent
 	public void onUseRocket(ZRightClickItem event) {
 		Player player = event.getEntity();
-		if(!player.isFallFlying() && player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)) {
+		if(!player.isFallFlying() && zeta.canElytraFly(player.getItemBySlot(EquipmentSlot.CHEST), player)) {
 			Level world = player.level;
 			ItemStack itemstack = event.getItemStack();
 

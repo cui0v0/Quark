@@ -24,6 +24,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.zeta.module.ZetaModule;
@@ -93,7 +94,7 @@ public class PickarangItem extends QuarkItem {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
 		playerIn.setItemInHand(handIn, ItemStack.EMPTY);
-		int eff = itemstack.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+		int eff = Quark.ZETA.getEnchantmentLevel(itemstack, Enchantments.BLOCK_EFFICIENCY);
 		Vec3 pos = playerIn.position();
 		worldIn.playSound(null, pos.x, pos.y, pos.z, QuarkSounds.ENTITY_PICKARANG_THROW, SoundSource.NEUTRAL, 0.5F + eff * 0.14F, 0.4F / (worldIn.random.nextFloat() * 0.4F + 0.8F));
 

@@ -22,6 +22,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.eventbus.api.Event;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.*;
@@ -144,7 +145,7 @@ public class GameNerfsModule extends ZetaModule {
 			return base;
 
 		if(noNerfForMendingTwo)
-			return (stack) -> base.test(stack) && stack.getEnchantmentLevel(Enchantments.MENDING) > 1;
+			return (stack) -> base.test(stack) && Quark.ZETA.getEnchantmentLevel(stack, Enchantments.MENDING) > 1;
 		return (stack) -> false;
 	}
 

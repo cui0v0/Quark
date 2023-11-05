@@ -1,16 +1,21 @@
 package vazkii.zetaimplforge;
 
+import java.util.Map;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -118,7 +123,32 @@ public class ForgeZeta extends Zeta {
 
 	@Override
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-		return stack.canElytraFly(entity);
+		return stack.canElytraFly(entity); //IForgeItemStack
+	}
+
+	@Override
+	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderboy) {
+		return stack.isEnderMask(player, enderboy); //IForgeItemStack
+	}
+
+	@Override
+	public boolean canShear(ItemStack stack) {
+		return stack.canPerformAction(ToolActions.SHEARS_CARVE); //IForgeItemStack
+	}
+
+	@Override
+	public int getEnchantmentLevel(ItemStack stack, Enchantment enchantment) {
+		return stack.getEnchantmentLevel(enchantment); //IForgeItemStack
+	}
+
+	@Override
+	public Map<Enchantment, Integer> getAllEnchantments(ItemStack stack) {
+		return stack.getAllEnchantments(); //IForgeItemStack
+	}
+
+	@Override
+	public int getEnchantmentValue(ItemStack stack) {
+		return stack.getEnchantmentValue(); //IForgeItemStack
 	}
 
 	@SuppressWarnings("duplicates")

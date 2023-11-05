@@ -26,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.tools.item.AncientTomeItem;
@@ -92,7 +93,7 @@ public class EnchantedBookTooltips {
 				continue;
 
 			if(!stack.isEmpty() && e.canEnchant(stack)) {
-				if (onlyForTable && (!e.canApplyAtEnchantingTable(stack) || !stack.isEnchantable() || stack.getEnchantmentValue() <= 0))
+				if (onlyForTable && (!e.canApplyAtEnchantingTable(stack) || !stack.isEnchantable() || Quark.ZETA.getEnchantmentValue(stack) <= 0))
 					continue;
 				list.add(stack);
 			}

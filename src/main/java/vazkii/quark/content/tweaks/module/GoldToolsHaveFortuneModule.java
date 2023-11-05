@@ -13,6 +13,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -144,7 +145,7 @@ public class GoldToolsHaveFortuneModule extends ZetaModule {
 	}
 
 	public static void fakeEnchantmentTooltip(ItemStack stack, List<Component> components) {
-		for (Map.Entry<Enchantment, Integer> entry : stack.getAllEnchantments().entrySet()) {
+		for (Map.Entry<Enchantment, Integer> entry : Quark.ZETA.getAllEnchantments(stack).entrySet()) {
 			int actualLevel = EnchantmentHelper.getTagEnchantmentLevel(entry.getKey(), stack);
 			if (actualLevel != entry.getValue()) {
 				Component comp = entry.getKey().getFullname(entry.getValue());
@@ -163,7 +164,7 @@ public class GoldToolsHaveFortuneModule extends ZetaModule {
 	public static ListTag hideSmallerEnchantments(ItemStack stack, ListTag tag) {
 		if (staticEnabled && displayBakedEnchantmentsInTooltip) {
 			List<ResourceLocation> toRemove = Lists.newArrayList();
-			for (Map.Entry<Enchantment, Integer> entry : stack.getAllEnchantments().entrySet()) {
+			for (Map.Entry<Enchantment, Integer> entry : Quark.ZETA.getAllEnchantments(stack).entrySet()) {
 				int actualLevel = EnchantmentHelper.getTagEnchantmentLevel(entry.getKey(), stack);
 				if (actualLevel != entry.getValue() && actualLevel != 0) {
 					toRemove.add(EnchantmentHelper.getEnchantmentId(entry.getKey()));
