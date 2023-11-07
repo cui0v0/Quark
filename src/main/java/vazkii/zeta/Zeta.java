@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.block.ext.BlockExtensionFactory;
+import vazkii.zeta.capability.ZetaCapabilityManager;
 import vazkii.zeta.item.ext.ItemExtensionFactory;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.config.IZetaConfigInternals;
@@ -51,6 +52,7 @@ public abstract class Zeta {
 
 		this.blockExtensions = createBlockExtensionFactory();
 		this.itemExtensions = createItemExtensionFactory();
+		this.capabilityManager = createCapabilityManager();
 
 		loadBus.subscribe(craftingExtensions)
 			.subscribe(brewingRegistry);
@@ -70,6 +72,7 @@ public abstract class Zeta {
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
 
+	public final ZetaCapabilityManager capabilityManager;
 	public final BlockExtensionFactory blockExtensions;
 	public final ItemExtensionFactory itemExtensions;
 
@@ -111,6 +114,7 @@ public abstract class Zeta {
 	}
 	public abstract BrewingRegistry createBrewingRegistry();
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
+	public abstract ZetaCapabilityManager createCapabilityManager();
 	public BlockExtensionFactory createBlockExtensionFactory() {
 		return BlockExtensionFactory.DEFAULT;
 	}

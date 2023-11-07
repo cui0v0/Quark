@@ -2,19 +2,12 @@ package vazkii.quark.base.capability;
 
 import java.util.concurrent.Callable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.addons.oddities.capability.MagnetTracker;
@@ -29,9 +22,12 @@ import vazkii.quark.base.capability.dummy.DummyMagnetTracker;
 import vazkii.quark.base.capability.dummy.DummyPistonCallback;
 import vazkii.quark.base.capability.dummy.DummyRuneColor;
 import vazkii.quark.base.capability.dummy.DummySorting;
+import vazkii.zeta.capability.ZetaCapabilityManager;
 
 public class CapabilityHandler {
-	
+
+	private static final ZetaCapabilityManager mgr = Quark.ZETA.capabilityManager;
+
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		registerLambda(event, ITransferManager.class, (player) -> false);
 
@@ -58,30 +54,22 @@ public class CapabilityHandler {
 	public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
 		Item item = event.getObject().getItem();
 
-		if(item instanceof ICustomSorting)
-			SelfProvider.attachItem(SORTING_HANDLER, QuarkCapabilities.SORTING, event);
+		if(item instanceof ICustomSorting impl)
+			mgr.attachCapability(event, SORTING_HANDLER, QuarkCapabilities.SORTING, impl);
 
-		if(item instanceof IRuneColorProvider)
-			SelfProvider.attachItem(RUNE_COLOR_HANDLER, QuarkCapabilities.RUNE_COLOR, event);
+		if(item instanceof IRuneColorProvider impl)
+			mgr.attachCapability(event, RUNE_COLOR_HANDLER, QuarkCapabilities.RUNE_COLOR, impl);
 	}
 
 	@SubscribeEvent
 	public static void attachTileCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
-		if (event.getObject() instanceof ITransferManager)
-			SelfProvider.attach(DROPOFF_MANAGER, QuarkCapabilities.TRANSFER, event);
+		if(event.getObject() instanceof ITransferManager impl)
+			mgr.attachCapability(event, DROPOFF_MANAGER, QuarkCapabilities.TRANSFER, impl);
 	}
 	
 	@SubscribeEvent 
 	public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event) {
 		Level world = event.getObject();
-		MagnetTracker tracker = new MagnetTracker(world);
-
-		event.addCapability(MAGNET_TRACKER, new ICapabilityProvider() {
-			@Nonnull
-			@Override
-			public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-				return QuarkCapabilities.MAGNET_TRACKER_CAPABILITY.orEmpty(cap, LazyOptional.of(() -> tracker));
-			}
-		});
+		mgr.attachCapability(event, MAGNET_TRACKER, QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, new MagnetTracker(world));
 	}
 }
