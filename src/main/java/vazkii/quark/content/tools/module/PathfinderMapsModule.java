@@ -30,31 +30,29 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
+import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
+import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
+import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.IConfigType;
+import vazkii.quark.content.tools.item.PathfindersQuillItem;
+import vazkii.quark.content.tools.loot.InBiomeCondition;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.client.event.ZRenderGuiOverlay;
 import vazkii.zeta.event.ZConfigChanged;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.client.event.ZClientSetup;
-import vazkii.zeta.util.ItemNBTHelper;
-import vazkii.quark.base.Quark;
-import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
-import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.util.Hint;
-import vazkii.quark.content.tools.item.PathfindersQuillItem;
-import vazkii.quark.content.tools.loot.InBiomeCondition;
+import vazkii.zeta.util.ItemNBTHelper;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
@@ -62,7 +60,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@LoadModule(category = "tools", hasSubscriptions = true)
+@ZetaLoadModule(category = "tools")
 public class PathfinderMapsModule extends ZetaModule {
 
 	public static final String TAG_IS_PATHFINDER = "quark:is_pathfinder";
@@ -144,51 +142,6 @@ public class PathfinderMapsModule extends ZetaModule {
 		pathfinderMapTrigger = QuarkAdvancementHandler.registerGenericTrigger("pathfinder_map_center");
 
 		pathfinders_quill = new PathfindersQuillItem(this);
-	}
-
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public void clientSetup(ZClientSetup e) {
-		e.enqueueWork(() -> ItemProperties.register(pathfinders_quill, new ResourceLocation("has_biome"),
-				(stack, world, entity, i) -> (PathfindersQuillItem.getTargetBiome(stack) != null) ? 1 : 0));
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public void drawHUD(RenderGuiOverlayEvent.Post event) {
-		if(drawHud && event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
-			Minecraft mc = Minecraft.getInstance();
-			if(mc.screen != null)
-				return;
-
-			ItemStack quill = PathfindersQuillItem.getActiveQuill(mc.player);
-
-			if(quill != null) {
-				Window window = event.getWindow();
-				int x = 5;
-				int y = PathfinderMapsModule.hudOnTop ? 20 : (window.getGuiScaledHeight() - 15);
-
-				PoseStack ps = event.getPoseStack();
-				mc.font.drawShadow(ps, PathfindersQuillItem.getSearchingComponent(), x, y, 0xFFFFFF);
-
-				int qx = x;
-				int qy = y - 15;
-
-				float speed = 0.1F;
-				float total = QuarkClient.ticker.total * speed;
-
-				float offX = (float) (Math.sin(total) + 1) * 20;
-				float offY = (float) (Math.sin(total * 8) - 1);
-
-				if(Math.cos(total) < 0)
-					offY = 0;
-
-				qx += (int) offX;
-				qy += (int) offY;
-
-				mc.getItemRenderer().renderGuiItem(quill, qx, qy);
-			}
-		}
 	}
 
 	@SubscribeEvent
@@ -391,4 +344,49 @@ public class PathfinderMapsModule extends ZetaModule {
 		}
 	}
 
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends PathfinderMapsModule {
+		@LoadEvent
+		public void clientSetup(ZClientSetup e) {
+			e.enqueueWork(() -> ItemProperties.register(pathfinders_quill, new ResourceLocation("has_biome"),
+					(stack, world, entity, i) -> (PathfindersQuillItem.getTargetBiome(stack) != null) ? 1 : 0));
+		}
+
+		@PlayEvent
+		public void drawHUD(ZRenderGuiOverlay.Hotbar.Post event) {
+			if (drawHud) {
+				Minecraft mc = Minecraft.getInstance();
+				if(mc.screen != null)
+					return;
+
+				ItemStack quill = PathfindersQuillItem.getActiveQuill(mc.player);
+
+				if(quill != null) {
+					Window window = event.getWindow();
+					int x = 5;
+					int y = PathfinderMapsModule.hudOnTop ? 20 : (window.getGuiScaledHeight() - 15);
+
+					PoseStack ps = event.getPoseStack();
+					mc.font.drawShadow(ps, PathfindersQuillItem.getSearchingComponent(), x, y, 0xFFFFFF);
+
+					int qx = x;
+					int qy = y - 15;
+
+					float speed = 0.1F;
+					float total = QuarkClient.ticker.total * speed;
+
+					float offX = (float) (Math.sin(total) + 1) * 20;
+					float offY = (float) (Math.sin(total * 8) - 1);
+
+					if(Math.cos(total) < 0)
+						offY = 0;
+
+					qx += (int) offX;
+					qy += (int) offY;
+
+					mc.getItemRenderer().renderGuiItem(quill, qx, qy);
+				}
+			}
+		}
+	}
 }

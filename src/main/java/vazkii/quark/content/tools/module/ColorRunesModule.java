@@ -15,35 +15,29 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkDirection;
-import vazkii.zeta.event.ZCommonSetup;
-import vazkii.zeta.event.ZLootTableLoad;
-import vazkii.zeta.event.ZRegister;
-import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.event.bus.PlayEvent;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.UpdateTridentMessage;
 import vazkii.quark.content.tools.client.render.GlintRenderTypes;
 import vazkii.quark.content.tools.item.RuneItem;
+import vazkii.zeta.event.*;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
+import vazkii.zeta.util.ItemNBTHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -54,7 +48,7 @@ import java.util.function.Supplier;
  * Hacked by svenhjol
  * Created at 1:52 PM on 8/17/19.
  */
-@LoadModule(category = "tools", hasSubscriptions = true)
+@ZetaLoadModule(category = "tools")
 public class ColorRunesModule extends ZetaModule {
 
 	public static final String TAG_RUNE_ATTACHED = Quark.MOD_ID + ":RuneAttached";
@@ -114,48 +108,7 @@ public class ColorRunesModule extends ZetaModule {
 		LazyOptional<IRuneColorProvider> proxyCap = get(proxied);
 		return proxyCap.orElse((s) -> -1).getRuneColor(target);
 	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getGlint() {
-		return renderType(GlintRenderTypes.glint, RenderType::glint);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getGlintTranslucent() {
-		return renderType(GlintRenderTypes.glintTranslucent, RenderType::glintTranslucent);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getEntityGlint() {
-		return renderType(GlintRenderTypes.entityGlint, RenderType::entityGlint);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getGlintDirect() {
-		return renderType(GlintRenderTypes.glintDirect, RenderType::glintDirect);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getEntityGlintDirect() {
-		return renderType(GlintRenderTypes.entityGlintDirect, RenderType::entityGlintDirect);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getArmorGlint() {
-		return renderType(GlintRenderTypes.armorGlint, RenderType::armorGlint);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static RenderType getArmorEntityGlint() {
-		return renderType(GlintRenderTypes.armorEntityGlint, RenderType::armorEntityGlint);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private static RenderType renderType(List<RenderType> list, Supplier<RenderType> vanilla) {
-		int color = changeColor();
-		return color >= 0 && color <= RUNE_TYPES ? list.get(color) : vanilla.get();
-	}
-
+	
 	private static final Map<ThrownTrident, ItemStack> TRIDENT_STACK_REFERENCES = new WeakHashMap<>();
 
 	public static void syncTrident(Consumer<Packet<?>> packetConsumer, ThrownTrident trident, boolean force) {
@@ -241,18 +194,18 @@ public class ColorRunesModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void onAnvilUse(AnvilRepairEvent event) {
+	@PlayEvent
+	public void onAnvilUse(ZAnvilRepair event) {
 		ItemStack right = event.getRight();
 
 		if(right.is(runesTag) && event.getEntity() instanceof ServerPlayer sp)
 			applyRuneTrigger.trigger(sp);
 	}
 
-	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event) {
+	@PlayEvent
+	public void onPlayerTick(ZPlayerTick event) {
 		final String tag = "quark:what_are_you_gay_or_something";
-		Player player = event.player;
+		Player player = event.getPlayer();
 
 		boolean wasRainbow = player.getPersistentData().getBoolean(tag);
 		boolean rainbow = isPlayerRainbow(player);
@@ -284,4 +237,48 @@ public class ColorRunesModule extends ZetaModule {
 		return provider.getCapability(QuarkCapabilities.RUNE_COLOR);
 	}
 
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ColorRunesModule {
+
+		public static RenderType getGlint() {
+			return renderType(GlintRenderTypes.glint, RenderType::glint);
+		}
+
+
+		public static RenderType getGlintTranslucent() {
+			return renderType(GlintRenderTypes.glintTranslucent, RenderType::glintTranslucent);
+		}
+
+
+		public static RenderType getEntityGlint() {
+			return renderType(GlintRenderTypes.entityGlint, RenderType::entityGlint);
+		}
+
+
+		public static RenderType getGlintDirect() {
+			return renderType(GlintRenderTypes.glintDirect, RenderType::glintDirect);
+		}
+
+
+		public static RenderType getEntityGlintDirect() {
+			return renderType(GlintRenderTypes.entityGlintDirect, RenderType::entityGlintDirect);
+		}
+
+
+		public static RenderType getArmorGlint() {
+			return renderType(GlintRenderTypes.armorGlint, RenderType::armorGlint);
+		}
+
+
+		public static RenderType getArmorEntityGlint() {
+			return renderType(GlintRenderTypes.armorEntityGlint, RenderType::armorEntityGlint);
+		}
+
+
+		private static RenderType renderType(List<RenderType> list, Supplier<RenderType> vanilla) {
+			int color = changeColor();
+			return color >= 0 && color <= RUNE_TYPES ? list.get(color) : vanilla.get();
+		}
+
+	}
 }

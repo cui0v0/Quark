@@ -1,12 +1,5 @@
 package vazkii.quark.content.tools.module;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -32,28 +25,28 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.QuarkSounds;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.entity.ParrotEgg;
 import vazkii.quark.content.tools.item.ParrotEggItem;
-import vazkii.zeta.event.ZCommonSetup;
-import vazkii.zeta.event.ZConfigChanged;
-import vazkii.zeta.event.ZRegister;
-import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.event.*;
+import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "tools", hasSubscriptions = true)
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@ZetaLoadModule(category = "tools")
 public class ParrotEggsModule extends ZetaModule {
 
 	private static final ResourceLocation KOTO = new ResourceLocation("quark", "textures/model/entity/variants/kotobirb.png");
@@ -127,21 +120,8 @@ public class ParrotEggsModule extends ZetaModule {
 		EntityRenderers.register(parrotEggType, ThrownItemRenderer::new);
 	}
 
-	@Nullable
-	@OnlyIn(Dist.CLIENT)
-	public static ResourceLocation getTextureForParrot(Parrot parrot) {
-		if (!isEnabled || !enableKotobirb)
-			return null;
-
-		UUID uuid = parrot.getUUID();
-		if (parrot.getVariant() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
-			return KOTO;
-
-		return null;
-	}
-
-	@SubscribeEvent
-	public void entityInteract(PlayerInteractEvent.EntityInteract event) {
+	@PlayEvent
+	public void entityInteract(ZPlayerInteract.EntityInteract event) {
 		Entity e = event.getTarget();
 		Player player = event.getEntity();
 		if (e instanceof Parrot parrot) {
@@ -178,8 +158,8 @@ public class ParrotEggsModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void entityUpdate(LivingTickEvent event) {
+	@PlayEvent
+	public void entityUpdate(ZLivingTick event) {
 		Entity e = event.getEntity();
 		if(e instanceof Parrot parrot) {
 			int time = parrot.getPersistentData().getInt(EGG_TIMER);
@@ -199,5 +179,20 @@ public class ParrotEggsModule extends ZetaModule {
 		if(rand.nextBoolean())
 			return color;
 		return rand.nextInt(ParrotEgg.VARIANTS);
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ParrotEggsModule {
+		@Nullable
+		public static ResourceLocation getTextureForParrot(Parrot parrot) {
+			if (!isEnabled || !enableKotobirb)
+				return null;
+
+			UUID uuid = parrot.getUUID();
+			if (parrot.getVariant() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
+				return KOTO;
+
+			return null;
+		}
 	}
 }

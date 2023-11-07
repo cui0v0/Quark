@@ -16,6 +16,10 @@ public interface ZPlayerInteract extends IZetaPlayEvent, Cancellable {
         Entity getTarget();
     }
 
+    interface EntityInteract extends ZPlayerInteract {
+        Entity getTarget();
+    }
+
     interface RightClickItem extends ZPlayerInteract {
         ItemStack getItemStack();
     }

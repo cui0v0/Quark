@@ -27,37 +27,37 @@ public abstract class ItemRendererMixin {
 
 	@ModifyExpressionValue(method = "getArmorFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;armorGlint()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getArmorGlint(RenderType prev) {
-		return ColorRunesModule.getArmorGlint();
+		return ColorRunesModule.Client.getArmorGlint();
 	}
 
 	@ModifyExpressionValue(method = "getArmorFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;armorEntityGlint()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getArmorEntityGlint(RenderType prev) {
-		return ColorRunesModule.getArmorEntityGlint();
+		return ColorRunesModule.Client.getArmorEntityGlint();
 	}
 
 	@ModifyExpressionValue(method = "getFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;glintTranslucent()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getGlintTranslucent(RenderType prev) {
-		return ColorRunesModule.getGlintTranslucent();
+		return ColorRunesModule.Client.getGlintTranslucent();
 	}
 
 	@ModifyExpressionValue(method = "getFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;glint()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getGlint(RenderType prev) {
-		return ColorRunesModule.getGlint();
+		return ColorRunesModule.Client.getGlint();
 	}
 
 	@ModifyExpressionValue(method = "getFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;entityGlint()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getEntityGlint(RenderType prev) {
-		return ColorRunesModule.getEntityGlint();
+		return ColorRunesModule.Client.getEntityGlint();
 	}
 
 	@ModifyExpressionValue(method = "getFoilBufferDirect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;glintDirect()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getGlintDirect(RenderType prev) {
-		return ColorRunesModule.getGlintDirect();
+		return ColorRunesModule.Client.getGlintDirect();
 	}
 
 	@ModifyExpressionValue(method = "getFoilBufferDirect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;entityGlintDirect()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getEntityGlintDirect(RenderType prev) {
-		return ColorRunesModule.getEntityGlintDirect();
+		return ColorRunesModule.Client.getEntityGlintDirect();
 	}
 
 	@ModifyConstant(method = "renderQuadList", constant = @Constant(floatValue = 1F), require = 0) // Allow failure in case of rubidium

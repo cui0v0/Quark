@@ -187,6 +187,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::levelTickEnd);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteractEntityInteractSpecific);
+		MinecraftForge.EVENT_BUS.addListener(this::playerInteractEntityInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteractRightClickItem);
 		MinecraftForge.EVENT_BUS.addListener(this::playerDestroyItem);
 		MinecraftForge.EVENT_BUS.addListener(this::livingSpawn);
@@ -341,6 +342,10 @@ public class ForgeZeta extends Zeta {
 
 	public void playerInteractEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific e) {
 		playBus.fire(new ForgeZPlayerInteract.EntityInteractSpecific(e), ZPlayerInteract.EntityInteractSpecific.class);
+	}
+
+	public void playerInteractEntityInteract(PlayerInteractEvent.EntityInteract e) {
+		playBus.fire(new ForgeZPlayerInteract.EntityInteract(e), ZPlayerInteract.EntityInteract.class);
 	}
 
 	public void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem e) {

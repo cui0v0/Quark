@@ -55,6 +55,20 @@ public class ForgeZPlayerInteract implements ZPlayerInteract {
         }
     }
 
+    public static class EntityInteract extends ForgeZPlayerInteract implements ZPlayerInteract.EntityInteract {
+        private final PlayerInteractEvent.EntityInteract e;
+
+        public EntityInteract(PlayerInteractEvent.EntityInteract e) {
+            super(e);
+            this.e = e;
+        }
+
+        @Override
+        public Entity getTarget() {
+            return e.getTarget();
+        }
+    }
+
     public static class RightClickItem extends ForgeZPlayerInteract implements ZPlayerInteract.RightClickItem {
         private final PlayerInteractEvent.RightClickItem e;
 

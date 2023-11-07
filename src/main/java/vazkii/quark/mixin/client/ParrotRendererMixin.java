@@ -13,7 +13,7 @@ import vazkii.quark.content.tools.module.ParrotEggsModule;
 public class ParrotRendererMixin {
 	@Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/Parrot;)Lnet/minecraft/resources/ResourceLocation;", at = @At("HEAD"), cancellable = true)
 	private void overrideTexture(Parrot parrot, CallbackInfoReturnable<ResourceLocation> cir) {
-		ResourceLocation loc = ParrotEggsModule.getTextureForParrot(parrot);
+		ResourceLocation loc = ParrotEggsModule.Client.getTextureForParrot(parrot);
 		if (loc != null)
 			cir.setReturnValue(loc);
 	}

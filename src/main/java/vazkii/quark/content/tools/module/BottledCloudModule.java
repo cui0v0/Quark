@@ -10,7 +10,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.block.CloudBlock;
 import vazkii.quark.content.tools.block.be.CloudBlockEntity;
@@ -25,7 +24,7 @@ import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "tools", hasSubscriptions = true)
+@ZetaLoadModule(category = "tools")
 public class BottledCloudModule extends ZetaModule {
 
 	public static BlockEntityType<CloudBlockEntity> blockEntityType;
