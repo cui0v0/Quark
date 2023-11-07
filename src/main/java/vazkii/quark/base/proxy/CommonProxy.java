@@ -15,6 +15,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import vazkii.quark.QuarkForgeCapabilities;
+import vazkii.quark.api.ICustomSorting;
+import vazkii.quark.api.IMagnetTracker;
+import vazkii.quark.api.IPistonCallback;
+import vazkii.quark.api.IRuneColorProvider;
+import vazkii.quark.api.ITransferManager;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
@@ -49,7 +54,14 @@ public class CommonProxy {
 			.register(QuarkCapabilities.PISTON_CALLBACK, QuarkForgeCapabilities.PISTON_CALLBACK)
 			.register(QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, QuarkForgeCapabilities.MAGNET_TRACKER_CAPABILITY)
 			.register(QuarkCapabilities.RUNE_COLOR, QuarkForgeCapabilities.RUNE_COLOR);
-
+		//weird forge capability-implementation-class stuff
+		MinecraftForge.EVENT_BUS.addListener((RegisterCapabilitiesEvent e) -> {
+			e.register(ICustomSorting.class);
+			e.register(ITransferManager.class);
+			e.register(IPistonCallback.class);
+			e.register(IMagnetTracker.class);
+			e.register(IRuneColorProvider.class);
+		});
 
 		Quark.ZETA.loadBus
 			.subscribe(EntityAttributeHandler.class)
@@ -68,12 +80,12 @@ public class CommonProxy {
 			.subscribe(this);
 
 		Quark.ZETA.playBus
+			.subscribe(CapabilityHandler.class)
 			.subscribe(SyncedFlagHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(FuelHandler.class)
 			.subscribe(ToolInteractionHandler.class);
 
-		MinecraftForge.EVENT_BUS.register(CapabilityHandler.class);
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);
 
 		Quark.ZETA.loadModules(
@@ -95,7 +107,6 @@ public class CommonProxy {
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::configChanged);
-		bus.addListener(this::registerCapabilities);
 		WorldGenHandler.registerBiomeModifier(bus);
 
 		LocalDateTime now = LocalDateTime.now();
@@ -133,11 +144,6 @@ public class CommonProxy {
 	public void handleQuarkConfigChange() {
 		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
-	}
-
-	//forge event
-	public void registerCapabilities(RegisterCapabilitiesEvent event) {
-		CapabilityHandler.registerCapabilities(event);
 	}
 
 	/**

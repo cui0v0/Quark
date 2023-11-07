@@ -349,9 +349,9 @@ public class AncientTomesModule extends ZetaModule {
 	private static final ResourceLocation OVERLEVEL_COLOR_HANDLER = new ResourceLocation(Quark.MOD_ID, "overlevel_rune");
 
 	@PlayEvent
-	public void attachRuneCapability(ZAttachCapabilities<ItemStack> event) {
+	public void attachRuneCapability(ZAttachCapabilities.ItemStackCaps event) {
 		if (event.getObject().getItem() == Items.ENCHANTED_BOOK) {
-			zeta.capabilityManager.attachCapability(event, OVERLEVEL_COLOR_HANDLER, QuarkCapabilities.RUNE_COLOR, (IRuneColorProvider) stack -> {
+			event.addCapability(OVERLEVEL_COLOR_HANDLER, QuarkCapabilities.RUNE_COLOR, stack -> {
 				if (overleveledBooksGlowRainbow && isOverlevel(stack))
 					return 16;
 				else
