@@ -18,8 +18,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import vazkii.zeta.block.ext.BlockExtensionFactory;
 import vazkii.zeta.registry.BrewingRegistry;
-import vazkii.zeta.client.ClientTicker;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.config.ConfigManager;
@@ -59,6 +59,8 @@ public abstract class Zeta {
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
 
+		this.blockExtensions = createBlockExtensionFactory();
+
 		loadBus.subscribe(craftingExtensions)
 			.subscribe(brewingRegistry);
 	}
@@ -76,6 +78,8 @@ public abstract class Zeta {
 	public final DyeablesRegistry dyeables;
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
+
+	public final BlockExtensionFactory blockExtensions;
 
 	public ConfigManager configManager; //This could do with being split up into various pieces?
 	public IZetaConfigInternals configInternals;
@@ -115,6 +119,9 @@ public abstract class Zeta {
 	}
 	public abstract BrewingRegistry createBrewingRegistry();
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
+	public BlockExtensionFactory createBlockExtensionFactory() {
+		return BlockExtensionFactory.DEFAULT;
+	}
 
 	// misc "ah fuck i need to interact with the modloader" stuff
 	public abstract boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr);

@@ -36,6 +36,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import vazkii.zeta.Zeta;
+import vazkii.zeta.block.ext.BlockExtensionFactory;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.*;
@@ -45,6 +46,7 @@ import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
+import vazkii.zetaimplforge.block.IForgeBlockBlockExtensions;
 import vazkii.zetaimplforge.config.ForgeBackedConfig;
 import vazkii.zetaimplforge.config.TerribleForgeConfigHackery;
 import vazkii.zetaimplforge.event.*;
@@ -104,6 +106,11 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion) {
 		return new ForgeZetaNetworkHandler(modid, protocolVersion);
+	}
+
+	@Override
+	public BlockExtensionFactory createBlockExtensionFactory() {
+		return block -> IForgeBlockBlockExtensions.INSTANCE;
 	}
 
 	@Override
