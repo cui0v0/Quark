@@ -541,7 +541,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		itemEntity.playerTouch(player);
 
 		if (itemEntity.isAlive()) {
-			// Player could not pick up everything
+			// PlayerGetter could not pick up everything
 			ItemStack drop = itemEntity.getItem();
 
 			player.drop(drop, false);

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -12,9 +11,9 @@ import vazkii.zeta.event.bus.Cancellable;
 import vazkii.zeta.event.bus.IZetaPlayEvent;
 import vazkii.zeta.event.bus.Resultable;
 import vazkii.zeta.event.bus.ZResult;
+import vazkii.zeta.event.bus.helpers.PlayerGetter;
 
-public interface ZRightClickBlock extends IZetaPlayEvent, Cancellable, Resultable {
-	Player getEntity();
+public interface ZRightClickBlock extends IZetaPlayEvent, Cancellable, Resultable, PlayerGetter {
 	Level getLevel();
 	BlockPos getPos();
 	InteractionHand getHand();

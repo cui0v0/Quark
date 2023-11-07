@@ -4,6 +4,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import vazkii.zeta.event.ZPlayerInteract;
 
@@ -51,6 +52,20 @@ public class ForgeZPlayerInteract implements ZPlayerInteract {
         @Override
         public Entity getTarget() {
             return e.getTarget();
+        }
+    }
+
+    public static class RightClickItem extends ForgeZPlayerInteract implements ZPlayerInteract.RightClickItem {
+        private final PlayerInteractEvent.RightClickItem e;
+
+        public RightClickItem(PlayerInteractEvent.RightClickItem e) {
+            super(e);
+            this.e = e;
+        }
+
+        @Override
+        public ItemStack getItemStack() {
+            return e.getItemStack();
         }
     }
 }

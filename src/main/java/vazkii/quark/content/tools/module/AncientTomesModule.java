@@ -36,33 +36,23 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.player.AnvilRepairEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.api.IRuneColorProvider;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.LoadModule;
 import vazkii.quark.base.module.ModuleLoader;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.loot.EnchantTome;
 import vazkii.quark.content.world.module.MonsterBoxModule;
-import vazkii.zeta.event.ZCommonSetup;
-import vazkii.zeta.event.ZConfigChanged;
-import vazkii.zeta.event.ZLootTableLoad;
-import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.*;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -71,7 +61,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@LoadModule(category = "tools", hasSubscriptions = true)
+@ZetaLoadModule(category = "tools")
 public class AncientTomesModule extends ZetaModule {
 
 	private static final Object mutex = new Object();
@@ -144,8 +134,8 @@ public class AncientTomesModule extends ZetaModule {
 		instamineDeepslateTrigger = QuarkAdvancementHandler.registerGenericTrigger("instamine_deepslate");
 	}
 
-	@SubscribeEvent
-	public void onTradesLoaded(VillagerTradesEvent event) {
+	@PlayEvent
+	public void onTradesLoaded(ZVillagerTrades event) {
 		if(event.getType() == VillagerProfession.LIBRARIAN && librariansExchangeAncientTomes) {
 			synchronized (mutex) {
 				Int2ObjectMap<List<ItemListing>> trades = event.getTrades();
@@ -203,8 +193,8 @@ public class AncientTomesModule extends ZetaModule {
 		return initialized;
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onAnvilUpdate(AnvilUpdateEvent event) {
+	@PlayEvent
+	public void onAnvilUpdate(ZAnvilUpdate.Highest event) {
 		ItemStack left = event.getLeft();
 		ItemStack right = event.getRight();
 		String name = event.getName();
@@ -302,8 +292,8 @@ public class AncientTomesModule extends ZetaModule {
 		}
 	}
 
-	@SubscribeEvent
-	public void onAnvilUse(AnvilRepairEvent event) {
+	@PlayEvent
+	public void onAnvilUse(ZAnvilRepair event) {
 		ItemStack output = event.getOutput();
 		ItemStack right = event.getRight();
 
@@ -315,8 +305,8 @@ public class AncientTomesModule extends ZetaModule {
 			overlevelTrigger.trigger(sp);
 	}
 
-	@SubscribeEvent
-	public void onGetSpeed(PlayerEvent.BreakSpeed event) {
+	@PlayEvent
+	public void onGetSpeed(ZPlayer.BreakSpeed event) {
 		if(deepslateTweak) {
 			Player player = event.getEntity();
 			ItemStack stack = player.getMainHandItem();
@@ -358,8 +348,8 @@ public class AncientTomesModule extends ZetaModule {
 
 	private static final ResourceLocation OVERLEVEL_COLOR_HANDLER = new ResourceLocation(Quark.MOD_ID, "overlevel_rune");
 
-	@SubscribeEvent
-	public void attachRuneCapability(AttachCapabilitiesEvent<ItemStack> event) {
+	@PlayEvent
+	public void attachRuneCapability(ZAttachCapabilities<ItemStack> event) {
 		if (event.getObject().getItem() == Items.ENCHANTED_BOOK) {
 			IRuneColorProvider provider = new IRuneColorProvider() {
 				@Override

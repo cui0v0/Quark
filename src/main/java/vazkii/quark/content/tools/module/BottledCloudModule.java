@@ -9,22 +9,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.tools.block.CloudBlock;
 import vazkii.quark.content.tools.block.be.CloudBlockEntity;
 import vazkii.quark.content.tools.client.render.be.CloudRenderer;
 import vazkii.quark.content.tools.item.BottledCloudItem;
+import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.event.ZPlayerInteract;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
 @LoadModule(category = "tools", hasSubscriptions = true)
 public class BottledCloudModule extends ZetaModule {
@@ -48,14 +47,8 @@ public class BottledCloudModule extends ZetaModule {
 		Quark.ZETA.registry.register(blockEntityType, "cloud", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 	}
 	
-	@LoadEvent
-	@OnlyIn(Dist.CLIENT)
-	public final void clientSetup(ZClientSetup event) {
-		BlockEntityRenderers.register(blockEntityType, CloudRenderer::new);
-	}
-	
-	@SubscribeEvent
-	public void onRightClick(PlayerInteractEvent.RightClickItem event) {
+	@PlayEvent
+	public void onRightClick(ZPlayerInteract.RightClickItem event) {
 		ItemStack stack = event.getItemStack();
 		Player player = event.getEntity();
 		if(stack.getItem() == Items.GLASS_BOTTLE && player.getY() > cloudLevelBottom && player.getY() < cloudLevelTop) {
@@ -68,6 +61,15 @@ public class BottledCloudModule extends ZetaModule {
 			event.setCanceled(true);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 		}
+	}
+	
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends BottledCloudModule {
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			BlockEntityRenderers.register(blockEntityType, CloudRenderer::new);
+		}
+
 	}
 	
 }

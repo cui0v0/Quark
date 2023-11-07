@@ -27,6 +27,11 @@ public class ForgeZAnvilUpdate implements ZAnvilUpdate {
     }
 
     @Override
+    public String getName() {
+        return e.getName();
+    }
+
+    @Override
     public void setOutput(ItemStack output) {
         e.setOutput(output);
     }
@@ -38,6 +43,12 @@ public class ForgeZAnvilUpdate implements ZAnvilUpdate {
 
     public static class Lowest extends ForgeZAnvilUpdate implements ZAnvilUpdate.Lowest {
         public Lowest(AnvilUpdateEvent e) {
+            super(e);
+        }
+    }
+
+    public static class Highest extends ForgeZAnvilUpdate implements ZAnvilUpdate.Highest {
+        public Highest(AnvilUpdateEvent e) {
             super(e);
         }
     }

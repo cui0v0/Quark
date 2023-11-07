@@ -19,11 +19,9 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.SleepingLocationCheckEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.NoteBlockEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -173,6 +171,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::livingConversionPost);
 		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdate);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::anvilUpdateLowest);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::anvilUpdateHighest);
 		MinecraftForge.EVENT_BUS.addListener(this::entityConstruct);
 		MinecraftForge.EVENT_BUS.addListener(this::entityInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::entityMobGriefing);
@@ -188,12 +187,17 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::levelTickEnd);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteractEntityInteractSpecific);
+		MinecraftForge.EVENT_BUS.addListener(this::playerInteractRightClickItem);
 		MinecraftForge.EVENT_BUS.addListener(this::playerDestroyItem);
 		MinecraftForge.EVENT_BUS.addListener(this::livingSpawn);
 		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawn);
 		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawnLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::livingChangeTarget);
 		MinecraftForge.EVENT_BUS.addListener(this::sleepingLocationCheck);
+		MinecraftForge.EVENT_BUS.addListener(this::villagerTrades);
+		MinecraftForge.EVENT_BUS.addListener(this::anvilRepair);
+		MinecraftForge.EVENT_BUS.addListener(this::player);
+		MinecraftForge.EVENT_BUS.addListener(this::playerBreakSpeed);
 	}
 
 	boolean registerDone = false;
@@ -275,6 +279,10 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZAnvilUpdate.Lowest(e), ZAnvilUpdate.Lowest.class);
 	}
 
+	public void anvilUpdateHighest(AnvilUpdateEvent e) {
+		playBus.fire(new ForgeZAnvilUpdate.Highest(e), ZAnvilUpdate.Highest.class);
+	}
+
 	public void entityConstruct(EntityEvent.EntityConstructing e) {
 		playBus.fire(new ForgeZEntityConstruct(e), ZEntityConstruct.class);
 	}
@@ -335,6 +343,10 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZPlayerInteract.EntityInteractSpecific(e), ZPlayerInteract.EntityInteractSpecific.class);
 	}
 
+	public void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem e) {
+		playBus.fire(new ForgeZPlayerInteract.RightClickItem(e), ZPlayerInteract.RightClickItem.class);
+	}
+
 	public void playerDestroyItem(PlayerDestroyItemEvent e) {
 		playBus.fire(new ForgeZPlayerDestroyItem(e), ZPlayerDestroyItem.class);
 	}
@@ -357,6 +369,22 @@ public class ForgeZeta extends Zeta {
 
 	public void sleepingLocationCheck(SleepingLocationCheckEvent e) {
 		playBus.fire(new ForgeZSleepingLocationCheck(e), ZSleepingLocationCheck.class);
+	}
+
+	public void villagerTrades(VillagerTradesEvent e) {
+		playBus.fire(new ForgeZVillagerTrades(e), ZVillagerTrades.class);
+	}
+
+	public void anvilRepair(AnvilRepairEvent e) {
+		playBus.fire(new ForgeZAnvilRepair(e), ZAnvilRepair.class);
+	}
+
+	public void player(PlayerEvent e) {
+		playBus.fire(new ForgeZPlayer(e), ZPlayer.class);
+	}
+
+	public void playerBreakSpeed(PlayerEvent.BreakSpeed e) {
+		playBus.fire(new ForgeZPlayer.BreakSpeed(e), ZPlayer.BreakSpeed.class);
 	}
 
 	public static ZResult from(Event.Result r) {
