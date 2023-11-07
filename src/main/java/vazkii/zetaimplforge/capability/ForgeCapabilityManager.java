@@ -1,6 +1,5 @@
 package vazkii.zetaimplforge.capability;
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -26,15 +25,6 @@ public class ForgeCapabilityManager implements ZetaCapabilityManager {
 		return (Capability<T>) toForge.get(zcap);
 	}
 
-	protected <T> boolean hasCapability0(ZetaCapability<T> cap, ICapabilityProvider prov) {
-		return prov.getCapability(forgify(cap)).isPresent();
-	}
-
-	@SuppressWarnings("DataFlowIssue") //passing null into nonnull
-	protected <T> T getCapability0(ZetaCapability<T> cap, ICapabilityProvider prov) {
-		return prov.getCapability(forgify(cap)).orElse(null);
-	}
-
 	@Override
 	public ForgeCapabilityManager register(ZetaCapability<?> cap, Object backing) {
 		if(backing instanceof Capability<?> forgecap)
@@ -47,47 +37,51 @@ public class ForgeCapabilityManager implements ZetaCapabilityManager {
 
 	@Override
 	public <T> boolean hasCapability(ZetaCapability<T> cap, ItemStack stack) {
-		return hasCapability0(cap, stack);
+		return stack.getCapability(forgify(cap)).isPresent();
 	}
 
+	@SuppressWarnings("DataFlowIssue") //passing null into nonnull
 	@Override
 	public <T> T getCapability(ZetaCapability<T> cap, ItemStack stack) {
-		return getCapability0(cap, stack);
+		return stack.getCapability(forgify(cap)).orElse(null);
 	}
 
 	@Override
 	public <T> boolean hasCapability(ZetaCapability<T> cap, BlockEntity be) {
-		return hasCapability0(cap, be);
+		return be.getCapability(forgify(cap)).isPresent();
 	}
 
+	@SuppressWarnings("DataFlowIssue") //passing null into nonnull
 	@Override
 	public <T> @Nullable T getCapability(ZetaCapability<T> cap, BlockEntity be) {
-		return getCapability0(cap, be);
+		return be.getCapability(forgify(cap)).orElse(null);
 	}
 
 	@Override
 	public <T> boolean hasCapability(ZetaCapability<T> cap, Level level) {
-		return hasCapability0(cap, level);
+		return level.getCapability(forgify(cap)).isPresent();
 	}
 
+	@SuppressWarnings("DataFlowIssue") //passing null into nonnull
 	@Override
 	public <T> @Nullable T getCapability(ZetaCapability<T> cap, Level level) {
-		return getCapability0(cap, level);
+		return level.getCapability(forgify(cap)).orElse(null);
 	}
 
 	@Override
 	public <T> void attachCapability(Object target, ResourceLocation id, ZetaCapability<T> cap, T impl) {
-		@SuppressWarnings("unchecked")
-		AttachCapabilitiesEvent<ItemStack> event = (AttachCapabilitiesEvent<ItemStack>) target;
-		event.addCapability(id, new ImmediateProvider<>(forgify(cap), impl));
+		((AttachCapabilitiesEvent<?>) target).addCapability(id, new ImmediateProvider<>(forgify(cap), impl));
 	}
 
 	// Capability Provider For Player With No Time For Nonsense
-	protected record ImmediateProvider<C>(Capability<C> cap, C impl) implements ICapabilityProvider {
-		@SuppressWarnings("unchecked")
+	protected record ImmediateProvider<C>(Capability<C> cap, LazyOptional<C> impl) implements ICapabilityProvider {
+		ImmediateProvider(Capability<C> cap, C impl) {
+			this(cap, LazyOptional.of(() -> impl));
+		}
+
 		@Override
 		public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-			return cap == this.cap ? LazyOptional.of(() -> (T) impl) : LazyOptional.empty();
+			return cap == this.cap ? impl.cast() : LazyOptional.empty();
 		}
 	}
 }
