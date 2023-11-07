@@ -8,10 +8,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import vazkii.quark.QuarkForgeCapabilities;
+import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.capability.CapabilityHandler;
 import vazkii.quark.base.handler.*;
@@ -38,6 +42,15 @@ public class CommonProxy {
 	public static boolean jingleTheBells = false;
 
 	public void start() {
+		//todo put this bit in forge-specific code
+		Quark.ZETA.capabilityManager
+			.register(QuarkCapabilities.SORTING, QuarkForgeCapabilities.SORTING)
+			.register(QuarkCapabilities.TRANSFER, QuarkForgeCapabilities.TRANSFER)
+			.register(QuarkCapabilities.PISTON_CALLBACK, QuarkForgeCapabilities.PISTON_CALLBACK)
+			.register(QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, QuarkForgeCapabilities.MAGNET_TRACKER_CAPABILITY)
+			.register(QuarkCapabilities.RUNE_COLOR, QuarkForgeCapabilities.RUNE_COLOR);
+
+
 		Quark.ZETA.loadBus
 			.subscribe(EntityAttributeHandler.class)
 			.subscribe(ContributorRewardHandler.class)
