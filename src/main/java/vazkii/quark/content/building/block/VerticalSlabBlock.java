@@ -55,12 +55,14 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 
 	@Override
 	public boolean isFlammableZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return Quark.ZETA.blockExtensions.get(state).isFlammableZeta(state, world, pos, face);
+		BlockState parentState = parent.get().defaultBlockState();
+		return Quark.ZETA.blockExtensions.get(parentState).isFlammableZeta(parentState, world, pos, face);
 	}
 
 	@Override
 	public int getFlammabilityZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return Quark.ZETA.blockExtensions.get(state).getFlammabilityZeta(state, world, pos, face);
+		BlockState parentState = parent.get().defaultBlockState();
+		return Quark.ZETA.blockExtensions.get(parentState).getFlammabilityZeta(parentState, world, pos, face);
 	}
 
 	@SuppressWarnings("deprecation") //IForgeBlock
@@ -104,7 +106,8 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 	//TODO: doesn't actually work, "parent" is a slab block, and in vanilla slabs are never conduit frames
 	@Override
 	public boolean isConduitFrameZeta(BlockState state, LevelReader world, BlockPos pos, BlockPos conduit) {
-		return Quark.ZETA.blockExtensions.get(parent.get()).isConduitFrameZeta(parent.get().defaultBlockState(), world, pos, conduit);
+		BlockState parentState = parent.get().defaultBlockState();
+		return Quark.ZETA.blockExtensions.get(parentState).isConduitFrameZeta(parentState, world, pos, conduit);
 	}
 
 	@Override

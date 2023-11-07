@@ -41,6 +41,7 @@ import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
 import vazkii.zeta.event.*;
 import vazkii.zeta.event.bus.ZResult;
+import vazkii.zeta.item.ext.ItemExtensionFactory;
 import vazkii.zeta.network.ZetaNetworkHandler;
 import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
@@ -50,6 +51,7 @@ import vazkii.zetaimplforge.block.IForgeBlockBlockExtensions;
 import vazkii.zetaimplforge.config.ForgeBackedConfig;
 import vazkii.zetaimplforge.config.TerribleForgeConfigHackery;
 import vazkii.zetaimplforge.event.*;
+import vazkii.zetaimplforge.item.IForgeItemItemExtensions;
 import vazkii.zetaimplforge.network.ForgeZetaNetworkHandler;
 import vazkii.zetaimplforge.registry.ForgeBrewingRegistry;
 import vazkii.zetaimplforge.registry.ForgeCraftingExtensionsRegistry;
@@ -114,43 +116,13 @@ public class ForgeZeta extends Zeta {
 	}
 
 	@Override
+	public ItemExtensionFactory createItemExtensionFactory() {
+		return stack -> IForgeItemItemExtensions.INSTANCE;
+	}
+
+	@Override
 	public boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr) {
 		return MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.RightClickBlock(player, hand, pos, bhr));
-	}
-
-	@Override
-	public int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType) {
-		return ForgeHooks.getBurnTime(stack, recipeType);
-	}
-
-	@Override
-	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-		return stack.canElytraFly(entity); //IForgeItemStack
-	}
-
-	@Override
-	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderboy) {
-		return stack.isEnderMask(player, enderboy); //IForgeItemStack
-	}
-
-	@Override
-	public boolean canShear(ItemStack stack) {
-		return stack.canPerformAction(ToolActions.SHEARS_CARVE); //IForgeItemStack
-	}
-
-	@Override
-	public int getEnchantmentLevel(ItemStack stack, Enchantment enchantment) {
-		return stack.getEnchantmentLevel(enchantment); //IForgeItemStack
-	}
-
-	@Override
-	public Map<Enchantment, Integer> getAllEnchantments(ItemStack stack) {
-		return stack.getAllEnchantments(); //IForgeItemStack
-	}
-
-	@Override
-	public int getEnchantmentValue(ItemStack stack) {
-		return stack.getEnchantmentValue(); //IForgeItemStack
 	}
 
 	@SuppressWarnings("duplicates")

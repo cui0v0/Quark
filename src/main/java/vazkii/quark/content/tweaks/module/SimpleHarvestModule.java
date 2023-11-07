@@ -178,7 +178,7 @@ public class SimpleHarvestModule extends ZetaModule {
         if (!(world instanceof ServerLevel serverLevel) || entity.isSpectator())
             return;
 
-        int fortune = Quark.ZETA.getEnchantmentLevel(heldItem, Enchantments.BLOCK_FORTUNE);
+        int fortune = Quark.ZETA.itemExtensions.get(heldItem).getEnchantmentLevelZeta(heldItem, Enchantments.BLOCK_FORTUNE);
 
         ItemStack copy = heldItem.copy();
         if (copy.isEmpty())
