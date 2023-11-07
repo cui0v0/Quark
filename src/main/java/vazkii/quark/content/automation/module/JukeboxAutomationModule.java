@@ -22,19 +22,19 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.util.Hint;
+import vazkii.zeta.event.ZAttachCapabilities;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.event.bus.PlayEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
 import javax.annotation.Nonnull;
 
-@LoadModule(category = "automation", hasSubscriptions = true)
+@ZetaLoadModule(category = "automation")
 public class JukeboxAutomationModule extends ZetaModule {
 
 	@Hint Item jukebox = Items.JUKEBOX;
@@ -50,8 +50,8 @@ public class JukeboxAutomationModule extends ZetaModule {
 		}));
 	}
 
-	@SubscribeEvent
-	public void attachCaps(AttachCapabilitiesEvent<BlockEntity> event) {
+	@PlayEvent
+	public void attachCaps(ZAttachCapabilities<BlockEntity> event) {
 		if(event.getObject() instanceof JukeboxBlockEntity jukebox)
 			event.addCapability(JUKEBOX_ITEM_HANDLER, new JukeboxItemHandler(jukebox));
 	}

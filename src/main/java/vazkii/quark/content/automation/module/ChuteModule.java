@@ -7,19 +7,19 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.automation.block.ChuteBlock;
 import vazkii.quark.content.automation.block.be.ChuteBlockEntity;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
 /**
  * @author WireSegal
  * Created at 10:25 AM on 9/29/19.
  */
-@LoadModule(category = "automation")
+@ZetaLoadModule(category = "automation")
 public class ChuteModule extends ZetaModule {
 
 	public static BlockEntityType<ChuteBlockEntity> blockEntityType;

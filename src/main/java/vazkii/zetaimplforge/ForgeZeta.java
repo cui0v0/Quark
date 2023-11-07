@@ -1,7 +1,5 @@
 package vazkii.zetaimplforge;
 
-import java.util.Map;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,25 +9,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
-import net.minecraftforge.event.entity.living.LivingConversionEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.SleepingLocationCheckEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -42,13 +35,13 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import vazkii.zeta.event.*;
-import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.config.IZetaConfigInternals;
 import vazkii.zeta.config.SectionDefinition;
+import vazkii.zeta.event.*;
 import vazkii.zeta.event.bus.ZResult;
 import vazkii.zeta.network.ZetaNetworkHandler;
+import vazkii.zeta.registry.BrewingRegistry;
 import vazkii.zeta.registry.CraftingExtensionsRegistry;
 import vazkii.zeta.registry.ZetaRegistry;
 import vazkii.zeta.util.ZetaSide;
@@ -59,6 +52,8 @@ import vazkii.zetaimplforge.network.ForgeZetaNetworkHandler;
 import vazkii.zetaimplforge.registry.ForgeBrewingRegistry;
 import vazkii.zetaimplforge.registry.ForgeCraftingExtensionsRegistry;
 import vazkii.zetaimplforge.registry.ForgeZetaRegistry;
+
+import java.util.Map;
 
 /**
  * ideally do not touch quark from this package, it will later be split off
@@ -177,13 +172,28 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::livingConversion);
 		MinecraftForge.EVENT_BUS.addListener(this::livingConversionPost);
 		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdate);
-		MinecraftForge.EVENT_BUS.addListener(this::anvilUpdateLowest);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::anvilUpdateLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::entityConstruct);
 		MinecraftForge.EVENT_BUS.addListener(this::entityInteract);
 		MinecraftForge.EVENT_BUS.addListener(this::entityMobGriefing);
 		MinecraftForge.EVENT_BUS.addListener(this::livingDrops);
 		MinecraftForge.EVENT_BUS.addListener(this::playerTickStart);
 		MinecraftForge.EVENT_BUS.addListener(this::playerTickEnd);
+		MinecraftForge.EVENT_BUS.addListener(this::babyEntitySpawn);
+		MinecraftForge.EVENT_BUS.addListener(this::babyEntitySpawnLowest);
+		MinecraftForge.EVENT_BUS.addListener(this::entityJoinLevel);
+		//fixme
+		//MinecraftForge.EVENT_BUS.addGenericListener(ForgeZeta.class, this::attachCapabilities);
+		MinecraftForge.EVENT_BUS.addListener(this::levelTickStart);
+		MinecraftForge.EVENT_BUS.addListener(this::levelTickEnd);
+		MinecraftForge.EVENT_BUS.addListener(this::playerInteract);
+		MinecraftForge.EVENT_BUS.addListener(this::playerInteractEntityInteractSpecific);
+		MinecraftForge.EVENT_BUS.addListener(this::playerDestroyItem);
+		MinecraftForge.EVENT_BUS.addListener(this::livingSpawn);
+		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawn);
+		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawnLowest);
+		MinecraftForge.EVENT_BUS.addListener(this::livingChangeTarget);
+		MinecraftForge.EVENT_BUS.addListener(this::sleepingLocationCheck);
 	}
 
 	boolean registerDone = false;
@@ -282,13 +292,71 @@ public class ForgeZeta extends Zeta {
 	}
 
 	public void playerTickStart(TickEvent.PlayerTickEvent e) {
-		if(e.phase == TickEvent.Phase.START)
+		if (e.phase == TickEvent.Phase.START)
 			playBus.fire(new ForgeZPlayerTick.Start(e), ZPlayerTick.Start.class);
 	}
 
 	public void playerTickEnd(TickEvent.PlayerTickEvent e) {
-		if(e.phase == TickEvent.Phase.END)
+		if (e.phase == TickEvent.Phase.END)
 			playBus.fire(new ForgeZPlayerTick.End(e), ZPlayerTick.End.class);
+	}
+
+	public void babyEntitySpawn(BabyEntitySpawnEvent e) {
+		playBus.fire(new ForgeZBabyEntitySpawn(e), ZBabyEntitySpawn.class);
+	}
+
+	public void babyEntitySpawnLowest(BabyEntitySpawnEvent e) {
+		playBus.fire(new ForgeZBabyEntitySpawn.Lowest(e), ZBabyEntitySpawn.Lowest.class);
+	}
+
+	public void entityJoinLevel(EntityJoinLevelEvent e) {
+		playBus.fire(new ForgeZEntityJoinLevel(e), ZEntityJoinLevel.class);
+	}
+
+	public void attachCapabilities(AttachCapabilitiesEvent<?> e) {
+		playBus.fire(new ForgeZAttachCapabilities<>(e), ZAttachCapabilities.class);
+	}
+
+	public void levelTickStart(TickEvent.LevelTickEvent e) {
+		if (e.phase == TickEvent.Phase.START)
+			playBus.fire(new ForgeZLevelTick.Start(e), ZLevelTick.Start.class);
+	}
+
+	public void levelTickEnd(TickEvent.LevelTickEvent e) {
+		if (e.phase == TickEvent.Phase.END)
+			playBus.fire(new ForgeZLevelTick.End(e), ZLevelTick.End.class);
+	}
+
+	public void playerInteract(PlayerInteractEvent e) {
+		playBus.fire(new ForgeZPlayerInteract(e), ZPlayerInteract.class);
+	}
+
+	public void playerInteractEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific e) {
+		playBus.fire(new ForgeZPlayerInteract.EntityInteractSpecific(e), ZPlayerInteract.EntityInteractSpecific.class);
+	}
+
+	public void playerDestroyItem(PlayerDestroyItemEvent e) {
+		playBus.fire(new ForgeZPlayerDestroyItem(e), ZPlayerDestroyItem.class);
+	}
+
+	public void livingSpawn(LivingSpawnEvent e) {
+		playBus.fire(new ForgeZLivingSpawn(e), ZLivingSpawn.class);
+	}
+
+	public void livingSpawnCheckSpawn(LivingSpawnEvent.CheckSpawn e) {
+		playBus.fire(new ForgeZLivingSpawn.CheckSpawn(e), ZLivingSpawn.CheckSpawn.class);
+	}
+
+	public void livingSpawnCheckSpawnLowest(LivingSpawnEvent.CheckSpawn e) {
+		playBus.fire(new ForgeZLivingSpawn.CheckSpawn.Lowest(e), ZLivingSpawn.CheckSpawn.Lowest.class);
+	}
+
+	public void livingChangeTarget(LivingChangeTargetEvent e) {
+		playBus.fire(new ForgeZLivingChangeTarget(e), ZLivingChangeTarget.class);
+	}
+
+	public void sleepingLocationCheck(SleepingLocationCheckEvent e) {
+		playBus.fire(new ForgeZSleepingLocationCheck(e), ZSleepingLocationCheck.class);
 	}
 
 	public static ZResult from(Event.Result r) {

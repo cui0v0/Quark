@@ -5,16 +5,16 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.automation.block.IronRodBlock;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "automation")
+@ZetaLoadModule(category = "automation")
 public class IronRodModule extends ZetaModule {
 
 	public static TagKey<Block> ironRodImmuneTag;

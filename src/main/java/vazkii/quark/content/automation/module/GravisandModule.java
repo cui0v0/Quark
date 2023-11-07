@@ -9,16 +9,16 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.LoadModule;
-import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.util.Hint;
 import vazkii.quark.content.automation.block.GravisandBlock;
 import vazkii.quark.content.automation.entity.Gravisand;
+import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.client.event.ZClientSetup;
+import vazkii.zeta.module.ZetaLoadModule;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.Hint;
 
-@LoadModule(category = "automation")
+@ZetaLoadModule(category = "automation")
 public class GravisandModule extends ZetaModule {
 
 	public static EntityType<Gravisand> gravisandType;
@@ -38,8 +38,12 @@ public class GravisandModule extends ZetaModule {
 		Quark.ZETA.registry.register(gravisandType, "gravisand", Registry.ENTITY_TYPE_REGISTRY);
 	}
 
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(gravisandType, FallingBlockRenderer::new);
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends GravisandModule {
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			EntityRenderers.register(gravisandType, FallingBlockRenderer::new);
+		}
 	}
 }
