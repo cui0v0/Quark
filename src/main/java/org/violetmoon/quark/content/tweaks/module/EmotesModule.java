@@ -31,7 +31,6 @@ import org.violetmoon.quark.base.network.message.RequestEmoteMessage;
 import org.violetmoon.quark.content.tweaks.client.emote.*;
 import org.violetmoon.quark.content.tweaks.client.screen.widgets.EmoteButton;
 import org.violetmoon.quark.content.tweaks.client.screen.widgets.TranslucentButton;
-import org.violetmoon.zeta.client.event.*;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZInput;
