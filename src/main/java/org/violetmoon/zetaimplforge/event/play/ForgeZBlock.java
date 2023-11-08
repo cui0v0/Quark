@@ -1,5 +1,7 @@
 package org.violetmoon.zetaimplforge.event.play;
 
+import net.minecraftforge.common.ToolAction;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.event.play.ZBlock;
 
 import net.minecraft.core.BlockPos;
@@ -55,6 +57,25 @@ public class ForgeZBlock implements ZBlock {
         @Override
         public BlockState getPlacedBlock() {
             return e.getPlacedBlock();
+        }
+    }
+
+    public static class BlockToolModification extends ForgeZBlock implements ZBlock.BlockToolModification {
+        private final BlockEvent.BlockToolModificationEvent e;
+
+        public BlockToolModification(BlockEvent.BlockToolModificationEvent e) {
+            super(e);
+            this.e = e;
+        }
+
+        @Override
+        public ToolAction getToolAction() {
+            return e.getToolAction();
+        }
+
+        @Override
+        public void setFinalState(@Nullable BlockState finalState) {
+            e.setFinalState(finalState);
         }
     }
 }

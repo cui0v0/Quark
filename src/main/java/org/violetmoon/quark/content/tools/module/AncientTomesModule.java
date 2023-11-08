@@ -50,7 +50,6 @@ import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
 import org.violetmoon.quark.content.tools.loot.EnchantTome;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
-import org.violetmoon.zeta.event.*;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

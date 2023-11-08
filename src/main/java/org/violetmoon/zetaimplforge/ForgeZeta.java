@@ -185,6 +185,8 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, this::blockEntityCaps);
 		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, this::levelCaps);
 
+		MinecraftForge.EVENT_BUS.addListener(this::serverTickStart);
+		MinecraftForge.EVENT_BUS.addListener(this::serverTickEnd);
 		MinecraftForge.EVENT_BUS.addListener(this::levelTickStart);
 		MinecraftForge.EVENT_BUS.addListener(this::levelTickEnd);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteract);
@@ -351,6 +353,16 @@ public class ForgeZeta extends Zeta {
 
 	public void levelCaps(AttachCapabilitiesEvent<Level> e) {
 		playBus.fire(new ForgeZAttachCapabilities.LevelCaps(capabilityManager, e), ZAttachCapabilities.LevelCaps.class);
+	}
+
+	public void serverTickStart(TickEvent.ServerTickEvent e) {
+		if (e.phase == TickEvent.Phase.START)
+			playBus.fire(new ForgeZServerTick.Start(e), ZServerTick.Start.class);
+	}
+
+	public void serverTickEnd(TickEvent.ServerTickEvent e) {
+		if (e.phase == TickEvent.Phase.END)
+			playBus.fire(new ForgeZServerTick.End(e), ZServerTick.End.class);
 	}
 
 	public void levelTickStart(TickEvent.LevelTickEvent e) {

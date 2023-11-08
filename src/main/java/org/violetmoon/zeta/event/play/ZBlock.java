@@ -1,5 +1,7 @@
 package org.violetmoon.zeta.event.play;
 
+import net.minecraftforge.common.ToolAction;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 
 import net.minecraft.core.BlockPos;
@@ -18,5 +20,10 @@ public interface ZBlock extends IZetaPlayEvent {
 
     interface EntityPlace extends ZBlock {
         BlockState getPlacedBlock();
+    }
+
+    interface BlockToolModification extends ZBlock {
+        ToolAction getToolAction();
+        void setFinalState(@Nullable BlockState finalState);
     }
 }
