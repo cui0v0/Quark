@@ -15,8 +15,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.mixin.zeta_forge.client.AccessorBlockColors;
-import org.violetmoon.quark.mixin.zeta_forge.client.AccessorItemColors;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.client.ClientRegistryExtension;
 import org.violetmoon.zeta.client.ZetaClient;
@@ -71,6 +69,8 @@ import org.violetmoon.zetaimplforge.client.event.player.ForgeZRenderPlayer;
 import org.violetmoon.zetaimplforge.client.event.player.ForgeZRenderTick;
 import org.violetmoon.zetaimplforge.client.event.player.ForgeZRenderTooltip;
 import org.violetmoon.zetaimplforge.client.event.player.ForgeZScreen;
+import org.violetmoon.zetaimplforge.mixin.client.AccessorBlockColors;
+import org.violetmoon.zetaimplforge.mixin.client.AccessorItemColors;
 
 import net.minecraftforge.client.event.*;
 

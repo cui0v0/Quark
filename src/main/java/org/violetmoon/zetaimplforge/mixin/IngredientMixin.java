@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixin.zeta_forge;
+package org.violetmoon.zetaimplforge.mixin;
 
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;

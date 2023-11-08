@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixin.zeta;
+package org.violetmoon.zeta.mixin.mixins;
 
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;

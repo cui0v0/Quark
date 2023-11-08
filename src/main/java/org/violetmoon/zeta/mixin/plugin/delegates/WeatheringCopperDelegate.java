@@ -1,12 +1,12 @@
-package org.violetmoon.quark.mixinsupport.delegates;
+package org.violetmoon.zeta.mixin.plugin.delegates;
 
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-import org.violetmoon.quark.mixinsupport.DelegateInterfaceTarget;
-import org.violetmoon.quark.mixinsupport.DelegateReturnValueTarget;
 import org.violetmoon.zeta.block.ext.CustomWeatheringCopper;
+import org.violetmoon.zeta.mixin.plugin.DelegateInterfaceTarget;
+import org.violetmoon.zeta.mixin.plugin.DelegateReturnValueTarget;
 
 @DelegateInterfaceTarget
 public class WeatheringCopperDelegate {

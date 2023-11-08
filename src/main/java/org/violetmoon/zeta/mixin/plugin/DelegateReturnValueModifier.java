@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixinsupport;
+package org.violetmoon.zeta.mixin.plugin;
 
 /**
  * Specifies which methods need delegation.

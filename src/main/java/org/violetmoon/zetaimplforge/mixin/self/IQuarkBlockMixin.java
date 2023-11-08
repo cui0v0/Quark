@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixin.zeta_forge.self;
+package org.violetmoon.zetaimplforge.mixin.self;
 
 import java.util.Locale;
 

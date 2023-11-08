@@ -3,8 +3,7 @@
   "required": true,
   "compatibilityLevel": "JAVA_17",
   "refmap": "quark.mixins.refmap.json",
-  "package": "vazkii.quark.mixin",
-  "plugin": "vazkii.quark.mixinsupport.QuarkMixinPlugin",
+  "package": "org.violetmoon.quark.mixin",
   "mixins": [
     "AbstractVillagerMixin",
     "AnimalMixin",
@@ -71,14 +70,6 @@
     "accessor.AccessorMerchantOffer",
     "accessor.AccessorPotionBrewing",
     "accessor.AccessorServerGamePacketListenerImpl",
-
-    "zeta.AccessorLootTable",
-    "zeta.AccessorPistonStructureResolver",
-    "zeta.PistonBaseBlockMixin",
-
-    "zeta_forge.WeatheringCopperMixin",
-    "zeta_forge.IngredientMixin",
-    "zeta_forge.self.IQuarkBlockMixin"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
@@ -106,8 +97,7 @@
     "client.ScreenMixin",
     "client.ThrownTridentRendererMixin",
     "client.ItemInHandRendererMixin",
-    "zeta_forge.client.AccessorBlockColors",
-    "zeta_forge.client.AccessorItemColors",
+    
     "client.accessor.AccessorLocalPlayer",
     "client.accessor.AccessorModelManager",
     "client.accessor.AccessorMultiPlayerGameMode",

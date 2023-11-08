@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixin.zeta;
+package org.violetmoon.zeta.mixin.mixins;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

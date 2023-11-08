@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixinsupport;
+package org.violetmoon.zeta.mixin.plugin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

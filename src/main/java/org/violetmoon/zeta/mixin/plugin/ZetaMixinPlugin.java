@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixinsupport;
+package org.violetmoon.zeta.mixin.plugin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -16,7 +16,7 @@ import java.util.*;
  *
  * This is so I can inject into interface methods. God save my soul. - Wire
  */
-public class QuarkMixinPlugin implements IMixinConfigPlugin {
+public class ZetaMixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
 

@@ -1,4 +1,4 @@
-package org.violetmoon.quark.mixin.zeta;
+package org.violetmoon.zeta.mixin.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;

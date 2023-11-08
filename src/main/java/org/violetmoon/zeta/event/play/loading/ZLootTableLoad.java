@@ -2,9 +2,9 @@ package org.violetmoon.zeta.event.play.loading;
 
 import java.util.List;
 
-import org.violetmoon.quark.mixin.zeta.AccessorLootTable;
 import org.violetmoon.zeta.event.bus.Cancellable;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
+import org.violetmoon.zeta.mixin.mixins.AccessorLootTable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
