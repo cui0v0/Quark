@@ -1,8 +1,21 @@
 package vazkii.quark.content.tools.item;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.QuartPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +29,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -28,24 +45,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.mobs.module.StonelingsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
 import vazkii.quark.content.world.module.GlimmeringWealdModule;
-import vazkii.zeta.registry.IZetaItemColorProvider_OLD;
+import vazkii.zeta.module.ZetaModule;
+import vazkii.zeta.util.ItemNBTHelper;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorProvider_OLD {
+public class PathfindersQuillItem extends QuarkItem {
 
     private static final Direction[] DIRECTIONS = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
 
@@ -402,13 +410,6 @@ public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorPro
             comps.add(Component.translatable("biome." + biome.getNamespace() + "." + biome.getPath()).withStyle(ChatFormatting.GRAY));
         } else comps.add(Component.translatable("quark.misc.quill_blank").withStyle(ChatFormatting.GRAY));
     }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public ItemColor getItemColor() {
-        return (stack, id) -> id == 0 ? 0xFFFFFF : getOverlayColor(stack);
-    }
-
 
     //new concurrent search stuff. Experimental
     private record Key(GlobalPos pos, ResourceLocation structure) {

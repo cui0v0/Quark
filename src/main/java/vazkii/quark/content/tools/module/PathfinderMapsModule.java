@@ -1,9 +1,18 @@
 package vazkii.quark.content.tools.module;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -30,6 +39,8 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import vazkii.quark.base.Quark;
@@ -40,21 +51,20 @@ import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.type.IConfigType;
 import vazkii.quark.content.tools.item.PathfindersQuillItem;
 import vazkii.quark.content.tools.loot.InBiomeCondition;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.client.event.ZRenderGuiOverlay;
-import vazkii.zeta.event.*;
+import vazkii.zeta.event.ZConfigChanged;
+import vazkii.zeta.event.ZLivingTick;
+import vazkii.zeta.event.ZPlayerTick;
+import vazkii.zeta.event.ZRegister;
+import vazkii.zeta.event.ZVillagerTrades;
 import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.zeta.util.Hint;
 import vazkii.zeta.util.ItemNBTHelper;
-
-import javax.annotation.Nonnull;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @ZetaLoadModule(category = "tools")
 public class PathfinderMapsModule extends ZetaModule {
@@ -385,5 +395,12 @@ public class PathfinderMapsModule extends ZetaModule {
 				}
 			}
 		}
+		
+		@LoadEvent
+		public void registerItemColors(ZAddItemColorHandlers event) {
+			ItemColor color = (stack, id) -> id == 0 ? 0xFFFFFF : PathfindersQuillItem.getOverlayColor(stack);
+			event.register(color, pathfinders_quill);
+		}
+
 	}
 }

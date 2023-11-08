@@ -1,6 +1,7 @@
 package vazkii.quark.addons.oddities.module;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -17,7 +18,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -31,6 +37,7 @@ import vazkii.quark.base.item.QuarkItem;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.oddities.HandleBackpackMessage;
+import vazkii.zeta.client.event.ZAddItemColorHandlers;
 import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.client.event.ZScreen;
 import vazkii.zeta.client.event.ZStartClientTick;
@@ -166,6 +173,13 @@ public class BackpackModule extends ZetaModule {
 
 				backpackRequested = false;
 			}
+		}
+		
+		
+		@LoadEvent
+		public void registerItemColors(ZAddItemColorHandlers event) {
+			ItemColor color = (stack, i) -> i > 0 ? -1 : ((DyeableArmorItem) stack.getItem()).getColor(stack);
+			event.register(color, backpack);
 		}
 
 		private static boolean isInventoryGUI(Screen gui) {
