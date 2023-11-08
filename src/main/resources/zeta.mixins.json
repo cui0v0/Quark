@@ -9,14 +9,8 @@
     "AccessorLootTable",
     "AccessorPistonStructureResolver",
     "PistonBaseBlockMixin",
-
-    "forge.WeatheringCopperMixin",
-    "forge.IngredientMixin",
-    "forge.self.IQuarkBlockMixin"
   ],
   "client": [
-    "zeta_forge.client.AccessorBlockColors",
-    "zeta_forge.client.AccessorItemColors"
   ],
   "injectors": {
     "defaultRequire": 1

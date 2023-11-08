@@ -44,7 +44,7 @@ public final class UndergroundBiomeHandler {
 				Class<?> testClazz = Class.forName("terrablender.api.Region");
 
 				if(testClazz != null) try {
-					Class<?> clazz = Class.forName("vazkii.quark.integration.terrablender.TerraBlenderIntegration");
+					Class<?> clazz = Class.forName("org.violetmoon.quark.integration.terrablender.TerraBlenderIntegration");
 					Supplier<UndergroundBiomeHandler.Proxy> supplier = (Supplier<Proxy>) clazz.getConstructor().newInstance();
 					proxy = supplier.get();
 				} catch (ReflectiveOperationException e) {
