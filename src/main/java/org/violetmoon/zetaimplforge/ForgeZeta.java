@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,45 +33,16 @@ import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
 import org.violetmoon.zeta.config.IZetaConfigInternals;
 import org.violetmoon.zeta.config.SectionDefinition;
-import org.violetmoon.zeta.event.*;
 import org.violetmoon.zeta.event.bus.ZResult;
-import org.violetmoon.zeta.event.load.ZAddReloadListener;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
-import org.violetmoon.zeta.event.load.ZLoadComplete;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.load.ZTagsUpdated;
-import org.violetmoon.zeta.event.play.ZAnvilRepair;
-import org.violetmoon.zeta.event.play.ZAnvilUpdate;
-import org.violetmoon.zeta.event.play.ZBlock;
-import org.violetmoon.zeta.event.play.ZBonemeal;
-import org.violetmoon.zeta.event.play.ZLevelTick;
-import org.violetmoon.zeta.event.play.ZPlayNoteBlock;
-import org.violetmoon.zeta.event.play.entity.ZEntityConstruct;
-import org.violetmoon.zeta.event.play.entity.ZEntityInteract;
-import org.violetmoon.zeta.event.play.entity.ZEntityItemPickup;
-import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
-import org.violetmoon.zeta.event.play.entity.ZEntityMobGriefing;
-import org.violetmoon.zeta.event.play.entity.ZEntityTeleport;
-import org.violetmoon.zeta.event.play.entity.living.ZAnimalTame;
-import org.violetmoon.zeta.event.play.entity.living.ZBabyEntitySpawn;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingChangeTarget;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingConversion;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingDeath;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingFall;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingSpawn;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.event.play.entity.living.ZSleepingLocationCheck;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayer;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerDestroyItem;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
+import org.violetmoon.zeta.event.load.*;
+import org.violetmoon.zeta.event.play.*;
+import org.violetmoon.zeta.event.play.entity.*;
+import org.violetmoon.zeta.event.play.entity.living.*;
+import org.violetmoon.zeta.event.play.entity.player.*;
 import org.violetmoon.zeta.event.play.loading.ZAttachCapabilities;
 import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
+import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
 import org.violetmoon.zeta.item.ext.ItemExtensionFactory;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
 import org.violetmoon.zeta.registry.BrewingRegistry;
@@ -81,42 +53,18 @@ import org.violetmoon.zetaimplforge.block.IForgeBlockBlockExtensions;
 import org.violetmoon.zetaimplforge.capability.ForgeCapabilityManager;
 import org.violetmoon.zetaimplforge.config.ForgeBackedConfig;
 import org.violetmoon.zetaimplforge.config.TerribleForgeConfigHackery;
-import org.violetmoon.zetaimplforge.event.*;
 import org.violetmoon.zetaimplforge.event.load.ForgeZAddReloadListener;
 import org.violetmoon.zetaimplforge.event.load.ForgeZCommonSetup;
 import org.violetmoon.zetaimplforge.event.load.ForgeZEntityAttributeCreation;
 import org.violetmoon.zetaimplforge.event.load.ForgeZLoadComplete;
-import org.violetmoon.zetaimplforge.event.play.ForgeZAnvilRepair;
-import org.violetmoon.zetaimplforge.event.play.ForgeZAnvilUpdate;
-import org.violetmoon.zetaimplforge.event.play.ForgeZBlock;
-import org.violetmoon.zetaimplforge.event.play.ForgeZBonemeal;
-import org.violetmoon.zetaimplforge.event.play.ForgeZLevelTick;
-import org.violetmoon.zetaimplforge.event.play.ForgeZPlayNoteBlock;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityConstruct;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityInteract;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityItemPickup;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityJoinLevel;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityMobGriefing;
-import org.violetmoon.zetaimplforge.event.play.entity.ForgeZEntityTeleport;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZAnimalTame;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZBabyEntitySpawn;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingChangeTarget;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingConversion;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingDeath;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingDrops;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingFall;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingSpawn;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZLivingTick;
-import org.violetmoon.zetaimplforge.event.play.entity.living.ForgeZSleepingLocationCheck;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZPlayer;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZPlayerDestroyItem;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZPlayerInteract;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZPlayerTick;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZRightClickBlock;
-import org.violetmoon.zetaimplforge.event.play.entity.player.ForgeZRightClickItem;
+import org.violetmoon.zetaimplforge.event.play.*;
+import org.violetmoon.zetaimplforge.event.play.entity.*;
+import org.violetmoon.zetaimplforge.event.play.entity.living.*;
+import org.violetmoon.zetaimplforge.event.play.entity.player.*;
 import org.violetmoon.zetaimplforge.event.play.loading.ForgeZAttachCapabilities;
 import org.violetmoon.zetaimplforge.event.play.loading.ForgeZLootTableLoad;
 import org.violetmoon.zetaimplforge.event.play.loading.ForgeZVillagerTrades;
+import org.violetmoon.zetaimplforge.event.play.loading.ForgeZWandererTrades;
 import org.violetmoon.zetaimplforge.item.IForgeItemItemExtensions;
 import org.violetmoon.zetaimplforge.network.ForgeZetaNetworkHandler;
 import org.violetmoon.zetaimplforge.registry.ForgeBrewingRegistry;
@@ -265,6 +213,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::bonemeal);
 		MinecraftForge.EVENT_BUS.addListener(this::entityTeleport);
 		MinecraftForge.EVENT_BUS.addListener(this::livingFall);
+		MinecraftForge.EVENT_BUS.addListener(this::wandererTrades);
 	}
 
 	boolean registerDone = false;
@@ -517,6 +466,10 @@ public class ForgeZeta extends Zeta {
 
 	public void livingFall(LivingFallEvent e) {
 		playBus.fire(new ForgeZLivingFall(e), ZLivingFall.class);
+	}
+
+	public void wandererTrades(WandererTradesEvent e) {
+		playBus.fire(new ForgeZWandererTrades(e), ZWandererTrades.class);
 	}
 
 	public static ZResult from(Event.Result r) {
