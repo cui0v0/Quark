@@ -1,6 +1,15 @@
 package vazkii.quark.base.handler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
@@ -10,8 +19,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -20,24 +33,38 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.block.*;
+import vazkii.quark.base.block.IQuarkBlock;
+import vazkii.quark.base.block.QuarkBlock;
+import vazkii.quark.base.block.QuarkDoorBlock;
+import vazkii.quark.base.block.QuarkFenceBlock;
+import vazkii.quark.base.block.QuarkFenceGateBlock;
+import vazkii.quark.base.block.QuarkPillarBlock;
+import vazkii.quark.base.block.QuarkPressurePlateBlock;
+import vazkii.quark.base.block.QuarkStandingSignBlock;
+import vazkii.quark.base.block.QuarkTrapdoorBlock;
+import vazkii.quark.base.block.QuarkWallSignBlock;
+import vazkii.quark.base.block.QuarkWoodenButtonBlock;
 import vazkii.quark.base.client.render.QuarkBoatRenderer;
 import vazkii.quark.base.item.QuarkSignItem;
 import vazkii.quark.base.item.boat.QuarkBoat;
 import vazkii.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
 import vazkii.quark.base.item.boat.QuarkBoatItem;
 import vazkii.quark.base.item.boat.QuarkChestBoat;
-import vazkii.quark.base.module.ModuleLoader;
-import vazkii.zeta.module.ZetaModule;
-import vazkii.quark.content.building.block.*;
-import vazkii.quark.content.building.module.*;
+import vazkii.quark.content.building.block.HollowLogBlock;
+import vazkii.quark.content.building.block.VariantBookshelfBlock;
+import vazkii.quark.content.building.block.VariantLadderBlock;
+import vazkii.quark.content.building.block.WoodPostBlock;
+import vazkii.quark.content.building.module.HollowLogsModule;
+import vazkii.quark.content.building.module.VariantBookshelvesModule;
+import vazkii.quark.content.building.module.VariantChestsModule;
+import vazkii.quark.content.building.module.VariantLaddersModule;
+import vazkii.quark.content.building.module.VerticalPlanksModule;
+import vazkii.quark.content.building.module.WoodenPostsModule;
+import vazkii.zeta.client.event.ZClientSetup;
 import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
-import vazkii.zeta.client.event.ZClientSetup;
-
-import java.util.*;
-import java.util.stream.Stream;
+import vazkii.zeta.module.ZetaModule;
 
 public class WoodSetHandler {
 
@@ -109,18 +136,16 @@ public class WoodSetHandler {
 		set.sign = new QuarkStandingSignBlock(name + "_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
 		set.wallSign = new QuarkWallSignBlock(name + "_wall_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
-		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantBookshelvesModule.class));
-		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VariantLaddersModule.class));
+		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
+		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantLaddersModule.class));
 
-		set.post = new WoodPostBlock(module, set.fence, "", false).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(WoodenPostsModule.class));
-		set.strippedPost = new WoodPostBlock(module, set.fence, "stripped_", false).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(WoodenPostsModule.class));
+		set.post = new WoodPostBlock(module, set.fence, "", false).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
+		set.strippedPost = new WoodPostBlock(module, set.fence, "stripped_", false).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
 
-		set.verticalPlanks = VerticalPlanksModule.add(name, set.planks, module).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(VerticalPlanksModule.class));
+		set.verticalPlanks = VerticalPlanksModule.add(name, set.planks, module).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VerticalPlanksModule.class));
 
-		if(hasLog) {
-			set.hollowLog = new HollowLogBlock(set.log, module, flammable).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(HollowLogsModule.class));
-//			set.hollowWood = new HollowWoodBlock(set.wood, module, flammable).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabledOrOverlapping(HollowLogsModule.class));
-		}
+		if(hasLog)
+			set.hollowLog = new HollowLogBlock(set.log, module, flammable).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(HollowLogsModule.class));
 
 		VariantChestsModule.addChest(name, module, () -> Block.Properties.copy(Blocks.CHEST), true);
 

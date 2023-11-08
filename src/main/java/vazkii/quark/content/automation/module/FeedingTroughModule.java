@@ -30,7 +30,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.automation.block.FeedingTroughBlock;
 import vazkii.quark.content.automation.block.be.FeedingTroughBlockEntity;
@@ -96,7 +95,7 @@ public class FeedingTroughModule extends ZetaModule {
 	}
 
 	public static Player temptWithTroughs(TemptGoal goal, Player found, ServerLevel level) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(FeedingTroughModule.class) ||
+		if (!Quark.ZETA.modules.isEnabled(FeedingTroughModule.class) ||
 				(found != null && (goal.items.test(found.getMainHandItem()) || goal.items.test(found.getOffhandItem()))))
 			return found;
 

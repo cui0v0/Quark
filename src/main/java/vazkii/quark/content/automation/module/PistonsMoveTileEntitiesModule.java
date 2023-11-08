@@ -21,7 +21,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.api.IPistonCallback;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.building.module.SturdyStoneModule;
 import vazkii.zeta.api.IIndirectConnector;
@@ -91,7 +90,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	public void addAdditionalHints(ZGatherHints consumer) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.piston_te");
 
-		if(ModuleLoader.INSTANCE.isModuleEnabled(SturdyStoneModule.class))
+		if(Quark.ZETA.modules.isEnabled(SturdyStoneModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.piston_sturdy"));
 
 		if(ZetaPistonStructureResolver.GlobalSettings.getPushLimit() != 12)
@@ -103,7 +102,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	// This is called from injected code and subsequently flipped, so to make it move, we return false
 	public static boolean shouldMoveTE(boolean te, BlockState state) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(PistonsMoveTileEntitiesModule.class))
+		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
 			return te;
 
 		return shouldMoveTE(state);
@@ -122,7 +121,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	public static void detachTileEntities(Level world, PistonStructureResolver helper, Direction facing, boolean extending) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(PistonsMoveTileEntitiesModule.class))
+		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
 			return;
 
 		if (!extending)
@@ -146,7 +145,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	public static boolean setPistonBlock(Level world, BlockPos pos, BlockState state, int flags) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(PistonsMoveTileEntitiesModule.class)) {
+		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class)) {
 			world.setBlock(pos, state, flags);
 			return false;
 		}

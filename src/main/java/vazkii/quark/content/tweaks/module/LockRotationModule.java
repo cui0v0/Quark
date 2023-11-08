@@ -30,9 +30,9 @@ import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.opengl.GL11;
 import vazkii.quark.api.IRotationLockable;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.SetLockProfileMessage;
 import vazkii.quark.content.building.block.QuarkVerticalSlabBlock;
@@ -65,7 +65,7 @@ public class LockRotationModule extends ZetaModule {
 	}
 
 	public static BlockState fixBlockRotation(BlockState state, BlockPlaceContext ctx) {
-		if(state == null || ctx.getPlayer() == null || !ModuleLoader.INSTANCE.isModuleEnabled(LockRotationModule.class))
+		if(state == null || ctx.getPlayer() == null || !Quark.ZETA.modules.isEnabled(LockRotationModule.class))
 			return state;
 
 		UUID uuid = ctx.getPlayer().getUUID();

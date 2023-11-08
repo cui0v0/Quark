@@ -26,7 +26,6 @@ import vazkii.quark.api.ICustomSorting;
 import vazkii.quark.api.ISortingLockedSlots;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.management.module.InventorySortingModule;
 
 import java.util.*;
@@ -69,7 +68,7 @@ public final class SortingHandler {
 		SortingHandler::potionTypeCompare));
 
 	public static void sortInventory(Player player, boolean forcePlayer) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(InventorySortingModule.class))
+		if (!Quark.ZETA.modules.isEnabled(InventorySortingModule.class))
 			return;
 
 		AbstractContainerMenu c = player.containerMenu;

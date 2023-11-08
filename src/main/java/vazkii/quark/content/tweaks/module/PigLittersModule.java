@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZBabyEntitySpawn;
 import vazkii.zeta.event.ZEntityJoinLevel;
@@ -50,7 +50,7 @@ public class PigLittersModule extends ZetaModule {
 	public static int maxGoldenCarrotBoost = 2;
 
 	public static boolean canEat(ItemStack stack) {
-		return ModuleLoader.INSTANCE.isModuleEnabled(PigLittersModule.class) && pigsEatGoldenCarrots && stack.is(Items.GOLDEN_CARROT);
+		return Quark.ZETA.modules.isEnabled(PigLittersModule.class) && pigsEatGoldenCarrots && stack.is(Items.GOLDEN_CARROT);
 	}
 
 	public static void onEat(Animal animal, ItemStack stack) {

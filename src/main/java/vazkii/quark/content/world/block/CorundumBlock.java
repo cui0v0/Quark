@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkGlassBlock;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.world.module.CorundumModule;
 import vazkii.quark.content.world.module.SpiralSpiresModule;
@@ -70,7 +70,7 @@ public class CorundumBlock extends QuarkGlassBlock {
 			BlockPos up = pos.above();
 			worldIn.setBlockAndUpdate(up, state);
 
-			if(down.getBlock() == SpiralSpiresModule.myalite_crystal && ModuleLoader.INSTANCE.isModuleEnabled(SpiralSpiresModule.class) && SpiralSpiresModule.renewableMyalite)
+			if(down.getBlock() == SpiralSpiresModule.myalite_crystal && Quark.ZETA.modules.isEnabled(SpiralSpiresModule.class) && SpiralSpiresModule.renewableMyalite)
 				worldIn.setBlockAndUpdate(pos, SpiralSpiresModule.myalite_crystal.defaultBlockState());
 			else for(Direction d : Direction.values()) {
 				BlockPos offPos = up.relative(d);

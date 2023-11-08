@@ -16,7 +16,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkInheritedPaneBlock;
 import vazkii.quark.base.handler.ToolInteractionHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.util.CorundumColor;
 import vazkii.quark.content.tools.module.BeaconRedirectionModule;
@@ -94,7 +93,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	public void addAdditionalHints(ZGatherHints consumer) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.corundum_cluster_grow");
 
-		if(ModuleLoader.INSTANCE.isModuleEnabled(BeaconRedirectionModule.class))
+		if(Quark.ZETA.modules.isEnabled(BeaconRedirectionModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.corundum_cluster_redirect"));
 
 		for(Block block : clusters)

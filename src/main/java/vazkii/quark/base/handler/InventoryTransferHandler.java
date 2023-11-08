@@ -17,7 +17,6 @@ import vazkii.quark.api.IQuarkButtonAllowed;
 import vazkii.quark.api.ITransferManager;
 import vazkii.quark.api.QuarkCapabilities;
 import vazkii.quark.base.Quark;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.management.module.EasyTransferingModule;
 
 import javax.annotation.Nonnull;
@@ -28,7 +27,7 @@ import java.util.function.BiPredicate;
 public class InventoryTransferHandler {
 
 	public static void transfer(Player player, boolean isRestock, boolean smart) {
-		if(!ModuleLoader.INSTANCE.isModuleEnabled(EasyTransferingModule.class) || player.isSpectator() || !accepts(player.containerMenu, player))
+		if(!Quark.ZETA.modules.isEnabled(EasyTransferingModule.class) || player.isSpectator() || !accepts(player.containerMenu, player))
 			return;
 
 		//		if(!useContainer && !player.getEntityWorld().getWorldInfo().getGameRulesInstance().getBoolean(StoreToChests.GAME_RULE)) {

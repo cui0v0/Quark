@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.Material;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.type.DimensionConfig;
 import vazkii.quark.base.world.generator.Generator;
 import vazkii.quark.content.building.module.CompressedBlocksModule;
@@ -91,7 +91,7 @@ public class ObsidianSpikeGenerator extends Generator {
 			world.setBlock(placePos, obsidian, 0);
 			
 			if(addSpawner && i == 0) {
-				boolean useBlazeLantern = ModuleLoader.INSTANCE.isModuleEnabled(CompressedBlocksModule.class) && CompressedBlocksModule.enableBlazeLantern;
+				boolean useBlazeLantern = Quark.ZETA.modules.isEnabled(CompressedBlocksModule.class) && CompressedBlocksModule.enableBlazeLantern;
 				world.setBlock(placePos, useBlazeLantern ? CompressedBlocksModule.blaze_lantern.defaultBlockState() : Blocks.GLOWSTONE.defaultBlockState(), 0);
 				
 				placePos = placePos.below();

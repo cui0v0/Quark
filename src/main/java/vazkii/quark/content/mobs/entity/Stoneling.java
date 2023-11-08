@@ -71,7 +71,6 @@ import net.minecraftforge.network.NetworkHooks;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.QuarkSounds;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.util.IfFlagGoal;
 import vazkii.quark.content.mobs.ai.ActWaryGoal;
 import vazkii.quark.content.mobs.ai.FavorBlockGoal;
@@ -126,7 +125,7 @@ public class Stoneling extends PathfinderMob {
 	}
 
 	private TagKey<Item> temptTag() {
-		return ModuleLoader.INSTANCE.isModuleEnabled(GlimmeringWealdModule.class) ? GlimmeringWealdModule.glowShroomFeedablesTag : Tags.Items.GEMS_DIAMOND;
+		return Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) ? GlimmeringWealdModule.glowShroomFeedablesTag : Tags.Items.GEMS_DIAMOND;
 	}
 
 	public static AttributeSupplier.Builder prepareAttributes() {

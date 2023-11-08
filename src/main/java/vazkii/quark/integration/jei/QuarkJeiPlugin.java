@@ -1,6 +1,17 @@
 package vazkii.quark.integration.jei;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Sets;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -10,7 +21,13 @@ import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
@@ -21,7 +38,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -30,9 +54,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import vazkii.zeta.event.ZGatherHints;
-import vazkii.zeta.module.IDisableable;
-import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import vazkii.quark.addons.oddities.client.screen.CrateScreen;
@@ -43,7 +64,6 @@ import vazkii.quark.base.client.handler.RequiredModTooltipHandler;
 import vazkii.quark.base.handler.GeneralConfig;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.content.building.module.VariantFurnacesModule;
 import vazkii.quark.content.client.module.ImprovedTooltipsModule;
 import vazkii.quark.content.client.tooltip.EnchantedBookTooltips;
@@ -54,12 +74,10 @@ import vazkii.quark.content.tools.module.PickarangModule;
 import vazkii.quark.content.tweaks.module.DiamondRepairModule;
 import vazkii.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 import vazkii.quark.content.tweaks.recipe.SlabToBlockRecipe;
+import vazkii.zeta.event.ZGatherHints;
+import vazkii.zeta.module.IDisableable;
+import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.zeta.util.RegistryUtil;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @JeiPlugin
 public class QuarkJeiPlugin implements IModPlugin {
@@ -86,7 +104,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 
 		Quark.ZETA.configManager.setJeiReloadListener(configInternals -> {
-			if(ModuleLoader.INSTANCE.isModuleEnabled(DiamondRepairModule.class))
+			if(Quark.ZETA.modules.isEnabled(DiamondRepairModule.class))
 				Minecraft.getInstance().submitAsync(() -> hideAnvilRepairRecipes(jeiRuntime.getRecipeManager()));
 
 			if(!GeneralConfig.hideDisabledContent)
@@ -128,7 +146,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	}
 
 	private boolean matrix() {
-		return ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class) && MatrixEnchantingModule.allowInfluencing && !MatrixEnchantingModule.candleInfluencingFailed;
+		return Quark.ZETA.modules.isEnabled(MatrixEnchantingModule.class) && MatrixEnchantingModule.allowInfluencing && !MatrixEnchantingModule.candleInfluencingFailed;
 	}
 
 	@Override
@@ -141,21 +159,21 @@ public class QuarkJeiPlugin implements IModPlugin {
 	public void registerRecipes(@Nonnull IRecipeRegistration registration) {
 		IVanillaRecipeFactory factory = registration.getVanillaRecipeFactory();
 
-		if (ModuleLoader.INSTANCE.isModuleEnabled(AncientTomesModule.class))
+		if (Quark.ZETA.modules.isEnabled(AncientTomesModule.class))
 			registerAncientTomeAnvilRecipes(registration, factory);
 
-		if (ModuleLoader.INSTANCE.isModuleEnabled(PickarangModule.class)) {
+		if (Quark.ZETA.modules.isEnabled(PickarangModule.class)) {
 			registerPickarangAnvilRepairs(PickarangModule.pickarang, Items.DIAMOND, registration, factory);
 			registerPickarangAnvilRepairs(PickarangModule.flamerang, Items.NETHERITE_INGOT, registration, factory);
 		}
 
-		if (ModuleLoader.INSTANCE.isModuleEnabled(ColorRunesModule.class))
+		if (Quark.ZETA.modules.isEnabled(ColorRunesModule.class))
 			registerRuneAnvilRecipes(registration, factory);
 
 		if (matrix())
 			registerInfluenceRecipes(registration);
 
-		if(ModuleLoader.INSTANCE.isModuleEnabled(DiamondRepairModule.class))
+		if(Quark.ZETA.modules.isEnabled(DiamondRepairModule.class))
 			registerCustomAnvilRecipes(registration, factory);
 
 		if(GeneralConfig.enableJeiItemInfo) {
@@ -180,7 +198,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(@Nonnull IRecipeCatalystRegistration registration) {
-		if(ModuleLoader.INSTANCE.isModuleEnabled(VariantFurnacesModule.class)) {
+		if(Quark.ZETA.modules.isEnabled(VariantFurnacesModule.class)) {
 			registration.addRecipeCatalyst(new ItemStack(VariantFurnacesModule.deepslateFurnace), RecipeTypes.FUELING, RecipeTypes.SMELTING);
 			registration.addRecipeCatalyst(new ItemStack(VariantFurnacesModule.blackstoneFurnace), RecipeTypes.FUELING, RecipeTypes.SMELTING);
 		}
@@ -218,7 +236,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	private void registerRuneAnvilRecipes(@Nonnull IRecipeRegistration registration, @Nonnull IVanillaRecipeFactory factory) {
 		RandomSource random = RandomSource.create();
 		Stream<ItemStack> displayItems;
-		if (ModuleLoader.INSTANCE.isModuleEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
+		if (Quark.ZETA.modules.isEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
 			displayItems = EnchantedBookTooltips.getTestItems().stream();
 		} else {
 			displayItems = Stream.of(Items.DIAMOND_SWORD, Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE,

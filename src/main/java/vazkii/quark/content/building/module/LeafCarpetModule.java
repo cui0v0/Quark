@@ -6,8 +6,8 @@ import java.util.List;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.client.AlikeColorHandler;
 import vazkii.zeta.client.event.ZAddBlockColorHandlers;
 import vazkii.zeta.client.event.ZAddItemColorHandlers;
@@ -41,7 +41,7 @@ public class LeafCarpetModule extends ZetaModule {
 	public void postRegister(ZRegister.Post e) {
 		BlossomTreesModule.trees.keySet().stream().map(t -> (BlossomLeavesBlock) t.leaf.getBlock()).forEach(this::blossomCarpet);
 		
-		carpetBlock(AncientWoodModule.ancient_leaves).setCondition(() -> ModuleLoader.INSTANCE.isModuleEnabled(AncientWoodModule.class));
+		carpetBlock(AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}
 
 	@LoadEvent

@@ -13,7 +13,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.ToolInteractionHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.util.VanillaWoods;
 import vazkii.quark.base.util.VanillaWoods.Wood;
 import vazkii.quark.content.building.block.WoodPostBlock;
@@ -48,7 +47,7 @@ public class WoodenPostsModule extends ZetaModule {
 
 	public static boolean canLanternConnect(BlockState state, LevelReader worldIn, BlockPos pos, boolean prev) {
 		return prev ||
-				(ModuleLoader.INSTANCE.isModuleEnabled(WoodenPostsModule.class)
+				(Quark.ZETA.modules.isEnabled(WoodenPostsModule.class)
 						&& state.getValue(LanternBlock.HANGING)
 						&& worldIn.getBlockState(pos.above()).getBlock() instanceof WoodPostBlock);
 	}

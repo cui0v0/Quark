@@ -26,10 +26,10 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.QuarkClient;
 import vazkii.zeta.util.ItemNBTHelper;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.mobs.module.StonelingsModule;
 import vazkii.quark.content.tools.module.PathfinderMapsModule;
@@ -383,8 +383,8 @@ public class PathfindersQuillItem extends QuarkItem implements IZetaItemColorPro
                 items.add(forBiome(trade.biome.toString(), trade.color));
             }
             if (!generatedWeald &&
-                ModuleLoader.INSTANCE.isModuleEnabled(StonelingsModule.class) &&
-                ModuleLoader.INSTANCE.isModuleEnabled(GlimmeringWealdModule.class) &&
+            	Quark.ZETA.modules.isEnabled(StonelingsModule.class) &&
+            	Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) &&
                 StonelingsModule.wealdPathfinderMaps) {
                 items.add(forBiome(GlimmeringWealdModule.BIOME_NAME.toString(), 0x317546));
             }

@@ -38,7 +38,6 @@ import vazkii.quark.base.handler.UndergroundBiomeHandler;
 import vazkii.quark.base.handler.VariantHandler;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.AdventuringTimeModifier;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.mobs.module.StonelingsModule;
 import vazkii.quark.content.world.block.GlowLichenGrowthBlock;
@@ -149,7 +148,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 		MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
 		BiomeDefaultFeatures.commonSpawns(mobs);
 
-		if(ModuleLoader.INSTANCE.isModuleEnabled(StonelingsModule.class))
+		if(Quark.ZETA.modules.isEnabled(StonelingsModule.class))
 			mobs.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(StonelingsModule.stonelingType, 200, 1, 4));
 		mobs.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 20, 4, 6));
 

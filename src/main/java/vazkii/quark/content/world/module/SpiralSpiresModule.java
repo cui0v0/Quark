@@ -16,10 +16,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.config.Config.Max;
 import vazkii.quark.base.module.config.Config.Min;
@@ -93,7 +93,7 @@ public class SpiralSpiresModule extends ZetaModule {
 		
 		if(enableMyaliteViaducts)
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_viaduct")); 
-		if(renewableMyalite && ModuleLoader.INSTANCE.isModuleEnabled(CorundumModule.class))
+		if(renewableMyalite && Quark.ZETA.modules.isEnabled(CorundumModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_grow"));
 		
 		consumer.accept(myalite_crystal.asItem(), comp);

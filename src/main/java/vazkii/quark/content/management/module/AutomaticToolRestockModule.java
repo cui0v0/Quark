@@ -17,7 +17,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 import vazkii.quark.api.event.GatherToolClassesEvent;
-import vazkii.quark.base.module.ModuleLoader;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.module.sync.SyncedFlagHandler;
 import vazkii.quark.base.util.InventoryIIH;
@@ -127,7 +127,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 				int upper = player.getInventory().items.size();
 				boolean foundInInv = crawlInventory(new PlayerInvWrapper(player.getInventory()), lower, upper, ctx);
 
-				if (!foundInInv && ModuleLoader.INSTANCE.isModuleEnabled(BackpackModule.class)) {
+				if (!foundInInv && Quark.ZETA.modules.isEnabled(BackpackModule.class)) {
 					ItemStack backpack = player.getInventory().armor.get(2);
 
 					if (backpack.getItem() == BackpackModule.backpack) {

@@ -39,7 +39,6 @@ import vazkii.quark.api.IEnchantmentInfluencer;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.IQuarkBlock;
 import vazkii.quark.base.handler.CreativeTabHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IQuarkBlock {
@@ -100,7 +99,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		if(!(worldIn.getBlockEntity(pos) instanceof MatrixEnchantingTableBlockEntity))
 			worldIn.setBlockEntity(newBlockEntity(pos, state));
 
-		if(ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class)) {
+		if(Quark.ZETA.modules.isEnabled(MatrixEnchantingModule.class)) {
 			if(player instanceof ServerPlayer serverPlayer)
 				NetworkHooks.openScreen(serverPlayer, (MatrixEnchantingTableBlockEntity) worldIn.getBlockEntity(pos), pos);
 		} else
@@ -112,7 +111,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
-		boolean enabled = ModuleLoader.INSTANCE.isModuleEnabled(MatrixEnchantingModule.class);
+		boolean enabled = Quark.ZETA.modules.isEnabled(MatrixEnchantingModule.class);
 		boolean showInfluences = enabled && MatrixEnchantingModule.allowInfluencing;
 		boolean allowUnderwater = enabled && MatrixEnchantingModule.allowUnderwaterEnchanting;
 		boolean allowShort = enabled && MatrixEnchantingModule.allowShortBlockEnchanting;

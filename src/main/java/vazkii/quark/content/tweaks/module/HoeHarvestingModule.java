@@ -26,7 +26,6 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolActions;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZBlock;
 import vazkii.zeta.event.ZCommonSetup;
@@ -56,7 +55,7 @@ public class HoeHarvestingModule extends ZetaModule {
 	public static TagKey<Item> bigHarvestingHoesTag;
 
 	public static int getRange(ItemStack hoe) {
-		if(!ModuleLoader.INSTANCE.isModuleEnabled(HoeHarvestingModule.class))
+		if(!Quark.ZETA.modules.isEnabled(HoeHarvestingModule.class))
 			return 1;
 
 		if(!isHoe(hoe))

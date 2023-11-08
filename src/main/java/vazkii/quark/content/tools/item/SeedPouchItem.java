@@ -31,7 +31,6 @@ import vazkii.quark.api.ITrowelable;
 import vazkii.quark.api.IUsageTickerOverride;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.item.QuarkItem;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.content.tools.module.SeedPouchModule;
 

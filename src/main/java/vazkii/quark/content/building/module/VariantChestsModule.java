@@ -28,7 +28,6 @@ import net.minecraftforge.common.Tags;
 import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler;
 import vazkii.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.util.VanillaWoods;
 import vazkii.quark.base.util.VanillaWoods.Wood;
@@ -197,7 +196,7 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	public static void addChest(String name, ZetaModule module, Supplier<Block.Properties> props, boolean external) {
-		BooleanSupplier cond = external ? (() -> ModuleLoader.INSTANCE.isModuleEnabled(VariantChestsModule.class)) : (() -> true);
+		BooleanSupplier cond = external ? (() -> Quark.ZETA.modules.isEnabled(VariantChestsModule.class)) : (() -> true);
 
 		chestTypes.add(new ChestInfo(name, module, props, cond, null));
 	}

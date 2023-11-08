@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import vazkii.quark.base.module.LoadModule;
 import vazkii.zeta.Zeta;
 import vazkii.zeta.event.ZModulesReady;
@@ -53,6 +54,11 @@ public class ZetaModuleManager {
 
 	public boolean isEnabled(Class<? extends ZetaModule> keyClass) {
 		return get(keyClass).enabled;
+	}
+	
+	public boolean isEnabledOrOverlapping(Class<? extends ZetaModule> keyClass) {
+		ZetaModule module = get(keyClass);
+		return module.enabled || module.disabledByOverlap;
 	}
 
 	// Categories //

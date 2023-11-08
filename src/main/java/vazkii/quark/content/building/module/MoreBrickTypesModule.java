@@ -3,9 +3,9 @@ package vazkii.quark.content.building.module;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.block.QuarkBlock;
 import vazkii.quark.base.handler.VariantHandler;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.zeta.event.ZRegister;
 import vazkii.zeta.event.bus.LoadEvent;
@@ -41,7 +41,7 @@ public class MoreBrickTypesModule extends ZetaModule {
 		
 		add("sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks);
 		add("red_sandstone", Blocks.RED_SANDSTONE, () -> enableSandstoneBricks);
-		add("soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && ModuleLoader.INSTANCE.isModuleEnabled(SoulSandstoneModule.class));
+		add("soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && Quark.ZETA.modules.isEnabled(SoulSandstoneModule.class));
 		
 		add("cobblestone", Blocks.COBBLESTONE, () -> enableCobblestoneBricks);
 		add("mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, () -> enableCobblestoneBricks);

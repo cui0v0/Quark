@@ -42,7 +42,6 @@ import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.MiscUtil;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.tools.item.AncientTomeItem;
 import vazkii.quark.content.tools.loot.EnchantTome;
@@ -361,7 +360,7 @@ public class AncientTomesModule extends ZetaModule {
 	}
 
 	public static Rarity shiftRarity(ItemStack itemStack, Rarity returnValue) {
-		return ModuleLoader.INSTANCE.isModuleEnabled(AncientTomesModule.class) && overleveledBooksGlowRainbow &&
+		return Quark.ZETA.modules.isEnabled(AncientTomesModule.class) && overleveledBooksGlowRainbow &&
 				itemStack.getItem() == Items.ENCHANTED_BOOK && isOverlevel(itemStack) ? Rarity.EPIC : returnValue;
 
 	}

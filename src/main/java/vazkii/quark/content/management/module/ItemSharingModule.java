@@ -29,7 +29,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.glfw.GLFW;
-import vazkii.quark.base.module.ModuleLoader;
+
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.base.network.QuarkNetwork;
 import vazkii.quark.base.network.message.ShareItemMessage;
@@ -103,7 +104,7 @@ public class ItemSharingModule extends ZetaModule {
 	}
 
 	public static void shareItem(ServerPlayer player, String message, ItemStack stack, Instant timeStamp, long salt, MessageSignature signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class))
+		if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class))
 			return;
 
 		Component itemComp = stack.getDisplayName();
@@ -114,7 +115,7 @@ public class ItemSharingModule extends ZetaModule {
 	}
 
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {
-		if (!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class) || !renderItemsInChat)
+		if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 			return component;
 
 		Style style = component.getStyle();
@@ -133,7 +134,7 @@ public class ItemSharingModule extends ZetaModule {
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ItemSharingModule {
 		public static void renderItemForMessage(PoseStack poseStack, FormattedCharSequence sequence, float x, float y, int color) {
-			if (!ModuleLoader.INSTANCE.isModuleEnabled(ItemSharingModule.class) || !renderItemsInChat)
+			if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 				return;
 
 			Minecraft mc = Minecraft.getInstance();

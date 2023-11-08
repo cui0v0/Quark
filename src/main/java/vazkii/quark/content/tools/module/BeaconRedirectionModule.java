@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import vazkii.quark.base.Quark;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.QuarkGenericTrigger;
-import vazkii.quark.base.module.ModuleLoader;
 import vazkii.quark.base.module.config.Config;
 import vazkii.quark.content.world.block.CorundumClusterBlock;
 import vazkii.quark.content.world.module.CorundumModule;
@@ -70,7 +70,7 @@ public class BeaconRedirectionModule extends ZetaModule {
 		final String redirectHint = "beacon_redirect_item";
 		String type = "amethyst";
 
-		if(!ModuleLoader.INSTANCE.isModuleEnabled(CorundumModule.class))
+		if(!Quark.ZETA.modules.isEnabled(CorundumModule.class))
 			consumer.hintItem(Items.AMETHYST_CLUSTER, redirectHint);
 		else
 			type = "corundum";

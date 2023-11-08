@@ -1,6 +1,6 @@
 package vazkii.quark.content.tweaks.module;
 
-import vazkii.quark.base.module.ModuleLoader;
+import vazkii.quark.base.Quark;
 import vazkii.zeta.module.ZetaLoadModule;
 import vazkii.zeta.module.ZetaModule;
 import vazkii.quark.base.module.config.Config;
@@ -17,7 +17,7 @@ public class SpongesBetterModule extends ZetaModule {
 	public static int maximumCrawlDistance = 10;
 
 	public static int drainLimit(int previous) {
-		if (ModuleLoader.INSTANCE.isModuleEnabled(SpongesBetterModule.class)) {
+		if (Quark.ZETA.modules.isEnabled(SpongesBetterModule.class)) {
 			// Additive to not directly conflict with other mods
 			return maximumWaterDrain - 64 + previous;
 		}
@@ -25,7 +25,7 @@ public class SpongesBetterModule extends ZetaModule {
 	}
 
 	public static int crawlLimit(int previous) {
-		if (ModuleLoader.INSTANCE.isModuleEnabled(SpongesBetterModule.class)) {
+		if (Quark.ZETA.modules.isEnabled(SpongesBetterModule.class)) {
 			// Additive to not directly conflict with other mods
 			return maximumCrawlDistance - 6 + previous;
 		}
