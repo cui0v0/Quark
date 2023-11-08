@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.module.config.Config;
-import org.violetmoon.quark.base.module.config.ConfigFlagManager;
-import org.violetmoon.quark.base.module.config.type.IConfigType;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.ConfigFlagManager;
+import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import com.google.common.collect.HashMultimap;
