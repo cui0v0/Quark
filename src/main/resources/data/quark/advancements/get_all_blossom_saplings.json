@@ -37,18 +37,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-   "pink": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "quark:pink_blossom_sapling"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "yellow": {
       "conditions": {
         "items": [
@@ -96,7 +84,6 @@
     [ "blue" ],
     [ "lavender" ],
     [ "orange" ],
-    [ "pink" ],
     [ "yellow" ],
     [ "red" ]
   ],

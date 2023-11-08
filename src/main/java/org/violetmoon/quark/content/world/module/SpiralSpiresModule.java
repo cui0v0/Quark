@@ -65,8 +65,9 @@ public class SpiralSpiresModule extends ZetaModule {
 
 	@Config public static boolean renewableMyalite = true;
 
-	@Hint
 	public static QuarkGenericTrigger useViaductTrigger;
+	
+	@Hint 
 	public static Block dusky_myalite;
 	public static Block myalite_crystal;
 
