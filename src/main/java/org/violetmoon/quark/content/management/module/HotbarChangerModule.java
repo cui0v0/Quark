@@ -58,7 +58,6 @@ public class HotbarChangerModule extends ZetaModule {
 			acceptInput(event.getKey());
 		}
 
-		//fixme Needs splitting up
 		@PlayEvent
 		public void hudHeathPre(ZRenderGuiOverlay.PlayerHealth.Pre event) {
 			float shift = -getRealHeight(event.getPartialTick()) + 22;
