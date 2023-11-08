@@ -34,7 +34,7 @@ public class ShulkerPackingModule extends ZetaModule {
 	@PlayEvent // It's like fedex but eldritch
 	public void callFedEnd(ZRightClickBlock event) {
 		BlockPos pos = event.getHitVec().getBlockPos();
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 
 		if (player.isShiftKeyDown()) {
 			ItemStack mainHand = player.getMainHandItem();

@@ -123,7 +123,7 @@ public class DoubleDoorOpeningModule extends ZetaModule {
 	public static class Client extends DoubleDoorOpeningModule {
 		@PlayEvent
 		public void onPlayerInteract(ZRightClickBlock.Low event) {
-			Player player = event.getEntity();
+			Player player = event.getPlayer();
 			if(!event.getLevel().isClientSide || player.isDiscrete() || event.isCanceled() || event.getResult() == ZResult.DENY || event.getUseBlock() == ZResult.DENY || handling)
 				return;
 

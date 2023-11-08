@@ -68,7 +68,7 @@ public class ShearVinesModule extends ZetaModule {
 					testState = world.getBlockState(testPos);
 				}
 				
-				Player player = event.getEntity();
+				Player player = event.getPlayer();
 				world.playSound(player, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5F, 1F);
 				if(!player.getAbilities().instabuild)
 					MiscUtil.damageStack(player, event.getHand(), stack, 1);

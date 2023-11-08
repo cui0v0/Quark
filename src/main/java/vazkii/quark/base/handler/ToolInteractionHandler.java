@@ -1,8 +1,17 @@
 package vazkii.quark.base.handler;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,19 +25,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import vazkii.quark.base.handler.advancement.QuarkAdvancementHandler;
 import vazkii.quark.base.handler.advancement.mod.WaxModifier;
+import vazkii.zeta.event.ZCommonSetup;
 import vazkii.zeta.event.ZRightClickBlock;
+import vazkii.zeta.event.bus.LoadEvent;
 import vazkii.zeta.event.bus.PlayEvent;
 import vazkii.zeta.module.ZetaModule;
-import vazkii.zeta.event.ZCommonSetup;
-import vazkii.zeta.event.bus.LoadEvent;
-
-import java.util.*;
 
 public final class ToolInteractionHandler {
 
@@ -102,9 +107,9 @@ public final class ToolInteractionHandler {
 
 				if(!world.isClientSide)
 					world.setBlockAndUpdate(pos, copyState(state, alternate));
-				world.levelEvent(event.getEntity(), LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+				world.levelEvent(event.getPlayer(), LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
 
-				if(!event.getEntity().getAbilities().instabuild)
+				if(!event.getPlayer().getAbilities().instabuild)
 					stack.setCount(stack.getCount() - 1);
 
 				event.setCanceled(true);

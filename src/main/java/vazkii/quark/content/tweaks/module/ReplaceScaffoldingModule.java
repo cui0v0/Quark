@@ -40,7 +40,7 @@ public class ReplaceScaffoldingModule extends ZetaModule {
 		Level world = event.getLevel();
 		BlockPos pos = event.getPos();
 		BlockState state = world.getBlockState(pos);
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		if(state.getBlock() == Blocks.SCAFFOLDING && !player.isDiscrete()) {
 			Direction dir = event.getFace();
 			ItemStack stack = event.getItemStack();

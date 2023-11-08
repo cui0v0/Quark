@@ -307,7 +307,7 @@ public class AncientTomesModule extends ZetaModule {
 	@PlayEvent
 	public void onGetSpeed(ZPlayer.BreakSpeed event) {
 		if(deepslateTweak) {
-			Player player = event.getEntity();
+			Player player = event.getPlayer();
 			ItemStack stack = player.getMainHandItem();
 			BlockState state = event.getState();
 

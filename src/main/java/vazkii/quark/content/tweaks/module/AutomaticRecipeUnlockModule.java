@@ -51,7 +51,7 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 	@PlayEvent
 	public void onPlayerLoggedIn(ZPlayer.LoggedIn event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 
 		if(player instanceof ServerPlayer spe) {
 			MinecraftServer server = spe.getServer();

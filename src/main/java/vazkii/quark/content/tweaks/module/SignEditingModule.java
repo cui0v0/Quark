@@ -41,7 +41,7 @@ public class SignEditingModule extends ZetaModule {
 			return;
 
 		BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		ItemStack stack = player.getMainHandItem();
 
 		if(player instanceof ServerPlayer serverPlayer

@@ -50,7 +50,7 @@ public class SeedPouchModule extends ZetaModule {
 
 	@PlayEvent
 	public void onItemPickup(ZEntityItemPickup event) {
-		Player player = event.getEntity();
+		Player player = event.getPlayer();
 		ItemStack stack = event.getItem().getItem();
 
 		ItemStack main = player.getMainHandItem();
