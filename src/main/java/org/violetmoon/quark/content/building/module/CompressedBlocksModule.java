@@ -44,13 +44,8 @@ public class CompressedBlocksModule extends ZetaModule {
 	@Config.Min(0)
 	public static int stickBlockFuelTime = 900;
 	
-	@Config(name = "Bamboo Block Fuel Time")
-	@Config.Min(0)
-	public static int bambooBundleFuelTime = 500;
-	
 	@Config(flag = "charcoal_block") public static boolean enableCharcoalBlock = true;
 	@Config(flag = "sugar_cane_block") public static boolean enableSugarCaneBlock = true;
-	@Config(flag = "bamboo_block") public static boolean enableBambooBlock = true;
 	@Config(flag = "cactus_block") public static boolean enableCactusBlock = true;
 	@Config(flag = "chorus_fruit_block") public static boolean enableChorusFruitBlock = true;
 	@Config(flag = "stick_block") public static boolean enableStickBlock = true;
@@ -77,7 +72,6 @@ public class CompressedBlocksModule extends ZetaModule {
 	@Hint("golden_apple_crate")	public static Block golden_apple_crate;
 	
 	public static Block stick_block;
-	public static Block bamboo_bundle;
 
 	private final List<Block> compostable = Lists.newArrayList();
 
@@ -90,9 +84,7 @@ public class CompressedBlocksModule extends ZetaModule {
 						.sound(SoundType.STONE))
 				.setCondition(() -> enableCharcoalBlock);
 		
-		bamboo_bundle = pillar("sugar_cane", MaterialColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
-		Block bamboo = pillar("bamboo", MaterialColor.COLOR_GREEN, false, () -> enableBambooBlock, 200);
-		Block stripped_bamboo = pillar("stripped_bamboo", MaterialColor.COLOR_YELLOW, false, () -> enableBambooBlock, 200);
+		pillar("sugar_cane", MaterialColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
 		pillar("cactus", MaterialColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);
 		pillar("chorus_fruit", MaterialColor.COLOR_PURPLE, false, () -> enableChorusFruitBlock, 10);
 		stick_block = pillar("stick", MaterialColor.WOOD, false, () -> enableStickBlock, 300);
@@ -126,8 +118,6 @@ public class CompressedBlocksModule extends ZetaModule {
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedRabbitHide);
-		
-		ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, bamboo, stripped_bamboo);
 	}
 
 	@LoadEvent
@@ -141,7 +131,6 @@ public class CompressedBlocksModule extends ZetaModule {
 		FuelHandler.addFuel(stick_block, stickBlockFuelTime);
 		FuelHandler.addFuel(charcoal_block, charcoalBlockFuelTime);
 		FuelHandler.addFuel(blaze_lantern, blazeLanternFuelTime);
-		FuelHandler.addFuel(bamboo_bundle, bambooBundleFuelTime);
 	}
 
 	private Block pillar(String name, MaterialColor color, boolean compost, BooleanSupplier cond, int flammability) {

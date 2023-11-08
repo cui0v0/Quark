@@ -74,7 +74,6 @@ public final class QuarkNetwork {
 
 		// Clientbound
 		network.register(DoEmoteMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
-		network.register(EditSignMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 		network.register(UpdateTridentMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 
 		// Flag Syncing

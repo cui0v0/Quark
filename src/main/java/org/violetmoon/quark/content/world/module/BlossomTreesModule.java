@@ -36,7 +36,6 @@ public class BlossomTreesModule extends ZetaModule {
 	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
 	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);
 	@Config public BlossomTreeConfig orange = new BlossomTreeConfig(100, BiomeTags.IS_SAVANNA);
-	@Config public BlossomTreeConfig pink = new BlossomTreeConfig(100, BiomeTags.IS_MOUNTAIN);
 	@Config public BlossomTreeConfig yellow = new BlossomTreeConfig(200, Tags.Biomes.IS_PLAINS);
 	@Config public BlossomTreeConfig red = new BlossomTreeConfig(30, BiomeTags.IS_BADLANDS);
 
@@ -53,7 +52,6 @@ public class BlossomTreesModule extends ZetaModule {
 		add("blue", MaterialColor.COLOR_LIGHT_BLUE, blue);
 		add("lavender", MaterialColor.COLOR_PINK, lavender);
 		add("orange", MaterialColor.TERRACOTTA_ORANGE, orange);
-		add("pink", MaterialColor.COLOR_PINK, pink);
 		add("yellow", MaterialColor.COLOR_YELLOW, yellow);
 		add("red", MaterialColor.COLOR_RED, red);
 	}

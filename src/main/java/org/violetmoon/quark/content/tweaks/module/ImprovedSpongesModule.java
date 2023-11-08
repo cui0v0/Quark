@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.module.config.Config;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -20,12 +22,26 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 
 @ZetaLoadModule(category = "tweaks")
-public class SpongeOnWaterPlacementModule extends ZetaModule {
+public class ImprovedSpongesModule extends ZetaModule {
 
+	@Config(description = "The maximum number of water tiles that a sponge can soak up. Vanilla default is 64.")
+	@Config.Min(64)
+	public static int maximumWaterDrain = 256;
+
+	@Config(description = "The maximum number of water tiles that a sponge can 'crawl along' for draining. Vanilla default is 6.")
+	@Config.Min(6)
+	public static int maximumCrawlDistance = 10;
+
+	@Config
+	public static boolean enablePlacingOnWater = true;
+	
 	@Hint Item sponge = Items.SPONGE;
 	
 	@PlayEvent
 	public void onUse(ZRightClickItem event) {
+		if(!enablePlacingOnWater)
+			return;
+		
 		ItemStack stack = event.getItemStack();
 		if(stack.is(Items.SPONGE)) {
 			Player player = event.getEntity();
@@ -44,6 +60,22 @@ public class SpongeOnWaterPlacementModule extends ZetaModule {
 				}
 			}
 		}
+	}
+	
+	public static int drainLimit(int previous) {
+		if (Quark.ZETA.modules.isEnabled(ImprovedSpongesModule.class)) {
+			// Additive to not directly conflict with other mods
+			return maximumWaterDrain - 64 + previous;
+		}
+		return previous;
+	}
+
+	public static int crawlLimit(int previous) {
+		if (Quark.ZETA.modules.isEnabled(ImprovedSpongesModule.class)) {
+			// Additive to not directly conflict with other mods
+			return maximumCrawlDistance - 6 + previous;
+		}
+		return previous;
 	}
 
 }
