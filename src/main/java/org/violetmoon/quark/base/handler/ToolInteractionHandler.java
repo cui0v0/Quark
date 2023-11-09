@@ -1,24 +1,8 @@
 package org.violetmoon.quark.base.handler;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.mod.WaxModifier;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,8 +16,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.apache.commons.lang3.tuple.Pair;
+import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
+import org.violetmoon.quark.base.handler.advancement.mod.WaxModifier;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.play.ZBlock;
+import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.*;
 
 public final class ToolInteractionHandler {
 
@@ -73,8 +66,8 @@ public final class ToolInteractionHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void toolActionEvent(BlockEvent.BlockToolModificationEvent event) {
+	@PlayEvent
+	public static void toolActionEvent(ZBlock.BlockToolModification event) {
 		ToolAction action = event.getToolAction();
 
 		if(interactionMaps.containsKey(action)) {

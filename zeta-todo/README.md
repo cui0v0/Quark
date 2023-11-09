@@ -25,7 +25,7 @@ So tl;dr for zeta-fying a module:
 * create cross-platform versions of any missing `@SubscribeEvent`s in Zeta and subscribe to them with `@PlayEvent`,
 * remove all other mentions of Forge and add an appropriate indirection layer in Zeta.
 
-Repeat ~~164x~~ ~~136x~~ 47x.
+Repeat ~~164x~~ ~~136x~~ ~~47x~~ 0x.
 
 # The initial Zeta pitch
 

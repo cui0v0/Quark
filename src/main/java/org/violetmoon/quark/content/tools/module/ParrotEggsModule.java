@@ -37,7 +37,6 @@ import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.content.tools.entity.ParrotEgg;
 import org.violetmoon.quark.content.tools.item.ParrotEggItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.*;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
