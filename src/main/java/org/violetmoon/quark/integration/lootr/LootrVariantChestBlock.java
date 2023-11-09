@@ -1,10 +1,5 @@
 package org.violetmoon.quark.integration.lootr;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -36,30 +31,28 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.ModList;
 import noobanidus.mods.lootr.LootrTags;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantChestBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
+import org.violetmoon.zeta.util.ZetaSide;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
  * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrChestBlock.java
  * All modifications are made purely to integrate with VariantChestBlock/quark
  */
-public class LootrVariantChestBlock extends VariantChestBlock implements IZetaItemPropertiesFiller {
+public class LootrVariantChestBlock extends VariantChestBlock implements IZetaItemPropertiesFiller, IZetaBlockItemProvider {
 	public LootrVariantChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
@@ -200,29 +193,6 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 			}
 
 			return super.onItemUseFirst(stack, context);
-		}
-
-		@Override
-		@OnlyIn(Dist.CLIENT)
-		public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-			consumer.accept(new IClientItemExtensions() {
-
-				@Override
-				public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-					Minecraft mc = Minecraft.getInstance();
-
-					return new BlockEntityWithoutLevelRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels()) {
-						private final BlockEntity tile = new LootrVariantChestBlockEntity(BlockPos.ZERO, getBlock().defaultBlockState());
-
-						@Override
-						public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemTransforms.TransformType transformType, @Nonnull PoseStack pose, @Nonnull MultiBufferSource buffer, int x, int y) {
-							mc.getBlockEntityRenderDispatcher().renderItem(tile, pose, buffer, x, y);
-						}
-
-					};
-				}
-
-			});
 		}
 	}
 

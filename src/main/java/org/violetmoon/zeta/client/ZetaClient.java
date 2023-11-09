@@ -4,7 +4,9 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
@@ -60,6 +62,9 @@ public abstract class ZetaClient {
 	//forge makes these weird
 	public abstract @Nullable BlockColor getBlockColor(BlockColors bcs, Block block);
 	public abstract @Nullable ItemColor getItemColor(ItemColors ics, ItemLike itemlike);
+
+	public abstract void setBlockEntityWithoutLevelRenderer(Item item, BlockEntityWithoutLevelRenderer bewlr);
+	public abstract void setHumanoidArmorModel(Item item, HumanoidArmorModelGetter modelGetter);
 
 	public abstract void start();
 }

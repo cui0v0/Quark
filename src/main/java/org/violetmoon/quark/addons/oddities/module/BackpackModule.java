@@ -4,7 +4,9 @@ import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScree
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.item.BackpackItem;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.block.QuarkBlock;
+import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.base.network.QuarkNetwork;
@@ -143,10 +145,14 @@ public class BackpackModule extends ZetaModule {
 
 		@LoadEvent
 		public void clientSetup(ZClientSetup e) {
-			MenuScreens.register(menyType, BackpackInventoryScreen::new);
+			e.enqueueWork(() -> {
+				MenuScreens.register(menyType, BackpackInventoryScreen::new);
 
-			e.enqueueWork(() -> ItemProperties.register(backpack, new ResourceLocation("has_items"),
-					(stack, world, entity, i) -> (!BackpackModule.superOpMode && BackpackItem.doesBackpackHaveItems(stack)) ? 1 : 0));
+				ItemProperties.register(backpack, new ResourceLocation("has_items"),
+					(stack, world, entity, i) -> (!BackpackModule.superOpMode && BackpackItem.doesBackpackHaveItems(stack)) ? 1 : 0);
+
+				QuarkClient.ZETA_CLIENT.setHumanoidArmorModel(backpack.asItem(), (living, stack, slot, original) -> ModelHandler.armorModel(ModelHandler.backpack, slot));
+			});
 		}
 
 		@PlayEvent

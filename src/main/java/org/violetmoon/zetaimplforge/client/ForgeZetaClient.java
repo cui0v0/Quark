@@ -4,6 +4,8 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.*;
@@ -18,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.client.ClientRegistryExtension;
+import org.violetmoon.zeta.client.HumanoidArmorModelGetter;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.event.load.*;
 import org.violetmoon.zeta.client.event.play.*;
@@ -48,6 +51,16 @@ public class ForgeZetaClient extends ZetaClient {
 	@Override
 	public ClientRegistryExtension createClientRegistryExtension() {
 		return new ForgeClientRegistryExtension(zeta);
+	}
+
+	@Override
+	public void setBlockEntityWithoutLevelRenderer(Item item, BlockEntityWithoutLevelRenderer bewlr) {
+		((IZetaForgeItemStuff) item).zeta$setBlockEntityWithoutLevelRenderer(bewlr);
+	}
+
+	@Override
+	public void setHumanoidArmorModel(Item item, HumanoidArmorModelGetter modelGetter) {
+		((IZetaForgeItemStuff) item).zeta$setHumanoidArmorModel(modelGetter);
 	}
 
 	@Override

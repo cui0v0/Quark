@@ -69,19 +69,6 @@ public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-				return ModelHandler.armorModel(ModelHandler.forgotten_hat, armorSlot);
-			}
-
-		});
-	}
-
-	@Override
 	public boolean isEnchantable(@Nonnull ItemStack stack) {
 		return false;
 	}
@@ -97,7 +84,6 @@ public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 
 			attributes = builder.build();
 		}
-
 
 		return slot == this.slot ? attributes : super.getDefaultAttributeModifiers(slot);
 	}

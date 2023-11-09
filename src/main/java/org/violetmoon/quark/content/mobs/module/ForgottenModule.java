@@ -1,6 +1,8 @@
 package org.violetmoon.quark.content.mobs.module;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
@@ -61,11 +63,6 @@ public class ForgottenModule extends ZetaModule {
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
 	}
 
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(forgottenType, ForgottenRenderer::new);
-	}
-
 	@PlayEvent
 	public void onSkeletonSpawn(ZLivingSpawn.CheckSpawn.Lowest event) {
 		if (event.getSpawnReason() == MobSpawnType.SPAWNER)
@@ -92,6 +89,20 @@ public class ForgottenModule extends ZetaModule {
 				}
 			}
 		}
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends ForgottenModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			event.enqueueWork(() -> {
+				EntityRenderers.register(forgottenType, ForgottenRenderer::new);
+
+				QuarkClient.ZETA_CLIENT.setHumanoidArmorModel(forgotten_hat, (living, stack, slot, original) -> ModelHandler.armorModel(ModelHandler.forgotten_hat, slot));
+			});
+		}
+
 	}
 
 }

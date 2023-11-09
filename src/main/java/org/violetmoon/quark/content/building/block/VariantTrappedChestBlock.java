@@ -7,19 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 
 import javax.annotation.Nonnull;
@@ -36,8 +31,7 @@ import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IZetaBlockItemProvider.class)
-public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlockItemProvider, IQuarkBlock, IChestTextureProvider {
+public class VariantTrappedChestBlock extends ChestBlock implements IQuarkBlock, IChestTextureProvider {
 
 	public final String type;
 	private final ZetaModule module;
@@ -102,12 +96,6 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlockIt
 	@Override
 	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState p_153065_) {
 		return new VariantTrappedChestBlockEntity(pos, p_153065_);
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockItem provideItemBlock(Block block, Item.Properties props) {
-		return new VariantChestBlock.Item(block, props);
 	}
 
 	public static class Compat extends VariantTrappedChestBlock {

@@ -248,19 +248,6 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
-				return ModelHandler.armorModel(ModelHandler.backpack, armorSlot);
-			}
-
-		});
-	}
-
-	@Override
 	public boolean isFoil(@Nonnull ItemStack stack) {
 		return false;
 	}

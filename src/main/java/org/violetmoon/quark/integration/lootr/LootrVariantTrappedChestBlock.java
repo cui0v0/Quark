@@ -30,9 +30,12 @@ import noobanidus.mods.lootr.util.ChestUtil;
 
 import javax.annotation.Nullable;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantTrappedChestBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
+import org.violetmoon.zeta.util.ZetaSide;
 
 import java.util.function.Supplier;
 
@@ -40,7 +43,7 @@ import java.util.function.Supplier;
  * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrVariantTrappedChestBlock.java
  * All modifications are made purely to integrate with VariantTrappedChestBlock/quark
  */
-public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaItemPropertiesFiller {
+public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaItemPropertiesFiller, IZetaBlockItemProvider {
 	public LootrVariantTrappedChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
@@ -122,7 +125,7 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 	}
 
 	@Override
-	public BlockItem provideItemBlock(Block block, Item.Properties props) {
+	public BlockItem provideItemBlock(Block block, LootrVariantChestBlock.Item.Properties props) {
 		return new LootrVariantChestBlock.Item(block, props, true);
 	}
 

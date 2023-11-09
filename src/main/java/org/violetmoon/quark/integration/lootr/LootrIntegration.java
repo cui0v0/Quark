@@ -12,8 +12,10 @@ import noobanidus.mods.lootr.init.ModBlocks;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.client.LootrVariantChestRenderer;
+import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 
 import static org.violetmoon.quark.content.building.module.VariantChestsModule.registerChests;
@@ -82,6 +84,11 @@ public class LootrIntegration implements ILootrIntegration {
 	public void clientSetup() {
 		BlockEntityRenderers.register(chestTEType, LootrVariantChestRenderer::new);
 		BlockEntityRenderers.register(trappedChestTEType, LootrVariantChestRenderer::new);
+
+		for(Block b : chests)
+			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
+		for(Block b : trappedChests)
+			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
 	}
 
 	@Override

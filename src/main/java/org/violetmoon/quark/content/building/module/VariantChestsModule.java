@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.Tags;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
@@ -39,6 +40,7 @@ import org.violetmoon.quark.content.building.client.render.be.VariantChestRender
 import org.violetmoon.quark.content.building.recipe.MixedExclusionRecipe;
 import org.violetmoon.quark.integration.lootr.ILootrIntegration;
 import org.violetmoon.quark.mixin.accessor.AccessorAbstractChestedHorse;
+import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -132,6 +134,11 @@ public class VariantChestsModule extends ZetaModule {
 		BlockEntityRenderers.register(trappedChestTEType, VariantChestRenderer::new);
 
 		ILootrIntegration.INSTANCE.clientSetup();
+
+		for(Block b : chests)
+			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
+		for(Block b : trappedChests)
+			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
 	}
 
 	@LoadEvent
