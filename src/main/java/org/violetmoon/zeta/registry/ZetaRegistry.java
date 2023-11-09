@@ -21,6 +21,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.Zeta;
+import org.violetmoon.zeta.item.ZetaBlockItem;
 
 //Mash of arl's RegistryHelper and its ModData innerclass.
 //You're expected to create one of these per modid instead, avoiding a dependency on Forge's "current mod id" notion.
@@ -129,7 +130,7 @@ public abstract class ZetaRegistry {
 		BlockItem blockitem;
 		if(block instanceof IZetaBlockItemProvider)
 			blockitem = ((IZetaBlockItemProvider) block).provideItemBlock(block, props);
-		else blockitem = new BlockItem(block, props);
+		else blockitem = new ZetaBlockItem(block, props);
 
 		if(block instanceof IZetaItemColorProvider prov && prov.getItemColorProviderName() != null)
 			itemsToColorProviderName.put(blockitem, prov.getItemColorProviderName());

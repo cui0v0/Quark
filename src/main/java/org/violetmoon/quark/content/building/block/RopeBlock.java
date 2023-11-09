@@ -40,6 +40,7 @@ import javax.annotation.Nonnull;
 import org.violetmoon.quark.base.block.QuarkBlock;
 import org.violetmoon.quark.content.automation.module.PistonsMoveTileEntitiesModule;
 import org.violetmoon.quark.content.building.module.RopeModule;
+import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
@@ -59,10 +60,9 @@ public class RopeBlock extends QuarkBlock implements IZetaBlockItemProvider, Sim
 
 	@Override
 	public BlockItem provideItemBlock(Block block, Item.Properties properties) {
-		return new BlockItem(block, properties) {
-			//TODO: IForgeItem
+		return new ZetaBlockItem(block, properties) {
 			@Override
-			public boolean doesSneakBypassUse(ItemStack stack, LevelReader world, BlockPos pos, Player player) {
+			public boolean doesSneakBypassUseZeta(ItemStack stack, LevelReader world, BlockPos pos, Player player) {
 				return world.getBlockState(pos).getBlock() instanceof RopeBlock;
 			}
 		};

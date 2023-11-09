@@ -192,7 +192,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 			classes.add("crossbow");
 
 		for(ToolAction action : ACTION_TO_CLASS.keySet()) {
-			if(item.canPerformAction(stack, action))
+			if(item.canPerformAction(stack, action)) //TODO: IForgeItem
 				classes.add(ACTION_TO_CLASS.get(action));
 		}
 

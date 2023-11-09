@@ -130,9 +130,8 @@ public class PathfindersQuillItem extends QuarkItem {
         return null;
     }
 
-    //TODO: IForgeItem
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    public boolean shouldCauseReequipAnimationZeta(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return slotChanged || (oldStack.getItem() != newStack.getItem());
     }
 

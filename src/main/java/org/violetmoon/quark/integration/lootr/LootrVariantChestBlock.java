@@ -41,6 +41,7 @@ import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantChestBlock;
+import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
@@ -158,7 +159,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 		return new Item(block, props, false);
 	}
 
-	public static class Item extends BlockItem {
+	public static class Item extends ZetaBlockItem {
 
 		private final boolean trap;
 
@@ -168,7 +169,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 		}
 
 		@Override
-		public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+		public InteractionResult onItemUseFirstZeta(ItemStack stack, UseOnContext context) {
 			if (!context.isSecondaryUseActive()) {
 				Player player = context.getPlayer();
 				Level level = context.getLevel();
@@ -192,7 +193,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 				}
 			}
 
-			return super.onItemUseFirst(stack, context);
+			return super.onItemUseFirstZeta(stack, context);
 		}
 	}
 

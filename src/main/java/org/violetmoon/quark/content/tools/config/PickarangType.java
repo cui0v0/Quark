@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tools.config;
 
+import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
@@ -8,11 +10,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 
 public class PickarangType<T extends AbstractPickarang<T>> implements IConfigType {
 
 	public final Item repairMaterial;
 	public final Item pickaxeEquivalent;
+	public final IZetaItemExtensions pickaxeEquivalentExt;
 
 	@Config(description = "How long it takes before the Pickarang starts returning to the player if it doesn't hit anything.")
 	public int timeout;
@@ -47,6 +51,7 @@ public class PickarangType<T extends AbstractPickarang<T>> implements IConfigTyp
 	public PickarangType(Item repairMaterial, Item pickaxeEquivalent, int timeout, int harvestLevel, int durability, double maxHardness, int attackDamage, int cooldown) {
 		this.repairMaterial = repairMaterial;
 		this.pickaxeEquivalent = pickaxeEquivalent;
+		this.pickaxeEquivalentExt = Quark.ZETA.itemExtensions.get(new ItemStack(pickaxeEquivalent));
 
 		this.timeout = timeout;
 		this.harvestLevel = harvestLevel;

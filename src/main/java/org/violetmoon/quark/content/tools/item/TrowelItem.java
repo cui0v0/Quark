@@ -106,9 +106,8 @@ public class TrowelItem extends QuarkItem implements IUsageTickerOverride {
 		return ItemStack.of(cmp);
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public int getMaxDamage(ItemStack stack) {
+	public int getMaxDamageZeta(ItemStack stack) {
 		return TrowelModule.maxDamage;
 	}
 

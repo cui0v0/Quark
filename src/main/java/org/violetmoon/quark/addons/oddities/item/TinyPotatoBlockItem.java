@@ -9,6 +9,7 @@ import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.util.TinyPotatoInfo;
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
+import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import net.minecraft.ChatFormatting;
@@ -19,12 +20,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class TinyPotatoBlockItem extends BlockItem implements IRuneColorProvider {
+public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProvider {
 	private static final int NOT_MY_NAME = 17;
 	private static final List<String> TYPOS = List.of("vaskii", "vazki", "voskii", "vazkkii", "vazkki", "vazzki", "vaskki", "vozkii", "vazkil", "vaskil", "vazkill", "vaskill", "vaski");
 
@@ -34,10 +34,9 @@ public class TinyPotatoBlockItem extends BlockItem implements IRuneColorProvider
 		super(block, properties);
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return super.canEquip(stack, armorType, entity) ||
+	public boolean canEquipZeta(ItemStack stack, EquipmentSlot armorType, Entity entity) {
+		return super.canEquipZeta(stack, armorType, entity) ||
 				(entity instanceof Player player && ContributorRewardHandler.getTier(player) > 0);
 	}
 
@@ -74,9 +73,9 @@ public class TinyPotatoBlockItem extends BlockItem implements IRuneColorProvider
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
+	public boolean onEntityItemUpdateZeta(ItemStack stack, ItemEntity entity) {
 		updateData(stack);
-		return super.onEntityItemUpdate(stack, entity);
+		return super.onEntityItemUpdateZeta(stack, entity);
 	}
 
 	@Override

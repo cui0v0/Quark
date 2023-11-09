@@ -33,6 +33,7 @@ import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
+import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.HashMap;
@@ -79,9 +80,8 @@ public class PickarangItem extends QuarkItem {
 		};
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public int getMaxDamage(ItemStack stack) {
+	public int getMaxDamageZeta(ItemStack stack) {
 		return Math.max(type.durability, 0);
 	}
 
@@ -144,9 +144,8 @@ public class PickarangItem extends QuarkItem {
 		return 0F;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean isRepairable(@Nonnull ItemStack stack) {
+	public boolean isRepairableZeta(@Nonnull ItemStack stack) {
 		return true;
 	}
 
@@ -155,10 +154,10 @@ public class PickarangItem extends QuarkItem {
 		return type.repairMaterial != null && repair.getItem() == type.repairMaterial;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public int getEnchantmentValue(ItemStack stack) {
-		return type.pickaxeEquivalent != null ? type.pickaxeEquivalent.getEnchantmentValue(stack) : 0;
+	public int getEnchantmentValueZeta(ItemStack stack) {
+		//return type.pickaxeEquivalent != null ? type.pickaxeEquivalentExt.getEnchantmentValueZeta(stack) : 0; //TODO ZETA: stack overflows
+		return getEnchantmentValue();
 	}
 
 	@SuppressWarnings("deprecation") //Forge replacement
@@ -167,9 +166,8 @@ public class PickarangItem extends QuarkItem {
 		return type.pickaxeEquivalent != null ? type.pickaxeEquivalent.getEnchantmentValue() : 0;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return super.canApplyAtEnchantingTable(stack, enchantment) || ImmutableSet.of(Enchantments.BLOCK_FORTUNE, Enchantments.SILK_TOUCH, Enchantments.BLOCK_EFFICIENCY).contains(enchantment);
+	public boolean canApplyAtEnchantingTableZeta(ItemStack stack, Enchantment enchantment) {
+		return super.canApplyAtEnchantingTableZeta(stack, enchantment) || ImmutableSet.of(Enchantments.BLOCK_FORTUNE, Enchantments.SILK_TOUCH, Enchantments.BLOCK_EFFICIENCY).contains(enchantment);
 	}
 }

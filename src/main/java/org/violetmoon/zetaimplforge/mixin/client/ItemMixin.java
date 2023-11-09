@@ -15,7 +15,7 @@ import org.violetmoon.zetaimplforge.client.IZetaForgeItemStuff;
 
 @Mixin(Item.class)
 public class ItemMixin implements IZetaForgeItemStuff {
-	@Shadow private Object renderProperties;
+	@Shadow(remap = false) private Object renderProperties;
 
 	@Override
 	public void zeta$setBlockEntityWithoutLevelRenderer(BlockEntityWithoutLevelRenderer bewlr) {

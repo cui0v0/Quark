@@ -16,6 +16,7 @@ import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.api.IEnchantmentInfluencer;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import com.google.common.collect.Lists;
@@ -240,7 +241,7 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 		if(item.isEmpty())
 			return;
 
-		enchantability = item.getItem().getEnchantmentValue(item);
+		enchantability = Quark.ZETA.itemExtensions.get(item).getEnchantmentValueZeta(item);
 
 		boolean allowWater = MatrixEnchantingModule.allowUnderwaterEnchanting;
 		boolean allowShort = MatrixEnchantingModule.allowShortBlockEnchanting;

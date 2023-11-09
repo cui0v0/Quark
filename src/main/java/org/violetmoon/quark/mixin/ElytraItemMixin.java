@@ -11,6 +11,7 @@ import org.violetmoon.quark.content.experimental.module.GameNerfsModule;
 @Mixin(ElytraItem.class)
 public class ElytraItemMixin {
 
+	//TODO: IForgeItem
 	@ModifyReturnValue(method = "canElytraFly", at = @At("RETURN"), remap = false)
 	private boolean canApply(boolean prev, ItemStack stack, LivingEntity living) {
 		return GameNerfsModule.canEntityUseElytra(living, prev);

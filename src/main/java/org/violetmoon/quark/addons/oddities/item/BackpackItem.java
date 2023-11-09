@@ -13,6 +13,7 @@ import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.ProxiedItemStackHandler;
 import org.violetmoon.zeta.item.IZetaItem;
+import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
@@ -46,23 +47,18 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuProvider {
+public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaItemExtensions, MenuProvider {
 
 	private static final String WORN_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn.png";
 	private static final String WORN_OVERLAY_TEXTURE = Quark.MOD_ID + ":textures/misc/backpack_worn_overlay.png";
 
 	private final ZetaModule module;
-
-	@OnlyIn(Dist.CLIENT)
-	@SuppressWarnings("rawtypes")
-	private HumanoidModel model;
 
 	public BackpackItem(ZetaModule module) {
 		super(ArmorMaterials.LEATHER, EquipmentSlot.CHEST,
@@ -79,9 +75,8 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 			RequiredModTooltipHandler.map(this, module.category.requiredMod);
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public int getDefaultTooltipHideFlags(@Nonnull ItemStack stack) {
+	public int getDefaultTooltipHideFlagsZeta(@Nonnull ItemStack stack) {
 		return stack.isEnchanted() ? ItemStack.TooltipPart.ENCHANTMENTS.getMask() : 0;
 	}
 
@@ -114,21 +109,18 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return false;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+	public boolean isBookEnchantableZeta(ItemStack stack, ItemStack book) {
 		return false;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+	public boolean canApplyAtEnchantingTableZeta(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public int getEnchantmentValue(ItemStack stack) {
+	public int getEnchantmentValueZeta(ItemStack stack) {
 		return 0;
 	}
 
@@ -137,9 +129,8 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return false;
 	}
 
-	//TODO: IForgeITem
 	@Override
-	public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	public <T extends LivingEntity> int damageItemZeta(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
 		return 0;
 	}
 
@@ -184,9 +175,8 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 			EnchantmentHelper.setEnchantments(enchants, stack);
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entityItem) {
+	public boolean onEntityItemUpdateZeta(ItemStack stack, ItemEntity entityItem) {
 		if(BackpackModule.superOpMode || entityItem.level.isClientSide)
 			return false;
 
@@ -241,9 +231,8 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, MenuPro
 		return ImmutableMultimap.of();
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	public String getArmorTextureZeta(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return type != null && type.equals("overlay") ? WORN_OVERLAY_TEXTURE : WORN_TEXTURE;
 	}
 

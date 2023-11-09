@@ -22,13 +22,14 @@ import javax.annotation.Nonnull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.zeta.item.IZetaItem;
+import org.violetmoon.zeta.item.ZetaArmorItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.UUID;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-public class ForgottenHatItem extends ArmorItem implements IZetaItem {
+public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 
 	private static final String TEXTURE = Quark.MOD_ID + ":textures/misc/forgotten_hat_worn.png";
 
@@ -62,9 +63,8 @@ public class ForgottenHatItem extends ArmorItem implements IZetaItem {
 		return true;
 	}
 
-	//TODO: IForgeItem
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	public String getArmorTextureZeta(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return TEXTURE;
 	}
 

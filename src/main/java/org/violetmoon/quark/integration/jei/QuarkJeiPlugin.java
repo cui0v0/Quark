@@ -343,7 +343,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			ItemStack left = new ItemStack(item);
 			ItemStack out = left.copy();
 
-			int max = item.getMaxDamage(left);
+			int max = Quark.ZETA.itemExtensions.get(left).getMaxDamageZeta(left);
 
 			left.setDamageValue(max - 1);
 			out.setDamageValue(max - max / 4);

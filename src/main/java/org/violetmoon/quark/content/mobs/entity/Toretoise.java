@@ -238,7 +238,7 @@ public class Toretoise extends Animal {
 		if (e instanceof LivingEntity living) {
 			ItemStack held = living.getMainHandItem();
 
-			if (ore != 0 && held.getItem().canPerformAction(held, ToolActions.PICKAXE_DIG)) {
+			if (ore != 0 && held.getItem().canPerformAction(held, ToolActions.PICKAXE_DIG)) { //TODO: IForgeItem
 				if (level instanceof ServerLevel serverLevel) {
 					if (held.isDamageableItem() && e instanceof Player)
 						MiscUtil.damageStack((Player) e, InteractionHand.MAIN_HAND, held, 1);
