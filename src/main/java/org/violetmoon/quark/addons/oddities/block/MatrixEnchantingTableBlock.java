@@ -10,7 +10,6 @@ import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.api.IEnchantmentInfluencer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import com.mojang.math.Vector3f;
@@ -49,8 +48,8 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		super(Block.Properties.copy(Blocks.ENCHANTING_TABLE));
 
 		this.module = module;
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
-		Quark.ZETA.registry.registerBlock(this, "matrix_enchanter", true);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.registerBlock(this, "matrix_enchanter", true);
 	}
 
 	@Nonnull

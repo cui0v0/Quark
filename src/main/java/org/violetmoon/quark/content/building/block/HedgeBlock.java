@@ -27,12 +27,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.content.building.module.HedgesModule;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -73,7 +70,7 @@ public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockCol
 			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
 			Quark.ZETA.registry.registerBlock(this, resloc, true);
 		}
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 

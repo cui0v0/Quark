@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 
@@ -106,6 +107,10 @@ public abstract class ZetaRegistry {
 
 	public void registerBlock(Block block, String resloc) {
 		registerBlock(block, resloc, true);
+	}
+
+	public void setCreativeTab(IQuarkBlock block, CreativeModeTab tab) {
+		setCreativeTab(block.getBlock(), tab, block::isEnabled);
 	}
 
 	public void setCreativeTab(Block block, CreativeModeTab tab, BooleanSupplier enabled) {

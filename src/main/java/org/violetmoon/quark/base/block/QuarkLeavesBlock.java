@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
@@ -33,7 +32,7 @@ public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, name + "_leaves", true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 	}

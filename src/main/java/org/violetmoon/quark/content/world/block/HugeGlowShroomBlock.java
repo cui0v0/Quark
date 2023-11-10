@@ -4,9 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -39,8 +37,8 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 		this.module = module;
 		this.glowing = glowing;
 
-		Quark.ZETA.registry.registerBlock(this, name, true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.registerBlock(this, name, true);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 	}
 
 	@Override

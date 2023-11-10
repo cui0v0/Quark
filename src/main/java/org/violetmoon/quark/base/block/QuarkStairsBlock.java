@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
@@ -33,9 +32,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 		this.parent = parent;
 		String resloc = IQuarkBlock.inheritQuark(parent, "%s_stairs");
 		Quark.ZETA.registry.registerBlock(this, resloc, true);
-
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
-
+		Quark.ZETA.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 

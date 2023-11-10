@@ -13,7 +13,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.base.block.QuarkSlabBlock;
 import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.function.BooleanSupplier;
@@ -30,7 +29,7 @@ public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IQuarkB
 
 	    this.module = module;
 
-        CreativeTabHandler.addTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
+        module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
 
         if (module.category.isAddon())
             RequiredModTooltipHandler.map(this, module.category.requiredMod);

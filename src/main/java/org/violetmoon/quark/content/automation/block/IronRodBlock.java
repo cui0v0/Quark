@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.content.automation.module.IronRodModule;
 import org.violetmoon.zeta.api.ICollateralMover;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -42,7 +41,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuar
 				.noOcclusion());
 
 		module.zeta.registry.registerBlock(this, "iron_rod", true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 

@@ -14,9 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.content.building.block.be.VariantFurnaceBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -30,8 +28,8 @@ public class VariantFurnaceBlock extends FurnaceBlock implements IQuarkBlock {
 	public VariantFurnaceBlock(String type, ZetaModule module, Properties props) {
 		super(props);
 
-		Quark.ZETA.registry.registerBlock(this, type + "_furnace", true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.registerBlock(this, type + "_furnace", true);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		this.module = module;
 	}

@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
@@ -26,7 +25,7 @@ public abstract class QuarkSaplingBlock extends SaplingBlock implements IQuarkBl
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, name + "_sapling", true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}

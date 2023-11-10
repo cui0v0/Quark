@@ -13,9 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
@@ -31,10 +29,9 @@ public class VariantLadderBlock extends LadderBlock implements IQuarkBlock {
 	public VariantLadderBlock(String type, ZetaModule module, Block.Properties props, boolean flammable) {
 		super(props);
 
-		Quark.ZETA.registry.registerBlock(this, type + "_ladder", true);
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_DECORATIONS);
-
 		this.module = module;
+		module.zeta.registry.registerBlock(this, type + "_ladder", true);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
 		this.flammable = flammable;

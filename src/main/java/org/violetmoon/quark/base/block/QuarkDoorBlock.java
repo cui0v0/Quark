@@ -5,7 +5,6 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.base.item.QuarkDoubleHighBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
@@ -30,7 +29,7 @@ public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlock
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		module.zeta.registry.registerBlock(this, regname, true);
-		CreativeTabHandler.addTab(this, creativeTab);
+		module.zeta.registry.setCreativeTab(this, creativeTab);
 	}
 
 	@Override

@@ -20,13 +20,10 @@ import net.minecraftforge.fml.ModList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.CreativeTabHandler;
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -42,12 +39,12 @@ public class VariantTrappedChestBlock extends ChestBlock implements IQuarkBlock,
 	public VariantTrappedChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
-		Quark.ZETA.registry.registerBlock(this, resloc, true);
 
-		CreativeTabHandler.addTab(this, CreativeModeTab.TAB_REDSTONE);
+		this.module = module;
+		module.zeta.registry.registerBlock(this, resloc, true);
+		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_REDSTONE);
 
 		this.type = type;
-		this.module = module;
 
 		path = (isCompat() ? "compat/" : "") + type + "/";
 	}
