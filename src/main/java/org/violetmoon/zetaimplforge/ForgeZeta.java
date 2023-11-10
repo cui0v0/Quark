@@ -224,7 +224,6 @@ public class ForgeZeta extends Zeta {
 			return;
 
 		loadBus.fire(new ZRegister(this));
-		registry.assertAllRegistered();
 		loadBus.fire(new ZRegister.Post());
 
 		registerDone = true;

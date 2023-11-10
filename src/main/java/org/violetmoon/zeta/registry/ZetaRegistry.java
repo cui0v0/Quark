@@ -152,7 +152,7 @@ public abstract class ZetaRegistry {
 
 	public void assertAllRegistered() {
 		if(!defers.isEmpty())
-			throw new IllegalStateException("Some defers were not registered: " + defers.keys().stream().map(ResourceLocation::toString).collect(Collectors.joining(", ")));
+			throw new IllegalStateException("Some defers were not registered: " + defers.keySet().stream().map(ResourceLocation::toString).collect(Collectors.joining(", ")));
 	}
 
 	public void finalizeBlockColors(BiConsumer<Block, String> consumer) {

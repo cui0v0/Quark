@@ -1,6 +1,7 @@
 package org.violetmoon.zeta.recipe;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.violetmoon.zeta.registry.DyeablesRegistry;
 
@@ -18,12 +19,22 @@ import net.minecraft.world.level.Level;
 // copy of ArmorDyeRecipe
 public class ZetaDyeRecipe extends CustomRecipe {
 	protected final DyeablesRegistry dyeablesRegistry;
-	protected final SimpleRecipeSerializer<?> serializer;
+	protected final RecipeSerializer<?> serializer;
 
 	public ZetaDyeRecipe(ResourceLocation id, DyeablesRegistry dyeablesRegistry) {
 		super(id);
 		this.dyeablesRegistry = dyeablesRegistry;
-		this.serializer = new SimpleRecipeSerializer<>(id_ -> new ZetaDyeRecipe(id_, dyeablesRegistry));
+		// We need to plug the serializer into itself, so that when a fresh copy of this ZetaDyeRecipe is constructed
+		// it will have the exact same serializer instance already registered in the recipe serializer registry.
+		// Yeah, it's weird i know. Don't try this at home, it's like searching Google into Google.
+		// Btw, the serializer can't be made `static` because constructing this recipe type requires a DyeablesRegistry.
+		this.serializer = new SimpleRecipeSerializer<>(id_ -> new ZetaDyeRecipe(id_, dyeablesRegistry, this::getSerializer));
+	}
+
+	protected ZetaDyeRecipe(ResourceLocation id, DyeablesRegistry dyeablesRegistry, Supplier<RecipeSerializer<?>> loopCloser) {
+		super(id);
+		this.dyeablesRegistry = dyeablesRegistry;
+		this.serializer = loopCloser.get();
 	}
 
 	@Override
