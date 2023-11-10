@@ -32,7 +32,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBColorConfig;
-import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.client.event.play.ZEndClientTick;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
