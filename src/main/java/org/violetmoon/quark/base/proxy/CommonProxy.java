@@ -15,7 +15,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.capability.CapabilityHandler;
 import org.violetmoon.quark.base.config.SyncedFlagHandler;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.FuelHandler;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -70,7 +69,6 @@ public class CommonProxy {
 		});
 
 		Quark.ZETA.loadBus
-			.subscribe(EntityAttributeHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)

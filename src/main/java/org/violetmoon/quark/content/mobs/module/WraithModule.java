@@ -19,12 +19,12 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -37,6 +37,7 @@ import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -106,10 +107,13 @@ public class WraithModule extends ZetaModule {
 
 		EntitySpawnHandler.registerSpawn(wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
-
-		EntityAttributeHandler.put(wraithType, Wraith::registerAttributes);
 		
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
+	}
+
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(wraithType, Wraith.registerAttributes().build());
 	}
 
 	@LoadEvent

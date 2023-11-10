@@ -4,7 +4,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.mod.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -15,6 +14,7 @@ import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.bus.ZResult;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.living.ZLivingSpawn;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -57,10 +57,13 @@ public class ForgottenModule extends ZetaModule {
 
 		Quark.ZETA.registry.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
-
-		EntityAttributeHandler.put(forgottenType, Forgotten::registerAttributes);
 		
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
+	}
+
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(forgottenType, Forgotten.registerAttributes().build());
 	}
 
 	@PlayEvent

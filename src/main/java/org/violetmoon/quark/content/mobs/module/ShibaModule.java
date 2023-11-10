@@ -1,10 +1,10 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.base.handler.advancement.mod.TwoByTwoModifier;
@@ -13,6 +13,7 @@ import org.violetmoon.quark.content.mobs.client.render.entity.ShibaRenderer;
 import org.violetmoon.quark.content.mobs.entity.Shiba;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -57,11 +58,14 @@ public class ShibaModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
 
-		EntityAttributeHandler.put(shibaType, Wolf::createAttributes);
-
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
 
 		shibaHelpTrigger = QuarkAdvancementHandler.registerGenericTrigger("shiba_help");
+	}
+
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(shibaType, Wolf.createAttributes().build());
 	}
 
 	@LoadEvent

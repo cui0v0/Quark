@@ -12,12 +12,12 @@ import net.minecraftforge.common.Tags;
 
 import java.util.List;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -25,6 +25,7 @@ import org.violetmoon.quark.content.mobs.client.render.entity.ToretoiseRenderer;
 import org.violetmoon.quark.content.mobs.entity.Toretoise;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -71,11 +72,14 @@ public class ToretoiseModule extends ZetaModule {
 
 		EntitySpawnHandler.registerSpawn(toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, toretoiseType, 0x55413b, 0x383237, spawnConfig);
-
-		EntityAttributeHandler.put(toretoiseType, Toretoise::prepareAttributes);
 		
 		mineToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_toretoise");
 		mineFedToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_fed_toretoise");
+	}
+
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(toretoiseType, Toretoise.prepareAttributes().build());
 	}
 
 	@LoadEvent

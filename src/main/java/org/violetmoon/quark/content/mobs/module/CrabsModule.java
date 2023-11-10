@@ -1,10 +1,10 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.mod.BalancedDietModifier;
@@ -19,6 +19,7 @@ import org.violetmoon.quark.content.mobs.entity.Crab;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -110,12 +111,15 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
-		EntityAttributeHandler.put(crabType, Crab::prepareAttributes);
-
 		QuarkAdvancementHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> resilienceRequiredForAllEffects));
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
 		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
+	}
+
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(crabType, Crab.prepareAttributes().build());
 	}
 
 	@LoadEvent

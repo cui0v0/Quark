@@ -1,11 +1,11 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -15,6 +15,7 @@ import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -77,8 +78,11 @@ public class StonelingsModule extends ZetaModule {
 
 		EntitySpawnHandler.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);
+	}
 
-		EntityAttributeHandler.put(stonelingType, Stoneling::prepareAttributes);
+	@LoadEvent
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(stonelingType, Stoneling.prepareAttributes().build());
 	}
 
 	@LoadEvent

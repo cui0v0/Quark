@@ -18,12 +18,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
 
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.EntityAttributeHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
 import org.violetmoon.quark.base.handler.advancement.mod.MonsterHunterModifier;
@@ -36,6 +36,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.bus.ZResult;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.living.ZLivingChangeTarget;
 import org.violetmoon.zeta.event.play.entity.living.ZSleepingLocationCheck;
@@ -81,8 +82,6 @@ public class FoxhoundModule extends ZetaModule {
 		EntitySpawnHandler.track(foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);
 
 		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
-
-		EntityAttributeHandler.put(foxhoundType, Wolf::createAttributes);
 		
 		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
 		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
@@ -91,13 +90,13 @@ public class FoxhoundModule extends ZetaModule {
 	}
 
 	@LoadEvent
-	public final void setup(ZCommonSetup event) {
-		foxhoundSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "foxhound_spawnable"));
+	public final void entityAttrs(ZEntityAttributeCreation e) {
+		e.put(foxhoundType, Wolf.createAttributes().build());
 	}
 
 	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(foxhoundType, FoxhoundRenderer::new);
+	public final void setup(ZCommonSetup event) {
+		foxhoundSpawnableTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "foxhound_spawnable"));
 	}
 
 	@PlayEvent
@@ -123,4 +122,15 @@ public class FoxhoundModule extends ZetaModule {
 				event.setResult(ZResult.ALLOW);
 		}
 	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends FoxhoundModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			EntityRenderers.register(foxhoundType, FoxhoundRenderer::new);
+		}
+
+	}
+
 }
