@@ -38,7 +38,7 @@ import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.experimental.PlaceVariantUpdateMessage;
 import org.violetmoon.quark.content.experimental.client.screen.VariantSelectorScreen;
 import org.violetmoon.quark.content.experimental.client.tooltip.VariantsComponent;
-import org.violetmoon.quark.content.experimental.config.BlockSuffixConfig;
+import org.violetmoon.quark.content.experimental.config.VariantsConfig;
 import org.violetmoon.quark.content.experimental.item.HammerItem;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.load.ZTooltipComponents;
@@ -77,13 +77,11 @@ public class VariantSelectorModule extends ZetaModule {
 	@Config public static boolean showHud = true;
 	@Config public static boolean enableGreenTint = true;
 	@Config public static boolean overrideHeldItemRender = true;
+	@Config public static int hudOffsetX = 0;
+	@Config public static int hudOffsetY = 0;
 
 	@Config
-	public static BlockSuffixConfig variants = new BlockSuffixConfig(
-			Arrays.asList("slab", "stairs", "wall", "fence", "fence_gate", "vertical_slab"),
-			Arrays.asList("quark"),
-			Arrays.asList("carpet=slab")
-			);
+	public static VariantsConfig variants = new VariantsConfig();
 
 	public static Item hammer;
 
@@ -123,14 +121,13 @@ public class VariantSelectorModule extends ZetaModule {
 	}
 
 	public static Block getVariantForBlock(Block block, String variant) {
-		Block variantBlock = variants.getBlockForVariant(block, variant);
-		if(variantBlock != null)
-			return variantBlock;
-
-		return null;
+		return variants.getBlockForVariant(block, variant);
 	}
 
 	public static Block getVariantOrOriginal(Block block, String variant) {
+		if(!variants.isVariant(block) && !variants.isOriginal(block))
+			return null;
+
 		block = variants.getOriginalBlock(block);
 
 		if(variant == null || variant.isEmpty())
@@ -313,10 +310,6 @@ public class VariantSelectorModule extends ZetaModule {
 					int x = window.getGuiScaledWidth() / 2;
 					int y = window.getGuiScaledHeight() / 2 + 12;
 
-
-					showSimpleHud = true;
-					alignHudToHotbar = true;
-
 					if(alignHudToHotbar) {
 						HumanoidArm arm = mc.options.mainHand().get();
 						if(arm == HumanoidArm.RIGHT)
@@ -331,8 +324,8 @@ public class VariantSelectorModule extends ZetaModule {
 
 					displayLeft.setCount(1);
 
-					int posX = x - offset - width;
-					int posY = y;
+					int posX = x - offset - width + hudOffsetX;
+					int posY = y + hudOffsetY;
 
 					if(!showSimpleHud) {
 						mc.getItemRenderer().renderAndDecorateItem(displayLeft, posX, posY);
