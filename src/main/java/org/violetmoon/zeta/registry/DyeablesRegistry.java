@@ -30,15 +30,9 @@ import net.minecraft.world.level.block.state.BlockState;
  * @see org.violetmoon.zeta.client.ClientRegistryExtension
  */
 public class DyeablesRegistry {
-	protected final Zeta z;
 
 	public final Map<Item, Supplier<Boolean>> dyeableConditions = new HashMap<>();
 	public final DyeableLeatherItem SURROGATE = new DyeableLeatherItem() {}; //Simply an accessor for various DyeableLeatherItem default methods
-
-	public DyeablesRegistry(Zeta z) {
-		this.z = z;
-		z.loadBus.subscribe(this);
-	}
 
 	@LoadEvent
 	public void register(ZRegister event) {

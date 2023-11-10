@@ -6,8 +6,6 @@ import aurelienribon.tweenengine.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,7 +17,6 @@ import java.util.*;
 
 import org.violetmoon.quark.base.Quark;
 
-@OnlyIn(Dist.CLIENT)
 public class EmoteTemplate {
 
 	private static final Map<String, Integer> parts = new HashMap<>();

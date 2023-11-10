@@ -21,7 +21,7 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 
 public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<CraftingContainer> {
 
-	public static final Serializer SERIALIZER = new Serializer();
+	public static final RecipeSerializer<MixedExclusionRecipe> SERIALIZER = new Serializer();
 
 	private final ResourceLocation res;
 	private NonNullList<Ingredient> ingredients;

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -147,6 +148,11 @@ public abstract class ZetaRegistry {
 
 	public void clearDeferCache(ResourceLocation resourceLocation) {
 		defers.removeAll(resourceLocation);
+	}
+
+	public void assertAllRegistered() {
+		if(!defers.isEmpty())
+			throw new IllegalStateException("Some defers were not registered: " + defers.keys().stream().map(ResourceLocation::toString).collect(Collectors.joining(", ")));
 	}
 
 	public void finalizeBlockColors(BiConsumer<Block, String> consumer) {

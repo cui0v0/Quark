@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GlowShroomBlock extends QuarkBushBlock implements BonemealableBlock {
 
@@ -33,7 +31,6 @@ public class GlowShroomBlock extends QuarkBushBlock implements BonemealableBlock
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 

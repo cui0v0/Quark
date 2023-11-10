@@ -23,8 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBlock {
 
@@ -61,7 +59,6 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 

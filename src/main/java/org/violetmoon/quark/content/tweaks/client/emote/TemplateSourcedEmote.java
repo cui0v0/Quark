@@ -7,10 +7,7 @@ import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.IEnvironment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class TemplateSourcedEmote extends EmoteBase {
 
 	private static final boolean DEOBF = Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.NAMING.get()).orElse("").equals("mcp");

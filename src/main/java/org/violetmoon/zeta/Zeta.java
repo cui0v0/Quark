@@ -55,6 +55,7 @@ public abstract class Zeta {
 		this.capabilityManager = createCapabilityManager();
 
 		loadBus.subscribe(craftingExtensions)
+			.subscribe(dyeables)
 			.subscribe(brewingRegistry);
 	}
 
@@ -110,7 +111,7 @@ public abstract class Zeta {
 	}
 	public abstract CraftingExtensionsRegistry createCraftingExtensionsRegistry();
 	public DyeablesRegistry createDyeablesRegistry() {
-		return new DyeablesRegistry(this);
+		return new DyeablesRegistry();
 	}
 	public abstract BrewingRegistry createBrewingRegistry();
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);

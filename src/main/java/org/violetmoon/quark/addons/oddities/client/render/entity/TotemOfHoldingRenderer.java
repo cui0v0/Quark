@@ -23,14 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * @author WireSegal
- * Created at 2:01 PM on 3/30/20.
- */
-@OnlyIn(Dist.CLIENT)
 public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity> {
 
 	private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(Quark.MOD_ID, "extra/totem_of_holding", "inventory");

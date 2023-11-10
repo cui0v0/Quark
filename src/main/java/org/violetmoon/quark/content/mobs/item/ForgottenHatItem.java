@@ -3,31 +3,24 @@ package org.violetmoon.quark.content.mobs.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nonnull;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ZetaArmorItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.UUID;
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 

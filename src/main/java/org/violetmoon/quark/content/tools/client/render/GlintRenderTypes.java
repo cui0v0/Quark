@@ -8,8 +8,6 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.function.Function;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 
-@OnlyIn(Dist.CLIENT)
 public class GlintRenderTypes extends RenderType {
 	private GlintRenderTypes(String name, VertexFormat vf, VertexFormat.Mode mode, int bufSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setup, Runnable clean) {
 		super(name, vf, mode, bufSize, affectsCrumbling, sortOnUpload, setup, clean);

@@ -41,14 +41,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -57,7 +53,6 @@ import net.minecraftforge.common.MinecraftForge;
  * Created at 11:58 AM on 8/25/19.
  */
 
-@OnlyIn(Dist.CLIENT)
 public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 
 	private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(new ResourceLocation(Quark.MOD_ID, "extra/glass_item_frame"), "inventory");

@@ -38,8 +38,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IQuarkBlock {
@@ -110,7 +108,6 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		boolean enabled = Quark.ZETA.modules.isEnabled(MatrixEnchantingModule.class);
 		boolean showInfluences = enabled && MatrixEnchantingModule.allowInfluencing;

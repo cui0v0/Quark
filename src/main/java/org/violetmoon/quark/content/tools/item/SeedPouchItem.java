@@ -22,8 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
@@ -155,7 +153,6 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 		return BAR_COLOR;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static float itemFraction(ItemStack stack, ClientLevel world, LivingEntity entityIn, int i) {
 		if(entityIn instanceof Player player) {
 			if(player.containerMenu != null) {

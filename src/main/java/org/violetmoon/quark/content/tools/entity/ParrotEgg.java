@@ -16,8 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
@@ -63,7 +61,6 @@ public class ParrotEgg extends ThrowableItemProjectile {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void handleEntityEvent(byte id) {
 		if(id == EVENT_BREAK) {
 			Vec3 pos = position();

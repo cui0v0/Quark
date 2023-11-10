@@ -4,10 +4,7 @@ import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class CustomEmote extends TemplateSourcedEmote {
 
 	public CustomEmote(EmoteDescriptor desc, Player player, HumanoidModel<?> model, HumanoidModel<?> armorModel, HumanoidModel<?> armorLegsModel) {

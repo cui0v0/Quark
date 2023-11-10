@@ -4,10 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class EmoteDescriptor {
 
 	public static final ResourceLocation TIER_1 = new ResourceLocation("quark", "textures/emote/patreon_t1.png");
@@ -46,8 +43,7 @@ public class EmoteDescriptor {
 	public String getTranslationKey() {
 		return "quark.emote." + name;
 	}
-	
-	@OnlyIn(Dist.CLIENT)
+
 	public String getLocalizedName() {
 		return I18n.get(getTranslationKey());
 	}

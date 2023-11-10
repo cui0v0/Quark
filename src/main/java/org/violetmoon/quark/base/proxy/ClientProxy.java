@@ -10,8 +10,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.fml.ModLoadingContext;
 
@@ -37,9 +35,7 @@ import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.structural.C2SUpdateFlag;
 import org.violetmoon.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
 import org.violetmoon.zeta.client.TopLayerTooltipHandler;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-@OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	public static boolean jingleBellsMotherfucker = false;

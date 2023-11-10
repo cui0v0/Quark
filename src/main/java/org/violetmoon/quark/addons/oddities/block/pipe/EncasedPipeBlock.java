@@ -15,8 +15,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EncasedPipeBlock extends BasePipeBlock {
 
@@ -30,7 +28,6 @@ public class EncasedPipeBlock extends BasePipeBlock {
 	}
 	
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(@Nonnull BlockState state, BlockState adjacentBlockState, @Nonnull Direction side) {
 		return adjacentBlockState.is(this) || adjacentBlockState.is(Blocks.GLASS) || super.skipRendering(state, adjacentBlockState, side);
 	}
@@ -42,7 +39,6 @@ public class EncasedPipeBlock extends BasePipeBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public float getShadeBrightness(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos) {
 		return 1.0F;
 	}

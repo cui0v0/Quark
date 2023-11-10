@@ -14,7 +14,7 @@ public class ItemInHandRendererMixin {
 
 	@ModifyVariable(method = "renderArmWithItem", at = @At("HEAD"), argsOnly = true)
 	private ItemStack renderArmWithItem(ItemStack stack, AbstractClientPlayer player) {
-		return VariantSelectorModule.modifyHeldItemStack(player, stack);
+		return VariantSelectorModule.Client.modifyHeldItemStack(player, stack);
 	}
 
 

@@ -16,10 +16,7 @@ import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.TweenManager;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public abstract class EmoteBase {
 
 	public static final float PI_F = (float) Math.PI;

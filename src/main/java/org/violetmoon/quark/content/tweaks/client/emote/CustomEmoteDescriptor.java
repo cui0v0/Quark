@@ -4,10 +4,7 @@ import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class CustomEmoteDescriptor extends EmoteDescriptor {
 
 	public CustomEmoteDescriptor(String name, String regName, int index) {

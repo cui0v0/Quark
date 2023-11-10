@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
@@ -91,7 +89,6 @@ public class DiamondHeartItem extends QuarkItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean isFoil(@Nonnull ItemStack stack) {
 		return true;
 	}

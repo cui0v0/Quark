@@ -15,8 +15,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author WireSegal
@@ -36,7 +34,6 @@ public class QuarkGlassBlock extends QuarkBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(@Nonnull BlockState state, BlockState adjacentBlockState, @Nonnull Direction side) {
 		return adjacentBlockState.is(this) || super.skipRendering(state, adjacentBlockState, side);
 	}
@@ -48,7 +45,6 @@ public class QuarkGlassBlock extends QuarkBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public float getShadeBrightness(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos) {
 		return 1.0F;
 	}

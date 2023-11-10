@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.tools.client.tooltip;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.content.tools.item.SeedPouchItem;
 
@@ -15,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-@OnlyIn(Dist.CLIENT)
 public class SeedPouchClientTooltipComponent implements ClientTooltipComponent {
 
 	private final ItemStack stack;

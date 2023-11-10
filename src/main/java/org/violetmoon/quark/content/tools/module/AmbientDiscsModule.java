@@ -3,6 +3,9 @@ package org.violetmoon.quark.content.tools.module;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.item.QuarkMusicDiscItem;
@@ -60,7 +63,9 @@ public class AmbientDiscsModule extends ZetaModule {
 		}
 	}
 
-	public static class Client {
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends AmbientDiscsModule {
+
 		public static void onJukeboxLoad(JukeboxBlockEntity tile) {
 			Minecraft mc = Minecraft.getInstance();
 			LevelRenderer render = mc.levelRenderer;
@@ -74,9 +79,30 @@ public class AmbientDiscsModule extends ZetaModule {
 				} else {
 					ItemStack stack = tile.getRecord();
 					if(stack.getItem() instanceof QuarkMusicDiscItem disc)
-						disc.playAmbientSound(pos);
+						playAmbientSound(disc, pos);
 				}
 			}
 		}
+
+		public static boolean playAmbientSound(QuarkMusicDiscItem disc, BlockPos pos) {
+			if(disc.isAmbient) {
+				Minecraft mc = Minecraft.getInstance();
+				SoundManager soundEngine = mc.getSoundManager();
+				LevelRenderer render = mc.levelRenderer;
+
+				SimpleSoundInstance simplesound = new SimpleSoundInstance(disc.soundSupplier.get().getLocation(), SoundSource.RECORDS, (float) AmbientDiscsModule.volume, 1.0F, SoundInstance.createUnseededRandom(), true, 0, SoundInstance.Attenuation.LINEAR, pos.getX(), pos.getY(), pos.getZ(), false);
+
+				render.playingRecords.put(pos, simplesound);
+				soundEngine.play(simplesound);
+
+				if(mc.level != null)
+					mc.level.addParticle(ParticleTypes.NOTE,pos.getX() + Math.random(), pos.getY() + 1.1, pos.getZ() + Math.random(), Math.random(), 0, 0);
+
+				return true;
+			}
+
+			return false;
+		}
+
 	}
 }

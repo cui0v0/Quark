@@ -28,8 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.violetmoon.quark.base.Quark;
@@ -56,7 +54,6 @@ import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.Arrays;
 import java.util.List;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false,
@@ -142,23 +139,6 @@ public class VariantSelectorModule extends ZetaModule {
 		return getVariantForBlock(block, variant);
 	}
 
-	public static ItemStack modifyHeldItemStack(AbstractClientPlayer player, ItemStack stack) {
-		if(!staticEnabled || !overrideHeldItemRender)
-			return stack;
-
-		Minecraft mc = Minecraft.getInstance();
-		if(player == mc.player && stack.getItem() instanceof BlockItem bi) {
-			Block block = bi.getBlock();
-			if(clientVariant != null && !clientVariant.isEmpty()) {
-				Block variant = variants.getBlockForVariant(block, clientVariant);
-				if(variant != null && variant != block)
-					return new ItemStack(variant);
-			}
-		}
-
-		return stack;
-	}
-
 	@PlayEvent
 	public void addEntityToWorld(ZEntityJoinLevel event) {
 		Entity entity = event.getEntity();
@@ -196,8 +176,24 @@ public class VariantSelectorModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends VariantSelectorModule {
-		@OnlyIn(Dist.CLIENT)
 		private static KeyMapping variantSelectorKey;
+
+		public static ItemStack modifyHeldItemStack(AbstractClientPlayer player, ItemStack stack) {
+			if(!staticEnabled || !overrideHeldItemRender)
+				return stack;
+
+			Minecraft mc = Minecraft.getInstance();
+			if(player == mc.player && stack.getItem() instanceof BlockItem bi) {
+				Block block = bi.getBlock();
+				if(clientVariant != null && !clientVariant.isEmpty()) {
+					Block variant = variants.getBlockForVariant(block, clientVariant);
+					if(variant != null && variant != block)
+						return new ItemStack(variant);
+				}
+			}
+
+			return stack;
+		}
 
 		@LoadEvent
 		public void registerKeybinds(ZKeyMapping event) {

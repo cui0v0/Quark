@@ -23,10 +23,7 @@ import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
 	private final List<String> verifiedNames = new ArrayList<>();
@@ -124,8 +121,5 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	public String getName() {
 		return "quark-emote-pack";
 	}
-
-
-
 
 }

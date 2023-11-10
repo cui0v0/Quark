@@ -20,8 +20,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
@@ -64,17 +62,14 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 		return Mth.lerp(ticks, this.lastProgress, this.progress);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getOffsetX(float ticks) {
 		return this.magnetFacing.getStepX() * this.getExtendedProgress(this.getProgress(ticks));
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getOffsetY(float ticks) {
 		return this.magnetFacing.getStepY() * this.getExtendedProgress(this.getProgress(ticks));
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getOffsetZ(float ticks) {
 		return this.magnetFacing.getStepZ() * this.getExtendedProgress(this.getProgress(ticks));
 	}

@@ -13,15 +13,12 @@ package org.violetmoon.quark.content.tweaks.client.emote;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelAccessor implements TweenAccessor<HumanoidModel<?>> {
 
 	public static final ModelAccessor INSTANCE = new ModelAccessor();

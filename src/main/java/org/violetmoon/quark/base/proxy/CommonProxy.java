@@ -123,7 +123,7 @@ public class CommonProxy {
 
 	@LoadEvent
 	public void setup(ZCommonSetup event) {
-		handleQuarkConfigChange();
+		event.enqueueWork(this::handleQuarkConfigChange);
 	}
 
 	//TODO find a better place for this little one-off thing, lol

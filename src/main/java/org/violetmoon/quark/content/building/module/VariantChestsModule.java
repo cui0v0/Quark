@@ -129,19 +129,6 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		BlockEntityRenderers.register(chestTEType, VariantChestRenderer::new);
-		BlockEntityRenderers.register(trappedChestTEType, VariantChestRenderer::new);
-
-		ILootrIntegration.INSTANCE.clientSetup();
-
-		for(Block b : chests)
-			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
-		for(Block b : trappedChests)
-			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
-	}
-
-	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
@@ -252,15 +239,6 @@ public class VariantChestsModule extends ZetaModule {
 		return BlockEntityType.Builder.<T>of(factory, blockTypes.toArray(new Block[0])).build(null);
 	}
 
-	@LoadEvent
-	public void textureStitch(ZPreTextureStitch event) {
-		if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
-			for (Block b : allChests)
-				VariantChestRenderer.accept(event, b);
-			ILootrIntegration.INSTANCE.stitch(event);
-		}
-	}
-
 	@PlayEvent
 	public void onClickEntity(ZPlayerInteract.EntityInteractSpecific event) {
 		Entity target = event.getTarget();
@@ -335,5 +313,32 @@ public class VariantChestsModule extends ZetaModule {
 	@FunctionalInterface
 	public interface CompatChestConstructor {
 		Block createChest(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends VariantChestsModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			BlockEntityRenderers.register(chestTEType, VariantChestRenderer::new);
+			BlockEntityRenderers.register(trappedChestTEType, VariantChestRenderer::new);
+
+			ILootrIntegration.INSTANCE.clientSetup();
+
+			for(Block b : chests)
+				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
+			for(Block b : trappedChests)
+				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
+		}
+
+		@LoadEvent
+		public void textureStitch(ZPreTextureStitch event) {
+			if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
+				for (Block b : allChests)
+					VariantChestRenderer.accept(event, b);
+				ILootrIntegration.INSTANCE.stitch(event);
+			}
+		}
+
 	}
 }

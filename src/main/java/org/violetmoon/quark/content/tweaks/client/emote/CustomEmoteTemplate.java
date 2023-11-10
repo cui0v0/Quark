@@ -7,10 +7,6 @@ import java.io.FileReader;
 
 import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-@OnlyIn(Dist.CLIENT)
 public class CustomEmoteTemplate extends EmoteTemplate {
 
 	private String name;

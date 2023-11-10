@@ -36,8 +36,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class MagnetBlock extends QuarkBlock implements EntityBlock {
 
@@ -50,7 +48,6 @@ public class MagnetBlock extends QuarkBlock implements EntityBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(@Nonnull ItemStack stack, @Nullable BlockGetter worldIn, @Nonnull List<Component> tooltip, @Nonnull TooltipFlag flagIn) {
 		if (stack.getHoverName().getString().equals("Q"))
 			tooltip.add(Component.literal("haha yes"));

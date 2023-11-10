@@ -42,8 +42,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -92,7 +90,6 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean shouldRenderAtSqrDistance(double distance) {
 		double d0 = this.getBoundingBox().getSize() * 4.0D;
 		if (Double.isNaN(d0)) d0 = 4.0D;
@@ -123,7 +120,6 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void lerpMotion(double x, double y, double z) {
 		this.setDeltaMovement(x, y, z);
 		if (this.xRotO == 0.0F && this.yRotO == 0.0F) {

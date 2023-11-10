@@ -32,8 +32,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 
 /**
@@ -189,7 +187,6 @@ public class RedstoneRandomizerBlock extends QuarkBlock {
 		world.updateNeighborsAtExceptFromFacing(neighborPos, block, face);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
 		if (stateIn.getValue(POWERED) != RandomizerPowerState.OFF) {

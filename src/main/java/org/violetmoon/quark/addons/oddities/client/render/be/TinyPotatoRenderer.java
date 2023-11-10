@@ -24,8 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
@@ -42,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-@OnlyIn(Dist.CLIENT)
 public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEntity> {
 	public static final String DEFAULT = "default";
 	public static final String HALLOWEEN = "halloween";

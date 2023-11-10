@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.structural.S2CUpdateFlag;
 import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 
 public class SyncedFlagHandler {

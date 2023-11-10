@@ -21,15 +21,12 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
 import org.violetmoon.quark.content.mobs.client.model.StonelingModel;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 
-@OnlyIn(Dist.CLIENT)
 public class StonelingItemLayer extends RenderLayer<Stoneling, StonelingModel> {
 
 	public StonelingItemLayer(RenderLayerParent<Stoneling, StonelingModel> renderer) {

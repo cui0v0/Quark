@@ -27,11 +27,8 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 // yes this shit again
-@OnlyIn(Dist.CLIENT)
 public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 
 	private static final ModelResourceLocation FRAME_LOCATION = new ModelResourceLocation(Quark.MOD_ID, "extra/dyed_item_frame", "inventory");
