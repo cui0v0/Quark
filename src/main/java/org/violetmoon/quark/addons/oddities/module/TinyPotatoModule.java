@@ -21,8 +21,7 @@ import org.violetmoon.quark.addons.oddities.client.model.TinyPotatoModel;
 import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZAddModels;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.load.ZModelBakingCompleted;
@@ -36,7 +35,7 @@ import org.violetmoon.zeta.util.Hint;
 public class TinyPotatoModule extends ZetaModule {
 
 	public static BlockEntityType<TinyPotatoBlockEntity> blockEntityType;
-	public static QuarkGenericTrigger patPotatoTrigger;
+	public static ManualTrigger patPotatoTrigger;
 
 	@Hint public static Block tiny_potato;
 
@@ -50,7 +49,7 @@ public class TinyPotatoModule extends ZetaModule {
 		blockEntityType = BlockEntityType.Builder.of(TinyPotatoBlockEntity::new, tiny_potato).build(null);
 		Quark.ZETA.registry.register(blockEntityType, "tiny_potato", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
-		patPotatoTrigger = QuarkAdvancementHandler.registerGenericTrigger("pat_potato");
+		patPotatoTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("pat_potato");
 	}
 
 	@ZetaLoadModule(clientReplacement = true)

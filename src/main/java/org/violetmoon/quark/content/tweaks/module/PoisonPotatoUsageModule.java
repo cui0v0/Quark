@@ -1,8 +1,7 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -36,11 +35,11 @@ public class PoisonPotatoUsageModule extends ZetaModule {
 	
 	@Hint Item poison_potato = Items.POISONOUS_POTATO;
 	
-	public static QuarkGenericTrigger poisonBabyTrigger;
+	public static ManualTrigger poisonBabyTrigger;
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		poisonBabyTrigger = QuarkAdvancementHandler.registerGenericTrigger("poison_baby");
+		poisonBabyTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("poison_baby");
 	}
 
 	@PlayEvent

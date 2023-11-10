@@ -35,8 +35,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.IConfigType;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
 import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
@@ -93,7 +92,7 @@ public class PathfinderMapsModule extends ZetaModule {
 	public static LootItemFunctionType pathfinderMapType;
 	public static LootItemConditionType inBiomeConditionType;
 
-	public static QuarkGenericTrigger pathfinderMapTrigger;
+	public static ManualTrigger pathfinderMapTrigger;
 
 	@Hint public static Item pathfinders_quill;
 
@@ -140,7 +139,7 @@ public class PathfinderMapsModule extends ZetaModule {
 		inBiomeConditionType = new LootItemConditionType(new InBiomeCondition.InBiomeSerializer());
 		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
 
-		pathfinderMapTrigger = QuarkAdvancementHandler.registerGenericTrigger("pathfinder_map_center");
+		pathfinderMapTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("pathfinder_map_center");
 
 		pathfinders_quill = new PathfindersQuillItem(this);
 	}

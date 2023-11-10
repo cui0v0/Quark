@@ -18,16 +18,14 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
-import org.violetmoon.quark.base.handler.advancement.mod.MonsterHunterModifier;
-import org.violetmoon.quark.base.handler.advancement.mod.TwoByTwoModifier;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.FoxhoundRenderer;
 import org.violetmoon.quark.content.mobs.entity.Foxhound;
@@ -66,7 +64,7 @@ public class FoxhoundModule extends ZetaModule {
 
 	public static TagKey<Block> foxhoundSpawnableTag;
 	
-	public static QuarkGenericTrigger foxhoundFurnaceTrigger;
+	public static ManualTrigger foxhoundFurnaceTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -82,11 +80,11 @@ public class FoxhoundModule extends ZetaModule {
 		EntitySpawnHandler.track(foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);
 
 		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
+
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
 		
-		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
-		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
-		
-		foxhoundFurnaceTrigger = QuarkAdvancementHandler.registerGenericTrigger("foxhound_furnace");
+		foxhoundFurnaceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("foxhound_furnace");
 	}
 
 	@LoadEvent

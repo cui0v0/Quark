@@ -23,8 +23,7 @@ import java.util.function.BooleanSupplier;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.client.render.entity.PickarangRenderer;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
@@ -73,8 +72,8 @@ public class PickarangModule extends ZetaModule {
 	public static TagKey<Block> echorangBreaksAnywayTag;
 	public static TagKey<GameEvent> echorangCanListenTag;
 
-	public static QuarkGenericTrigger throwPickarangTrigger;
-	public static QuarkGenericTrigger useFlamerangTrigger;
+	public static ManualTrigger throwPickarangTrigger;
+	public static ManualTrigger useFlamerangTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -82,8 +81,8 @@ public class PickarangModule extends ZetaModule {
 		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang);
 		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new, () -> enableEchorang);
 
-		throwPickarangTrigger = QuarkAdvancementHandler.registerGenericTrigger("throw_pickarang");
-		useFlamerangTrigger = QuarkAdvancementHandler.registerGenericTrigger("use_flamerang");
+		throwPickarangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_pickarang");
+		useFlamerangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_flamerang");
 	}
 
 	private <T extends AbstractPickarang<T>> Item makePickarang(PickarangType<T> type, String name,

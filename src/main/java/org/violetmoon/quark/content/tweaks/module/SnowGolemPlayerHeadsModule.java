@@ -3,8 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import java.util.Arrays;
 import java.util.List;
 
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -28,14 +27,14 @@ import net.minecraft.world.phys.Vec3;
 @ZetaLoadModule(category = "tweaks")
 public class SnowGolemPlayerHeadsModule extends ZetaModule {
 
-	public static QuarkGenericTrigger getOwnHeadTrigger;
+	public static ManualTrigger getOwnHeadTrigger;
 	
 	@Hint(key = "snow_golem_player_heads")
 	List<Item> items = Arrays.asList(Items.PLAYER_HEAD, Items.NAME_TAG, Items.CARVED_PUMPKIN);
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		getOwnHeadTrigger = QuarkAdvancementHandler.registerGenericTrigger("own_head");
+		getOwnHeadTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("own_head");
 	}
 	
 	@PlayEvent

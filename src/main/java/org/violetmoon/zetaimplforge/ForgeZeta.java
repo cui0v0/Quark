@@ -50,6 +50,7 @@ import org.violetmoon.zeta.registry.BrewingRegistry;
 import org.violetmoon.zeta.registry.CraftingExtensionsRegistry;
 import org.violetmoon.zeta.registry.ZetaRegistry;
 import org.violetmoon.zeta.util.ZetaSide;
+import org.violetmoon.zetaimplforge.api.GatherAdvancementModifiersEvent;
 import org.violetmoon.zetaimplforge.block.IForgeBlockBlockExtensions;
 import org.violetmoon.zetaimplforge.capability.ForgeCapabilityManager;
 import org.violetmoon.zetaimplforge.config.ForgeBackedConfig;
@@ -147,6 +148,14 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr) {
 		return MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.RightClickBlock(player, hand, pos, bhr));
+	}
+
+	@Override
+	public <E, T extends E> T fireExternalEvent(T impl) {
+		if(impl instanceof ZGatherAdvancementModifiers advancementModifiers)
+			MinecraftForge.EVENT_BUS.post(new GatherAdvancementModifiersEvent(this, advancementModifiers));
+
+		return impl;
 	}
 
 	@SuppressWarnings("duplicates")

@@ -1,8 +1,7 @@
 package org.violetmoon.quark.content.automation.module;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.automation.block.EnderWatcherBlock;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -20,7 +19,7 @@ public class EnderWatcherModule extends ZetaModule {
 
 	public static BlockEntityType<EnderWatcherBlockEntity> blockEntityType;
 	
-	public static QuarkGenericTrigger watcherCenterTrigger;
+	public static ManualTrigger watcherCenterTrigger;
 	@Hint Block ender_watcher;
 
 	@LoadEvent
@@ -29,7 +28,7 @@ public class EnderWatcherModule extends ZetaModule {
 		blockEntityType = BlockEntityType.Builder.of(EnderWatcherBlockEntity::new, ender_watcher).build(null);
 		Quark.ZETA.registry.register(blockEntityType, "ender_watcher", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
-		watcherCenterTrigger = QuarkAdvancementHandler.registerGenericTrigger("watcher_center");
+		watcherCenterTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("watcher_center");
 	}
 	
 }

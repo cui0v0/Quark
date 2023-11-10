@@ -35,8 +35,7 @@ import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -161,7 +160,7 @@ public class MatrixEnchantingModule extends ZetaModule {
 
 	public static Block matrixEnchanter;
 
-	public static QuarkGenericTrigger influenceTrigger;
+	public static ManualTrigger influenceTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -173,7 +172,7 @@ public class MatrixEnchantingModule extends ZetaModule {
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
 		Quark.ZETA.registry.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
 
-		influenceTrigger = QuarkAdvancementHandler.registerGenericTrigger("influence");
+		influenceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("influence");
 	}
 
 	@PlayEvent

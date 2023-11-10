@@ -22,7 +22,6 @@ import org.violetmoon.quark.base.handler.RecipeCrawlHandler;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.recipe.ExclusionRecipe;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -72,7 +71,6 @@ public class CommonProxy {
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)
-			.subscribe(QuarkAdvancementHandler.class)
 			.subscribe(RecipeCrawlHandler.class)
 			.subscribe(ToolInteractionHandler.class)
 			.subscribe(WoodSetHandler.class)

@@ -1,13 +1,11 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
-import org.violetmoon.quark.base.handler.advancement.mod.TwoByTwoModifier;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ShibaRenderer;
 import org.violetmoon.quark.content.mobs.entity.Shiba;
@@ -44,7 +42,7 @@ public class ShibaModule extends ZetaModule {
 
 	@Hint(key = "shiba_find_low_light") Item torch = Items.TORCH;
 
-	public static QuarkGenericTrigger shibaHelpTrigger;
+	public static ManualTrigger shibaHelpTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -58,9 +56,9 @@ public class ShibaModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
 
-		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
 
-		shibaHelpTrigger = QuarkAdvancementHandler.registerGenericTrigger("shiba_help");
+		shibaHelpTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("shiba_help");
 	}
 
 	@LoadEvent

@@ -1,4 +1,4 @@
-package org.violetmoon.quark.base.handler.advancement.mod;
+package org.violetmoon.zeta.advancement.modifier;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.Criterion;
@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.Set;
 
-import org.violetmoon.quark.api.IMutableAdvancement;
-import org.violetmoon.quark.base.handler.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
 import org.violetmoon.zeta.module.ZetaModule;
 
 public class ASeedyPlaceModifier extends AdvancementModifier {

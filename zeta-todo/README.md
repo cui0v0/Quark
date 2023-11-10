@@ -101,7 +101,7 @@ Bring to zeta:
 - "If the feature exists only to interact with a specific quark feature it stays in quark, otherwise it goes in zeta"
 - [x] Piston logic override in zeta? :eyes:
 - [ ] Recipe crawler -> zeta
-- [ ] Advancement modification system
+- [x] Advancement modification system
 - [ ] "ig the worldgen shim?"
 - [ ] "pretty much everything in `block` is viable to pull out"
 - [x] some stuff wrt to module loader - anti overlap
@@ -163,3 +163,14 @@ Zeta takes a very event-bus-centric approach to things, but:
 * when you *do* need strong ordering guarantees, it is pretty hard to express them (you need pre/post events, or to cram multiple tasks into a single event handler)
 
 Zeta's event bus doesn't have any "event priority" notion at all, so ive been cheating with `.Pre` and `.Lowest` variants of events.
+
+# Quark addon porting guide?
+
+what things should authors of quark addons know about?
+
+- for detecting if a quark module is loaded, `ModuleLoader.INSTANCE.isModuleEnabled(class)` -> `Quark.ZETA.modules.get(class).enabled`
+- when dealing with the event bus, you have two options:
+  - Use `Quark.ZETA.loadBus` and `Quark.ZETA.playBus` directly just like Quark.
+    - It's basically like Forge's event bus but a little more bare-bones. Instead of `@SubscribeEvent`, use one of `@LoadEvent` or `@PlayEvent`.
+    - Note that you *cannot* subscribe with lambdas or method references. This is because introspecting them is *really* hard (have you *seen* Forge's event bus)
+  - Occasionally, events part of Zeta/Quark's API are wrapped in platform-specific "external events" (like `GatherAdvancementModifiersEvent`). You can listen for these events in the familiar way, with the platform-specific event bus abstraction.

@@ -1,11 +1,11 @@
-package org.violetmoon.quark.base.handler.advancement;
+package org.violetmoon.zeta.advancement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.violetmoon.quark.api.IMutableAdvancement;
+import org.violetmoon.zeta.api.IMutableAdvancement;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -54,7 +54,7 @@ public class MutableAdvancement implements IMutableAdvancement {
 		}
 	}
 	
-	protected void commit() {
+	public void commit() {
 		advancement.criteria = ImmutableMap.copyOf(criteria);
 		
 		List<String[]> requirementArrays = new ArrayList<>();
@@ -62,7 +62,7 @@ public class MutableAdvancement implements IMutableAdvancement {
 			String[] arr = list.toArray(new String[list.size()]);
 			requirementArrays.add(arr);
 		}
-		
+
 		String[][] arr = requirementArrays.toArray(new String[0][requirementArrays.size()]);
 		advancement.requirements = arr;
 	}

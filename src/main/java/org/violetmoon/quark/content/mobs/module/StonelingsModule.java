@@ -1,20 +1,17 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.StonelingRenderer;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -53,14 +50,9 @@ public class StonelingsModule extends ZetaModule {
 	@Config(description = "Disabled if if Pathfinder Maps are disabled.", flag = "stoneling_weald_pathfinder")
 	public static boolean wealdPathfinderMaps = true;
 
-	public static QuarkGenericTrigger makeStonelingTrigger;
+	public static ManualTrigger makeStonelingTrigger;
 	
 	@Hint("stoneling_drop_diamond_heart") public static Item diamondHeart;
-
-	@LoadEvent
-	public final void setup(ZCommonSetup event) {
-		makeStonelingTrigger = QuarkAdvancementHandler.registerGenericTrigger("make_stoneling");
-	}
 	
 	public boolean registered = false;
 
@@ -75,6 +67,8 @@ public class StonelingsModule extends ZetaModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Stoneling(stonelingType, world))
 				.build("stoneling");
 		Quark.ZETA.registry.register(stonelingType, "stoneling", Registry.ENTITY_TYPE_REGISTRY);
+
+		makeStonelingTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("make_stoneling");
 
 		EntitySpawnHandler.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);

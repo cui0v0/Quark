@@ -1,109 +1,116 @@
-package org.violetmoon.quark.base.handler.advancement;
+package org.violetmoon.zeta.advancement;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.BooleanSupplier;
-
-import org.violetmoon.quark.api.IAdvancementModifier;
-import org.violetmoon.quark.api.IAdvancementModifierDelegate;
-import org.violetmoon.quark.api.event.GatherAdvancementModifiersEvent;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.advancement.mod.*;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZAddReloadListener;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.violetmoon.zeta.Zeta;
+import org.violetmoon.zeta.advancement.modifier.ASeedyPlaceModifier;
+import org.violetmoon.zeta.advancement.modifier.AdventuringTimeModifier;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
+import org.violetmoon.zeta.advancement.modifier.FishyBusinessModifier;
+import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
+import org.violetmoon.zeta.advancement.modifier.GlowAndBeholdModifier;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
+import org.violetmoon.zeta.advancement.modifier.TacticalFishingModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
+import org.violetmoon.zeta.advancement.modifier.WaxModifier;
+import org.violetmoon.zeta.api.IAdvancementModifier;
+import org.violetmoon.zeta.api.IAdvancementModifierDelegate;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZAddReloadListener;
+import org.violetmoon.zeta.event.load.ZGatherAdvancementModifiers;
 
-public final class QuarkAdvancementHandler {
+public class AdvancementModifierRegistry {
+	protected final Zeta zeta;
+	protected final BooleanSupplier actuallyDoIt;
+	protected final Multimap<ResourceLocation, IAdvancementModifier> modifiers = HashMultimap.create();
 
-	private static Multimap<ResourceLocation, IAdvancementModifier> modifiers = HashMultimap.create();
-	private static boolean first = true;
-	private static boolean gatheredAddons = false;
-	
-	public static void addModifier(IAdvancementModifier mod) {
-		Set<ResourceLocation> targets = mod.getTargets();
-		for(ResourceLocation r : targets)
-			modifiers.put(r, mod);
+	protected boolean gatheredAddons = false;
+
+	public AdvancementModifierRegistry(Zeta zeta, BooleanSupplier actuallyDoIt) {
+		this.zeta = zeta;
+		this.actuallyDoIt = actuallyDoIt;
 	}
-	
-	public static QuarkGenericTrigger registerGenericTrigger(String name) {
-		if(first) {
-			first = false;
-			registerGenericTrigger("none"); // temporary fallback for wip advancements
-		}
-		
-		ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, name);
-		QuarkGenericTrigger trigger = new QuarkGenericTrigger(resloc);
+
+	public ManualTrigger registerManualTrigger(String resloc) {
+		ResourceLocation id = zeta.registry.newResourceLocation(resloc);
+		ManualTrigger trigger = new ManualTrigger(id);
 		CriteriaTriggers.register(trigger);
-		
 		return trigger;
 	}
 
-	@LoadEvent
-	public static void addListener(ZAddReloadListener event) {
-		ReloadableServerResources resources = event.getServerResources();
-		ServerAdvancementManager advancementManager = resources.getAdvancements();
+	public void addModifier(IAdvancementModifier mod) {
+		for(ResourceLocation r : mod.getTargets())
+			modifiers.put(r, mod);
+	}
 
+	@LoadEvent
+	public void addListeners(ZAddReloadListener event) {
 		if(!gatheredAddons) {
-			GatherAdvancementModifiersEvent ev = new GatherAdvancementModifiersEvent(new Delegate());
-			MinecraftForge.EVENT_BUS.post(ev);
-			ev.modifiers().forEach(QuarkAdvancementHandler::addModifier);
+			IAdvancementModifierDelegate delegateImpl = new DelegateImpl();
+			zeta.loadBus.fireExternal(new ZGatherAdvancementModifiers() {
+				@Override
+				public void register(IAdvancementModifier modifier) {
+					addModifier(modifier);
+				}
+
+				@Override
+				public IAdvancementModifierDelegate getDelegate() {
+					return delegateImpl;
+				}
+			}, ZGatherAdvancementModifiers.class);
+
 			gatheredAddons = true;
 		}
-		
-		event.addListener((barrier, manager, prepFiller, applyFiller, prepExec, applyExec) ->
-				CompletableFuture.completedFuture(null)
-		.thenCompose(barrier::wait)
-		.thenAccept(v -> onAdvancementsLoaded(advancementManager)));
+
+		ServerAdvancementManager advancements = event.getServerResources().getAdvancements();
+		event.addListener((ResourceManagerReloadListener) mgr -> onAdvancementsLoaded(advancements));
+
 	}
-	
-	private static void onAdvancementsLoaded(ServerAdvancementManager manager) {
-		if(!GeneralConfig.enableAdvancementModification)
+
+	private void onAdvancementsLoaded(ServerAdvancementManager manager) {
+		if(!actuallyDoIt.getAsBoolean())
 			return;
-		
+
 		for(ResourceLocation res : modifiers.keySet()) {
 			Advancement adv = manager.getAdvancement(res);
-			
+
 			if(adv != null) {
 				Collection<IAdvancementModifier> found = modifiers.get(res);
-				
+
 				if(!found.isEmpty()) {
 					int modifications = 0;
 					MutableAdvancement mutable = new MutableAdvancement(adv);
-					
+
 					for(IAdvancementModifier mod : found)
 						if(mod.isActive() && mod.apply(res, mutable))
 							modifications++;
-							
+
 					if(modifications > 0) {
-						Quark.LOG.info("Modified advancement {} with {} patches", adv.getId(), modifications);
+						zeta.log.info("Modified advancement {} with {} patches", adv.getId(), modifications);
 						mutable.commit();
 					}
 				}
 			}
 		}
 	}
-	
-	private static class Delegate implements IAdvancementModifierDelegate {
+
+	private static class DelegateImpl implements IAdvancementModifierDelegate {
 
 		@Override
 		public IAdvancementModifier createAdventuringTimeMod(Set<ResourceKey<Biome>> locations) {
@@ -156,5 +163,5 @@ public final class QuarkAdvancementHandler {
 		}
 
 	}
-	
+
 }

@@ -12,14 +12,12 @@ import net.minecraftforge.common.Tags;
 
 import java.util.List;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ToretoiseRenderer;
 import org.violetmoon.quark.content.mobs.entity.Toretoise;
@@ -56,8 +54,8 @@ public class ToretoiseModule extends ZetaModule {
 	@Config
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(120, 2, 4, CompoundBiomeConfig.fromBiomeTags(true, Tags.Biomes.IS_VOID, BiomeTags.IS_NETHER, BiomeTags.IS_END));
 
-	public static QuarkGenericTrigger mineToretoiseTrigger;
-	public static QuarkGenericTrigger mineFedToretoiseTrigger;
+	public static ManualTrigger mineToretoiseTrigger;
+	public static ManualTrigger mineFedToretoiseTrigger;
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -73,8 +71,8 @@ public class ToretoiseModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, toretoiseType, 0x55413b, 0x383237, spawnConfig);
 		
-		mineToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_toretoise");
-		mineFedToretoiseTrigger = QuarkAdvancementHandler.registerGenericTrigger("mine_fed_toretoise");
+		mineToretoiseTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("mine_toretoise");
+		mineFedToretoiseTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("mine_fed_toretoise");
 	}
 
 	@LoadEvent

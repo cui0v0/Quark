@@ -3,8 +3,7 @@ package org.violetmoon.quark.content.building.module;
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.HollowLogBlock;
@@ -34,7 +33,7 @@ public class HollowLogsModule extends ZetaModule {
 
 	private static final String TAG_TRYING_TO_CRAWL = "quark:trying_crawl";
 
-	public static QuarkGenericTrigger crawlTrigger;
+	public static ManualTrigger crawlTrigger;
 
 	@Config(flag = "hollow_log_auto_crawl")
 	public static boolean enableAutoCrawl = true;
@@ -49,7 +48,7 @@ public class HollowLogsModule extends ZetaModule {
 //			new HollowWoodBlock(wood.wood(), this, !wood.nether());
 		}
 
-		crawlTrigger = QuarkAdvancementHandler.registerGenericTrigger("hollow_log_crawl");
+		crawlTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("hollow_log_crawl");
 	}
 
 	@LoadEvent

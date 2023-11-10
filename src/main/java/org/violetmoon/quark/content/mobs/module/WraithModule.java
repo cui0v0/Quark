@@ -19,14 +19,12 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.mod.MonsterHunterModifier;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.SoulBeadRenderer;
 import org.violetmoon.quark.content.mobs.client.render.entity.WraithRenderer;
@@ -103,12 +101,12 @@ public class WraithModule extends ZetaModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new SoulBead(soulBeadType, world))
 				.build("soul_bead");
-		Quark.ZETA.registry.register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
+		event.getRegistry().register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
 
 		EntitySpawnHandler.registerSpawn(wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
-		
-		QuarkAdvancementHandler.addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
+
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
 	}
 
 	@LoadEvent

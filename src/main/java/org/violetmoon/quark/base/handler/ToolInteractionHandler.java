@@ -17,8 +17,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.apache.commons.lang3.tuple.Pair;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.mod.WaxModifier;
+import org.violetmoon.zeta.advancement.modifier.WaxModifier;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -52,18 +51,21 @@ public final class ToolInteractionHandler {
 
 	@LoadEvent
 	public static void addModifiers(ZCommonSetup event) {
-		for(ZetaModule module : waxingByModule.keySet()) {
-			Collection<Pair<Block, Block>> pairs = waxingByModule.get(module);
-			Set<Block> unwaxed = new HashSet<>();
-			Set<Block> waxed = new HashSet<>();
+		event.enqueueWork(() -> {
+			for(ZetaModule module : waxingByModule.keySet()) {
+				Collection<Pair<Block, Block>> pairs = waxingByModule.get(module);
+				Set<Block> unwaxed = new HashSet<>();
+				Set<Block> waxed = new HashSet<>();
 
-			for(Pair<Block, Block> pair : pairs) {
-				unwaxed.add(pair.getLeft());
-				waxed.add(pair.getRight());
+				for(Pair<Block, Block> pair : pairs) {
+					unwaxed.add(pair.getLeft());
+					waxed.add(pair.getRight());
+				}
+
+				//TODO: what
+				module.zeta.advancementModifierRegistry.addModifier(new WaxModifier(module, unwaxed, waxed));
 			}
-
-			QuarkAdvancementHandler.addModifier(new WaxModifier(module, unwaxed, waxed));
-		}
+		});
 	}
 
 	@PlayEvent

@@ -1,8 +1,7 @@
-package org.violetmoon.quark.api;
+package org.violetmoon.zeta.api;
 
 import java.util.Set;
-
-import com.google.common.base.Supplier;
+import java.util.function.BooleanSupplier;
 
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,7 +11,7 @@ public interface IAdvancementModifier {
 	boolean apply(ResourceLocation res, IMutableAdvancement adv);
 
 
-	default IAdvancementModifier setCondition(Supplier<Boolean> cond){
+	default IAdvancementModifier setCondition(BooleanSupplier cond){
 		return this;
 	}
 

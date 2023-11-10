@@ -27,8 +27,7 @@ import org.violetmoon.quark.base.config.Config.Max;
 import org.violetmoon.quark.base.config.Config.Min;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MyaliteCrystalBlock;
@@ -65,7 +64,7 @@ public class SpiralSpiresModule extends ZetaModule {
 
 	@Config public static boolean renewableMyalite = true;
 
-	public static QuarkGenericTrigger useViaductTrigger;
+	public static ManualTrigger useViaductTrigger;
 	
 	@Hint 
 	public static Block dusky_myalite;
@@ -81,7 +80,7 @@ public class SpiralSpiresModule extends ZetaModule {
 
 		myalite_crystal = new MyaliteCrystalBlock(this);
 		
-		useViaductTrigger = QuarkAdvancementHandler.registerGenericTrigger("use_viaduct");
+		useViaductTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_viaduct");
 	}
 
 	@LoadEvent

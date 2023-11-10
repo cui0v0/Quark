@@ -7,9 +7,8 @@ import org.violetmoon.quark.base.config.Config.Min;
 import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
-import org.violetmoon.quark.base.handler.advancement.mod.BalancedDietModifier;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
 import org.violetmoon.quark.content.world.block.AncientSaplingBlock;
 import org.violetmoon.quark.content.world.item.AncientFruitItem;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -56,7 +55,7 @@ public class AncientWoodModule extends ZetaModule {
 	@Hint public static Block ancient_sapling;
 	@Hint public static Item ancient_fruit;
 
-	public static QuarkGenericTrigger ancientFruitTrigger;
+	public static ManualTrigger ancientFruitTrigger;
 
 	@LoadEvent
 	public void setup(ZCommonSetup e) {
@@ -76,9 +75,9 @@ public class AncientWoodModule extends ZetaModule {
 
 		VariantHandler.addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, Registry.BLOCK).getPath(), Functions.identity());
 
-		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
+		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 
-		ancientFruitTrigger = QuarkAdvancementHandler.registerGenericTrigger("ancient_fruit_overlevel");
+		ancientFruitTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("ancient_fruit_overlevel");
 	}
 
 	@PlayEvent

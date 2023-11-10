@@ -7,7 +7,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.RaytracingUtil;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
 import org.violetmoon.zeta.config.ConfigManager;
@@ -41,8 +44,8 @@ public abstract class Zeta {
 
 		this.modid = modid;
 		this.side = side;
-		this.loadBus = new ZetaEventBus<>(LoadEvent.class, IZetaLoadEvent.class, log);
-		this.playBus = new ZetaEventBus<>(PlayEvent.class, IZetaPlayEvent.class, null);
+		this.loadBus = new ZetaEventBus<>(this, LoadEvent.class, IZetaLoadEvent.class, log);
+		this.playBus = new ZetaEventBus<>(this, PlayEvent.class, IZetaPlayEvent.class, null);
 
 		this.modules = createModuleManager();
 		this.registry = createRegistry();
@@ -50,6 +53,7 @@ public abstract class Zeta {
 		this.dyeables = createDyeablesRegistry();
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
+		this.advancementModifierRegistry = createAdvancementModifierRegistry();
 
 		this.blockExtensions = createBlockExtensionFactory();
 		this.itemExtensions = createItemExtensionFactory();
@@ -59,7 +63,8 @@ public abstract class Zeta {
 
 		loadBus.subscribe(craftingExtensions)
 			.subscribe(dyeables)
-			.subscribe(brewingRegistry);
+			.subscribe(brewingRegistry)
+			.subscribe(advancementModifierRegistry);
 	}
 
 	public final Logger log;
@@ -75,6 +80,7 @@ public abstract class Zeta {
 	public final DyeablesRegistry dyeables;
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
+	public final AdvancementModifierRegistry advancementModifierRegistry;
 
 	public final ZetaCapabilityManager capabilityManager;
 	public final BlockExtensionFactory blockExtensions;
@@ -119,6 +125,9 @@ public abstract class Zeta {
 		return new DyeablesRegistry();
 	}
 	public abstract BrewingRegistry createBrewingRegistry();
+	public AdvancementModifierRegistry createAdvancementModifierRegistry() {
+		return new AdvancementModifierRegistry(this, () -> GeneralConfig.enableAdvancementModification); //TODO: Quark config option
+	}
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
 	public abstract ZetaCapabilityManager createCapabilityManager();
 	public BlockExtensionFactory createBlockExtensionFactory() {
@@ -126,6 +135,8 @@ public abstract class Zeta {
 	}
 	public abstract ItemExtensionFactory createItemExtensionFactory();
 	public abstract RaytracingUtil createRaytracingUtil();
+
+	public abstract <E, T extends E> T fireExternalEvent(T impl);
 
 	// misc "ah fuck i need to interact with the modloader" stuff
 	public abstract boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr);

@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.Zeta;
 
 /**
  * A polymorphic event bus. Events can be fired under one of their supertypes, allowing a sort of API/impl split of events.
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
  *  - I also think these are hard to reflect
  */
 public class ZetaEventBus<E> {
+	private final Zeta z;
 	private final Class<? extends Annotation> subscriberAnnotation;
 	private final Class<? extends E> eventRoot;
 	private final @Nullable Logger logSpam;
@@ -37,9 +39,10 @@ public class ZetaEventBus<E> {
 	 * @param subscriberAnnotation The annotation that subscribe()/unsubscribe() will pay attention to.
 	 * @param eventRoot The superinterface of all events fired on this bus.
 	 */
-	public ZetaEventBus(Class<? extends Annotation> subscriberAnnotation, Class<? extends E> eventRoot, @Nullable Logger logSpam) {
+	public ZetaEventBus(Zeta z, Class<? extends Annotation> subscriberAnnotation, Class<? extends E> eventRoot, @Nullable Logger logSpam) {
 		Preconditions.checkArgument(eventRoot.isInterface(), "Event roots should be an interface");
 
+		this.z = z;
 		this.subscriberAnnotation = subscriberAnnotation;
 		this.eventRoot = eventRoot;
 		this.logSpam = logSpam;
@@ -125,6 +128,15 @@ public class ZetaEventBus<E> {
 	private String logspamSimpleName(Class<?> clazz) {
 		String[] split = clazz.getName().split("\\.");
 		return split[split.length - 1];
+	}
+
+	public <T extends E> T fireExternal(@NotNull T event, Class<? super T> firedAs) {
+		event = fire(event, firedAs);
+
+		if(event instanceof Cancellable cancellable && cancellable.isCanceled())
+			return event;
+		else
+			return z.fireExternalEvent(event); // Interfaces with the platform-specific event bus utility
 	}
 
 	/**

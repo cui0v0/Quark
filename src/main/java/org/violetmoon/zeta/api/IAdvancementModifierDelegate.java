@@ -1,4 +1,4 @@
-package org.violetmoon.quark.api;
+package org.violetmoon.zeta.api;
 
 import java.util.Set;
 import java.util.function.BooleanSupplier;

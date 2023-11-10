@@ -1,15 +1,13 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.mod.BalancedDietModifier;
-import org.violetmoon.quark.base.handler.advancement.mod.FuriousCocktailModifier;
-import org.violetmoon.quark.base.handler.advancement.mod.TwoByTwoModifier;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
+import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.base.item.QuarkMobBucketItem;
 import org.violetmoon.quark.base.util.QuarkEffect;
@@ -111,10 +109,10 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
-		QuarkAdvancementHandler.addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
+		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> resilienceRequiredForAllEffects));
-		QuarkAdvancementHandler.addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
-		QuarkAdvancementHandler.addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
+		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
 	}
 
 	@LoadEvent

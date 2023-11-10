@@ -1,9 +1,9 @@
-package org.violetmoon.quark.base.handler.advancement.mod;
+package org.violetmoon.zeta.advancement.modifier;
 
 import java.util.Set;
 
-import org.violetmoon.quark.api.IMutableAdvancement;
-import org.violetmoon.quark.base.handler.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import com.google.common.collect.ImmutableSet;

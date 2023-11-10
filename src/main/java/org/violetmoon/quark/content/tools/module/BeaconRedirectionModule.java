@@ -26,8 +26,7 @@ import java.util.HashSet;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.world.block.CorundumClusterBlock;
 import org.violetmoon.quark.content.world.module.CorundumModule;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -54,11 +53,11 @@ public class BeaconRedirectionModule extends ZetaModule {
 
 	public static boolean staticEnabled;
 
-	public static QuarkGenericTrigger redirectTrigger;
+	public static ManualTrigger redirectTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		redirectTrigger = QuarkAdvancementHandler.registerGenericTrigger("redirect_beacon");
+		redirectTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("redirect_beacon");
 	}
 
 	@LoadEvent

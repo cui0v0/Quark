@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -33,20 +32,15 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
 import org.violetmoon.quark.content.tools.loot.EnchantTome;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
@@ -129,8 +123,8 @@ public class AncientTomesModule extends ZetaModule {
 	public static final List<Enchantment> validEnchants = new ArrayList<>();
 	private static boolean initialized = false;
 
-	public static QuarkGenericTrigger overlevelTrigger;
-	public static QuarkGenericTrigger instamineDeepslateTrigger;
+	public static ManualTrigger overlevelTrigger;
+	public static ManualTrigger instamineDeepslateTrigger;
 
 	@LoadEvent
 	public void register(ZRegister event) {
@@ -139,8 +133,8 @@ public class AncientTomesModule extends ZetaModule {
 		tomeEnchantType = new LootItemFunctionType(new EnchantTome.Serializer());
 		Registry.register(Registry.LOOT_FUNCTION_TYPE, new ResourceLocation(Quark.MOD_ID, "tome_enchant"), tomeEnchantType);
 
-		overlevelTrigger = QuarkAdvancementHandler.registerGenericTrigger("overlevel");
-		instamineDeepslateTrigger = QuarkAdvancementHandler.registerGenericTrigger("instamine_deepslate");
+		overlevelTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("overlevel");
+		instamineDeepslateTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("instamine_deepslate");
 	}
 
 	@PlayEvent

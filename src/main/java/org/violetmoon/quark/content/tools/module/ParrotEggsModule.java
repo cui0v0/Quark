@@ -32,8 +32,7 @@ import javax.annotation.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.entity.ParrotEgg;
 import org.violetmoon.quark.content.tools.item.ParrotEggItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
@@ -76,7 +75,7 @@ public class ParrotEggsModule extends ZetaModule {
 
 	private static boolean isEnabled;
 	
-	public static QuarkGenericTrigger throwParrotEggTrigger;
+	public static ManualTrigger throwParrotEggTrigger;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -107,7 +106,7 @@ public class ParrotEggsModule extends ZetaModule {
 			});
 		}
 		
-		throwParrotEggTrigger = QuarkAdvancementHandler.registerGenericTrigger("throw_parrot_egg");
+		throwParrotEggTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_parrot_egg");
 	}
 
 	@LoadEvent

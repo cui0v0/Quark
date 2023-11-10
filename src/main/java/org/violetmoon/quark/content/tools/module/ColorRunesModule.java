@@ -21,8 +21,7 @@ import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.advancement.QuarkAdvancementHandler;
-import org.violetmoon.quark.base.handler.advancement.QuarkGenericTrigger;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.UpdateTridentMessage;
 import org.violetmoon.quark.content.tools.client.render.GlintRenderTypes;
@@ -77,8 +76,8 @@ public class ColorRunesModule extends ZetaModule {
 	@Config public static int itemQuality = 0;
 	@Config public static int applyCost = 5;
 
-	public static QuarkGenericTrigger applyRuneTrigger;
-	public static QuarkGenericTrigger fullRainbowTrigger;
+	public static ManualTrigger applyRuneTrigger;
+	public static ManualTrigger fullRainbowTrigger;
 
 	public static void setTargetStack(ItemStack stack) {
 		targetStack.set(stack);
@@ -141,8 +140,8 @@ public class ColorRunesModule extends ZetaModule {
 		rainbow_rune = new RuneItem("rainbow_rune", this, 16, true);
 		blank_rune = new RuneItem("blank_rune", this, 17, false);
 
-		applyRuneTrigger = QuarkAdvancementHandler.registerGenericTrigger("apply_rune");
-		fullRainbowTrigger = QuarkAdvancementHandler.registerGenericTrigger("full_rainbow");
+		applyRuneTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("apply_rune");
+		fullRainbowTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("full_rainbow");
 	}
 
 	@LoadEvent
