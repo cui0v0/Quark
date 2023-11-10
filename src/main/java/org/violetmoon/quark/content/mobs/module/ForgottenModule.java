@@ -4,6 +4,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ForgottenRenderer;
@@ -57,7 +58,8 @@ public class ForgottenModule extends ZetaModule {
 		Quark.ZETA.registry.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
 
-		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

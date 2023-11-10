@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
 import org.violetmoon.quark.base.handler.VariantHandler;
@@ -112,7 +113,8 @@ public class GlimmeringWealdModule extends ZetaModule {
 		UndergroundBiomeHandler.addUndergroundBiome(this, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE,
 				Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F), BIOME_NAME);
 
-		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY)));
+		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

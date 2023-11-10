@@ -4,6 +4,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
@@ -56,7 +57,8 @@ public class ShibaModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
 
-		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 
 		shibaHelpTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("shiba_help");
 	}

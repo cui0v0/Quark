@@ -24,6 +24,7 @@ import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.SoulBeadRenderer;
@@ -106,7 +107,8 @@ public class WraithModule extends ZetaModule {
 		EntitySpawnHandler.registerSpawn(wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
 
-		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType)));
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

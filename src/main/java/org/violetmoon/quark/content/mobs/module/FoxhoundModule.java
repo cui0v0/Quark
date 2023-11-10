@@ -23,6 +23,7 @@ import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
@@ -81,8 +82,10 @@ public class FoxhoundModule extends ZetaModule {
 
 		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
 
-		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
-		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 		
 		foxhoundFurnaceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("foxhound_furnace");
 	}

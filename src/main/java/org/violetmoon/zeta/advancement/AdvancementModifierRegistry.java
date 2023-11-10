@@ -37,14 +37,12 @@ import org.violetmoon.zeta.event.load.ZGatherAdvancementModifiers;
 
 public class AdvancementModifierRegistry {
 	protected final Zeta zeta;
-	protected final BooleanSupplier actuallyDoIt;
 	protected final Multimap<ResourceLocation, IAdvancementModifier> modifiers = HashMultimap.create();
 
 	protected boolean gatheredAddons = false;
 
-	public AdvancementModifierRegistry(Zeta zeta, BooleanSupplier actuallyDoIt) {
+	public AdvancementModifierRegistry(Zeta zeta) {
 		this.zeta = zeta;
-		this.actuallyDoIt = actuallyDoIt;
 	}
 
 	public ManualTrigger registerManualTrigger(String resloc) {
@@ -84,9 +82,6 @@ public class AdvancementModifierRegistry {
 	}
 
 	private void onAdvancementsLoaded(ServerAdvancementManager manager) {
-		if(!actuallyDoIt.getAsBoolean())
-			return;
-
 		for(ResourceLocation res : modifiers.keySet()) {
 			Advancement adv = manager.getAdvancement(res);
 

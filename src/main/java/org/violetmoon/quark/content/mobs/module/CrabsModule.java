@@ -4,6 +4,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
 import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
@@ -110,9 +111,11 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
-				.setCondition(() -> resilienceRequiredForAllEffects));
-		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
-		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
+			.setCondition(() -> GeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg))
+			.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

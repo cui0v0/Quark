@@ -125,7 +125,7 @@ public abstract class Zeta {
 	}
 	public abstract BrewingRegistry createBrewingRegistry();
 	public AdvancementModifierRegistry createAdvancementModifierRegistry() {
-		return new AdvancementModifierRegistry(this, () -> GeneralConfig.enableAdvancementModification); //TODO: Quark config option
+		return new AdvancementModifierRegistry(this);
 	}
 	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
 	public abstract ZetaCapabilityManager createCapabilityManager();
