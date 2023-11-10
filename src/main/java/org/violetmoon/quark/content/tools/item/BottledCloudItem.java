@@ -18,7 +18,8 @@ import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.handler.RayTraceHandler;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
@@ -35,7 +36,7 @@ public class BottledCloudItem extends QuarkItem {
 	public InteractionResultHolder<ItemStack> use(@Nonnull Level world, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		HitResult result = RayTraceHandler.rayTrace(player, world, player, Block.OUTLINE, Fluid.ANY);
+		HitResult result = Quark.ZETA.raytracingUtil.rayTrace(player, world, player, Block.OUTLINE, Fluid.ANY);
 		if(result instanceof BlockHitResult bresult) {
 			BlockPos pos = bresult.getBlockPos();
 			if(!world.isEmptyBlock(pos))

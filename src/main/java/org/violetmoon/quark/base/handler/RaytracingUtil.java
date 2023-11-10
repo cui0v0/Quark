@@ -12,35 +12,33 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
 
-public class RayTraceHandler {
+// rtx on boys
+public abstract class RaytracingUtil {
 
-	public static HitResult rayTrace(Entity entity, Level world, Player player, Block blockMode, Fluid fluidMode) {
+	public abstract double getEntityRange(LivingEntity player);
+
+	public HitResult rayTrace(Entity entity, Level world, Player player, Block blockMode, Fluid fluidMode) {
 		return rayTrace(entity, world, player, blockMode, fluidMode, getEntityRange(player));
 	}
 
-	public static HitResult rayTrace(Entity entity, Level world, Entity player, Block blockMode, Fluid fluidMode, double range) {
+	public HitResult rayTrace(Entity entity, Level world, Entity player, Block blockMode, Fluid fluidMode, double range) {
 		 Pair<Vec3, Vec3> params = getEntityParams(player);
 
 		return rayTrace(entity, world, params.getLeft(), params.getRight(), blockMode, fluidMode, range);
 	}
 
-	public static HitResult rayTrace(Entity entity, Level world, Vec3 startPos, Vec3 ray, Block blockMode, Fluid fluidMode, double range) {
+	public HitResult rayTrace(Entity entity, Level world, Vec3 startPos, Vec3 ray, Block blockMode, Fluid fluidMode, double range) {
 		return rayTrace(entity, world, startPos, ray.scale(range), blockMode, fluidMode);
 	}
 
-	public static HitResult rayTrace(Entity entity, Level world, Vec3 startPos, Vec3 ray, Block blockMode, Fluid fluidMode) {
+	public HitResult rayTrace(Entity entity, Level world, Vec3 startPos, Vec3 ray, Block blockMode, Fluid fluidMode) {
 		Vec3 end = startPos.add(ray);
 		ClipContext context = new ClipContext(startPos, end, blockMode, fluidMode, entity);
 		return world.clip(context);
 	}
 
-	public static double getEntityRange(LivingEntity player) {
-		return player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
-	}
-
-	public static Pair<Vec3, Vec3> getEntityParams(Entity player) {
+	public Pair<Vec3, Vec3> getEntityParams(Entity player) {
 		float scale = 1.0F;
 		float pitch = player.xRotO + (player.getXRot() - player.xRotO) * scale;
 		float yaw = player.yRotO + (player.getYRot() - player.yRotO) * scale;

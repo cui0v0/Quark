@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.client.module;
 
-import org.violetmoon.quark.base.handler.RayTraceHandler;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -41,7 +42,7 @@ public class LongRangePickBlockModule extends ZetaModule {
 					return hitResult;
 			}
 
-			HitResult result = RayTraceHandler.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 200);
+			HitResult result = Quark.ZETA.raytracingUtil.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 200);
 			if(result != null && result.getType() == Type.BLOCK)
 				return result;
 

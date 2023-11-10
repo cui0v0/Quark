@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.RayTraceHandler;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.quark.content.automation.block.EnderWatcherBlock;
 import org.violetmoon.quark.content.automation.module.EnderWatcherModule;
 import org.violetmoon.zeta.block.be.ZetaBlockEntity;
@@ -51,7 +51,7 @@ public class EnderWatcherBlockEntity extends ZetaBlockEntity {
 			if(!helm.isEmpty() && Quark.ZETA.itemExtensions.get(helm).isEnderMaskZeta(helm, player, fakeEnderman))
 				continue;
 
-			HitResult result = RayTraceHandler.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 64);
+			HitResult result = Quark.ZETA.raytracingUtil.rayTrace(player, level, player, Block.OUTLINE, Fluid.NONE, 64);
 			if(result != null && result.getType() == HitResult.Type.BLOCK && ((BlockHitResult) result).getBlockPos().equals(be.worldPosition)) {
 				looking = true;
 

@@ -32,7 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBColorConfig;
-import org.violetmoon.quark.base.handler.RayTraceHandler;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.client.event.play.ZEndClientTick;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
@@ -122,12 +122,12 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 		Level world = player.level;
 
-		Pair<Vec3, Vec3> params = RayTraceHandler.getEntityParams(player);
-		double range = RayTraceHandler.getEntityRange(player);
+		Pair<Vec3, Vec3> params = Quark.ZETA.raytracingUtil.getEntityParams(player);
+		double range = Quark.ZETA.raytracingUtil.getEntityRange(player);
 		Vec3 rayPos = params.getLeft();
 		Vec3 ray = params.getRight().scale(range);
 
-		HitResult normalRes = RayTraceHandler.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
+		HitResult normalRes = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
 		if (normalRes.getType() == HitResult.Type.MISS) {
 			ReacharoundTarget target = getPlayerVerticalReacharoundTarget(player, hand, world, rayPos, ray);
@@ -146,7 +146,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			return null;
 
 		rayPos = rayPos.add(0, leniency, 0);
-		HitResult take2Res = RayTraceHandler.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
+		HitResult take2Res = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
 		if (take2Res.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().below();
@@ -162,7 +162,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	private ReacharoundTarget getPlayerHorizontalReacharoundTarget(Player player, InteractionHand hand, Level world, Vec3 rayPos, Vec3 ray) {
 		Direction dir = Direction.fromYRot(player.getYRot());
 		rayPos = rayPos.subtract(leniency * dir.getStepX(), 0, leniency * dir.getStepZ());
-		HitResult take2Res = RayTraceHandler.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
+		HitResult take2Res = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
 		if (take2Res.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().relative(dir);

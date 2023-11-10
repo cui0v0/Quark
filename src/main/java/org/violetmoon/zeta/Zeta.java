@@ -7,6 +7,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
 import org.violetmoon.zeta.config.ConfigManager;
@@ -54,6 +55,8 @@ public abstract class Zeta {
 		this.itemExtensions = createItemExtensionFactory();
 		this.capabilityManager = createCapabilityManager();
 
+		this.raytracingUtil = createRaytracingUtil();
+
 		loadBus.subscribe(craftingExtensions)
 			.subscribe(dyeables)
 			.subscribe(brewingRegistry);
@@ -76,6 +79,8 @@ public abstract class Zeta {
 	public final ZetaCapabilityManager capabilityManager;
 	public final BlockExtensionFactory blockExtensions;
 	public final ItemExtensionFactory itemExtensions;
+
+	public final RaytracingUtil raytracingUtil;
 
 	public ConfigManager configManager; //This could do with being split up into various pieces?
 	public IZetaConfigInternals configInternals;
@@ -120,6 +125,7 @@ public abstract class Zeta {
 		return BlockExtensionFactory.DEFAULT;
 	}
 	public abstract ItemExtensionFactory createItemExtensionFactory();
+	public abstract RaytracingUtil createRaytracingUtil();
 
 	// misc "ah fuck i need to interact with the modloader" stuff
 	public abstract boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr);

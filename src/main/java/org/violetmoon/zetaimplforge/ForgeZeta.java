@@ -28,6 +28,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.handler.RaytracingUtil;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
@@ -70,6 +71,7 @@ import org.violetmoon.zetaimplforge.network.ForgeZetaNetworkHandler;
 import org.violetmoon.zetaimplforge.registry.ForgeBrewingRegistry;
 import org.violetmoon.zetaimplforge.registry.ForgeCraftingExtensionsRegistry;
 import org.violetmoon.zetaimplforge.registry.ForgeZetaRegistry;
+import org.violetmoon.zetaimplforge.util.ForgeRaytracingUtil;
 
 /**
  * ideally do not touch quark from this package, it will later be split off
@@ -135,6 +137,11 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public ItemExtensionFactory createItemExtensionFactory() {
 		return stack -> IForgeItemItemExtensions.INSTANCE;
+	}
+
+	@Override
+	public RaytracingUtil createRaytracingUtil() {
+		return new ForgeRaytracingUtil();
 	}
 
 	@Override
