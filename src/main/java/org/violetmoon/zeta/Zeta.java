@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.zeta.util.NameChanger;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
@@ -59,6 +60,7 @@ public abstract class Zeta {
 		this.capabilityManager = createCapabilityManager();
 
 		this.raytracingUtil = createRaytracingUtil();
+		this.nameChanger = createNameChanger();
 
 		loadBus.subscribe(craftingExtensions)
 			.subscribe(dyeables)
@@ -86,6 +88,7 @@ public abstract class Zeta {
 	public final ItemExtensionFactory itemExtensions;
 
 	public final RaytracingUtil raytracingUtil;
+	public final NameChanger nameChanger;
 
 	public ConfigManager configManager; //This could do with being split up into various pieces?
 	public IZetaConfigInternals configInternals;
@@ -134,6 +137,9 @@ public abstract class Zeta {
 	}
 	public abstract ItemExtensionFactory createItemExtensionFactory();
 	public abstract RaytracingUtil createRaytracingUtil();
+	public NameChanger createNameChanger() {
+		return new NameChanger();
+	}
 
 	public abstract <E, T extends E> T fireExternalEvent(T impl);
 

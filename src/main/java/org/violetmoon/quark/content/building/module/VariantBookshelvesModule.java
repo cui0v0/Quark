@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.building.module;
 
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.ItemOverrideHandler;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.VariantBookshelfBlock;
@@ -26,6 +25,6 @@ public class VariantBookshelvesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
-		ItemOverrideHandler.changeBlockLocalizationKey(Blocks.BOOKSHELF, "block.quark.oak_bookshelf", changeNames && enabled);
+		zeta.nameChanger.changeBlock(Blocks.BOOKSHELF, "block.quark.oak_bookshelf", changeNames && enabled);
 	}
 }

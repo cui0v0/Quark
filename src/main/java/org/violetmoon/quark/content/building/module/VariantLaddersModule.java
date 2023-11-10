@@ -1,19 +1,13 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.FuelHandler;
-import org.violetmoon.quark.base.handler.ItemOverrideHandler;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
@@ -47,21 +41,7 @@ public class VariantLaddersModule extends ZetaModule {
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
 		moduleEnabled = this.enabled;
-		ItemOverrideHandler.changeBlockLocalizationKey(Blocks.LADDER, "block.quark.oak_ladder", changeNames && enabled);
-	}
-
-	public static boolean isTrapdoorLadder(boolean defaultValue, LevelReader world, BlockPos pos) {
-		if(defaultValue || !moduleEnabled)
-			return defaultValue;
-
-		BlockState curr = world.getBlockState(pos);
-		if(curr.getProperties().contains(TrapDoorBlock.OPEN) && curr.getValue(TrapDoorBlock.OPEN)) {
-			BlockState down = world.getBlockState(pos.below());
-			if(down.getBlock() instanceof LadderBlock)
-				return down.getValue(LadderBlock.FACING) == curr.getValue(TrapDoorBlock.FACING);
-		}
-
-		return false;
+		zeta.nameChanger.changeBlock(Blocks.LADDER, "block.quark.oak_ladder", changeNames && enabled);
 	}
 
 }

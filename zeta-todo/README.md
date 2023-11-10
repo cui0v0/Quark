@@ -105,7 +105,7 @@ Bring to zeta:
 - [ ] "ig the worldgen shim?"
 - [ ] "pretty much everything in `block` is viable to pull out"
 - [x] some stuff wrt to module loader - anti overlap
-- [ ] ItemOverrideHandler is used by variant bookshelves/ladders but it's pretty standalone
+- [x] ItemOverrideHandler is used by variant bookshelves/ladders but it's pretty standalone
 - [ ] ToolInteractionHandler is "literally only used for waxing" but it's important
 - [ ] QuarkBlock and QuarkItem are really for "disableable/enablable blocks"
 - [ ] WoodSetHandler is important, but there are some quark uniques in there
