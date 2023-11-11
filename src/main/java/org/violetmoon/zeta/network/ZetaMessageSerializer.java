@@ -46,7 +46,18 @@ public final class ZetaMessageSerializer {
 		mapFunctions(Date.class, FriendlyByteBuf::readDate, FriendlyByteBuf::writeDate);
 		mapFunctions(BlockHitResult.class, FriendlyByteBuf::readBlockHitResult, FriendlyByteBuf::writeBlockHitResult);
 	}
-	
+
+	public <T> T instantiateAndReadObject(Class<T> clazz, FriendlyByteBuf buf) {
+		try {
+			T msg = clazz.getDeclaredConstructor().newInstance();
+			readObject(msg, buf);
+			return msg;
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// ! NO relation to java Serializable !
 	public void readObject(Object obj, FriendlyByteBuf buf) {
 		try {
 			Class<?> clazz = obj.getClass();

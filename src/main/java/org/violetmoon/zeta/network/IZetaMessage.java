@@ -1,7 +1,5 @@
 package org.violetmoon.zeta.network;
 
-import java.io.Serializable;
-
-public interface IZetaMessage extends Serializable {
+public interface IZetaMessage {
 	boolean receive(IZetaNetworkEventContext context);
 }

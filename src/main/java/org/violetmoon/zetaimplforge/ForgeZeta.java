@@ -121,8 +121,8 @@ public class ForgeZeta extends Zeta {
 	}
 
 	@Override
-	public ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion) {
-		return new ForgeZetaNetworkHandler(modid, protocolVersion);
+	public ZetaNetworkHandler createNetworkHandler(int protocolVersion) {
+		return new ForgeZetaNetworkHandler(this, protocolVersion);
 	}
 
 	@Override

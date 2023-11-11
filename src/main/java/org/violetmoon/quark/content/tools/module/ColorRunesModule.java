@@ -36,6 +36,7 @@ import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
 import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.network.ZetaNetworkDirection;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
@@ -118,7 +119,7 @@ public class ColorRunesModule extends ZetaModule {
 		ItemStack stack = trident.getPickupItem();
 		ItemStack prev = TRIDENT_STACK_REFERENCES.get(trident);
 		if (force || prev == null || ItemStack.isSameItemSameTags(stack, prev))
-			packetConsumer.accept(QuarkNetwork.toVanillaPacket(new UpdateTridentMessage(trident.getId(), stack), NetworkDirection.PLAY_TO_CLIENT));
+			packetConsumer.accept(QuarkNetwork.toVanillaPacket(new UpdateTridentMessage(trident.getId(), stack), ZetaNetworkDirection.PLAY_TO_CLIENT));
 		else
 			TRIDENT_STACK_REFERENCES.put(trident, stack);
 	}

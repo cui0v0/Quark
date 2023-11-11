@@ -7,7 +7,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.util.NameChanger;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
@@ -130,7 +129,7 @@ public abstract class Zeta {
 	public AdvancementModifierRegistry createAdvancementModifierRegistry() {
 		return new AdvancementModifierRegistry(this);
 	}
-	public abstract ZetaNetworkHandler createNetworkHandler(String modid, int protocolVersion);
+	public abstract ZetaNetworkHandler createNetworkHandler(int protocolVersion);
 	public abstract ZetaCapabilityManager createCapabilityManager();
 	public BlockExtensionFactory createBlockExtensionFactory() {
 		return BlockExtensionFactory.DEFAULT;

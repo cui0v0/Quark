@@ -8,15 +8,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.HandshakeHandler;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.time.Instant;
 import java.util.BitSet;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.network.message.*;
@@ -31,21 +27,16 @@ import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.network.IZetaMessage;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
-import org.violetmoon.zetaimplforge.network.ForgeZetaNetworkHandler;
 
 public final class QuarkNetwork {
 
-	private static final int PROTOCOL_VERSION = 2;
+	private static final int PROTOCOL_VERSION = 3;
 
 	private static ZetaNetworkHandler network;
 
-	@Deprecated(forRemoval = true)
-	private static SimpleChannel channel;
-
 	@LoadEvent
 	public static void setup(ZCommonSetup event) {
-		network = Quark.ZETA.createNetworkHandler(Quark.MOD_ID, PROTOCOL_VERSION);
-		channel = ((ForgeZetaNetworkHandler) network).channel; //TODO: LEAKY ABSTRACTION
+		network = Quark.ZETA.createNetworkHandler(PROTOCOL_VERSION);
 
 		network.getSerializer().mapHandlers(Instant.class, (buf, field) -> buf.readInstant(), (buf, field, instant) -> buf.writeInstant(instant));
 		network.getSerializer().mapHandlers(MessageSignature.class, (buf, field) -> new MessageSignature(buf), (buf, field, signature) -> signature.write(buf));
@@ -80,34 +71,9 @@ public final class QuarkNetwork {
 		network.register(S2CUpdateFlag.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 		network.register(C2SUpdateFlag.class, ZetaNetworkDirection.PLAY_TO_SERVER);
 
-
-		loginIndexedBuilder(S2CLoginFlag.class, 98, NetworkDirection.LOGIN_TO_CLIENT)
-				.decoder(S2CLoginFlag::new)
-				.consumerNetworkThread(loginPacketHandler())
-				.buildLoginPacketList(S2CLoginFlag::generateRegistryPackets)
-				.add();
-		loginIndexedBuilder(C2SLoginFlag.class, 99, NetworkDirection.LOGIN_TO_SERVER)
-				.decoder(C2SLoginFlag::new)
-				.consumerNetworkThread(loginIndexFirst(loginPacketHandler()))
-				.noResponse()
-				.add();
-	}
-
-	private static <MSG extends HandshakeMessage> SimpleChannel.MessageBuilder<MSG> loginIndexedBuilder(Class<MSG> clazz, int id, NetworkDirection direction) {
-		return channel.messageBuilder(clazz, id, direction)
-				.loginIndex(HandshakeMessage::getLoginIndex, HandshakeMessage::setLoginIndex)
-				.encoder(HandshakeMessage::encode);
-	}
-
-	private static <MSG extends HandshakeMessage> BiConsumer<MSG, Supplier<NetworkEvent.Context>> loginPacketHandler() {
-		return (msg, contextSupplier) -> {
-			NetworkEvent.Context context = contextSupplier.get();
-			context.setPacketHandled(msg.consume(context, channel::reply));
-		};
-	}
-
-	private static <MSG extends HandshakeMessage> BiConsumer<MSG, Supplier<NetworkEvent.Context>> loginIndexFirst(BiConsumer<MSG, Supplier<NetworkEvent.Context>> toWrap) {
-		return HandshakeHandler.indexFirst((handler, msg, context) -> toWrap.accept(msg, context));
+		// Login
+		network.registerLogin(S2CLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_CLIENT, 98, true, S2CLoginFlag::generateRegistryPackets);
+		network.registerLogin(C2SLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_SERVER, 99, false, null);
 	}
 
 	public static void sendToPlayer(IZetaMessage msg, ServerPlayer player) {
@@ -139,8 +105,8 @@ public final class QuarkNetwork {
 		network.sendToAllPlayers(msg, server);
 	}
 
-	public static Packet<?> toVanillaPacket(IZetaMessage msg, NetworkDirection direction) {
-		return channel.toVanillaPacket(msg, direction);
+	public static Packet<?> toVanillaPacket(IZetaMessage msg, ZetaNetworkDirection dir) {
+		return network.wrapInVanilla(msg, dir);
 	}
 
 }

@@ -1,14 +1,12 @@
 package org.violetmoon.quark.base.network.message.structural;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-
 import java.util.BitSet;
-import java.util.function.BiConsumer;
 
 import org.violetmoon.quark.base.config.SyncedFlagHandler;
+import org.violetmoon.zeta.network.IZetaNetworkEventContext;
+import org.violetmoon.zeta.network.ZetaHandshakeMessage;
 
-public class C2SLoginFlag extends HandshakeMessage {
+public class C2SLoginFlag extends ZetaHandshakeMessage {
 
 	public BitSet flags;
 	public int expectedLength;
@@ -20,21 +18,8 @@ public class C2SLoginFlag extends HandshakeMessage {
 		expectedHash = SyncedFlagHandler.expectedHash();
 	}
 
-	public C2SLoginFlag(FriendlyByteBuf buf) {
-		this.flags = BitSet.valueOf(buf.readLongArray());
-		this.expectedLength = buf.readInt();
-		this.expectedHash = buf.readInt();
-	}
-
 	@Override
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeLongArray(flags.toLongArray());
-		buf.writeInt(expectedLength);
-		buf.writeInt(expectedHash);
-	}
-
-	@Override
-	public boolean consume(NetworkEvent.Context context, BiConsumer<HandshakeMessage, NetworkEvent.Context> reply) {
+	public boolean receive(IZetaNetworkEventContext context) {
 		if (expectedLength == SyncedFlagHandler.expectedLength() && expectedHash == SyncedFlagHandler.expectedHash())
 			SyncedFlagHandler.receiveFlagInfoFromPlayer(context.getSender(), flags);
 		return true;
