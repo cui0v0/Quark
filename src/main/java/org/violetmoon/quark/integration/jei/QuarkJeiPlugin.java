@@ -16,7 +16,7 @@ import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
+import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
@@ -99,7 +99,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	@Override
 	public void onRuntimeAvailable(@Nonnull final IJeiRuntime jeiRuntime) {
-		List<ItemStack> disabledItems = RequiredModTooltipHandler.disabledItems();
+		List<ItemStack> disabledItems = Quark.ZETA.requiredModTooltipHandler.disabledItems();
 		if (!disabledItems.isEmpty())
 			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 

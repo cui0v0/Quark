@@ -1,4 +1,4 @@
-package org.violetmoon.quark.base.client.handler;
+package org.violetmoon.zeta.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,24 +17,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
 
+//TODO: janky
 public class RequiredModTooltipHandler {
 
-	private static final Map<Item, String> ITEMS = new HashMap<>();
-	private static final Map<Block, String> BLOCKS = new HashMap<>();
+	private final Map<Item, String> items = new HashMap<>();
+	private final Map<Block, String> blocks = new HashMap<>(); //TODO: only needed because it's called in constructors where Block.asItem isn't set up yet
 
-	public static void map(Item item, String mod) {
-		ITEMS.put(item, mod);
+	public void map(Item item, String mod) {
+		items.put(item, mod);
 	}
 
-	public static void map(Block block, String mod) {
-		BLOCKS.put(block, mod);
+	public void map(Block block, String mod) {
+		blocks.put(block, mod);
 	}
 
-	public static List<ItemStack> disabledItems() {
+	public List<ItemStack> disabledItems() {
 		if(!GeneralConfig.hideDisabledContent)
 			return new ArrayList<>();
 		
-		return ITEMS.entrySet().stream()
+		return items.entrySet().stream()
 				.filter((entry) -> !ModList.get().isLoaded(entry.getValue()))
 				.map((entry) -> new ItemStack(entry.getKey()))
 				.toList();
@@ -49,6 +50,9 @@ public class RequiredModTooltipHandler {
 
 		@PlayEvent
 		public void onTooltip(ZItemTooltip event) {
+			Map<Item, String> ITEMS = z.requiredModTooltipHandler.items;
+			Map<Block, String> BLOCKS = z.requiredModTooltipHandler.blocks;
+
 			if(!BLOCKS.isEmpty() && event.getEntity() != null && event.getEntity().level != null) {
 				for(Block b : BLOCKS.keySet())
 					ITEMS.put(b.asItem(), BLOCKS.get(b));

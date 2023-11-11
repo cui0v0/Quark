@@ -9,8 +9,7 @@ import javax.annotation.Nonnull;
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.handler.ModelHandler;
-import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
+import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.ProxiedItemStackHandler;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
@@ -20,7 +19,6 @@ import org.violetmoon.zeta.util.ItemNBTHelper;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -66,11 +64,11 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 				.tab(CreativeModeTab.TAB_TOOLS)
 				.rarity(Rarity.RARE));
 
-		Quark.ZETA.registry.registerItem(this, "backpack");
 		this.module = module;
+		module.zeta.registry.registerItem(this, "backpack");
 
 		if(module.category.isAddon())
-			RequiredModTooltipHandler.map(this, module.category.requiredMod);
+			module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
 	}
 
 	@Override

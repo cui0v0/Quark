@@ -27,7 +27,7 @@ import org.violetmoon.quark.base.client.config.QuarkConfigHomeScreen;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.client.handler.NetworkProfilingHandler;
-import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
+import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.WoodSetHandler;

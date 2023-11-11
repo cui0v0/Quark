@@ -6,8 +6,6 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -22,11 +20,11 @@ public class QuarkItem extends ZetaItem implements IZetaItem {
 	public QuarkItem(String regname, ZetaModule module, Properties properties) {
 		super(properties);
 
-		Quark.ZETA.registry.registerItem(this, regname);
 		this.module = module;
+		module.zeta.registry.registerItem(this, regname);
 
 		if(module != null && module.category.isAddon())
-			RequiredModTooltipHandler.map(this, module.category.requiredMod);
+			module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
 	}
 
 	@Override

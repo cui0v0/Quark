@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
+import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.function.BooleanSupplier;
@@ -29,7 +29,7 @@ public class QuarkBlock extends Block implements IQuarkBlock {
         module.zeta.registry.setCreativeTab(this, creativeTab);
 
         if (module.category.isAddon())
-            RequiredModTooltipHandler.map(this, module.category.requiredMod);
+            module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
     }
 
     @Override

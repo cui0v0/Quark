@@ -30,6 +30,7 @@ import org.violetmoon.zeta.registry.CraftingExtensionsRegistry;
 import org.violetmoon.zeta.registry.DyeablesRegistry;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.registry.ZetaRegistry;
+import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.zeta.util.ZetaSide;
 
 /**
@@ -82,6 +83,7 @@ public abstract class Zeta {
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
 	public final AdvancementModifierRegistry advancementModifierRegistry;
+	public final RequiredModTooltipHandler requiredModTooltipHandler = new RequiredModTooltipHandler(); //TODO, find better spot or remove this.
 
 	//extensions
 	public final ZetaCapabilityManager capabilityManager;
