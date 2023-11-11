@@ -31,7 +31,6 @@ import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.structural.C2SUpdateFlag;
 import org.violetmoon.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
 import org.violetmoon.zeta.client.TopLayerTooltipHandler;
@@ -75,7 +74,7 @@ public class ClientProxy extends CommonProxy {
 		super.handleQuarkConfigChange();
 
 		if (Minecraft.getInstance().getConnection() != null)
-			QuarkNetwork.sendToServer(C2SUpdateFlag.createPacket());
+			QuarkClient.ZETA_CLIENT.sendToServer(C2SUpdateFlag.createPacket());
 
 		Minecraft mc = Minecraft.getInstance();
 		mc.submit(() -> {

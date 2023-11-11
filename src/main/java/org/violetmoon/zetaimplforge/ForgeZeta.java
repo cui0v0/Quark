@@ -28,6 +28,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
@@ -121,11 +122,6 @@ public class ForgeZeta extends Zeta {
 	}
 
 	@Override
-	public ZetaNetworkHandler createNetworkHandler(int protocolVersion) {
-		return new ForgeZetaNetworkHandler(this, protocolVersion);
-	}
-
-	@Override
 	public ZetaCapabilityManager createCapabilityManager() {
 		return new ForgeCapabilityManager();
 	}
@@ -143,6 +139,11 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public RaytracingUtil createRaytracingUtil() {
 		return new ForgeRaytracingUtil();
+	}
+
+	@Override
+	public ZetaNetworkHandler createNetworkHandler(int protocolVersion) {
+		return new ForgeZetaNetworkHandler(this, protocolVersion);
 	}
 
 	@Override

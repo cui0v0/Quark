@@ -118,7 +118,7 @@ public class BackpackModule extends ZetaModule {
 
 	public static void requestBackpack() {
 		heldStack = Minecraft.getInstance().player.inventoryMenu.getCarried();
-		QuarkNetwork.sendToServer(new HandleBackpackMessage(true));
+		QuarkClient.ZETA_CLIENT.sendToServer(new HandleBackpackMessage(true));
 	}
 
 	public static boolean isEntityWearingBackpack(Entity e) {

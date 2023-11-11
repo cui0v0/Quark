@@ -12,7 +12,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 
 public class TopLayerTooltipHandler {
 
@@ -22,11 +21,10 @@ public class TopLayerTooltipHandler {
 	@PlayEvent
 	public void renderTick(ZRenderTick event) {
 		if(tooltip != null && event.isEndPhase()) {
-			Minecraft mc = Minecraft.getInstance();
 			Screen screen = Minecraft.getInstance().screen;
 
-			//TODO: I think this is a Forge extension
-			screen.renderTooltip(new PoseStack(), tooltip, Optional.empty(), tooltipX, tooltipY, mc.font, ItemStack.EMPTY);
+			if(screen != null)
+				screen.renderTooltip(new PoseStack(), tooltip, Optional.empty(), tooltipX, tooltipY);
 
 			tooltip = null;
 		}

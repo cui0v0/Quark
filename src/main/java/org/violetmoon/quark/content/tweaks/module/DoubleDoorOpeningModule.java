@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.DoubleDoorMessage;
@@ -139,7 +140,7 @@ public class DoubleDoorOpeningModule extends ZetaModule {
 			handling = false;
 
 			if(opened)
-				QuarkNetwork.sendToServer(new DoubleDoorMessage(pos));
+				QuarkClient.ZETA_CLIENT.sendToServer(new DoubleDoorMessage(pos));
 		}
 	}
 }

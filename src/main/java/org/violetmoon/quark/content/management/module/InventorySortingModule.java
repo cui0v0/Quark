@@ -42,7 +42,7 @@ public class InventorySortingModule extends ZetaModule {
 						if (enablePlayerInventory) {
 							if (satisfyingClick)
 								click();
-							QuarkNetwork.sendToServer(new SortInventoryMessage(true));
+							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(true));
 						}
 					},
 					provider("sort", true, () -> enablePlayerInventory),
@@ -54,7 +54,7 @@ public class InventorySortingModule extends ZetaModule {
 						if (enablePlayerInventoryInChests) {
 							if (satisfyingClick)
 								click();
-							QuarkNetwork.sendToServer(new SortInventoryMessage(true));
+							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(true));
 						}
 					},
 					provider("sort_inventory", true, () -> enablePlayerInventoryInChests),
@@ -66,7 +66,7 @@ public class InventorySortingModule extends ZetaModule {
 						if (enableChests) {
 							if (satisfyingClick)
 								click();
-							QuarkNetwork.sendToServer(new SortInventoryMessage(false));
+							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(false));
 						}
 					},
 					provider("sort_container", false, () -> enableChests),
@@ -75,7 +75,7 @@ public class InventorySortingModule extends ZetaModule {
 
 		private InventoryButtonHandler.ButtonProvider provider(String tooltip, boolean forcePlayer, BooleanSupplier condition) {
 			return (parent, x, y) -> !condition.getAsBoolean() ? null :
-					new MiniInventoryButton(parent, 0, x, y, "quark.gui.button." + tooltip, (b) -> QuarkNetwork.sendToServer(new SortInventoryMessage(forcePlayer)));
+					new MiniInventoryButton(parent, 0, x, y, "quark.gui.button." + tooltip, (b) -> QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(forcePlayer)));
 		}
 
 		private void click() {

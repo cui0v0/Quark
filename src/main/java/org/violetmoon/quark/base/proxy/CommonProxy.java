@@ -51,6 +51,7 @@ public class CommonProxy {
 	public static boolean jingleTheBells = false;
 
 	public void start() {
+		// CAPABILITIES
 		//todo put this bit in forge-specific code
 		Quark.ZETA.capabilityManager
 			.register(QuarkCapabilities.SORTING, QuarkForgeCapabilities.SORTING)
@@ -67,9 +68,9 @@ public class CommonProxy {
 			e.register(IRuneColorProvider.class);
 		});
 
+		// GLOBAL EVENT LISTENERS
 		Quark.ZETA.loadBus
 			.subscribe(ContributorRewardHandler.class)
-			.subscribe(QuarkNetwork.class)
 			.subscribe(QuarkSounds.class)
 			.subscribe(RecipeCrawlHandler.class)
 			.subscribe(ToolInteractionHandler.class)
@@ -88,7 +89,14 @@ public class CommonProxy {
 			.subscribe(ToolInteractionHandler.class);
 
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		bus.addListener(this::configChanged);
+		WorldGenHandler.registerBiomeModifier(bus);
 
+		// OTHER RANDOM SHIT
+		QuarkNetwork.init();
+
+		// MODULES
 		Quark.ZETA.loadModules(
 			List.of(
 				new ZetaCategory("automation", Items.REDSTONE),
@@ -102,13 +110,9 @@ public class CommonProxy {
 				new ZetaCategory("experimental", Items.TNT),
 				new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
 			),
-			new ModFileScanDataModuleFinder(Quark.MOD_ID),
+			new ModFileScanDataModuleFinder(Quark.MOD_ID), //forge only
 			GeneralConfig.INSTANCE
 		);
-
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		bus.addListener(this::configChanged);
-		WorldGenHandler.registerBiomeModifier(bus);
 
 		LocalDateTime now = LocalDateTime.now();
 		if (now.getMonth() == Month.DECEMBER && now.getDayOfMonth() >= 16 || now.getMonth() == Month.JANUARY && now.getDayOfMonth() <= 2)

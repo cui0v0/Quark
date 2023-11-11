@@ -1,5 +1,6 @@
 package org.violetmoon.zeta.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
@@ -15,6 +16,7 @@ import org.violetmoon.zeta.client.config.ClientConfigManager;
 import org.violetmoon.zeta.event.bus.IZetaLoadEvent;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.event.bus.ZetaEventBus;
+import org.violetmoon.zeta.network.IZetaMessage;
 
 public abstract class ZetaClient {
 	public ZetaClient(Zeta zeta) {
@@ -54,6 +56,14 @@ public abstract class ZetaClient {
 
 	public TopLayerTooltipHandler createTopLayerTooltipHandler() {
 		return new TopLayerTooltipHandler();
+	}
+
+	//ummm ??
+	public void sendToServer(IZetaMessage msg) {
+		if(Minecraft.getInstance().getConnection() == null)
+			return;
+
+		zeta.network.sendToServer(msg);
 	}
 
 	//kinda a grab bag of stuff that needs to happen client-only; hmm, not the best design

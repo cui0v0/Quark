@@ -203,7 +203,7 @@ public class VariantSelectorModule extends ZetaModule {
 			if(sync) {
 				if(variant == null)
 					variant = "";
-				QuarkNetwork.sendToServer(new PlaceVariantUpdateMessage(variant));
+				QuarkClient.ZETA_CLIENT.sendToServer(new PlaceVariantUpdateMessage(variant));
 			}
 		}
 

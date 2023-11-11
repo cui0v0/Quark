@@ -202,7 +202,7 @@ public class EmotesModule extends ZetaModule {
 
 							Button button = new EmoteButton(x, y, desc, (b) -> {
 								String name = desc.getRegistryName();
-								QuarkNetwork.sendToServer(new RequestEmoteMessage(name));
+								QuarkClient.ZETA_CLIENT.sendToServer(new RequestEmoteMessage(name));
 							});
 							emoteButtons.add(button);
 
@@ -242,7 +242,7 @@ public class EmotesModule extends ZetaModule {
 				for(KeyMapping key : Client.emoteKeybinds.keySet()) {
 					if (key.isDown()) {
 						String emote = Client.emoteKeybinds.get(key);
-						QuarkNetwork.sendToServer(new RequestEmoteMessage(emote));
+						QuarkClient.ZETA_CLIENT.sendToServer(new RequestEmoteMessage(emote));
 						return;
 					}
 				}

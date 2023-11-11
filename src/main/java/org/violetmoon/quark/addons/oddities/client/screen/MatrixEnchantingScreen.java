@@ -333,7 +333,7 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 
 	private void send(int operation, int arg0, int arg1, int arg2) {
 		MatrixEnchanterOperationMessage message = new MatrixEnchanterOperationMessage(operation, arg0, arg1, arg2);
-		QuarkNetwork.sendToServer(message);
+		QuarkClient.ZETA_CLIENT.sendToServer(message);
 	}
 
 	private void click() {

@@ -40,6 +40,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
@@ -444,7 +445,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 								event.setCanceled(true);
 								if (scrollDelta < -0.1 || scrollDelta > 0.1) {
 									rotateBundle(underStack, scrollDelta);
-									QuarkNetwork.sendToServer(new ScrollOnBundleMessage(menu.containerId, menu.getStateId(), under.index, scrollDelta));
+									QuarkClient.ZETA_CLIENT.sendToServer(new ScrollOnBundleMessage(menu.containerId, menu.getStateId(), under.index, scrollDelta));
 								}
 							}
 						}

@@ -1,15 +1,7 @@
 package org.violetmoon.quark.base.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.LastSeenMessages;
 import net.minecraft.network.chat.MessageSignature;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.time.Instant;
 import java.util.BitSet;
@@ -22,21 +14,16 @@ import org.violetmoon.quark.base.network.message.oddities.MatrixEnchanterOperati
 import org.violetmoon.quark.base.network.message.oddities.ScrollCrateMessage;
 import org.violetmoon.quark.base.network.message.structural.*;
 import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.network.IZetaMessage;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
 
 public final class QuarkNetwork {
 
-	private static final int PROTOCOL_VERSION = 3;
+	public static final int PROTOCOL_VERSION = 3;
 
-	private static ZetaNetworkHandler network;
-
-	@LoadEvent
-	public static void setup(ZCommonSetup event) {
-		network = Quark.ZETA.createNetworkHandler(PROTOCOL_VERSION);
+	public static void init() {
+		ZetaNetworkHandler network = Quark.ZETA.createNetworkHandler(PROTOCOL_VERSION);
+		Quark.ZETA.network = network;
 
 		network.getSerializer().mapHandlers(Instant.class, (buf, field) -> buf.readInstant(), (buf, field, instant) -> buf.writeInstant(instant));
 		network.getSerializer().mapHandlers(MessageSignature.class, (buf, field) -> new MessageSignature(buf), (buf, field, signature) -> signature.write(buf));
@@ -74,39 +61,6 @@ public final class QuarkNetwork {
 		// Login
 		network.registerLogin(S2CLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_CLIENT, 98, true, S2CLoginFlag::generateRegistryPackets);
 		network.registerLogin(C2SLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_SERVER, 99, false, null);
-	}
-
-	public static void sendToPlayer(IZetaMessage msg, ServerPlayer player) {
-		if(network == null)
-			return;
-
-		network.sendToPlayer(msg, player);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void sendToServer(IZetaMessage msg) {
-		if(network == null || Minecraft.getInstance().getConnection() == null)
-			return;
-
-		network.sendToServer(msg);
-	}
-
-	public static void sendToPlayers(IZetaMessage msg, Iterable<ServerPlayer> players) {
-		if(network == null)
-			return;
-
-		network.sendToPlayers(msg, players);
-	}
-
-	public static void sendToAllPlayers(IZetaMessage msg, MinecraftServer server) {
-		if(network == null)
-			return;
-
-		network.sendToAllPlayers(msg, server);
-	}
-
-	public static Packet<?> toVanillaPacket(IZetaMessage msg, ZetaNetworkDirection dir) {
-		return network.wrapInVanilla(msg, dir);
 	}
 
 }

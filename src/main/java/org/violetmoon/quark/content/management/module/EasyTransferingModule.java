@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.management.module;
 
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import org.violetmoon.quark.base.config.Config;
@@ -40,10 +41,10 @@ public class EasyTransferingModule extends ZetaModule {
 		private void addButton(ZKeyMapping event, int priority, String name, boolean restock) {
 			InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, priority,
 					"quark.keybind.transfer_" + name,
-					(screen) -> QuarkNetwork.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)),
+					(screen) -> QuarkClient.ZETA_CLIENT.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)),
 					(parent, x, y) -> new MiniInventoryButton(parent, priority, x, y,
 							(t) -> t.add(I18n.get("quark.gui.button." + name + (Screen.hasShiftDown() ? "_filtered" : ""))),
-							(b) -> QuarkNetwork.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)))
+							(b) -> QuarkClient.ZETA_CLIENT.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)))
 							.setTextureShift(Screen::hasShiftDown),
 					null);
 		}

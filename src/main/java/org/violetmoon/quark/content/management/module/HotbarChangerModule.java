@@ -171,7 +171,7 @@ public class HotbarChangerModule extends ZetaModule {
 				else if(hotbarChangeOpen)
 					for(int i = 0; i < 3; i++)
 						if(isKeyDownOrFallback(mc.options.keyHotbarSlots[i], 49 + i, currInput)) {
-							QuarkNetwork.sendToServer(new ChangeHotbarMessage(i + 1));
+							QuarkClient.ZETA_CLIENT.sendToServer(new ChangeHotbarMessage(i + 1));
 							hotbarChangeOpen = false;
 							currentHeldItem = mc.player.getInventory().selected;
 							return;

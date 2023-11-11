@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import org.violetmoon.quark.addons.oddities.block.be.CrateBlockEntity;
 import org.violetmoon.quark.addons.oddities.capability.CrateItemHandler;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
-import org.violetmoon.quark.base.network.QuarkNetwork;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.message.oddities.ScrollCrateMessage;
 
 public class CrateMenu extends AbstractContainerMenu {
@@ -222,7 +222,7 @@ public class CrateMenu extends AbstractContainerMenu {
 			broadcastChanges();
 
 			if (packet)
-				QuarkNetwork.sendToServer(new ScrollCrateMessage(down));
+				QuarkClient.ZETA_CLIENT.sendToServer(new ScrollCrateMessage(down));
 		}
 	}
 

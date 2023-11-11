@@ -67,14 +67,15 @@ public abstract class Zeta {
 			.subscribe(advancementModifierRegistry);
 	}
 
+	//core
 	public final Logger log;
-
 	public final String modid;
 	public final ZetaSide side;
 	public final ZetaEventBus<IZetaLoadEvent> loadBus;
 	public final ZetaEventBus<IZetaPlayEvent> playBus;
 	public final ZetaModuleManager modules;
 
+	//registry
 	public final ZetaRegistry registry;
 	public final RenderLayerRegistry renderLayerRegistry;
 	public final DyeablesRegistry dyeables;
@@ -82,15 +83,21 @@ public abstract class Zeta {
 	public final BrewingRegistry brewingRegistry;
 	public final AdvancementModifierRegistry advancementModifierRegistry;
 
+	//extensions
 	public final ZetaCapabilityManager capabilityManager;
 	public final BlockExtensionFactory blockExtensions;
 	public final ItemExtensionFactory itemExtensions;
 
+	//misc :tada:
 	public final RaytracingUtil raytracingUtil;
 	public final NameChanger nameChanger;
 
-	public ConfigManager configManager; //This could do with being split up into various pieces?
+	//config (which isn't set in the constructor b/c module loading has to happen first)
+	public ConfigManager configManager;
 	public IZetaConfigInternals configInternals;
+
+	//network (which isn't set in the constructor b/c it has a user-specified protocol version TODO this isnt good api design, imo)
+	public ZetaNetworkHandler network;
 
 	public void loadModules(Iterable<ZetaCategory> categories, ModuleFinder finder, Object rootPojo) {
 		modules.initCategories(categories);
@@ -129,7 +136,6 @@ public abstract class Zeta {
 	public AdvancementModifierRegistry createAdvancementModifierRegistry() {
 		return new AdvancementModifierRegistry(this);
 	}
-	public abstract ZetaNetworkHandler createNetworkHandler(int protocolVersion);
 	public abstract ZetaCapabilityManager createCapabilityManager();
 	public BlockExtensionFactory createBlockExtensionFactory() {
 		return BlockExtensionFactory.DEFAULT;
@@ -139,6 +145,8 @@ public abstract class Zeta {
 	public NameChanger createNameChanger() {
 		return new NameChanger();
 	}
+
+	public abstract ZetaNetworkHandler createNetworkHandler(int protocolVersion);
 
 	public abstract <E, T extends E> T fireExternalEvent(T impl);
 

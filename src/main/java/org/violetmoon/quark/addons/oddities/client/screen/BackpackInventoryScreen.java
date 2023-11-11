@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 
@@ -77,7 +78,7 @@ public class BackpackInventoryScreen extends InventoryScreen {
 			ItemStack curr = player.containerMenu.getCarried();
 			BackpackMenu.saveCraftingInventory(player);
 			closeHack = true;
-			QuarkNetwork.sendToServer(new HandleBackpackMessage(false));
+			QuarkClient.ZETA_CLIENT.sendToServer(new HandleBackpackMessage(false));
 			minecraft.setScreen(new InventoryScreen(player));
 			player.inventoryMenu.setCarried(curr);
 		}

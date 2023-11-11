@@ -119,7 +119,7 @@ public class ColorRunesModule extends ZetaModule {
 		ItemStack stack = trident.getPickupItem();
 		ItemStack prev = TRIDENT_STACK_REFERENCES.get(trident);
 		if (force || prev == null || ItemStack.isSameItemSameTags(stack, prev))
-			packetConsumer.accept(QuarkNetwork.toVanillaPacket(new UpdateTridentMessage(trident.getId(), stack), ZetaNetworkDirection.PLAY_TO_CLIENT));
+			packetConsumer.accept(Quark.ZETA.network.wrapInVanilla(new UpdateTridentMessage(trident.getId(), stack), ZetaNetworkDirection.PLAY_TO_CLIENT));
 		else
 			TRIDENT_STACK_REFERENCES.put(trident, stack);
 	}

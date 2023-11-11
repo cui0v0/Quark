@@ -244,7 +244,7 @@ public class LockRotationModule extends ZetaModule {
 					clientProfile = null;
 				else
 					clientProfile = newProfile;
-				QuarkNetwork.sendToServer(new SetLockProfileMessage(clientProfile));
+				QuarkClient.ZETA_CLIENT.sendToServer(new SetLockProfileMessage(clientProfile));
 			}
 		}
 

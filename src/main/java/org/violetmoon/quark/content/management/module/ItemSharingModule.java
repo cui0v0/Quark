@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.ShareItemMessage;
@@ -90,7 +91,7 @@ public class ItemSharingModule extends ZetaModule {
 							MessageSignature signature = accessorLocalPlayer.quark$signMessage(sign, content, update.lastSeen());
 
 							ShareItemMessage message = new ShareItemMessage(stack, content.plain(), sign.timeStamp(), sign.salt(), signature, content.isDecorated(), update);
-							QuarkNetwork.sendToServer(message);
+							QuarkClient.ZETA_CLIENT.sendToServer(message);
 
 							return true;
 						}

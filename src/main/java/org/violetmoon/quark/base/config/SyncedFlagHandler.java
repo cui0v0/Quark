@@ -9,6 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.structural.S2CUpdateFlag;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -62,7 +63,7 @@ public class SyncedFlagHandler {
 
 	@LoadEvent
 	public static void sendFlagInfoToPlayers(ZConfigChanged event) {
-		QuarkNetwork.sendToPlayers(S2CUpdateFlag.createPacket(), flagsFromPlayers.keySet());
+		Quark.ZETA.network.sendToPlayers(S2CUpdateFlag.createPacket(), flagsFromPlayers.keySet());
 	}
 
 	private static final WeakHashMap<PacketListener, Set<String>> flagsFromServer = new WeakHashMap<>();

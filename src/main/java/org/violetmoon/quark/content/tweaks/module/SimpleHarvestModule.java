@@ -44,6 +44,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.violetmoon.quark.api.event.SimpleHarvestEvent;
 import org.violetmoon.quark.api.event.SimpleHarvestEvent.ActionType;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.network.QuarkNetwork;
@@ -321,7 +322,7 @@ public class SimpleHarvestModule extends ZetaModule {
 
         if (player.level.isClientSide) {
             if (inHand.isEmpty())
-                QuarkNetwork.sendToServer(new HarvestMessage(pos, hand));
+                QuarkClient.ZETA_CLIENT.sendToServer(new HarvestMessage(pos, hand));
         } else {
             if (harvestingCostsDurability && isHoe)
                 inHand.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
