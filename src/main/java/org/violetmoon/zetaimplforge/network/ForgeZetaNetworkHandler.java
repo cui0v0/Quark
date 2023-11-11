@@ -62,6 +62,7 @@ public class ForgeZetaNetworkHandler extends ZetaNetworkHandler {
 	}
 
 	//God this api suuuucks
+	@Override
 	public <T extends ZetaHandshakeMessage> void registerLogin(Class<T> clazz, ZetaNetworkDirection dir, int id, boolean hasResponse, @Nullable Function<Boolean, List<Pair<String,T>>> loginPacketGenerators) {
 		NetworkDirection forgeDir = toForge(dir);
 
