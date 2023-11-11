@@ -31,6 +31,7 @@ public class QuarkMusicDiscItem extends RecordItem implements IZetaItem {
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public QuarkMusicDiscItem(int comparatorValue, Supplier<SoundEvent> sound, String name, ZetaModule module, int lengthInTicks) {
+		//TODO: This constructor (with the supplier) is a Forge extension
 		super(comparatorValue, sound, (new Item.Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE), lengthInTicks);
 
 		Quark.ZETA.registry.registerItem(this, "music_disc_" + name);
