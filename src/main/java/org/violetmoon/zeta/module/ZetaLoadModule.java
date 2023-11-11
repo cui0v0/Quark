@@ -5,9 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @see org.violetmoon.quark.base.module.LoadModule
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ZetaLoadModule {
@@ -29,12 +26,26 @@ public @interface ZetaLoadModule {
 	 */
 	String[] antiOverlap() default {};
 
-	//omitted: hasSubscriptions/subscribeOn
-
 	boolean enabledByDefault() default true;
 
 	/**
-	 * If "t
+	 * If "true", this module will load *instead* of the module the class extends, on the client.
+	 *
+	 * For example:
+	 *
+	 * <pre>
+	 * @ZetaLoadModule
+	 * class FooModule {
+	 *
+	 *   @ZetaLoadModule(clientReplacement = true)
+	 *   static class Client extends FooModule {
+	 *     //client-only code
+	 *   }
+	 * }
+	 * </pre>
+	 *
+	 * On the client, `FooModule.Client` will load, and on the server, `FooModule` will load.
+	 * Either way, the module is accessible with `FooModule.class` in APIs like ZetaModuleManager#get.
 	 */
 	boolean clientReplacement() default false;
 }

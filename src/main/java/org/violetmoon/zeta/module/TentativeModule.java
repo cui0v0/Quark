@@ -23,10 +23,7 @@ public record TentativeModule(
 	Set<String> antiOverlap,
 	boolean enabledByDefault,
 
-	boolean clientReplacement,
-
-	@Deprecated boolean LEGACY_hasSubscriptions,
-	@Deprecated List<Dist> LEGACY_subscribeOn
+	boolean clientReplacement
 ) {
 	@SuppressWarnings("unchecked")
 	public static TentativeModule from(ZetaLoadModuleAnnotationData data, Function<String, ZetaCategory> categoryResolver) {
@@ -69,9 +66,7 @@ public record TentativeModule(
 			data.description(),
 			Set.of(data.antiOverlap()),
 			data.enabledByDefault(),
-			clientReplacement,
-			data.LEGACY_hasSubscriptions(),
-			data.LEGACY_subscribeOn()
+			clientReplacement
 		);
 	}
 
@@ -85,9 +80,7 @@ public record TentativeModule(
 			this.description,
 			this.antiOverlap,
 			this.enabledByDefault,
-			false,
-			this.LEGACY_hasSubscriptions,
-			this.LEGACY_subscribeOn
+			false
 		);
 	}
 

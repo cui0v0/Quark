@@ -122,21 +122,16 @@ public class ZetaModuleManager {
 			tentative = byClazz.values();
 		}
 
-		z.log.info("Discovered " + tentative.size() + " modules to load");
+		z.log.info("Discovered " + tentative.size() + " modules to load.");
 
 		for(TentativeModule t : tentative)
 			modulesByKey.put(t.keyClass(), constructAndSetup(t));
 
-		//Just for fun
-		int count = modulesByKey.size();
-		int nonLegacyCount = count - legacyModuleCount;
-		String percentNonLegacy = String.format("%.2f", ((float) nonLegacyCount / count) * 100f);
-		z.log.info("Constructed {} modules, of which {} are legacy @LoadModules. Module porting is {}% done.", modulesByKey.size(), legacyModuleCount, percentNonLegacy);
+		z.log.info("Constructed {} modules.", modulesByKey.size());
 
 		z.loadBus.fire(new ZModulesReady());
 	}
 
-	int legacyModuleCount = 0;
 	private ZetaModule constructAndSetup(TentativeModule t) {
 		z.log.info("Constructing module {}...", t.displayName());
 
@@ -168,54 +163,12 @@ public class ZetaModuleManager {
 	}
 
 	private <Z extends ZetaModule> Z construct(Class<Z> clazz) {
-		Z zeroArg = constructWithZeroArguments(clazz);
-		if(zeroArg != null)
-			return zeroArg;
-
-		Z oneArg = constructWithOneArgument(clazz);
-		if(oneArg != null)
-			return oneArg;
-
-		throw new RuntimeException("ZetaModule " + clazz.getName() + " should have a public zero or one-argument constructor");
-	}
-
-	private <Z extends ZetaModule> @Nullable Z constructWithZeroArguments(Class<Z> clazz) {
 		try {
 			Constructor<Z> cons = clazz.getConstructor();
 			return cons.newInstance();
-		} catch (NoSuchMethodException e) {
-			return null;
 		} catch (Exception e) {
-			throw new RuntimeException("Could not construct ZetaModule " + clazz.getName(), e);
+			throw new RuntimeException("Could not construct ZetaModule '" + clazz.getName() + "', does it have a public zero-argument constructor?", e);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private <Z extends ZetaModule> @Nullable Z constructWithOneArgument(Class<Z> clazz) {
-		try {
-			//find the one-argument constructor
-			Optional<Constructor<?>> oneOpt = Arrays.stream(clazz.getConstructors())
-				.filter(c -> c.getParameterCount() == 1)
-				.findFirst();
-			if(oneOpt.isEmpty())
-				return null;
-			Constructor<?> one = oneOpt.get();
-
-			//find the argument type of that constructor
-			Class<?> paramType = one.getParameters()[0].getType();
-
-			//check it
-			if(!ZetaModule.class.isAssignableFrom(paramType))
-				throw new RuntimeException("ZetaModule " + clazz.getName() + " should take a ZetaModule as contructor parameter");
-			Class<? extends ZetaModule> checkedParamType = (Class<? extends ZetaModule>) paramType;
-
-			//construct it
-			ZetaModule parent = construct(checkedParamType);
-
-			//call my one-arg constructor with this module
-			return (Z) one.newInstance(parent);
-		} catch (Exception e) {
-			throw new RuntimeException("Could not construct ZetaModule " + clazz.getName(), e);
-		}
-	}
 }
