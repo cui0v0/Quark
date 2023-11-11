@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.config.ConfigObjectMapper;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -22,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import org.violetmoon.zeta.util.RegistryUtil;
 
 public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component> {
 	default void hintItem(ItemLike itemLike, Object... extra) {
@@ -108,7 +108,7 @@ public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component
 			key = tkey.location().getPath();
 
 		try {
-			List<?> tagItems = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, tkey);
+			List<?> tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, tkey);
 			applyIterable(tagItems, key, extra);
 		} catch(IllegalStateException e) {
 			throw new RuntimeException("TagKey " + tkey + " failed to load.", e);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.client.event.play.ZInputUpdate;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -47,6 +46,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.zeta.util.RegistryUtil;
 
 @ZetaLoadModule(category = "tweaks")
 public class EnhancedLaddersModule extends ZetaModule {
@@ -95,7 +95,7 @@ public class EnhancedLaddersModule extends ZetaModule {
 		if(allowInventorySneak)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.ladder_sneak"));
 		
-		List<Item> ladders = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, laddersTag);
+		List<Item> ladders = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, laddersTag);
 		for(Item item : ladders)
 			consumer.accept(item, comp);
 	}

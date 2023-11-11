@@ -18,7 +18,6 @@ import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.RequiredModTooltipHandler;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
@@ -252,7 +251,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				.collect(Collectors.toList());
 
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Item rune : MiscUtil.getTagValues(BuiltinRegistries.ACCESS, ColorRunesModule.runesTag)) {
+		for (Item rune : RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, ColorRunesModule.runesTag)) {
 			ItemStack runeStack = new ItemStack(rune);
 			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
 					used.stream().map(stack -> {

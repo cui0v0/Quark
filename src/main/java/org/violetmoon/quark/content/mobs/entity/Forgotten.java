@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.mobs.module.ForgottenModule;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
@@ -53,6 +52,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.zeta.util.RegistryUtil;
 
 public class Forgotten extends Skeleton {
 
@@ -177,7 +177,7 @@ public class Forgotten extends Skeleton {
 		EnchantmentHelper.enchantItem(random, sheathed, 20, false);
 
 		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class) && random.nextBoolean()) {
-			List<Item> items = MiscUtil.getTagValues(level.registryAccess(), ColorRunesModule.runesLootableTag);
+			List<Item> items = RegistryUtil.getTagValues(level.registryAccess(), ColorRunesModule.runesLootableTag);
 			if (!items.isEmpty()) {
 				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
 				CompoundTag runeNbt = item.serializeNBT();

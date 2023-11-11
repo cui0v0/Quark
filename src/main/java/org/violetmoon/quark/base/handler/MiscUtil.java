@@ -15,13 +15,11 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.WorldlyContainerHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -68,9 +66,6 @@ import java.util.Set;
 public class MiscUtil {
 
 	public static final ResourceLocation GENERAL_ICONS = new ResourceLocation(Quark.MOD_ID, "textures/gui/general_icons.png");
-	public static final ResourceLocation ATTRIBUTE_ICONS = new ResourceLocation(Quark.MOD_ID, "textures/gui/attribute_icons.png");
-
-	public static final int BASIC_GUI_TEXT_COLOR = 0x404040;
 
 	public static final Direction[] HORIZONTALS = new Direction[] {
 			Direction.NORTH,
@@ -145,11 +140,6 @@ public class MiscUtil {
 		return new Vec2((float) (pitch * 180 / Math.PI), (float) (-yaw * 180 / Math.PI));
 	}
 
-	public static boolean isEntityInsideOpaqueBlock(Entity entity) {
-		BlockPos pos = entity.blockPosition();
-		return !entity.noPhysics && entity.level.getBlockState(pos).isSuffocating(entity.level, pos);
-	}
-
 	public static boolean validSpawnLight(ServerLevelAccessor world, BlockPos pos, RandomSource rand) {
 		if (world.getBrightness(LightLayer.SKY, pos) > rand.nextInt(32)) {
 			return false;
@@ -202,13 +192,6 @@ public class MiscUtil {
 		return putIntoInv(stack, level, blockPos, tile, face, true, doSimulation).isEmpty();
 	}
 
-	public static <T> List<T> getTagValues(RegistryAccess access, TagKey<T> tag) {
-		Registry<T> registry = access.registryOrThrow(tag.registry());
-		HolderSet<T> holderSet = registry.getTag(tag).orElse(new HolderSet.Named<>(registry, tag));
-
-		return holderSet.stream().map(Holder::value).toList();
-	}
-
 	public static BlockState fromString(String key) {
 		try {
 			BlockResult result = BlockStateParser.parseForBlock(Registry.BLOCK, new StringReader(key), false);
@@ -230,6 +213,8 @@ public class MiscUtil {
 
 	public static class Client {
 		private static int progress;
+
+		private static final int BASIC_GUI_TEXT_COLOR = 0x404040;
 
 		@PlayEvent
 		public static void onKeystroke(ZScreen.KeyPressed.Pre event) {

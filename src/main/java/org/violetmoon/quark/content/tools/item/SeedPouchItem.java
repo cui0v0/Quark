@@ -25,12 +25,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.module.SeedPouchModule;
 import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+import org.violetmoon.zeta.util.RegistryUtil;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -298,7 +298,7 @@ public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, IT
 			List<Item> tagItems;
 
 			try {
-				tagItems = MiscUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
+				tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
 			} catch(IllegalStateException e) { // Tag not bound yet
 				return;
 			}
