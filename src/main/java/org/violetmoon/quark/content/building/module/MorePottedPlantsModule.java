@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -31,30 +30,30 @@ public class MorePottedPlantsModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		add(Blocks.BEETROOTS, "beetroot");
-		add(Blocks.SWEET_BERRY_BUSH, "berries");
-		add(Blocks.CARROTS, "carrot");
-		add(Blocks.CHORUS_FLOWER, "chorus");
-		add(Blocks.COCOA, "cocoa_bean");
-		Block grass = add(Blocks.GRASS, "grass");
-		add(Blocks.PEONY, "peony");
-		Block largeFern = add(Blocks.LARGE_FERN, "large_fern");
-		add(Blocks.LILAC, "lilac");
-		add(Blocks.MELON_STEM, "melon");
-		add(Blocks.NETHER_SPROUTS, "nether_sprouts");
-		add(Blocks.NETHER_WART, "nether_wart");
-		add(Blocks.POTATOES, "potato");
-		add(Blocks.PUMPKIN_STEM, "pumpkin");
-		add(Blocks.ROSE_BUSH, "rose");
-		VariantHandler.addFlowerPot(Blocks.SEA_PICKLE, "sea_pickle", p -> p.lightLevel(b -> 3));
-		Block sugarCane = add(Blocks.SUGAR_CANE, "sugar_cane");
-		add(Blocks.SUNFLOWER, "sunflower");
-		Block tallGrass = add(Blocks.TALL_GRASS, "tall_grass");
-		add(Blocks.TWISTING_VINES, "twisting_vines");
-		Block vine = add(Blocks.VINE, "vine");
-		add(Blocks.WEEPING_VINES, "weeping_vines");
-		add(Blocks.WHEAT, "wheat");
-		VariantHandler.addFlowerPot(Blocks.CAVE_VINES, "cave_vines", p -> p.lightLevel(b -> 14));
+		add(event, Blocks.BEETROOTS, "beetroot");
+		add(event, Blocks.SWEET_BERRY_BUSH, "berries");
+		add(event, Blocks.CARROTS, "carrot");
+		add(event, Blocks.CHORUS_FLOWER, "chorus");
+		add(event, Blocks.COCOA, "cocoa_bean");
+		Block grass = add(event, Blocks.GRASS, "grass");
+		add(event, Blocks.PEONY, "peony");
+		Block largeFern = add(event, Blocks.LARGE_FERN, "large_fern");
+		add(event, Blocks.LILAC, "lilac");
+		add(event, Blocks.MELON_STEM, "melon");
+		add(event, Blocks.NETHER_SPROUTS, "nether_sprouts");
+		add(event, Blocks.NETHER_WART, "nether_wart");
+		add(event, Blocks.POTATOES, "potato");
+		add(event, Blocks.PUMPKIN_STEM, "pumpkin");
+		add(event, Blocks.ROSE_BUSH, "rose");
+		event.getVariantRegistry().addFlowerPot(Blocks.SEA_PICKLE, "sea_pickle", p -> p.lightLevel(b -> 3));
+		Block sugarCane = add(event, Blocks.SUGAR_CANE, "sugar_cane");
+		add(event, Blocks.SUNFLOWER, "sunflower");
+		Block tallGrass = add(event, Blocks.TALL_GRASS, "tall_grass");
+		add(event, Blocks.TWISTING_VINES, "twisting_vines");
+		Block vine = add(event, Blocks.VINE, "vine");
+		add(event, Blocks.WEEPING_VINES, "weeping_vines");
+		add(event, Blocks.WHEAT, "wheat");
+		event.getVariantRegistry().addFlowerPot(Blocks.CAVE_VINES, "cave_vines", p -> p.lightLevel(b -> 14));
 		
 		tintedBlocks.put(grass, Blocks.GRASS);
 		tintedBlocks.put(largeFern, Blocks.LARGE_FERN);
@@ -63,9 +62,9 @@ public class MorePottedPlantsModule extends ZetaModule {
 		tintedBlocks.put(vine, Blocks.VINE);
 	}
 	
-	private FlowerPotBlock add(Block block, String name) {
+	private FlowerPotBlock add(ZRegister event, Block block, String name) {
 		pottableBlocks.add(block);
-		return VariantHandler.addFlowerPot(block, name, Functions.identity());
+		return event.getVariantRegistry().addFlowerPot(block, name, Functions.identity());
 	}
 	
 	@LoadEvent

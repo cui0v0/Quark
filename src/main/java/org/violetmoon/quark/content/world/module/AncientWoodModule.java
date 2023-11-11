@@ -14,7 +14,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.Config.Min;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.content.world.block.AncientSaplingBlock;
@@ -67,12 +66,12 @@ public class AncientWoodModule extends ZetaModule {
 
 	@LoadEvent
 	public void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, true);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, true);
 		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MaterialColor.PLANT);
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 
-		VariantHandler.addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, Registry.BLOCK).getPath(), Functions.identity());
+		event.getVariantRegistry().addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, Registry.BLOCK).getPath(), Functions.identity());
 
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit))
 			.setCondition(() -> GeneralConfig.enableAdvancementModification));

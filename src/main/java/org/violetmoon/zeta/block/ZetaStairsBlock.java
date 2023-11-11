@@ -1,4 +1,4 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
@@ -14,19 +14,18 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.quark.base.handler.VariantHandler;
-import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.registry.VariantRegistry;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
-public class QuarkStairsBlock extends StairBlock implements IZetaBlock, IZetaBlockColorProvider {
+public class ZetaStairsBlock extends StairBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private final IZetaBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkStairsBlock(IZetaBlock parent) {
-		super(parent.getBlock()::defaultBlockState, VariantHandler.realStateCopy(parent));
+	public ZetaStairsBlock(IZetaBlock parent) {
+		super(parent.getBlock()::defaultBlockState, VariantRegistry.realStateCopy(parent));
 
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_stairs");
@@ -60,7 +59,7 @@ public class QuarkStairsBlock extends StairBlock implements IZetaBlock, IZetaBlo
 	}
 
 	@Override
-	public QuarkStairsBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaStairsBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

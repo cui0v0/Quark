@@ -5,6 +5,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -29,6 +31,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.network.QuarkNetwork;
+import org.violetmoon.zeta.registry.PottedPlantRegistry;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
@@ -119,6 +122,11 @@ public class ForgeZeta extends Zeta {
 	@Override
 	public BrewingRegistry createBrewingRegistry() {
 		return new ForgeBrewingRegistry(this);
+	}
+
+	@Override
+	public PottedPlantRegistry createPottedPlantRegistry() {
+		return (resloc, potted) -> ((FlowerPotBlock)Blocks.FLOWER_POT).addPlant(resloc, () -> potted);
 	}
 
 	@Override

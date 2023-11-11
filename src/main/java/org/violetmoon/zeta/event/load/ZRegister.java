@@ -1,5 +1,6 @@
 package org.violetmoon.zeta.event.load;
 
+import org.violetmoon.zeta.registry.VariantRegistry;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
 import org.violetmoon.zeta.event.bus.IZetaLoadEvent;
@@ -34,6 +35,10 @@ public class ZRegister implements IZetaLoadEvent {
 
 	public AdvancementModifierRegistry getAdvancementModifierRegistry() {
 		return zeta.advancementModifierRegistry;
+	}
+
+	public VariantRegistry getVariantRegistry() {
+		return zeta.variantRegistry;
 	}
 
 	public static class Post implements IZetaLoadEvent { }

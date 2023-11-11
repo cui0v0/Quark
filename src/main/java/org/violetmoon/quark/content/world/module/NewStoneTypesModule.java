@@ -23,7 +23,6 @@ import net.minecraft.world.phys.HitResult;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.base.world.generator.OreGenerator;
@@ -70,17 +69,17 @@ public class NewStoneTypesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		limestoneBlock = makeStone(this, "limestone", limestone, BigStoneClustersModule.limestone, () -> enableLimestone, MaterialColor.STONE);
-		jasperBlock = makeStone(this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MaterialColor.TERRACOTTA_RED);
-		shaleBlock = makeStone(this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MaterialColor.ICE);
-		myaliteBlock = makeStone(this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MaterialColor.COLOR_PURPLE, MyaliteBlock::new);
+		limestoneBlock = makeStone(event, this, "limestone", limestone, BigStoneClustersModule.limestone, () -> enableLimestone, MaterialColor.STONE);
+		jasperBlock = makeStone(event, this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MaterialColor.TERRACOTTA_RED);
+		shaleBlock = makeStone(event, this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MaterialColor.ICE);
+		myaliteBlock = makeStone(event, this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MaterialColor.COLOR_PURPLE, MyaliteBlock::new);
 	}
 
-	public static Block makeStone(ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
-		return makeStone(module, null, name, config, bigConfig, enabledCond, color, ZetaBlock::new);
+	public static Block makeStone(ZRegister event, ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
+		return makeStone(event, module, null, name, config, bigConfig, enabledCond, color, ZetaBlock::new);
 	}
 
-	public static Block makeStone(ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
+	public static Block makeStone(ZRegister event, ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !Quark.ZETA.modules.isEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
 		Block.Properties props;
@@ -100,8 +99,8 @@ public class NewStoneTypesModule extends ZetaModule {
 		ZetaBlock polished = constr.make("polished_" + name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
 
-		VariantHandler.addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond));
-		VariantHandler.addSlabAndStairs(polished);
+		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond));
+		event.getVariantRegistry().addSlabAndStairs(polished);
 
 		if(raw == null) {
 			defers.add(() -> {

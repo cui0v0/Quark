@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -28,8 +27,8 @@ public class MidoriModule extends ZetaModule {
 		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GREEN)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
-		
-		VariantHandler.addSlabAndStairs(new ZetaBlock("midori_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+
+		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("midori_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
 		new ZetaPillarBlock("midori_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
 	}
 

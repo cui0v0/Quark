@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.content.world.undergroundstyle.PermafrostStyle;
 import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
@@ -29,8 +28,8 @@ public class PermafrostModule extends AbstractUndergroundStyleModule<PermafrostS
 				.strength(1.5F, 10F)
 				.sound(SoundType.STONE));
 		
-		VariantHandler.addSlabStairsWall(permafrost);
-		VariantHandler.addSlabStairsWall(new ZetaBlock("permafrost_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(permafrost)));
+		event.getVariantRegistry().addSlabStairsWall(permafrost);
+		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock("permafrost_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(permafrost)));
 		
 		generationSettings.biomeObj.setBlock(permafrost.defaultBlockState());
 	}

@@ -19,10 +19,10 @@ import net.minecraftforge.common.extensions.IForgeBlock;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.violetmoon.quark.addons.oddities.block.MatrixEnchantingTableBlock;
-import org.violetmoon.quark.base.block.QuarkSlabBlock;
-import org.violetmoon.quark.base.block.QuarkStairsBlock;
-import org.violetmoon.quark.base.block.QuarkTrapdoorBlock;
-import org.violetmoon.quark.base.block.QuarkWallBlock;
+import org.violetmoon.zeta.block.ZetaSlabBlock;
+import org.violetmoon.zeta.block.ZetaStairsBlock;
+import org.violetmoon.zeta.block.ZetaTrapdoorBlock;
+import org.violetmoon.zeta.block.ZetaWallBlock;
 import org.violetmoon.quark.content.automation.block.IronRodBlock;
 import org.violetmoon.quark.content.building.block.HedgeBlock;
 import org.violetmoon.quark.content.building.block.QuarkVerticalSlabBlock;
@@ -75,12 +75,12 @@ import org.violetmoon.zeta.block.ext.IZetaBlockExtensions;
 	ZetaPillarBlock.class,
 	ZetaPressurePlateBlock.class,
 	ZetaSaplingBlock.class,
-	QuarkSlabBlock.class,
-	QuarkStairsBlock.class,
+	ZetaSlabBlock.class,
+	ZetaStairsBlock.class,
 	ZetaStandingSignBlock.class,
-	QuarkTrapdoorBlock.class,
+	ZetaTrapdoorBlock.class,
 	ZetaVineBlock.class,
-	QuarkWallBlock.class,
+	ZetaWallBlock.class,
 	ZetaWallSignBlock.class,
 })
 public class IZetaBlockMixin_FAKE implements IZetaBlockExtensions, IForgeBlock {

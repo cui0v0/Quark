@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.module.NewStoneTypesModule;
@@ -32,23 +31,23 @@ public class MoreStoneVariantsModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		expandVanillaStone(this, Blocks.CALCITE, "calcite");
-		expandVanillaStone(this, Blocks.DRIPSTONE_BLOCK, "dripstone");
-		expandVanillaStone(this, Blocks.TUFF, "tuff");
+		expandVanillaStone(event, this, Blocks.CALCITE, "calcite");
+		expandVanillaStone(event, this, Blocks.DRIPSTONE_BLOCK, "dripstone");
+		expandVanillaStone(event, this, Blocks.TUFF, "tuff");
 		
 		BooleanSupplier _true = () -> true;
-		add("granite", MaterialColor.DIRT, SoundType.STONE, _true);
-		add("diorite", MaterialColor.QUARTZ, SoundType.STONE, _true);
-		add("andesite", MaterialColor.STONE, SoundType.STONE, _true);
-		add("calcite", MaterialColor.TERRACOTTA_WHITE, SoundType.CALCITE, _true);
-		add("dripstone", MaterialColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, _true);
-		add("tuff", MaterialColor.TERRACOTTA_GRAY, SoundType.TUFF, _true);
+		add(event, "granite", MaterialColor.DIRT, SoundType.STONE, _true);
+		add(event, "diorite", MaterialColor.QUARTZ, SoundType.STONE, _true);
+		add(event, "andesite", MaterialColor.STONE, SoundType.STONE, _true);
+		add(event, "calcite", MaterialColor.TERRACOTTA_WHITE, SoundType.CALCITE, _true);
+		add(event, "dripstone", MaterialColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, _true);
+		add(event, "tuff", MaterialColor.TERRACOTTA_GRAY, SoundType.TUFF, _true);
 		
-		add("limestone", MaterialColor.STONE, SoundType.STONE, () -> NewStoneTypesModule.enableLimestone);
-		add("jasper", MaterialColor.TERRACOTTA_RED, SoundType.STONE, () -> NewStoneTypesModule.enableJasper);
-		add("shale", MaterialColor.ICE, SoundType.STONE, () -> NewStoneTypesModule.enableShale);
+		add(event, "limestone", MaterialColor.STONE, SoundType.STONE, () -> NewStoneTypesModule.enableLimestone);
+		add(event, "jasper", MaterialColor.TERRACOTTA_RED, SoundType.STONE, () -> NewStoneTypesModule.enableJasper);
+		add(event, "shale", MaterialColor.ICE, SoundType.STONE, () -> NewStoneTypesModule.enableShale);
 		
-		add("myalite", MaterialColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
+		add(event, "myalite", MaterialColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
 	}
 
 	@PlayEvent
@@ -62,15 +61,15 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		manager.putFlag(this, "tuff", true);
 	}
 	
-	public static void expandVanillaStone(ZetaModule module, Block raw, String name) {
-		NewStoneTypesModule.makeStone(module, raw, name, null, null, () -> true, null, ZetaBlock::new);
+	public static void expandVanillaStone(ZRegister event, ZetaModule module, Block raw, String name) {
+		NewStoneTypesModule.makeStone(event, module, raw, name, null, null, () -> true, null, ZetaBlock::new);
 	}
 	
-	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond) {
-		add(name, color, sound, cond, ZetaBlock::new, ZetaPillarBlock::new);
+	private void add(ZRegister event, String name, MaterialColor color, SoundType sound, BooleanSupplier cond) {
+		add(event, name, color, sound, cond, ZetaBlock::new, ZetaPillarBlock::new);
 	}
 	
-	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
+	private void add(ZRegister event, String name, MaterialColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
 		Block.Properties props = Block.Properties.of(Material.STONE, color)
 				.requiresCorrectToolForDrops()
 				.sound(sound)
@@ -78,7 +77,7 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		
 		ZetaBlock bricks = constr.make(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks);
-		VariantHandler.addSlabStairsWall(bricks);
+		event.getVariantRegistry().addSlabStairsWall(bricks);
 		
 		constr.make("chiseled_" + name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks && enableChiseledBricks);

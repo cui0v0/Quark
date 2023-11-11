@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.world.module;
 
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.ChorusVegetationBlock;
@@ -38,8 +37,8 @@ public class ChorusVegetationModule extends ZetaModule {
 		chorus_weeds = new ChorusVegetationBlock("chorus_weeds", this, true);
 		chorus_twist = new ChorusVegetationBlock("chorus_twist", this, false);
 		
-		VariantHandler.addFlowerPot(chorus_weeds, "chorus_weeds", Functions.identity());
-		VariantHandler.addFlowerPot(chorus_twist, "chorus_twist", Functions.identity());
+		event.getVariantRegistry().addFlowerPot(chorus_weeds, "chorus_weeds", Functions.identity());
+		event.getVariantRegistry().addFlowerPot(chorus_twist, "chorus_twist", Functions.identity());
 	}
 	
 	@LoadEvent

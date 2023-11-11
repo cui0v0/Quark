@@ -19,7 +19,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.content.building.block.QuarkVerticalSlabBlock;
 import org.violetmoon.quark.content.building.block.WeatheringCopperVerticalSlabBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -96,7 +95,7 @@ public class VerticalSlabsModule extends ZetaModule {
 			current.first = first;
 		}
 
-		VariantHandler.SLABS.forEach(b -> {
+		Quark.ZETA.variantRegistry.slabs.forEach(b -> {
 			if(b instanceof IVerticalSlabProvider provider)
 				provider.getVerticalSlab(b, this);
 			else new QuarkVerticalSlabBlock(b, this);

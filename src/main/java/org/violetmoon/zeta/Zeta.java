@@ -7,6 +7,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.registry.VariantRegistry;
 import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
@@ -26,6 +27,7 @@ import org.violetmoon.zeta.network.ZetaNetworkHandler;
 import org.violetmoon.zeta.registry.BrewingRegistry;
 import org.violetmoon.zeta.registry.CraftingExtensionsRegistry;
 import org.violetmoon.zeta.registry.DyeablesRegistry;
+import org.violetmoon.zeta.registry.PottedPlantRegistry;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.registry.ZetaRegistry;
 import org.violetmoon.zeta.util.NameChanger;
@@ -55,6 +57,7 @@ public abstract class Zeta {
 		this.craftingExtensions = createCraftingExtensionsRegistry();
 		this.brewingRegistry = createBrewingRegistry();
 		this.advancementModifierRegistry = createAdvancementModifierRegistry();
+		this.pottedPlantRegistry = createPottedPlantRegistry();
 
 		this.blockExtensions = createBlockExtensionFactory();
 		this.itemExtensions = createItemExtensionFactory();
@@ -85,7 +88,9 @@ public abstract class Zeta {
 	public final CraftingExtensionsRegistry craftingExtensions;
 	public final BrewingRegistry brewingRegistry;
 	public final AdvancementModifierRegistry advancementModifierRegistry;
+	public final PottedPlantRegistry pottedPlantRegistry;
 	public final RequiredModTooltipHandler requiredModTooltipHandler = new RequiredModTooltipHandler(); //TODO, find better spot or remove this.
+	public final VariantRegistry variantRegistry = new VariantRegistry(this);
 
 	//extensions
 	public final ZetaCapabilityManager capabilityManager;
@@ -140,6 +145,7 @@ public abstract class Zeta {
 	public AdvancementModifierRegistry createAdvancementModifierRegistry() {
 		return new AdvancementModifierRegistry(this);
 	}
+	public abstract PottedPlantRegistry createPottedPlantRegistry();
 	public abstract ZetaCapabilityManager createCapabilityManager();
 	public BlockExtensionFactory createBlockExtensionFactory() {
 		return BlockExtensionFactory.DEFAULT;

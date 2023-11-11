@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -21,7 +20,7 @@ public class RawMetalBricksModule extends ZetaModule {
 		IZetaBlock gold = new ZetaBlock("raw_gold_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.copy(Blocks.RAW_GOLD_BLOCK));
 		IZetaBlock copper = new ZetaBlock("raw_copper_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.copy(Blocks.RAW_COPPER_BLOCK));
 		
-		ImmutableSet.of(iron, gold, copper).forEach(VariantHandler::addSlabAndStairs);
+		ImmutableSet.of(iron, gold, copper).forEach(what -> event.getVariantRegistry().addSlabAndStairs(what));
 	}
 	
 }

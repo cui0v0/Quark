@@ -1,4 +1,4 @@
-package org.violetmoon.quark.base.handler;
+package org.violetmoon.zeta.registry;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,46 +12,53 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkSlabBlock;
-import org.violetmoon.quark.base.block.QuarkStairsBlock;
-import org.violetmoon.quark.base.block.QuarkWallBlock;
+import org.violetmoon.zeta.block.ZetaSlabBlock;
+import org.violetmoon.zeta.block.ZetaStairsBlock;
+import org.violetmoon.zeta.block.ZetaWallBlock;
+import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class VariantHandler {
+//another kinda-weird formerly singleton class
+public class VariantRegistry {
 
-	public static final List<QuarkSlabBlock> SLABS = new LinkedList<>();
-	public static final List<QuarkStairsBlock> STAIRS = new LinkedList<>();
-	public static final List<QuarkWallBlock> WALLS = new LinkedList<>();
+	protected final Zeta zeta;
 
-	public static Block addSlabStairsWall(IZetaBlock block) {
+	public VariantRegistry(Zeta zeta) {
+		this.zeta = zeta;
+	}
+
+	public final List<Block> slabs = new LinkedList<>();
+	public final List<Block> stairs = new LinkedList<>();
+	public final List<Block> walls = new LinkedList<>();
+
+	public Block addSlabStairsWall(IZetaBlock block) {
 		addSlabAndStairs(block);
 		addWall(block);
 		return block.getBlock();
 	}
 
-	public static IZetaBlock addSlabAndStairs(IZetaBlock block) {
+	public IZetaBlock addSlabAndStairs(IZetaBlock block) {
 		addSlab(block);
 		addStairs(block);
 		return block;
 	}
 
-	public static IZetaBlock addSlab(IZetaBlock block) {
-		SLABS.add(new QuarkSlabBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addSlab(IZetaBlock block) {
+		slabs.add(new ZetaSlabBlock(block).setCondition(block::doesConditionApply));
 		return block;
 	}
 
-	public static IZetaBlock addStairs(IZetaBlock block) {
-		STAIRS.add(new QuarkStairsBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addStairs(IZetaBlock block) {
+		stairs.add(new ZetaStairsBlock(block).setCondition(block::doesConditionApply));
 		return block;
 	}
 
-	public static IZetaBlock addWall(IZetaBlock block) {
-		WALLS.add(new QuarkWallBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addWall(IZetaBlock block) {
+		walls.add(new ZetaWallBlock(block).setCondition(block::doesConditionApply));
 		return block;
 	}
 
-	public static FlowerPotBlock addFlowerPot(Block block, String name, Function<Block.Properties, Block.Properties> propertiesFunc) {
+	public FlowerPotBlock addFlowerPot(Block block, String name, Function<Block.Properties, Block.Properties> propertiesFunc) {
 		Block.Properties props = Block.Properties.of(Material.DECORATION).strength(0F);
 		props = propertiesFunc.apply(props);
 
@@ -62,10 +69,12 @@ public class VariantHandler {
 			resLoc = new ResourceLocation("missingno");
 
 		Quark.ZETA.registry.registerBlock(potted, "potted_" + name, false);
-		((FlowerPotBlock)Blocks.FLOWER_POT).addPlant(resLoc, () -> potted);
+		Quark.ZETA.pottedPlantRegistry.addPot(resLoc, potted);
 
 		return potted;
 	}
+
+	// hmm (TODO: unused ever since Quark removed magma bricks)
 
 	public static BlockBehaviour.Properties realStateCopy(IZetaBlock parent) {
 		BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(parent.getBlock());

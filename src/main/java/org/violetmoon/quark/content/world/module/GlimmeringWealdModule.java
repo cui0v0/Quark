@@ -40,7 +40,6 @@ import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.advancement.modifier.AdventuringTimeModifier;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
 import org.violetmoon.quark.content.world.block.GlowLichenGrowthBlock;
@@ -94,8 +93,8 @@ public class GlimmeringWealdModule extends ZetaModule {
 		glow_shroom_stem = new HugeGlowShroomBlock("glow_shroom_stem", this, false);
 		glow_shroom_ring = new GlowShroomRingBlock(this);
 
-		VariantHandler.addFlowerPot(glow_lichen_growth, "glow_lichen_growth", prop -> prop.lightLevel((state) -> 8));
-		VariantHandler.addFlowerPot(glow_shroom, "glow_shroom", prop -> prop.lightLevel((state) -> 10));
+		event.getVariantRegistry().addFlowerPot(glow_lichen_growth, "glow_lichen_growth", prop -> prop.lightLevel((state) -> 8));
+		event.getVariantRegistry().addFlowerPot(glow_shroom, "glow_shroom", prop -> prop.lightLevel((state) -> 10));
 
 		makeFeatures();
 	}

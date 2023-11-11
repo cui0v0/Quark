@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkSlabBlock;
+import org.violetmoon.zeta.block.ZetaSlabBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -36,7 +36,7 @@ public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IZetaBl
         if (!(parent instanceof SlabBlock))
             throw new IllegalArgumentException("Can't rotate a non-slab block into a vertical slab.");
 
-        if (parent instanceof QuarkSlabBlock quarkSlab)
+        if (parent instanceof ZetaSlabBlock quarkSlab)
             setCondition(quarkSlab.parent::isEnabled);
     }
 

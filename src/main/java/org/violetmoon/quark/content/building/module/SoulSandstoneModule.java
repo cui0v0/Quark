@@ -4,7 +4,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -20,10 +19,10 @@ public class SoulSandstoneModule extends ZetaModule {
 				.requiresCorrectToolForDrops()
 				.strength(0.8F);
 		
-		VariantHandler.addSlabStairsWall(new ZetaBlock("soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock("soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
 		new ZetaBlock("chiseled_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
-		VariantHandler.addSlab(new ZetaBlock("cut_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
-		VariantHandler.addSlabAndStairs(new ZetaBlock("smooth_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+		event.getVariantRegistry().addSlab(new ZetaBlock("cut_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("smooth_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
 	}
 	
 }

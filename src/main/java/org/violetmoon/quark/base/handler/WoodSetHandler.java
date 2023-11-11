@@ -32,7 +32,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolActions;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkTrapdoorBlock;
+import org.violetmoon.zeta.block.ZetaTrapdoorBlock;
 import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
 import org.violetmoon.quark.base.item.boat.QuarkBoat;
 import org.violetmoon.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
@@ -104,11 +104,11 @@ public class WoodSetHandler {
 		});
 	}
 
-	public static WoodSet addWoodSet(ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean flammable) {
-		return addWoodSet(module, name, color, barkColor, true, true, flammable);
+	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean flammable) {
+		return addWoodSet(event, module, name, color, barkColor, true, true, flammable);
 	}
 
-	public static WoodSet addWoodSet(ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
+	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
 		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
 		WoodSet set = new WoodSet(name, module, type);
 
@@ -121,13 +121,13 @@ public class WoodSetHandler {
 
 		set.planks = new ZetaBlock(name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.slab = VariantHandler.addSlab((IZetaBlock) set.planks).getBlock();
-		set.stairs = VariantHandler.addStairs((IZetaBlock) set.planks).getBlock();
+		set.slab = event.getVariantRegistry().addSlab((IZetaBlock) set.planks).getBlock();
+		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks).getBlock();
 		set.fence = new ZetaFenceBlock(name + "_fence", module, CreativeModeTab.TAB_DECORATIONS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
 		set.door = new ZetaDoorBlock(name + "_door", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
-		set.trapdoor = new QuarkTrapdoorBlock(name + "_trapdoor", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
+		set.trapdoor = new ZetaTrapdoorBlock(name + "_trapdoor", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
 		set.button = new ZetaWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
 		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));

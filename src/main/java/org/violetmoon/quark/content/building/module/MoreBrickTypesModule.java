@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -37,22 +36,22 @@ public class MoreBrickTypesModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		add("blue_nether", Blocks.NETHER_BRICKS, () -> enableBlueNetherBricks);
+		add(event, "blue_nether", Blocks.NETHER_BRICKS, () -> enableBlueNetherBricks);
 		
-		add("sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks);
-		add("red_sandstone", Blocks.RED_SANDSTONE, () -> enableSandstoneBricks);
-		add("soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && Quark.ZETA.modules.isEnabled(SoulSandstoneModule.class));
+		add(event, "sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks);
+		add(event, "red_sandstone", Blocks.RED_SANDSTONE, () -> enableSandstoneBricks);
+		add(event, "soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && Quark.ZETA.modules.isEnabled(SoulSandstoneModule.class));
 		
-		add("cobblestone", Blocks.COBBLESTONE, () -> enableCobblestoneBricks);
-		add("mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, () -> enableCobblestoneBricks);
+		add(event, "cobblestone", Blocks.COBBLESTONE, () -> enableCobblestoneBricks);
+		add(event, "mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, () -> enableCobblestoneBricks);
 		
-		add("blackstone", Blocks.BLACKSTONE, () -> enableBlackstoneBricks && enableCobblestoneBricks);
-		add("dirt", Blocks.DIRT, () -> enableDirtBricks && enableCobblestoneBricks);
-		add("netherrack", Blocks.NETHERRACK, () -> enableNetherrackBricks && enableCobblestoneBricks);
+		add(event, "blackstone", Blocks.BLACKSTONE, () -> enableBlackstoneBricks && enableCobblestoneBricks);
+		add(event, "dirt", Blocks.DIRT, () -> enableDirtBricks && enableCobblestoneBricks);
+		add(event, "netherrack", Blocks.NETHERRACK, () -> enableNetherrackBricks && enableCobblestoneBricks);
 	}
 	
-	private void add(String name, Block parent, BooleanSupplier cond) {
-		VariantHandler.addSlabStairsWall(new ZetaBlock(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
+	private void add(ZRegister event, String name, Block parent, BooleanSupplier cond) {
+		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.copy(parent)
 				.requiresCorrectToolForDrops())
 				.setCondition(cond));

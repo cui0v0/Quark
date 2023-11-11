@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.base.world.WorldGenHandler;
@@ -48,13 +47,13 @@ public class BlossomTreesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(this, "blossom", MaterialColor.COLOR_RED, MaterialColor.COLOR_BROWN, true);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "blossom", MaterialColor.COLOR_RED, MaterialColor.COLOR_BROWN, true);
 
-		add("blue", MaterialColor.COLOR_LIGHT_BLUE, blue);
-		add("lavender", MaterialColor.COLOR_PINK, lavender);
-		add("orange", MaterialColor.TERRACOTTA_ORANGE, orange);
-		add("yellow", MaterialColor.COLOR_YELLOW, yellow);
-		add("red", MaterialColor.COLOR_RED, red);
+		add(event, "blue", MaterialColor.COLOR_LIGHT_BLUE, blue);
+		add(event, "lavender", MaterialColor.COLOR_PINK, lavender);
+		add(event, "orange", MaterialColor.TERRACOTTA_ORANGE, orange);
+		add(event, "yellow", MaterialColor.COLOR_YELLOW, yellow);
+		add(event, "red", MaterialColor.COLOR_RED, red);
 	}
 
 	@LoadEvent
@@ -78,11 +77,11 @@ public class BlossomTreesModule extends ZetaModule {
 			consumer.hintItem(tree.sapling.asItem());
 	}
 
-	private void add(String colorName, MaterialColor color, BlossomTreeConfig config) {
+	private void add(ZRegister event, String colorName, MaterialColor color, BlossomTreeConfig config) {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
 		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
-		VariantHandler.addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, Registry.BLOCK).getPath(), Functions.identity());
+		event.getVariantRegistry().addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, Registry.BLOCK).getPath(), Functions.identity());
 
 		trees.put(tree, config);
 	}

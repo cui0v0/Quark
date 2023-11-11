@@ -21,7 +21,7 @@ public class AzaleaWoodModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(this, "azalea", MaterialColor.COLOR_LIGHT_GREEN, MaterialColor.COLOR_BROWN, true);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "azalea", MaterialColor.COLOR_LIGHT_GREEN, MaterialColor.COLOR_BROWN, true);
 		//ugly I know but config is fired before this now
 		//TODO: not actually fired by the config lol
 		enabledStatusChanged(true, this.enabled, this.enabled);

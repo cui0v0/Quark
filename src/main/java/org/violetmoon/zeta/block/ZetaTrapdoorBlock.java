@@ -1,4 +1,4 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
@@ -13,16 +13,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class QuarkTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
+public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkTrapdoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaTrapdoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 
@@ -48,7 +47,7 @@ public class QuarkTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 	}
 
 	@Override
-	public QuarkTrapdoorBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaTrapdoorBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}
