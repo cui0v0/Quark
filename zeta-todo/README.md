@@ -103,11 +103,11 @@ Bring to zeta:
 - [ ] Recipe crawler -> zeta
 - [x] Advancement modification system
 - [ ] "ig the worldgen shim?"
-- [ ] "pretty much everything in `block` is viable to pull out"
+- [x] "pretty much everything in `block` is viable to pull out"
 - [x] some stuff wrt to module loader - anti overlap
 - [x] ItemOverrideHandler is used by variant bookshelves/ladders but it's pretty standalone
 - [ ] ToolInteractionHandler is "literally only used for waxing" but it's important
-- [ ] QuarkBlock and QuarkItem are really for "disableable/enablable blocks"
+- [x] QuarkBlock and QuarkItem are really for "disableable/enablable blocks"
 - [ ] WoodSetHandler is important, but there are some quark uniques in there
 - [ ] VanillaWoods is used in a few modules, could be moved out since it's useful
 
@@ -115,15 +115,19 @@ Keep in quark/reform:
 
 - [x] ContributorRewardHandler (ofc)
 - [x] CreativeTabHandler will need rethinking for the new creative tab scheme in 1.19.4
-  - stub api is in place, CreativeTabHandler is just a bridge to it 
-- [ ] EntityAttributeHandler is "essentially just a bridge"
+  - ~~stub api is in place, CreativeTabHandler is just a bridge to it~~
+  - deleted the class
+- [x] EntityAttributeHandler is "essentially just a bridge"
+  - deleted the class, pushed event subscribers into their respective modules
 - [x] DyeHandler -> some simple utilities fit in Zeta, others not so much
 - [x] capabilities: pain point. Some can be made non-capabilities
   - tried to abstract over all quark capabilities, still gotta deal with IItemHandler and such tho 
 - [ ] InventoryTransferHandler is quark specific so it can stay
+  - and also forge specific 
 - [ ] MiscUtil should probably be dissolved
   - ~~(addToLootTable is very important though -> maybe into a LootTableLoadEvent shim)~~ Done
 - [ ] SimilarBlockTypeHandler is for quark shulker box stuff
+  - Relies on quark config settings 
 - [ ] UndergroundBiomeHandler is overengineered
 
 Obsolete things:
