@@ -1,24 +1,28 @@
 package org.violetmoon.quark.content.tools.item;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.List;
-
-public class AncientTomeItem extends QuarkItem {
+public class AncientTomeItem extends ZetaItem {
 
 	public AncientTomeItem(ZetaModule module) {
 		super("ancient_tome", module,

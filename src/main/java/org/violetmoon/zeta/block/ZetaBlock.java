@@ -1,4 +1,9 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
+
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
@@ -7,21 +12,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-
-public class QuarkBlock extends Block implements IQuarkBlock {
+public class ZetaBlock extends Block implements IZetaBlock {
 
     private final ZetaModule module;
     private BooleanSupplier enabledSupplier = () -> true;
 
-    public QuarkBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+    public ZetaBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
         super(properties);
 
         this.module = module;
@@ -39,7 +37,7 @@ public class QuarkBlock extends Block implements IQuarkBlock {
     }
 
     @Override
-    public QuarkBlock setCondition(BooleanSupplier enabledSupplier) {
+    public ZetaBlock setCondition(BooleanSupplier enabledSupplier) {
         this.enabledSupplier = enabledSupplier;
         return this;
     }

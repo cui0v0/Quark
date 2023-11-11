@@ -1,11 +1,8 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nullable;
-
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
@@ -13,13 +10,15 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
+public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 	
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 	
-	public QuarkLeavesBlock(String name, ZetaModule module, MaterialColor color) {
+	public ZetaLeavesBlock(String name, ZetaModule module, MaterialColor color) {
 		super(Block.Properties.of(Material.LEAVES, color)
 				.strength(0.2F)
 				.randomTicks()
@@ -44,7 +43,7 @@ public class QuarkLeavesBlock extends LeavesBlock implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkLeavesBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaLeavesBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

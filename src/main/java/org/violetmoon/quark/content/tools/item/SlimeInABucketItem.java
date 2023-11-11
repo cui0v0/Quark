@@ -2,10 +2,6 @@ package org.violetmoon.quark.content.tools.item;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,8 +27,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.phys.Vec3;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.ItemNBTHelper;
 
-public class SlimeInABucketItem extends QuarkItem {
+public class SlimeInABucketItem extends ZetaItem {
 
 	public static final String TAG_ENTITY_DATA = "slime_nbt";
 	public static final String TAG_EXCITED = "excited";

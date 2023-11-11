@@ -2,10 +2,6 @@ package org.violetmoon.quark.content.world.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -28,8 +24,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterloggedBlock {
+public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public final CorundumBlock base;
 
@@ -55,7 +54,7 @@ public class CorundumClusterBlock extends QuarkBlock implements SimpleWaterlogge
 	}
 
 	public CorundumClusterBlock(CorundumBlock base) {
-		super(IQuarkBlock.inheritQuark(base, "%s_cluster"), base.getModule(), CreativeModeTab.TAB_DECORATIONS,
+		super(Quark.ZETA.registryUtil.inheritQuark(base, "%s_cluster"), base.getModule(), CreativeModeTab.TAB_DECORATIONS,
 				Block.Properties.copy(base)
 				.sound(SoundType.AMETHYST_CLUSTER));
 

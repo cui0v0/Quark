@@ -1,25 +1,23 @@
-package org.violetmoon.quark.base.item;
+package org.violetmoon.zeta.item;
+
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.zeta.item.IZetaItem;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-
-public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IZetaItem {
+public class ZetaDoubleHighBlockItem extends DoubleHighBlockItem implements IZetaItem {
 
 	private final ZetaModule module;
 
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkDoubleHighBlockItem(IQuarkBlock baseBlock, Properties props) {
+	public ZetaDoubleHighBlockItem(IZetaBlock baseBlock, Properties props) {
 		super(baseBlock.getBlock(), props);
 
 		this.module = baseBlock.getModule();
@@ -32,7 +30,7 @@ public class QuarkDoubleHighBlockItem extends DoubleHighBlockItem implements IZe
 	}
 
 	@Override
-	public QuarkDoubleHighBlockItem setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaDoubleHighBlockItem setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

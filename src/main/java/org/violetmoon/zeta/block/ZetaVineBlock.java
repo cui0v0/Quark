@@ -1,12 +1,9 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,13 +18,15 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class QuarkVineBlock extends VineBlock implements IQuarkBlock {
+public class ZetaVineBlock extends VineBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkVineBlock(ZetaModule module, String name, boolean creative) {
+	public ZetaVineBlock(ZetaModule module, String name, boolean creative) {
 		super(Block.Properties.of(Material.REPLACEABLE_PLANT).noCollission().randomTicks().strength(0.2F).sound(SoundType.GRASS));
 		this.module = module;
 
@@ -65,7 +64,7 @@ public class QuarkVineBlock extends VineBlock implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkVineBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaVineBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

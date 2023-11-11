@@ -21,8 +21,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.zeta.Zeta;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 
 //Mash of arl's RegistryHelper and its ModData innerclass.
@@ -109,7 +109,7 @@ public abstract class ZetaRegistry {
 		registerBlock(block, resloc, true);
 	}
 
-	public void setCreativeTab(IQuarkBlock block, CreativeModeTab tab) {
+	public void setCreativeTab(IZetaBlock block, CreativeModeTab tab) {
 		setCreativeTab(block.getBlock(), tab, block::isEnabled);
 	}
 

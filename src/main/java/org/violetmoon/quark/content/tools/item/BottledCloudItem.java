@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tools.item;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -11,20 +13,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class BottledCloudItem extends QuarkItem {
+public class BottledCloudItem extends ZetaItem {
 
 	public BottledCloudItem(ZetaModule module) {
 		super("bottled_cloud", module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS));

@@ -2,11 +2,6 @@ package org.violetmoon.quark.content.building.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -29,8 +24,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock {
+public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape SHAPE_X = Block.box(0F, 6F, 6F, 16F, 10F, 10F);
 	private static final VoxelShape SHAPE_Y = Block.box(6F, 0F, 6F, 10F, 16F, 10F);
@@ -49,7 +48,7 @@ public class WoodPostBlock extends QuarkBlock implements SimpleWaterloggedBlock 
 	};
 
 	public WoodPostBlock(ZetaModule module, Block parent, String prefix, boolean nether) {
-		super(IQuarkBlock.inherit(parent, s -> prefix + s.replace("_fence", "_post")), 
+		super(Quark.ZETA.registryUtil.inherit(parent, s -> prefix + s.replace("_fence", "_post")),
 				module, CreativeModeTab.TAB_DECORATIONS,
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
 

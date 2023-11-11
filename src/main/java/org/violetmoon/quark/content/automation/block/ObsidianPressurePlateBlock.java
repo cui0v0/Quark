@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkPressurePlateBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,12 +15,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
+import org.violetmoon.zeta.block.ZetaPressurePlateBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 9:47 PM on 10/8/19.
  */
-public class ObsidianPressurePlateBlock extends QuarkPressurePlateBlock {
+public class ObsidianPressurePlateBlock extends ZetaPressurePlateBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public ObsidianPressurePlateBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {

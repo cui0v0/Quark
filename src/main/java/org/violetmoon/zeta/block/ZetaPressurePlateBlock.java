@@ -1,27 +1,26 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.PressurePlateBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 9:41 PM on 10/8/19.
  */
-public class QuarkPressurePlateBlock extends PressurePlateBlock implements IQuarkBlock {
+public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(sensitivity, properties);
 		this.module = module;
 
@@ -36,7 +35,7 @@ public class QuarkPressurePlateBlock extends PressurePlateBlock implements IQuar
 	}
 
 	@Override
-	public QuarkPressurePlateBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaPressurePlateBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

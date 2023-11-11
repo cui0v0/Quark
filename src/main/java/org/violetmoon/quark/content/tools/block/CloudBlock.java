@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tools.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,17 +25,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class CloudBlock extends QuarkBlock implements EntityBlock {
+public class CloudBlock extends ZetaBlock implements EntityBlock {
 
 	public CloudBlock(ZetaModule module) {
 		super("cloud", module, null,

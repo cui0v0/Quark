@@ -5,7 +5,6 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
-
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -29,15 +28,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.content.building.module.HedgesModule;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 //TODO ZETA: extend QuarkFenceBlock
-public class HedgeBlock extends FenceBlock implements IQuarkBlock, IZetaBlockColorProvider {
+public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColorProvider {
 	
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);
 	private static final VoxelShape HEDGE_CENTER_SHAPE = box(2F, 1F, 2F, 14F, 16F, 14F);

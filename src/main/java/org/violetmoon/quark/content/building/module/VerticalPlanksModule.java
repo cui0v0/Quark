@@ -1,15 +1,14 @@
 package org.violetmoon.quark.content.building.module;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.block.Block;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.block.Block;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VerticalPlanksModule extends ZetaModule {
@@ -20,8 +19,8 @@ public class VerticalPlanksModule extends ZetaModule {
 			add(type.name(), type.planks(), this);
 	}
 	
-	public static QuarkBlock add(String name, Block base, ZetaModule module) {
-		return new QuarkBlock("vertical_" + name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(base));
+	public static ZetaBlock add(String name, Block base, ZetaModule module) {
+		return new ZetaBlock("vertical_" + name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(base));
 	}
 	
 }

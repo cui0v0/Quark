@@ -5,32 +5,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.function.BooleanSupplier;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkBlockWrapper;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.handler.VariantHandler;
-import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
-import org.violetmoon.quark.base.world.generator.OreGenerator;
-import org.violetmoon.quark.content.world.block.MyaliteBlock;
-import org.violetmoon.quark.content.world.block.MyaliteColorLogic;
-import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
-import org.violetmoon.quark.content.world.config.StoneTypeConfig;
-import org.violetmoon.zeta.client.event.load.ZAddBlockColorHandlers;
-import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import com.google.common.collect.Maps;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
@@ -45,6 +20,29 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.quark.base.world.WorldGenHandler;
+import org.violetmoon.quark.base.world.WorldGenWeights;
+import org.violetmoon.quark.base.world.generator.OreGenerator;
+import org.violetmoon.quark.content.world.block.MyaliteBlock;
+import org.violetmoon.quark.content.world.block.MyaliteColorLogic;
+import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
+import org.violetmoon.quark.content.world.config.StoneTypeConfig;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaBlockWrapper;
+import org.violetmoon.zeta.client.event.load.ZAddBlockColorHandlers;
+import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "world")
 public class NewStoneTypesModule extends ZetaModule {
@@ -79,10 +77,10 @@ public class NewStoneTypesModule extends ZetaModule {
 	}
 
 	public static Block makeStone(ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
-		return makeStone(module, null, name, config, bigConfig, enabledCond, color, QuarkBlock::new);
+		return makeStone(module, null, name, config, bigConfig, enabledCond, color, ZetaBlock::new);
 	}
 
-	public static Block makeStone(ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, QuarkBlock.Constructor<QuarkBlock> constr) {
+	public static Block makeStone(ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !Quark.ZETA.modules.isEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
 		Block.Properties props;
@@ -99,10 +97,10 @@ public class NewStoneTypesModule extends ZetaModule {
 		else
 			normal = constr.make(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
 
-		QuarkBlock polished = constr.make("polished_" + name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
+		ZetaBlock polished = constr.make("polished_" + name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
 
-		VariantHandler.addSlabStairsWall(normal instanceof IQuarkBlock quarkBlock ? quarkBlock : new QuarkBlockWrapper(normal, module).setCondition(enabledCond));
+		VariantHandler.addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond));
 		VariantHandler.addSlabAndStairs(polished);
 
 		if(raw == null) {

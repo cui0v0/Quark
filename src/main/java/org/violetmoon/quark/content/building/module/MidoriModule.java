@@ -1,21 +1,20 @@
 package org.violetmoon.quark.content.building.module;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkPillarBlock;
-import org.violetmoon.quark.base.handler.VariantHandler;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZLoadComplete;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZLoadComplete;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
 
 @ZetaLoadModule(category = "building")
 public class MidoriModule extends ZetaModule {
@@ -24,14 +23,14 @@ public class MidoriModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		moss_paste = new QuarkItem("moss_paste", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 		
 		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GREEN)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 		
-		VariantHandler.addSlabAndStairs(new QuarkBlock("midori_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
-		new QuarkPillarBlock("midori_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
+		VariantHandler.addSlabAndStairs(new ZetaBlock("midori_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+		new ZetaPillarBlock("midori_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
 	}
 
 	@LoadEvent

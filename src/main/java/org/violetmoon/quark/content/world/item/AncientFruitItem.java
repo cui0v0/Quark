@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.world.item;
 
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.world.module.AncientWoodModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,8 +9,11 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.violetmoon.quark.content.world.module.AncientWoodModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class AncientFruitItem extends QuarkItem {
+public class AncientFruitItem extends ZetaItem {
 
 	public AncientFruitItem(ZetaModule module) {
 		super("ancient_fruit", module, new Item.Properties().tab(CreativeModeTab.TAB_FOOD)

@@ -1,36 +1,34 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
-import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
+import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
 /**
  * @author WireSegal
  * Created at 1:09 PM on 9/19/19.
  */
-public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlock, IZetaBlockColorProvider {
+public class ZetaInheritedPaneBlock extends ZetaPaneBlock implements IZetaBlock, IZetaBlockColorProvider {
 
-	public final IQuarkBlock parent;
+	public final IZetaBlock parent;
 
-	public QuarkInheritedPaneBlock(IQuarkBlock parent, String name, Block.Properties properties) {
+	public ZetaInheritedPaneBlock(IZetaBlock parent, String name, Block.Properties properties) {
 		super(name, parent.getModule(), properties, null);
 
 		this.parent = parent;
-		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
+		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
-	public QuarkInheritedPaneBlock(IQuarkBlock parent, Block.Properties properties) {
-		this(parent, IQuarkBlock.inheritQuark(parent, "%s_pane"), properties);
+	public ZetaInheritedPaneBlock(IZetaBlock parent, Block.Properties properties) {
+		this(parent, parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_pane"), properties);
 	}
 
-	public QuarkInheritedPaneBlock(IQuarkBlock parent) {
+	public ZetaInheritedPaneBlock(IZetaBlock parent) {
 		this(parent, Block.Properties.copy(parent.getBlock()));
 	}
 
@@ -43,7 +41,7 @@ public class QuarkInheritedPaneBlock extends QuarkPaneBlock implements IQuarkBlo
 	@Override
 	public float[] getBeaconColorMultiplierZeta(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
 		BlockState parentState = parent.getBlock().defaultBlockState();
-		return Quark.ZETA.blockExtensions.get(parentState).getBeaconColorMultiplierZeta(parentState, world, pos, beaconPos);
+		return parent.getModule().zeta.blockExtensions.get(parentState).getBeaconColorMultiplierZeta(parentState, world, pos, beaconPos);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -22,14 +24,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
-import org.violetmoon.quark.base.block.QuarkPillarBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class HollowPillarBlock extends QuarkPillarBlock implements SimpleWaterloggedBlock, ICrawlSpaceBlock {
+public class HollowPillarBlock extends ZetaPillarBlock implements SimpleWaterloggedBlock, ICrawlSpaceBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

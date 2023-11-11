@@ -1,5 +1,10 @@
 package org.violetmoon.quark.base.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
@@ -7,32 +12,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
-import java.util.function.BooleanSupplier;
+public class QuarkWallBlock extends WallBlock implements IZetaBlock, IZetaBlockColorProvider {
 
-public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IZetaBlockColorProvider {
-
-	private final IQuarkBlock parent;
+	private final IZetaBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkWallBlock(IQuarkBlock parent) {
+	public QuarkWallBlock(IZetaBlock parent) {
 		super(VariantHandler.realStateCopy(parent));
 
 		this.parent = parent;
-		String resloc = IQuarkBlock.inheritQuark(parent, "%s_wall");
-		Quark.ZETA.registry.registerBlock(this, resloc, true);
-		Quark.ZETA.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
-
-		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
+		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_wall");
+		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
+		parent.getModule().zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	@Override
@@ -62,7 +60,7 @@ public class QuarkWallBlock extends WallBlock implements IQuarkBlock, IZetaBlock
 	@Override
 	public float[] getBeaconColorMultiplierZeta(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
 		BlockState parentState = parent.getBlock().defaultBlockState();
-		return Quark.ZETA.blockExtensions.get(parentState).getBeaconColorMultiplierZeta(parentState, world, pos, beaconPos);
+		return parent.getModule().zeta.blockExtensions.get(parentState).getBeaconColorMultiplierZeta(parentState, world, pos, beaconPos);
 	}
 
 	@Override

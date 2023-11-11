@@ -5,15 +5,7 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.api.IEnchantmentInfluencer;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.mojang.math.Vector3f;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -38,8 +30,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.api.IEnchantmentInfluencer;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IQuarkBlock {
+public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

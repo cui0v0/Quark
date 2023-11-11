@@ -2,10 +2,6 @@ package org.violetmoon.quark.content.building.item;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.base.util.TriFunction;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,12 +15,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.violetmoon.quark.base.util.TriFunction;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 11:04 AM on 8/25/19.
  */
-public class QuarkItemFrameItem extends QuarkItem {
+public class QuarkItemFrameItem extends ZetaItem {
 	private final TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider;
 
 	public QuarkItemFrameItem(String name, ZetaModule module, TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider) {

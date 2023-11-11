@@ -1,23 +1,22 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class QuarkPillarBlock extends RotatedPillarBlock implements IQuarkBlock {
+public class ZetaPillarBlock extends RotatedPillarBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkPillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaPillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 		module.zeta.registry.registerBlock(this, regname, true);
@@ -37,7 +36,7 @@ public class QuarkPillarBlock extends RotatedPillarBlock implements IQuarkBlock 
 	}
 
 	@Override
-	public QuarkPillarBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaPillarBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

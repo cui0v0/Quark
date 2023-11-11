@@ -1,12 +1,8 @@
-package org.violetmoon.quark.base.item;
+package org.violetmoon.zeta.item;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.item.IZetaItem;
-import org.violetmoon.zeta.module.ZetaModule;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,16 +12,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public abstract class QuarkArrowItem extends ArrowItem implements IZetaItem {
+public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkArrowItem(String name, ZetaModule module) {
+	public ZetaArrowItem(String name, ZetaModule module) {
 		super(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
 
-		Quark.ZETA.registry.registerItem(this, name);
+		module.zeta.registry.registerItem(this, name);
 		this.module = module;
 	}
 
@@ -36,7 +33,7 @@ public abstract class QuarkArrowItem extends ArrowItem implements IZetaItem {
 	}
 
 	@Override
-	public QuarkArrowItem setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaArrowItem setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}
@@ -51,7 +48,7 @@ public abstract class QuarkArrowItem extends ArrowItem implements IZetaItem {
 		return enabledSupplier.getAsBoolean();
 	}
 	
-	public static class Impl extends QuarkArrowItem {
+	public static class Impl extends ZetaArrowItem {
 
 		private final ArrowCreator creator;
 		

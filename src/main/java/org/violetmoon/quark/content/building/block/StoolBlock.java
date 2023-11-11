@@ -2,11 +2,6 @@ package org.violetmoon.quark.content.building.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.content.building.entity.Stool;
-import org.violetmoon.quark.content.building.module.StoolsModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -40,8 +35,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.quark.content.building.entity.Stool;
+import org.violetmoon.quark.content.building.module.StoolsModule;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class StoolBlock extends QuarkBlock implements SimpleWaterloggedBlock {
+public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape SHAPE_TOP = Block.box(0F, 1F, 0F, 16F, 9F, 16F);
 	private static final VoxelShape SHAPE_LEG = Block.box(0F, 0F, 0F, 4F, 1F, 4F);

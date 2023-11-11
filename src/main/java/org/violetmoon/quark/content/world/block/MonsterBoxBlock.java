@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.world.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -12,16 +14,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class MonsterBoxBlock extends QuarkBlock implements EntityBlock {
+public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 
 	public MonsterBoxBlock(ZetaModule module) {
 		super("monster_box", module, null,

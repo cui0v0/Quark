@@ -5,12 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBushBlock;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,8 +20,11 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.block.ZetaBushBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class GlowLichenGrowthBlock extends QuarkBushBlock implements BonemealableBlock {
+public class GlowLichenGrowthBlock extends ZetaBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 

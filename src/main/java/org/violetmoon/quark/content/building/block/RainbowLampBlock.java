@@ -1,5 +1,8 @@
 package org.violetmoon.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -15,19 +18,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.block.QuarkGlassBlock;
 import org.violetmoon.quark.content.building.module.RainbowLampsModule;
+import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 12:31 PM on 9/19/19.
  */
-public class RainbowLampBlock extends QuarkGlassBlock {
+public class RainbowLampBlock extends ZetaGlassBlock {
 
 	public final float[] colorComponents;
 

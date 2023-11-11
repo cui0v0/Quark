@@ -5,12 +5,6 @@ import java.util.function.BooleanSupplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.VariantHandler;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
-import org.violetmoon.zeta.registry.IZetaItemColorProvider;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -20,20 +14,25 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
+import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
-public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBlockColorProvider {
+public class QuarkStairsBlock extends StairBlock implements IZetaBlock, IZetaBlockColorProvider {
 
-	private final IQuarkBlock parent;
+	private final IZetaBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkStairsBlock(IQuarkBlock parent) {
+	public QuarkStairsBlock(IZetaBlock parent) {
 		super(parent.getBlock()::defaultBlockState, VariantHandler.realStateCopy(parent));
 
 		this.parent = parent;
-		String resloc = IQuarkBlock.inheritQuark(parent, "%s_stairs");
-		Quark.ZETA.registry.registerBlock(this, resloc, true);
-		Quark.ZETA.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
-		Quark.ZETA.renderLayerRegistry.mock(this, parent.getBlock());
+		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_stairs");
+		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
+		parent.getModule().zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	@Override
@@ -45,13 +44,13 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 	@Override
 	public boolean isFlammableZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		BlockState parentState = parent.getBlock().defaultBlockState();
-		return Quark.ZETA.blockExtensions.get(parentState).isFlammableZeta(parentState, world, pos, face);
+		return parent.getModule().zeta.blockExtensions.get(parentState).isFlammableZeta(parentState, world, pos, face);
 	}
 
 	@Override
 	public int getFlammabilityZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		BlockState parentState = parent.getBlock().defaultBlockState();
-		return Quark.ZETA.blockExtensions.get(parentState).getFlammabilityZeta(parentState, world, pos, face);
+		return parent.getModule().zeta.blockExtensions.get(parentState).getFlammabilityZeta(parentState, world, pos, face);
 	}
 
 	@Nullable
@@ -74,7 +73,7 @@ public class QuarkStairsBlock extends StairBlock implements IQuarkBlock, IZetaBl
 	@Nullable
 	@Override
 	public float[] getBeaconColorMultiplierZeta(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos) {
-		return Quark.ZETA.blockExtensions.get(state).getBeaconColorMultiplierZeta(state, world, pos, beaconPos);
+		return parent.getModule().zeta.blockExtensions.get(state).getBeaconColorMultiplierZeta(state, world, pos, beaconPos);
 	}
 
 	@Override

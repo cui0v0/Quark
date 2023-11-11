@@ -1,29 +1,5 @@
 package org.violetmoon.quark.addons.oddities.module;
 
-import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
-import org.violetmoon.quark.addons.oddities.item.BackpackItem;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.client.handler.ModelHandler;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.base.network.QuarkNetwork;
-import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
-import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.play.ZScreen;
-import org.violetmoon.zeta.client.event.play.ZStartClientTick;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -52,6 +28,28 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
+import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
+import org.violetmoon.quark.addons.oddities.item.BackpackItem;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.client.handler.ModelHandler;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.client.event.play.ZScreen;
+import org.violetmoon.zeta.client.event.play.ZStartClientTick;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "oddities")
 public class BackpackModule extends ZetaModule {
@@ -81,12 +79,12 @@ public class BackpackModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		backpack = new BackpackItem(this);
-		ravager_hide = new QuarkItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
+		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
 		Quark.ZETA.registry.register(menyType, "backpack", Registry.MENU_REGISTRY);
 
-		bonded_ravager_hide = new QuarkBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
+		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
 				.strength(1F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableRavagerHide);

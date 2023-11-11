@@ -19,12 +19,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.block.QuarkBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class LeafCarpetBlock extends QuarkBlock implements IZetaBlockColorProvider {
+public class LeafCarpetBlock extends ZetaBlock implements IZetaBlockColorProvider {
 
 	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 1, 16);
 

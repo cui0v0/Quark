@@ -6,11 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
-import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -40,12 +35,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
+import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 3:05 PM on 2/26/20.
  */
-public class MovingMagnetizedBlock extends QuarkBlock implements EntityBlock {
+public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
 
 	public MovingMagnetizedBlock(ZetaModule module) {

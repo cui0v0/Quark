@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -10,14 +12,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.block.QuarkFlammableBlock;
 import org.violetmoon.quark.content.building.module.ThatchModule;
+import org.violetmoon.zeta.block.ZetaFlammableBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class ThatchBlock extends QuarkFlammableBlock {
+public class ThatchBlock extends ZetaFlammableBlock {
 
 	public ThatchBlock(ZetaModule module) {
 		super("thatch", module, CreativeModeTab.TAB_BUILDING_BLOCKS, 300,

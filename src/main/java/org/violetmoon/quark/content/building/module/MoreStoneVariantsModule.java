@@ -1,22 +1,21 @@
 package org.violetmoon.quark.content.building.module;
 
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import java.util.function.BooleanSupplier;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkPillarBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.module.NewStoneTypesModule;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -64,20 +63,20 @@ public class MoreStoneVariantsModule extends ZetaModule {
 	}
 	
 	public static void expandVanillaStone(ZetaModule module, Block raw, String name) {
-		NewStoneTypesModule.makeStone(module, raw, name, null, null, () -> true, null, QuarkBlock::new);
+		NewStoneTypesModule.makeStone(module, raw, name, null, null, () -> true, null, ZetaBlock::new);
 	}
 	
 	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond) {
-		add(name, color, sound, cond, QuarkBlock::new, QuarkPillarBlock::new);
+		add(name, color, sound, cond, ZetaBlock::new, ZetaPillarBlock::new);
 	}
 	
-	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond, QuarkBlock.Constructor<QuarkBlock> constr, QuarkBlock.Constructor<QuarkPillarBlock> pillarConstr) {
+	private void add(String name, MaterialColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
 		Block.Properties props = Block.Properties.of(Material.STONE, color)
 				.requiresCorrectToolForDrops()
 				.sound(sound)
 				.strength(1.5F, 6.0F);
 		
-		QuarkBlock bricks = constr.make(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		ZetaBlock bricks = constr.make(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks);
 		VariantHandler.addSlabStairsWall(bricks);
 		

@@ -1,29 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkLeavesBlock;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.Config.Min;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.VariantHandler;
-import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
-import org.violetmoon.quark.content.world.block.AncientSaplingBlock;
-import org.violetmoon.quark.content.world.item.AncientFruitItem;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +10,26 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.Config.Min;
+import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.quark.base.handler.WoodSetHandler;
+import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
+import org.violetmoon.quark.content.world.block.AncientSaplingBlock;
+import org.violetmoon.quark.content.world.item.AncientFruitItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
+import org.violetmoon.zeta.block.ZetaLeavesBlock;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "world")
 public class AncientWoodModule extends ZetaModule {
@@ -70,7 +68,7 @@ public class AncientWoodModule extends ZetaModule {
 	@LoadEvent
 	public void register(ZRegister event) {
 		woodSet = WoodSetHandler.addWoodSet(this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, true);
-		ancient_leaves = new QuarkLeavesBlock(woodSet.name, this, MaterialColor.PLANT);
+		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MaterialColor.PLANT);
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 

@@ -12,12 +12,12 @@ package org.violetmoon.quark.content.building.module;
 
 import java.util.function.BooleanSupplier;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.BambooMatBlock;
 import org.violetmoon.quark.content.building.block.BambooMatCarpetBlock;
 import org.violetmoon.quark.content.building.block.PaperLanternBlock;
 import org.violetmoon.quark.content.building.block.PaperWallBlock;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -37,7 +37,7 @@ public class JapanesePaletteModule extends ZetaModule {
 		BooleanSupplier paperBlockCond = () -> enablePaperBlocks;
 		BooleanSupplier bambooMatCond = () -> enableBambooMats;
 
-		IQuarkBlock parent = new PaperLanternBlock("paper_lantern", this).setCondition(paperBlockCond);
+		IZetaBlock parent = new PaperLanternBlock("paper_lantern", this).setCondition(paperBlockCond);
 		new PaperLanternBlock("paper_lantern_sakura", this).setCondition(paperBlockCond);
 
 		new PaperWallBlock(parent, "paper_wall").setCondition(paperBlockCond);

@@ -7,8 +7,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.zeta.util.NameChanger;
-import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.advancement.AdvancementModifierRegistry;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
@@ -30,6 +28,9 @@ import org.violetmoon.zeta.registry.CraftingExtensionsRegistry;
 import org.violetmoon.zeta.registry.DyeablesRegistry;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.registry.ZetaRegistry;
+import org.violetmoon.zeta.util.NameChanger;
+import org.violetmoon.zeta.util.RaytracingUtil;
+import org.violetmoon.zeta.util.RegistryUtil;
 import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 import org.violetmoon.zeta.util.ZetaSide;
 
@@ -78,6 +79,7 @@ public abstract class Zeta {
 
 	//registry
 	public final ZetaRegistry registry;
+	public final RegistryUtil registryUtil = new RegistryUtil(this); //TODO: Delete this, only needed cause there's no way to get early registry names.
 	public final RenderLayerRegistry renderLayerRegistry;
 	public final DyeablesRegistry dyeables;
 	public final CraftingExtensionsRegistry craftingExtensions;

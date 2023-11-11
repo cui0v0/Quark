@@ -1,27 +1,22 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-/**
- * @author WireSegal
- * Created at 9:14 PM on 10/8/19.
- */
-public class QuarkFenceGateBlock extends FenceGateBlock implements IQuarkBlock {
+public class ZetaFenceBlock extends FenceBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkFenceGateBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaFenceBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 
@@ -36,7 +31,7 @@ public class QuarkFenceGateBlock extends FenceGateBlock implements IQuarkBlock {
 	}
 
 	@Override
-	public QuarkFenceGateBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaFenceBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

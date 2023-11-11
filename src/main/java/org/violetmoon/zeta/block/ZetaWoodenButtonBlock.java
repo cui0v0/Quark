@@ -1,16 +1,15 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class QuarkWoodenButtonBlock extends QuarkButtonBlock {
+public class ZetaWoodenButtonBlock extends ZetaButtonBlock {
 
-	public QuarkWoodenButtonBlock(String regname, ZetaModule module, Properties properties) {
+	public ZetaWoodenButtonBlock(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE, properties);
 	}
 

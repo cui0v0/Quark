@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.automation.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,15 +20,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
 import org.violetmoon.quark.content.automation.module.EnderWatcherModule;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class EnderWatcherBlock extends QuarkBlock implements EntityBlock {
+public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 
 	public static final BooleanProperty WATCHED = BooleanProperty.create("watched");
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;

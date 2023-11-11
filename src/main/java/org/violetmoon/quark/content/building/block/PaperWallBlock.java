@@ -10,18 +10,17 @@
  */
 package org.violetmoon.quark.content.building.block;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.block.QuarkInheritedPaneBlock;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 
-public class PaperWallBlock extends QuarkInheritedPaneBlock {
+public class PaperWallBlock extends ZetaInheritedPaneBlock {
 
-	public PaperWallBlock(IQuarkBlock parent, String name) {
+	public PaperWallBlock(IZetaBlock parent, String name) {
 		super(parent, name,
 				Block.Properties.copy(parent.getBlock())
 					.lightLevel(b -> 0));

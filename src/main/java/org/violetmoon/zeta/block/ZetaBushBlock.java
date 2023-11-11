@@ -1,35 +1,29 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.item.QuarkDoubleHighBlockItem;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.BushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-
-public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlockItemProvider {
+public class ZetaBushBlock extends BushBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkDoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaBushBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 
-		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		module.zeta.registry.registerBlock(this, regname, true);
 		module.zeta.registry.setCreativeTab(this, creativeTab);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override
@@ -39,7 +33,7 @@ public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlock
 	}
 
 	@Override
-	public QuarkDoorBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaBushBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}
@@ -53,11 +47,6 @@ public class QuarkDoorBlock extends DoorBlock implements IQuarkBlock, IZetaBlock
 	@Override
 	public ZetaModule getModule() {
 		return module;
-	}
-
-	@Override
-	public BlockItem provideItemBlock(Block block, Item.Properties props) {
-		return new QuarkDoubleHighBlockItem(this, props);
 	}
 
 }

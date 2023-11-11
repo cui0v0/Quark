@@ -1,5 +1,11 @@
 package org.violetmoon.quark.content.tools.item;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -25,19 +31,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.module.SeedPouchModule;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 import org.violetmoon.zeta.util.RegistryUtil;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-public class SeedPouchItem extends QuarkItem implements IUsageTickerOverride, ITrowelable {
+public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITrowelable {
 
 	public static final String TAG_STORED_ITEM = "storedItem";
 	public static final String TAG_COUNT = "itemCount";

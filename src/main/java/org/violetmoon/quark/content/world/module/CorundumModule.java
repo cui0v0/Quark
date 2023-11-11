@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -14,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MaterialColor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkInheritedPaneBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.util.CorundumColor;
@@ -25,6 +26,7 @@ import org.violetmoon.quark.content.world.undergroundstyle.CorundumStyle;
 import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
 import org.violetmoon.zeta.api.IIndirectConnector;
+import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -33,8 +35,6 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.util.Hint;
-
-import java.util.List;
 
 @ZetaLoadModule(category = "world")
 public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle> {
@@ -107,7 +107,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 		CorundumBlock waxed = new CorundumBlock("waxed_" + name + "_corundum", color, this, material, true);
 		ToolInteractionHandler.registerWaxedBlock(this, crystal, waxed);
 
-		new QuarkInheritedPaneBlock(crystal);
+		new ZetaInheritedPaneBlock(crystal);
 		CorundumClusterBlock cluster = new CorundumClusterBlock(crystal);
 		clusters.add(cluster);
 

@@ -2,19 +2,18 @@ package org.violetmoon.quark.content.tools.item;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.api.IRuneColorProvider;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.api.IRuneColorProvider;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 2:27 PM on 8/17/19.
  */
-public class RuneItem extends QuarkItem implements IRuneColorProvider {
+public class RuneItem extends ZetaItem implements IRuneColorProvider {
 
 	private final int color;
 	private final boolean glow;

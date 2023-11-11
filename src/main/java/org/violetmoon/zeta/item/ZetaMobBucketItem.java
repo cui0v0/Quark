@@ -1,4 +1,9 @@
-package org.violetmoon.quark.base.item;
+package org.violetmoon.zeta.item;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
@@ -7,27 +12,19 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluid;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-public class QuarkMobBucketItem extends MobBucketItem implements IZetaItem {
+public class ZetaMobBucketItem extends MobBucketItem implements IZetaItem {
 
 	private final ZetaModule module;
 
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkMobBucketItem(Supplier<? extends EntityType<?>> entity, Supplier<? extends Fluid> fluid, Supplier<? extends SoundEvent> sound, String name, ZetaModule module) {
+	public ZetaMobBucketItem(Supplier<? extends EntityType<?>> entity, Supplier<? extends Fluid> fluid, Supplier<? extends SoundEvent> sound, String name, ZetaModule module) {
 		super(entity, fluid, sound, (new Properties()).stacksTo(1).tab(CreativeModeTab.TAB_MISC));
 
-		Quark.ZETA.registry.registerItem(this, name);
 		this.module = module;
+		module.zeta.registry.registerItem(this, name);
 	}
 
 	@Override
@@ -37,7 +34,7 @@ public class QuarkMobBucketItem extends MobBucketItem implements IZetaItem {
 	}
 
 	@Override
-	public QuarkMobBucketItem setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaMobBucketItem setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

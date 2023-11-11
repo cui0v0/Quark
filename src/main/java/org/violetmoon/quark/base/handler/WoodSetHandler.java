@@ -8,42 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkDoorBlock;
-import org.violetmoon.quark.base.block.QuarkFenceBlock;
-import org.violetmoon.quark.base.block.QuarkFenceGateBlock;
-import org.violetmoon.quark.base.block.QuarkPillarBlock;
-import org.violetmoon.quark.base.block.QuarkPressurePlateBlock;
-import org.violetmoon.quark.base.block.QuarkStandingSignBlock;
-import org.violetmoon.quark.base.block.QuarkTrapdoorBlock;
-import org.violetmoon.quark.base.block.QuarkWallSignBlock;
-import org.violetmoon.quark.base.block.QuarkWoodenButtonBlock;
-import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
-import org.violetmoon.quark.base.item.QuarkSignItem;
-import org.violetmoon.quark.base.item.boat.QuarkBoat;
-import org.violetmoon.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
-import org.violetmoon.quark.base.item.boat.QuarkBoatItem;
-import org.violetmoon.quark.base.item.boat.QuarkChestBoat;
-import org.violetmoon.quark.content.building.block.HollowLogBlock;
-import org.violetmoon.quark.content.building.block.VariantBookshelfBlock;
-import org.violetmoon.quark.content.building.block.VariantLadderBlock;
-import org.violetmoon.quark.content.building.block.WoodPostBlock;
-import org.violetmoon.quark.content.building.module.HollowLogsModule;
-import org.violetmoon.quark.content.building.module.VariantBookshelvesModule;
-import org.violetmoon.quark.content.building.module.VariantChestsModule;
-import org.violetmoon.quark.content.building.module.VariantLaddersModule;
-import org.violetmoon.quark.content.building.module.VerticalPlanksModule;
-import org.violetmoon.quark.content.building.module.WoodenPostsModule;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
@@ -66,6 +31,39 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolActions;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.block.QuarkTrapdoorBlock;
+import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
+import org.violetmoon.quark.base.item.boat.QuarkBoat;
+import org.violetmoon.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
+import org.violetmoon.quark.base.item.boat.QuarkBoatItem;
+import org.violetmoon.quark.base.item.boat.QuarkChestBoat;
+import org.violetmoon.quark.content.building.block.HollowLogBlock;
+import org.violetmoon.quark.content.building.block.VariantBookshelfBlock;
+import org.violetmoon.quark.content.building.block.VariantLadderBlock;
+import org.violetmoon.quark.content.building.block.WoodPostBlock;
+import org.violetmoon.quark.content.building.module.HollowLogsModule;
+import org.violetmoon.quark.content.building.module.VariantBookshelvesModule;
+import org.violetmoon.quark.content.building.module.VariantChestsModule;
+import org.violetmoon.quark.content.building.module.VariantLaddersModule;
+import org.violetmoon.quark.content.building.module.VerticalPlanksModule;
+import org.violetmoon.quark.content.building.module.WoodenPostsModule;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaDoorBlock;
+import org.violetmoon.zeta.block.ZetaFenceBlock;
+import org.violetmoon.zeta.block.ZetaFenceGateBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
+import org.violetmoon.zeta.block.ZetaPressurePlateBlock;
+import org.violetmoon.zeta.block.ZetaStandingSignBlock;
+import org.violetmoon.zeta.block.ZetaWallSignBlock;
+import org.violetmoon.zeta.block.ZetaWoodenButtonBlock;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaSignItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
 public class WoodSetHandler {
 
@@ -116,26 +114,26 @@ public class WoodSetHandler {
 
 		if(hasLog) {
 			set.log = log(name + "_log", module, color, barkColor);
-			set.wood = new QuarkPillarBlock(name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
+			set.wood = new ZetaPillarBlock(name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
 			set.strippedLog = log("stripped_" + name + "_log", module, color, color);
-			set.strippedWood = new QuarkPillarBlock("stripped_" + name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
+			set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, CreativeModeTab.TAB_BUILDING_BLOCKS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
 		}
 
-		set.planks = new QuarkBlock(name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.planks = new ZetaBlock(name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.slab = VariantHandler.addSlab((IQuarkBlock) set.planks).getBlock();
-		set.stairs = VariantHandler.addStairs((IQuarkBlock) set.planks).getBlock();
-		set.fence = new QuarkFenceBlock(name + "_fence", module, CreativeModeTab.TAB_DECORATIONS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.fenceGate = new QuarkFenceGateBlock(name + "_fence_gate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.slab = VariantHandler.addSlab((IZetaBlock) set.planks).getBlock();
+		set.stairs = VariantHandler.addStairs((IZetaBlock) set.planks).getBlock();
+		set.fence = new ZetaFenceBlock(name + "_fence", module, CreativeModeTab.TAB_DECORATIONS, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.door = new QuarkDoorBlock(name + "_door", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
+		set.door = new ZetaDoorBlock(name + "_door", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
 		set.trapdoor = new QuarkTrapdoorBlock(name + "_trapdoor", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
-		set.button = new QuarkWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
-		set.pressurePlate = new QuarkPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.button = new ZetaWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, CreativeModeTab.TAB_REDSTONE, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));
 
-		set.sign = new QuarkStandingSignBlock(name + "_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
-		set.wallSign = new QuarkWallSignBlock(name + "_wall_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
+		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
+		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
 		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantLaddersModule.class));
@@ -150,7 +148,7 @@ public class WoodSetHandler {
 
 		VariantChestsModule.addChest(name, module, () -> Block.Properties.copy(Blocks.CHEST), true);
 
-		set.signItem = new QuarkSignItem(module, set.sign, set.wallSign);
+		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
 
 		if(hasBoat) {
 			set.boatItem = new QuarkBoatItem(name, module, false);
@@ -188,7 +186,7 @@ public class WoodSetHandler {
 	}
 
 	private static RotatedPillarBlock log(String name, ZetaModule module, MaterialColor topColor, MaterialColor sideColor) {
-		return new QuarkPillarBlock(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		return new ZetaPillarBlock(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
 				.strength(2.0F).sound(SoundType.WOOD));
 	}

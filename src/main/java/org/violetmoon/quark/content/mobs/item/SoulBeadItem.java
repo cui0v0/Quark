@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.mobs.item;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -13,16 +15,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.mobs.entity.SoulBead;
 import org.violetmoon.quark.content.mobs.module.WraithModule;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class SoulBeadItem extends QuarkItem {
+public class SoulBeadItem extends ZetaItem {
 
 	public SoulBeadItem(ZetaModule module) {
 		super("soul_bead", module, new Item.Properties().tab(CreativeModeTab.TAB_MISC));

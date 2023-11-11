@@ -1,17 +1,5 @@
 package org.violetmoon.quark.content.tools.module;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.item.QuarkArrowItem;
-import org.violetmoon.quark.content.tools.client.render.entity.TorchArrowRenderer;
-import org.violetmoon.quark.content.tools.entity.TorchArrow;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +8,17 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.content.tools.client.render.entity.TorchArrowRenderer;
+import org.violetmoon.quark.content.tools.entity.TorchArrow;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaArrowItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "tools")
 public class TorchArrowModule extends ZetaModule {
@@ -34,7 +33,7 @@ public class TorchArrowModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		torch_arrow = new QuarkArrowItem.Impl("torch_arrow", this, (level, stack, living) -> new TorchArrow(level, living));
+		torch_arrow = new ZetaArrowItem.Impl("torch_arrow", this, (level, stack, living) -> new TorchArrow(level, living));
 		
 		torchArrowType = EntityType.Builder.<TorchArrow>of(TorchArrow::new, MobCategory.MISC)
 				.sized(0.5F, 0.5F)

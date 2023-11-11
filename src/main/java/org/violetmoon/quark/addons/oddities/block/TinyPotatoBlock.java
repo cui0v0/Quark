@@ -1,5 +1,8 @@
 package org.violetmoon.quark.addons.oddities.block;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,17 +40,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.item.TinyPotatoBlockItem;
 import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
-import org.violetmoon.quark.base.block.QuarkBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.util.ItemNBTHelper;
@@ -56,7 +54,7 @@ import org.violetmoon.zeta.util.ItemNBTHelper;
  * @author WireSegal
  * Created at 10:16 AM on 3/14/22.
  */
-public class TinyPotatoBlock extends QuarkBlock implements SimpleWaterloggedBlock, EntityBlock, IZetaBlockItemProvider {
+public class TinyPotatoBlock extends ZetaBlock implements SimpleWaterloggedBlock, EntityBlock, IZetaBlockItemProvider {
 
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

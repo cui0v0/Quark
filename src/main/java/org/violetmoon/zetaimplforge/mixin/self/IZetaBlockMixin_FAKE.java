@@ -19,46 +19,71 @@ import net.minecraftforge.common.extensions.IForgeBlock;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.violetmoon.quark.addons.oddities.block.MatrixEnchantingTableBlock;
-import org.violetmoon.quark.base.block.*;
+import org.violetmoon.quark.base.block.QuarkSlabBlock;
+import org.violetmoon.quark.base.block.QuarkStairsBlock;
+import org.violetmoon.quark.base.block.QuarkTrapdoorBlock;
+import org.violetmoon.quark.base.block.QuarkWallBlock;
 import org.violetmoon.quark.content.automation.block.IronRodBlock;
-import org.violetmoon.quark.content.building.block.*;
+import org.violetmoon.quark.content.building.block.HedgeBlock;
+import org.violetmoon.quark.content.building.block.QuarkVerticalSlabBlock;
+import org.violetmoon.quark.content.building.block.VariantChestBlock;
+import org.violetmoon.quark.content.building.block.VariantFurnaceBlock;
+import org.violetmoon.quark.content.building.block.VariantLadderBlock;
+import org.violetmoon.quark.content.building.block.VariantTrappedChestBlock;
+import org.violetmoon.quark.content.building.block.VerticalSlabBlock;
 import org.violetmoon.quark.content.world.block.HugeGlowShroomBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaBlockWrapper;
+import org.violetmoon.zeta.block.ZetaBushBlock;
+import org.violetmoon.zeta.block.ZetaButtonBlock;
+import org.violetmoon.zeta.block.ZetaDoorBlock;
+import org.violetmoon.zeta.block.ZetaFenceBlock;
+import org.violetmoon.zeta.block.ZetaFenceGateBlock;
+import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
+import org.violetmoon.zeta.block.ZetaLeavesBlock;
+import org.violetmoon.zeta.block.ZetaPaneBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
+import org.violetmoon.zeta.block.ZetaPressurePlateBlock;
+import org.violetmoon.zeta.block.ZetaSaplingBlock;
+import org.violetmoon.zeta.block.ZetaStandingSignBlock;
+import org.violetmoon.zeta.block.ZetaVineBlock;
+import org.violetmoon.zeta.block.ZetaWallSignBlock;
 import org.violetmoon.zeta.block.ext.IZetaBlockExtensions;
 
-// Kid named forge interface mixins:
+// Forge can't actually mixin to interfaces, so we fake it by just... mixing in to everyone inheriting the interface.
 @Mixin({
 	HedgeBlock.class,
 	HugeGlowShroomBlock.class,
 	IronRodBlock.class,
 	MatrixEnchantingTableBlock.class,
-	QuarkBlock.class,
-	QuarkBlockWrapper.class,
-	QuarkBushBlock.class,
-	QuarkButtonBlock.class,
-	QuarkDoorBlock.class,
-	QuarkFenceBlock.class,
-	QuarkFenceGateBlock.class,
-	QuarkInheritedPaneBlock.class,
-	QuarkLeavesBlock.class,
-	QuarkPaneBlock.class,
-	QuarkPillarBlock.class,
-	QuarkPressurePlateBlock.class,
-	QuarkSaplingBlock.class,
-	QuarkSlabBlock.class,
-	QuarkStairsBlock.class,
-	QuarkStandingSignBlock.class,
-	QuarkTrapdoorBlock.class,
 	QuarkVerticalSlabBlock.class,
-	QuarkVineBlock.class,
-	QuarkWallBlock.class,
-	QuarkWallSignBlock.class,
 	VariantChestBlock.class,
 	VariantFurnaceBlock.class,
 	VariantLadderBlock.class,
 	VariantTrappedChestBlock.class,
 	VerticalSlabBlock.class,
+	ZetaBlock.class,
+	ZetaBlockWrapper.class,
+	ZetaBushBlock.class,
+	ZetaButtonBlock.class,
+	ZetaDoorBlock.class,
+	ZetaFenceBlock.class,
+	ZetaFenceGateBlock.class,
+	ZetaInheritedPaneBlock.class,
+	ZetaLeavesBlock.class,
+	ZetaPaneBlock.class,
+	ZetaPillarBlock.class,
+	ZetaPressurePlateBlock.class,
+	ZetaSaplingBlock.class,
+	QuarkSlabBlock.class,
+	QuarkStairsBlock.class,
+	ZetaStandingSignBlock.class,
+	QuarkTrapdoorBlock.class,
+	ZetaVineBlock.class,
+	QuarkWallBlock.class,
+	ZetaWallSignBlock.class,
 })
-public class IQuarkBlockMixin implements IZetaBlockExtensions, IForgeBlock {
+public class IZetaBlockMixin_FAKE implements IZetaBlockExtensions, IForgeBlock {
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {

@@ -1,4 +1,8 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
+
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -12,9 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-
-import javax.annotation.Nonnull;
-import java.util.Optional;
 
 public interface SimpleFluidloggedBlock extends BucketPickup, LiquidBlockContainer {
 	

@@ -1,9 +1,6 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import javax.annotation.Nonnull;
-
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,14 +12,16 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 /**
  * @author WireSegal
  * Created at 12:46 PM on 8/24/19.
  */
-public class QuarkGlassBlock extends QuarkBlock {
+public class ZetaGlassBlock extends ZetaBlock {
 
-	public QuarkGlassBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, boolean translucent, Properties properties) {
+	public ZetaGlassBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, boolean translucent, Properties properties) {
 		super(regname, module, creativeTab, properties
 				.noOcclusion()
 				.isValidSpawn((state, world, pos, entityType) -> false)

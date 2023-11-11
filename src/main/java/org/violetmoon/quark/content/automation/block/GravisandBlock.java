@@ -2,10 +2,6 @@ package org.violetmoon.quark.content.automation.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.content.automation.entity.Gravisand;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,8 +13,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import org.violetmoon.quark.content.automation.entity.Gravisand;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class GravisandBlock extends QuarkBlock {
+public class GravisandBlock extends ZetaBlock {
 
 	public GravisandBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);

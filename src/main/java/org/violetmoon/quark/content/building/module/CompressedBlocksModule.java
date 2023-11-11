@@ -1,5 +1,8 @@
 package org.violetmoon.quark.content.building.module;
 
+import java.util.List;
+import java.util.function.BooleanSupplier;
+
 import com.google.common.collect.Lists;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
@@ -8,17 +11,11 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.common.ToolActions;
-
-import java.util.List;
-import java.util.function.BooleanSupplier;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkFlammableBlock;
-import org.violetmoon.quark.base.block.QuarkFlammablePillarBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.FuelHandler;
-import org.violetmoon.quark.base.handler.ToolInteractionHandler;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaFlammableBlock;
+import org.violetmoon.zeta.block.ZetaFlammablePillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZLoadComplete;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -77,7 +74,7 @@ public class CompressedBlocksModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		charcoal_block = new QuarkBlock("charcoal_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		charcoal_block = new ZetaBlock("charcoal_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
 						.requiresCorrectToolForDrops()
 						.strength(5F, 10F)
@@ -102,19 +99,19 @@ public class CompressedBlocksModule extends ZetaModule {
 		sack("berry", MaterialColor.COLOR_RED, true, () -> enableBerrySack);
 		sack("glowberry", MaterialColor.COLOR_YELLOW, 14, true, () -> enableGlowBerrySack);
 
-		blaze_lantern = new QuarkBlock("blaze_lantern", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		blaze_lantern = new ZetaBlock("blaze_lantern", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.of(Material.GLASS, DyeColor.YELLOW)
 				.strength(0.3F)
 				.sound(SoundType.GLASS)
 				.lightLevel(b -> 15))
 		.setCondition(() -> enableBlazeLantern);
 		
-		new QuarkBlock("bonded_leather", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.ORANGE)
+		new ZetaBlock("bonded_leather", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.ORANGE)
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedLeather);
 		
-		new QuarkBlock("bonded_rabbit_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.WHITE)
+		new ZetaBlock("bonded_rabbit_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.WHITE)
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedRabbitHide);
@@ -134,7 +131,7 @@ public class CompressedBlocksModule extends ZetaModule {
 	}
 
 	private Block pillar(String name, MaterialColor color, boolean compost, BooleanSupplier cond, int flammability) {
-		Block block = new QuarkFlammablePillarBlock(name + "_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, flammability,
+		Block block = new ZetaFlammablePillarBlock(name + "_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, flammability,
 				Block.Properties.of(Material.WOOD, color)
 				.strength(0.5F)
 				.sound(SoundType.WOOD))
@@ -146,7 +143,7 @@ public class CompressedBlocksModule extends ZetaModule {
 	}
 	
 	private Block crate(String name, MaterialColor color, boolean compost, BooleanSupplier cond) {
-		Block block = new QuarkFlammableBlock(name + "_crate", this, CreativeModeTab.TAB_DECORATIONS, 150,
+		Block block = new ZetaFlammableBlock(name + "_crate", this, CreativeModeTab.TAB_DECORATIONS, 150,
 				Block.Properties.of(Material.WOOD, color)
 				.strength(1.5F)
 				.sound(SoundType.WOOD))
@@ -162,7 +159,7 @@ public class CompressedBlocksModule extends ZetaModule {
 	}
 	
 	private Block sack(String name, MaterialColor color, int light, boolean compost, BooleanSupplier cond) {
-		Block block = new QuarkFlammableBlock(name + "_sack", this, CreativeModeTab.TAB_DECORATIONS, 150,
+		Block block = new ZetaFlammableBlock(name + "_sack", this, CreativeModeTab.TAB_DECORATIONS, 150,
 				Block.Properties.of(Material.WOOL, color)
 				.strength(0.5F)
 				.lightLevel(s -> light)

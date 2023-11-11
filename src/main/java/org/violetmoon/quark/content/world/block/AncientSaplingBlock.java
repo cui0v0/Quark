@@ -9,13 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkSaplingBlock;
-import org.violetmoon.quark.content.world.module.AncientWoodModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
@@ -35,8 +30,11 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import org.violetmoon.quark.content.world.module.AncientWoodModule;
+import org.violetmoon.zeta.block.ZetaSaplingBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class AncientSaplingBlock extends QuarkSaplingBlock {
+public class AncientSaplingBlock extends ZetaSaplingBlock {
 
 	public AncientSaplingBlock(ZetaModule module) {
 		super("ancient", module, new AncientTree());

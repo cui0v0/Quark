@@ -1,18 +1,17 @@
-package org.violetmoon.quark.base.block;
-
-import org.violetmoon.zeta.module.ZetaModule;
+package org.violetmoon.zeta.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class QuarkFlammableBlock extends QuarkBlock {
+public class ZetaFlammablePillarBlock extends ZetaPillarBlock {
 
 	private final int flammability;
 
-	public QuarkFlammableBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, int flamability, Properties properties) {
+	public ZetaFlammablePillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, int flamability, Properties properties) {
 		super(regname, module, creativeTab, properties);
 		this.flammability = flamability;
 	}

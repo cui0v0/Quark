@@ -1,5 +1,8 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -10,18 +13,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkInheritedPaneBlock;
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tweaks.block.DirtyGlassBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -32,7 +31,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 @ZetaLoadModule(category = "tweaks")
 public class GlassShardModule extends ZetaModule {
 
-	public static QuarkBlock dirtyGlass;
+	public static ZetaBlock dirtyGlass;
 
 	public static TagKey<Item> shardTag;
 
@@ -45,13 +44,13 @@ public class GlassShardModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		dirtyGlass = new DirtyGlassBlock("dirty_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
-		new QuarkInheritedPaneBlock(dirtyGlass);
+		new ZetaInheritedPaneBlock(dirtyGlass);
 
-		clearShard = new QuarkItem("clear_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
-		dirtyShard = new QuarkItem("dirty_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		clearShard = new ZetaItem("clear_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 
 		for(DyeColor color : DyeColor.values())
-			shardColors.put(color, new QuarkItem(color.getSerializedName() + "_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
+			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
 	}
 
 	@LoadEvent

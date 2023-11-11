@@ -1,5 +1,10 @@
 package org.violetmoon.quark.content.automation.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -15,19 +20,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.content.automation.module.IronRodModule;
 import org.violetmoon.zeta.api.ICollateralMover;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import java.util.function.BooleanSupplier;
-
-public class IronRodBlock extends EndRodBlock implements ICollateralMover, IQuarkBlock {
+public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

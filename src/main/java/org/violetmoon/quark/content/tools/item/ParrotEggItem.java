@@ -2,11 +2,6 @@ package org.violetmoon.quark.content.tools.item;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.tools.entity.ParrotEgg;
-import org.violetmoon.quark.content.tools.module.ParrotEggsModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,8 +13,12 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.violetmoon.quark.content.tools.entity.ParrotEgg;
+import org.violetmoon.quark.content.tools.module.ParrotEggsModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class ParrotEggItem extends QuarkItem {
+public class ParrotEggItem extends ZetaItem {
 	private final int variant;
 
 	public ParrotEggItem(String suffix, int variant, ZetaModule module) {

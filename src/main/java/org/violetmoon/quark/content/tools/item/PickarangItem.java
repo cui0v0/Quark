@@ -1,5 +1,10 @@
 package org.violetmoon.quark.content.tools.item;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -24,22 +29,15 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
-import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
-public class PickarangItem extends QuarkItem {
+public class PickarangItem extends ZetaItem {
 
 	public final PickarangType<?> type;
 

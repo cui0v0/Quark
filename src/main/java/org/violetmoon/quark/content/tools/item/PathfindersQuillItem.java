@@ -9,16 +9,6 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.mobs.module.StonelingsModule;
-import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
-import org.violetmoon.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
-import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,8 +43,17 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.content.mobs.module.StonelingsModule;
+import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
+import org.violetmoon.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
+import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.ItemNBTHelper;
 
-public class PathfindersQuillItem extends QuarkItem {
+public class PathfindersQuillItem extends ZetaItem {
 
     private static final Direction[] DIRECTIONS = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
 

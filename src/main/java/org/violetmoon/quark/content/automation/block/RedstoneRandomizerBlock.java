@@ -4,11 +4,6 @@ import java.util.EnumSet;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.content.automation.base.RandomizerPowerState;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -33,13 +28,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.violetmoon.quark.content.automation.base.RandomizerPowerState;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 /**
  * @author WireSegal
  * Created at 9:57 AM on 8/26/19.
  */
 
-public class RedstoneRandomizerBlock extends QuarkBlock {
+public class RedstoneRandomizerBlock extends ZetaBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 

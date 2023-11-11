@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.building.module;
 
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
@@ -7,14 +9,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.util.ForgeSoundType;
-
-import java.util.function.BooleanSupplier;
-
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.base.block.QuarkPillarBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.VariantHandler;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -43,10 +42,10 @@ public class IndustrialPaletteModule extends ZetaModule {
 		BooleanSupplier ironPlateCond = () -> enableIronPlates;
 		BooleanSupplier ironLadderCond = () -> enableIronLadder;
 
-		VariantHandler.addSlabAndStairs(new QuarkBlock("iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
-		VariantHandler.addSlabAndStairs(new QuarkBlock("rusty_iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
+		VariantHandler.addSlabAndStairs(new ZetaBlock("iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
+		VariantHandler.addSlabAndStairs(new ZetaBlock("rusty_iron_plate", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond));
 
-		new QuarkPillarBlock("iron_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond);
+		new ZetaPillarBlock("iron_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond);
 
 		new VariantLadderBlock("iron", this, Block.Properties.of(Material.DECORATION)
 				.strength(0.8F)

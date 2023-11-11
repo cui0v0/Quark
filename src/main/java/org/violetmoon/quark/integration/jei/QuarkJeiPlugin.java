@@ -10,32 +10,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
-import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.addons.oddities.util.Influence;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.util.RequiredModTooltipHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
-import org.violetmoon.quark.content.tools.item.AncientTomeItem;
-import org.violetmoon.quark.content.tools.module.AncientTomesModule;
-import org.violetmoon.quark.content.tools.module.ColorRunesModule;
-import org.violetmoon.quark.content.tools.module.PickarangModule;
-import org.violetmoon.quark.content.tweaks.module.DiamondRepairModule;
-import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
-import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
-import org.violetmoon.zeta.event.play.loading.ZGatherHints;
-import org.violetmoon.zeta.module.IDisableable;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-import org.violetmoon.zeta.util.RegistryUtil;
-
 import com.google.common.collect.Sets;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -78,6 +53,27 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
+import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
+import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.addons.oddities.util.Influence;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
+import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
+import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
+import org.violetmoon.quark.content.tools.item.AncientTomeItem;
+import org.violetmoon.quark.content.tools.module.AncientTomesModule;
+import org.violetmoon.quark.content.tools.module.ColorRunesModule;
+import org.violetmoon.quark.content.tools.module.PickarangModule;
+import org.violetmoon.quark.content.tweaks.module.DiamondRepairModule;
+import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
+import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
+import org.violetmoon.zeta.event.play.loading.ZGatherHints;
+import org.violetmoon.zeta.module.IDisableable;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+import org.violetmoon.zeta.util.RegistryUtil;
 
 @JeiPlugin
 public class QuarkJeiPlugin implements IModPlugin {
@@ -246,7 +242,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 		}
 
 		List<ItemStack> used = displayItems
-				.filter(it -> !(it.getItem() instanceof QuarkItem qItem) || qItem.isEnabled())
+				.filter(it -> !(it.getItem() instanceof IDisableable<?> dis) || dis.isEnabled())
 				.map(item -> makeEnchantedDisplayItem(item, random))
 				.collect(Collectors.toList());
 

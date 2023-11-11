@@ -1,4 +1,9 @@
-package org.violetmoon.quark.base.item;
+package org.violetmoon.zeta.item;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EntityType;
@@ -6,25 +11,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IZetaItem {
+public class ZetaSpawnEggItem extends ForgeSpawnEggItem implements IZetaItem {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkSpawnEggItem(Supplier<EntityType<? extends Mob>> type, int primaryColor, int secondaryColor, String regname, ZetaModule module, Properties properties) {
+	public ZetaSpawnEggItem(Supplier<EntityType<? extends Mob>> type, int primaryColor, int secondaryColor, String regname, ZetaModule module, Properties properties) {
 		super(type, primaryColor, secondaryColor, properties);
 
-		Quark.ZETA.registry.registerItem(this, regname);
+		module.zeta.registry.registerItem(this, regname);
 		this.module = module;
 	}
 
@@ -35,7 +32,7 @@ public class QuarkSpawnEggItem extends ForgeSpawnEggItem implements IZetaItem {
 	}
 
 	@Override
-	public QuarkSpawnEggItem setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaSpawnEggItem setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

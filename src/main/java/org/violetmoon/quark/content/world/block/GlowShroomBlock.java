@@ -2,9 +2,6 @@ package org.violetmoon.quark.content.world.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBushBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -18,8 +15,10 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.violetmoon.zeta.block.ZetaBushBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class GlowShroomBlock extends QuarkBushBlock implements BonemealableBlock {
+public class GlowShroomBlock extends ZetaBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 

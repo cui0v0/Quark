@@ -1,11 +1,12 @@
 package org.violetmoon.quark.content.building.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -14,17 +15,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.block.IQuarkBlock;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
-
-import javax.annotation.Nonnull;
 
 /**
  * Unfortunately, due to Ladder Weirdness (tm) this block is NYI
@@ -41,7 +38,7 @@ public class HollowWoodBlock extends HollowFrameBlock {
     private final boolean flammable;
 
     public HollowWoodBlock(Block sourceLog, ZetaModule module, boolean flammable) {
-        this(IQuarkBlock.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
+	    this(Quark.ZETA.registryUtil.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
     }
 
     public HollowWoodBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {

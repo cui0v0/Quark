@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.mobs.item;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,16 +19,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.item.QuarkItem;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 import org.violetmoon.quark.content.mobs.entity.Stoneling.StonelingVariant;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class DiamondHeartItem extends QuarkItem {
+public class DiamondHeartItem extends ZetaItem {
 
 	public DiamondHeartItem(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, properties);

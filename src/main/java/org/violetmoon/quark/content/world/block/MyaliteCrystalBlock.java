@@ -9,11 +9,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.block.QuarkGlassBlock;
+import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 
-public class MyaliteCrystalBlock extends QuarkGlassBlock implements IZetaBlockColorProvider {
+public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockColorProvider {
 
 	public MyaliteCrystalBlock(ZetaModule module) {
 		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,

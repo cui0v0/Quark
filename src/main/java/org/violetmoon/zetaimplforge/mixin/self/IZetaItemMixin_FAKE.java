@@ -27,12 +27,13 @@ import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 
+// Forge can't actually mixin to interfaces, so we fake it by just... mixing in to everyone inheriting the interface.
 @Mixin({
 	ZetaArmorItem.class,
 	ZetaBlockItem.class,
 	ZetaItem.class,
 })
-public class IZetaItemMixin implements IForgeItem, IZetaItemExtensions {
+public class IZetaItemMixin_FAKE implements IForgeItem, IZetaItemExtensions {
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
 		return onItemUseFirstZeta(stack, context);

@@ -1,30 +1,28 @@
 package org.violetmoon.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.base.block.QuarkSlabBlock;
-import org.violetmoon.zeta.util.RequiredModTooltipHandler;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-
-public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IQuarkBlock {
+public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IZetaBlock {
 
     private final ZetaModule module;
     private BooleanSupplier enabledSupplier = () -> true;
 
     public QuarkVerticalSlabBlock(Block parent, ZetaModule module) {
         super(() -> parent, Block.Properties.copy(parent));
-	    String resloc = IQuarkBlock.inherit(parent, s -> s.replace("_slab", "_vertical_slab"));
+        String resloc = Quark.ZETA.registryUtil.inherit(parent, s -> s.replace("_slab", "_vertical_slab"));
 	    Quark.ZETA.registry.registerBlock(this, resloc, true);
 
 	    this.module = module;

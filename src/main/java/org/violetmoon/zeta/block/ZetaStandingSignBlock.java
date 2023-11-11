@@ -1,29 +1,27 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.Quark;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.world.level.block.WallSignBlock;
-import net.minecraft.world.level.block.state.properties.WoodType;
-
-public class QuarkWallSignBlock extends WallSignBlock implements IQuarkBlock {
+public class ZetaStandingSignBlock extends StandingSignBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkWallSignBlock(String regname, ZetaModule module, WoodType type, Properties properties) {
+	public ZetaStandingSignBlock(String regname, ZetaModule module, WoodType type, Properties properties) {
 		super(properties, type);
 		this.module = module;
 
-		Quark.ZETA.registry.registerBlock(this, regname, false);
+		module.zeta.registry.registerBlock(this, regname, false);
 	}
 
 	@Override
-	public QuarkWallSignBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaStandingSignBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

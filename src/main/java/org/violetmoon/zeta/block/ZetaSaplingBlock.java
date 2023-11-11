@@ -1,33 +1,32 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
+
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.IronBarsBlock;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry.Layer;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import java.util.function.BooleanSupplier;
+public abstract class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
 
-public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
-
-	public final ZetaModule module;
+	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
-
-	public QuarkPaneBlock(String name, ZetaModule module, Block.Properties properties, Layer renderLayer) {
-		super(properties);
-
+	
+	public ZetaSaplingBlock(String name, ZetaModule module, AbstractTreeGrower tree) {
+		super(tree, Block.Properties.copy(Blocks.OAK_SAPLING));
 		this.module = module;
-		module.zeta.registry.registerBlock(this, name, true);
+
+		module.zeta.registry.registerBlock(this, name + "_sapling", true);
 		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 
-		if(renderLayer != null)
-			module.zeta.renderLayerRegistry.put(this, renderLayer);
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override
@@ -36,14 +35,13 @@ public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 			super.fillItemCategory(group, items);
 	}
 
-	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;
 	}
 
 	@Override
-	public QuarkPaneBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaSaplingBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}
@@ -52,6 +50,5 @@ public class QuarkPaneBlock extends IronBarsBlock implements IQuarkBlock {
 	public boolean doesConditionApply() {
 		return enabledSupplier.getAsBoolean();
 	}
-
-
+	
 }

@@ -4,12 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "quark.mixins.refmap.json",
   "package": "org.violetmoon.zetaimplforge.mixin",
-  "mixins": [
-    "WeatheringCopperMixin",
-    "IngredientMixin",
-    "self.IQuarkBlockMixin",
-    "self.IZetaItemMixin"
-  ],
+  "mixins": ["IngredientMixin", "WeatheringCopperMixin", "self.IZetaBlockMixin_FAKE", "self.IZetaItemMixin_FAKE"],
   "client": [
     "client.AccessorBlockColors",
     "client.AccessorItemColors",

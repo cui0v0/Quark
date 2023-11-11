@@ -1,28 +1,27 @@
-package org.violetmoon.quark.base.block;
+package org.violetmoon.zeta.block;
+
+import java.util.function.BooleanSupplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ButtonBlock;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.violetmoon.zeta.module.ZetaModule;
-
-import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
  * Created at 9:14 PM on 10/8/19.
  */
-public abstract class QuarkButtonBlock extends ButtonBlock implements IQuarkBlock {
+public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public QuarkButtonBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaButtonBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
 		super(false, properties);
 		this.module = module;
 
@@ -44,7 +43,7 @@ public abstract class QuarkButtonBlock extends ButtonBlock implements IQuarkBloc
 	}
 
 	@Override
-	public QuarkButtonBlock setCondition(BooleanSupplier enabledSupplier) {
+	public ZetaButtonBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;
 	}

@@ -1,23 +1,22 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class HollowLogBlock extends HollowPillarBlock {
 
     private final boolean flammable;
 
     public HollowLogBlock(Block sourceLog, ZetaModule module, boolean flammable) {
-        this(IQuarkBlock.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
+	    this(Quark.ZETA.registryUtil.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
     }
 
     public HollowLogBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {

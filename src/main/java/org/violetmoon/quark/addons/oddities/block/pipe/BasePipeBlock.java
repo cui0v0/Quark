@@ -1,5 +1,10 @@
 package org.violetmoon.quark.addons.oddities.block.pipe;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -12,7 +17,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,18 +34,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
-import org.violetmoon.quark.base.block.QuarkBlock;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import javax.annotation.Nonnull;
-
 import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public abstract class BasePipeBlock extends QuarkBlock implements EntityBlock {
+public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 
 	protected static final BooleanProperty DOWN = BlockStateProperties.DOWN;
 	protected static final BooleanProperty UP = BlockStateProperties.UP;

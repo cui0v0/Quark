@@ -3,14 +3,7 @@ package org.violetmoon.quark.content.world.block;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkGlassBlock;
-import org.violetmoon.quark.content.world.module.CorundumModule;
-import org.violetmoon.quark.content.world.module.SpiralSpiresModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.mojang.math.Vector3f;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -25,12 +18,17 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.world.module.CorundumModule;
+import org.violetmoon.quark.content.world.module.SpiralSpiresModule;
+import org.violetmoon.zeta.block.ZetaGlassBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
  * Created at 12:31 PM on 9/19/19.
  */
-public class CorundumBlock extends QuarkGlassBlock {
+public class CorundumBlock extends ZetaGlassBlock {
 
 	public final float[] colorComponents;
 	public final boolean waxed;

@@ -1,15 +1,14 @@
 package org.violetmoon.quark.content.building.module;
 
+import java.util.function.BooleanSupplier;
+
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
-import java.util.function.BooleanSupplier;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.QuarkBlock;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.VariantHandler;
+import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -53,7 +52,7 @@ public class MoreBrickTypesModule extends ZetaModule {
 	}
 	
 	private void add(String name, Block parent, BooleanSupplier cond) {
-		VariantHandler.addSlabStairsWall(new QuarkBlock(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, 
+		VariantHandler.addSlabStairsWall(new ZetaBlock(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				Block.Properties.copy(parent)
 				.requiresCorrectToolForDrops())
 				.setCondition(cond));

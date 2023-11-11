@@ -4,11 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.IQuarkBlock;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,8 +16,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBlock {
+public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private final boolean glowing;
@@ -134,7 +133,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IQuarkBloc
 	}
 
 	@Override
-	public IQuarkBlock setCondition(BooleanSupplier condition) {
+	public IZetaBlock setCondition(BooleanSupplier condition) {
 		return this;
 	}
 

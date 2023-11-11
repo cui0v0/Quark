@@ -3,8 +3,10 @@ package org.violetmoon.quark.content.building.module;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.LeafCarpetBlock;
@@ -19,10 +21,6 @@ import org.violetmoon.zeta.event.load.ZLoadComplete;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks", "immersive_weathering" })
 public class LeafCarpetModule extends ZetaModule {
@@ -64,7 +62,7 @@ public class LeafCarpetModule extends ZetaModule {
 	}
 
 	private LeafCarpetBlock carpetBlock(Block base) {
-		LeafCarpetBlock carpet = new LeafCarpetBlock(IQuarkBlock.inherit(base, s -> s.replaceAll("_leaves", "_leaf_carpet")), base, this);
+		LeafCarpetBlock carpet = new LeafCarpetBlock(Quark.ZETA.registryUtil.inherit(base, s -> s.replaceAll("_leaves", "_leaf_carpet")), base, this);
 		carpets.add(carpet);
 		return carpet;
 	}

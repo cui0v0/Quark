@@ -2,11 +2,6 @@ package org.violetmoon.quark.content.world.block;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.block.QuarkBlock;
-import org.violetmoon.quark.content.world.module.ChorusVegetationModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,8 +32,12 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
+import org.violetmoon.quark.content.world.module.ChorusVegetationModule;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public class ChorusVegetationBlock extends QuarkBlock implements BonemealableBlock, IForgeShearable {
+public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBlock, IForgeShearable {
 
 	protected static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 13, 14);
 

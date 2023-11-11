@@ -2,11 +2,6 @@ package org.violetmoon.quark.content.experimental.item;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
-import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -18,8 +13,12 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
+import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class HammerItem extends QuarkItem {
+public class HammerItem extends ZetaItem {
 
 	public HammerItem(ZetaModule module) {
 		super("hammer", module, new Item.Properties()

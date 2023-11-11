@@ -6,14 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.quark.content.tools.item.AncientTomeItem;
-import org.violetmoon.quark.content.tools.module.AncientTomesModule;
-import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -34,6 +26,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
+import org.violetmoon.quark.content.tools.item.AncientTomeItem;
+import org.violetmoon.quark.content.tools.module.AncientTomesModule;
+import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
+import org.violetmoon.zeta.module.IDisableable;
+import org.violetmoon.zeta.util.ItemNBTHelper;
 
 public class EnchantedBookTooltips {
 
@@ -90,7 +89,7 @@ public class EnchantedBookTooltips {
 
 		for(ItemStack stack : getTestItems()) {
 			Item item = stack.getItem();
-			if(item instanceof QuarkItem && !((QuarkItem) item).isEnabled())
+			if(item instanceof IDisableable<?> disableable && !disableable.isEnabled())
 				continue;
 
 			if(!stack.isEmpty() && e.canEnchant(stack)) {

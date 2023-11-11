@@ -1,29 +1,5 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
-import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
-import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.quark.base.item.QuarkMobBucketItem;
-import org.violetmoon.quark.base.util.QuarkEffect;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
-import org.violetmoon.quark.content.mobs.client.render.entity.CrabRenderer;
-import org.violetmoon.quark.content.mobs.entity.Crab;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
@@ -45,6 +21,29 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
+import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.base.util.QuarkEffect;
+import org.violetmoon.quark.base.world.EntitySpawnHandler;
+import org.violetmoon.quark.content.mobs.client.render.entity.CrabRenderer;
+import org.violetmoon.quark.content.mobs.entity.Crab;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
+import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.item.ZetaMobBucketItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 /**
  * @author WireSegal
@@ -74,7 +73,7 @@ public class CrabsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		crab_leg = new QuarkItem("crab_leg", this, new Item.Properties()
+		crab_leg = new ZetaItem("crab_leg", this, new Item.Properties()
 				.tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder()
 						.meat()
@@ -82,7 +81,7 @@ public class CrabsModule extends ZetaModule {
 						.saturationMod(0.3F)
 						.build()));
 
-		Item cookedCrabLeg = new QuarkItem("cooked_crab_leg", this, new Item.Properties()
+		Item cookedCrabLeg = new ZetaItem("cooked_crab_leg", this, new Item.Properties()
 				.tab(CreativeModeTab.TAB_FOOD)
 				.food(new FoodProperties.Builder()
 						.meat()
@@ -90,10 +89,10 @@ public class CrabsModule extends ZetaModule {
 						.saturationMod(0.8F)
 						.build()));
 
-		crab_shell = new QuarkItem("crab_shell", this, new Item.Properties().tab(CreativeModeTab.TAB_BREWING))
+		crab_shell = new ZetaItem("crab_shell", this, new Item.Properties().tab(CreativeModeTab.TAB_BREWING))
 				.setCondition(() -> enableBrewing);
 
-		crab_bucket = new QuarkMobBucketItem(() -> crabType, () -> Fluids.WATER, () -> QuarkSounds.BUCKET_EMPTY_CRAB, "crab_bucket", this);
+		crab_bucket = new ZetaMobBucketItem(() -> crabType, () -> Fluids.WATER, () -> QuarkSounds.BUCKET_EMPTY_CRAB, "crab_bucket", this);
 
 		resilience = new QuarkEffect("resilience", MobEffectCategory.BENEFICIAL, 0x5b1a04);
 		resilience.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "2ddf3f0a-f386-47b6-aeb0-6bd32851f215", 0.5, AttributeModifier.Operation.ADDITION);

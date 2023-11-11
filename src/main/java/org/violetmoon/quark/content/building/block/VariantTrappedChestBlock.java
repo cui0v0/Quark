@@ -1,5 +1,11 @@
 package org.violetmoon.quark.content.building.block;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -16,19 +22,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.block.IQuarkBlock;
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-public class VariantTrappedChestBlock extends ChestBlock implements IQuarkBlock, IChestTextureProvider {
+public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IChestTextureProvider {
 
 	public final String type;
 	private final ZetaModule module;

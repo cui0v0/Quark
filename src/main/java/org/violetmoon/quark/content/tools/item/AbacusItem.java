@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tools.item;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -13,14 +15,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.item.QuarkItem;
+import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-public class AbacusItem extends QuarkItem {
+public class AbacusItem extends ZetaItem {
 
 	public static final String TAG_POS_X = "boundPosX";
 	public static final String TAG_POS_Y = "boundPosY";

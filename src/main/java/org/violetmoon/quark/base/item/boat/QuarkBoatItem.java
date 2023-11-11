@@ -5,10 +5,6 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
-import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.item.QuarkItem;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -26,8 +22,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.violetmoon.quark.base.handler.WoodSetHandler;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
 
-public class QuarkBoatItem extends QuarkItem {
+public class QuarkBoatItem extends ZetaItem {
 
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 
