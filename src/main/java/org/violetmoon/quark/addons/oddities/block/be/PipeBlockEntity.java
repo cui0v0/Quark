@@ -7,7 +7,6 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -34,7 +33,6 @@ import javax.annotation.Nonnull;
 
 import org.violetmoon.quark.addons.oddities.block.pipe.BasePipeBlock;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
-import org.violetmoon.quark.base.client.handler.NetworkProfilingHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.util.SimpleInventoryBlockEntity;
@@ -282,12 +280,6 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 
 			level.addFreshEntity(entity);
 		}
-	}
-
-	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		super.onDataPacket(net, packet);
-		NetworkProfilingHandler.receive("pipe");
 	}
 
 	public void dropAllItems() {

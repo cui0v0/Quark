@@ -84,9 +84,6 @@ public class GeneralConfig {
 
 	@Config(description = "Set to true to make the quark big worldgen features such as stone clusters generate as spheres rather than unique shapes. It's faster, but won't look as cool")
 	public static boolean useFastWorldgen = false;
-
-	@Config(description = "Enables quark network profiling features. Do not enable this unless requested to.")
-	public static boolean enableNetworkProfiling = false;
 	
 	@Config(description = "Used for terrablender integration")
 	public static int terrablenderRegionWeight = 1;
