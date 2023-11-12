@@ -339,10 +339,6 @@ public class AttributeTooltips {
 
 	public record AttributeComponent(ItemStack stack,
 									 AttributeSlot slot) implements ClientTooltipComponent, TooltipComponent {
-		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
-
-		}
 
 		@Override
 		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
