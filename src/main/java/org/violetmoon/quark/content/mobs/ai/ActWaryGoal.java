@@ -10,18 +10,17 @@
  */
 package org.violetmoon.quark.content.mobs.ai;
 
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.function.BooleanSupplier;
-
-import org.violetmoon.quark.base.util.MutableVectorHolder;
-import org.violetmoon.quark.content.mobs.entity.Stoneling;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.violetmoon.quark.base.util.MutableVectorHolder;
+import org.violetmoon.quark.content.mobs.entity.Stoneling;
+
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.function.BooleanSupplier;
 
 public class ActWaryGoal extends WaterAvoidingRandomStrollGoal {
 
@@ -95,7 +94,7 @@ public class ActWaryGoal extends WaterAvoidingRandomStrollGoal {
 		if (startled || stoneling.isPlayerMade())
 			return false;
 
-		List<Player> playersAround = stoneling.level.getEntitiesOfClass(Player.class, stoneling.getBoundingBox().inflate(range),
+		List<Player> playersAround = stoneling.getCommandSenderWorld().getEntitiesOfClass(Player.class, stoneling.getBoundingBox().inflate(range),
 				(player) -> player != null && !player.getAbilities().instabuild && player.distanceToSqr(stoneling) < range * range);
 
 		if (playersAround.isEmpty())

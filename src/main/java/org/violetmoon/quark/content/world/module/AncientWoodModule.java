@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -66,8 +67,8 @@ public class AncientWoodModule extends ZetaModule {
 
 	@LoadEvent
 	public void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(event, this, "ancient", MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, true);
-		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MaterialColor.PLANT);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "ancient", MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_WHITE, true);
+		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MapColor.PLANT);
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 

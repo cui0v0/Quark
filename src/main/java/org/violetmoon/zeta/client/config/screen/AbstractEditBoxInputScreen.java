@@ -1,13 +1,12 @@
 package org.violetmoon.zeta.client.config.screen;
 
-import javax.annotation.Nonnull;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.config.ChangeSet;
@@ -24,15 +23,15 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen<
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(mstack);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
 
-		super.render(mstack, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		drawCenteredString(mstack, font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
-		drawCenteredString(mstack, font, I18n.get("quark.gui.config.defaultvalue", def.defaultValue), width / 2, 30, 0xFFFFFF);
+		guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.defaultvalue", def.defaultValue), width / 2, 30, 0xFFFFFF);
 
-		input.render(mstack, mouseX, mouseY, partialTicks);
+		input.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 
 	@Override

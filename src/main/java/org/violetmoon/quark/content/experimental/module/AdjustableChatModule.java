@@ -8,7 +8,6 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class AdjustableChatModule extends ZetaModule {
-
 	@Config public static int horizontalShift = 0;
 	@Config public static int verticalShift = 0;
 
@@ -17,13 +16,12 @@ public class AdjustableChatModule extends ZetaModule {
 
 		@PlayEvent
 		public void pre(ZRenderGuiOverlay.ChatPanel.Pre event) {
-			event.getPoseStack().translate(horizontalShift, verticalShift, 0);
+			event.getGuiGraphics().pose().translate(horizontalShift, verticalShift, 0);
 		}
 
 		@PlayEvent
 		public void post(ZRenderGuiOverlay.ChatPanel.Post event) {
-			event.getPoseStack().translate(-horizontalShift, -verticalShift, 0);
+			event.getGuiGraphics().pose().translate(-horizontalShift, -verticalShift, 0);
 		}
 	}
-	
 }

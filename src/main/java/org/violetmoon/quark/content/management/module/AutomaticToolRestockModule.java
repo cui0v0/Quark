@@ -2,6 +2,8 @@ package org.violetmoon.quark.content.management.module;
 
 import com.google.common.collect.Lists;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -82,8 +84,8 @@ public class AutomaticToolRestockModule extends ZetaModule {
 
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
-		importantEnchants = RegistryUtil.massRegistryGet(enchantNames, Registry.ENCHANTMENT);
-		itemsToIgnore = RegistryUtil.massRegistryGet(ignoredItems, Registry.ITEM);
+		importantEnchants = RegistryUtil.massRegistryGet(enchantNames, BuiltInRegistries.ENCHANTMENT);
+		itemsToIgnore = RegistryUtil.massRegistryGet(ignoredItems, BuiltInRegistries.ITEM);
 	}
 
 	@PlayEvent

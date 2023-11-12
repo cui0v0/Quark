@@ -17,9 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
-
-import java.util.*;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.play.ZEndClientTick;
@@ -30,6 +27,8 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayer;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.*;
 
 @ZetaLoadModule(category = "tweaks")
 public class AutomaticRecipeUnlockModule extends ZetaModule {
@@ -61,9 +60,9 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 				recipes.removeIf(
 						(recipe) ->
 						recipe == null
-						|| recipe.getResultItem() == null
+						|| recipe.getResultItem(event.getPlayer().getCommandSenderWorld().registryAccess()) == null
 						|| ignoredRecipes.contains(Objects.toString(recipe.getId()))
-						|| recipe.getResultItem().isEmpty());
+						|| recipe.getResultItem(event.getPlayer().getCommandSenderWorld().registryAccess()).isEmpty());
 
 				int idx = 0;
 				int maxShift = 1000;
@@ -80,7 +79,7 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 
 				if (forceLimitedCrafting)
-					player.level.getGameRules().getRule(GameRules.RULE_LIMITED_CRAFTING).set(true, server);
+					player.getCommandSenderWorld().getGameRules().getRule(GameRules.RULE_LIMITED_CRAFTING).set(true, server);
 			}
 		}
 	}

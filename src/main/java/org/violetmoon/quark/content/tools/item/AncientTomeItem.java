@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -54,7 +55,7 @@ public class AncientTomeItem extends ZetaItem {
 	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
 		if (isEnabled() || group == CreativeModeTab.TAB_SEARCH) {
 			if (group == CreativeModeTab.TAB_SEARCH || group.getEnchantmentCategories().length != 0) {
-				Registry.ENCHANTMENT.forEach(ench -> {
+				BuiltInRegistries.ENCHANTMENT.forEach(ench -> {
 					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
 						if (!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
 							if (group == CreativeModeTab.TAB_SEARCH || group.hasEnchantmentCategory(ench.category)) {

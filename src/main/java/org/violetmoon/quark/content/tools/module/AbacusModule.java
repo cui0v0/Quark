@@ -1,27 +1,11 @@
 package org.violetmoon.quark.content.tools.module;
 
-import java.util.List;
-
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
-import org.violetmoon.quark.content.tools.item.AbacusItem;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.play.ZHighlightBlock;
-import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
@@ -36,6 +20,21 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.joml.Matrix4f;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
+import org.violetmoon.quark.content.tools.item.AbacusItem;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.client.event.play.ZHighlightBlock;
+import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "tools")
 public class AbacusModule extends ZetaModule {
@@ -61,6 +60,7 @@ public class AbacusModule extends ZetaModule {
 		public void onHUDRender(ZRenderGuiOverlay.Crosshair event) {
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
+			GuiGraphics guiGraphics = event.getGuiGraphics();
 			if(player != null) {
 				ItemStack stack = player.getMainHandItem();
 				if(!(stack.getItem() instanceof AbacusItem))
@@ -73,10 +73,11 @@ public class AbacusModule extends ZetaModule {
 						int x = window.getGuiScaledWidth() / 2 + 10;
 						int y = window.getGuiScaledHeight() / 2 - 7;
 
-						mc.getItemRenderer().renderAndDecorateItem(stack, x, y);
+						guiGraphics.renderItem(stack, x, y);
+
 
 						String distStr = distance < AbacusItem.MAX_COUNT ? Integer.toString(distance + 1) : (AbacusItem.MAX_COUNT + "+");
-						mc.font.drawShadow(event.getPoseStack(), distStr, x + 17, y + 5, 0xFFFFFF);
+						guiGraphics.drawString(mc.font, distStr, x + 17, y + 5, 0xFFFFFF, true);
 					}
 				}
 			}

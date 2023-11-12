@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.world.module;
 
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.material.MaterialColor;
 
 @ZetaLoadModule(category = "world", antiOverlap = { "caverns_and_chasms" })
 public class AzaleaWoodModule extends ZetaModule {
@@ -21,7 +21,7 @@ public class AzaleaWoodModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(event, this, "azalea", MaterialColor.COLOR_LIGHT_GREEN, MaterialColor.COLOR_BROWN, true);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "azalea", MapColor.COLOR_LIGHT_GREEN, MapColor.COLOR_BROWN, true);
 		//ugly I know but config is fired before this now
 		//TODO: not actually fired by the config lol
 		enabledStatusChanged(true, this.enabled, this.enabled);

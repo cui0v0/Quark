@@ -10,6 +10,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -81,7 +84,7 @@ public class AttributeTooltips {
 
 	@Nullable
 	private static AttributeIconEntry getIconForAttribute(Attribute attribute) {
-		ResourceLocation loc = Registry.ATTRIBUTE.getKey(attribute);
+		ResourceLocation loc = BuiltInRegistries.ATTRIBUTE.getKey(attribute);
 		if (loc != null) return attributes.get(loc);
 		return null;
 	}
@@ -336,9 +339,15 @@ public class AttributeTooltips {
 
 	public record AttributeComponent(ItemStack stack,
 									 AttributeSlot slot) implements ClientTooltipComponent, TooltipComponent {
-
 		@Override
 		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+
+		}
+
+		@Override
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+			PoseStack pose = guiGraphics.pose();
+
 			if (!Screen.hasShiftDown()) {
 				pose.pushPose();
 				pose.translate(0, 0, 500);
@@ -383,7 +392,7 @@ public class AttributeTooltips {
 							RenderSystem.setShader(GameRenderer::getPositionTexShader);
 							RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 							RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-							GuiComponent.blit(pose, x, y, 193 + slot.ordinal() * 9, 35, 9, 9, 256, 256);
+							guiGraphics.blit(pose, x, y, 193 + slot.ordinal() * 9, 35, 9, 9, 256, 256);
 							x += 20;
 						}
 
@@ -395,7 +404,7 @@ public class AttributeTooltips {
 
 						for (Attribute key : slotAttributes.keys()) {
 							if (getIconForAttribute(key) == null) {
-								mc.font.drawShadow(pose, "[+]", x + 1, y + 1, 0xFFFF55);
+								guiGraphics.drawString(font, "[+]", x + 1, y + 1, 0xFFFF55, true);
 								break;
 							}
 						}

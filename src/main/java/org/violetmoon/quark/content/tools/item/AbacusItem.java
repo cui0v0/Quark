@@ -83,7 +83,7 @@ public class AbacusItem extends ZetaItem {
 				HitResult result = mc.hitResult;
 				if(result instanceof BlockHitResult) {
 					BlockPos target = ((BlockHitResult) result).getBlockPos();
-					count = AbacusItem.getCount(stack, target, player.level);
+					count = AbacusItem.getCount(stack, target, player.level());
 				}
 			}
 

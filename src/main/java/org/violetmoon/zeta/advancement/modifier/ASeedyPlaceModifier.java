@@ -2,16 +2,15 @@ package org.violetmoon.zeta.advancement.modifier;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.PlacedBlockTrigger;
-import net.minecraft.core.Registry;
+import net.minecraft.advancements.critereon.EnterBlockTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Set;
-
-import org.violetmoon.zeta.api.IMutableAdvancement;
-import org.violetmoon.zeta.advancement.AdvancementModifier;
-import org.violetmoon.zeta.module.ZetaModule;
 
 public class ASeedyPlaceModifier extends AdvancementModifier {
 
@@ -33,9 +32,9 @@ public class ASeedyPlaceModifier extends AdvancementModifier {
 	@Override
 	public boolean apply(ResourceLocation res, IMutableAdvancement adv) {
 		for(var block : seeds) {
-			Criterion criterion = new Criterion(PlacedBlockTrigger.TriggerInstance.placedBlock(block));
+			Criterion criterion = new Criterion(EnterBlockTrigger.TriggerInstance.entersBlock(block));
 			
-			String name = Registry.BLOCK.getKey(block).toString();
+			String name = BuiltInRegistries.BLOCK.getKey(block).toString();
 			adv.addOrCriterion(name, criterion);
 		}
 		
