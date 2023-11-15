@@ -1,10 +1,5 @@
 package org.violetmoon.quark.content.tweaks.client.item;
 
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
@@ -25,6 +20,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class CompassAnglePropertyFunction implements ItemPropertyFunction {
@@ -47,7 +46,7 @@ public class CompassAnglePropertyFunction implements ItemPropertyFunction {
 		if(entity == null)
 			return 0;
 
-		if(worldIn == null && entity != null && entity.level instanceof ClientLevel level)
+		if(worldIn == null && entity != null && entity.getCommandSenderWorld() instanceof ClientLevel level)
 			worldIn = level;
 
 		double angle;

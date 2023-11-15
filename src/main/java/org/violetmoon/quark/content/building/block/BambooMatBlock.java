@@ -10,8 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -25,7 +24,8 @@ public class BambooMatBlock extends ZetaBlock {
 	
 	public BambooMatBlock(String name, ZetaModule module, Material material, CreativeModeTab tab) {
 		super(name, module, tab,
-				Block.Properties.of(material, MaterialColor.COLOR_YELLOW)
+				Block.Properties.of(material)
+				.mapColor(MapColor.COLOR_YELLOW)
 				.strength(0.5F)
 				.sound(SoundType.BAMBOO));
 		

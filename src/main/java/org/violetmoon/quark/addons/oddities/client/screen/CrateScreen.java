@@ -1,9 +1,15 @@
 package org.violetmoon.quark.addons.oddities.client.screen;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.addons.oddities.inventory.CrateMenu;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
 import org.violetmoon.quark.base.Quark;
@@ -12,19 +18,10 @@ import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTar
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.client.module.ChestSearchingModule;
 
-import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Quark.MOD_ID, "textures/gui/crate.png");
 
 	private int lastScroll;
@@ -55,10 +52,10 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	private boolean canScroll() {
@@ -136,35 +133,33 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	}
 
 	@Override
-	protected void renderBg(@Nonnull PoseStack matrixStack, float partialTicks, int x, int y) {
+	protected void renderBg(@Nonnull GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TEXTURE);
 
 		int i = (width - imageWidth) / 2;
 		int j = (height - imageHeight) / 2;
-		blit(matrixStack, i, j, 0, 0, imageWidth + 20, imageHeight);
+		guiGraphics.blit(TEXTURE, i, j, 0, 0, imageWidth + 20, imageHeight);
 
 		int maxScroll = (menu.getStackCount() / CrateMenu.numCols) * CrateMenu.numCols;
 
 		int u = 232 + (maxScroll == 0 ? 12 : 0);
 		int by = j + 18 + scrollOffs;
-		blit(matrixStack, i + imageWidth, by, u, 0, 12, 15);
+		guiGraphics.blit(TEXTURE, i + imageWidth, by, u, 0, 12, 15);
 
-		if(!Quark.ZETA.modules.get(ChestSearchingModule.class).searchBarShown()) {
+		if (!Quark.ZETA.modules.get(ChestSearchingModule.class).searchBarShown()) {
 			String s = menu.getTotal() + "/" + CrateModule.maxItems;
 
 			int color = MiscUtil.Client.getGuiTextColor("crate_count");
-			font.draw(matrixStack, s, i + this.imageWidth - font.width(s) - 8 - InventoryButtonHandler.getActiveButtons(ButtonTargetType.CONTAINER_INVENTORY).size() * 12, j + 6, color);
+			guiGraphics.drawString(font, s, i + this.imageWidth - font.width(s) - 8 - InventoryButtonHandler.getActiveButtons(ButtonTargetType.CONTAINER_INVENTORY).size() * 12, j + 6, color);
 		}
 	}
 
 	@Override
-	protected void renderLabels(@Nonnull PoseStack poseStack, int mouseX, int mouseY) {
+	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		int color = MiscUtil.Client.getGuiTextColor("crate_count");
 
-		this.font.draw(poseStack, this.title, (float)this.titleLabelX, (float)this.titleLabelY, color);
-		this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY, color);
+		guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, color);
+		guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, color);
 	}
-
 }

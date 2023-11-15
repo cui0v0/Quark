@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.ChuteBlock;
 import org.violetmoon.quark.content.automation.block.be.ChuteBlockEntity;
@@ -34,6 +35,6 @@ public class ChuteModule extends ZetaModule {
 						.sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(ChuteBlockEntity::new, chute).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "chute", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "chute", Registries.BLOCK_ENTITY_TYPE);
 	}
 }

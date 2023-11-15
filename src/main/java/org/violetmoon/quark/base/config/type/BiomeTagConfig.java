@@ -1,18 +1,17 @@
 package org.violetmoon.quark.base.config.type;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.ConfigFlagManager;
+import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.zeta.module.ZetaModule;
 
 public class BiomeTagConfig implements IBiomeConfig, IConfigType {
 
@@ -74,7 +73,7 @@ public class BiomeTagConfig implements IBiomeConfig, IConfigType {
 	public void updateTypes() {
 		tags = new LinkedList<>();
 		for (String s : biomeTagStrings) {
-			TagKey<Biome> tag = TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(s));
+			TagKey<Biome> tag = TagKey.create(Registries.BIOME, new ResourceLocation(s));
 
 			if(tag != null)
 				tags.add(tag);

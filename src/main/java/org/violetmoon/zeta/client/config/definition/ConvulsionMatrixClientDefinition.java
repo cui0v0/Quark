@@ -1,13 +1,19 @@
 package org.violetmoon.zeta.client.config.definition;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.annotation.Nonnull;
-
+import com.google.common.base.Preconditions;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.client.gui.widget.ForgeSlider;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.config.type.inputtable.ConvulsionMatrixConfig;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.config.screen.AbstractSectionInputScreen;
@@ -16,18 +22,11 @@ import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.ValueDefinition;
 
-import com.google.common.base.Preconditions;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.client.gui.widget.ForgeSlider;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<SectionDefinition> {
 	public ConvulsionMatrixClientDefinition(ConvulsionMatrixConfig cfg, SectionDefinition def) {
@@ -103,7 +102,7 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 			for(Map.Entry<String, double[]> entry : params.presetMap.entrySet()) {
 				String name = entry.getKey();
 				double[] preset = entry.getValue();
-				addRenderableWidget(new Button(x + (w * i), y + 115, w - p, 20, Component.literal(name), __ -> setFromArray(preset)));
+				addRenderableWidget(new Button.Builder(Component.literal(name), __ -> setFromArray(preset)).size(w - p, 20).pos(x + (w * i), y + 115).build());
 				i++;
 			}
 
@@ -133,12 +132,14 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 				}
 
 				@Override
-				public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-					super.render(mstack, mouseX, mouseY, partialTicks);
+				public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+					Minecraft mc = Minecraft.getInstance();
+
+					super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 					String displayVal = String.format("%.2f", getValue());
 					int valueColor = changes.isDirty(binding) ? ChatFormatting.GOLD.getColor() : 0xFFFFFF;
-					font.drawShadow(mstack, displayVal, x + (float) (getWidth() / 2 - font.width(displayVal) / 2), y + 6, valueColor);
+					guiGraphics.drawString(mc.font, displayVal, x + (getWidth() / 2 - font.width(displayVal) / 2), y + 6, valueColor);
 				}
 			};
 		}
@@ -149,35 +150,37 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 		}
 
 		@Override
-		public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-			renderBackground(mstack);
+		public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			PoseStack mstack = guiGraphics.pose();
 
-			super.render(mstack, mouseX, mouseY, partialTicks);
+			renderBackground(guiGraphics);
+
+			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			int x = width / 2 - 203;
 			int y = 10;
 			int size = 60;
 
 			int titleLeft = width / 2 + 66;
-			drawCenteredString(mstack, font, Component.literal(params.name).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
-			drawCenteredString(mstack, font, Component.literal("Presets"), titleLeft, 155, 0xFFFFFF);
+			guiGraphics.drawCenteredString(font, Component.literal(params.name).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+			guiGraphics.drawCenteredString(font, Component.literal("Presets"), titleLeft, 155, 0xFFFFFF);
 
 			//copied from the original
 			int sliders = 0;
-			for(Widget w : renderables) {
-				if(w instanceof ForgeSlider s) {
+			for (Renderable renderable : renderables) {
+				if (renderable instanceof ForgeSlider s) {
 					switch (sliders) {
 						case 0 -> {
-							font.drawShadow(mstack, "R =", s.x - 20, s.y + 5, 0xFF0000);
-							font.drawShadow(mstack, "R", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0xFF0000);
+							guiGraphics.drawString(font, "R =", s.getX() - 20, s.getY() + 5, 0xFF0000);
+							guiGraphics.drawString(font, "R", s.getX() + (s.getWidth() / 2 - 2), s.getY() - 12, 0xFF0000);
 						}
-						case 1 -> font.drawShadow(mstack, "G", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x00FF00);
-						case 2 -> font.drawShadow(mstack, "B", s.x + (float) (s.getWidth() / 2 - 2), s.y - 12, 0x0077FF);
-						case 3 -> font.drawShadow(mstack, "G =", s.x - 20, s.y + 5, 0x00FF00);
-						case 6 -> font.drawShadow(mstack, "B =", s.x - 20, s.y + 5, 0x0077FF);
+						case 1 -> guiGraphics.drawString(font, "G", s.getX() + (s.getWidth() / 2 - 2), s.getY() - 12, 0x00FF00);
+						case 2 -> guiGraphics.drawString(font, "B", s.getX() + (s.getWidth() / 2 - 2), s.getY() - 12, 0x0077FF);
+						case 3 -> guiGraphics.drawString(font, "G =", s.getX() - 20, s.getY() + 5, 0x00FF00);
+						case 6 -> guiGraphics.drawString(font, "B =", s.getX() - 20, s.getY() + 5, 0x0077FF);
 					}
-					if((sliders % 3) != 0)
-						font.drawShadow(mstack, "+", s.x - 9, s.y + 5, 0xFFFFFF);
+					if ((sliders % 3) != 0)
+						guiGraphics.drawString(font, "+", s.getX() - 9, s.getY() + 5, 0xFFFFFF);
 
 					sliders++;
 				}
@@ -186,18 +189,18 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 			//color preview
 			String[] biomes = params.biomeNames;
 			int[] colors = params.testColors;
-			int[] folliageColors =  params.folliageTestColors;
+			int[] folliageColors = params.folliageTestColors;
 			boolean renderFolliage = params.shouldDisplayFolliage();
 			double[] matrix = getToDoubleArray();
 
-			for(int i = 0; i < biomes.length; i++) {
+			for (int i = 0; i < biomes.length; i++) {
 				String name = biomes[i];
 				int color = colors[i];
 
 				int convolved = ConvulsionMatrixConfig.convolve(matrix, color);
 
 				int folliage, convolvedFolliage = 0;
-				if(renderFolliage) {
+				if (renderFolliage) {
 					folliage = folliageColors[i];
 					convolvedFolliage = ConvulsionMatrixConfig.convolve(matrix, folliage);
 				}
@@ -205,20 +208,20 @@ public class ConvulsionMatrixClientDefinition implements ClientDefinitionExt<Sec
 				int cx = x + (i % 2) * (size + 5);
 				int cy = y + (i / 2) * (size + 5);
 
-				fill(mstack, cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
-				fill(mstack, cx, cy, cx + size, cy + size, convolved);
-				fill(mstack, cx + size / 2 - 1, cy + size / 2 - 1, cx + size, cy + size, 0x22000000);
+				guiGraphics.fill(cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
+				guiGraphics.fill(cx, cy, cx + size, cy + size, convolved);
+				guiGraphics.fill(cx + size / 2 - 1, cy + size / 2 - 1, cx + size, cy + size, 0x22000000);
 
-				if(renderFolliage)
-					fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage);
+				if (renderFolliage)
+					guiGraphics.fill(cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage);
 
-				font.draw(mstack, name, cx + 2, cy + 2, 0x55000000);
+				guiGraphics.drawString(font, name, cx + 2, cy + 2, 0x55000000);
 
-				if(renderFolliage) {
-					minecraft.getItemRenderer().renderGuiItem(new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
+				if (renderFolliage) {
+					guiGraphics.renderItem(new ItemStack(Items.OAK_SAPLING), cx + size - 18, cy + size - 16);
 					mstack.pushPose();
 					mstack.translate(0, 0, 999);
-					fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage & 0x55FFFFFF);
+					guiGraphics.fill(cx + size / 2, cy + size / 2, cx + size, cy + size, convolvedFolliage & 0x55FFFFFF);
 					mstack.popPose();
 				}
 			}

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -91,7 +93,7 @@ public class ChestSearchingModule extends ZetaModule {
 						if(searchBar != null) {
 							searchEnabled = !searchEnabled;
 							updateSearchStatus();
-							searchBar.setFocus(true);
+							searchBar.setFocused(true);
 						}
 					}).setTextureShift(() -> searchEnabled),
 				null);
@@ -126,7 +128,7 @@ public class ChestSearchingModule extends ZetaModule {
 				searchBar.setVisible(searchEnabled);
 
 				if(!searchEnabled)
-					searchBar.setFocus(false);
+					searchBar.setFocused(false);
 			}
 		}
 
@@ -169,12 +171,13 @@ public class ChestSearchingModule extends ZetaModule {
 		@PlayEvent
 		public void renderForeground(ZRenderContainerScreen.Foreground event) {
 			if(searchBar != null && searchEnabled) {
-				PoseStack matrix = event.getPoseStack();
+				GuiGraphics guiGraphics = event.getGuiGraphics();
+				PoseStack matrix = guiGraphics.pose();
 				AbstractContainerScreen<?> gui = event.getContainerScreen();
 
 				matrix.pushPose();
 
-				drawBackground(matrix, gui, searchBar.x - 11, searchBar.y - 3);
+				drawBackground(guiGraphics, gui, searchBar.getX() - 11, searchBar.getY() - 3);
 
 				if(!text.isEmpty()) {
 					AbstractContainerMenu container = gui.getMenu();
@@ -186,7 +189,7 @@ public class ChestSearchingModule extends ZetaModule {
 								int x = s.x;
 								int y = s.y;
 
-								Screen.fill(matrix, x, y, x + 16, y + 16, overlayColor.getColor());
+								guiGraphics.fill(x, y, x + 16, y + 16, overlayColor.getColor());
 							} else matched++;
 						}
 					}
@@ -196,20 +199,19 @@ public class ChestSearchingModule extends ZetaModule {
 					searchBar.setTextColor(0xFF5555);
 				else searchBar.setTextColor(0xFFFFFF);
 
-				searchBar.render(matrix, 0, 0, 0);
+				searchBar.render(guiGraphics, 0, 0, 0);
 				matrix.popPose();
 			}
 		}
 
-		private void drawBackground(PoseStack matrix, Screen gui, int x, int y) {
-			if(gui == null)
+		private void drawBackground(GuiGraphics guiGraphics, Screen gui, int x, int y) {
+			if (gui == null)
 				return;
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
-			Screen.blit(matrix, x, y, 0, 0, 126, 13, 256, 256);
+			guiGraphics.blit(MiscUtil.GENERAL_ICONS, x, y, 0, 0, 126, 13, 256, 256);
 		}
 
 		@Override
@@ -226,7 +228,7 @@ public class ChestSearchingModule extends ZetaModule {
 				return false;
 
 			Item item = stack.getItem();
-			ResourceLocation res = Registry.ITEM.getKey(item);
+			ResourceLocation res = BuiltInRegistries.ITEM.getKey(item);
 			if(SimilarBlockTypeHandler.isShulkerBox(res)) {
 				CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
 				if(cmp != null) {
@@ -292,7 +294,7 @@ public class ChestSearchingModule extends ZetaModule {
 			//		if(search.matches("favou?rites?") && FavoriteItems.isItemFavorited(stack))
 			//			return true;
 
-			ResourceLocation itemName = Registry.ITEM.getKey(item);
+			ResourceLocation itemName = BuiltInRegistries.ITEM.getKey(item);
 			@Nullable String modDisplayName = zeta.getModDisplayName(itemName.getNamespace());
 
 			if(modDisplayName != null && matcher.test(modDisplayName.toLowerCase(Locale.ROOT), search))

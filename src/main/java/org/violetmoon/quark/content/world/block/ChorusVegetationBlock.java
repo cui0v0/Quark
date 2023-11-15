@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.world.block;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,15 +25,17 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.content.world.module.ChorusVegetationModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+
+import javax.annotation.Nonnull;
 
 public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBlock, IForgeShearable {
 
@@ -139,7 +139,7 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(@Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(@NotNull LevelReader levelReader, @NotNull BlockPos blockPos, @NotNull BlockState blockState, boolean isClient) {
 		return true;
 	}
 

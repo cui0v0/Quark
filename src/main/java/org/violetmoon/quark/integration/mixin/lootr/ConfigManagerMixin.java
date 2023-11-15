@@ -1,6 +1,6 @@
 package org.violetmoon.quark.integration.mixin.lootr;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -16,7 +16,7 @@ import org.violetmoon.quark.integration.lootr.ILootrIntegration;
 public class ConfigManagerMixin {
 	@ModifyVariable(method = "addSafeReplacement", at = @At("HEAD"), argsOnly = true, remap = false)
 	private static Block replacement(Block original, ResourceLocation location) {
-		Block block = Registry.BLOCK.get(location);
+		Block block = BuiltInRegistries.BLOCK.get(location);
 		if (block != Blocks.AIR) {
 			Block lootrVariant = ILootrIntegration.INSTANCE.lootrVariant(block);
 			if (lootrVariant != null)

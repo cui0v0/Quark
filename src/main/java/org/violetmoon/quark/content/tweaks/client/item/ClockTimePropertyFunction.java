@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.tweaks.client.item;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.util.Mth;
@@ -13,6 +10,9 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class ClockTimePropertyFunction implements ItemPropertyFunction {
@@ -30,8 +30,8 @@ public class ClockTimePropertyFunction implements ItemPropertyFunction {
 		boolean carried = entityIn != null;
 		Entity entity = carried ? entityIn : stack.getFrame();
 
-		if(worldIn == null && entity != null && entity.level instanceof ClientLevel)
-			worldIn = (ClientLevel) entity.level;
+		if(worldIn == null && entity != null && entity.getCommandSenderWorld() instanceof ClientLevel)
+			worldIn = (ClientLevel) entity.getCommandSenderWorld();
 
 		if(worldIn == null)
 			return 0F;

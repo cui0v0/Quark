@@ -1,39 +1,6 @@
 package org.violetmoon.quark.base.proxy;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.List;
-
-import org.violetmoon.quark.QuarkForgeCapabilities;
-import org.violetmoon.quark.api.ICustomSorting;
-import org.violetmoon.quark.api.IMagnetTracker;
-import org.violetmoon.quark.api.IPistonCallback;
-import org.violetmoon.quark.api.IRuneColorProvider;
-import org.violetmoon.quark.api.ITransferManager;
-import org.violetmoon.quark.api.QuarkCapabilities;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.capability.CapabilityHandler;
-import org.violetmoon.quark.base.config.SyncedFlagHandler;
-import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.FuelHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.handler.RecipeCrawlHandler;
-import org.violetmoon.quark.base.handler.ToolInteractionHandler;
-import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
-import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.network.QuarkNetwork;
-import org.violetmoon.quark.base.recipe.ExclusionRecipe;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
-import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaCategory;
-import org.violetmoon.zetaimplforge.module.ModFileScanDataModuleFinder;
-
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +12,26 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.violetmoon.quark.QuarkForgeCapabilities;
+import org.violetmoon.quark.api.*;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.capability.CapabilityHandler;
+import org.violetmoon.quark.base.config.SyncedFlagHandler;
+import org.violetmoon.quark.base.handler.*;
+import org.violetmoon.quark.base.network.QuarkNetwork;
+import org.violetmoon.quark.base.recipe.ExclusionRecipe;
+import org.violetmoon.quark.base.world.EntitySpawnHandler;
+import org.violetmoon.quark.base.world.WorldGenHandler;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaCategory;
+import org.violetmoon.zetaimplforge.module.ModFileScanDataModuleFinder;
+
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
 
 public class CommonProxy {
 
@@ -127,7 +114,7 @@ public class CommonProxy {
 	//TODO find a better place for this little one-off thing, lol
 	@LoadEvent
 	public void recipe(ZRegister event) {
-		event.getRegistry().register(ExclusionRecipe.SERIALIZER, "exclusion", Registry.RECIPE_SERIALIZER_REGISTRY);
+		event.getRegistry().register(ExclusionRecipe.SERIALIZER, "exclusion", Registries.RECIPE_SERIALIZER);
 	}
 
 	//forge event

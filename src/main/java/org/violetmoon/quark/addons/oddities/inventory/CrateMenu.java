@@ -11,14 +11,13 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.addons.oddities.block.be.CrateBlockEntity;
 import org.violetmoon.quark.addons.oddities.capability.CrateItemHandler;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.message.oddities.ScrollCrateMessage;
+
+import javax.annotation.Nonnull;
 
 public class CrateMenu extends AbstractContainerMenu {
 
@@ -119,7 +118,7 @@ public class CrateMenu extends AbstractContainerMenu {
 					int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
 					int rmv = Math.min(maxStack, stack.getCount());
 
-					if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.tagMatches(stack, existingStack)) {
+					if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.isSameItemSameTags(stack, existingStack)) {
 						int existingSize = existingStack.getCount() + stack.getCount();
 						ItemStack existingStackCopy = existingStack.copy();
 						
@@ -175,7 +174,7 @@ public class CrateMenu extends AbstractContainerMenu {
 
 	public static CrateMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
-		CrateBlockEntity te = (CrateBlockEntity) playerInventory.player.level.getBlockEntity(pos);
+		CrateBlockEntity te = (CrateBlockEntity) playerInventory.player.getCommandSenderWorld().getBlockEntity(pos);
 		return new CrateMenu(windowId, playerInventory, te);
 	}
 

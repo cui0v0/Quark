@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
@@ -104,7 +104,7 @@ public class CrabsModule extends ZetaModule {
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Crab(crabType, world))
 				.build("crab");
-		Quark.ZETA.registry.register(crabType, "crab", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(crabType, "crab", Registries.ENTITY_TYPE);
 
 		EntitySpawnHandler.registerSpawn(crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
