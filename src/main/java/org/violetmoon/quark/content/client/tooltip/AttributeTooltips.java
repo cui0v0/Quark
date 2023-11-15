@@ -1,30 +1,5 @@
 package org.violetmoon.quark.content.client.tooltip;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.content.client.hax.PseudoAccessorItemStack;
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.quark.content.client.resources.AttributeDisplayType;
-import org.violetmoon.quark.content.client.resources.AttributeIconEntry;
-import org.violetmoon.quark.content.client.resources.AttributeSlot;
-import org.violetmoon.quark.content.client.resources.AttributeIconEntry.CompareType;
-import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -35,12 +10,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -49,12 +23,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -63,6 +32,22 @@ import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.content.client.hax.PseudoAccessorItemStack;
+import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
+import org.violetmoon.quark.content.client.resources.AttributeDisplayType;
+import org.violetmoon.quark.content.client.resources.AttributeIconEntry;
+import org.violetmoon.quark.content.client.resources.AttributeIconEntry.CompareType;
+import org.violetmoon.quark.content.client.resources.AttributeSlot;
+import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 /**
  * @author WireSegal
@@ -210,7 +195,7 @@ public class AttributeTooltips {
 		return onlyInvalid;
 	}
 
-	private static int renderAttribute(PoseStack matrix, Attribute attribute, AttributeSlot slot, int x, int y, ItemStack stack, Multimap<Attribute, AttributeModifier> slotAttributes, Minecraft mc, boolean forceRenderIfZero, Multimap<Attribute, AttributeModifier> equippedSlotAttributes, @Nullable Set<Attribute> equippedAttrsToRender) {
+	private static int renderAttribute(GuiGraphics guiGraphics, Attribute attribute, AttributeSlot slot, int x, int y, ItemStack stack, Multimap<Attribute, AttributeModifier> slotAttributes, Minecraft mc, boolean forceRenderIfZero, Multimap<Attribute, AttributeModifier> equippedSlotAttributes, @Nullable Set<Attribute> equippedAttrsToRender) {
 		AttributeIconEntry entry = getIconForAttribute(attribute);
 		if (entry != null) {
 			if (equippedAttrsToRender != null)
@@ -221,8 +206,7 @@ public class AttributeTooltips {
 
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				RenderSystem.setShaderTexture(0, entry.texture());
-				GuiComponent.blit(matrix, x, y, 0, 0, 9, 9, 9, 9);
+				guiGraphics.blit(entry.texture(), x, y, 0, 0, 9, 9, 9, 9);
 
 				MutableComponent valueStr = format(attribute, value, entry.displayTypes().get(slot));
 
@@ -239,13 +223,12 @@ public class AttributeTooltips {
 								ChatFormatting color = compareType.getColor(value, otherValue);
 
 								if (color != ChatFormatting.WHITE) {
-									RenderSystem.setShaderTexture(0, color == ChatFormatting.RED ? TEXTURE_DOWNGRADE : TEXTURE_UPGRADE);
 									int xp = x - 2;
 									int yp = y - 2;
 									if (ImprovedTooltipsModule.animateUpDownArrows && QuarkClient.ticker.total % 20 < 10)
 										yp++;
 
-									GuiComponent.blit(matrix, xp, yp, 0, 0, 13, 13, 13, 13);
+									guiGraphics.blit(color == ChatFormatting.RED ? TEXTURE_DOWNGRADE : TEXTURE_UPGRADE, xp, yp, 0, 0, 13, 13, 13, 13);
 								}
 
 
@@ -255,7 +238,7 @@ public class AttributeTooltips {
 					}
 				}
 
-				mc.font.draw(matrix, valueStr, x + 12, y + 1, -1);
+				guiGraphics.drawString(mc.font, valueStr, x + 12, y + 1, -1);
 				x += mc.font.width(valueStr) + 20;
 			}
 		}
@@ -387,15 +370,14 @@ public class AttributeTooltips {
 						if (showSlots) {
 							RenderSystem.setShader(GameRenderer::getPositionTexShader);
 							RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-							RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
-							guiGraphics.blit(pose, x, y, 193 + slot.ordinal() * 9, 35, 9, 9, 256, 256);
+							guiGraphics.blit(MiscUtil.GENERAL_ICONS, x, y, 193 + slot.ordinal() * 9, 35, 9, 9, 256, 256);
 							x += 20;
 						}
 
 						for (Attribute key : slotAttributes.keySet())
-							x = renderAttribute(pose, key, slot, x, y, stack, slotAttributes, mc, false, presentOnEquipped, equippedAttrsToRender);
+							x = renderAttribute(guiGraphics, key, slot, x, y, stack, slotAttributes, mc, false, presentOnEquipped, equippedAttrsToRender);
 						for (Attribute key : equippedAttrsToRender)
-							x = renderAttribute(pose, key, slot, x, y, stack, slotAttributes, mc, true, presentOnEquipped, null);
+							x = renderAttribute(guiGraphics, key, slot, x, y, stack, slotAttributes, mc, true, presentOnEquipped, null);
 
 
 						for (Attribute key : slotAttributes.keys()) {

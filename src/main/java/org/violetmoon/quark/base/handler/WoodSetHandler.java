@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolActions;
@@ -104,11 +105,11 @@ public class WoodSetHandler {
 		});
 	}
 
-	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean flammable) {
+	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MapColor color, MapColor barkColor, boolean flammable) {
 		return addWoodSet(event, module, name, color, barkColor, true, true, flammable);
 	}
 
-	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MaterialColor color, MaterialColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
+	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MapColor color, MapColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
 		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
 		WoodSet set = new WoodSet(name, module, type);
 
@@ -185,7 +186,7 @@ public class WoodSetHandler {
 		BlockEntityType.SIGN.validBlocks = ImmutableSet.copyOf(validBlocks);
 	}
 
-	private static RotatedPillarBlock log(String name, ZetaModule module, MaterialColor topColor, MaterialColor sideColor) {
+	private static RotatedPillarBlock log(String name, ZetaModule module, MapColor topColor, MapColor sideColor) {
 		return new ZetaPillarBlock(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS,
 				BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
 				.strength(2.0F).sound(SoundType.WOOD));

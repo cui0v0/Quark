@@ -1,7 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
 import com.google.common.collect.Lists;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Items;
@@ -10,11 +10,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
-
-import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.BooleanSupplier;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
@@ -30,6 +25,10 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "world")
 public class BigStoneClustersModule extends ZetaModule {
@@ -88,7 +87,7 @@ public class BigStoneClustersModule extends ZetaModule {
 			}
 			
 			String dimFinal = dimension;
-			Registry.BLOCK.getOptional(new ResourceLocation(bname)).ifPresent(blockObj -> {
+			BuiltInRegistries.BLOCK.getOptional(new ResourceLocation(bname)).ifPresent(blockObj -> {
 				if(blockObj != Blocks.AIR) {
 					if(dimFinal == null)
 						blockReplacePredicate = blockReplacePredicate.or((w, b) -> blockObj == b);

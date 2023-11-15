@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.client.module;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
@@ -56,6 +57,8 @@ public class AutoWalkKeybindModule extends ZetaModule {
 			if(drawHud && autorunning) {
 				String message = I18n.get("quark.misc.autowalking");
 
+				GuiGraphics guiGraphics = event.getGuiGraphics();
+
 				Minecraft mc = Minecraft.getInstance();
 				int w = mc.font.width("OoO" + message + "oOo");
 
@@ -70,7 +73,7 @@ public class AutoWalkKeybindModule extends ZetaModule {
 					case 1 -> displayMessage = "oOo " + message + " OoO";
 				}
 
-				mc.font.drawShadow(event.getPoseStack(), displayMessage, x, y, 0xFFFFFFFF);
+				guiGraphics.drawString(mc.font, displayMessage, x, y, 0xFFFFFFFF, true);
 			}
 		}
 

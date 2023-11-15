@@ -1,18 +1,11 @@
 package org.violetmoon.quark.content.world.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -30,9 +23,18 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.zeta.block.ZetaSaplingBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class AncientSaplingBlock extends ZetaSaplingBlock {
 
@@ -56,11 +58,17 @@ public class AncientSaplingBlock extends ZetaSaplingBlock {
 					.build();
 		}
 
+		ResourceKey<ConfiguredFeature<?, ?>> ANCIENT_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Quark.asResource("ancient_tree"));
+
 		@Override
-		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@Nonnull RandomSource rand, boolean hjskfsd) {
-			return Holder.direct(new ConfiguredFeature<>(Feature.TREE, config));
+		protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@Nonnull RandomSource rand, boolean hasFlowers) {
+			return ANCIENT_TREE;
 		}
 
+		//fixme find how to call this
+		public void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+			context.register(ANCIENT_TREE, new ConfiguredFeature<>(Feature.TREE, config));
+		}
 	}
 	
 	public static class MultiFolliageStraightTrunkPlacer extends TrunkPlacer {

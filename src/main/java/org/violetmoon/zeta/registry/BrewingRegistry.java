@@ -1,7 +1,8 @@
 package org.violetmoon.zeta.registry;
 
 import com.google.common.collect.Maps;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -9,12 +10,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
-
-import javax.annotation.Nullable;
-
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.recipe.FlagIngredient;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -47,7 +46,7 @@ public abstract class BrewingRegistry {
 
 	public void addPotionMix(String flag, Supplier<Ingredient> reagent, MobEffect effect,
 									@Nullable MobEffect negation, int normalTime, int longTime, int strongTime) {
-		ResourceLocation loc = zeta.registry.getRegistryName(effect, Registry.MOB_EFFECT);
+		ResourceLocation loc = zeta.registry.getRegistryName(effect, BuiltInRegistries.MOB_EFFECT);
 
 		if (loc != null) {
 			String baseName = loc.getPath();
@@ -60,7 +59,7 @@ public abstract class BrewingRegistry {
 			addPotionMix(flag, reagent, normalType, longType, strongType);
 
 			if (negation != null) {
-				ResourceLocation negationLoc = zeta.registry.getRegistryName(negation, Registry.MOB_EFFECT);
+				ResourceLocation negationLoc = zeta.registry.getRegistryName(negation, BuiltInRegistries.MOB_EFFECT);
 				if (negationLoc != null) {
 					String negationBaseName = negationLoc.getPath();
 
@@ -117,7 +116,7 @@ public abstract class BrewingRegistry {
 
 	protected Potion registerPotion(MobEffectInstance eff, String baseName, String name) {
 		Potion effect = new Potion(zeta.modid + "." + baseName, eff);
-		zeta.registry.register(effect, name, Registry.POTION_REGISTRY);
+		zeta.registry.register(effect, name, Registries.POTION);
 
 		return effect;
 	}

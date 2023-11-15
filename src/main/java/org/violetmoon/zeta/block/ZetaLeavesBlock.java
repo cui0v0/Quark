@@ -1,32 +1,36 @@
 package org.violetmoon.zeta.block;
 
-import java.util.function.BooleanSupplier;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+
+import javax.annotation.Nullable;
+import java.util.function.BooleanSupplier;
 
 public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 	
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 	
-	public ZetaLeavesBlock(String name, ZetaModule module, MaterialColor color) {
-		super(Block.Properties.of(Material.LEAVES, color)
+	public ZetaLeavesBlock(String name, ZetaModule module, MapColor color) {
+		super(Block.Properties.of()
+				.mapColor(color)
 				.strength(0.2F)
 				.randomTicks()
 				.sound(SoundType.GRASS)
 				.noOcclusion()
 				.isValidSpawn((s, r, p, t) -> false)
 				.isSuffocating((s, r, p) -> false)
-				.isViewBlocking((s, r, p) -> false));
+				.isViewBlocking((s, r, p) -> false)
+				.ignitedByLava()
+				.pushReaction(PushReaction.DESTROY)
+				.isRedstoneConductor((s, r, p) -> false));
 
 		this.module = module;
 

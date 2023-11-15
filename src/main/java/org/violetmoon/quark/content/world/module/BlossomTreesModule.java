@@ -3,6 +3,8 @@ package org.violetmoon.quark.content.world.module;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
@@ -27,7 +29,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.Tags;
 
 @ZetaLoadModule(category = "world")
@@ -47,13 +49,13 @@ public class BlossomTreesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		woodSet = WoodSetHandler.addWoodSet(event, this, "blossom", MaterialColor.COLOR_RED, MaterialColor.COLOR_BROWN, true);
+		woodSet = WoodSetHandler.addWoodSet(event, this, "blossom", MapColor.COLOR_RED, MapColor.COLOR_BROWN, true);
 
-		add(event, "blue", MaterialColor.COLOR_LIGHT_BLUE, blue);
-		add(event, "lavender", MaterialColor.COLOR_PINK, lavender);
-		add(event, "orange", MaterialColor.TERRACOTTA_ORANGE, orange);
-		add(event, "yellow", MaterialColor.COLOR_YELLOW, yellow);
-		add(event, "red", MaterialColor.COLOR_RED, red);
+		add(event, "blue", MapColor.COLOR_LIGHT_BLUE, blue);
+		add(event, "lavender", MapColor.COLOR_PINK, lavender);
+		add(event, "orange", MapColor.TERRACOTTA_ORANGE, orange);
+		add(event, "yellow", MapColor.COLOR_YELLOW, yellow);
+		add(event, "red", MapColor.COLOR_RED, red);
 	}
 
 	@LoadEvent
@@ -77,11 +79,11 @@ public class BlossomTreesModule extends ZetaModule {
 			consumer.hintItem(tree.sapling.asItem());
 	}
 
-	private void add(ZRegister event, String colorName, MaterialColor color, BlossomTreeConfig config) {
+	private void add(ZRegister event, String colorName, MapColor color, BlossomTreeConfig config) {
 		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
 		BlossomTree tree = new BlossomTree(leaves);
 		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
-		event.getVariantRegistry().addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, Registry.BLOCK).getPath(), Functions.identity());
+		event.getVariantRegistry().addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity());
 
 		trees.put(tree, config);
 	}

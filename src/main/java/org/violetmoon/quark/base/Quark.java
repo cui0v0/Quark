@@ -1,5 +1,6 @@
 package org.violetmoon.quark.base;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 
@@ -32,4 +33,7 @@ public class Quark {
 		proxy.start();
 	}
 
+	public static ResourceLocation asResource(String name) {
+		return new ResourceLocation(MOD_ID, name);
+	}
 }

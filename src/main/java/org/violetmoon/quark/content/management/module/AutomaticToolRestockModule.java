@@ -1,9 +1,7 @@
 package org.violetmoon.quark.content.management.module;
 
 import com.google.common.collect.Lists;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,10 +15,6 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
-
-import java.util.*;
-import java.util.function.Predicate;
-
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.api.event.GatherToolClassesEvent;
 import org.violetmoon.quark.base.Quark;
@@ -35,6 +29,9 @@ import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.RegistryUtil;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 @ZetaLoadModule(category = "management", antiOverlap = "inventorytweaks")
 public class AutomaticToolRestockModule extends ZetaModule {
@@ -172,7 +169,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 
 	@PlayEvent
 	public void onPlayerTick(ZPlayerTick.End event) {
-		if(!event.getPlayer().level.isClientSide && replacements.containsKey(event.getPlayer())) {
+		if(!event.getPlayer().getCommandSenderWorld().isClientSide && replacements.containsKey(event.getPlayer())) {
 			Stack<QueuedRestock> replacementStack = replacements.get(event.getPlayer());
 			synchronized(mutex) {
 				while(!replacementStack.isEmpty()) {
@@ -274,7 +271,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 
 		List<String> strings = new ArrayList<>();
 		for(Enchantment e : enchants)
-			strings.add(Registry.ENCHANTMENT.getKey(e).toString());
+			strings.add(BuiltInRegistries.ENCHANTMENT.getKey(e).toString());
 
 		return strings;
 	}

@@ -6,10 +6,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.phys.Vec3;
+import org.violetmoon.quark.content.mobs.entity.Shiba;
 
 import java.util.EnumSet;
-
-import org.violetmoon.quark.content.mobs.entity.Shiba;
 
 public class BarkAtDarknessGoal extends Goal {
 
@@ -28,7 +27,7 @@ public class BarkAtDarknessGoal extends Goal {
 		if(shiba.currentHyperfocus != null) {
 			navigator.moveTo(navigator.createPath(shiba.currentHyperfocus, 1), 1.1);
 
-			if(shiba.level instanceof ServerLevel slevel && shiba.tickCount % 10 == 0) {
+			if(shiba.getCommandSenderWorld() instanceof ServerLevel slevel && shiba.tickCount % 10 == 0) {
 				Vec3 pos = shiba.position();
 				slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.x, pos.y + 0.5, pos.z, 1, 0.25F, 0.1F, 0.25F, 0);
 				shiba.lookAt(Anchor.EYES, new Vec3(shiba.currentHyperfocus.getX() + 0.5, shiba.currentHyperfocus.getY(), shiba.currentHyperfocus.getZ() + 0.5));

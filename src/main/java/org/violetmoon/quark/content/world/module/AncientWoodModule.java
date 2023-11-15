@@ -2,12 +2,11 @@ package org.violetmoon.quark.content.world.module;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
@@ -72,7 +71,7 @@ public class AncientWoodModule extends ZetaModule {
 		ancient_sapling = new AncientSaplingBlock(this);
 		ancient_fruit = new AncientFruitItem(this);
 
-		event.getVariantRegistry().addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, Registry.BLOCK).getPath(), Functions.identity());
+		event.getVariantRegistry().addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity());
 
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit))
 			.setCondition(() -> GeneralConfig.enableAdvancementModification));

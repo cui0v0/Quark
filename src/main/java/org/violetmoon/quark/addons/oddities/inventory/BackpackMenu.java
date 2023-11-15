@@ -8,18 +8,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.addons.oddities.inventory.slot.BackpackSlot;
 import org.violetmoon.quark.addons.oddities.inventory.slot.CachedItemHandlerSlot;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.util.InventoryIIH;
 
+import javax.annotation.Nonnull;
+
 public class BackpackMenu extends InventoryMenu {
 
 	public BackpackMenu(int windowId, Player player) {
-		super(player.getInventory(), !player.level.isClientSide, player);
+		super(player.getInventory(), !player.getCommandSenderWorld().isClientSide, player);
 		this.containerId = windowId;
 
 		Inventory inventory = player.getInventory();
@@ -138,7 +137,7 @@ public class BackpackMenu extends InventoryMenu {
 				int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
 				int rmv = Math.min(maxStack, stack.getCount());
 
-				if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.tagMatches(stack, existingStack)) {
+				if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.isSameItemSameTags(stack, existingStack)) {
 					int existingSize = existingStack.getCount() + stack.getCount();
 
 					if (existingSize <= maxStack) {

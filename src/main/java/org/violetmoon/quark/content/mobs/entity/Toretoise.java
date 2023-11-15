@@ -40,6 +40,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ToolActions;
@@ -268,7 +269,7 @@ public class Toretoise extends Animal {
 		return super.hurt(source, amount);
 	}
 
-	public void dropOre(int ore, LootContext.Builder lootContext) {
+	public void dropOre(int ore, LootParams.Builder lootContext) {
 		lootContext.withParameter(LootContextParams.ORIGIN, position());
 
 		BlockState dropState = null;

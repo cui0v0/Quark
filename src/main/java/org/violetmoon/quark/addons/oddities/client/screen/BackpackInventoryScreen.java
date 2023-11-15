@@ -1,10 +1,11 @@
 package org.violetmoon.quark.addons.oddities.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -13,14 +14,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 
 import java.util.HashMap;
@@ -57,12 +54,12 @@ public class BackpackInventoryScreen extends InventoryScreen {
 
 		buttonYs.clear();
 
-		for(Widget widget : renderables)
-			if(widget instanceof Button b)
-				if(b.getClass().getName().contains("GuiButtonInventoryBook")) { // class check for Patchouli
-					if(!buttonYs.containsKey(b)) {
-						b.y -= 29;
-						buttonYs.put(b, b.y);
+		for (Renderable renderable : renderables)
+			if (renderable instanceof Button b)
+				if (b.getClass().getName().contains("GuiButtonInventoryBook")) { // class check for Patchouli
+					if (!buttonYs.containsKey(b)) {
+						b.setY(b.getY() - 29);
+						buttonYs.put(b, b.getY());
 					}
 				}
 
@@ -70,7 +67,7 @@ public class BackpackInventoryScreen extends InventoryScreen {
 
 	@Override
 	public void containerTick() {
-		buttonYs.forEach((button, y) -> button.y = y);
+		buttonYs.forEach(AbstractWidget::setY);
 
 		super.containerTick();
 
@@ -95,23 +92,22 @@ public class BackpackInventoryScreen extends InventoryScreen {
 	}
 
 	@Override
-	protected void renderBg(@Nonnull PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, BACKPACK_INVENTORY_BACKGROUND);
 		int i = leftPos;
 		int j = topPos;
-		blit(stack, i, j, 0, 0, imageWidth, imageHeight);
-		renderEntityInInventory(i + 51, j + 75, 30, i + 51 - mouseX, j + 75 - 50 - mouseY, minecraft.player);
+		guiGraphics.blit(BACKPACK_INVENTORY_BACKGROUND, i, j, 0, 0, imageWidth, imageHeight);
+		renderEntityInInventoryFollowsMouse(guiGraphics, i + 51, j + 75, 30, i + 51 - mouseX, j + 75 - 50 - mouseY, minecraft.player);
 		moveCharmsButtons();
 	}
 
 	private void moveCharmsButtons() {
-		for(Widget widget : renderables) {
+		for (Renderable renderable : renderables) {
 			//Charms buttons have a static Y pos, so use that to only focus on them.
-			if(widget instanceof ImageButton img) {
-				if(img.y == height / 2 - 22)
-					img.setPosition(img.x, img.y - 29);
+			if (renderable instanceof ImageButton img) {
+				if (img.getY() == height / 2 - 22)
+					img.setPosition(img.getX(), img.getY() - 29);
 			}
 		}
 	}

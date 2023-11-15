@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -34,18 +33,14 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
 import org.violetmoon.quark.content.tools.loot.EnchantTome;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -61,6 +56,8 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -303,7 +300,7 @@ public class AncientTomesModule extends ZetaModule {
 		ItemStack right = event.getRight();
 
 		if(curseGear && (right.is(ancient_tome) || event.getLeft().is(ancient_tome))){
-			event.getOutput().enchant(curses.get(event.getEntity().level.random.nextInt(curses.size())),1);
+			event.getOutput().enchant(curses.get(event.getEntity().getCommandSenderWorld().random.nextInt(curses.size())),1);
 		}
 
 		if(isOverlevel(output) && (right.getItem() == Items.ENCHANTED_BOOK || right.getItem() == ancient_tome) && event.getEntity() instanceof ServerPlayer sp)
@@ -397,7 +394,7 @@ public class AncientTomesModule extends ZetaModule {
 
 		List<String> strings = new ArrayList<>();
 		for(Enchantment e : enchants) {
-			ResourceLocation regname = Registry.ENCHANTMENT.getKey(e);
+			ResourceLocation regname = BuiltInRegistries.ENCHANTMENT.getKey(e);
 			if(e != null && regname != null)
 				strings.add(regname.toString());
 		}
@@ -414,7 +411,7 @@ public class AncientTomesModule extends ZetaModule {
 	private final List<Enchantment> curses = new ArrayList<>();
 
 	public void setupCursesList() {
-		for (var e : Registry.ENCHANTMENT) {
+		for (var e : BuiltInRegistries.ENCHANTMENT) {
 			if (e.isCurse()) curses.add(e);
 		}
 	}
@@ -427,7 +424,7 @@ public class AncientTomesModule extends ZetaModule {
 
 		for(int i = 0; i < list.size(); ++i) {
 			CompoundTag nbt = list.getCompound(i);
-			Enchantment enchant = Registry.ENCHANTMENT.get(ResourceLocation.tryParse(nbt.getString("id")));
+			Enchantment enchant = BuiltInRegistries.ENCHANTMENT.get(ResourceLocation.tryParse(nbt.getString("id")));
 			if (enchant != null)
 				return enchant;
 		}

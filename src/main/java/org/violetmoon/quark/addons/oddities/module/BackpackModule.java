@@ -6,8 +6,8 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -18,15 +18,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeableArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
@@ -82,11 +77,14 @@ public class BackpackModule extends ZetaModule {
 		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
-		Quark.ZETA.registry.register(menyType, "backpack", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(menyType, "backpack", Registries.MENU);
 
-		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.BLACK)
+		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of()
+				.mapColor(DyeColor.BLACK)
+				.instrument(NoteBlockInstrument.GUITAR)
 				.strength(1F)
-				.sound(SoundType.WOOL))
+				.sound(SoundType.WOOL)
+				.ignitedByLava())
 		.setCondition(() -> enableRavagerHide);
 		
 		CauldronInteraction.WATER.put(backpack, CauldronInteraction.DYED_ITEM);
@@ -107,10 +105,10 @@ public class BackpackModule extends ZetaModule {
 				chance--;
 				amount++;
 			}
-			if(chance > 0 && entity.level.random.nextDouble() < chance)
+			if(chance > 0 && entity.getCommandSenderWorld().random.nextDouble() < chance)
 				amount++;
 
-			event.getDrops().add(new ItemEntity(entity.level, entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ravager_hide, amount)));
+			event.getDrops().add(new ItemEntity(entity.getCommandSenderWorld(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ravager_hide, amount)));
 		}
 	}
 
