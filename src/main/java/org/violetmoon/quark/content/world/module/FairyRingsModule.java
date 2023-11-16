@@ -1,16 +1,12 @@
 package org.violetmoon.quark.content.world.module;
 
 import com.google.common.collect.Lists;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.WorldGenHandler;
@@ -21,6 +17,9 @@ import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ZetaLoadModule(category = "world")
 public class FairyRingsModule extends ZetaModule {
@@ -43,7 +42,7 @@ public class FairyRingsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		ores = new ArrayList<>();
 		for(String s : oresRaw) {
-			Block b = Registry.BLOCK.get(new ResourceLocation(s));
+			Block b = BuiltInRegistries.BLOCK.get(new ResourceLocation(s));
 			if (b != Blocks.AIR) {
 				ores.add(b.defaultBlockState());
 			}

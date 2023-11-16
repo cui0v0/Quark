@@ -7,6 +7,6 @@ import org.violetmoon.zeta.util.RaytracingUtil;
 public class ForgeRaytracingUtil extends RaytracingUtil {
 	@Override
 	public double getEntityRange(LivingEntity player) {
-		return player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+		return player.getAttribute(ForgeMod.ENTITY_REACH.get()).getValue();
 	}
 }

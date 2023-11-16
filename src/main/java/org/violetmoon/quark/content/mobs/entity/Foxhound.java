@@ -10,31 +10,13 @@
  */
 package org.violetmoon.quark.content.mobs.entity;
 
-import static org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.FURNACE;
-import static org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.GLOWING;
-import static org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.LIT_FURNACE;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
-import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal;
-import org.violetmoon.quark.content.mobs.ai.SleepGoal;
-import org.violetmoon.quark.content.mobs.module.FoxhoundModule;
-import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -49,24 +31,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.BegGoal;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -90,6 +57,21 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
+import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
+import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal;
+import org.violetmoon.quark.content.mobs.ai.SleepGoal;
+import org.violetmoon.quark.content.mobs.module.FoxhoundModule;
+import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.violetmoon.quark.content.mobs.ai.FindPlaceToSleepGoal.Target.*;
 
 public class Foxhound extends Wolf implements Enemy {
 
@@ -140,7 +122,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, @Nonnull DifficultyInstance difficultyIn, @Nonnull MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
-		Holder<Biome> biome = worldIn.getBiome(new BlockPos(position()));
+		Holder<Biome> biome = worldIn.getBiome(BlockPos.containing(position()));
 		if(biome.is(Biomes.SOUL_SAND_VALLEY.location()))
 			setBlue(true);
 
@@ -158,12 +140,12 @@ public class Foxhound extends Wolf implements Enemy {
 		} else if(pose == Pose.SLEEPING)
 			setPose(Pose.STANDING);
 
-		if (!level.isClientSide && level.getDifficulty() == Difficulty.PEACEFUL && !isTame()) {
+		if (!getCommandSenderWorld().isClientSide && getCommandSenderWorld().getDifficulty() == Difficulty.PEACEFUL && !isTame()) {
 			discard();
 			return;
 		}
 
-		if (!level.isClientSide && timeUntilPotatoEmerges > 0) {
+		if (!getCommandSenderWorld().isClientSide && timeUntilPotatoEmerges > 0) {
 			if (--timeUntilPotatoEmerges == 0) {
 				setTatering(false);
 				ItemStack stack = new ItemStack(TinyPotatoModule.tiny_potato);
@@ -194,30 +176,30 @@ public class Foxhound extends Wolf implements Enemy {
 		}
 
 		Vec3 pos = position();
-		if(level.isClientSide) {
+		if(getCommandSenderWorld().isClientSide) {
 			SimpleParticleType particle = ParticleTypes.FLAME;
 			if(isSleeping())
 				particle = ParticleTypes.SMOKE;
 			else if(isBlue())
 				particle = ParticleTypes.SOUL_FIRE_FLAME;
 
-			level.addParticle(particle, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
+			getCommandSenderWorld().addParticle(particle, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
 
 			if (isTatering() && random.nextDouble() < 0.1) {
-				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
+				getCommandSenderWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
 
-				level.playLocalSound(pos.x, pos.y, pos.z, QuarkSounds.ENTITY_FOXHOUND_CRACKLE, getSoundSource(), 1.0F, 1.0F, false);
+				getCommandSenderWorld().playLocalSound(pos.x, pos.y, pos.z, QuarkSounds.ENTITY_FOXHOUND_CRACKLE, getSoundSource(), 1.0F, 1.0F, false);
 			}
 
 		}
 
 		if(isTame() && FoxhoundModule.foxhoundsSpeedUpFurnaces) {
 			BlockPos below = blockPosition().below();
-			BlockEntity tile = level.getBlockEntity(below);
+			BlockEntity tile = getCommandSenderWorld().getBlockEntity(below);
 			if (tile instanceof AbstractFurnaceBlockEntity furnace) {
 				int cookTime = furnace.cookingProgress;
 				if (cookTime > 0 && cookTime % 3 == 0) {
-					List<Foxhound> foxhounds = level.getEntitiesOfClass(Foxhound.class, new AABB(blockPosition()),
+					List<Foxhound> foxhounds = getCommandSenderWorld().getEntitiesOfClass(Foxhound.class, new AABB(blockPosition()),
 							(fox) -> fox != null && fox.isTame());
 					if(!foxhounds.isEmpty() && foxhounds.get(0) == this) {
 						furnace.cookingProgress = furnace.cookingProgress == 3 ? 5 : Math.min(furnace.cookingTotalTime - 1, cookTime + 1);
@@ -273,7 +255,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	public int getRemainingPersistentAngerTime() {
-		if (!isTame() && level.getDifficulty() != Difficulty.PEACEFUL)
+		if (!isTame() && getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL)
 			return 0;
 		return super.getRemainingPersistentAngerTime();
 	}
@@ -286,7 +268,7 @@ public class Foxhound extends Wolf implements Enemy {
 			return super.doHurtTarget(entityIn);
 		}
 
-		boolean flag = entityIn.hurt(DamageSource.mobAttack(this).setIsFire(),
+		boolean flag = entityIn.hurt(getCommandSenderWorld().damageSources().onFire(),
 				((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 
 		if (flag) {
@@ -322,16 +304,16 @@ public class Foxhound extends Wolf implements Enemy {
 			}
 		} else {
 			if (!itemstack.isEmpty()) {
-				if (itemstack.getItem() == Items.COAL && (level.getDifficulty() == Difficulty.PEACEFUL || player.getAbilities().invulnerable || player.getEffect(MobEffects.FIRE_RESISTANCE) != null) && !level.isClientSide) {
+				if (itemstack.getItem() == Items.COAL && (getCommandSenderWorld().getDifficulty() == Difficulty.PEACEFUL || player.getAbilities().invulnerable || player.getEffect(MobEffects.FIRE_RESISTANCE) != null) && !getCommandSenderWorld().isClientSide) {
 					if (random.nextDouble() < FoxhoundModule.tameChance) {
 						this.tame(player);
 						this.navigation.stop();
 						this.setTarget(null);
 						this.setOrderedToSit(true);
 						this.setHealth(20.0F);
-						this.level.broadcastEntityEvent(this, (byte) 7);
+						this.getCommandSenderWorld().broadcastEntityEvent(this, (byte) 7);
 					} else {
-						this.level.broadcastEntityEvent(this, (byte) 6);
+						this.getCommandSenderWorld().broadcastEntityEvent(this, (byte) 6);
 					}
 
 					if (!player.getAbilities().instabuild)
@@ -342,7 +324,7 @@ public class Foxhound extends Wolf implements Enemy {
 		}
 
 		InteractionResult res = super.mobInteract(player, hand);
-		if(res == InteractionResult.SUCCESS && !level.isClientSide)
+		if(res == InteractionResult.SUCCESS && !getCommandSenderWorld().isClientSide)
 			setWoke();
 
 		return res;
@@ -355,7 +337,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override // createChild
 	public Wolf getBreedOffspring(@Nonnull ServerLevel sworld, @Nonnull AgeableMob otherParent) {
-		Foxhound kid = new Foxhound(FoxhoundModule.foxhoundType, this.level);
+		Foxhound kid = new Foxhound(FoxhoundModule.foxhoundType, this.getCommandSenderWorld());
 		UUID uuid = this.getOwnerUUID();
 
 		if (uuid != null) {
@@ -459,7 +441,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

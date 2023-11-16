@@ -1,21 +1,10 @@
 package org.violetmoon.quark.content.mobs.entity;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.mobs.module.ForgottenModule;
-import org.violetmoon.quark.content.tools.module.ColorRunesModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,13 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -52,7 +35,16 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.mobs.module.ForgottenModule;
+import org.violetmoon.quark.content.tools.module.ColorRunesModule;
+import org.violetmoon.zeta.util.ItemNBTHelper;
 import org.violetmoon.zeta.util.RegistryUtil;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class Forgotten extends Skeleton {
 
@@ -90,7 +82,7 @@ public class Forgotten extends Skeleton {
 	public void tick() {
 		super.tick();
 
-		if(!level.isClientSide) {
+		if(!getCommandSenderWorld().isClientSide) {
 			LivingEntity target = getTarget();
 			boolean shouldUseBow = target == null;
 			if(!shouldUseBow) {
@@ -105,7 +97,7 @@ public class Forgotten extends Skeleton {
 
 		double w = getBbWidth() * 2;
 		double h = getBbHeight();
-		level.addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w/2, getY() + Math.random() * h, getZ() + Math.random() * w - w/2, 0, 0, 0);
+		getCommandSenderWorld().addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w/2, getY() + Math.random() * h, getZ() + Math.random() * w - w/2, 0, 0, 0);
 	}
 
 	private void swap() {
@@ -177,7 +169,7 @@ public class Forgotten extends Skeleton {
 		EnchantmentHelper.enchantItem(random, sheathed, 20, false);
 
 		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class) && random.nextBoolean()) {
-			List<Item> items = RegistryUtil.getTagValues(level.registryAccess(), ColorRunesModule.runesLootableTag);
+			List<Item> items = RegistryUtil.getTagValues(getCommandSenderWorld().registryAccess(), ColorRunesModule.runesLootableTag);
 			if (!items.isEmpty()) {
 				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
 				CompoundTag runeNbt = item.serializeNBT();
@@ -211,7 +203,7 @@ public class Forgotten extends Skeleton {
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

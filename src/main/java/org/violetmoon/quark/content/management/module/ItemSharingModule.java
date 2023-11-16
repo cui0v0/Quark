@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -133,7 +134,7 @@ public class ItemSharingModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ItemSharingModule {
-		public static void renderItemForMessage(PoseStack poseStack, FormattedCharSequence sequence, float x, float y, int color) {
+		public static void renderItemForMessage(GuiGraphics guiGraphics, FormattedCharSequence sequence, float x, float y, int color) {
 			if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 				return;
 
@@ -146,7 +147,7 @@ public class ItemSharingModule extends ZetaModule {
 			sequence.accept((counter_, style, character) -> {
 				String sofar = before.toString();
 				if (sofar.endsWith("   ")) {
-					render(mc, poseStack, sofar.substring(0, sofar.length() - 2), character == ' ' ? 0 : -halfSpace, x, y, style, color);
+					render(mc, guiGraphics, sofar.substring(0, sofar.length() - 2), character == ' ' ? 0 : -halfSpace, x, y, style, color);
 					return false;
 				}
 				before.append((char) character);
@@ -170,8 +171,10 @@ public class ItemSharingModule extends ZetaModule {
 				event.setCanceled(click());
 		}
 
-		private static void render(Minecraft mc, PoseStack pose, String before, float extraShift, float x, float y, Style style, int color) {
+		private static void render(Minecraft mc, GuiGraphics guiGraphics, String before, float extraShift, float x, float y, Style style, int color) {
 			float a = (color >> 24 & 255) / 255.0F;
+
+			PoseStack pose = guiGraphics.pose();
 
 			HoverEvent hoverEvent = style.getHoverEvent();
 			if (hoverEvent != null && hoverEvent.getAction() == HoverEvent.Action.SHOW_ITEM) {
@@ -195,7 +198,7 @@ public class ItemSharingModule extends ZetaModule {
 
 					poseStack.translate(shift + x, y, 0);
 					poseStack.scale(0.5f, 0.5f, 0.5f);
-					mc.getItemRenderer().renderGuiItem(stack, 0, 0);
+					guiGraphics.renderItem(stack, 0, 0);
 					poseStack.popPose();
 
 					RenderSystem.applyModelViewMatrix();

@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -29,8 +31,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.eventbus.api.Event.Result;
 
 @ZetaLoadModule(category = "mobs")
@@ -55,7 +55,7 @@ public class ForgottenModule extends ZetaModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Forgotten(forgottenType, world))
 				.build("forgotten");
 
-		Quark.ZETA.registry.register(forgottenType, "forgotten", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(forgottenType, "forgotten", Registries.ENTITY_TYPE);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
@@ -78,7 +78,7 @@ public class ForgottenModule extends ZetaModule {
 
 		if (entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != ZResult.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
 			if(result == ZResult.ALLOW || (mob.checkSpawnRules(world, event.getSpawnReason()) && mob.checkSpawnObstruction(world))) {
-				Forgotten forgotten = new Forgotten(forgottenType, entity.level);
+				Forgotten forgotten = new Forgotten(forgottenType, entity.getCommandSenderWorld());
 				Vec3 epos = entity.position();
 				
 				forgotten.absMoveTo(epos.x, epos.y, epos.z, entity.getYRot(), entity.getXRot());

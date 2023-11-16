@@ -1,5 +1,11 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.Item;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.client.render.entity.GlassItemFrameRenderer;
@@ -12,13 +18,6 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Registry;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.Item;
 
 /**
  * @author WireSegal
@@ -48,7 +47,7 @@ public class GlassItemFrameModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new GlassItemFrame(glassFrameEntity, world))
 				.build("glass_frame");
-		Quark.ZETA.registry.register(glassFrameEntity, "glass_frame", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(glassFrameEntity, "glass_frame", Registries.ENTITY_TYPE);
 
 		glassFrame = new QuarkItemFrameItem("glass_item_frame", this, GlassItemFrame::new);
 		glowingGlassFrame = new QuarkItemFrameItem("glowing_glass_item_frame", this, 

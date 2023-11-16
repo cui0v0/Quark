@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.experimental.module;
 
 import com.mojang.serialization.Dynamic;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -19,13 +19,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Predicate;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -39,6 +32,12 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
 import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class GameNerfsModule extends ZetaModule {
@@ -112,7 +111,7 @@ public class GameNerfsModule extends ZetaModule {
 		if(!staticEnabled || !enableDimensionLockedElytra)
 			return true;
 
-		Level level = entity.getLevel();
+		Level level = entity.getCommandSenderWorld();
 		String dim = level.dimensionTypeId().location().toString();
 		return elytraAllowedDimensions.contains(dim);
 	}
@@ -138,7 +137,7 @@ public class GameNerfsModule extends ZetaModule {
 		if(!enableSelectiveMobGriefing || event.getEntity() == null)
 			return;
 
-		String name = Registry.ENTITY_TYPE.getKey(event.getEntity().getType()).toString();
+		String name = BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).toString();
 		if(nonGriefingEntities.contains(name))
 			event.setResult(ZResult.DENY);
 	}

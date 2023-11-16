@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VerticalSlabBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -32,7 +34,7 @@ public class FuelHandler {
 	}
 
 	public static void addWood(Block block) {
-		String regname = Objects.toString(Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK));
+		String regname = Objects.toString(Quark.ZETA.registry.getRegistryName(block, BuiltInRegistries.BLOCK));
 		if(regname.contains("crimson") || regname.contains("warped"))
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
@@ -42,8 +44,8 @@ public class FuelHandler {
 
 	@LoadEvent
 	public static void addAllWoods(ZLoadComplete event) {
-		for(Block block : Registry.BLOCK) {
-			ResourceLocation regname = Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK);
+		for(Block block : BuiltInRegistries.BLOCK) {
+			ResourceLocation regname = Quark.ZETA.registry.getRegistryName(block, BuiltInRegistries.BLOCK);
 			if(block != null && regname.getNamespace().equals(Quark.MOD_ID) && block.defaultBlockState().getMaterial() == Material.WOOD)
 				addWood(block);
 		}

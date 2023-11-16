@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.management.module;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -379,7 +380,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			Screen gui = mc.screen;
 			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 				Slot under = containerGui.getSlotUnderMouse();
-				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTabs.TAB_INVENTORY.getId())
+				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
 					return;
 
 				if (under != null) {
@@ -399,6 +400,8 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 		public void onDrawScreen(ZScreen.Render.Post event) {
 			Minecraft mc = Minecraft.getInstance();
 			Screen gui = mc.screen;
+			GuiGraphics guiGraphics = event.getGuiGraphics();
+
 			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
 				ItemStack held = containerGui.getMenu().getCarried();
 				if (!held.isEmpty()) {
@@ -410,13 +413,13 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 						int x = event.getMouseX();
 						int y = event.getMouseY();
 						if (enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
-							gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
+							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
 						} else if (enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
-							gui.renderComponentTooltip(event.getPoseStack(), List.of(Component.translatable(
+							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable(
 									SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
 							).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
 						} else if (enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
-							gui.renderComponentTooltip(event.getPoseStack(), gui.getTooltipFromItem(underStack), x, y, underStack);
+							guiGraphics.renderComponentTooltip(mc.font, Screen.getTooltipFromItem(mc, underStack), x, y, underStack);
 						}
 					}
 

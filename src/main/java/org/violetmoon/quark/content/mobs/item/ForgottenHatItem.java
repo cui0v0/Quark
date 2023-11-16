@@ -78,7 +78,7 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 			attributes = builder.build();
 		}
 
-		return slot == this.slot ? attributes : super.getDefaultAttributeModifiers(slot);
+		return slot == this.getEquipmentSlot() ? attributes : super.getDefaultAttributeModifiers(slot);
 	}
 
 	@Override

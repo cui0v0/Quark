@@ -2,19 +2,13 @@ package org.violetmoon.quark.content.experimental.module;
 
 import com.google.common.collect.Lists;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -22,6 +16,11 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.play.ZAnvilUpdate;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class EnchantmentsBegoneModule extends ZetaModule {
@@ -40,7 +39,7 @@ public class EnchantmentsBegoneModule extends ZetaModule {
 		enchantments.clear();
 
 		for (String enchantKey : enchantmentsToBegone) {
-			Enchantment enchantment = Registry.ENCHANTMENT.get(new ResourceLocation(enchantKey));
+			Enchantment enchantment = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(enchantKey));
 			if (enchantment != null)
 				enchantments.add(enchantment);
 		}

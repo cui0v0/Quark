@@ -3,7 +3,7 @@ package org.violetmoon.quark.content.mobs.module;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -15,21 +15,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-
-import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
-import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.FoxhoundRenderer;
 import org.violetmoon.quark.content.mobs.entity.Foxhound;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -41,6 +38,8 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingChangeTarget;
 import org.violetmoon.zeta.event.play.entity.living.ZSleepingLocationCheck;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
 
 /**
  * @author WireSegal
@@ -75,7 +74,7 @@ public class FoxhoundModule extends ZetaModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Foxhound(foxhoundType, world))
 				.build("foxhound");
-		Quark.ZETA.registry.register(foxhoundType, "foxhound", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(foxhoundType, "foxhound", Registries.ENTITY_TYPE);
 
 		EntitySpawnHandler.registerSpawn(foxhoundType, MobCategory.MONSTER, Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Foxhound::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.track(foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);
@@ -114,7 +113,7 @@ public class FoxhoundModule extends ZetaModule {
 	public void onSleepCheck(ZSleepingLocationCheck event) {
 		if(event.getEntity() instanceof Foxhound) {
 			BlockPos pos = event.getSleepingLocation();
-			Level world = event.getEntity().level;
+			Level world = event.getEntity().getCommandSenderWorld();
 
 			BlockPos below = pos.below();
 			BlockState belowState = world.getBlockState(below);

@@ -2,7 +2,7 @@ package org.violetmoon.quark.base.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -102,7 +102,7 @@ public abstract class GenericChestBERenderer<T extends BlockEntity & LidBlockEnt
 			matrix.pushPose();
 			float f = blockstate.getValue(ChestBlock.FACING).toYRot();
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(-f));
+			matrix.mulPose(Axis.YP.rotationDegrees(-f));
 			matrix.translate(-0.5D, -0.5D, -0.5D);
 			DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> icallbackwrapper;
 			if (flag) {

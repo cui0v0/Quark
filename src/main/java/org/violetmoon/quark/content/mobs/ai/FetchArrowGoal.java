@@ -4,11 +4,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
-
-import java.util.EnumSet;
-
 import org.violetmoon.quark.content.mobs.entity.Shiba;
 import org.violetmoon.quark.mixin.accessor.AccessorAbstractArrow;
+
+import java.util.EnumSet;
 
 public class FetchArrowGoal extends Goal {
 
@@ -46,7 +45,7 @@ public class FetchArrowGoal extends Goal {
 
 		timeTilNextJump--;
 		if(timeTilNextJump <= 0) {
-			timeTilNextJump = shiba.level.random.nextInt(5) + 10;
+			timeTilNextJump = shiba.getCommandSenderWorld().random.nextInt(5) + 10;
 
 			if(shiba.onGround()) {
 				shiba.push(0, 0.3, 0);
@@ -63,7 +62,7 @@ public class FetchArrowGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		AbstractArrow fetching = shiba.getFetching();
-		return shiba.getMouthItem().isEmpty() && fetching != null && fetching.isAlive() && fetching.level == shiba.level && fetching.pickup != Pickup.DISALLOWED;
+		return shiba.getMouthItem().isEmpty() && fetching != null && fetching.isAlive() && fetching.getCommandSenderWorld() == shiba.getCommandSenderWorld() && fetching.pickup != Pickup.DISALLOWED;
 	}
 
 }

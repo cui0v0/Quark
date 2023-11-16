@@ -2,6 +2,7 @@ package org.violetmoon.zeta.client.event.play;
 
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 
 import com.mojang.blaze3d.platform.Window;
@@ -12,6 +13,6 @@ public interface ZCustomizeDebugText extends IZetaPlayEvent {
 	List<String> getLeft();
 	List<String> getRight();
 	Window getWindow();
-	PoseStack getPoseStack();
+	GuiGraphics getGuiGraphics();
 	float getPartialTick();
 }

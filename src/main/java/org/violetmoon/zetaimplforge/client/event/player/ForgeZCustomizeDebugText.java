@@ -2,6 +2,7 @@ package org.violetmoon.zetaimplforge.client.event.player;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.violetmoon.zeta.client.event.play.ZCustomizeDebugText;
 
 import com.mojang.blaze3d.platform.Window;
@@ -16,17 +17,27 @@ public class ForgeZCustomizeDebugText implements ZCustomizeDebugText {
 	}
 
 	@Override
-	public ArrayList<String> getLeft() {return e.getLeft();}
+	public ArrayList<String> getLeft() {
+		return e.getLeft();
+	}
 
 	@Override
-	public ArrayList<String> getRight() {return e.getRight();}
+	public ArrayList<String> getRight() {
+		return e.getRight();
+	}
 
 	@Override
-	public Window getWindow() {return e.getWindow();}
+	public Window getWindow() {
+		return e.getWindow();
+	}
 
 	@Override
-	public PoseStack getPoseStack() {return e.getPoseStack();}
+	public GuiGraphics getGuiGraphics() {
+		return e.getGuiGraphics();
+	}
 
 	@Override
-	public float getPartialTick() {return e.getPartialTick();}
+	public float getPartialTick() {
+		return e.getPartialTick();
+	}
 }

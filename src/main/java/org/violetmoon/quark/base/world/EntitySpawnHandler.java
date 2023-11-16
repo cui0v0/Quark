@@ -6,6 +6,7 @@ import java.util.function.BooleanSupplier;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -46,7 +47,7 @@ public class EntitySpawnHandler {
 	}
 
 	public static void addEgg(EntityType<? extends Mob> entityType, int color1, int color2, ZetaModule module, BooleanSupplier enabledSupplier) {
-		new ZetaSpawnEggItem(() -> entityType, color1, color2, Quark.ZETA.registry.getRegistryName(entityType, Registry.ENTITY_TYPE) + "_spawn_egg", module,
+		new ZetaSpawnEggItem(() -> entityType, color1, color2, Quark.ZETA.registry.getRegistryName(entityType, BuiltInRegistries.ENTITY_TYPE) + "_spawn_egg", module,
 				new Item.Properties().tab(CreativeModeTab.TAB_MISC))
 		.setCondition(enabledSupplier);
 	}

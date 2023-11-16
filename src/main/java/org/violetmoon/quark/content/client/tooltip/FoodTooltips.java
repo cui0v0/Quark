@@ -1,12 +1,5 @@
 package org.violetmoon.quark.content.client.tooltip;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -14,17 +7,23 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
+import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public class FoodTooltips {
 
@@ -89,9 +88,10 @@ public class FoodTooltips {
 
 	public record FoodComponent(ItemStack stack, int width,
 								int height) implements ClientTooltipComponent, TooltipComponent {
-
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+			PoseStack pose = guiGraphics.pose();
+
 			if (stack.isEdible()) {
 				FoodProperties food = stack.getItem().getFoodProperties();
 				if (food != null) {
@@ -121,7 +121,6 @@ public class FoodTooltips {
 					pose.translate(0, 0, 500);
 					RenderSystem.setShader(GameRenderer::getPositionTexShader);
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-					RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 
 					for (int i = 0; i < renderCount; i++) {
 						int x = tooltipX + i * 9 - 1;
@@ -131,7 +130,7 @@ public class FoodTooltips {
 							u += 117;
 						int v = 27;
 
-						GuiComponent.blit(pose, x, y, u, v, 9, 9, 256, 256);
+						guiGraphics.blit(new ResourceLocation("textures/gui/icons.png"), x, y, u, v, 9, 9, 256, 256);
 
 						u = 52;
 						if (fract && i == (renderCount - 1))
@@ -139,11 +138,11 @@ public class FoodTooltips {
 						if (poison)
 							u += 36;
 
-						GuiComponent.blit(pose, x, y, u, v, 9, 9, 256, 256);
+						guiGraphics.blit(new ResourceLocation("textures/gui/icons.png"), x, y, u, v, 9, 9, 256, 256);
 					}
 
 					if (compress)
-						mc.font.drawShadow(pose, "x" + (count + (fract ? ".5" : "")), tooltipX + 10, y + 1, 0xFF666666);
+						guiGraphics.drawString(mc.font, "x" + (count + (fract ? ".5" : "")), tooltipX + 10, y + 1, 0xFF666666, true);
 					pose.popPose();
 				}
 			}

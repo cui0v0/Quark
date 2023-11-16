@@ -14,12 +14,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -67,9 +69,10 @@ public class GlowLichenGrowthBlock extends ZetaBushBlock implements Bonemealable
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(@Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, boolean idkmansomething) {
+	public boolean isValidBonemealTarget(@NotNull LevelReader levelReader, @NotNull BlockPos blockPos,
+										 @NotNull BlockState blockState, boolean isClientSided) {
 		for(Direction dir : MiscUtil.HORIZONTALS)
-			if(canSpread(world, pos.relative(dir)))
+			if(canSpread(levelReader, blockPos.relative(dir)))
 				return true;
 
 		return false;
