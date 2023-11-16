@@ -1,14 +1,13 @@
 package org.violetmoon.zeta.client.config.widget;
 
-import java.util.function.Consumer;
-
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 import org.violetmoon.zeta.client.config.screen.ZetaScreen;
 import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.Definition;
 
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
+import java.util.function.Consumer;
 
 public class DefaultDiscardDone {
 	public final Button resetToDefault;
@@ -25,9 +24,9 @@ public class DefaultDiscardDone {
 		int left = (screen.width - (bWidth + pad) * 3) / 2;
 		int vStart = screen.height - 30;
 
-		this.resetToDefault = new Button(left, vStart, bWidth, 20, Component.translatable("quark.gui.config.default"), this::resetToDefault);
-		this.discard = new Button(left + bWidth + pad, vStart, bWidth, 20, Component.translatable("quark.gui.config.discard"), this::discard);
-		this.done = new Button(left + (bWidth + pad) * 2, vStart, bWidth, 20, Component.translatable("gui.done"), this::done);
+		this.resetToDefault = new Button.Builder(Component.translatable("quark.gui.config.default"), this::resetToDefault).size(bWidth, 20).pos(left, vStart).build();
+		this.discard = new Button.Builder(Component.translatable("quark.gui.config.discard"), this::discard).size(bWidth, 20).pos(left + bWidth + pad, vStart).build();
+		this.done = new Button.Builder(Component.translatable("gui.done"), this::done).size(bWidth, 20).pos(left + (bWidth + pad) * 2, vStart).build();
 
 		this.screen = screen;
 		this.changes = changes;

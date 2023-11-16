@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.ChangeHotbarMessage;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZEndClientTick;
@@ -62,7 +62,7 @@ public class HotbarChangerModule extends ZetaModule {
 		public void hudHeathPre(ZRenderGuiOverlay.PlayerHealth.Pre event) {
 			float shift = -getRealHeight(event.getPartialTick()) + 22;
 			if (shift < 0) {
-				event.getPoseStack().translate(0, shift, 0);
+				event.getGuiGraphics().pose().translate(0, shift, 0);
 				shifting = true;
 			}
 		}
@@ -80,7 +80,7 @@ public class HotbarChangerModule extends ZetaModule {
 		public void hudOverlay(ZRenderGuiOverlay event) {
 			float shift = -getRealHeight(event.getPartialTick()) + 22;
 			if (shifting) {
-				event.getPoseStack().translate(0, -shift, 0);
+				event.getGuiGraphics().pose().translate(0, -shift, 0);
 				shifting = false;
 			}
 		}
@@ -92,7 +92,8 @@ public class HotbarChangerModule extends ZetaModule {
 
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
-			PoseStack matrix = event.getPoseStack();
+			GuiGraphics guiGraphics = event.getGuiGraphics();
+			PoseStack matrix = guiGraphics.pose();
 
 			Window res = event.getWindow();
 			float realHeight = getRealHeight(event.getPartialTick());
@@ -105,12 +106,11 @@ public class HotbarChangerModule extends ZetaModule {
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderTexture(0, WIDGETS);
 			for(int i = 0; i < 3; i++) {
 				matrix.pushPose();
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.75F);
 				matrix.translate(xStart, yStart + i * 21, 0);
-				mc.gui.blit(matrix, 0, 0, 0, 0, 182, 22);
+				guiGraphics.blit(WIDGETS, 0, 0, 0, 0, 182, 22);
 				matrix.popPose();
 			}
 
@@ -125,7 +125,7 @@ public class HotbarChangerModule extends ZetaModule {
 
 				draw = ChatFormatting.BOLD + draw;
 
-				mc.font.drawShadow(matrix, draw, xStart - mc.font.width(draw) - 2, yStart + i * 21 + 7, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, draw, xStart - mc.font.width(draw) - 2, yStart + i * 21 + 7, 0xFFFFFF, true);
 			}
 
 			for(int i = 0; i < 27; i++) {
@@ -133,8 +133,8 @@ public class HotbarChangerModule extends ZetaModule {
 				int x = (int) (xStart + (i % 9) * 20 + 3);
 				int y = (int) (yStart + (i / 9) * 21 + 3);
 
-				render.renderAndDecorateItem(invStack, x, y);
-				render.renderGuiItemDecorations(mc.font, invStack, x, y);
+				guiGraphics.renderItem(invStack, x, y);
+				guiGraphics.renderItemDecorations(mc.font, invStack, x, y);
 			}
 		}
 

@@ -1,13 +1,8 @@
 package org.violetmoon.quark.content.tools.loot;
 
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -17,13 +12,16 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
+import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
+
+import javax.annotation.Nonnull;
 
 public record InBiomeCondition(ResourceLocation target) implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext lootContext) {
 		Vec3 pos = lootContext.getParam(LootContextParams.ORIGIN);
-		return lootContext.getLevel().getBiome(new BlockPos(pos)).is(target);
+		return lootContext.getLevel().getBiome(BlockPos.containing(pos)).is(target);
 	}
 
 	@Override

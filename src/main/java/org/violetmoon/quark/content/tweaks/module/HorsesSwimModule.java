@@ -18,7 +18,7 @@ public class HorsesSwimModule extends ZetaModule {
 			boolean ridden = !honse.getPassengers().isEmpty();
 			boolean water = honse.isInWater();
 			if(ridden && water) {
-				boolean tallWater = honse.level.isWaterAt(honse.blockPosition().below());
+				boolean tallWater = honse.getCommandSenderWorld().isWaterAt(honse.blockPosition().below());
 				
 				if(tallWater)
 					honse.move(MoverType.PLAYER, new Vec3(0, 0.1, 0));

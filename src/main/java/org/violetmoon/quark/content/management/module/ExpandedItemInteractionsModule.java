@@ -9,6 +9,8 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -88,7 +90,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		heldShulkerBoxMenuType = IForgeMenuType.create(HeldShulkerBoxMenu::fromNetwork);
-		Quark.ZETA.registry.register(heldShulkerBoxMenuType, "held_shulker_box", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(heldShulkerBoxMenuType, "held_shulker_box", Registries.MENU);
 	}
 
 	@LoadEvent
@@ -100,7 +102,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
-		shulkers = RegistryUtil.massRegistryGet(GeneralConfig.shulkerBoxes, Registry.ITEM);
+		shulkers = RegistryUtil.massRegistryGet(GeneralConfig.shulkerBoxes, BuiltInRegistries.ITEM);
 	}
 
 	public static boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
@@ -191,7 +193,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			EquipmentSlot equipSlot = null;
 
 			if (stack.getItem() instanceof ArmorItem armor) {
-				equipSlot = armor.getSlot();
+				equipSlot = armor.getEquipmentSlot();
 			} else if (stack.getItem() instanceof ElytraItem)
 				equipSlot = EquipmentSlot.CHEST;
 
@@ -231,8 +233,8 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 		if (canTrashItem(stack, incoming, slot, player)) {
 
 			incoming.setCount(0);
-			if (!player.level.isClientSide)
-				player.level.playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 2F + (float) Math.random());
+			if (!player.getCommandSenderWorld().isClientSide)
+				player.getCommandSenderWorld().playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 2F + (float) Math.random());
 
 			return true;
 		}
@@ -377,7 +379,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			Screen gui = mc.screen;
 			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 				Slot under = containerGui.getSlotUnderMouse();
-				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getSelectedTab() != CreativeModeTab.TAB_INVENTORY.getId())
+				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTabs.TAB_INVENTORY.getId())
 					return;
 
 				if (under != null) {

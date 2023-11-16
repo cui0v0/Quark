@@ -62,7 +62,7 @@ public class HollowLogsModule extends ZetaModule {
 			Player player = event.getPlayer();
 			BlockPos playerPos = player.blockPosition();
 			boolean isTrying = player.isVisuallyCrawling() ||
-				(player.isCrouching() && !player.isColliding(playerPos, player.level.getBlockState(playerPos)));
+				(player.isCrouching() && !player.isColliding(playerPos, player.getCommandSenderWorld().getBlockState(playerPos)));
 			boolean wasTrying = player.getPersistentData().getBoolean(TAG_TRYING_TO_CRAWL);
 
 			if (!player.isVisuallyCrawling()) {
@@ -86,16 +86,16 @@ public class HollowLogsModule extends ZetaModule {
 	}
 
 	private boolean tryClimb(Player player, Direction dir, BlockPos pos) {
-		BlockState state = player.level.getBlockState(pos);
+		BlockState state = player.getCommandSenderWorld().getBlockState(pos);
 		Block block = state.getBlock();
 
 		if(block instanceof ICrawlSpaceBlock crawlSpace) {
-			if(crawlSpace.canCrawl(player.level, state, pos, dir)) {
+			if(crawlSpace.canCrawl(player.getCommandSenderWorld(), state, pos, dir)) {
 				player.setPose(Pose.SWIMMING);
 				player.setSwimming(true);
 
 				double x = pos.getX() + 0.5 - (dir.getStepX() * 0.3);
-				double y = pos.getY() + crawlSpace.crawlHeight(player.level, state, pos, dir);
+				double y = pos.getY() + crawlSpace.crawlHeight(player.getCommandSenderWorld(), state, pos, dir);
 				double z = pos.getZ() + 0.5 - (dir.getStepZ() * 0.3);
 
 				player.setPos(x, y, z);
