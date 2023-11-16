@@ -1,6 +1,8 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,7 +26,7 @@ public class DragonScalesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		event.getRegistry().register(ElytraDuplicationRecipe.SERIALIZER, "elytra_duplication", Registry.RECIPE_SERIALIZER_REGISTRY);
+		event.getRegistry().register(ElytraDuplicationRecipe.SERIALIZER, "elytra_duplication", Registries.RECIPE_SERIALIZER);
 
 		dragon_scale = new ZetaItem("dragon_scale", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 	}
@@ -34,8 +36,8 @@ public class DragonScalesModule extends ZetaModule {
 		if(event.getEntity() instanceof EnderDragon dragon && !event.getEntity().getCommandSenderWorld().isClientSide) {
 			if(dragon.getDragonFight() != null && dragon.getDragonFight().hasPreviouslyKilledDragon() && dragon.dragonDeathTime == 100) {
 				Vec3 pos = dragon.position();
-				ItemEntity item = new ItemEntity(dragon.level, pos.x, pos.y, pos.z, new ItemStack(dragon_scale, 1));
-				dragon.level.addFreshEntity(item);
+				ItemEntity item = new ItemEntity(dragon.getCommandSenderWorld(), pos.x, pos.y, pos.z, new ItemStack(dragon_scale, 1));
+				dragon.getCommandSenderWorld().addFreshEntity(item);
 			}
 		}
 	}

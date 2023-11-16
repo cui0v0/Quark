@@ -1,6 +1,6 @@
 package org.violetmoon.quark.addons.oddities.inventory;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-
-import javax.annotation.Nonnull;
-
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -145,8 +143,8 @@ public class EnchantmentMatrix {
 		List<Piece> marked = pieces.values().stream().filter(p -> p.marked).collect(Collectors.toList());
 
 		List<EnchantmentDataWrapper> validEnchants = new ArrayList<>();
-		Registry.ENCHANTMENT.forEach(enchantment -> {
-			String id = Registry.ENCHANTMENT.getKey(enchantment).toString();
+		BuiltInRegistries.ENCHANTMENT.forEach(enchantment -> {
+			String id = BuiltInRegistries.ENCHANTMENT.getKey(enchantment).toString();
 			boolean isValid = true;
 			if(enchantment.isTreasureOnly()){
 				isValid = MatrixEnchantingModule.allowTreasures ||
@@ -414,7 +412,7 @@ public class EnchantmentMatrix {
 			this.influence = wrapper.influence;
 			this.type = type;
 
-			Random rng = new Random(Objects.toString(Registry.ENCHANTMENT.getKey(enchant)).hashCode());
+			Random rng = new Random(Objects.toString(BuiltInRegistries.ENCHANTMENT.getKey(enchant)).hashCode());
 			float h = rng.nextFloat();
 			float s = rng.nextFloat() * 0.2F + 0.8F;
 			float b = rng.nextFloat() * 0.25F + 0.75F;
@@ -457,7 +455,7 @@ public class EnchantmentMatrix {
 			cmp.putInt(TAG_COLOR, color);
 			cmp.putInt(TAG_TYPE, type);
 			if (enchant != null)
-				cmp.putString(TAG_ENCHANTMENT, Objects.toString(Registry.ENCHANTMENT.getKey(enchant)));
+				cmp.putString(TAG_ENCHANTMENT, Objects.toString(BuiltInRegistries.ENCHANTMENT.getKey(enchant)));
 			cmp.putInt(TAG_LEVEL, level);
 			cmp.putInt(TAG_X, x);
 			cmp.putInt(TAG_Y, y);
@@ -473,7 +471,7 @@ public class EnchantmentMatrix {
 		public void readFromNBT(CompoundTag cmp) {
 			color = cmp.getInt(TAG_COLOR);
 			type = cmp.getInt(TAG_TYPE);
-			enchant = Registry.ENCHANTMENT.get(new ResourceLocation(cmp.getString(TAG_ENCHANTMENT)));
+			enchant = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(cmp.getString(TAG_ENCHANTMENT)));
 			level = cmp.getInt(TAG_LEVEL);
 			x = cmp.getInt(TAG_X);
 			y = cmp.getInt(TAG_Y);

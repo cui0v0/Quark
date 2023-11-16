@@ -1,16 +1,11 @@
 package org.violetmoon.quark.content.tweaks.client.render.entity;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -22,11 +17,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
 
 // yes this shit again
 public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
@@ -51,61 +50,61 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 	}
 
 	@Override
-	public void render(DyedItemFrame p_115076_, float p_115077_, float p_115078_, PoseStack p_115079_, MultiBufferSource p_115080_, int p_115081_) {
-		super.render(p_115076_, p_115077_, p_115078_, p_115079_, p_115080_, p_115081_);
-		p_115079_.pushPose();
-		Direction direction = p_115076_.getDirection();
-		Vec3 vec3 = this.getRenderOffset(p_115076_, p_115078_);
-		p_115079_.translate(-vec3.x(), -vec3.y(), -vec3.z());
-		p_115079_.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
-		p_115079_.mulPose(Vector3f.XP.rotationDegrees(p_115076_.getXRot()));
-		p_115079_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115076_.getYRot()));
-		boolean flag = p_115076_.isInvisible();
-		ItemStack itemstack = p_115076_.getItem();
+	public void render(@NotNull DyedItemFrame dyedItemFrame, float p_115077_, float p_115078_, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int p_115081_) {
+		super.render(dyedItemFrame, p_115077_, p_115078_, poseStack, multiBufferSource, p_115081_);
+		poseStack.pushPose();
+		Direction direction = dyedItemFrame.getDirection();
+		Vec3 vec3 = this.getRenderOffset(dyedItemFrame, p_115078_);
+		poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
+		poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+		poseStack.mulPose(Axis.XP.rotationDegrees(dyedItemFrame.getXRot()));
+		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - dyedItemFrame.getYRot()));
+		boolean flag = dyedItemFrame.isInvisible();
+		ItemStack itemstack = dyedItemFrame.getItem();
 		if (!flag) {
 			ModelManager modelmanager = this.blockRenderer.getBlockModelShaper().getModelManager();
-			boolean map = p_115076_.getItem().getItem() instanceof MapItem;
+			boolean map = dyedItemFrame.getItem().getItem() instanceof MapItem;
 			ModelResourceLocation modelresourcelocation = map ? MAP_FRAME_LOCATION : FRAME_LOCATION;
 			
-			p_115079_.pushPose();
-			p_115079_.translate(-0.5D, -0.5D, -0.5D);
+			poseStack.pushPose();
+			poseStack.translate(-0.5D, -0.5D, -0.5D);
 			
-			int color = p_115076_.getColor();
+			int color = dyedItemFrame.getColor();
 			float r = ((float) ((color >> 16) & 0xFF)) / 255F;
 			float g = ((float) ((color >>  8) & 0xFF)) / 255F;
 			float b = ((float) ((color      ) & 0xFF)) / 255F;
 			
-			blockRenderer.getModelRenderer().renderModel(p_115079_.last(), p_115080_.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(modelresourcelocation), r, g, b, p_115081_, OverlayTexture.NO_OVERLAY);
-			p_115079_.popPose();
+			blockRenderer.getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(modelresourcelocation), r, g, b, p_115081_, OverlayTexture.NO_OVERLAY);
+			poseStack.popPose();
 		}
 
 		if (!itemstack.isEmpty()) {
-			MapItemSavedData mapitemsaveddata = MapItem.getSavedData(itemstack, p_115076_.level);
+			MapItemSavedData mapitemsaveddata = MapItem.getSavedData(itemstack, dyedItemFrame.getCommandSenderWorld());
 			if (flag) {
-				p_115079_.translate(0.0D, 0.0D, 0.5D);
+				poseStack.translate(0.0D, 0.0D, 0.5D);
 			} else {
-				p_115079_.translate(0.0D, 0.0D, 0.4375D);
+				poseStack.translate(0.0D, 0.0D, 0.4375D);
 			}
 
-			int j = mapitemsaveddata != null ? p_115076_.getRotation() % 4 * 2 : p_115076_.getRotation();
-			p_115079_.mulPose(Vector3f.ZP.rotationDegrees((float)j * 360.0F / 8.0F));
+			int j = mapitemsaveddata != null ? dyedItemFrame.getRotation() % 4 * 2 : dyedItemFrame.getRotation();
+			poseStack.mulPose(Axis.ZP.rotationDegrees((float)j * 360.0F / 8.0F));
 			if (mapitemsaveddata != null) {
-				p_115079_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-				p_115079_.scale(0.0078125F, 0.0078125F, 0.0078125F);
-				p_115079_.translate(-64.0D, -64.0D, 0.0D);
-				p_115079_.translate(0.0D, 0.0D, -1.0D);
+				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+				poseStack.scale(0.0078125F, 0.0078125F, 0.0078125F);
+				poseStack.translate(-64.0D, -64.0D, 0.0D);
+				poseStack.translate(0.0D, 0.0D, -1.0D);
 				if (mapitemsaveddata != null) {
-					int i = this.getLightVal(p_115076_, 15728850, p_115081_);
-					Minecraft.getInstance().gameRenderer.getMapRenderer().render(p_115079_, p_115080_, p_115076_.getFramedMapId().getAsInt(), mapitemsaveddata, true, i);
+					int i = this.getLightVal(dyedItemFrame, 15728850, p_115081_);
+					Minecraft.getInstance().gameRenderer.getMapRenderer().render(poseStack, multiBufferSource, dyedItemFrame.getFramedMapId().getAsInt(), mapitemsaveddata, true, i);
 				}
 			} else {
-				int k = this.getLightVal(p_115076_, 15728880, p_115081_);
-				p_115079_.scale(0.5F, 0.5F, 0.5F);
-				this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, k, OverlayTexture.NO_OVERLAY, p_115079_, p_115080_, p_115076_.getId());
+				int k = this.getLightVal(dyedItemFrame, 15728880, p_115081_);
+				poseStack.scale(0.5F, 0.5F, 0.5F);
+				this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, k, OverlayTexture.NO_OVERLAY, poseStack, multiBufferSource, Minecraft.getInstance().level, dyedItemFrame.getId());
 			}
 		}
 
-		p_115079_.popPose();
+		poseStack.popPose();
 	}
 
 	private int getLightVal(DyedItemFrame p_174209_, int p_174210_, int p_174211_) {

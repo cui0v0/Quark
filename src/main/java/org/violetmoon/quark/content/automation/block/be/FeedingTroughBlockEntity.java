@@ -1,17 +1,6 @@
 package org.violetmoon.quark.content.automation.block.be;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
-import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
-
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -36,6 +25,14 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
+import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author WireSegal
@@ -140,11 +137,11 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 
 	private void addItemParticles(Entity entity, ItemStack stack, int count) {
 		for(int i = 0; i < count; ++i) {
-			Vec3 direction = new Vec3((entity.level.random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+			Vec3 direction = new Vec3((entity.getCommandSenderWorld().random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			direction = direction.xRot(-entity.getXRot() * ((float)Math.PI / 180F));
 			direction = direction.yRot(-entity.getYRot() * ((float)Math.PI / 180F));
-			double yVelocity = (-entity.level.random.nextFloat()) * 0.6D - 0.3D;
-			Vec3 position = new Vec3((entity.level.random.nextFloat() - 0.5D) * 0.3D, yVelocity, 0.6D);
+			double yVelocity = (-entity.getCommandSenderWorld().random.nextFloat()) * 0.6D - 0.3D;
+			Vec3 position = new Vec3((entity.getCommandSenderWorld().random.nextFloat() - 0.5D) * 0.3D, yVelocity, 0.6D);
 			Vec3 entityPos = entity.position();
 			position = position.xRot(-entity.getXRot() * ((float)Math.PI / 180F));
 			position = position.yRot(-entity.getYRot() * ((float)Math.PI / 180F));

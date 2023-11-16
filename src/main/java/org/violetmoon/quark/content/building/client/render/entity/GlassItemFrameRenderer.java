@@ -1,24 +1,14 @@
 package org.violetmoon.quark.content.building.client.render.entity;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.building.entity.GlassItemFrame;
-import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -35,11 +25,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BannerItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPattern;
@@ -47,6 +33,12 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.building.entity.GlassItemFrame;
+import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -85,8 +77,8 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 		Vec3 Vector3d = this.getRenderOffset(frame, partialTicks);
 		matrix.translate(-Vector3d.x(), -Vector3d.y(), -Vector3d.z());
 		matrix.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(frame.getXRot()));
-		matrix.mulPose(Vector3f.YP.rotationDegrees(180.0F - frame.getYRot()));
+		matrix.mulPose(Axis.XP.rotationDegrees(frame.getXRot()));
+		matrix.mulPose(Axis.YP.rotationDegrees(180.0F - frame.getYRot()));
 		BlockRenderDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
 		ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
 
@@ -138,7 +130,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	protected void renderItemStack(GlassItemFrame itemFrame, PoseStack matrix, MultiBufferSource buff, int light, ItemStack stack) {
 		if (!stack.isEmpty()) {
 			matrix.pushPose();
-			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.level);
+			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.getCommandSenderWorld());
 
 			sign: if(itemFrame.isOnSign()) {
 
@@ -156,17 +148,17 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 				matrix.translate(0, 0.35, 0.8);
 				matrix.scale(0.4F, 0.4F, 0.4F);
 				matrix.translate(0, 0, 0.5);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(angle));
+				matrix.mulPose(Axis.YP.rotationDegrees(angle));
 				matrix.translate(0, 0, -0.5);
 				matrix.translate(0, 0, -0.085);
 			}
 
 			int rotation = mapdata != null ? itemFrame.getRotation() % 4 * 2 : itemFrame.getRotation();
-			matrix.mulPose(Vector3f.ZP.rotationDegrees((float) rotation * 360.0F / 8.0F));
+			matrix.mulPose(Axis.ZP.rotationDegrees((float) rotation * 360.0F / 8.0F));
 
 			if (!MinecraftForge.EVENT_BUS.post(new RenderItemInFrameEvent(itemFrame, defaultRenderer, matrix, buff, light))) {
 				if (mapdata != null) {
-					matrix.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+					matrix.mulPose(Axis.ZP.rotationDegrees(180.0F));
 					matrix.scale(0.0078125F, 0.0078125F, 0.0078125F);
 					matrix.translate(-64.0F, -64.0F, 62.5F); // <- Use 62.5 instead of 64 to prevent z-fighting
 
@@ -194,7 +186,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 							matrix.scale(s, s, s);
 						}
 						matrix.scale(0.5F, 0.5F, 0.5F);
-						this.itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buff, 0);
+						this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buff, mc.level, 0);
 					}
 				}
 			}

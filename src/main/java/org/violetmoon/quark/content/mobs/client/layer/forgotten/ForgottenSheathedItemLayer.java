@@ -1,19 +1,17 @@
 package org.violetmoon.quark.content.mobs.client.layer.forgotten;
 
-import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.content.mobs.entity.Forgotten;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.content.mobs.entity.Forgotten;
+
+import javax.annotation.Nonnull;
 
 public class ForgottenSheathedItemLayer<M extends EntityModel<Forgotten>> extends RenderLayer<Forgotten, M> {
 
@@ -31,8 +29,8 @@ public class ForgottenSheathedItemLayer<M extends EntityModel<Forgotten>> extend
 		matrix.pushPose();
 		matrix.translate(0.1, 0.2, 0.15);
 		matrix.scale(0.75F, 0.75F, 0.75F);
-		matrix.mulPose(Vector3f.ZP.rotationDegrees(90));
-		itemInHandRenderer.renderItem(entitylivingbaseIn, item, ItemTransforms.TransformType.NONE, true, matrix, bufferIn, packedLightIn);
+		matrix.mulPose(Axis.ZP.rotationDegrees(90));
+		itemInHandRenderer.renderItem(entitylivingbaseIn, item, ItemDisplayContext.NONE, true, matrix, bufferIn, packedLightIn);
 		matrix.popPose();
 	}
 }

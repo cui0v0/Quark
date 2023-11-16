@@ -1,18 +1,17 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.automation.block.EnderWatcherBlock;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 @ZetaLoadModule(category = "automation")
 public class EnderWatcherModule extends ZetaModule {
@@ -26,7 +25,7 @@ public class EnderWatcherModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		ender_watcher = new EnderWatcherBlock(this);
 		blockEntityType = BlockEntityType.Builder.of(EnderWatcherBlockEntity::new, ender_watcher).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "ender_watcher", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "ender_watcher", Registries.BLOCK_ENTITY_TYPE);
 
 		watcherCenterTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("watcher_center");
 	}

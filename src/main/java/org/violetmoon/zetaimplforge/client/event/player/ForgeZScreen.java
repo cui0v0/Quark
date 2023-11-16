@@ -1,13 +1,12 @@
 package org.violetmoon.zetaimplforge.client.event.player;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.event.ScreenEvent;
+import org.violetmoon.zeta.client.event.play.ZScreen;
 
 import java.util.List;
-
-import org.violetmoon.zeta.client.event.play.ZScreen;
 
 public class ForgeZScreen implements ZScreen {
     private final ScreenEvent e;
@@ -66,8 +65,8 @@ public class ForgeZScreen implements ZScreen {
         }
 
         @Override
-        public PoseStack getPoseStack() {
-            return e.getPoseStack();
+        public GuiGraphics getGuiGraphics() {
+            return e.getGuiGraphics();
         }
 
         @Override

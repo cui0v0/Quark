@@ -1,19 +1,8 @@
 package org.violetmoon.zeta.registry;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import org.violetmoon.zeta.Zeta;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.recipe.ZetaDyeRecipe;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,6 +14,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.recipe.ZetaDyeRecipe;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @see org.violetmoon.zeta.client.ClientRegistryExtension
@@ -38,7 +36,7 @@ public class DyeablesRegistry {
 	public void register(ZRegister event) {
 		ResourceLocation id = event.getRegistry().newResourceLocation("dye_item");
 		ZetaDyeRecipe recipe = new ZetaDyeRecipe(id, this);
-		event.getRegistry().register(recipe.getSerializer(), id, Registry.RECIPE_SERIALIZER_REGISTRY);
+		event.getRegistry().register(recipe.getSerializer(), id, Registries.RECIPE_SERIALIZER);
 	}
 
 	@LoadEvent

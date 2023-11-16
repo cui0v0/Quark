@@ -20,7 +20,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -194,8 +193,8 @@ public class EnhancedLaddersModule extends ZetaModule {
 
 			Player player = event.getEntity();
 			if(player.onClimbable() && !player.getAbilities().flying &&
-				!isScaffolding(player.level.getBlockState(player.blockPosition()), player)
-				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.isOnGround()) {
+				!isScaffolding(player.getCommandSenderWorld().getBlockState(player.blockPosition()), player)
+				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.onGround()) {
 				Input input = event.getInput();
 				if(input != null)
 					input.shiftKeyDown = true; // sneaking
@@ -208,11 +207,11 @@ public class EnhancedLaddersModule extends ZetaModule {
 				return;
 
 			Player player = event.getPlayer();
-			if(player.onClimbable() && player.level.isClientSide) {
+			if(player.onClimbable() && player.getCommandSenderWorld().isClientSide) {
 				BlockPos playerPos = player.blockPosition();
 				BlockPos downPos = playerPos.below();
 
-				boolean scaffold = isScaffolding(player.level.getBlockState(playerPos), player);
+				boolean scaffold = isScaffolding(player.getCommandSenderWorld().getBlockState(playerPos), player);
 				if(player.isCrouching() == scaffold &&
 					player.zza == 0 &&
 					player.yya <= 0 &&
@@ -220,12 +219,12 @@ public class EnhancedLaddersModule extends ZetaModule {
 					player.getXRot() > 70 &&
 					!player.jumping &&
 					!player.getAbilities().flying &&
-					player.level.getBlockState(downPos).isLadder(player.level, downPos, player)) {
+					player.getCommandSenderWorld().getBlockState(downPos).isLadder(player.getCommandSenderWorld(), downPos, player)) {
 
 					Vec3 move = new Vec3(0, fallSpeed, 0);
 					AABB target = player.getBoundingBox().move(move);
 
-					Iterable<VoxelShape> collisions = player.level.getBlockCollisions(player, target);
+					Iterable<VoxelShape> collisions = player.getCommandSenderWorld().getBlockCollisions(player, target);
 					if(!collisions.iterator().hasNext()) {
 						player.setBoundingBox(target);
 						player.move(MoverType.SELF, move);
@@ -237,7 +236,7 @@ public class EnhancedLaddersModule extends ZetaModule {
 	}
 
 	protected boolean isScaffolding(BlockState state, LivingEntity entity) {
-		return zeta.blockExtensions.get(state).isScaffoldingZeta(state, entity.level, entity.blockPosition(), entity);
+		return zeta.blockExtensions.get(state).isScaffoldingZeta(state, entity.getCommandSenderWorld(), entity.blockPosition(), entity);
 	}
 
 

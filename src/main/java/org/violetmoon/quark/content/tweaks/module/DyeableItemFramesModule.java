@@ -1,26 +1,10 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
-import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
-import org.violetmoon.zeta.client.event.load.ZAddModels;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,6 +20,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
+import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
+import org.violetmoon.zeta.client.event.load.ZAddModels;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+
+import java.util.Arrays;
+import java.util.List;
 
 @ZetaLoadModule(category = "tweaks")
 public class DyeableItemFramesModule extends ZetaModule {
@@ -54,7 +53,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new DyedItemFrame(entityType, world))
 				.build("dyed_item_frame");
-		event.getRegistry().register(entityType, "dyed_item_frame", Registry.ENTITY_TYPE_REGISTRY);
+		event.getRegistry().register(entityType, "dyed_item_frame", Registries.ENTITY_TYPE);
 
 		Quark.ZETA.dyeables.register(Items.ITEM_FRAME, this);
 		Quark.ZETA.dyeables.register(Items.GLOW_ITEM_FRAME, this);
@@ -70,7 +69,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 			BlockHitResult blockhit = event.getHitVec();
 			UseOnContext context = new UseOnContext(player, hand, blockhit);
 
-			Level level = player.level;
+			Level level = player.getCommandSenderWorld();
 			BlockPos pos = event.getPos();
 			BlockState state = level.getBlockState(pos);
 			
@@ -120,7 +119,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 	}
 
 	protected boolean mayPlace(Player player, Direction direction, ItemStack stack, BlockPos pos) {
-		return !player.level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
+		return !player.getCommandSenderWorld().isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
 	}
 
 	@ZetaLoadModule(clientReplacement = true)

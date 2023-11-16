@@ -3,14 +3,11 @@ package org.violetmoon.quark.content.experimental.module;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
@@ -18,6 +15,8 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.RegistryUtil;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false,
 description = "This feature generates Resource Pack Item Model predicates on the items defined in 'Items to Change'\n"
@@ -40,11 +39,11 @@ public class EnchantmentPredicatesModule extends ZetaModule {
 		public void clientSetup(ZClientSetup e) {
 			if(enabled) {
 				e.enqueueWork(() -> {
-					List<Item> items = RegistryUtil.massRegistryGet(itemsToChange, Registry.ITEM);
-					List<Enchantment> enchants = RegistryUtil.massRegistryGet(enchantmentsToRegister, Registry.ENCHANTMENT);
+					List<Item> items = RegistryUtil.massRegistryGet(itemsToChange, BuiltInRegistries.ITEM);
+					List<Enchantment> enchants = RegistryUtil.massRegistryGet(enchantmentsToRegister, BuiltInRegistries.ENCHANTMENT);
 
 					for(Enchantment enchant : enchants) {
-						ResourceLocation enchantRes = Registry.ENCHANTMENT.getKey(enchant);
+						ResourceLocation enchantRes = BuiltInRegistries.ENCHANTMENT.getKey(enchant);
 						ResourceLocation name = new ResourceLocation(Quark.MOD_ID + "_has_enchant_" + enchantRes.getNamespace() + "_" + enchantRes.getPath());
 						ItemPropertyFunction fun = (stack, level, entity, i) -> EnchantmentHelper.getTagEnchantmentLevel(enchant, stack);
 

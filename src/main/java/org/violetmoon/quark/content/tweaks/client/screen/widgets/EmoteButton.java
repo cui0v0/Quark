@@ -1,21 +1,18 @@
 package org.violetmoon.quark.content.tweaks.client.screen.widgets;
 
-import javax.annotation.Nonnull;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.tweaks.client.emote.EmoteDescriptor;
 import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-
 public class EmoteButton extends TranslucentButton {
-
 	public final EmoteDescriptor desc;
 
 	public EmoteButton(int x, int y, EmoteDescriptor desc, OnPress onPress) {
@@ -24,28 +21,28 @@ public class EmoteButton extends TranslucentButton {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack matrix, int mouseX, int mouseY, float partial) {
-		super.renderButton(matrix, mouseX, mouseY, partial);
+	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, partial);
 
-		if(visible) {
+		PoseStack matrix = guiGraphics.pose();
+
+		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, desc.texture);
-			blit(matrix, x + 4, y + 4, 0, 0, 16, 16, 16, 16);
+			guiGraphics.blit(desc.texture, getX() + 4, getY() + 4, 0, 0, 16, 16, 16, 16);
 
 			ResourceLocation tierTexture = desc.getTierTexture();
 			if(tierTexture != null) {
 				RenderSystem.setShaderTexture(0, tierTexture);
-				blit(matrix, x + 4, y + 4, 0, 0, 16, 16, 16, 16);
+				guiGraphics.blit(tierTexture, getX() + 4, getY() + 4, 0, 0, 16, 16, 16, 16);
 			}
 
-			boolean hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			if(hovered) {
+			boolean hovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
+			if (hovered) {
 				String name = desc.getLocalizedName();
-				MiscUtil.Client.drawChatBubble(matrix, x, y, mc.font, name, 1F, false);
+				MiscUtil.Client.drawChatBubble(matrix, getX(), getY(), mc.font, name, 1F, false);
 			}
 		}
 	}
-
 }

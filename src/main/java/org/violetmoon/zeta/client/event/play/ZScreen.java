@@ -1,13 +1,12 @@
 package org.violetmoon.zeta.client.event.play;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-
-import java.util.List;
-
 import org.violetmoon.zeta.event.bus.Cancellable;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
+
+import java.util.List;
 
 public interface ZScreen extends IZetaPlayEvent {
     Screen getScreen();
@@ -22,7 +21,7 @@ public interface ZScreen extends IZetaPlayEvent {
     }
 
     interface Render extends ZScreen {
-        PoseStack getPoseStack();
+        GuiGraphics getGuiGraphics();
         int getMouseX();
         int getMouseY();
 

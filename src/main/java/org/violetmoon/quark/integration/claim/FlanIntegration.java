@@ -8,18 +8,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import org.violetmoon.quark.base.Quark;
 
 import javax.annotation.Nonnull;
-
-import org.violetmoon.quark.base.Quark;
 
 public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canBreak(@Nonnull Player player, @Nonnull BlockPos pos) {
-        if (player.level.isClientSide) return true; //should only be used from server but client can call too
+        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level);
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.BREAK, pos, true);
         } catch (Exception e) {
@@ -30,9 +29,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canPlace(@Nonnull Player player, @Nonnull BlockPos pos) {
-        if (player.level.isClientSide) return true; //should only be used from server but client can call too
+        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level);
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.PLACE, pos);
         } catch (Exception e) {
@@ -43,9 +42,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canReplace(@Nonnull Player player, @Nonnull BlockPos pos) {
-        if (player.level.isClientSide) return true; //should only be used from server but client can call too
+        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level);
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.PLACE, pos);
         } catch (Exception e) {
@@ -56,9 +55,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canAttack(@Nonnull Player player, @Nonnull Entity victim) {
-        if (player.level.isClientSide) return true; //should only be used from server but client can call too
+        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level);
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
             IPermissionContainer claim = storage.getForPermissionCheck(victim.blockPosition());
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.HURTANIMAL, victim.blockPosition());
         } catch (Exception e) {
@@ -69,9 +68,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canInteract(@Nonnull Player player, @Nonnull BlockPos targetPos) {
-        if (player.level.isClientSide) return true; //should only be used from server but client can call too
+        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level);
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
             IPermissionContainer claim = storage.getForPermissionCheck(targetPos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.INTERACTBLOCK, targetPos);
         } catch (Exception e) {

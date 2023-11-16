@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.client.module;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -41,19 +42,19 @@ public class ElytraIndicatorModule extends ZetaModule {
 				int armor = player.getArmorValue();
 				shift = (armor >= 20 ? 0 : 9);
 
-				PoseStack pose = event.getPoseStack();
+				GuiGraphics guiGraphics = event.getGuiGraphics();
+				PoseStack pose = guiGraphics.pose();
 				Window window = event.getWindow();
 
 				pose.translate(shift, 0, 0);
 
 				pose.pushPose();
 				pose.translate(0, 0, 100);
-				RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 				int x = window.getGuiScaledWidth() / 2 - 100;
 				int y = window.getGuiScaledHeight() - event.getLeftHeight();
-				Screen.blit(pose, x, y, 184, 35, 9, 9, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, x, y, 184, 35, 9, 9, 256, 256);
 
 				pose.popPose();
 			}
@@ -62,7 +63,7 @@ public class ElytraIndicatorModule extends ZetaModule {
 		@PlayEvent
 		public void hudPost(ZRenderGuiOverlay.ArmorLevel.Post event) {
 			if(shift != 0) {
-				event.getPoseStack().translate(-shift, 0, 0);
+				event.getGuiGraphics().pose().translate(-shift, 0, 0);
 				shift = 0;
 			}
 		}

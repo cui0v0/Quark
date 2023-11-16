@@ -1,15 +1,11 @@
 package org.violetmoon.quark.content.automation.block;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
@@ -28,16 +24,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.EntityCollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.common.util.ForgeSoundType;
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
 import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author WireSegal
@@ -94,11 +89,11 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	}
 
 	@Override
-	public void fallOn(Level world, @Nonnull BlockState state, @Nonnull BlockPos pos, @Nonnull Entity entity, float distance) {
-		if (world.getBlockState(pos).getValue(FULL))
-			entity.causeFallDamage(distance, 0.2F, DamageSource.FALL);
+	public void fallOn(Level level, @Nonnull BlockState state, @Nonnull BlockPos pos, @Nonnull Entity entity, float distance) {
+		if (level.getBlockState(pos).getValue(FULL))
+			entity.causeFallDamage(distance, 0.2F, level.damageSources().fall());
 		else
-			super.fallOn(world, state, pos, entity, distance);
+			super.fallOn(level, state, pos, entity, distance);
 	}
 
 	@Override

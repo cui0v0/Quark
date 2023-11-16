@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,17 +28,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
-
-import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnData {
@@ -66,11 +63,11 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		ItemStack item = getItem();
 		if(!player.isShiftKeyDown() && !item.isEmpty() && !(item.getItem() instanceof BannerItem)) {
 			BlockPos behind = getBehindPos();
-			BlockEntity tile = level.getBlockEntity(behind);
+			BlockEntity tile = getCommandSenderWorld().getBlockEntity(behind);
 
 			if(tile != null && tile.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
-				BlockState behindState = level.getBlockState(behind);
-				InteractionResult result = behindState.use(level, player, hand, new BlockHitResult(new Vec3(getX(), getY(), getZ()), direction, behind, true));
+				BlockState behindState = getCommandSenderWorld().getBlockState(behind);
+				InteractionResult result = behindState.use(getCommandSenderWorld(), player, hand, new BlockHitResult(new Vec3(getX(), getY(), getZ()), direction, behind, true));
 
 				if(result.consumesAction())
 					return result;
@@ -87,18 +84,18 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		super.tick();
         boolean shouldUpdateMaps = GlassItemFrameModule.glassItemFramesUpdateMapsEveryTick;
 		//same update as normal frames
-		if(level.getGameTime() % 100 == 0) {
+		if(getCommandSenderWorld().getGameTime() % 100 == 0) {
 			updateIsOnSign();
 			//not upating every tick otherwise lag
 			shouldUpdateMaps = true;
 		}
 
-		if(!level.isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps &&  shouldUpdateMaps) {
+		if(!getCommandSenderWorld().isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps &&  shouldUpdateMaps) {
 			ItemStack stack = getItem();
-			if(stack.getItem() instanceof MapItem map && level instanceof ServerLevel sworld) {
+			if(stack.getItem() instanceof MapItem map && getCommandSenderWorld() instanceof ServerLevel sworld) {
 				ItemStack clone = stack.copy();
 
-				MapItemSavedData data = MapItem.getSavedData(clone, level);
+				MapItemSavedData data = MapItem.getSavedData(clone, getCommandSenderWorld());
 				if(data != null && !data.locked) {
 					var fakePlayer = FakePlayerFactory.get(sworld, DUMMY_PROFILE);
 
@@ -106,7 +103,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 					fakePlayer.setPos(getX(), getY(), getZ());
 					fakePlayer.getInventory().setItem(0, clone);
 
-					map.update(level, fakePlayer, data);
+					map.update(getCommandSenderWorld(), fakePlayer, data);
 				}
 			}
 		}
@@ -115,7 +112,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	private void updateIsOnSign() {
 		onSignRotation = null;
 		if(this.direction.getAxis() != Direction.Axis.Y){
-			BlockState back = level.getBlockState(getBehindPos());
+			BlockState back = getCommandSenderWorld().getBlockState(getBehindPos());
 			if(back.is(BlockTags.STANDING_SIGNS)){
 				onSignRotation = back.getValue(StandingSignBlock.ROTATION);
 			}
@@ -187,7 +184,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 
 	@Nonnull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

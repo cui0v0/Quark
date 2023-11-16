@@ -2,17 +2,12 @@ package org.violetmoon.quark.content.tweaks.module;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -21,6 +16,10 @@ import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.RegistryUtil;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @ZetaLoadModule(category = "tweaks")
 public class DiamondRepairModule extends ZetaModule {
@@ -61,15 +60,15 @@ public class DiamondRepairModule extends ZetaModule {
 			if(toks.length == 2) {
 				ResourceLocation itemRes = new ResourceLocation(toks[0]);
 
-				if(Registry.ITEM.containsKey(itemRes)) {
+				if(BuiltInRegistries.ITEM.containsKey(itemRes)) {
 					String repairItems = toks[1];
 					String[] repairToks = repairItems.split(",");
 					for(String repairTok : repairToks) {
 						ResourceLocation repairItemRes = new ResourceLocation(repairTok);
 
-						if(Registry.ITEM.containsKey(repairItemRes)) {
-							Item item = Registry.ITEM.get(itemRes);
-							Item repairItem = Registry.ITEM.get(repairItemRes);
+						if(BuiltInRegistries.ITEM.containsKey(repairItemRes)) {
+							Item item = BuiltInRegistries.ITEM.get(itemRes);
+							Item repairItem = BuiltInRegistries.ITEM.get(repairItemRes);
 							repairChanges.put(item, repairItem);
 						}
 					}
@@ -77,7 +76,7 @@ public class DiamondRepairModule extends ZetaModule {
 			}
 		}
 
-		unrepairableItems = RegistryUtil.massRegistryGet(unrepairableItemsList, Registry.ITEM);
+		unrepairableItems = RegistryUtil.massRegistryGet(unrepairableItemsList, BuiltInRegistries.ITEM);
 	}
 
 	@PlayEvent

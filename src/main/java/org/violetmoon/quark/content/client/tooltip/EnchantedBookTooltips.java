@@ -1,11 +1,5 @@
 package org.violetmoon.quark.content.client.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -13,9 +7,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
@@ -33,6 +28,11 @@ import org.violetmoon.quark.content.tools.module.AncientTomesModule;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class EnchantedBookTooltips {
 
@@ -141,7 +141,7 @@ public class EnchantedBookTooltips {
 	private static void computeTestItems() {
 		testItems = ImprovedTooltipsModule.enchantingStacks.stream()
 			.map(ResourceLocation::new)
-			.map(Registry.ITEM::get)
+			.map(BuiltInRegistries.ITEM::get)
 			.filter(i -> i != Items.AIR)
 			.map(ItemStack::new)
 			.toList();
@@ -158,10 +158,10 @@ public class EnchantedBookTooltips {
 			String left = tokens[0];
 			String right = tokens[1];
 
-			Registry.ENCHANTMENT.getOptional(new ResourceLocation(left))
+			BuiltInRegistries.ENCHANTMENT.getOptional(new ResourceLocation(left))
 				.ifPresent(ench -> {
 					for(String itemId : right.split(",")) {
-						Registry.ITEM.getOptional(new ResourceLocation(itemId)).ifPresent(item ->
+						BuiltInRegistries.ITEM.getOptional(new ResourceLocation(itemId)).ifPresent(item ->
 							additionalStacks.put(ench, new ItemStack(item)));
 					}
 				});
@@ -172,7 +172,7 @@ public class EnchantedBookTooltips {
 										 Enchantment enchantment, boolean tableOnly) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack basePose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			PoseStack modelviewPose = RenderSystem.getModelViewStack();
 
 			modelviewPose.pushPose();
@@ -182,7 +182,7 @@ public class EnchantedBookTooltips {
 			List<ItemStack> items = getItemsForEnchantment(enchantment, tableOnly);
 			int drawn = 0;
 			for (ItemStack testStack : items) {
-				mc.getItemRenderer().renderGuiItem(testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
+				guiGraphics.renderItem(testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
 				drawn++;
 			}
 
