@@ -13,7 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -76,7 +76,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	@LoadEvent
 	public final void register(ZRegister event) {
 		for (CorundumColor color : CorundumColor.values())
-			add(color.name, color.beaconColor, color.materialColor);
+			add(color.name, color.beaconColor, color.mapColor);
 	}
 
 	@LoadEvent
@@ -100,11 +100,11 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 			consumer.accept(block.asItem(), comp);
 	}
 
-	private void add(String name, int color, MaterialColor material) {
-		CorundumBlock crystal = new CorundumBlock(name + "_corundum", color, this, material, false);
+	private void add(String name, int color, MapColor mapColor) {
+		CorundumBlock crystal = new CorundumBlock(name + "_corundum", color, this, mapColor, false);
 		crystals.add(crystal);
 
-		CorundumBlock waxed = new CorundumBlock("waxed_" + name + "_corundum", color, this, material, true);
+		CorundumBlock waxed = new CorundumBlock("waxed_" + name + "_corundum", color, this, mapColor, true);
 		ToolInteractionHandler.registerWaxedBlock(this, crystal, waxed);
 
 		new ZetaInheritedPaneBlock(crystal);

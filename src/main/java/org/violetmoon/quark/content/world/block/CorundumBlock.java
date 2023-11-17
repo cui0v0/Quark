@@ -15,6 +15,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import org.joml.Vector3f;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.world.module.CorundumModule;
@@ -33,9 +34,10 @@ public class CorundumBlock extends ZetaGlassBlock {
 
 	public CorundumClusterBlock cluster;
 
-	public CorundumBlock(String regname, int color, ZetaModule module, MaterialColor materialColor, boolean waxed) {
+	public CorundumBlock(String regname, int color, ZetaModule module, MapColor mapColor, boolean waxed) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
-				Block.Properties.of(Material.GLASS, materialColor)
+				Block.Properties.of(Material.GLASS)
+						.mapColor(mapColor)
 				.strength(0.3F, 0F)
 				.sound(SoundType.AMETHYST)
 				.lightLevel(b -> 11)
