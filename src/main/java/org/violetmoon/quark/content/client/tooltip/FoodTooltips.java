@@ -7,6 +7,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
@@ -130,7 +131,7 @@ public class FoodTooltips {
 							u += 117;
 						int v = 27;
 
-						guiGraphics.blit(new ResourceLocation("textures/gui/icons.png"), x, y, u, v, 9, 9, 256, 256);
+						guiGraphics.blit(Gui.GUI_ICONS_LOCATION, x, y, u, v, 9, 9, 256, 256);
 
 						u = 52;
 						if (fract && i == (renderCount - 1))
@@ -138,7 +139,7 @@ public class FoodTooltips {
 						if (poison)
 							u += 36;
 
-						guiGraphics.blit(new ResourceLocation("textures/gui/icons.png"), x, y, u, v, 9, 9, 256, 256);
+						guiGraphics.blit(Gui.GUI_ICONS_LOCATION, x, y, u, v, 9, 9, 256, 256);
 					}
 
 					if (compress)

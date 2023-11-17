@@ -60,16 +60,17 @@
     "StructureStartMixin",
     "StructureTemplateMixin",
     "TemptGoalMixin",
-    
     "TripWireHookBlockMixin",
+    "VariantAccessor",
     "VillagerMixin",
     "WallBlockMixin",
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
+    "accessor.AccessorAxolotlVariant",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
     "accessor.AccessorPotionBrewing",
-    "accessor.AccessorServerGamePacketListenerImpl",
+    "accessor.AccessorServerGamePacketListenerImpl"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
@@ -85,6 +86,7 @@
     "client.HumanoidArmorLayerMixin",
     "client.HumanoidModelMixin",
     "client.ItemBlockRenderTypesMixin",
+    "client.ItemInHandRendererMixin",
     "client.ItemRendererMixin",
     "client.JukeboxBlockEntityMixin",
     "client.LevelRendererMixin",
@@ -96,8 +98,6 @@
     "client.RenderBuffersMixin",
     "client.ScreenMixin",
     "client.ThrownTridentRendererMixin",
-    "client.ItemInHandRendererMixin",
-    
     "client.accessor.AccessorLocalPlayer",
     "client.accessor.AccessorModelManager",
     "client.accessor.AccessorMultiPlayerGameMode",
