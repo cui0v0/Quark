@@ -14,9 +14,6 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -29,6 +26,8 @@ import org.violetmoon.zeta.event.play.entity.living.ZAnimalTame;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -64,7 +63,7 @@ public class PatTheDogsModule extends ZetaModule {
 		if (player.isDiscrete() && player.getMainHandItem().isEmpty()) {
 			if (event.getTarget() instanceof Wolf wolf) {
 				if (event.getHand() == InteractionHand.MAIN_HAND && WantLoveGoal.canPet(wolf)) {
-					if (player.level instanceof ServerLevel serverLevel) {
+					if (player.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
 						var pos = wolf.position();
 						serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 						wolf.playSound(SoundEvents.WOLF_WHINE, 1F, 0.5F + (float) Math.random() * 0.5F);
@@ -131,7 +130,7 @@ public class PatTheDogsModule extends ZetaModule {
 				}
 				if (sound != null) {
 					if (event.getHand() == InteractionHand.MAIN_HAND) {
-						if (player.level instanceof ServerLevel serverLevel) {
+						if (player.getCommandSenderWorld() instanceof ServerLevel serverLevel) {
 							var pos = living.getEyePosition();
 							serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 

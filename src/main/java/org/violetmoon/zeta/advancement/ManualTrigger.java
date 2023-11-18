@@ -1,12 +1,10 @@
 package org.violetmoon.zeta.advancement;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
 public class ManualTrigger extends SimpleCriterionTrigger<ManualTrigger.Instance> {
 
@@ -26,14 +24,14 @@ public class ManualTrigger extends SimpleCriterionTrigger<ManualTrigger.Instance
 	}
 
 	@Override
-	protected Instance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext ctx) {
-		return new Instance(id, predicate);
+	protected @NotNull Instance createInstance(@NotNull JsonObject jsonObject, @NotNull ContextAwarePredicate contextAwarePredicate, @NotNull DeserializationContext deserializationContext) {
+		return new Instance(id, contextAwarePredicate);
 	}
 
 	public static class Instance extends AbstractCriterionTriggerInstance {
 
-		public Instance(ResourceLocation id, EntityPredicate.Composite predicate) {
-			super(id, predicate);
+		public Instance(ResourceLocation id, ContextAwarePredicate contextAwarePredicate) {
+			super(id, contextAwarePredicate);
 		}
 
 	}

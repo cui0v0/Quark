@@ -2,6 +2,7 @@ package org.violetmoon.quark.integration.lootr;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -70,8 +71,8 @@ public class LootrIntegration implements ILootrIntegration {
 			lootrChests.put(VariantChestsModule.trappedChests.get(i), trappedChests.get(i));
 		}
 
-		Quark.ZETA.registry.register(chestTEType, "lootr_variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-		Quark.ZETA.registry.register(trappedChestTEType, "lootr_variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(chestTEType, "lootr_variant_chest", Registries.BLOCK_ENTITY_TYPE);
+		Quark.ZETA.registry.register(trappedChestTEType, "lootr_variant_trapped_chest", Registries.BLOCK_ENTITY_TYPE);
 	}
 
 	@Override

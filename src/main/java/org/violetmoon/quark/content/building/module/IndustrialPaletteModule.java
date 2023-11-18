@@ -1,13 +1,11 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.function.BooleanSupplier;
-
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.util.ForgeSoundType;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
@@ -17,6 +15,8 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "building")
 public class IndustrialPaletteModule extends ZetaModule {
@@ -46,10 +46,13 @@ public class IndustrialPaletteModule extends ZetaModule {
 
 		new ZetaPillarBlock("iron_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(ironPlateCond);
 
-		new VariantLadderBlock("iron", this, Block.Properties.of(Material.DECORATION)
+		new VariantLadderBlock("iron", this, Block.Properties.of()
+				.noCollission()
 				.strength(0.8F)
 				.sound(IRON_LADDER_SOUND_TYPE)
-				.noOcclusion(), false)
+				.noOcclusion()
+				.pushReaction(PushReaction.DESTROY), false
+		)
 		.setCondition(ironLadderCond);
 	}
 

@@ -68,7 +68,7 @@ public class MatrixEnchantingMenu extends AbstractContainerMenu {
 
 	public static MatrixEnchantingMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
-		MatrixEnchantingTableBlockEntity te = (MatrixEnchantingTableBlockEntity) playerInventory.player.level.getBlockEntity(pos);
+		MatrixEnchantingTableBlockEntity te = (MatrixEnchantingTableBlockEntity) playerInventory.player.getCommandSenderWorld().getBlockEntity(pos);
 		return new MatrixEnchantingMenu(windowId, playerInventory, te);
 	}
 
@@ -88,7 +88,7 @@ public class MatrixEnchantingMenu extends AbstractContainerMenu {
 				MatrixEnchantingModule.influenceTrigger.trigger(serverPlayer);
 		}
 
-		player.level.playSound(null, enchanter.getBlockPos(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, player.level.random.nextFloat() * 0.1F + 0.9F);
+		player.getCommandSenderWorld().playSound(null, enchanter.getBlockPos(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, player.getCommandSenderWorld().random.nextFloat() * 0.1F + 0.9F);
 	}
 
 	@Override

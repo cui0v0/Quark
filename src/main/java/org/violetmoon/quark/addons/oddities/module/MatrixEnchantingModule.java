@@ -4,7 +4,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,12 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.FakePlayer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.violetmoon.quark.addons.oddities.block.MatrixEnchantingTableBlock;
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.render.be.MatrixEnchantingTableRenderer;
@@ -48,6 +43,11 @@ import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ZetaLoadModule(category = "oddities")
 public class MatrixEnchantingModule extends ZetaModule {
@@ -167,10 +167,10 @@ public class MatrixEnchantingModule extends ZetaModule {
 		matrixEnchanter = new MatrixEnchantingTableBlock(this);
 
 		menuType = IForgeMenuType.create(MatrixEnchantingMenu::fromNetwork);
-		Quark.ZETA.registry.register(menuType, "matrix_enchanting", Registry.MENU_REGISTRY);
+		Quark.ZETA.registry.register(menuType, "matrix_enchanting", Registries.MENU);
 
 		blockEntityType = BlockEntityType.Builder.of(MatrixEnchantingTableBlockEntity::new, matrixEnchanter).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "matrix_enchanting", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "matrix_enchanting", Registries.BLOCK_ENTITY_TYPE);
 
 		influenceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("influence");
 	}
@@ -220,7 +220,7 @@ public class MatrixEnchantingModule extends ZetaModule {
 			if (damp)
 				enchStr = enchStr.substring(1);
 
-			Enchantment ench = Registry.ENCHANTMENT.get(new ResourceLocation(enchStr));
+			Enchantment ench = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(enchStr));
 			if (ench != null) {
 				if (damp)
 					dampen.add(ench);

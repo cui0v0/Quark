@@ -1,15 +1,13 @@
 package org.violetmoon.zeta.client.config.widget;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.zeta.client.ZetaClient;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.zeta.client.ZetaClient;
 
 public class PencilButton extends Button {
 
@@ -17,7 +15,7 @@ public class PencilButton extends Button {
 	private final ResourceLocation iconsTexture;
 
 	public PencilButton(ResourceLocation iconsTexture, int x, int y, OnPress pressable) {
-		super(x, y, 20, 20, Component.literal(""), pressable);
+		super(new Builder(Component.literal(""), pressable).size(20, 20).pos(x, y));
 		this.iconsTexture = iconsTexture;
 	}
 
@@ -26,17 +24,16 @@ public class PencilButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.renderButton(mstack, mouseX, mouseY, partialTicks);
+	public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, iconsTexture);
 
 		int u = 32;
 		int v = 0;
 
-		blit(mstack, x + 2, y + 1, u, v, 16, 16);
+		guiGraphics.blit(iconsTexture, getX() + 2, getY() + 1, u, v, 16, 16);
 	}
 
 }

@@ -1,30 +1,10 @@
 package org.violetmoon.quark.addons.oddities.block.be;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
-
-import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
-import org.violetmoon.quark.addons.oddities.inventory.MatrixEnchantingMenu;
-import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.addons.oddities.util.Influence;
-import org.violetmoon.quark.api.IEnchantmentInfluencer;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
@@ -49,6 +29,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
+import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
+import org.violetmoon.quark.addons.oddities.inventory.MatrixEnchantingMenu;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.addons.oddities.util.Influence;
+import org.violetmoon.quark.api.IEnchantmentInfluencer;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlockEntity implements MenuProvider {
 
@@ -296,9 +293,9 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 			if(influencer != null) {
 				int count = influencer.getInfluenceStack(world, pos, state);
 
-				List<Enchantment> influencedEnchants = Registry.ENCHANTMENT.stream()
+				List<Enchantment> influencedEnchants = BuiltInRegistries.ENCHANTMENT.stream()
 						.filter((it) -> influencer.influencesEnchantment(world, pos, state, it)).toList();
-				List<Enchantment> dampenedEnchants = Registry.ENCHANTMENT.stream()
+				List<Enchantment> dampenedEnchants = BuiltInRegistries.ENCHANTMENT.stream()
 						.filter((it) -> influencer.dampensEnchantment(world, pos, state, it)).toList();
 				if(!influencedEnchants.isEmpty() || !dampenedEnchants.isEmpty()) {
 					for(Enchantment e : influencedEnchants) {

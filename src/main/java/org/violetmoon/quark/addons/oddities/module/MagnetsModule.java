@@ -2,13 +2,10 @@ package org.violetmoon.quark.addons.oddities.module;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.List;
-
 import org.violetmoon.quark.addons.oddities.block.MagnetBlock;
 import org.violetmoon.quark.addons.oddities.block.MovingMagnetizedBlock;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetBlockEntity;
@@ -26,6 +23,8 @@ import org.violetmoon.zeta.event.play.ZLevelTick;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "oddities")
 public class MagnetsModule extends ZetaModule {
@@ -52,10 +51,10 @@ public class MagnetsModule extends ZetaModule {
 		magnetized_block = new MovingMagnetizedBlock(this);
 
 		magnetType = BlockEntityType.Builder.of(MagnetBlockEntity::new, magnet).build(null);
-		Quark.ZETA.registry.register(magnetType, "magnet", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(magnetType, "magnet", Registries.BLOCK_ENTITY_TYPE);
 
 		magnetizedBlockType = BlockEntityType.Builder.of(MagnetizedBlockBlockEntity::new, magnetized_block).build(null);
-		Quark.ZETA.registry.register(magnetizedBlockType, "magnetized_block", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(magnetizedBlockType, "magnetized_block", Registries.BLOCK_ENTITY_TYPE);
 	}
 
 	@LoadEvent

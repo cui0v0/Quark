@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.GravisandBlock;
 import org.violetmoon.quark.content.automation.entity.Gravisand;
@@ -36,7 +37,7 @@ public class GravisandModule extends ZetaModule {
 				.updateInterval(20) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new Gravisand(gravisandType, world))
 				.build("gravisand");
-		Quark.ZETA.registry.register(gravisandType, "gravisand", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(gravisandType, "gravisand", Registries.ENTITY_TYPE);
 	}
 
 

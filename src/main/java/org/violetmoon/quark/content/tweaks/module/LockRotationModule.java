@@ -3,11 +3,10 @@ package org.violetmoon.quark.content.tweaks.module;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +32,6 @@ import org.violetmoon.quark.api.IRotationLockable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.SetLockProfileMessage;
 import org.violetmoon.quark.content.building.block.QuarkVerticalSlabBlock;
 import org.violetmoon.quark.content.building.block.VerticalSlabBlock;
@@ -251,21 +249,20 @@ public class LockRotationModule extends ZetaModule {
 		@PlayEvent
 		public void onHUDRender(ZRenderGuiOverlay.Crosshair.Post event) {
 			if (clientProfile != null) {
-				PoseStack matrix = event.getPoseStack();
+				GuiGraphics guiGraphics = event.getGuiGraphics();
 
 				RenderSystem.enableBlend();
 				RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
-				RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
 				Window window = event.getWindow();
 				int x = window.getGuiScaledWidth() / 2 + 20;
 				int y = window.getGuiScaledHeight() / 2 - 8;
-				Screen.blit(matrix, x, y, clientProfile.facing.ordinal() * 16, 65, 16, 16, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, x, y, clientProfile.facing.ordinal() * 16, 65, 16, 16, 256, 256);
 
 				if(clientProfile.half > -1)
-					Screen.blit(matrix, x + 16, y, clientProfile.half * 16, 79, 16, 16, 256, 256);
+					guiGraphics.blit(MiscUtil.GENERAL_ICONS, x + 16, y, clientProfile.half * 16, 79, 16, 16, 256, 256);
 
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 

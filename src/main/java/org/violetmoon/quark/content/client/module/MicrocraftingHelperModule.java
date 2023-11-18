@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -122,7 +123,8 @@ public class MicrocraftingHelperModule extends ZetaModule {
 
 			Screen screen = mc.screen;
 			if(screen instanceof CraftingScreen cscreen) {
-				PoseStack mstack = event.getPoseStack();
+				GuiGraphics guiGraphics = event.getGuiGraphics();
+				PoseStack mstack = guiGraphics.pose();
 				ItemRenderer render = mc.getItemRenderer();
 				int left = cscreen.getGuiLeft() + 95;
 				int top = cscreen.getGuiTop() + 6;
@@ -130,10 +132,9 @@ public class MicrocraftingHelperModule extends ZetaModule {
 				if(!recipes.isEmpty()) {
 					RenderSystem.setShader(GameRenderer::getPositionTexShader);
 					RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-					RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
 					mstack.pushPose();
-					Screen.blit(mstack, left, top, 0, 0, 108, 80, 20, 256, 256);
+					guiGraphics.blit(MiscUtil.GENERAL_ICONS, left, top, 0, 0, 108, 80, 20, 256, 256);
 					mstack.popPose();
 
 					int start = Math.max(0, recipes.size() - 3);
@@ -144,11 +145,11 @@ public class MicrocraftingHelperModule extends ZetaModule {
 						int y = top + 2;
 
 						ItemStack drawStack = recipe.displayItem;
-						render.renderGuiItem(drawStack, x, y);
-						render.renderGuiItemDecorations(mc.font, drawStack, x, y);
+						guiGraphics.renderItem(drawStack, x, y);
+						guiGraphics.renderItemDecorations(mc.font, drawStack, x, y);
 
 						if(index > 0)
-							mc.font.draw(mstack, "<", x - 6, y + 4, 0x3f3f3f);
+							guiGraphics.drawString(mc.font, "<", x - 6, y + 4, 0x3f3f3f);
 					}
 				}
 

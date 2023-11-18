@@ -1,13 +1,13 @@
 package org.violetmoon.quark.content.automation.block;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.block.ZetaButtonBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -21,10 +21,12 @@ public class MetalButtonBlock extends ZetaButtonBlock {
 
 	public MetalButtonBlock(String regname, ZetaModule module, int speed) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE,
-				Block.Properties.of(Material.DECORATION)
+				Block.Properties.of()
+						.mapColor(MapColor.NONE)
 						.noCollission()
 						.strength(0.5F)
-						.sound(SoundType.METAL));
+						.sound(SoundType.METAL)
+						.pushReaction(PushReaction.DESTROY));
 		this.speed = speed;
 	}
 

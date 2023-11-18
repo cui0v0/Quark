@@ -33,10 +33,13 @@ public class LeafCarpetBlock extends ZetaBlock implements IZetaBlockColorProvide
 
 	public LeafCarpetBlock(String name, Block base, ZetaModule module) {
 		super(name, module, CreativeModeTab.TAB_DECORATIONS,
-				Block.Properties.of(Material.CLOTH_DECORATION, base.defaultBlockState().materialColor)
+				Block.Properties.of()
+						.mapColor(base.defaultBlockState().mapColor)
+						.noCollission()
 						.strength(0F)
 						.sound(SoundType.GRASS)
-						.noOcclusion());
+						.noOcclusion()
+						.ignitedByLava());
 
 		baseState = base.defaultBlockState();
 

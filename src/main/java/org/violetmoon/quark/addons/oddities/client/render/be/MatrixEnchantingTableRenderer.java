@@ -2,24 +2,22 @@ package org.violetmoon.quark.addons.oddities.client.render.be;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BookModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.EnchantTableRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 
 public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<MatrixEnchantingTableBlockEntity> {
@@ -48,10 +46,10 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 
 		ItemStack item = te.getItem(0);
 		if(!item.isEmpty())
-			renderItem(item, time, bookOpen, rot, matrix, buffer, light, overlay);
+			renderItem(item, time, bookOpen, rot, matrix, buffer, light, overlay, te.getLevel());
 	}
 
-	private void renderItem(ItemStack item, float time, float bookOpen, float rot, PoseStack matrix, MultiBufferSource buffer, int light, int overlay) {
+	private void renderItem(ItemStack item, float time, float bookOpen, float rot, PoseStack matrix, MultiBufferSource buffer, int light, int overlay, Level level) {
 		matrix.pushPose();
 		matrix.translate(0.5F, 0.8F, 0.5F);
 		matrix.scale(0.6F, 0.6F, 0.6F);
@@ -60,15 +58,15 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 		rot -= 90F;
 		rot *= bookOpen;
 
-		matrix.mulPose(Vector3f.YP.rotationDegrees(rot));
+		matrix.mulPose(Axis.YP.rotationDegrees(rot));
 		matrix.translate(0, bookOpen * 1.4F, Math.sin(bookOpen * Math.PI));
-		matrix.mulPose(Vector3f.XP.rotationDegrees(-90F * (bookOpen - 1F)));
+		matrix.mulPose(Axis.XP.rotationDegrees(-90F * (bookOpen - 1F)));
 
 		float trans = (float) Math.sin(time * 0.06) * bookOpen * 0.2F;
 		matrix.translate(0F, trans, 0F);
 
 		ItemRenderer render = Minecraft.getInstance().getItemRenderer();
-		render.renderStatic(item, ItemTransforms.TransformType.FIXED, light, overlay, matrix, buffer, 0);
+		render.renderStatic(item, ItemDisplayContext.FIXED, light, overlay, matrix, buffer, level, 0 );
 		matrix.popPose();
 	}
 
@@ -90,8 +88,8 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 		}
 
 		float f2 = tileEntityIn.bookRotationPrev + f1 * partialTicks;
-		matrixStackIn.mulPose(Vector3f.YP.rotation(-f2));
-		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(80.0F));
+		matrixStackIn.mulPose(Axis.YP.rotation(-f2));
+		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(80.0F));
 		float f3 = Mth.lerp(partialTicks, tileEntityIn.pageFlipPrev, tileEntityIn.pageFlip);
 		float f4 = Mth.frac(f3 + 0.25F) * 1.6F - 0.3F;
 		float f5 = Mth.frac(f3 + 0.75F) * 1.6F - 0.3F;
