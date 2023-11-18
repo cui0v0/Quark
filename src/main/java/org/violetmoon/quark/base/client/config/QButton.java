@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.QuarkClient;
@@ -113,8 +114,8 @@ public class QButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.renderButton(mstack, mouseX, mouseY, partialTicks);
+	public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
 
 		int iconIndex = Math.min(4, ContributorRewardHandler.localPatronTier);
 		if(celebrating != null) {
@@ -124,10 +125,9 @@ public class QButton extends Button {
 		if(iconIndex > 0) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
-			int rx = x - 2;
-			int ry = y - 2;
+			int rx = getX() - 2;
+			int ry = getY() - 2;
 
 			int w = 9;
 			int h = 9;
@@ -141,23 +141,23 @@ public class QButton extends Button {
 				h = 10;
 				v = 44;
 
-				boolean hovered = mouseX >= x && mouseY >= y && mouseX < (x + width) && mouseY < (y + height);
+				boolean hovered = mouseX >= getX() && mouseY >= getY() && mouseX < (getX() + width) && mouseY < (getY() + height);
 				if(hovered)
 					QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.celebration." + celebrating.name)), mouseX, mouseY);
 			}
 
 			int u = 256 - iconIndex * w;
 
-			blit(mstack, rx, ry, u, v, w, h);
+			guiGraphics.blit(MiscUtil.GENERAL_ICONS, rx, ry, u, v, w, h);
 		}
 		
 		if(showBubble && GeneralConfig.enableOnboarding) {
 			Font font = Minecraft.getInstance().font;
-			int cy = y - 2;
+			int cy = getY() - 2;
 			if(QuarkClient.ticker.total % 20 > 10)
 				cy++;
 			
-			MiscUtil.Client.drawChatBubble(mstack, x + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);
+			MiscUtil.Client.drawChatBubble(guiGraphics, getX() + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);
 		}
 	}
 	

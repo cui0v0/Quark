@@ -1,5 +1,6 @@
 package org.violetmoon.quark.base.item.boat;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.handler.WoodSetHandler;
@@ -63,7 +64,7 @@ public class QuarkBoat extends Boat implements IQuarkBoat {
 
 	@Override
 	public ItemEntity spawnAtLocation(ItemLike itemLike) {
-		if(Registry.ITEM.getKey(itemLike.asItem()).getPath().contains("_planks"))
+		if(BuiltInRegistries.ITEM.getKey(itemLike.asItem()).getPath().contains("_planks"))
 			return super.spawnAtLocation(getQuarkBoatTypeObj().planks());
 		return super.spawnAtLocation(itemLike);
 	}

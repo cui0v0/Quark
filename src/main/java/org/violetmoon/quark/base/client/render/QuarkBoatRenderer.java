@@ -1,21 +1,10 @@
 package org.violetmoon.quark.base.client.render;
 
-import java.util.Map;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.handler.ModelHandler;
-import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.item.boat.IQuarkBoat;
-
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -25,6 +14,14 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.client.handler.ModelHandler;
+import org.violetmoon.quark.base.handler.WoodSetHandler;
+import org.violetmoon.quark.base.item.boat.IQuarkBoat;
+
+import java.util.Map;
 
 public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 
@@ -54,7 +51,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 	public void render(Boat boat, float yaw, float partialTicks, PoseStack matrix, @NotNull MultiBufferSource buffer, int light) {
 		matrix.pushPose();
 		matrix.translate(0.0D, 0.375D, 0.0D);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
+		matrix.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
 		float wiggleAngle = (float)boat.getHurtTime() - partialTicks;
 		float wiggleMagnitude = boat.getDamage() - partialTicks;
 		if (wiggleMagnitude < 0.0F) {
@@ -62,7 +59,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		}
 
 		if (wiggleAngle > 0.0F) {
-			matrix.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(wiggleAngle) * wiggleAngle * wiggleMagnitude / 10.0F * (float)boat.getHurtDir()));
+			matrix.mulPose(Axis.XP.rotationDegrees(Mth.sin(wiggleAngle) * wiggleAngle * wiggleMagnitude / 10.0F * (float)boat.getHurtDir()));
 		}
 
 		float f2 = boat.getBubbleAngle(partialTicks);
@@ -75,7 +72,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		BoatModel model = tuple.model();
 		
 		matrix.scale(-1.0F, -1.0F, 1.0F);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		matrix.mulPose(Axis.YP.rotationDegrees(90.0F));
 		model.setupAnim(boat, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(model.renderType(loc));
 		model.renderToBuffer(matrix, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

@@ -1,11 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
-
-import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -30,12 +24,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.api.IEnchantmentInfluencer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import javax.annotation.Nullable;
+import java.util.function.BooleanSupplier;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {
 

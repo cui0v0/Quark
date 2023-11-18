@@ -1,16 +1,8 @@
 package org.violetmoon.quark.content.tools.client.render;
 
-import java.util.List;
-
-import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule;
-import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule.ExtendedBeamSegment;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
@@ -18,6 +10,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule;
+import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule.ExtendedBeamSegment;
+
+import java.util.List;
 
 // Mostly vanilla copypaste but adapted to use ExtendedBeamSegment values
 public class QuarkBeaconBlockEntityRenderer {
@@ -59,7 +57,7 @@ public class QuarkBeaconBlockEntityRenderer {
 		float b = colors[2];
 
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(angle * 2.25F - 45.0F));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(angle * 2.25F - 45.0F));
 
 		float renderTime = -(totalWorldTime + partialTicks);
 		float partAngle = Mth.frac(renderTime * 0.2F - (float)Mth.floor(angle * 0.1F));

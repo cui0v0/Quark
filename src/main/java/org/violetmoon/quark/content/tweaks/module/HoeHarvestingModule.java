@@ -68,7 +68,7 @@ public class HoeHarvestingModule extends ZetaModule {
 	public static boolean isHoe(ItemStack itemStack) {
 		return !itemStack.isEmpty() &&
 				(itemStack.getItem() instanceof HoeItem
-						|| itemStack.is(Tags.Items.TOOLS_HOES)
+						|| itemStack.is(ItemTags.HOES)
 						|| itemStack.getItem().canPerformAction(itemStack, ToolActions.HOE_DIG)); //TODO: IForgeItem
 	}
 

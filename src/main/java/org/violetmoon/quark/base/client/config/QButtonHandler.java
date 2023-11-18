@@ -8,12 +8,11 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.language.I18n;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+
+import java.util.List;
 
 public class QButtonHandler {
 
@@ -30,7 +29,7 @@ public class QButtonHandler {
 			for(GuiEventListener b : listeners)
 				if(b instanceof AbstractWidget abs) {
 					if(targets.contains(abs.getMessage().getString())) {
-						Button qButton = new QButton(abs.x + (GeneralConfig.qButtonOnRight ? 103 : -24), abs.y);
+						Button qButton = new QButton(abs.getX() + (GeneralConfig.qButtonOnRight ? 103 : -24), abs.getY());
 						event.addListener(qButton);
 						return;
 					}

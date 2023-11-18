@@ -75,7 +75,7 @@ public class QuarkBoatItem extends ZetaItem {
 				} else {
 					if (!world.isClientSide) {
 						world.addFreshEntity(boat);
-						world.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(hitresult.getLocation()));
+						world.gameEvent(player, GameEvent.ENTITY_PLACE, BlockPos.containing(hitresult.getLocation()));
 						if (!player.getAbilities().instabuild) {
 							itemstack.shrink(1);
 						}

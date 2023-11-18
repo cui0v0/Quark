@@ -6,11 +6,14 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.Util;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -39,7 +42,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -49,10 +51,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.zeta.client.config.screen.ZetaScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
@@ -62,7 +63,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class MiscUtil {
 
@@ -124,7 +124,7 @@ public class MiscUtil {
 	public static void initializeEnchantmentList(Iterable<String> enchantNames, List<Enchantment> enchants) {
 		enchants.clear();
 		for(String s : enchantNames) {
-			Enchantment enchant = Registry.ENCHANTMENT.get(new ResourceLocation(s));
+			Enchantment enchant = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(s));
 			if (enchant != null && !EnchantmentsBegoneModule.shouldBegone(enchant))
 				enchants.add(enchant);
 		}
@@ -155,7 +155,7 @@ public class MiscUtil {
 		if (reason == MobSpawnType.SPAWNER)
 			return true;
 		BlockState state = world.getBlockState(below);
-		return state.getMaterial() == Material.STONE && state.isValidSpawn(world, below, type);
+		return BlockUtils.isStoneBased(state, world, below) && state.isValidSpawn(world, below, type);
 	}
 
 	public static void syncTE(BlockEntity tile) {
@@ -208,7 +208,7 @@ public class MiscUtil {
 		BlockBehaviour.Properties p = BlockBehaviour.Properties.copy(blockBehaviour);
 		p.lightLevel(s -> 0);
 		p.offsetType(BlockBehaviour.OffsetType.NONE);
-		p.color(blockBehaviour.defaultMaterialColor());
+		p.mapColor(blockBehaviour.defaultMapColor());
 		return p;
 	}
 
@@ -251,10 +251,11 @@ public class MiscUtil {
 			return ret;
 		}
 
-		public static void drawChatBubble(PoseStack matrix, int x, int y, Font font, String text, float alpha, boolean extendRight) {
+		public static void drawChatBubble(GuiGraphics guiGraphics, int x, int y, Font font, String text, float alpha, boolean extendRight) {
+			PoseStack matrix = guiGraphics.pose();
+
 			matrix.pushPose();
 			matrix.translate(0, 0, 200);
-			RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 			int w = font.width(text);
 			int left = x - (extendRight ? 0 : w);
 			int top = y - 8;
@@ -262,19 +263,19 @@ public class MiscUtil {
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
 
 			if(extendRight) {
-				Screen.blit(matrix, left, top, 227, 9, 6, 17, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left, top, 227, 9, 6, 17, 256, 256);
 				for(int i = 0; i < w; i++)
-					Screen.blit(matrix, left + i + 6, top, 232, 9, 1, 17, 256, 256);
-				Screen.blit(matrix, left + w + 5, top, 236, 9, 5, 17, 256, 256);
+					guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + i + 6, top, 232, 9, 1, 17, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + w + 5, top, 236, 9, 5, 17, 256, 256);
 			} else {
-				Screen.blit(matrix, left, top, 242, 9, 5, 17, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left, top, 242, 9, 5, 17, 256, 256);
 				for(int i = 0; i < w; i++)
-					Screen.blit(matrix, left + i + 5, top, 248, 9, 1, 17, 256, 256);
-				Screen.blit(matrix, left + w + 5, top, 250, 9, 6, 17, 256, 256);
+					guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + i + 5, top, 248, 9, 1, 17, 256, 256);
+				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + w + 5, top, 250, 9, 6, 17, 256, 256);
 			}
 
 			int alphaInt = (int) (256F * alpha) << 24;
-			font.draw(matrix, text, left + 5, top + 3, alphaInt);
+			guiGraphics.drawString(font, text, left + 5, top + 3, alphaInt);
 			matrix.popPose();
 		}
 	}

@@ -1,25 +1,11 @@
 package org.violetmoon.quark.addons.oddities.client.render.be;
 
-import java.util.Iterator;
-import java.util.Random;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
-import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
-import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.PipeItem;
-import org.violetmoon.quark.addons.oddities.block.pipe.PipeBlock;
-import org.violetmoon.quark.addons.oddities.module.PipesModule;
-import org.violetmoon.quark.base.Quark;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -30,7 +16,18 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
+import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
+import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.PipeItem;
+import org.violetmoon.quark.addons.oddities.module.PipesModule;
+import org.violetmoon.quark.base.Quark;
+
+import java.util.Iterator;
+import java.util.Random;
 
 public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 
@@ -51,7 +48,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 
 		if(PipesModule.renderPipeItems)
 			while(items.hasNext())
-				renderItem(items.next(), render, matrix, buffer, partialTicks, light, overlay);
+				renderItem(items.next(), render, matrix, buffer, partialTicks, light, overlay, te.getLevel());
 
 		BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 		ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
@@ -67,12 +64,12 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		if(type.isFlared) {
 			matrix.pushPose();
 			switch (dir.getAxis()) {
-				case X -> matrix.mulPose(Vector3f.YP.rotationDegrees(-dir.toYRot()));
-				case Z -> matrix.mulPose(Vector3f.YP.rotationDegrees(dir.toYRot()));
+				case X -> matrix.mulPose(Axis.YP.rotationDegrees(-dir.toYRot()));
+				case Z -> matrix.mulPose(Axis.YP.rotationDegrees(dir.toYRot()));
 				case Y -> {
-					matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
+					matrix.mulPose(Axis.XP.rotationDegrees(90F));
 					if (dir == Direction.UP)
-						matrix.mulPose(Vector3f.YP.rotationDegrees(180F));
+						matrix.mulPose(Axis.YP.rotationDegrees(180F));
 				}
 			}
 
@@ -82,7 +79,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		}
 	}
 
-	private void renderItem(PipeItem item, ItemRenderer render, PoseStack matrix, MultiBufferSource buffer, float partial, int light, int overlay) {
+	private void renderItem(PipeItem item, ItemRenderer render, PoseStack matrix, MultiBufferSource buffer, float partial, int light, int overlay, Level level) {
 		matrix.pushPose();
 
 		float scale = 0.4F;
@@ -100,7 +97,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		matrix.scale(scale, scale, scale);
 
 		float speed = 4F;
-		matrix.mulPose(Vector3f.YP.rotationDegrees((item.timeInWorld + partial) * speed));
+		matrix.mulPose(Axis.YP.rotationDegrees((item.timeInWorld + partial) * speed));
 
 		int seed = item.stack.isEmpty() ? 187 : Item.getId(item.stack.getItem());
 		random.setSeed(seed);
@@ -116,7 +113,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 				matrix.translate(x, y, z);
 			}
 
-			render.renderStatic(item.stack, ItemTransforms.TransformType.FIXED, light, overlay, matrix, buffer, 0);
+			render.renderStatic(item.stack, ItemDisplayContext.FIXED, light, overlay, matrix, buffer, level, 0);
 			matrix.popPose();
 		}
 		matrix.popPose();

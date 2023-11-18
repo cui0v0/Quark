@@ -34,7 +34,8 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 	public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
 
 	public IronRodBlock(ZetaModule module) {
-		super(Block.Properties.of(Material.METAL, DyeColor.GRAY)
+		super(Block.Properties.of()
+				.mapColor(DyeColor.GRAY)
 				.strength(5F, 10F)
 				.sound(SoundType.METAL)
 				.noOcclusion());

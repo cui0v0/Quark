@@ -1,6 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block.be;
 
-import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -28,9 +27,8 @@ import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-
 import org.jetbrains.annotations.NotNull;
-
+import org.joml.Vector3f;
 import org.violetmoon.quark.addons.oddities.block.pipe.BasePipeBlock;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
 import org.violetmoon.quark.base.handler.MiscUtil;

@@ -49,9 +49,9 @@ public class PoisonPotatoUsageModule extends ZetaModule {
 			
 			if(!event.getLevel().isClientSide) {
 				Vec3 pos = entity.position();
-				if(event.getEntity().isCreative() || entity.level.random.nextDouble() < chance) {
+				if(event.getEntity().isCreative() || entity.getCommandSenderWorld().random.nextDouble() < chance) {
 					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.25f);
-					entity.level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.x, pos.y, pos.z, 0.2, 0.8, 0);
+					entity.getCommandSenderWorld().addParticle(ParticleTypes.ENTITY_EFFECT, pos.x, pos.y, pos.z, 0.2, 0.8, 0);
 					poisonEntity(entity);
 					
 					if(event.getEntity() instanceof ServerPlayer sp)
@@ -60,8 +60,8 @@ public class PoisonPotatoUsageModule extends ZetaModule {
 					if (poisonEffect)
 						entity.addEffect(new MobEffectInstance(MobEffects.POISON, 80));
 				} else {
-					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.5f + entity.level.random.nextFloat() / 2);
-					entity.level.addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 0, 0.1, 0);
+					entity.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.5f + entity.getCommandSenderWorld().random.nextFloat() / 2);
+					entity.getCommandSenderWorld().addParticle(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 0, 0.1, 0);
 				}
 
 				if (!event.getEntity().getAbilities().instabuild)

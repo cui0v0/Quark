@@ -2,6 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
@@ -20,8 +21,8 @@ public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaB
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
-		super(sensitivity, properties);
+	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties, BlockSetType blockSetType) {
+		super(sensitivity, properties, blockSetType);
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
