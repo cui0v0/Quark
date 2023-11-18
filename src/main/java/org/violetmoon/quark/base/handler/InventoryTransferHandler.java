@@ -121,7 +121,7 @@ public class InventoryTransferHandler {
 
 					boolean itemEqual = stack.getItem() == stackAt.getItem();
 					boolean damageEqual = stack.getDamageValue() == stackAt.getDamageValue();
-					boolean nbtEqual = ItemStack.tagMatches(stackAt, stack);
+					boolean nbtEqual = ItemStack.isSameItemSameTags(stackAt, stack);
 
 					if(itemEqual && damageEqual && nbtEqual)
 						return true;

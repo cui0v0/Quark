@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 /**
  * Assortment of Block Related Utilities
@@ -26,6 +27,10 @@ public class BlockUtils {
     public static boolean isGlassBased(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return blockState.getBlock().propagatesSkylightDown(blockState, blockGetter, blockPos) ||
                 blockState.getSoundType() == SoundType.GLASS;
+    }
+
+    public static boolean isStoneBased(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return blockState.instrument() == NoteBlockInstrument.BASEDRUM || blockState.getMapColor(blockGetter, blockPos) == MapColor.STONE;
     }
 
     public static boolean canFallThrough(BlockState state) {

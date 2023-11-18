@@ -8,7 +8,7 @@
   "mixins": [
     "AccessorLootTable",
     "AccessorPistonStructureResolver",
-    "PistonBaseBlockMixin",
+    "PistonBaseBlockMixin"
   ],
   "client": [
   ],

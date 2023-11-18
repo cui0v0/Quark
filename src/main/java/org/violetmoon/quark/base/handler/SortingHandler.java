@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.handler;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
@@ -216,7 +217,7 @@ public final class SortingHandler {
 			if (stackAt.isEmpty())
 				continue;
 
-			if (stackAt.getCount() < stackAt.getMaxStackSize() && ItemStack.isSame(stack, stackAt) && ItemStack.tagMatches(stack, stackAt)) {
+			if (stackAt.getCount() < stackAt.getMaxStackSize() && ItemStack.isSameItem(stack, stackAt) && ItemStack.isSameItemSameTags(stack, stackAt)) {
 				int setSize = stackAt.getCount() + stack.getCount();
 				int carryover = Math.max(0, setSize - stackAt.getMaxStackSize());
 				stackAt.setCount(carryover);
@@ -342,7 +343,7 @@ public final class SortingHandler {
 				else if (o instanceof ItemStack stack)
 					itemList.add(stack.getItem());
 				else if (o instanceof String s) {
-					Item item = Registry.ITEM.get(new ResourceLocation(s));
+					Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(s));
 					if (item != Items.AIR)
 						itemList.add(item);
 				}
@@ -404,8 +405,8 @@ public final class SortingHandler {
 		ArmorItem armor1 = (ArmorItem) stack1.getItem();
 		ArmorItem armor2 = (ArmorItem) stack2.getItem();
 
-		EquipmentSlot slot1 = armor1.getSlot();
-		EquipmentSlot slot2 = armor2.getSlot();
+		EquipmentSlot slot1 = armor1.getEquipmentSlot();
+		EquipmentSlot slot2 = armor2.getEquipmentSlot();
 
 		if (slot1 == slot2)
 			return armor2.getMaterial().getDefenseForSlot(slot2) - armor2.getMaterial().getDefenseForSlot(slot1);
@@ -449,7 +450,7 @@ public final class SortingHandler {
 		Potion potion1 = PotionUtils.getPotion(stack1);
 		Potion potion2 = PotionUtils.getPotion(stack2);
 
-		return Registry.POTION.getId(potion2) - Registry.POTION.getId(potion1);
+		return BuiltInRegistries.POTION.getId(potion2) - BuiltInRegistries.POTION.getId(potion1);
 	}
 
 	static boolean hasCustomSorting(ItemStack stack) {

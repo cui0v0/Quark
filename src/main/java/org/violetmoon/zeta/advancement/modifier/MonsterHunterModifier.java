@@ -1,20 +1,18 @@
 package org.violetmoon.zeta.advancement.modifier;
 
-import java.util.Set;
-
-import org.violetmoon.zeta.api.IMutableAdvancement;
-import org.violetmoon.zeta.advancement.AdvancementModifier;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.advancements.critereon.KilledTrigger;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.Set;
 
 public class MonsterHunterModifier extends AdvancementModifier {
 
@@ -41,7 +39,7 @@ public class MonsterHunterModifier extends AdvancementModifier {
 		for(EntityType<?> type : entityTypes) {
 			Criterion criterion = new Criterion(KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(type))));
 			
-			String name = Registry.ENTITY_TYPE.getKey(type).toString();
+			String name = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
 			if(all)
 				adv.addRequiredCriterion(name, criterion);
 			else adv.addOrCriterion(name, criterion);

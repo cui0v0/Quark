@@ -156,7 +156,7 @@ public class NarratorReadoutModule extends ZetaModule {
 					if(stack.isEmpty())
 						sb.append(I18n.get("quark.readout.no_item"));
 					else {
-						List<Component> tooltip = cnt.getTooltipFromItem(stack);
+						List<Component> tooltip = cnt.getTooltipFromItem(mc, stack);
 
 						for(Component t : tooltip) {
 							Component print = t.copy();
