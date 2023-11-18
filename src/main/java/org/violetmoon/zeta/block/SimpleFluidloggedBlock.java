@@ -2,7 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -20,12 +20,12 @@ import net.minecraft.world.level.material.Fluids;
 public interface SimpleFluidloggedBlock extends BucketPickup, LiquidBlockContainer {
 	
 	@Override
-	default boolean canPlaceLiquid(@Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull Fluid fluid) {
+	default boolean canPlaceLiquid(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Fluid fluid) {
 		return fluidContained(state) == Fluids.EMPTY && acceptsFluid(fluid);
 	}
 
 	@Override
-	default boolean placeLiquid(@Nonnull LevelAccessor level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull FluidState fluid) {
+	default boolean placeLiquid(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull FluidState fluid) {
 		if (canPlaceLiquid(level, pos, state, fluid.getType())) {
 			if (!level.isClientSide()) {
 				level.setBlock(pos, withFluid(state, fluid.getType()), 3);
@@ -37,9 +37,9 @@ public interface SimpleFluidloggedBlock extends BucketPickup, LiquidBlockContain
 			return false;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	default ItemStack pickupBlock(@Nonnull LevelAccessor level, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	default ItemStack pickupBlock(@NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state) {
 		Fluid fluid = fluidContained(state);
 		if (fluid != Fluids.EMPTY && fluid.getBucket() != Items.AIR) {
 			level.setBlock(pos, withFluid(state, Fluids.EMPTY), 3);
@@ -51,7 +51,7 @@ public interface SimpleFluidloggedBlock extends BucketPickup, LiquidBlockContain
 			return ItemStack.EMPTY;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	default Optional<SoundEvent> getPickupSound() {
 		return Optional.empty(); // Irrelevant - using state variant below
@@ -62,12 +62,12 @@ public interface SimpleFluidloggedBlock extends BucketPickup, LiquidBlockContain
 		return fluidContained(state).getPickupSound();
 	}
 
-	boolean acceptsFluid(@Nonnull Fluid fluid);
+	boolean acceptsFluid(@NotNull Fluid fluid);
 
-	@Nonnull
-	BlockState withFluid(@Nonnull BlockState state, @Nonnull Fluid fluid);
+	@NotNull
+	BlockState withFluid(@NotNull BlockState state, @NotNull Fluid fluid);
 
-	@Nonnull
-	Fluid fluidContained(@Nonnull BlockState state);
+	@NotNull
+	Fluid fluidContained(@NotNull BlockState state);
 
 }

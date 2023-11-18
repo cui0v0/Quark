@@ -1,6 +1,6 @@
 package org.violetmoon.quark.addons.oddities.client.render.be;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import org.violetmoon.quark.content.automation.client.render.QuarkPistonBlockEntityRenderer;
@@ -31,7 +31,7 @@ public class MagnetizedBlockRenderer implements BlockEntityRenderer<MagnetizedBl
 	}
 
 	@Override
-	public void render(MagnetizedBlockBlockEntity tileEntityIn, float partialTicks, @Nonnull PoseStack matrixStackIn, @Nonnull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(MagnetizedBlockBlockEntity tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		Level world = tileEntityIn.getLevel();
 		if (world != null) {
 			BlockPos truepos = tileEntityIn.getBlockPos();

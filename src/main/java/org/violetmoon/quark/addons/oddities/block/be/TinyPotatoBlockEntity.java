@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
@@ -224,11 +224,11 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 	}
 
 	@Override
-	public boolean canPlaceItem(int slot, @Nonnull ItemStack itemstack) {
+	public boolean canPlaceItem(int slot, @NotNull ItemStack itemstack) {
 		return this.getItem(slot).isEmpty();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getName() {
 		return Component.translatable(TinyPotatoModule.tiny_potato.getDescriptionId());
@@ -240,7 +240,7 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 		return name.getString().isEmpty() ? null : name;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getDisplayName() {
 		if (hasCustomName()) {

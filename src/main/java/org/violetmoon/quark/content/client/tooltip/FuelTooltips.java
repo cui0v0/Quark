@@ -19,7 +19,7 @@ import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class FuelTooltips {
 
@@ -47,7 +47,7 @@ public class FuelTooltips {
 
 	public record FuelComponent(ItemStack stack, int width, int count) implements ClientTooltipComponent, TooltipComponent {
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			PoseStack pose = guiGraphics.pose();
 
 			pose.pushPose();
@@ -69,7 +69,7 @@ public class FuelTooltips {
 		}
 
 		@Override
-		public int getWidth(@Nonnull Font font) {
+		public int getWidth(@NotNull Font font) {
 			return width;
 		}
 	}

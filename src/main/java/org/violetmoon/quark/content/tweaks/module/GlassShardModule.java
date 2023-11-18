@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -11,6 +8,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.base.Quark;
@@ -23,6 +21,9 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author WireSegal
@@ -43,7 +44,7 @@ public class GlassShardModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		dirtyGlass = new DirtyGlassBlock("dirty_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
-				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
+				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		new ZetaInheritedPaneBlock(dirtyGlass);
 
 		clearShard = new ZetaItem("clear_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));

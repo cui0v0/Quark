@@ -1,6 +1,6 @@
 package org.violetmoon.quark.base.world;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.world.generator.IGenerator;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -10,7 +10,7 @@ public record WeightedGenerator(ZetaModule module,
 								int weight) implements Comparable<WeightedGenerator> {
 
 	@Override
-	public int compareTo(@Nonnull WeightedGenerator o) {
+	public int compareTo(@NotNull WeightedGenerator o) {
 		int diff = weight - o.weight;
 		if (diff != 0)
 			return diff;

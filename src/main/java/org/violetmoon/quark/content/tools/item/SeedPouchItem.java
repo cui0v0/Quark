@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -53,7 +53,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(@Nonnull ItemStack stack, @Nonnull ItemStack incoming, @Nonnull Slot slot, @Nonnull ClickAction action, @Nonnull Player player, @Nonnull SlotAccess accessor) {
+	public boolean overrideOtherStackedOnMe(@NotNull ItemStack stack, @NotNull ItemStack incoming, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player, @NotNull SlotAccess accessor) {
 		if(action == ClickAction.SECONDARY) {
 			if(!incoming.isEmpty())
 				return addItemToMe(player, stack, incoming, slot);
@@ -64,7 +64,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(@Nonnull ItemStack stack, @Nonnull Slot slot, @Nonnull ClickAction action, @Nonnull Player player) {
+	public boolean overrideStackedOnOther(@NotNull ItemStack stack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player) {
 		if(action == ClickAction.SECONDARY) {
 			ItemStack incoming = slot.getItem();
 			if(!incoming.isEmpty())
@@ -75,7 +75,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	}
 
 	@Override
-	public boolean isEnchantable(@Nonnull ItemStack stack) {
+	public boolean isEnchantable(@NotNull ItemStack stack) {
 		return false;
 	}
 
@@ -138,19 +138,19 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	}
 
 	@Override
-	public boolean isBarVisible(@Nonnull ItemStack stack) {
+	public boolean isBarVisible(@NotNull ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public int getBarWidth(@Nonnull ItemStack stack) {
+	public int getBarWidth(@NotNull ItemStack stack) {
 		var contents = getContents(stack);
 		int count = contents == null ? 0 : contents.getRight();
 		return Math.round(count * 13.0F / SeedPouchModule.maxItems);
 	}
 
 	@Override
-	public int getBarColor(@Nonnull ItemStack stack) {
+	public int getBarColor(@NotNull ItemStack stack) {
 		return BAR_COLOR;
 	}
 
@@ -214,9 +214,9 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		ItemNBTHelper.setInt(stack, TAG_COUNT, count);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Component getName(@Nonnull ItemStack stack) {
+	public Component getName(@NotNull ItemStack stack) {
 		Component base = super.getName(stack);
 
 		Pair<ItemStack, Integer> contents = getContents(stack);
@@ -230,7 +230,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		return comp;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getItemInHand();
@@ -292,7 +292,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		super.fillItemCategory(group, items);
 
 		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
@@ -334,9 +334,9 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		return 0;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Optional<TooltipComponent> getTooltipImage(@Nonnull ItemStack stack) {
+	public Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
 		return getContents(stack) == null ? Optional.empty() : Optional.of(new Tooltip(stack));
 	}
 

@@ -56,7 +56,7 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -497,7 +497,7 @@ public class AncientTomesModule extends ZetaModule {
 	private class ExchangeAncientTomesTrade implements ItemListing {
 		@Nullable
 		@Override
-		public MerchantOffer getOffer(@Nonnull Entity trader, @Nonnull RandomSource random) {
+		public MerchantOffer getOffer(@NotNull Entity trader, @NotNull RandomSource random) {
 			if (validEnchants.isEmpty() || !enabled)
 				return null;
 			Enchantment target = validEnchants.get(random.nextInt(validEnchants.size()));

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class FoodTooltips {
@@ -90,7 +90,7 @@ public class FoodTooltips {
 	public record FoodComponent(ItemStack stack, int width,
 								int height) implements ClientTooltipComponent, TooltipComponent {
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			PoseStack pose = guiGraphics.pose();
 
 			if (stack.isEdible()) {
@@ -155,7 +155,7 @@ public class FoodTooltips {
 		}
 
 		@Override
-		public int getWidth(@Nonnull Font font) {
+		public int getWidth(@NotNull Font font) {
 			return width;
 		}
 	}

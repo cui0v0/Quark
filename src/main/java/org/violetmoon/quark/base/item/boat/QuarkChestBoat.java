@@ -1,6 +1,6 @@
 package org.violetmoon.quark.base.item.boat;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.QuarkBoatType;
@@ -49,13 +49,13 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@Nonnull CompoundTag tag) {
+	protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putString("QuarkType", getQuarkBoatType());
 	}
 
 	@Override
-	protected void readAdditionalSaveData(@Nonnull CompoundTag tag) {
+	protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		if (tag.contains("QuarkType", 8)) {
 			setQuarkBoatType(tag.getString("QuarkType"));
@@ -69,20 +69,20 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 		return super.spawnAtLocation(itemLike);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Item getDropItem() {
 		return getQuarkBoatTypeObj().chestBoat();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Type getBoatType() {
 		return Boat.Type.OAK;
 	}
 
 	@Override
-	public void setType(@Nonnull Type type) {
+	public void setType(@NotNull Type type) {
 		// NO-OP
 	}
 	

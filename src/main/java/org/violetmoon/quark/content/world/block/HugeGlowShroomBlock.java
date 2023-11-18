@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.world.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,7 +56,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 
 		BlockState below = worldIn.getBlockState(pos.below());

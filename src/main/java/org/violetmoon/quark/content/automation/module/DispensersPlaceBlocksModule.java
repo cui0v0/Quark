@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -87,7 +87,7 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 			this.wrapped = wrapped;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public ItemStack execute(BlockSource source, ItemStack stack) {
 			if(wrapped != null) {
@@ -137,7 +137,7 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 			return replaceClicked;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public Direction getNearestLookingDirection() {
 			return direction.getOpposite();

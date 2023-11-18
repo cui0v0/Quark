@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.building.entity.Stool;
 
@@ -15,14 +15,14 @@ public class StoolEntityRenderer extends EntityRenderer<Stool> {
 		super(context);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Stool entity) {
+	public ResourceLocation getTextureLocation(@NotNull Stool entity) {
 		return null;
 	}
 
 	@Override
-	public boolean shouldRender(@Nonnull Stool livingEntityIn, @Nonnull Frustum camera, double camX, double camY, double camZ) {
+	public boolean shouldRender(@NotNull Stool livingEntityIn, @NotNull Frustum camera, double camX, double camY, double camZ) {
 		return false;
 	}
 

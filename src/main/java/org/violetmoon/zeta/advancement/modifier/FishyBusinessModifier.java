@@ -6,15 +6,14 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.FishingRodHookedTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Set;
-
-import org.violetmoon.zeta.api.IMutableAdvancement;
-import org.violetmoon.zeta.advancement.AdvancementModifier;
-import org.violetmoon.zeta.module.ZetaModule;
 
 public class FishyBusinessModifier extends AdvancementModifier {
 
@@ -43,7 +42,7 @@ public class FishyBusinessModifier extends AdvancementModifier {
                         EntityPredicate.ANY,
                         ItemPredicate.Builder.item().of(array).build()));
 
-        String name = Registry.ITEM.getKey(array[0].asItem()).toString();
+        String name = BuiltInRegistries.ITEM.getKey(array[0].asItem()).toString();
         adv.addOrCriterion(name, criterion);
 
         return true;

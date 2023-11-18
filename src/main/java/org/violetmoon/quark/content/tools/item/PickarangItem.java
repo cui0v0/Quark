@@ -3,7 +3,7 @@ package org.violetmoon.quark.content.tools.item;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
@@ -47,13 +47,13 @@ public class PickarangItem extends ZetaItem {
 	}
 
 	@Override
-	public boolean hurtEnemy(ItemStack stack, @Nonnull LivingEntity target, @Nonnull LivingEntity attacker) {
+	public boolean hurtEnemy(ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
 		stack.hurtAndBreak(2, attacker, (player) -> player.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		return true;
 	}
 
 	@Override
-	public boolean isCorrectToolForDrops(@Nonnull BlockState blockIn) {
+	public boolean isCorrectToolForDrops(@NotNull BlockState blockIn) {
 		return switch (type.harvestLevel) {
 			case 0 -> Items.WOODEN_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.WOODEN_AXE.isCorrectToolForDrops(blockIn)) ||
@@ -84,15 +84,15 @@ public class PickarangItem extends ZetaItem {
 	}
 
 	@Override
-	public boolean mineBlock(@Nonnull ItemStack stack, @Nonnull Level worldIn, BlockState state, @Nonnull BlockPos pos, @Nonnull LivingEntity entityLiving) {
+	public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level worldIn, BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entityLiving) {
 		if (state.getDestroySpeed(worldIn, pos) != 0)
 			stack.hurtAndBreak(1, entityLiving, (player) -> player.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		return true;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @Nonnull InteractionHand handIn) {
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, @NotNull InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
 		playerIn.setItemInHand(handIn, ItemStack.EMPTY);
 		int eff = Quark.ZETA.itemExtensions.get(itemstack).getEnchantmentLevelZeta(itemstack, Enchantments.BLOCK_EFFICIENCY);
@@ -124,9 +124,9 @@ public class PickarangItem extends ZetaItem {
 	}
 
 	@SuppressWarnings("deprecation") //Avoiding FOrge extension
-	@Nonnull
+	@NotNull
 	@Override
-	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@Nonnull EquipmentSlot slot) {
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot slot) {
 		Multimap<Attribute, AttributeModifier> multimap = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 
 		if (slot == EquipmentSlot.MAINHAND) {
@@ -138,17 +138,17 @@ public class PickarangItem extends ZetaItem {
 	}
 
 	@Override
-	public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull BlockState state) {
+	public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
 		return 0F;
 	}
 
 	@Override
-	public boolean isRepairableZeta(@Nonnull ItemStack stack) {
+	public boolean isRepairableZeta(@NotNull ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public boolean isValidRepairItem(@Nonnull ItemStack toRepair, ItemStack repair) {
+	public boolean isValidRepairItem(@NotNull ItemStack toRepair, ItemStack repair) {
 		return type.repairMaterial != null && repair.getItem() == type.repairMaterial;
 	}
 

@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.mobs.client.render.entity;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.content.mobs.client.layer.StonelingItemLayer;
@@ -20,9 +20,9 @@ public class StonelingRenderer extends MobRenderer<Stoneling, StonelingModel> {
 		addLayer(new StonelingLichenLayer(this));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Stoneling entity) {
+	public ResourceLocation getTextureLocation(@NotNull Stoneling entity) {
 		return entity.getVariant().getTexture();
 	}
 

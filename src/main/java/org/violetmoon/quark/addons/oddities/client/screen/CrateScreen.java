@@ -18,7 +18,7 @@ import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTar
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.client.module.ChestSearchingModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
@@ -133,7 +133,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	}
 
 	@Override
-	protected void renderBg(@Nonnull GuiGraphics guiGraphics, float partialTicks, int x, int y) {
+	protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTicks, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 

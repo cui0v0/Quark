@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -32,6 +34,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
 
+import org.joml.Vector3i;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
@@ -61,7 +64,7 @@ public class FeedingTroughModule extends ZetaModule {
 	
 	private static final String TAG_CACHE = "quark:feedingTroughCache";
 
-	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(Registry.POINT_OF_INTEREST_TYPE.getKey(feedingTroughPoi));
+	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(BuiltInRegistries.POINT_OF_INTEREST_TYPE.getKey(feedingTroughPoi));
 
 	@Config(description = "How long, in game ticks, between animals being able to eat from the trough")
 	@Config.Min(1)
@@ -84,7 +87,7 @@ public class FeedingTroughModule extends ZetaModule {
 
 	@PlayEvent
 	public void onBreed(ZBabyEntitySpawn.Lowest event) {
-		if (event.getCausedByPlayer() == null && event.getParentA().level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
+		if (event.getCausedByPlayer() == null && event.getParentA().getCommandSenderWorld().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
 			breedingOccurred.set(true);
 	}
 
@@ -120,7 +123,7 @@ public class FeedingTroughModule extends ZetaModule {
 		
 		if(!cached)
 			pointer = level.getPoiManager().findAllClosestFirstWithType(
-				IS_FEEDER, p -> p.distSqr(new Vec3i(position.x, position.y, position.z)) <= range * range,
+				IS_FEEDER, p -> p.distSqr(new Vec3i((int) position.x, (int) position.y, (int) position.z)) <= range * range,
 				animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
 				.map(Pair::getSecond)
 				.map(pos -> getTroughFakePlayer(level, pos, goal))
@@ -132,7 +135,7 @@ public class FeedingTroughModule extends ZetaModule {
 			BlockPos location = pointer.pos();
 			Vec3 eyesPos = goal.mob.position().add(0, goal.mob.getEyeHeight(), 0);
 			Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
-			BlockHitResult ray = goal.mob.level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
+			BlockHitResult ray = goal.mob.getCommandSenderWorld().clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
 
 			if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
 				if(!cached)
@@ -159,13 +162,13 @@ public class FeedingTroughModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		feeding_trough = new FeedingTroughBlock("feeding_trough", this, CreativeModeTab.TAB_DECORATIONS,
-				Block.Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD));
+				Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().strength(0.6F).sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feeding_trough).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "feeding_trough", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "feeding_trough", Registries.BLOCK_ENTITY_TYPE);
 
 		feedingTroughPoi = new PoiType(getBlockStates(feeding_trough), 1, 32);
-		Quark.ZETA.registry.register(feedingTroughPoi, "feeding_trough", Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(feedingTroughPoi, "feeding_trough", Registries.POINT_OF_INTEREST_TYPE);
 	}
 
 	private static Set<BlockState> getBlockStates(Block p_218074_) {
@@ -199,7 +202,7 @@ public class FeedingTroughModule extends ZetaModule {
 			int z = tag.getInt("z");
 			
 			BlockPos pos = new BlockPos(x, y, z);
-			return getTroughFakePlayer(e.level, pos, goal);
+			return getTroughFakePlayer(e.getCommandSenderWorld(), pos, goal);
 		}
 		
 	}

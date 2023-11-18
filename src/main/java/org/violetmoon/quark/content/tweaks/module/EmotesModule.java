@@ -21,7 +21,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.world.entity.player.Player;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -112,7 +112,7 @@ public class EmotesModule extends ZetaModule {
 			mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
 
 				@Override
-				public void loadPacks(@Nonnull Consumer<Pack> packConsumer, @Nonnull Pack.PackConstructor packInfoFactory) {
+				public void loadPacks(@NotNull Consumer<Pack> packConsumer, @NotNull Pack.PackConstructor packInfoFactory) {
 					Client.resourcePack = new CustomEmoteIconResourcePack();
 
 					String name = "quark:emote_resources";

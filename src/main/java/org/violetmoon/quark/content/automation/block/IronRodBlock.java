@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.automation.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -65,13 +65,13 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(@Nonnull Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(@NotNull Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(CONNECTED);
 	}
@@ -88,7 +88,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		// NO-OP
 	}
 

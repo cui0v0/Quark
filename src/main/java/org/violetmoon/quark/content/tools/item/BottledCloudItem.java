@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -29,9 +29,9 @@ public class BottledCloudItem extends ZetaItem {
 		super("bottled_cloud", module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResultHolder<ItemStack> use(@Nonnull Level world, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		HitResult result = Quark.ZETA.raytracingUtil.rayTrace(player, world, player, Block.OUTLINE, Fluid.ANY);

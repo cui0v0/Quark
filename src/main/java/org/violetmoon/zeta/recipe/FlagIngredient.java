@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.config.ConfigFlagManager;
@@ -36,7 +36,7 @@ public class FlagIngredient extends Ingredient implements IZetaIngredient<FlagIn
 	}
 
 	@Override
-	@Nonnull
+	@NotNull
 	public ItemStack[] getItems() {
 		if (!cfm.getFlag(flag))
 			return new ItemStack[0];
@@ -44,7 +44,7 @@ public class FlagIngredient extends Ingredient implements IZetaIngredient<FlagIn
 	}
 
 	@Override
-	@Nonnull
+	@NotNull
 	public IntList getStackingIds() {
 		if (!cfm.getFlag(flag))
 			return IntLists.EMPTY_LIST;
@@ -79,22 +79,22 @@ public class FlagIngredient extends Ingredient implements IZetaIngredient<FlagIn
 		@Deprecated(forRemoval = true)
 		public static Serializer INSTANCE;
 
-		@Nonnull
+		@NotNull
 		@Override
-		public FlagIngredient parse(@Nonnull FriendlyByteBuf buffer) {
+		public FlagIngredient parse(@NotNull FriendlyByteBuf buffer) {
 			return new FlagIngredient(Ingredient.fromNetwork(buffer), buffer.readUtf(), cfm, this);
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public FlagIngredient parse(@Nonnull JsonObject json) {
+		public FlagIngredient parse(@NotNull JsonObject json) {
 			Ingredient value = Ingredient.fromJson(json.get("value"));
 			String flag = json.getAsJsonPrimitive("flag").getAsString();
 			return new FlagIngredient(value, flag, cfm, this);
 		}
 
 		@Override
-		public void write(@Nonnull FriendlyByteBuf buffer, @Nonnull FlagIngredient ingredient) {
+		public void write(@NotNull FriendlyByteBuf buffer, @NotNull FlagIngredient ingredient) {
 			ingredient.parent.toNetwork(buffer);
 			buffer.writeUtf(ingredient.flag);
 		}

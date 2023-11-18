@@ -54,7 +54,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -300,7 +300,7 @@ public class PathfinderMapsModule extends ZetaModule {
 	private record PathfinderQuillTrade(TradeInfo info, boolean hasCompass) implements ItemListing {
 
 		@Override
-		public MerchantOffer getOffer(@Nonnull Entity entity, @Nonnull RandomSource random) {
+		public MerchantOffer getOffer(@NotNull Entity entity, @NotNull RandomSource random) {
 			if (!info.enabled)
 				return null;
 

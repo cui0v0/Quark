@@ -22,7 +22,7 @@ import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class VariantSelectorScreen extends Screen {
 
@@ -47,7 +47,7 @@ public class VariantSelectorScreen extends Screen {
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack ms, int mx, int my, float delta) {
+	public void render(@NotNull PoseStack ms, int mx, int my, float delta) {
 		super.render(ms, mx, my, delta);
 
 		timeIn += delta;

@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -19,15 +20,20 @@ public class BambooMatBlock extends ZetaBlock {
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
 	
 	public BambooMatBlock(String name, ZetaModule module) {
-		this(name, module, Material.BAMBOO, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		this(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS);
 	}
 	
-	public BambooMatBlock(String name, ZetaModule module, Material material, CreativeModeTab tab) {
+	public BambooMatBlock(String name, ZetaModule module, CreativeModeTab tab) {
 		super(name, module, tab,
-				Block.Properties.of(material)
+				Block.Properties.of()
 				.mapColor(MapColor.COLOR_YELLOW)
+				.forceSolidOn()
 				.strength(0.5F)
-				.sound(SoundType.BAMBOO));
+				.sound(SoundType.BAMBOO)
+				.ignitedByLava()
+				.pushReaction(PushReaction.DESTROY)
+				.isRedstoneConductor((s, r, p) -> false)
+		);
 		
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
 	}

@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.RopeBlock;
@@ -55,9 +55,9 @@ public class RopeModule extends ZetaModule {
 
 	public static class BehaviourRope extends OptionalDispenseItemBehavior {
 
-		@Nonnull
+		@NotNull
 		@Override
-		protected ItemStack execute(BlockSource source, @Nonnull ItemStack stack) {
+		protected ItemStack execute(BlockSource source, @NotNull ItemStack stack) {
 			Direction facing = source.getBlockState().getValue(DispenserBlock.FACING);
 			BlockPos pos = source.getPos().relative(facing);
 			Level world = source.getLevel();

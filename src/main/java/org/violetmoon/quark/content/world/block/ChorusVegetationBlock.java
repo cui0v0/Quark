@@ -25,6 +25,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,7 +37,7 @@ import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBlock, IForgeShearable {
 
@@ -45,30 +47,35 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 
 	public ChorusVegetationBlock(String regname, ZetaModule module, boolean simple) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
-				BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
+				BlockBehaviour.Properties.of()
+				.mapColor(MapColor.PLANT)
+				.replaceable()
 				.noCollission()
 				.instabreak()
 				.sound(SoundType.GRASS)
 				.offsetType(OffsetType.XZ)
-				.randomTicks());
+				.randomTicks()
+				.ignitedByLava()
+				.pushReaction(PushReaction.DESTROY)
+		);
 
 		this.simple = simple;
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
 	@Override
-	public void randomTick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, RandomSource random) {
+	public void randomTick(@NotNull BlockState state, @NotNull ServerLevel worldIn, @NotNull BlockPos pos, RandomSource random) {
 		if(random.nextDouble() < ChorusVegetationModule.passiveTeleportChance)
 			teleport(pos, random, worldIn, state);
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		worldIn.addParticle(ParticleTypes.PORTAL, pos.getX() + 0.2 + rand.nextDouble() * 0.6, pos.getY() + 0.3, pos.getZ() + 0.2 + rand.nextDouble() * 0.6, 0, 0, 0);
 	}
 
 	@Override
-	public void entityInside(@Nonnull BlockState state, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Entity entity) {
+	public void entityInside(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Entity entity) {
 		if(simple && worldIn instanceof ServerLevel serverLevel && entity instanceof LivingEntity && !(entity instanceof EnderMan) && !(entity instanceof Endermite)) {
 			BlockPos target = teleport(pos, worldIn.random, serverLevel, state);
 
@@ -81,7 +88,7 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 	}
 
 	@Override
-	public void neighborChanged(@Nonnull BlockState state, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull Block blockIn, @Nonnull BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos, boolean isMoving) {
 		super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
 
 		if(worldIn instanceof ServerLevel serverLevel)
@@ -144,36 +151,36 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isBonemealSuccess(@Nonnull Level worldIn, @Nonnull RandomSource rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public boolean isBonemealSuccess(@NotNull Level worldIn, @NotNull RandomSource rand, @NotNull BlockPos pos, @NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(@Nonnull ServerLevel worldIn, RandomSource rand, @Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public void performBonemeal(@NotNull ServerLevel worldIn, RandomSource rand, @NotNull BlockPos pos, @NotNull BlockState state) {
 		for(int i = 0; i < (3 + rand.nextInt(3)); i++)
 			teleport(pos, rand, worldIn, state, 10, 0);
 		teleport(pos, rand, worldIn, state, 4, 1);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
+	public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPE;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public BlockState updateShape(BlockState stateIn, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor worldIn, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor worldIn, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
 		return !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean canSurvive(@Nonnull BlockState state, LevelReader worldIn, BlockPos pos) {
+	public boolean canSurvive(@NotNull BlockState state, LevelReader worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos.below()).getBlock() == Blocks.END_STONE;
 	}
 
 	@Override
-	public boolean isPathfindable(@Nonnull BlockState state, @Nonnull BlockGetter worldIn, @Nonnull BlockPos pos, @Nonnull PathComputationType type) {
+	public boolean isPathfindable(@NotNull BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull PathComputationType type) {
 		return (type == PathComputationType.AIR && !this.hasCollision) || super.isPathfindable(state, worldIn, pos, type);
 	}
 

@@ -16,7 +16,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
@@ -201,7 +201,7 @@ public final class InventoryButtonHandler {
 		}
 
 		@Override
-		public int compareTo(@Nonnull ButtonProviderHolder o) {
+		public int compareTo(@NotNull ButtonProviderHolder o) {
 			return priority - o.priority;
 		}
 

@@ -16,7 +16,7 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -532,7 +532,7 @@ public class EnchantmentMatrix {
 			}
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public Weight getWeight() {
 			return mutableWeight;

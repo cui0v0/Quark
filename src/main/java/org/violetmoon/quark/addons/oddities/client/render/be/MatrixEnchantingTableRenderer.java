@@ -18,7 +18,7 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 
@@ -32,7 +32,7 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 	}
 
 	@Override
-	public void render(MatrixEnchantingTableBlockEntity te, float partialTicks, @Nonnull PoseStack matrix, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+	public void render(MatrixEnchantingTableBlockEntity te, float partialTicks, @NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light, int overlay) {
 		float time = te.tickCount + partialTicks;
 
 		float f1 = te.bookRotation - te.bookRotationPrev;

@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.mobs.client.model;
 
 import java.util.Random;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.mobs.entity.Wraith;
 
@@ -98,7 +98,7 @@ public class WraithModel extends EntityModel<Wraith> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, @Nonnull VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrix, @NotNull VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		alpha *= alphaMult;
 
 		matrix.pushPose();

@@ -2,7 +2,7 @@ package org.violetmoon.zeta.client.config.definition;
 
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -108,7 +108,7 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 				}
 
 				@Override
-				public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+				public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 					super.render(mstack, mouseX, mouseY, partialTicks);
 
 					//draw the current value
@@ -128,7 +128,7 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 		}
 
 		@Override
-		public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+		public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 			renderBackground(mstack);
 
 			super.render(mstack, mouseX, mouseY, partialTicks);

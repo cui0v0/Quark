@@ -10,7 +10,7 @@
  */
 package org.violetmoon.quark.base.util;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.zeta.block.be.ZetaBlockEntity;
 
@@ -74,13 +74,13 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 		return true;
 	}
 	
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack getItem(int i) {
 		return inventorySlots.get(i);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItem(int i, int j) {
 		if (!inventorySlots.get(i).isEmpty()) {
@@ -105,7 +105,7 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 		return ItemStack.EMPTY;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack removeItemNoUpdate(int i) {
 		ItemStack stack = getItem(i);
@@ -115,7 +115,7 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	}
 
 	@Override
-	public void setItem(int i, @Nonnull ItemStack itemstack) {
+	public void setItem(int i, @NotNull ItemStack itemstack) {
 		inventorySlots.set(i, itemstack);
 		inventoryChanged(i);
 	}
@@ -137,13 +137,13 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	}
 
 	@Override
-	public boolean stillValid(@Nonnull Player entityplayer) {
+	public boolean stillValid(@NotNull Player entityplayer) {
 		return getLevel().getBlockEntity(getBlockPos()) == this && entityplayer.distanceToSqr(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D) <= 64;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
+	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction facing) {
 		if(capability == ForgeCapabilities.ITEM_HANDLER)
 			return (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, facing));
 		
@@ -151,17 +151,17 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	}
 
 	@Override
-	public boolean canPlaceItem(int i, @Nonnull ItemStack itemstack) {
+	public boolean canPlaceItem(int i, @NotNull ItemStack itemstack) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(@Nonnull Player player) {
+	public void startOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
 	@Override
-	public void stopOpen(@Nonnull Player player) {
+	public void stopOpen(@NotNull Player player) {
 		// NO-OP
 	}
 
@@ -179,18 +179,18 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	}
 
 	@Override
-	public boolean canTakeItemThroughFace(int index, @Nonnull ItemStack stack, @Nonnull Direction direction) {
+	public boolean canTakeItemThroughFace(int index, @NotNull ItemStack stack, @NotNull Direction direction) {
 		return isAutomationEnabled();
 	}
 
 	@Override
-	public boolean canPlaceItemThroughFace(int index, @Nonnull ItemStack itemStackIn, @Nonnull Direction direction) {
+	public boolean canPlaceItemThroughFace(int index, @NotNull ItemStack itemStackIn, @NotNull Direction direction) {
 		return isAutomationEnabled();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public int[] getSlotsForFace(@Nonnull Direction side) {
+	public int[] getSlotsForFace(@NotNull Direction side) {
 		if(isAutomationEnabled()) {
 			int[] slots = new int[getContainerSize()];
 			for(int i = 0; i < slots.length; i++)

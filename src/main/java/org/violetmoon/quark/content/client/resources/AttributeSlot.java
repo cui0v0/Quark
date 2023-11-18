@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.client.resources;
 
 import net.minecraft.world.entity.EquipmentSlot;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 public enum AttributeSlot {
@@ -27,7 +27,7 @@ public enum AttributeSlot {
 		this(null, locKey);
 	}
 
-	AttributeSlot(@Nonnull EquipmentSlot canonicalSlot) {
+	AttributeSlot(@NotNull EquipmentSlot canonicalSlot) {
 		this(canonicalSlot, "item.modifiers." + canonicalSlot.getName());
 	}
 
@@ -35,7 +35,7 @@ public enum AttributeSlot {
 		return canonicalSlot != null;
 	}
 
-	@Nonnull
+	@NotNull
 	public EquipmentSlot getCanonicalSlot() {
 		if (canonicalSlot == null)
 			throw new IllegalStateException("Potions have no canonical slot");
@@ -46,7 +46,7 @@ public enum AttributeSlot {
 		return locKey;
 	}
 
-	public static AttributeSlot fromCanonicalSlot(@Nonnull EquipmentSlot slot) {
+	public static AttributeSlot fromCanonicalSlot(@NotNull EquipmentSlot slot) {
 		switch (slot) {
 			case OFFHAND -> {
 				return OFFHAND;

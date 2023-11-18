@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.mobs.entity;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.handler.QuarkSounds;
 
@@ -88,18 +88,18 @@ public class SoulBead extends Entity {
 	}
 	
 	@Override
-	public void addAdditionalSaveData(@Nonnull CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		entityData.set(TARGET_X, compound.getInt(TAG_TARGET_X));
 		entityData.set(TARGET_Z, compound.getInt(TAG_TARGET_Z));
 	}
 
 	@Override
-	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
+	protected void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		compound.putInt(TAG_TARGET_X, entityData.get(TARGET_X));
 		compound.putInt(TAG_TARGET_Z, entityData.get(TARGET_Z));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);

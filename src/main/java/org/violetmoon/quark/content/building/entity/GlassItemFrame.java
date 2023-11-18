@@ -33,7 +33,7 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
@@ -57,9 +57,9 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		this.setDirection(face);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResult interact(Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult interact(Player player, @NotNull InteractionHand hand) {
 		ItemStack item = getItem();
 		if(!player.isShiftKeyDown() && !item.isEmpty() && !(item.getItem() instanceof BannerItem)) {
 			BlockPos behind = getBehindPos();
@@ -145,7 +145,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 
 	@Nullable
 	@Override
-	public ItemEntity spawnAtLocation(@Nonnull ItemStack stack, float offset) {
+	public ItemEntity spawnAtLocation(@NotNull ItemStack stack, float offset) {
 		if (stack.getItem() == Items.ITEM_FRAME && !didHackery) {
 			stack = new ItemStack(getDroppedItem());
 			didHackery = true;
@@ -154,7 +154,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		return super.spawnAtLocation(stack, offset);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
 		ItemStack held = getItem();
@@ -169,20 +169,20 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	}
 
 	@Override
-	public void addAdditionalSaveData(@Nonnull CompoundTag cmp) {
+	public void addAdditionalSaveData(@NotNull CompoundTag cmp) {
 		super.addAdditionalSaveData(cmp);
 
 		cmp.putBoolean(TAG_SHINY, entityData.get(IS_SHINY));
 	}
 
 	@Override
-	public void readAdditionalSaveData(@Nonnull CompoundTag cmp) {
+	public void readAdditionalSaveData(@NotNull CompoundTag cmp) {
 		super.readAdditionalSaveData(cmp);
 
 		entityData.set(IS_SHINY, cmp.getBoolean(TAG_SHINY));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);

@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -137,15 +137,15 @@ public abstract class HollowFrameBlock extends ZetaBlock implements SimpleWaterl
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull CollisionContext ctx) {
+    public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext ctx) {
         return SHAPES[getShapeCode(state)];
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public VoxelShape getCollisionShape(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull CollisionContext ctx) {
+    public VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext ctx) {
         byte code = getShapeCode(state);
         if (ctx.isDescending()) {
             code &= ~FLAG_TOP;
@@ -174,25 +174,25 @@ public abstract class HollowFrameBlock extends ZetaBlock implements SimpleWaterl
     }
 
     @Override
-    public BlockState getStateForPlacement(@Nonnull BlockPlaceContext ctx) {
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext ctx) {
         return defaultBlockState().setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
     }
 
     @Override
-    public boolean propagatesSkylightDown(@Nonnull BlockState state, @Nonnull BlockGetter reader, @Nonnull BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter reader, @NotNull BlockPos pos) {
         byte shapeCode = getShapeCode(state);
         return !state.getValue(WATERLOGGED) && bottom(shapeCode) && top(shapeCode);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public BlockState updateShape(BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor level, @Nonnull BlockPos pos, @Nonnull BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -201,12 +201,12 @@ public abstract class HollowFrameBlock extends ZetaBlock implements SimpleWaterl
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(@Nonnull BlockState p_56967_) {
+    public boolean useShapeForLightOcclusion(@NotNull BlockState p_56967_) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(@Nonnull Builder<Block, BlockState> def) {
+    protected void createBlockStateDefinition(@NotNull Builder<Block, BlockState> def) {
         super.createBlockStateDefinition(def);
 
         def.add(WATERLOGGED);

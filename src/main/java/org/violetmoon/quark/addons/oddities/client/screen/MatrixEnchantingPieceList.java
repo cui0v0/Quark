@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
 
@@ -45,7 +45,7 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack stack, int mouseX, int mouseY, float partialTicks) {
 		int i = this.getScrollbarPosition();
 		int j = i + 6;
 
@@ -81,7 +81,7 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 	}
 
 	@Override
-	protected void renderBackground(@Nonnull PoseStack stack) {
+	protected void renderBackground(@NotNull PoseStack stack) {
 		// NO-OP
 	}
 
@@ -96,7 +96,7 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 		}
 
 		@Override
-		public void render(@Nonnull PoseStack stack, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hover, float partialTicks) {
+		public void render(@NotNull PoseStack stack, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hover, float partialTicks) {
 			if(mouseX > left && mouseY > top && mouseX <= (left + entryWidth) && mouseY <= (top + entryHeight))
 				parent.hoveredPiece = piece;
 
@@ -119,7 +119,7 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 			return false;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public Component getNarration() {
 			return Component.literal("");

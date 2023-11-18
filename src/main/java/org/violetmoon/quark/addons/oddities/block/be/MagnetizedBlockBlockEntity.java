@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.magnetsystem.MagnetSystem;
 import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
@@ -302,7 +302,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 
 
 	@Override
-	public void load(@Nonnull CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 
 		this.magnetState = NbtUtils.readBlockState(compound.getCompound("blockState"));
@@ -313,13 +313,13 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	@Nonnull
+	@NotNull
 	public CompoundTag getUpdateTag() {
 		return writeNBTData(serializeNBT(), false);
 	}
 
 	@Override
-	protected void saveAdditional(@Nonnull CompoundTag nbt) {
+	protected void saveAdditional(@NotNull CompoundTag nbt) {
 		super.saveAdditional(nbt);
 		writeNBTData(nbt, true);
 	}

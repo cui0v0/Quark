@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
@@ -21,9 +21,9 @@ public class SturdyStoneBlock extends ZetaBlock {
 				.sound(SoundType.STONE));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
+	public PushReaction getPistonPushReaction(@NotNull BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

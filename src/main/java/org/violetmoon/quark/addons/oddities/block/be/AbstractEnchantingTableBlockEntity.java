@@ -2,7 +2,7 @@ package org.violetmoon.quark.addons.oddities.block.be;
 
 import java.util.Random;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.util.SimpleInventoryBlockEntity;
@@ -134,7 +134,7 @@ public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventory
 			Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getName() {
 		return hasCustomName() ? customName : Component.translatable("container.enchant");

@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.mobs.client.model.FoxhoundModel;
@@ -32,7 +32,7 @@ public class FoxhoundCollarLayer extends RenderLayer<Foxhound, FoxhoundModel> {
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack matrix, @Nonnull MultiBufferSource buffer, int light, Foxhound foxhound, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch) {
+	public void render(@NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light, Foxhound foxhound, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch) {
 		if (foxhound.isTame() && !foxhound.isInvisible()) {
 			float[] afloat = foxhound.getCollarColor().getTextureDiffuseColors();
 			renderColoredCutoutModel(getParentModel(), WOLF_COLLAR, matrix, buffer, light, foxhound, afloat[0], afloat[1], afloat[2]);

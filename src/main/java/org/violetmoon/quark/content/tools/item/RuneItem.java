@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -25,7 +25,7 @@ public class RuneItem extends ZetaItem implements IRuneColorProvider {
 	}
 
 	@Override
-	public boolean isFoil(@Nonnull ItemStack stack) {
+	public boolean isFoil(@NotNull ItemStack stack) {
 		return glow;
 	}
 

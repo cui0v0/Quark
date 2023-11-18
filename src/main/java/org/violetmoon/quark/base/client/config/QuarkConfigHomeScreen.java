@@ -3,7 +3,7 @@ package org.violetmoon.quark.base.client.config;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
@@ -71,7 +71,7 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		this.partialTicks = partialTicks;
 
 		super.render(mstack, mouseX, mouseY, partialTicks);

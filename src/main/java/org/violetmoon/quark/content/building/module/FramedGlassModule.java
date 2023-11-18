@@ -4,7 +4,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -17,7 +16,7 @@ public class FramedGlassModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		Block.Properties props = Block.Properties.of(Material.GLASS)
+		Block.Properties props = Block.Properties.of()
 				.strength(3F, 10F)
 				.sound(SoundType.GLASS);
 		

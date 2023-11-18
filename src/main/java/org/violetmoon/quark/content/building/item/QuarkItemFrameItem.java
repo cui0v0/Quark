@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.building.item;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +31,7 @@ public class QuarkItemFrameItem extends ZetaItem {
 		this.entityProvider = entityProvider;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		BlockPos pos = context.getClickedPos();

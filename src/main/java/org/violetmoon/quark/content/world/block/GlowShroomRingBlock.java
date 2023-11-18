@@ -2,7 +2,9 @@ package org.violetmoon.quark.content.world.block;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -28,8 +30,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -46,30 +46,33 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 
 	public GlowShroomRingBlock(ZetaModule module) {
 		super("glow_shroom_ring", module, CreativeModeTab.TAB_DECORATIONS,
-				BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_GRAY)
+				BlockBehaviour.Properties.of()
+				.mapColor(MapColor.COLOR_LIGHT_GRAY)
 				.noCollission()
 				.instabreak()
-				.sound(SoundType.FUNGUS));
+				.sound(SoundType.FUNGUS)
+				.pushReaction(PushReaction.DESTROY)
+		);
 		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public VoxelShape getShape(BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
+	public VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		return SHAPES.get(state.getValue(FACING));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public BlockState mirror(@Nonnull BlockState state, Mirror mirror) {
+	public BlockState mirror(@NotNull BlockState state, Mirror mirror) {
 		return rotate(state, mirror.getRotation(state.getValue(FACING)));
 	}
 
@@ -78,15 +81,15 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 		builder.add(FACING, WATERLOGGED);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public BlockState updateShape(BlockState state, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor world, @Nonnull BlockPos pos, @Nonnull BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) {
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -103,7 +106,7 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 	}
 
 	@Override
-	public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context) {
+	public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
 		BlockState blockstate = super.getStateForPlacement(context);
 		LevelReader levelreader = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();

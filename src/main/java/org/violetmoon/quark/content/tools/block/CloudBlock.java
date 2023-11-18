@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.tools.block;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -22,10 +20,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -35,22 +34,24 @@ public class CloudBlock extends ZetaBlock implements EntityBlock {
 
 	public CloudBlock(ZetaModule module) {
 		super("cloud", module, null,
-				Block.Properties.of(Material.CLAY)
-				.sound(SoundType.WOOL)
-				.strength(0)
-				.noOcclusion()
-				.noCollission());
+				Block.Properties.of()
+						.mapColor(MapColor.CLAY)
+						.sound(SoundType.WOOL)
+						.strength(0)
+						.noOcclusion()
+						.noCollission()
+		);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
+	public PushReaction getPistonPushReaction(@NotNull BlockState state) {
 		return PushReaction.BLOCK;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResult use(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, Player player, @Nonnull InteractionHand hand, @Nonnull BlockHitResult raytrace) {
+	public InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult raytrace) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(stack.getItem() == Items.GLASS_BOTTLE) {
@@ -104,12 +105,12 @@ public class CloudBlock extends ZetaBlock implements EntityBlock {
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new CloudBlockEntity(pos, state);
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level world, @Nonnull BlockState state, @Nonnull BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
 		return createTickerHelper(type, BottledCloudModule.blockEntityType, CloudBlockEntity::tick);
 	}
 

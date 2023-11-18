@@ -1,16 +1,13 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.List;
-import java.util.function.BooleanSupplier;
-
 import com.google.common.collect.Lists;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.FuelHandler;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -22,6 +19,9 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.List;
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "building")
 public class CompressedBlocksModule extends ZetaModule {
@@ -75,43 +75,50 @@ public class CompressedBlocksModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		charcoal_block = new ZetaBlock("charcoal_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
-				Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
+				Block.Properties.of()
+						.instrument(NoteBlockInstrument.BASEDRUM)
+						.mapColor(MapColor.COLOR_BLACK)
 						.requiresCorrectToolForDrops()
 						.strength(5F, 10F)
 						.sound(SoundType.STONE))
 				.setCondition(() -> enableCharcoalBlock);
 		
-		pillar("sugar_cane", MaterialColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
-		pillar("cactus", MaterialColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);
-		pillar("chorus_fruit", MaterialColor.COLOR_PURPLE, false, () -> enableChorusFruitBlock, 10);
-		stick_block = pillar("stick", MaterialColor.WOOD, false, () -> enableStickBlock, 300);
+		pillar("sugar_cane", MapColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
+		pillar("cactus", MapColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);
+		pillar("chorus_fruit", MapColor.COLOR_PURPLE, false, () -> enableChorusFruitBlock, 10);
+		stick_block = pillar("stick", MapColor.WOOD, false, () -> enableStickBlock, 300);
 
-		golden_apple_crate = crate("golden_apple", MaterialColor.GOLD, false, () -> enableGoldenAppleCrate);
-		crate("apple", MaterialColor.COLOR_RED, true, () -> enableAppleCrate);
-		crate("potato", MaterialColor.COLOR_ORANGE, true, () -> enablePotatoCrate);
-		crate("carrot", MaterialColor.TERRACOTTA_ORANGE, true, () -> enableCarrotCrate);
-		crate("golden_carrot", MaterialColor.GOLD, false, () -> enableGoldenCarrotCrate);
-		crate("beetroot", MaterialColor.COLOR_RED, true, () -> enableBeetrootCrate);
+		golden_apple_crate = crate("golden_apple", MapColor.GOLD, false, () -> enableGoldenAppleCrate);
+		crate("apple", MapColor.COLOR_RED, true, () -> enableAppleCrate);
+		crate("potato", MapColor.COLOR_ORANGE, true, () -> enablePotatoCrate);
+		crate("carrot", MapColor.TERRACOTTA_ORANGE, true, () -> enableCarrotCrate);
+		crate("golden_carrot", MapColor.GOLD, false, () -> enableGoldenCarrotCrate);
+		crate("beetroot", MapColor.COLOR_RED, true, () -> enableBeetrootCrate);
 
-		sack("cocoa_beans", MaterialColor.COLOR_BROWN, true, () -> enableCocoaBeanSack);
-		sack("nether_wart", MaterialColor.COLOR_RED, true, () -> enableNetherWartSack);
-		sack("gunpowder", MaterialColor.COLOR_GRAY, false, () -> enableGunpowderSack);
-		sack("berry", MaterialColor.COLOR_RED, true, () -> enableBerrySack);
-		sack("glowberry", MaterialColor.COLOR_YELLOW, 14, true, () -> enableGlowBerrySack);
+		sack("cocoa_beans", MapColor.COLOR_BROWN, true, () -> enableCocoaBeanSack);
+		sack("nether_wart", MapColor.COLOR_RED, true, () -> enableNetherWartSack);
+		sack("gunpowder", MapColor.COLOR_GRAY, false, () -> enableGunpowderSack);
+		sack("berry", MapColor.COLOR_RED, true, () -> enableBerrySack);
+		sack("glowberry", MapColor.COLOR_YELLOW, 14, true, () -> enableGlowBerrySack);
 
 		blaze_lantern = new ZetaBlock("blaze_lantern", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
-				Block.Properties.of(Material.GLASS, DyeColor.YELLOW)
+				Block.Properties.of()
+				.mapColor(DyeColor.YELLOW)
 				.strength(0.3F)
 				.sound(SoundType.GLASS)
 				.lightLevel(b -> 15))
 		.setCondition(() -> enableBlazeLantern);
 		
-		new ZetaBlock("bonded_leather", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.ORANGE)
+		new ZetaBlock("bonded_leather", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of()
+				.mapColor(MapColor.COLOR_ORANGE)
+				.ignitedByLava()
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedLeather);
 		
-		new ZetaBlock("bonded_rabbit_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of(Material.WOOL, DyeColor.WHITE)
+		new ZetaBlock("bonded_rabbit_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of()
+				.mapColor(MapColor.TERRACOTTA_WHITE)
+				.ignitedByLava()
 				.strength(0.4F)
 				.sound(SoundType.WOOL))
 		.setCondition(() -> enableBondedRabbitHide);
@@ -130,9 +137,11 @@ public class CompressedBlocksModule extends ZetaModule {
 		FuelHandler.addFuel(blaze_lantern, blazeLanternFuelTime);
 	}
 
-	private Block pillar(String name, MaterialColor color, boolean compost, BooleanSupplier cond, int flammability) {
+	private Block pillar(String name, MapColor color, boolean compost, BooleanSupplier cond, int flammability) {
 		Block block = new ZetaFlammablePillarBlock(name + "_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, flammability,
-				Block.Properties.of(Material.WOOD, color)
+				Block.Properties.of()
+				.mapColor(color)
+				.ignitedByLava()
 				.strength(0.5F)
 				.sound(SoundType.WOOD))
 		.setCondition(cond);
@@ -142,9 +151,11 @@ public class CompressedBlocksModule extends ZetaModule {
 		return block;
 	}
 	
-	private Block crate(String name, MaterialColor color, boolean compost, BooleanSupplier cond) {
+	private Block crate(String name, MapColor color, boolean compost, BooleanSupplier cond) {
 		Block block = new ZetaFlammableBlock(name + "_crate", this, CreativeModeTab.TAB_DECORATIONS, 150,
-				Block.Properties.of(Material.WOOD, color)
+				Block.Properties.of()
+				.mapColor(color)
+				.ignitedByLava()
 				.strength(1.5F)
 				.sound(SoundType.WOOD))
 		.setCondition(cond);
@@ -154,13 +165,15 @@ public class CompressedBlocksModule extends ZetaModule {
 		return block;
 	}
 
-	private Block sack(String name, MaterialColor color, boolean compost, BooleanSupplier cond) {
+	private Block sack(String name, MapColor color, boolean compost, BooleanSupplier cond) {
 		return sack(name, color, 0, compost, cond);
 	}
 	
-	private Block sack(String name, MaterialColor color, int light, boolean compost, BooleanSupplier cond) {
+	private Block sack(String name, MapColor color, int light, boolean compost, BooleanSupplier cond) {
 		Block block = new ZetaFlammableBlock(name + "_sack", this, CreativeModeTab.TAB_DECORATIONS, 150,
-				Block.Properties.of(Material.WOOL, color)
+				Block.Properties.of()
+				.mapColor(color)
+				.ignitedByLava()
 				.strength(0.5F)
 				.lightLevel(s -> light)
 				.sound(SoundType.WOOL))

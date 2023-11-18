@@ -2,7 +2,7 @@ package org.violetmoon.quark.addons.oddities.client.model;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
@@ -42,30 +42,30 @@ public record TinyPotatoModel(BakedModel originalModel) implements BakedModel {
 		return originalModel.isCustomRenderer();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
 		return originalModel.getParticleIcon();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemTransforms getTransforms() {
 		return originalModel.getTransforms();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand) {
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand) {
 		return List.of();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ItemOverrides getOverrides() {
 		return new ItemOverrides() {
 			@Override
-			public BakedModel resolve(@Nonnull BakedModel model, @Nonnull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
+			public BakedModel resolve(@NotNull BakedModel model, @NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
 				if (stack.hasCustomHoverName() || TinyPotatoBlock.isAngry(stack)) {
 					return TinyPotatoRenderer.getModelFromDisplayName(stack.getHoverName(), TinyPotatoBlock.isAngry(stack));
 				}

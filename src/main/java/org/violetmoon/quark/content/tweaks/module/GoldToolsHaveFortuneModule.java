@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -13,9 +13,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-
-import java.util.*;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.Config.Max;
@@ -25,6 +22,11 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ZetaLoadModule(category = "tweaks")
 public class GoldToolsHaveFortuneModule extends ZetaModule {
@@ -67,14 +69,14 @@ public class GoldToolsHaveFortuneModule extends ZetaModule {
 			if (split1.length == 2) {
 				ResourceLocation itemLoc = ResourceLocation.tryParse(split1[0]);
 				if (itemLoc != null) {
-					Item item = Registry.ITEM.get(itemLoc);
+					Item item = BuiltInRegistries.ITEM.get(itemLoc);
 					if (item != Items.AIR) {
 						String[] split2 = split1[1].split("@");
 						if (split2.length == 0 || split2.length > 2)
 							continue;
 						ResourceLocation enchantLoc = ResourceLocation.tryParse(split2[0]);
 						if (enchantLoc != null) {
-							Enchantment enchant = Registry.ENCHANTMENT.get(enchantLoc);
+							Enchantment enchant = BuiltInRegistries.ENCHANTMENT.get(enchantLoc);
 							if (enchant != null) {
 								try {
 									int strength = split2.length == 1 ? 1 : Integer.parseInt(split2[1]);
@@ -91,7 +93,7 @@ public class GoldToolsHaveFortuneModule extends ZetaModule {
 		}
 
 		if (fortuneLevel > 0) {
-			for (Item item : Registry.ITEM) {
+			for (Item item : BuiltInRegistries.ITEM) {
 				if (item instanceof TieredItem tiered && tiered.getTier() == Tiers.GOLD) {
 					Enchantment enchant = item instanceof SwordItem ? Enchantments.MOB_LOOTING : Enchantments.BLOCK_FORTUNE;
 					var pastry = wellBakedEnchantments.computeIfAbsent(item, it -> new Object2IntArrayMap<>());
@@ -132,7 +134,7 @@ public class GoldToolsHaveFortuneModule extends ZetaModule {
 
 	// Tier
 
-	public static Tier getEffectiveTier(Item item, Tier realTier) {
+	public static Tier getEffectiveTier(Tier realTier) {
 		if(!staticEnabled || (realTier != Tiers.GOLD))
 			return realTier;
 

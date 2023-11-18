@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -30,7 +30,7 @@ public class ShibaRenderer extends MobRenderer<Shiba, ShibaModel> {
 		addLayer(new ShibaMouthItemLayer(this, context.getItemInHandRenderer()));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public ResourceLocation getTextureLocation(Shiba entity) {
 		if(entity.hasCustomName() && entity.getCustomName().getString().trim().equalsIgnoreCase("doge"))

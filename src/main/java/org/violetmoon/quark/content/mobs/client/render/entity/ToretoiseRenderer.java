@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -21,9 +21,9 @@ public class ToretoiseRenderer extends MobRenderer<Toretoise, ToretoiseModel>{
 		addLayer(new ToretoiseOreLayer(this));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Toretoise entity) {
+	public ResourceLocation getTextureLocation(@NotNull Toretoise entity) {
 		return BASE_TEXTURE;
 	}
 

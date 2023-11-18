@@ -11,7 +11,7 @@ import org.violetmoon.quark.content.world.module.BlossomTreesModule;
 import org.violetmoon.zeta.block.ZetaLeavesBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class BlossomLeavesBlock extends ZetaLeavesBlock {
 
@@ -20,7 +20,7 @@ public class BlossomLeavesBlock extends ZetaLeavesBlock {
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, Level worldIn, BlockPos pos, @Nonnull RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, Level worldIn, BlockPos pos, @NotNull RandomSource rand) {
 		if(BlossomTreesModule.dropLeafParticles && rand.nextInt(5) == 0 && worldIn.isEmptyBlock(pos.below())) {
 			double windStrength = 5 + Math.cos((double) worldIn.getGameTime() / 2000) * 2;
 			double windX = Math.cos((double) worldIn.getGameTime() / 1200) * windStrength;

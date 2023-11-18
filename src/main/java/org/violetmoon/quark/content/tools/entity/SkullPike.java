@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.tools.entity;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tools.module.SkullPikesModule;
 
@@ -62,16 +62,16 @@ public class SkullPike extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(@Nonnull CompoundTag nbt) {
+	protected void readAdditionalSaveData(@NotNull CompoundTag nbt) {
 		// NO-OP
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@Nonnull CompoundTag nbt) {
+	protected void addAdditionalSaveData(@NotNull CompoundTag nbt) {
 		// NO-OP
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);

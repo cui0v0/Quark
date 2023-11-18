@@ -1,11 +1,5 @@
 package org.violetmoon.quark.content.world.gen;
 
-import java.util.List;
-
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.world.generator.Generator;
-import org.violetmoon.quark.content.world.module.FairyRingsModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -15,14 +9,20 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.AbstractGlassBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
+import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.quark.base.world.generator.Generator;
+import org.violetmoon.quark.content.world.module.FairyRingsModule;
+
+import java.util.List;
 
 public class FairyRingGenerator extends Generator {
 
@@ -39,21 +39,21 @@ public class FairyRingGenerator extends Generator {
 		Holder<Biome> biome = getBiome(worldIn, center, false);
 
 		double chance = 0;
-		if(biome.is(BiomeTags.IS_FOREST))
+		if (biome.is(BiomeTags.IS_FOREST))
 			chance = FairyRingsModule.forestChance;
-		else if(biome.is(Tags.Biomes.IS_PLAINS))
+		else if (biome.is(Tags.Biomes.IS_PLAINS))
 			chance = FairyRingsModule.plainsChance;
 
-		if(rand.nextDouble() < chance) {
+		if (rand.nextDouble() < chance) {
 			BlockPos pos = center;
 			BlockState state = worldIn.getBlockState(pos);
 
-			while(state.getMaterial() != Material.GRASS && pos.getY() > 30) {
+			while (BlockUtils.isGlassBased(state, worldIn, corner) && pos.getY() > 30) {
 				pos = pos.below();
 				state = worldIn.getBlockState(pos);
 			}
 
-			if(state.getMaterial() == Material.GRASS)
+			if (BlockUtils.isGlassBased(state, worldIn, corner))
 				spawnFairyRing(worldIn, generator, pos.below(), biome, rand);
 		}
 	}
@@ -82,7 +82,7 @@ public class FairyRingGenerator extends Generator {
 						BlockPos fpos = pos.offset(i, k, j);
 						BlockPos fposUp = fpos.above();
 						BlockState state = world.getBlockState(fpos);
-						if (state.getMaterial() == Material.GRASS && world.isEmptyBlock(fposUp)) {
+						if (state.getBlock() instanceof AbstractGlassBlock && world.isEmptyBlock(fposUp)) {
 							if (flowerState == null) {
 								holder.value().place(world, generator, rand, fposUp);
 								flowerState = world.getBlockState(fposUp);
@@ -111,5 +111,4 @@ public class FairyRingGenerator extends Generator {
 					world.setBlock(orePos.relative(face), ore, 2);
 		}
 	}
-
 }

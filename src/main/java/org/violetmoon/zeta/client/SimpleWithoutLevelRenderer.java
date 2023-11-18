@@ -1,6 +1,6 @@
 package org.violetmoon.zeta.client;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,7 @@ public class SimpleWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer 
 	}
 
 	@Override
-	public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemTransforms.TransformType transformType, @Nonnull PoseStack pose, @Nonnull MultiBufferSource buffer, int x, int y) {
+	public void renderByItem(@NotNull ItemStack stack, @NotNull ItemTransforms.TransformType transformType, @NotNull PoseStack pose, @NotNull MultiBufferSource buffer, int x, int y) {
 		Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(be, pose, buffer, x, y);
 	}
 }

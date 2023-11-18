@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.client.tooltip;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
@@ -47,7 +47,7 @@ public class MapTooltips {
 	public record MapComponent(ItemStack stack) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @Nonnull PoseStack pose, @Nonnull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull PoseStack pose, @NotNull ItemRenderer itemRenderer, int something) {
 			Minecraft mc = Minecraft.getInstance();
 
 			MapItemSavedData mapdata = MapItem.getSavedData(stack, mc.level);
@@ -86,7 +86,7 @@ public class MapTooltips {
 		}
 
 		@Override
-		public int getWidth(@Nonnull Font font) {
+		public int getWidth(@NotNull Font font) {
 			return 72;
 		}
 	}

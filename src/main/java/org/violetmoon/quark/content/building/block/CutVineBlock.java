@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,7 @@ public class CutVineBlock extends ZetaVineBlock implements IZetaBlockColorProvid
 	}
 
 	@Override
-	public boolean canSupportAtFace(@Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull Direction dir) {
+	public boolean canSupportAtFace(@NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction dir) {
 		if(dir != Direction.UP) {
 			BooleanProperty booleanproperty = PROPERTY_BY_DIRECTION.get(dir);
 			BlockState blockstate = level.getBlockState(pos.above());

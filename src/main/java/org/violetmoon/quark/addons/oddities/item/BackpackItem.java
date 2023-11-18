@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
@@ -72,7 +72,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	}
 
 	@Override
-	public int getDefaultTooltipHideFlagsZeta(@Nonnull ItemStack stack) {
+	public int getDefaultTooltipHideFlagsZeta(@NotNull ItemStack stack) {
 		return stack.isEnchanted() ? ItemStack.TooltipPart.ENCHANTMENTS.getMask() : 0;
 	}
 
@@ -131,7 +131,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	}
 
 	@Override
-	public void inventoryTick(@Nonnull ItemStack stack, Level worldIn, @Nonnull Entity entityIn, int itemSlot, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
 		if(worldIn.isClientSide)
 			return;
 
@@ -203,7 +203,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	}
 
 	//TODO: IForgeItem
-	@Nonnull
+	@NotNull
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
 		ProxiedItemStackHandler handler = new ProxiedItemStackHandler(stack, 27);
@@ -233,27 +233,27 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	}
 
 	@Override
-	public boolean isFoil(@Nonnull ItemStack stack) {
+	public boolean isFoil(@NotNull ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public boolean isEnchantable(@Nonnull ItemStack stack) {
+	public boolean isEnchantable(@NotNull ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}
 
 	@Override
-	public AbstractContainerMenu createMenu(int id, @Nonnull Inventory inv, @Nonnull Player player) {
+	public AbstractContainerMenu createMenu(int id, @NotNull Inventory inv, @NotNull Player player) {
 		return new BackpackMenu(id, player);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getDisplayName() {
 		return Component.translatable(getDescriptionId());

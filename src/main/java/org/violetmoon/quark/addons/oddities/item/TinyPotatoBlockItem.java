@@ -2,7 +2,7 @@ package org.violetmoon.quark.addons.oddities.item;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
@@ -40,9 +40,9 @@ public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProv
 				(entity instanceof Player player && ContributorRewardHandler.getTier(player) > 0);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public String getDescriptionId(@Nonnull ItemStack stack) {
+	public String getDescriptionId(@NotNull ItemStack stack) {
 		if (TinyPotatoBlock.isAngry(stack))
 			return super.getDescriptionId(stack) + ".angry";
 		return super.getDescriptionId(stack);
@@ -79,7 +79,7 @@ public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProv
 	}
 
 	@Override
-	public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level world, @Nonnull Entity holder, int itemSlot, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity holder, int itemSlot, boolean isSelected) {
 		updateData(stack);
 
 		if (!world.isClientSide && holder instanceof Player player && holder.tickCount % 30 == 0 && TYPOS.contains(ChatFormatting.stripFormatting(stack.getDisplayName().getString()))) {
@@ -92,7 +92,7 @@ public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProv
 	}
 
 	@Override
-	public boolean isFoil(@Nonnull ItemStack stack) {
+	public boolean isFoil(@NotNull ItemStack stack) {
 		if (stack.hasCustomHoverName() && TinyPotatoInfo.fromComponent(stack.getHoverName()).enchanted())
 			return true;
 		return super.isFoil(stack);

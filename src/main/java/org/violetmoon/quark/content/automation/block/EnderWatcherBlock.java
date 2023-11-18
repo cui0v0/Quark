@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.automation.block;
 
-import javax.annotation.Nonnull;
+import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,8 +19,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
 import org.violetmoon.quark.content.automation.module.EnderWatcherModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -32,7 +31,8 @@ public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 
 	public EnderWatcherBlock(ZetaModule module) {
 		super("ender_watcher", module, CreativeModeTab.TAB_REDSTONE,
-				Block.Properties.of(Material.METAL, MaterialColor.COLOR_GREEN)
+				Block.Properties.of()
+				.mapColor(MapColor.COLOR_GREEN)
 				.strength(3F, 10F)
 				.sound(SoundType.METAL));
 
@@ -45,22 +45,22 @@ public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 	}
 
 	@Override
-	public boolean isSignalSource(@Nonnull BlockState state) {
+	public boolean isSignalSource(@NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, @Nonnull BlockGetter blockAccess, @Nonnull BlockPos pos, @Nonnull Direction side) {
+	public int getSignal(BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
 		return blockState.getValue(POWER);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new EnderWatcherBlockEntity(pos, state);
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level world, @Nonnull BlockState state, @Nonnull BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
 		return createTickerHelper(type, EnderWatcherModule.blockEntityType, EnderWatcherBlockEntity::tick);
 	}
 

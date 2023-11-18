@@ -28,7 +28,7 @@ import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.zeta.block.ZetaSaplingBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +61,7 @@ public class AncientSaplingBlock extends ZetaSaplingBlock {
 		ResourceKey<ConfiguredFeature<?, ?>> ANCIENT_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Quark.asResource("ancient_tree"));
 
 		@Override
-		protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@Nonnull RandomSource rand, boolean hasFlowers) {
+		protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource rand, boolean hasFlowers) {
 			return ANCIENT_TREE;
 		}
 

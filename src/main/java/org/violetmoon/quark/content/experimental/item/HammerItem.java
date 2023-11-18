@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.experimental.item;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ public class HammerItem extends ZetaItem {
 				.tab(CreativeModeTab.TAB_TOOLS));
 	}
 	
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
@@ -73,7 +73,7 @@ public class HammerItem extends ZetaItem {
 		// so that the block is placed on the edge, but in this case we want to place it in the
 		// same blockpos that was clicked so we do this nonsense
 
-		@Nonnull
+		@NotNull
 		@Override
 		public BlockPos getClickedPos() {
 			boolean oldRepl = replaceClicked;

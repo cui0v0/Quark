@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Skeleton;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 
@@ -20,7 +20,7 @@ public class ForgottenEyesLayer<T extends Skeleton, M extends SkeletonModel<T>> 
 		super(rendererIn);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RenderType renderType() {
 		return RENDER_TYPE;

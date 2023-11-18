@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -86,7 +86,7 @@ public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetLi
 	// list.reenableVisibleWidgets();
 
 	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		//turn off wasOnScreen, then render widget - minecraft does some simple culling when rendering,
 		//and as a side effect of Entry.render, wasOnScreen will be turned back on
 		forEachWidgetWrapper(w -> {
@@ -112,7 +112,7 @@ public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetLi
 		}
 
 		@Override
-		public void render(@Nonnull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 			children.forEach(c -> {
 				c.updatePosition(rowLeft, rowTop);
 

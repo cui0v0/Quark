@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
@@ -358,11 +358,11 @@ public class MatrixEnchantingTableBlockEntity extends AbstractEnchantingTableBlo
 	}
 
 	@Override
-	public AbstractContainerMenu createMenu(int id, @Nonnull Inventory inv, @Nonnull Player player) {
+	public AbstractContainerMenu createMenu(int id, @NotNull Inventory inv, @NotNull Player player) {
 		return new MatrixEnchantingMenu(id, inv, this);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getDisplayName() {
 		return getName();

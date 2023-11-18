@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.world.block;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -36,8 +36,8 @@ public class CorundumBlock extends ZetaGlassBlock {
 
 	public CorundumBlock(String regname, int color, ZetaModule module, MapColor mapColor, boolean waxed) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
-				Block.Properties.of(Material.GLASS)
-						.mapColor(mapColor)
+				Block.Properties.of()
+				.mapColor(mapColor)
 				.strength(0.3F, 0F)
 				.sound(SoundType.AMETHYST)
 				.lightLevel(b -> 11)
@@ -63,7 +63,7 @@ public class CorundumBlock extends ZetaGlassBlock {
 	}
 
 	@Override
-	public void tick(@Nonnull BlockState state, @Nonnull ServerLevel worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
+	public void tick(@NotNull BlockState state, @NotNull ServerLevel worldIn, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		if(canGrow(worldIn, pos) && random.nextInt(CorundumModule.caveCrystalGrowthChance) == 0) {
 			BlockState down = worldIn.getBlockState(pos.below());
 			BlockPos up = pos.above();
@@ -80,7 +80,7 @@ public class CorundumBlock extends ZetaGlassBlock {
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		if(canGrow(worldIn, pos)) {
 			double x = (double)pos.getX() + rand.nextDouble();
 			double y = (double)pos.getY() + rand.nextDouble();

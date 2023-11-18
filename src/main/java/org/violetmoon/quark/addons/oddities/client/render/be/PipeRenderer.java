@@ -3,7 +3,7 @@ package org.violetmoon.quark.addons.oddities.client.render.be;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
@@ -43,7 +43,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 	}
 
 	@Override
-	public void render(PipeBlockEntity te, float partialTicks, PoseStack matrix, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+	public void render(PipeBlockEntity te, float partialTicks, PoseStack matrix, @NotNull MultiBufferSource buffer, int light, int overlay) {
 		matrix.pushPose();
 		matrix.translate(0.5, 0.5, 0.5);
 		ItemRenderer render = Minecraft.getInstance().getItemRenderer();

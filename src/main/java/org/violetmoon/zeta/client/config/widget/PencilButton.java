@@ -1,6 +1,6 @@
 package org.violetmoon.zeta.client.config.widget;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.zeta.client.ZetaClient;
 
@@ -26,7 +26,7 @@ public class PencilButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		super.renderButton(mstack, mouseX, mouseY, partialTicks);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);

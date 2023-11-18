@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.world.block;
 
 import java.util.OptionalInt;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
@@ -49,7 +49,7 @@ public class BlossomSaplingBlock extends ZetaSaplingBlock {
 
 		//fixme tree stuff
 		@Override
-		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@Nonnull RandomSource rand, boolean hjskfsd) {
+		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@NotNull RandomSource rand, boolean hjskfsd) {
 			return Holder.direct(new ConfiguredFeature<>(Feature.TREE, config));
 		}
 

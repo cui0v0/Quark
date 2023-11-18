@@ -1,7 +1,14 @@
 package org.violetmoon.quark.content.client.module;
 
-import java.util.List;
-
+import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.ConvulsionMatrixConfig;
@@ -10,16 +17,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import com.google.common.base.Supplier;
-import com.google.common.collect.Lists;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import java.util.List;
 
 @ZetaLoadModule(category = "client")
 public class GreenerGrassModule extends ZetaModule {
@@ -122,7 +120,7 @@ public class GreenerGrassModule extends ZetaModule {
 			BlockColors colors = Minecraft.getInstance().getBlockColors();
 
 			for(String id : ids) {
-				Block block = Registry.BLOCK.get(new ResourceLocation(id));
+				Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(id));
 				if(block == Blocks.AIR)
 					continue;
 

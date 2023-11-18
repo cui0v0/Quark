@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class CompassAnglePropertyFunction implements ItemPropertyFunction {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public float call(@Nonnull ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn, int id) {
+	public float call(@NotNull ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn, int id) {
 		if(entityIn == null && !stack.isFramed())
 			return 0F;
 

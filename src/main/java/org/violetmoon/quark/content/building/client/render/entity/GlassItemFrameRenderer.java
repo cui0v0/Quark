@@ -37,7 +37,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.entity.GlassItemFrame;
 import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
@@ -70,7 +70,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	}
 
 	@Override
-	public void render(@Nonnull GlassItemFrame frame, float yaw, float partialTicks, @Nonnull PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
+	public void render(@NotNull GlassItemFrame frame, float yaw, float partialTicks, @NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light) {
 		super.render(frame, yaw, partialTicks, matrix, buffer, light);
 		matrix.pushPose();
 		Direction direction = frame.getDirection();
@@ -99,20 +99,20 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 		matrix.popPose();
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Vec3 getRenderOffset(GlassItemFrame frame, float partialTicks) {
 		return new Vec3((float)frame.getDirection().getStepX() * 0.3F, -0.25D, (float)frame.getDirection().getStepZ() * 0.3F);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull GlassItemFrame frame) {
+	public ResourceLocation getTextureLocation(@NotNull GlassItemFrame frame) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 
 	@Override
-	protected boolean shouldShowName(@Nonnull GlassItemFrame frame) {
+	protected boolean shouldShowName(@NotNull GlassItemFrame frame) {
 		if (Minecraft.renderNames() && !frame.getItem().isEmpty() && frame.getItem().hasCustomHoverName() && this.entityRenderDispatcher.crosshairPickEntity == frame) {
 			double d0 = this.entityRenderDispatcher.distanceToSqr(frame);
 			float f = frame.isDiscrete() ? 32.0F : 64.0F;
@@ -123,7 +123,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	}
 
 	@Override
-	protected void renderNameTag(@Nonnull GlassItemFrame frame, @Nonnull Component text, @Nonnull PoseStack matrix, @Nonnull MultiBufferSource buffer, int light) {
+	protected void renderNameTag(@NotNull GlassItemFrame frame, @NotNull Component text, @NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light) {
 		super.renderNameTag(frame, frame.getItem().getHoverName(), matrix, buffer, light);
 	}
 

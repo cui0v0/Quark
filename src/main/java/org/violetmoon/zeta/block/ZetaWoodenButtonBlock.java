@@ -1,6 +1,6 @@
 package org.violetmoon.zeta.block;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +13,7 @@ public class ZetaWoodenButtonBlock extends ZetaButtonBlock {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE, properties);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	protected SoundEvent getSound(boolean powered) {
 		return powered ? SoundEvents.WOODEN_BUTTON_CLICK_ON : SoundEvents.WOODEN_BUTTON_CLICK_OFF;

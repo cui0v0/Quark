@@ -3,7 +3,7 @@ package org.violetmoon.zeta.item;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
@@ -28,7 +28,7 @@ public class ZetaMobBucketItem extends MobBucketItem implements IZetaItem {
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}

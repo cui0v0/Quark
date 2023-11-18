@@ -1,15 +1,8 @@
 package org.violetmoon.quark.content.management.client.screen;
 
-import org.lwjgl.glfw.GLFW;
-import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-import org.violetmoon.quark.addons.oddities.module.BackpackModule;
-import org.violetmoon.quark.api.IQuarkButtonAllowed;
-import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxMenu;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,6 +13,11 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
+import org.violetmoon.quark.addons.oddities.module.BackpackModule;
+import org.violetmoon.quark.api.IQuarkButtonAllowed;
+import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxMenu;
 
 public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBoxMenu> implements IQuarkButtonAllowed {
 
@@ -30,20 +28,19 @@ public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBox
 	}
 
 	@Override
-	public void render(PoseStack p_99249_, int p_99250_, int p_99251_, float p_99252_) {
-		this.renderBackground(p_99249_);
-		super.render(p_99249_, p_99250_, p_99251_, p_99252_);
-		this.renderTooltip(p_99249_, p_99250_, p_99251_);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack p_99244_, float p_99245_, int p_99246_, int p_99247_) {
+	protected void renderBg(@NotNull GuiGraphics guiGraphics, float mouseX, int mouseY, int partialTicks) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, CONTAINER_TEXTURE);
 		int i = (this.width - this.imageWidth) / 2;
 		int j = (this.height - this.imageHeight) / 2;
-		this.blit(p_99244_, i, j, 0, 0, this.imageWidth, this.imageHeight);
+		guiGraphics.blit(CONTAINER_TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
@@ -54,9 +51,9 @@ public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBox
 			int x = getGuiLeft() + (8 + (s % 9) * 18);
 			int y = getGuiTop() + (s < 9 ? 142 : 84 + ((s - 9) / 9) * 18);
 
-			mc.getItemRenderer().renderGuiItem(stack, x, y);
+			guiGraphics.renderItem(stack, x, y);
 
-			fill(p_99244_, x, y, x + 16, y + 16, 0x88000000);
+			guiGraphics.fill(x, y, x + 16, y + 16, 0x88000000);
 		}
 	}
 

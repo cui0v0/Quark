@@ -14,7 +14,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import org.violetmoon.quark.base.Quark;
@@ -85,7 +85,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 			}
 
 			@Override
-			public float call(@Nonnull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
+			public float call(@NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
 				if(!enabled || !featureEnabled.getAsBoolean())
 					return 0;
 
@@ -102,7 +102,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 			}
 
 			@Override
-			public float call(@Nonnull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
+			public float call(@NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
 				if(!enabled || !featureEnabled.getAsBoolean())
 					return 0;
 
@@ -128,7 +128,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 			}
 
 			@Override
-			public float call(@Nonnull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
+			public float call(@NotNull ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int id) {
 				if(!enabled || !featureEnabled.getAsBoolean())
 					return 0;
 
@@ -154,7 +154,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 			}
 
 			@Override
-			public int getColor(@Nonnull ItemStack stack, int layer) {
+			public int getColor(@NotNull ItemStack stack, int layer) {
 				if(enabled && featureEnabled.getAsBoolean() && (layer == 1 || layer == 2)) {
 					CompoundTag tag = stack.getTag();
 					if(tag != null && tag.contains(TropicalFish.BUCKET_VARIANT_TAG, Tag.TAG_INT)) {

@@ -2,7 +2,7 @@ package org.violetmoon.quark.addons.oddities.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Vector3f;
@@ -50,14 +50,14 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		module.zeta.registry.registerBlock(this, "matrix_enchanter", true);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public MutableComponent getName() {
 		return Blocks.ENCHANTING_TABLE.getName();
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}
@@ -80,18 +80,18 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new MatrixEnchantingTableBlockEntity(pos, state);
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@Nonnull Level world, @Nonnull BlockState state, @Nonnull BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
 		return createTickerHelper(type, MatrixEnchantingModule.blockEntityType, MatrixEnchantingTableBlockEntity::tick);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public InteractionResult use(@Nonnull BlockState state, Level worldIn, @Nonnull BlockPos pos, @Nonnull Player player, @Nonnull InteractionHand handIn, @Nonnull BlockHitResult raytrace) {
+	public InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult raytrace) {
 		if(!(worldIn.getBlockEntity(pos) instanceof MatrixEnchantingTableBlockEntity))
 			worldIn.setBlockEntity(newBlockEntity(pos, state));
 
@@ -105,7 +105,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	}
 
 	@Override
-	public void animateTick(@Nonnull BlockState stateIn, @Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull RandomSource rand) {
+	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		boolean enabled = Quark.ZETA.modules.isEnabled(MatrixEnchantingModule.class);
 		boolean showInfluences = enabled && MatrixEnchantingModule.allowInfluencing;
 		boolean allowUnderwater = enabled && MatrixEnchantingModule.allowUnderwaterEnchanting;
@@ -167,7 +167,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	}
 
 	@Override
-	public void setPlacedBy(@Nonnull Level worldIn, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull LivingEntity placer, @Nonnull ItemStack stack) {
+	public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull LivingEntity placer, @NotNull ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 
 		if(stack.hasCustomHoverName()) {
@@ -179,7 +179,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	}
 
 	@Override
-	public void onRemove(@Nonnull BlockState state, Level worldIn, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
+	public void onRemove(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
 		BlockEntity tileentity = worldIn.getBlockEntity(pos);
 
 		if(tileentity instanceof MatrixEnchantingTableBlockEntity enchanter) {

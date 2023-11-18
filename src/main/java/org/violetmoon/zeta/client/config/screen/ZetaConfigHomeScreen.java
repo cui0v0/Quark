@@ -3,7 +3,7 @@ package org.violetmoon.zeta.client.config.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -112,7 +112,7 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 	}
 
 	@Override
-	public void render(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(mstack);
 
 		super.render(mstack, mouseX, mouseY, partialTicks);

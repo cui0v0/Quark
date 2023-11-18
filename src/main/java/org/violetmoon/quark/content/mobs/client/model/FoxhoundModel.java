@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import org.violetmoon.quark.content.mobs.entity.Foxhound;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * ModelFoxhound - McVinnyq
@@ -193,7 +193,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, @Nonnull VertexConsumer vb, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrix, @NotNull VertexConsumer vb, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		matrix.pushPose();
 		if(entity.isSleeping()) {
 			matrix.mulPose(Axis.XP.rotationDegrees(90F));

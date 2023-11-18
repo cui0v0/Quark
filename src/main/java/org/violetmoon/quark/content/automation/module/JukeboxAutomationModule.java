@@ -23,7 +23,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -63,19 +63,19 @@ public class JukeboxAutomationModule extends ZetaModule {
 			return 1;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public ItemStack getStackInSlot(int slot) {
 			return tile.getRecord();
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
 			return stack;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			ItemStack stackAt = getStackInSlot(slot);
@@ -101,13 +101,13 @@ public class JukeboxAutomationModule extends ZetaModule {
 		}
 
 		@Override
-		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		public boolean isItemValid(int slot, @NotNull ItemStack stack) {
 			return false;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
+		public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 			if (cap == ForgeCapabilities.ITEM_HANDLER)
 				return LazyOptional.of(() -> this).cast();
 
@@ -118,9 +118,9 @@ public class JukeboxAutomationModule extends ZetaModule {
 
 	public static class MusicDiscBehaviour extends OptionalDispenseItemBehavior {
 
-		@Nonnull
+		@NotNull
 		@Override
-		protected ItemStack execute(BlockSource source, @Nonnull ItemStack stack) {
+		protected ItemStack execute(BlockSource source, @NotNull ItemStack stack) {
 			Direction dir = source.getBlockState().getValue(DispenserBlock.FACING);
 			BlockPos pos = source.getPos().relative(dir);
 			Level world = source.getLevel();

@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import static org.violetmoon.quark.content.tools.module.AncientTomesModule.validEnchants;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
 
@@ -27,14 +27,14 @@ public class EnchantTome extends LootItemConditionalFunction {
 	}
 
 	@Override
-	@Nonnull
+	@NotNull
 	public LootItemFunctionType getType() {
 		return AncientTomesModule.tomeEnchantType;
 	}
 
 	@Override
-	@Nonnull
-	public ItemStack run(@Nonnull ItemStack stack, LootContext context) {
+	@NotNull
+	public ItemStack run(@NotNull ItemStack stack, LootContext context) {
 		Enchantment enchantment = validEnchants.get(context.getRandom().nextInt(validEnchants.size()));
 		EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(enchantment, enchantment.getMaxLevel()));
 		return stack;
@@ -42,8 +42,8 @@ public class EnchantTome extends LootItemConditionalFunction {
 
 	public static class Serializer extends LootItemConditionalFunction.Serializer<EnchantTome> {
 		@Override
-		@Nonnull
-		public EnchantTome deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext, @Nonnull LootItemCondition[] conditionsIn) {
+		@NotNull
+		public EnchantTome deserialize(@NotNull JsonObject object, @NotNull JsonDeserializationContext deserializationContext, @NotNull LootItemCondition[] conditionsIn) {
 			return new EnchantTome(conditionsIn);
 		}
 	}

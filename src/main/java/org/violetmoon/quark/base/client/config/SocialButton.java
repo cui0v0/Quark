@@ -2,7 +2,7 @@ package org.violetmoon.quark.base.client.config;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
@@ -36,7 +36,7 @@ public class SocialButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@Nonnull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
 		super.renderButton(mstack, mouseX, mouseY, partialTicks);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);

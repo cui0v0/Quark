@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
@@ -91,7 +91,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 	}
 
 	@Override
-	public void render(@Nonnull TinyPotatoBlockEntity potato, float partialTicks, @Nonnull PoseStack ms, @Nonnull MultiBufferSource buffers, int light, int overlay) {
+	public void render(@NotNull TinyPotatoBlockEntity potato, float partialTicks, @NotNull PoseStack ms, @NotNull MultiBufferSource buffers, int light, int overlay) {
 		if (runeStacks == null) {
 			List<ItemStack> stacks = new ArrayList<>();
 			for (RuneItem item : ColorRunesModule.runes) {

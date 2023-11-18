@@ -1,6 +1,6 @@
 package org.violetmoon.quark.content.mobs.item;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -31,7 +31,7 @@ public class DiamondHeartItem extends ZetaItem {
 		super(regname, module, properties);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
@@ -81,14 +81,14 @@ public class DiamondHeartItem extends ZetaItem {
 		return InteractionResult.PASS;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public Rarity getRarity(@Nonnull ItemStack stack) {
+	public Rarity getRarity(@NotNull ItemStack stack) {
 		return Rarity.UNCOMMON;
 	}
 
 	@Override
-	public boolean isFoil(@Nonnull ItemStack stack) {
+	public boolean isFoil(@NotNull ItemStack stack) {
 		return true;
 	}
 

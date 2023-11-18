@@ -1,6 +1,6 @@
 package org.violetmoon.quark.base.world;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -17,7 +17,7 @@ public class DeferredFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(@Nonnull FeaturePlaceContext<NoneFeatureConfiguration> context) {
+	public boolean place(@NotNull FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenHandler.generateChunk(context, stage);
 		return false;
 	}

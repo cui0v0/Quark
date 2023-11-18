@@ -18,7 +18,7 @@ import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.management.module.EasyTransferingModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -243,9 +243,9 @@ public class InventoryTransferHandler {
 			super(inv);
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
 			if(stack.isEmpty())
 				stack = stack.copy();
 
@@ -287,9 +287,9 @@ public class InventoryTransferHandler {
 			this.container = container;
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
 			Slot containerSlot = getSlot(slot);
 			if(containerSlot == null || !containerSlot.mayPlace(stack))
 				return stack;

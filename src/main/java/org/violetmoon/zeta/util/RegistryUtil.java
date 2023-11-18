@@ -9,6 +9,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -43,12 +44,12 @@ public class RegistryUtil {
 	}
 
 	public String inherit(Block parent, String format) {
-		ResourceLocation parentName = z.registry.getRegistryName(parent, Registry.BLOCK);
+		ResourceLocation parentName = z.registry.getRegistryName(parent, BuiltInRegistries.BLOCK);
 		return String.format(String.format("%s:%s", z.modid, format), parentName.getPath());
 	}
 
 	public String inherit(Block parent, Function<String, String> fun) {
-		ResourceLocation parentName = z.registry.getRegistryName(parent, Registry.BLOCK);
+		ResourceLocation parentName = z.registry.getRegistryName(parent, BuiltInRegistries.BLOCK);
 		return String.format(String.format("%s:%s", z.modid, fun.apply(parentName.getPath())));
 	}
 }

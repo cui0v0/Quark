@@ -3,6 +3,8 @@ package org.violetmoon.quark.content.world.module;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -60,7 +62,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 	private static final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
 	public static final ResourceLocation BIOME_NAME = new ResourceLocation(Quark.MOD_ID, "glimmering_weald");
-	public static final ResourceKey<Biome> BIOME_KEY = ResourceKey.create(Registry.BIOME_REGISTRY, BIOME_NAME);
+	public static final ResourceKey<Biome> BIOME_KEY = ResourceKey.create(Registries.BIOME, BIOME_NAME);
 	
 	public static final Holder<PlacedFeature> ORE_LAPIS_EXTRA = PlacementUtils.register("ore_lapis_glimmering_weald", OreFeatures.ORE_LAPIS, OrePlacements.commonOrePlacement(12, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
 	public static Holder<PlacedFeature> placed_glow_shrooms;
@@ -101,7 +103,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		Quark.ZETA.registry.register(makeBiome(), BIOME_NAME, Registry.BIOME_REGISTRY);
+		Quark.ZETA.registry.register(makeBiome(), BIOME_NAME, Registries.BIOME);
 		float wmin = (float) minDepthRange;
 		float wmax = (float) maxDepthRange;
 		if(wmin >= wmax){

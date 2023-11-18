@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LevelEvent;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 
@@ -27,9 +27,9 @@ public class QuarkBoatDispenseItemBehavior extends DefaultDispenseItemBehavior {
 		this.chest = chest;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ItemStack execute(BlockSource world, @Nonnull ItemStack stack) {
+	public ItemStack execute(BlockSource world, @NotNull ItemStack stack) {
 		Direction direction = world.getBlockState().getValue(DispenserBlock.FACING);
 		Level level = world.getLevel();
 		double boatX = world.x() + (double)((float)direction.getStepX() * 1.125F);

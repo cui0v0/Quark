@@ -3,7 +3,7 @@ package org.violetmoon.quark.content.building.block;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -67,7 +67,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}
@@ -90,7 +90,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState p_153065_) {
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState p_153065_) {
 		return new VariantTrappedChestBlockEntity(pos, p_153065_);
 	}
 
@@ -119,24 +119,24 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 
 	// VANILLA TrappedChestBlock copy
 
-	@Nonnull
+	@NotNull
 	@Override
 	protected Stat<ResourceLocation> getOpenChestStat() {
 		return Stats.CUSTOM.get(Stats.TRIGGER_TRAPPED_CHEST);
 	}
 
 	@Override
-	public boolean isSignalSource(@Nonnull BlockState state) {
+	public boolean isSignalSource(@NotNull BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getSignal(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull Direction side) {
+	public int getSignal(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull Direction side) {
 		return Mth.clamp(ChestBlockEntity.getOpenCount(world, pos), 0, 15);
 	}
 
 	@Override
-	public int getDirectSignal(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull Direction side) {
+	public int getDirectSignal(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull Direction side) {
 		return side == Direction.UP ? state.getSignal(world, pos, side) : 0;
 	}
 

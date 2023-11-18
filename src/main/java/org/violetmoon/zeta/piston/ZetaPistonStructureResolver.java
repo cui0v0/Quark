@@ -20,7 +20,7 @@ import org.violetmoon.zeta.api.ICollateralMover.MoveResult;
 import org.violetmoon.zeta.block.ext.IZetaBlockExtensions;
 import org.violetmoon.zeta.mixin.mixins.AccessorPistonStructureResolver;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -360,7 +360,7 @@ public class ZetaPistonStructureResolver extends PistonStructureResolver {
 		return null;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public List<BlockPos> getToPush() {
 		if(!GlobalSettings.isEnabled())
@@ -369,7 +369,7 @@ public class ZetaPistonStructureResolver extends PistonStructureResolver {
 		return toMove;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public List<BlockPos> getToDestroy() {
 		if(!GlobalSettings.isEnabled())

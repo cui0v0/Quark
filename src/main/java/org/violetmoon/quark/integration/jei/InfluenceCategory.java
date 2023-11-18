@@ -1,6 +1,6 @@
 package org.violetmoon.quark.integration.jei;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.base.Quark;
@@ -34,32 +34,32 @@ public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 		this.localizedName = Component.translatable("quark.jei.influence");
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Component getTitle() {
 		return localizedName;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public RecipeType<InfluenceEntry> getRecipeType() {
 		return QuarkJeiPlugin.INFLUENCING;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public IDrawable getBackground() {
 		return this.background;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
 
 	@Override
-	public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull InfluenceEntry recipe, @Nonnull IFocusGroup focuses) {
+	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull InfluenceEntry recipe, @NotNull IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 10)
 			 .addItemStack(recipe.getCandleStack());
 

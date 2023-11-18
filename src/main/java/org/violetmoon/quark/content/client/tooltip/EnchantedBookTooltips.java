@@ -29,7 +29,7 @@ import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -172,7 +172,7 @@ public class EnchantedBookTooltips {
 										 Enchantment enchantment, boolean tableOnly) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
-		public void renderImage(@Nonnull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			PoseStack modelviewPose = RenderSystem.getModelViewStack();
 
 			modelviewPose.pushPose();
@@ -196,7 +196,7 @@ public class EnchantedBookTooltips {
 		}
 
 		@Override
-		public int getWidth(@Nonnull Font font) {
+		public int getWidth(@NotNull Font font) {
 			return width;
 		}
 

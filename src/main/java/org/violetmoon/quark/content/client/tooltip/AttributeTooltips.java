@@ -45,7 +45,7 @@ import org.violetmoon.quark.content.client.resources.AttributeSlot;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.*;
 
@@ -400,7 +400,7 @@ public class AttributeTooltips {
 		}
 
 		@Override
-		public int getWidth(@Nonnull Font font) {
+		public int getWidth(@NotNull Font font) {
 			int width = 0;
 
 			if (canShowAttributes(stack, slot)) {

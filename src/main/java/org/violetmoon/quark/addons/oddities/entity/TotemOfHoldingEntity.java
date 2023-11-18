@@ -3,7 +3,7 @@ package org.violetmoon.quark.addons.oddities.entity;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.item.BackpackItem;
 import org.violetmoon.quark.addons.oddities.module.TotemOfHoldingModule;
@@ -72,7 +72,7 @@ public class TotemOfHoldingEntity extends Entity {
 	}
 
 	@Override
-	public boolean skipAttackInteraction(@Nonnull Entity e) {
+	public boolean skipAttackInteraction(@NotNull Entity e) {
 		if(!level.isClientSide && e instanceof Player player) {
 
 			if(!TotemOfHoldingModule.allowAnyoneToCollect && !player.getAbilities().instabuild) {
@@ -174,7 +174,7 @@ public class TotemOfHoldingEntity extends Entity {
 	}
 
 	@Override
-	public void readAdditionalSaveData(@Nonnull CompoundTag compound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		ListTag list = compound.getList(TAG_ITEMS, 10);
 		storedItems = new LinkedList<>();
 
@@ -191,7 +191,7 @@ public class TotemOfHoldingEntity extends Entity {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
+	protected void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		ListTag list = new ListTag();
 		for(ItemStack stack : storedItems) {
 			list.add(stack.serializeNBT());
@@ -203,7 +203,7 @@ public class TotemOfHoldingEntity extends Entity {
 			compound.putString(TAG_OWNER, owner);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);

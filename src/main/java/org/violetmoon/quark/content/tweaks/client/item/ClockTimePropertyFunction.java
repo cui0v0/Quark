@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
@@ -23,7 +23,7 @@ public class ClockTimePropertyFunction implements ItemPropertyFunction {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public float call(@Nonnull ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn, int id) {
+	public float call(@NotNull ItemStack stack, @Nullable ClientLevel worldIn, @Nullable LivingEntity entityIn, int id) {
 		if(!CompassesWorkEverywhereModule.isClockCalculated(stack))
 			return 0F;
 

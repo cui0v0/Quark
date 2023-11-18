@@ -2,7 +2,9 @@ package org.violetmoon.quark.content.building.block;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nonnull;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -61,7 +63,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 		this.module = module;
 		this.leafState = leaf.defaultBlockState();
 
-		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, Registry.BLOCK);
+		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, BuiltInRegistries.BLOCK);
 		if (leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			Quark.ZETA.registry.registerBlock(this, colorName + "_blossom_hedge", true);
@@ -131,12 +133,12 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	}
 
 	@Override
-	public boolean connectsTo(BlockState state, boolean isSideSolid, @Nonnull Direction direction) {
+	public boolean connectsTo(BlockState state, boolean isSideSolid, @NotNull Direction direction) {
 		return state.is(HedgesModule.hedgesTag);
 	}
 
 	@Override
-	public boolean canSustainPlantZeta(@Nonnull BlockState state, @Nonnull BlockGetter world, @Nonnull BlockPos pos, @Nonnull Direction facing, @Nonnull String plantabletype) {
+	public boolean canSustainPlantZeta(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull Direction facing, @NotNull String plantabletype) {
 		return facing == Direction.UP && !state.getValue(WATERLOGGED) && "plains".equals(plantabletype);
 	}
 
@@ -151,9 +153,9 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 				.setValue(EXTEND, downState.getBlock() instanceof HedgeBlock);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public BlockState updateShape(BlockState stateIn, @Nonnull Direction facing, @Nonnull BlockState facingState, @Nonnull LevelAccessor worldIn, @Nonnull BlockPos currentPos, @Nonnull BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor worldIn, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
 			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
@@ -165,7 +167,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	}
 
 	@Override
-	protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(EXTEND);
 	}
@@ -181,7 +183,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	}
 
 	@Override
-	public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
 			super.fillItemCategory(group, items);
 	}

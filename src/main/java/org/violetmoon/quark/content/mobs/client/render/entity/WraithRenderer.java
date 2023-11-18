@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.content.mobs.client.model.WraithModel;
@@ -18,9 +18,9 @@ public class WraithRenderer extends MobRenderer<Wraith, WraithModel> {
 		super(context, ModelHandler.model(ModelHandler.wraith), 0F);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Wraith entity) {
+	public ResourceLocation getTextureLocation(@NotNull Wraith entity) {
 		return TEXTURE;
 	}
 

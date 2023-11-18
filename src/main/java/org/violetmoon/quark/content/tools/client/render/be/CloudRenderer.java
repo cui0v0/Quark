@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class CloudRenderer implements BlockEntityRenderer<CloudBlockEntity> {
 
@@ -21,7 +21,7 @@ public class CloudRenderer implements BlockEntityRenderer<CloudBlockEntity> {
 	}
 
 	@Override
-	public void render(CloudBlockEntity te, float partialTicks, @Nonnull PoseStack matrix, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+	public void render(CloudBlockEntity te, float partialTicks, @NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light, int overlay) {
 		Minecraft mc = Minecraft.getInstance();
 
 		float scale = ((float) (te.liveTime - partialTicks + Math.sin(QuarkClient.ticker.total * 0.2F) * -10F) / 200F) * 0.6F;

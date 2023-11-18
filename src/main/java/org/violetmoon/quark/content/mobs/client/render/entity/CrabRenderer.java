@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.content.mobs.client.layer.CrabMoldLayer;
@@ -24,9 +24,9 @@ public class CrabRenderer extends MobRenderer<Crab, CrabModel> {
 		addLayer(new CrabMoldLayer(this));
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public ResourceLocation getTextureLocation(@Nonnull Crab entity) {
+	public ResourceLocation getTextureLocation(@NotNull Crab entity) {
 		return TEXTURES[entity.getVariant() % TEXTURES.length];
 	}
 }

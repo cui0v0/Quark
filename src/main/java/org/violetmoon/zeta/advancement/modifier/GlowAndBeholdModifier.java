@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.ItemInteractWithBlockTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -46,7 +47,7 @@ public class GlowAndBeholdModifier extends AdvancementModifier {
                                         .of(array).build()),
                         ItemPredicate.Builder.item().of(Items.GLOW_INK_SAC)));
 
-        String name = Registry.BLOCK.getKey(array[0]).toString();
+        String name = BuiltInRegistries.BLOCK.getKey(array[0]).toString();
         adv.addOrCriterion(name, criterion);
 
         return true;
