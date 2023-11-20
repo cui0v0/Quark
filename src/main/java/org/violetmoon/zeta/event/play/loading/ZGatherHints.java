@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.zeta.config.ConfigObjectMapper;
@@ -26,7 +27,7 @@ import org.violetmoon.zeta.util.RegistryUtil;
 public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component> {
 	default void hintItem(ItemLike itemLike, Object... extra) {
 		Item item = itemLike.asItem();
-		ResourceLocation res = Registry.ITEM.getKey(item);
+		ResourceLocation res = BuiltInRegistries.ITEM.getKey(item);
 		String ns = res.getNamespace();
 		String path = res.getPath();
 

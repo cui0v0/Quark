@@ -113,7 +113,7 @@ public class FoxhoundModule extends ZetaModule {
 	public void onSleepCheck(ZSleepingLocationCheck event) {
 		if(event.getEntity() instanceof Foxhound) {
 			BlockPos pos = event.getSleepingLocation();
-			Level world = event.getEntity().getCommandSenderWorld();
+			Level world = event.getEntity().level();
 
 			BlockPos below = pos.below();
 			BlockState belowState = world.getBlockState(below);

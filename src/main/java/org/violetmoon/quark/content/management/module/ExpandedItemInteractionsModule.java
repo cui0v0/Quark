@@ -234,8 +234,8 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 		if (canTrashItem(stack, incoming, slot, player)) {
 
 			incoming.setCount(0);
-			if (!player.getCommandSenderWorld().isClientSide)
-				player.getCommandSenderWorld().playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 2F + (float) Math.random());
+			if (!player.level().isClientSide)
+				player.level().playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 2F + (float) Math.random());
 
 			return true;
 		}

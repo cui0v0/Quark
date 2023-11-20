@@ -20,7 +20,7 @@ public class DeliverFetchedItemGoal extends FollowOwnerGoal {
 
 		timeTilNextJump--;
 		if(timeTilNextJump <= 0) {
-			timeTilNextJump = shiba.getCommandSenderWorld().random.nextInt(5) + 10;
+			timeTilNextJump = shiba.level().random.nextInt(5) + 10;
 
 			if(shiba.onGround()) {
 				shiba.push(0, 0.3, 0);

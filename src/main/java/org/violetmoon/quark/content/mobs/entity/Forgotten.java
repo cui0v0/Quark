@@ -82,7 +82,7 @@ public class Forgotten extends Skeleton {
 	public void tick() {
 		super.tick();
 
-		if(!getCommandSenderWorld().isClientSide) {
+		if(!level().isClientSide) {
 			LivingEntity target = getTarget();
 			boolean shouldUseBow = target == null;
 			if(!shouldUseBow) {
@@ -97,7 +97,7 @@ public class Forgotten extends Skeleton {
 
 		double w = getBbWidth() * 2;
 		double h = getBbHeight();
-		getCommandSenderWorld().addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w/2, getY() + Math.random() * h, getZ() + Math.random() * w - w/2, 0, 0, 0);
+		level().addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w/2, getY() + Math.random() * h, getZ() + Math.random() * w - w/2, 0, 0, 0);
 	}
 
 	private void swap() {
@@ -169,7 +169,7 @@ public class Forgotten extends Skeleton {
 		EnchantmentHelper.enchantItem(random, sheathed, 20, false);
 
 		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class) && random.nextBoolean()) {
-			List<Item> items = RegistryUtil.getTagValues(getCommandSenderWorld().registryAccess(), ColorRunesModule.runesLootableTag);
+			List<Item> items = RegistryUtil.getTagValues(level().registryAccess(), ColorRunesModule.runesLootableTag);
 			if (!items.isEmpty()) {
 				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
 				CompoundTag runeNbt = item.serializeNBT();

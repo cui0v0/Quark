@@ -33,11 +33,11 @@ public class DragonScalesModule extends ZetaModule {
 
 	@PlayEvent
 	public void onEntityTick(ZLivingTick event) {
-		if(event.getEntity() instanceof EnderDragon dragon && !event.getEntity().getCommandSenderWorld().isClientSide) {
+		if(event.getEntity() instanceof EnderDragon dragon && !event.getEntity().level().isClientSide) {
 			if(dragon.getDragonFight() != null && dragon.getDragonFight().hasPreviouslyKilledDragon() && dragon.dragonDeathTime == 100) {
 				Vec3 pos = dragon.position();
-				ItemEntity item = new ItemEntity(dragon.getCommandSenderWorld(), pos.x, pos.y, pos.z, new ItemStack(dragon_scale, 1));
-				dragon.getCommandSenderWorld().addFreshEntity(item);
+				ItemEntity item = new ItemEntity(dragon.level(), pos.x, pos.y, pos.z, new ItemStack(dragon_scale, 1));
+				dragon.level().addFreshEntity(item);
 			}
 		}
 	}

@@ -137,11 +137,11 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 
 	private void addItemParticles(Entity entity, ItemStack stack, int count) {
 		for(int i = 0; i < count; ++i) {
-			Vec3 direction = new Vec3((entity.getCommandSenderWorld().random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+			Vec3 direction = new Vec3((entity.level().random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			direction = direction.xRot(-entity.getXRot() * ((float)Math.PI / 180F));
 			direction = direction.yRot(-entity.getYRot() * ((float)Math.PI / 180F));
-			double yVelocity = (-entity.getCommandSenderWorld().random.nextFloat()) * 0.6D - 0.3D;
-			Vec3 position = new Vec3((entity.getCommandSenderWorld().random.nextFloat() - 0.5D) * 0.3D, yVelocity, 0.6D);
+			double yVelocity = (-entity.level().random.nextFloat()) * 0.6D - 0.3D;
+			Vec3 position = new Vec3((entity.level().random.nextFloat() - 0.5D) * 0.3D, yVelocity, 0.6D);
 			Vec3 entityPos = entity.position();
 			position = position.xRot(-entity.getXRot() * ((float)Math.PI / 180F));
 			position = position.yRot(-entity.getYRot() * ((float)Math.PI / 180F));

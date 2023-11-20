@@ -47,7 +47,7 @@ public class SnowGolemPlayerHeadsModule extends ZetaModule {
 				String name = e.getCustomName().getString();
 				ItemNBTHelper.setString(stack, "SkullOwner", name);
 				Vec3 pos = e.position();
-				event.getDrops().add(new ItemEntity(e.getCommandSenderWorld(), pos.x, pos.y, pos.z, stack));
+				event.getDrops().add(new ItemEntity(e.level(), pos.x, pos.y, pos.z, stack));
 				
 				for(Player player : e.getLevel().players()) {
 					String pname = player.getName().getString();

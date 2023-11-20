@@ -32,7 +32,7 @@ public class HarvestMessage implements IZetaMessage {
 		context.enqueueWork(() -> {
 			Player player = context.getSender();
 			if(player != null) {
-				BlockHitResult pick = Item.getPlayerPOVHitResult(player.getCommandSenderWorld(), player, ClipContext.Fluid.ANY);
+				BlockHitResult pick = Item.getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.ANY);
 				SimpleHarvestModule.click(context.getSender(), hand, pos, pick);
 			}
 		});

@@ -22,7 +22,7 @@ public class BeehiveBlockEntityMixin {
 
 	@Inject(method = "setBeeReleaseData", at = @At("HEAD"))
 	private static void rerollUUIDIfNeeded(int ticksInHive, Bee bee, CallbackInfo ci) {
-		if (bee.getCommandSenderWorld() instanceof ServerLevel level) {
+		if (bee.level() instanceof ServerLevel level) {
 			if (level.getEntities().get(bee.getUUID()) != null)
 				bee.setUUID(Mth.createInsecureUUID(level.random));
 		}

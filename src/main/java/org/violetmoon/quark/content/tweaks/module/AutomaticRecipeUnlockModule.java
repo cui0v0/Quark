@@ -60,9 +60,9 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 				recipes.removeIf(
 						(recipe) ->
 						recipe == null
-						|| recipe.getResultItem(event.getPlayer().getCommandSenderWorld().registryAccess()) == null
+						|| recipe.getResultItem(event.getPlayer().level().registryAccess()) == null
 						|| ignoredRecipes.contains(Objects.toString(recipe.getId()))
-						|| recipe.getResultItem(event.getPlayer().getCommandSenderWorld().registryAccess()).isEmpty());
+						|| recipe.getResultItem(event.getPlayer().level().registryAccess()).isEmpty());
 
 				int idx = 0;
 				int maxShift = 1000;
@@ -79,7 +79,7 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 
 				if (forceLimitedCrafting)
-					player.getCommandSenderWorld().getGameRules().getRule(GameRules.RULE_LIMITED_CRAFTING).set(true, server);
+					player.level().getGameRules().getRule(GameRules.RULE_LIMITED_CRAFTING).set(true, server);
 			}
 		}
 	}

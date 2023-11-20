@@ -173,7 +173,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 
 	@Override
 	public boolean onEntityItemUpdateZeta(ItemStack stack, ItemEntity entityItem) {
-		if(BackpackModule.superOpMode || entityItem.getCommandSenderWorld().isClientSide)
+		if(BackpackModule.superOpMode || entityItem.level().isClientSide)
 			return false;
 
 		if (!ItemNBTHelper.detectNBT(stack))
@@ -190,7 +190,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 			ItemStack stackAt = handler.getStackInSlot(i);
 			if(!stackAt.isEmpty()) {
 				ItemStack copy = stackAt.copy();
-				Containers.dropItemStack(entityItem.getCommandSenderWorld(), entityItem.getX(), entityItem.getY(), entityItem.getZ(), copy);
+				Containers.dropItemStack(entityItem.level(), entityItem.getX(), entityItem.getY(), entityItem.getZ(), copy);
 			}
 		}
 

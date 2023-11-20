@@ -63,11 +63,11 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		ItemStack item = getItem();
 		if(!player.isShiftKeyDown() && !item.isEmpty() && !(item.getItem() instanceof BannerItem)) {
 			BlockPos behind = getBehindPos();
-			BlockEntity tile = getCommandSenderWorld().getBlockEntity(behind);
+			BlockEntity tile = level().getBlockEntity(behind);
 
 			if(tile != null && tile.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
-				BlockState behindState = getCommandSenderWorld().getBlockState(behind);
-				InteractionResult result = behindState.use(getCommandSenderWorld(), player, hand, new BlockHitResult(new Vec3(getX(), getY(), getZ()), direction, behind, true));
+				BlockState behindState = level().getBlockState(behind);
+				InteractionResult result = behindState.use(level(), player, hand, new BlockHitResult(new Vec3(getX(), getY(), getZ()), direction, behind, true));
 
 				if(result.consumesAction())
 					return result;
@@ -84,18 +84,18 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		super.tick();
         boolean shouldUpdateMaps = GlassItemFrameModule.glassItemFramesUpdateMapsEveryTick;
 		//same update as normal frames
-		if(getCommandSenderWorld().getGameTime() % 100 == 0) {
+		if(level().getGameTime() % 100 == 0) {
 			updateIsOnSign();
 			//not upating every tick otherwise lag
 			shouldUpdateMaps = true;
 		}
 
-		if(!getCommandSenderWorld().isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps &&  shouldUpdateMaps) {
+		if(!level().isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps &&  shouldUpdateMaps) {
 			ItemStack stack = getItem();
-			if(stack.getItem() instanceof MapItem map && getCommandSenderWorld() instanceof ServerLevel sworld) {
+			if(stack.getItem() instanceof MapItem map && level() instanceof ServerLevel sworld) {
 				ItemStack clone = stack.copy();
 
-				MapItemSavedData data = MapItem.getSavedData(clone, getCommandSenderWorld());
+				MapItemSavedData data = MapItem.getSavedData(clone, level());
 				if(data != null && !data.locked) {
 					var fakePlayer = FakePlayerFactory.get(sworld, DUMMY_PROFILE);
 
@@ -103,7 +103,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 					fakePlayer.setPos(getX(), getY(), getZ());
 					fakePlayer.getInventory().setItem(0, clone);
 
-					map.update(getCommandSenderWorld(), fakePlayer, data);
+					map.update(level(), fakePlayer, data);
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	private void updateIsOnSign() {
 		onSignRotation = null;
 		if(this.direction.getAxis() != Direction.Axis.Y){
-			BlockState back = getCommandSenderWorld().getBlockState(getBehindPos());
+			BlockState back = level().getBlockState(getBehindPos());
 			if(back.is(BlockTags.STANDING_SIGNS)){
 				onSignRotation = back.getValue(StandingSignBlock.ROTATION);
 			}

@@ -80,7 +80,7 @@ public class GrabChickensModule extends ZetaModule {
 	@PlayEvent
 	public void playerTick(ZPlayerTick.Start event) {
 		Player player = event.getPlayer();
-		Level level = player.getCommandSenderWorld();
+		Level level = player.level();
 		
 		if(player.hasPassenger(e -> e.getType() == EntityType.CHICKEN)) {
 			if(!canPlayerHostChicken(player)) {

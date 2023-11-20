@@ -22,7 +22,7 @@ public class ZombieVillagersOnNormalModule extends ZetaModule {
 	public void onConversion(ZLivingConversion.Pre event) {
 		if(event.getEntity().getType() == EntityType.VILLAGER && event.getOutcome() == EntityType.ZOMBIE_VILLAGER) {
 			Villager villager = (Villager) event.getEntity();
-			Level level = villager.getCommandSenderWorld();
+			Level level = villager.level();
 
 			if(level instanceof ServerLevelAccessor serverLevel) {
 				ZombieVillager zombievillager = villager.convertTo(EntityType.ZOMBIE_VILLAGER, false);

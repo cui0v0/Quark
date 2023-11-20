@@ -50,7 +50,7 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 	@Override
 	protected void emitParticles(Vec3 pos, Vec3 ourMotion) {
 		if(Math.random() < 0.4)
-			this.getCommandSenderWorld().addParticle(ParticleTypes.SCULK_SOUL,
+			this.level().addParticle(ParticleTypes.SCULK_SOUL,
 					pos.x - ourMotion.x * 0.25D + (Math.random() - 0.5) * 0.4,
 					pos.y - ourMotion.y * 0.25D + (Math.random() - 0.5) * 0.4,
 					pos.z - ourMotion.z * 0.25D + (Math.random() - 0.5) * 0.4,
@@ -81,7 +81,7 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 
 	@Override
 	public boolean shouldListen(ServerLevel level, GameEventListener listener, BlockPos pos, GameEvent event, Context context) {
-		return !isReturning() && level.getWorldBorder().isWithinBounds(pos) && !isRemoved() && this.getCommandSenderWorld() == level;
+		return !isReturning() && level.getWorldBorder().isWithinBounds(pos) && !isRemoved() && this.level() == level;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class DoubleDoorMessage implements IZetaMessage {
 	}
 
 	private Level extractWorld(ServerPlayer entity) {
-		return entity == null ? null : entity.getCommandSenderWorld();
+		return entity == null ? null : entity.level();
 	}
 
 	@Override
