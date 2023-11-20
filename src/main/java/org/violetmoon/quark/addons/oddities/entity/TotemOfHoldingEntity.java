@@ -62,7 +62,7 @@ public class TotemOfHoldingEntity extends Entity {
 	}
 
 	private Player getOwnerEntity() {
-		for(Player player : level.players()) {
+		for(Player player : level().players()) {
 			String uuid = player.getUUID().toString();
 			if(uuid.equals(owner))
 				return player;
@@ -73,7 +73,7 @@ public class TotemOfHoldingEntity extends Entity {
 
 	@Override
 	public boolean skipAttackInteraction(@NotNull Entity e) {
-		if(!level.isClientSide && e instanceof Player player) {
+		if(!level().isClientSide && e instanceof Player player) {
 
 			if(!TotemOfHoldingModule.allowAnyoneToCollect && !player.getAbilities().instabuild) {
 				Player owner = getOwnerEntity();
@@ -81,13 +81,13 @@ public class TotemOfHoldingEntity extends Entity {
 					return false;
 			}
 
-			int drops = Math.min(storedItems.size(), 3 + level.random.nextInt(4));
+			int drops = Math.min(storedItems.size(), 3 + level().random.nextInt(4));
 
 			for(int i = 0; i < drops; i++) {
 				ItemStack stack = storedItems.remove(0);
 
 				if(stack.getItem() instanceof ArmorItem armor) {
-					EquipmentSlot slot = armor.getSlot();
+					EquipmentSlot slot = armor.getEquipmentSlot();
 					ItemStack curr = player.getItemBySlot(slot);
 
 					if(curr.isEmpty()) {
@@ -112,7 +112,7 @@ public class TotemOfHoldingEntity extends Entity {
 						spawnAtLocation(stack, 0);
 			}
 
-			if(level instanceof ServerLevel serverLevel) {
+			if(level() instanceof ServerLevel serverLevel) {
 				serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR, getX(), getY() + 0.5, getZ(), drops, 0.1, 0.5, 0.1, 0);
 				serverLevel.sendParticles(ParticleTypes.ENCHANTED_HIT, getX(), getY() + 0.5, getZ(), drops, 0.4, 0.5, 0.4, 0);
 			}
@@ -135,14 +135,14 @@ public class TotemOfHoldingEntity extends Entity {
 
 		if(TotemOfHoldingModule.darkSoulsMode) {
 			Player owner = getOwnerEntity();
-			if(owner != null && !level.isClientSide) {
+			if(owner != null && !level().isClientSide) {
 				String ownerTotem = TotemOfHoldingModule.getTotemUUID(owner);
 				if(!getUUID().toString().equals(ownerTotem))
 					dropEverythingAndDie();
 			}
 		}
 
-		if(storedItems.isEmpty() && !level.isClientSide)
+		if(storedItems.isEmpty() && !level().isClientSide)
 			entityData.set(DYING, true);
 
 		if(isDying()) {
@@ -151,8 +151,8 @@ public class TotemOfHoldingEntity extends Entity {
 			else deathTicks++;
 		}
 
-		else if(level.isClientSide)
-			level.addParticle(ParticleTypes.PORTAL, getX(), getY() + (Math.random() - 0.5) * 0.2, getZ(), Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+		else if(level().isClientSide)
+			level().addParticle(ParticleTypes.PORTAL, getX(), getY() + (Math.random() - 0.5) * 0.2, getZ(), Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 	}
 
 	private void dropEverythingAndDie() {

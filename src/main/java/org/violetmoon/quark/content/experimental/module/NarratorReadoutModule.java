@@ -114,7 +114,21 @@ public class NarratorReadoutModule extends ZetaModule {
 					if(state.getBlock() instanceof SignBlock) {
 						SignBlockEntity tile = (SignBlockEntity) mc.level.getBlockEntity(pos);
 						sb.append(I18n.get("quark.readout.sign_says"));
-						for(Component cmp : tile.messages) {
+						for(Component cmp : tile.getFrontText().getMessages(false)) {
+							String msg = cmp.getString().trim();
+							if(!msg.isEmpty()) {
+								sb.append(cmp.getString());
+								sb.append(" ");
+							}
+						}
+
+						sb.append(". ");
+
+						//todo: Can someone check if this would be a decent way to handle back parts of sign? Alternatively, perhaps we could see if the raycast gets the front or back of the sign?
+						// No matter what, it should have a separate piece of text for front and back but still.
+
+						sb.append(I18n.get("quark.readout.sign_says"));
+						for(Component cmp : tile.getBackText().getMessages(false)) {
 							String msg = cmp.getString().trim();
 							if(!msg.isEmpty()) {
 								sb.append(cmp.getString());

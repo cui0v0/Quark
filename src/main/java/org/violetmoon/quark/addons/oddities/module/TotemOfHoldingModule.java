@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,7 +66,7 @@ public class TotemOfHoldingModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new TotemOfHoldingEntity(totemType, world))
 				.build("totem");
-		Quark.ZETA.registry.register(totemType, "totem", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(totemType, "totem", Registries.ENTITY_TYPE);
 	}
 	
 	@PlayEvent
@@ -81,8 +82,8 @@ public class TotemOfHoldingModule extends ZetaModule {
 			CompoundTag persistent = data.getCompound(Player.PERSISTED_NBT_TAG);
 
 			if(!drops.isEmpty()) {
-				TotemOfHoldingEntity totem = new TotemOfHoldingEntity(totemType, player.level);
-				totem.setPos(player.getX(), Math.max(player.level.getMinBuildHeight() + 3, player.getY() + 1), player.getZ());
+				TotemOfHoldingEntity totem = new TotemOfHoldingEntity(totemType, player.level());
+				totem.setPos(player.getX(), Math.max(player.level().getMinBuildHeight() + 3, player.getY() + 1), player.getZ());
 				totem.setOwner(player);
 				totem.setCustomName(player.getDisplayName());
 				drops.stream()
@@ -90,8 +91,8 @@ public class TotemOfHoldingModule extends ZetaModule {
 				.map(ItemEntity::getItem)
 				.filter(stack -> !stack.isEmpty())
 				.forEach(totem::addItem);
-				if (!player.level.isClientSide)
-					player.level.addFreshEntity(totem);
+				if (!player.level().isClientSide)
+					player.level().addFreshEntity(totem);
 
 				persistent.putString(TAG_LAST_TOTEM, totem.getUUID().toString());
 
@@ -101,7 +102,7 @@ public class TotemOfHoldingModule extends ZetaModule {
 			BlockPos pos = player.blockPosition(); // getPosition
 			persistent.putInt(TAG_DEATH_X, pos.getX());
 			persistent.putInt(TAG_DEATH_Z, pos.getZ());
-			persistent.putString(TAG_DEATH_DIM, player.level.dimension().location().toString());
+			persistent.putString(TAG_DEATH_DIM, player.level().dimension().location().toString());
 
 			if(!data.contains(Player.PERSISTED_NBT_TAG))
 				data.put(Player.PERSISTED_NBT_TAG, persistent);

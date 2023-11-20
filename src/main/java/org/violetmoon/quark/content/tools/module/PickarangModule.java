@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -96,7 +97,7 @@ public class PickarangModule extends ZetaModule {
 				.updateInterval(10)
 				.setCustomClientFactory((t, l) -> entityFactory.create(type.getEntityType(), l))
 				.build(name);
-		Quark.ZETA.registry.register(entityType, name, Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(entityType, name, Registries.ENTITY_TYPE);
 
 		knownTypes.add(type);
 		type.setEntityType(entityType, thrownFactory);
@@ -121,7 +122,7 @@ public class PickarangModule extends ZetaModule {
 	public final void setup(ZCommonSetup event) {
 		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
 		echorangBreaksAnywayTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "echorang_breaks_anyway"));
-		echorangCanListenTag = TagKey.create(Registry.GAME_EVENT_REGISTRY, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
+		echorangCanListenTag = TagKey.create(Registries.GAME_EVENT, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
 	}
 
 	@LoadEvent

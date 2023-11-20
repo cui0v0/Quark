@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -47,7 +48,7 @@ public class TinyPotatoModule extends ZetaModule {
 		tiny_potato = new TinyPotatoBlock(this);
 
 		blockEntityType = BlockEntityType.Builder.of(TinyPotatoBlockEntity::new, tiny_potato).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "tiny_potato", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "tiny_potato", Registries.BLOCK_ENTITY_TYPE);
 
 		patPotatoTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("pat_potato");
 	}

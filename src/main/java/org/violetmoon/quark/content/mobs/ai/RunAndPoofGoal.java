@@ -66,7 +66,7 @@ public class RunAndPoofGoal<T extends Entity> extends Goal {
 		if (entity.isPlayerMade() || !entity.isStartled())
 			return false;
 
-		List<T> entities = this.entity.level.getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance),
+		List<T> entities = this.entity.level().getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance),
 				entity -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) && this.canBeSeenSelector.test(entity) && this.avoidTargetSelector.test(entity));
 
 		if (entities.isEmpty())
@@ -102,7 +102,7 @@ public class RunAndPoofGoal<T extends Entity> extends Goal {
 			if (pos.getX() != k || pos.getY() != j || pos.getZ() != l) {
 				pos.set(k, j, l);
 
-				if (entity.level.getBlockState(pos).getMaterial().blocksMotion()) {
+				if (entity.level().getBlockState(pos).blocksMotion()) {
 					return false;
 				}
 			}
@@ -117,14 +117,14 @@ public class RunAndPoofGoal<T extends Entity> extends Goal {
 
 		if (this.path != null)
 			this.navigation.moveTo(this.path, this.farSpeed);
-		entity.level.playSound(null, epos.x, epos.y, epos.z, QuarkSounds.ENTITY_STONELING_MEEP, SoundSource.NEUTRAL, 1.0F, 1.0F);
+		entity.level().playSound(null, epos.x, epos.y, epos.z, QuarkSounds.ENTITY_STONELING_MEEP, SoundSource.NEUTRAL, 1.0F, 1.0F);
 	}
 
 	@Override
 	public void stop() {
 		this.closestLivingEntity = null;
 
-		Level world = entity.level;
+		Level world = entity.level();
 
 		if (world instanceof ServerLevel ws) {
 			Vec3 epos = entity.position();
