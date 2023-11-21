@@ -15,9 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.violetmoon.quark.base.Quark;
@@ -69,26 +69,28 @@ public class NewStoneTypesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		limestoneBlock = makeStone(event, this, "limestone", limestone, BigStoneClustersModule.limestone, () -> enableLimestone, MaterialColor.STONE);
-		jasperBlock = makeStone(event, this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MaterialColor.TERRACOTTA_RED);
-		shaleBlock = makeStone(event, this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MaterialColor.ICE);
-		myaliteBlock = makeStone(event, this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MaterialColor.COLOR_PURPLE, MyaliteBlock::new);
+		limestoneBlock = makeStone(event, this, "limestone", limestone, BigStoneClustersModule.limestone, () -> enableLimestone, MapColor.STONE);
+		jasperBlock = makeStone(event, this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MapColor.TERRACOTTA_RED);
+		shaleBlock = makeStone(event, this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MapColor.ICE);
+		myaliteBlock = makeStone(event, this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MapColor.COLOR_PURPLE, MyaliteBlock::new);
 	}
 
-	public static Block makeStone(ZRegister event, ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color) {
+	public static Block makeStone(ZRegister event, ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MapColor color) {
 		return makeStone(event, module, null, name, config, bigConfig, enabledCond, color, ZetaBlock::new);
 	}
 
-	public static Block makeStone(ZRegister event, ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MaterialColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
+	public static Block makeStone(ZRegister event, ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MapColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !Quark.ZETA.modules.isEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
 		Block.Properties props;
 		if(raw != null)
 			props = Block.Properties.copy(raw);
 		else
-			props = Block.Properties.of(Material.STONE, color)
-				.requiresCorrectToolForDrops()
-				.strength(1.5F, 6.0F);
+			props = Block.Properties.of()
+					.mapColor(color)
+					.instrument(NoteBlockInstrument.BASEDRUM)
+					.requiresCorrectToolForDrops()
+					.strength(1.5F, 6.0F);
 
 		Block normal;
 		if(raw != null)

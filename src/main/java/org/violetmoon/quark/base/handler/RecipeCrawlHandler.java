@@ -3,6 +3,7 @@ package org.violetmoon.quark.base.handler;
 import com.google.common.collect.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -140,9 +141,9 @@ public class RecipeCrawlHandler {
 	 */
 
 	public static void recursivelyFindCraftedItemsFromStrings(@Nullable Collection<String> derivationList, @Nullable Collection<String> whitelist, @Nullable Collection<String> blacklist, Consumer<Item> callback) {
-		List<Item> parsedDerivationList = derivationList == null ? null : RegistryUtil.massRegistryGet(derivationList, Registry.ITEM);
-		List<Item> parsedWhitelist      = whitelist == null      ? null : RegistryUtil.massRegistryGet(whitelist, Registry.ITEM);
-		List<Item> parsedBlacklist      = blacklist == null      ? null : RegistryUtil.massRegistryGet(blacklist, Registry.ITEM);
+		List<Item> parsedDerivationList = derivationList == null ? null : RegistryUtil.massRegistryGet(derivationList, BuiltInRegistries.ITEM);
+		List<Item> parsedWhitelist      = whitelist == null      ? null : RegistryUtil.massRegistryGet(whitelist, BuiltInRegistries.ITEM);
+		List<Item> parsedBlacklist      = blacklist == null      ? null : RegistryUtil.massRegistryGet(blacklist, BuiltInRegistries.ITEM);
 
 		recursivelyFindCraftedItems(parsedDerivationList, parsedWhitelist, parsedBlacklist, callback);
 	}

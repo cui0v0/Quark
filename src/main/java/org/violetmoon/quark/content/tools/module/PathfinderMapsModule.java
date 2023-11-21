@@ -8,6 +8,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -137,7 +138,7 @@ public class PathfinderMapsModule extends ZetaModule {
 		loadTradeInfo(Biomes.ICE_SPIKES, true, 5, 20, 26, 0x1EC0C9);
 
 		inBiomeConditionType = new LootItemConditionType(new InBiomeCondition.InBiomeSerializer());
-		Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
+		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);
 
 		pathfinderMapTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("pathfinder_map_center");
 
@@ -185,10 +186,10 @@ public class PathfinderMapsModule extends ZetaModule {
 			}
 
 			if(!hasPathfinder && !tradeList.isEmpty()) {
-				TradeInfo info = tradeList.get(wt.level.random.nextInt(tradeList.size()));
+				TradeInfo info = tradeList.get(wt.level().random.nextInt(tradeList.size()));
 
 				PathfinderQuillTrade trade = new PathfinderQuillTrade(info, false);
-				MerchantOffer offer = trade.getOffer(wt, wt.level.random);
+				MerchantOffer offer = trade.getOffer(wt, wt.level().random);
 				if (offer != null) {
 					offers.add(0, offer);
 				}
@@ -366,7 +367,7 @@ public class PathfinderMapsModule extends ZetaModule {
 					int x = 5;
 					int y = PathfinderMapsModule.hudOnTop ? 20 : (window.getGuiScaledHeight() - 15);
 
-					PoseStack ps = event.getPoseStack();
+					PoseStack ps = event.getGuiGraphics().pose();
 					mc.font.drawShadow(ps, PathfindersQuillItem.getSearchingComponent(), x, y, 0xFFFFFF);
 
 					int qx = x;

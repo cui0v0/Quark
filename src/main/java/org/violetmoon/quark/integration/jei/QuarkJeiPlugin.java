@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Sets;
@@ -107,8 +108,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 				return;
 
 			Set<Potion> hidePotions = Sets.newHashSet();
-			for (Potion potion : Registry.POTION) {
-				ResourceLocation loc = Registry.POTION.getKey(potion);
+			for (Potion potion : BuiltInRegistries.POTION) {
+				ResourceLocation loc = BuiltInRegistries.POTION.getKey(potion);
 				if (loc != null && loc.getNamespace().equals("quark")) {
 					if (!Quark.ZETA.brewingRegistry.isEnabled(potion)) {
 						hidePotions.add(potion);
@@ -117,8 +118,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 			}
 
 			NonNullList<ItemStack> stacksToHide = NonNullList.create();
-			for (Item item : Registry.ITEM) {
-				ResourceLocation loc = Registry.ITEM.getKey(item);
+			for (Item item : BuiltInRegistries.ITEM) {
+				ResourceLocation loc = BuiltInRegistries.ITEM.getKey(item);
 				if (loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
 					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
 				}
@@ -176,14 +177,14 @@ public class QuarkJeiPlugin implements IModPlugin {
 			MutableComponent externalPreamble = Component.translatable("quark.jei.hint_preamble");
 			externalPreamble.setStyle(externalPreamble.getStyle().withColor(0x0b5d4b));
 
-			List<Item> blacklist = RegistryUtil.massRegistryGet(GeneralConfig.suppressedInfo, Registry.ITEM);
+			List<Item> blacklist = RegistryUtil.massRegistryGet(GeneralConfig.suppressedInfo, BuiltInRegistries.ITEM);
 
 			Quark.ZETA.playBus.fire((item, component) -> {
 				if(blacklist.contains(item))
 					return;
 
 				MutableComponent compound = Component.literal("");
-				if(!Registry.ITEM.getKey(item).getNamespace().equals(Quark.MOD_ID))
+				if(!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(Quark.MOD_ID))
 					compound = compound.append(externalPreamble);
 				compound = compound.append(component);
 
@@ -346,7 +347,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 			for(Item repair : DiamondRepairModule.repairChanges.get(item)) {
 				IJeiAnvilRecipe toolRepair = factory.createAnvilRecipe(left, Collections.singletonList(new ItemStack(repair)), Collections.singletonList(out));
 
-				registration.addRecipes(RecipeTypes.ANVIL, Arrays.asList(toolRepair));
+				registration.addRecipes(RecipeTypes.ANVIL, List.of(toolRepair));
 			}
 		}
 	}

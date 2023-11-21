@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -75,7 +76,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 		if(target != null && event.getHand() == target.hand) {
 			ItemStack stack = event.getItemStack();
-			if(!player.mayUseItemAt(target.pos, target.dir, stack) || !player.level.mayInteract(player, target.pos))
+			if(!player.mayUseItemAt(target.pos, target.dir, stack) || !player.level().mayInteract(player, target.pos))
 				return;
 
 			if(!IClaimIntegration.INSTANCE.canPlace(player, target.pos))return;
@@ -95,11 +96,11 @@ public class ReacharoundPlacingModule extends ZetaModule {
 					player.swing(hand);
 				else if(res == InteractionResult.CONSUME) {
 					BlockPos placedPos = target.pos;
-					BlockState state = player.level.getBlockState(placedPos);
-					SoundType soundtype = state.getSoundType(player.level, placedPos, context.getPlayer());
+					BlockState state = player.level().getBlockState(placedPos);
+					SoundType soundtype = state.getSoundType(player.level(), placedPos, context.getPlayer());
 
-					if(player.level instanceof ServerLevel)
-						player.level.playSound(null, placedPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+					if(player.level() instanceof ServerLevel)
+						player.level().playSound(null, placedPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
 				}
 
@@ -119,7 +120,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		if(hand == null)
 			return null;
 
-		Level world = player.level;
+		Level world = player.level();
 
 		Pair<Vec3, Vec3> params = Quark.ZETA.raytracingUtil.getEntityParams(player);
 		double range = Quark.ZETA.raytracingUtil.getEntityRange(player);
@@ -151,7 +152,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().below();
 			BlockState state = world.getBlockState(pos);
 
-			if (player.position().y - pos.getY() > 1 && (world.isEmptyBlock(pos) || state.getMaterial().isReplaceable()))
+			if (player.position().y - pos.getY() > 1 && (world.isEmptyBlock(pos) || state.canBeReplaced()))
 				return new ReacharoundTarget(pos, Direction.DOWN, hand);
 		}
 
@@ -167,7 +168,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().relative(dir);
 			BlockState state = world.getBlockState(pos);
 
-			if ((world.isEmptyBlock(pos) || state.getMaterial().isReplaceable()))
+			if ((world.isEmptyBlock(pos) || state.canBeReplaced()))
 				return new ReacharoundTarget(pos, dir.getOpposite(), hand);
 		}
 
@@ -176,7 +177,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 	private boolean validateReacharoundStack(ItemStack stack) {
 		Item item = stack.getItem();
-		String name = Registry.ITEM.getKey(item).toString();
+		String name = BuiltInRegistries.ITEM.getKey(item).toString();
 		if (blacklist.contains(name))
 			return false;
 		return item instanceof BlockItem || stack.is(reacharoundTag) || whitelist.contains(name);
@@ -198,7 +199,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 			if(player != null && currentTarget != null) {
 				Window res = event.getWindow();
-				PoseStack matrix = event.getPoseStack();
+				PoseStack matrix = event.getGuiGraphics().pose();
 				String text = (currentTarget.dir.getAxis() == Axis.Y ? display : displayHorizontal);
 
 				matrix.pushPose();

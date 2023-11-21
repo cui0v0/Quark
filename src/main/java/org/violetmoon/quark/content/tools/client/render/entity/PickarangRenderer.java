@@ -1,11 +1,11 @@
 package org.violetmoon.quark.content.tools.client.render.entity;
 
+import com.mojang.math.Axis;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,11 +27,11 @@ public class PickarangRenderer extends EntityRenderer<AbstractPickarang<?>> {
 		if (entity.tickCount >= 2) {
 			matrix.pushPose();
 			matrix.translate(0, 0.2, 0);
-			matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
+			matrix.mulPose(Axis.XP.rotationDegrees(90F));
 
 			Minecraft mc = Minecraft.getInstance();
 			float time = entity.tickCount + (mc.isPaused() ? 0 : partialTicks);
-			matrix.mulPose(Vector3f.ZP.rotationDegrees(time * 20F));
+			matrix.mulPose(Axis.ZP.rotationDegrees(time * 20F));
 
 			mc.getItemRenderer().renderStatic(entity.getStack(), TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buffer, 0);
 

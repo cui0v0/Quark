@@ -95,7 +95,7 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 					if(!stack.isEmpty() && stack.is(tag)) {
 						if(first == null)
 							first = stack;
-						else if(!ItemStack.isSame(first, stack))
+						else if(!ItemStack.isSameItem(first, stack))
 							foundDifference = true;
 					} else return false;
 				}

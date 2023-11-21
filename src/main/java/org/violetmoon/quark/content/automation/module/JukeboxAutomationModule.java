@@ -5,6 +5,7 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,7 @@ public class JukeboxAutomationModule extends ZetaModule {
 	@LoadEvent
 	public void setup(ZCommonSetup e) {
 		MusicDiscBehaviour behaviour = new MusicDiscBehaviour();
-		e.enqueueWork(() -> Registry.ITEM.forEach(i -> {
+		e.enqueueWork(() -> BuiltInRegistries.ITEM.forEach(i -> {
 			if (i instanceof RecordItem)
 				DispenserBlock.DISPENSER_REGISTRY.put(i, behaviour);
 		}));
@@ -66,7 +67,7 @@ public class JukeboxAutomationModule extends ZetaModule {
 		@NotNull
 		@Override
 		public ItemStack getStackInSlot(int slot) {
-			return tile.getRecord();
+			return tile.getItem(0);
 		}
 
 		@NotNull
@@ -82,8 +83,8 @@ public class JukeboxAutomationModule extends ZetaModule {
 			if (!stackAt.isEmpty()) {
 				ItemStack copy = stackAt.copy();
 				if (!simulate) {
-					tile.getLevel().levelEvent(LevelEvent.SOUND_PLAY_RECORDING, tile.getBlockPos(), 0);
-					tile.setRecord(ItemStack.EMPTY);
+					tile.getLevel().levelEvent(LevelEvent.SOUND_PLAY_JUKEBOX_SONG, tile.getBlockPos(), 0);
+					tile.setItem(0, ItemStack.EMPTY);
 
 					BlockState state = tile.getBlockState().setValue(JukeboxBlock.HAS_RECORD, false);
 					tile.getLevel().setBlock(tile.getBlockPos(), state, 1 | 2);
@@ -129,9 +130,9 @@ public class JukeboxAutomationModule extends ZetaModule {
 			if(state.getBlock() == Blocks.JUKEBOX) {
 				JukeboxBlockEntity jukebox = (JukeboxBlockEntity) world.getBlockEntity(pos);
 				if (jukebox != null) {
-					ItemStack currentRecord = jukebox.getRecord();
+					ItemStack currentRecord = jukebox.getItem(0);
 					((JukeboxBlock) state.getBlock()).setRecord(null, world, pos, state, stack);
-					world.levelEvent(null, LevelEvent.SOUND_PLAY_RECORDING, pos, Item.getId(stack.getItem()));
+					world.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, pos, Item.getId(stack.getItem()));
 
 					return currentRecord;
 				}
