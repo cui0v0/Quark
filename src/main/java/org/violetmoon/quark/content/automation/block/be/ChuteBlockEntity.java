@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.quark.content.automation.block.ChuteBlock;
 import org.violetmoon.quark.content.automation.module.ChuteModule;

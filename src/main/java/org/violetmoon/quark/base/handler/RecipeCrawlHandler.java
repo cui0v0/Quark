@@ -17,7 +17,7 @@ import org.violetmoon.zeta.event.load.ZTagsUpdated;
 import org.violetmoon.zeta.event.play.ZServerTick;
 import org.violetmoon.zeta.util.RegistryUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.recipe.FlagIngredient;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 

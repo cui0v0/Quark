@@ -37,7 +37,7 @@ import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantChestBlock;

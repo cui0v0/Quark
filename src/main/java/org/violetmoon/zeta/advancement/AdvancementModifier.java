@@ -2,7 +2,7 @@ package org.violetmoon.zeta.advancement;
 
 import java.util.function.BooleanSupplier;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.zeta.api.IAdvancementModifier;
 import org.violetmoon.zeta.module.ZetaModule;

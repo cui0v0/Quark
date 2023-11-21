@@ -1,10 +1,5 @@
 package org.violetmoon.zeta.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -14,10 +9,14 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.zeta.registry.VariantRegistry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.IZetaItemColorProvider;
+import org.violetmoon.zeta.registry.VariantRegistry;
+
+import java.util.function.BooleanSupplier;
 
 public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockColorProvider {
 

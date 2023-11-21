@@ -34,7 +34,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnData {

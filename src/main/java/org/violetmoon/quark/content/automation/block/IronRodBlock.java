@@ -3,7 +3,7 @@ package org.violetmoon.quark.content.automation.block;
 import java.util.function.BooleanSupplier;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
