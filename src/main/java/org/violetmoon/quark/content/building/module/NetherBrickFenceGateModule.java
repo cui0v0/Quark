@@ -4,7 +4,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.zeta.block.ZetaFenceGateBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -20,7 +19,7 @@ public class NetherBrickFenceGateModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		new ZetaFenceGateBlock("nether_brick_fence_gate", this, CreativeModeTab.TAB_REDSTONE,
-				Block.Properties.of(Material.STONE, MaterialColor.NETHER)
+				Block.Properties.of(Material.STONE, MapColor.NETHER)
 				.requiresCorrectToolForDrops()
 				.sound(SoundType.NETHER_BRICKS)
 				.strength(2.0F, 6.0F));

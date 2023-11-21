@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -25,7 +24,7 @@ public class PaperLanternBlock extends ZetaBlock {
 
 	public PaperLanternBlock(String regname, ZetaModule module) {
 		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
-				Block.Properties.of(Material.WOOD, MaterialColor.SNOW)
+				Block.Properties.of(Material.WOOD, MapColor.SNOW)
 						.sound(SoundType.WOOD)
 						.lightLevel(b -> 15)
 						.strength(1.5F));

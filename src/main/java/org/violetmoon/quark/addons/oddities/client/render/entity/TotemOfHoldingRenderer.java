@@ -79,6 +79,6 @@ public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity>
 	@NotNull
 	@Override
 	public ResourceLocation getTextureLocation(@NotNull TotemOfHoldingEntity entity) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 }

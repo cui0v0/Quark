@@ -118,7 +118,7 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 
 	@Override
 	public ResourceLocation getTextureLocation(DyedItemFrame p_115071_) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 
 	@Override

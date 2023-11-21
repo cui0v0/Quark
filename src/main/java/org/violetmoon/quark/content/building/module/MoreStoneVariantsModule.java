@@ -1,13 +1,11 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.function.BooleanSupplier;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
@@ -21,6 +19,8 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherAdditionalFlags;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "building")
 public class MoreStoneVariantsModule extends ZetaModule {
@@ -36,18 +36,18 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		expandVanillaStone(event, this, Blocks.TUFF, "tuff");
 		
 		BooleanSupplier _true = () -> true;
-		add(event, "granite", MaterialColor.DIRT, SoundType.STONE, _true);
-		add(event, "diorite", MaterialColor.QUARTZ, SoundType.STONE, _true);
-		add(event, "andesite", MaterialColor.STONE, SoundType.STONE, _true);
-		add(event, "calcite", MaterialColor.TERRACOTTA_WHITE, SoundType.CALCITE, _true);
-		add(event, "dripstone", MaterialColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, _true);
-		add(event, "tuff", MaterialColor.TERRACOTTA_GRAY, SoundType.TUFF, _true);
+		add(event, "granite", MapColor.DIRT, SoundType.STONE, _true);
+		add(event, "diorite", MapColor.QUARTZ, SoundType.STONE, _true);
+		add(event, "andesite", MapColor.STONE, SoundType.STONE, _true);
+		add(event, "calcite", MapColor.TERRACOTTA_WHITE, SoundType.CALCITE, _true);
+		add(event, "dripstone", MapColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, _true);
+		add(event, "tuff", MapColor.TERRACOTTA_GRAY, SoundType.TUFF, _true);
 		
-		add(event, "limestone", MaterialColor.STONE, SoundType.STONE, () -> NewStoneTypesModule.enableLimestone);
-		add(event, "jasper", MaterialColor.TERRACOTTA_RED, SoundType.STONE, () -> NewStoneTypesModule.enableJasper);
-		add(event, "shale", MaterialColor.ICE, SoundType.STONE, () -> NewStoneTypesModule.enableShale);
+		add(event, "limestone", MapColor.STONE, SoundType.STONE, () -> NewStoneTypesModule.enableLimestone);
+		add(event, "jasper", MapColor.TERRACOTTA_RED, SoundType.STONE, () -> NewStoneTypesModule.enableJasper);
+		add(event, "shale", MapColor.ICE, SoundType.STONE, () -> NewStoneTypesModule.enableShale);
 		
-		add(event, "myalite", MaterialColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
+		add(event, "myalite", MapColor.COLOR_PURPLE, SoundType.STONE, () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
 	}
 
 	@PlayEvent
@@ -65,11 +65,11 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		NewStoneTypesModule.makeStone(event, module, raw, name, null, null, () -> true, null, ZetaBlock::new);
 	}
 	
-	private void add(ZRegister event, String name, MaterialColor color, SoundType sound, BooleanSupplier cond) {
+	private void add(ZRegister event, String name, MapColor color, SoundType sound, BooleanSupplier cond) {
 		add(event, name, color, sound, cond, ZetaBlock::new, ZetaPillarBlock::new);
 	}
 	
-	private void add(ZRegister event, String name, MaterialColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
+	private void add(ZRegister event, String name, MapColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
 		Block.Properties props = Block.Properties.of(Material.STONE, color)
 				.requiresCorrectToolForDrops()
 				.sound(sound)

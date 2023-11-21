@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.ToolActions;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaTrapdoorBlock;

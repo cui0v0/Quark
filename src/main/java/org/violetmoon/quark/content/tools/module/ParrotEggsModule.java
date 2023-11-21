@@ -141,13 +141,13 @@ public class ParrotEggsModule extends ZetaModule {
 						return;
 
 					event.setCanceled(true);
-					if (parrot.level.isClientSide || event.getHand() == InteractionHand.OFF_HAND)
+					if (parrot.level().isClientSide || event.getHand() == InteractionHand.OFF_HAND)
 						return;
 
 					if (!player.getAbilities().instabuild)
 						stack.shrink(1);
 
-					if (parrot.level instanceof ServerLevel ws) {
+					if (parrot.level() instanceof ServerLevel ws) {
 						ws.playSound(null, parrot.getX(), parrot.getY(), parrot.getZ(), SoundEvents.PARROT_EAT, SoundSource.NEUTRAL, 1.0F, 1.0F + (ws.random.nextFloat() - ws.random.nextFloat()) * 0.2F);
 
 						if (ws.random.nextDouble() < chance) {

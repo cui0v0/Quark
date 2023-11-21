@@ -4,7 +4,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.content.world.undergroundstyle.PermafrostStyle;
 import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
@@ -23,7 +22,7 @@ public class PermafrostModule extends AbstractUndergroundStyleModule<PermafrostS
 	@LoadEvent
 	public final void register(ZRegister event) {
 		permafrost = new ZetaBlock("permafrost", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
-				Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_BLUE)
+				Block.Properties.of(Material.STONE, MapColor.COLOR_LIGHT_BLUE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 10F)
 				.sound(SoundType.STONE));

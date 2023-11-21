@@ -108,7 +108,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	@NotNull
 	@Override
 	public ResourceLocation getTextureLocation(@NotNull GlassItemFrame frame) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 
 	@Override

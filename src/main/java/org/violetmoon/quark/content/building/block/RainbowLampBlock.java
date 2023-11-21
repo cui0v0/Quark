@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.quark.content.building.module.RainbowLampsModule;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -34,9 +34,9 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 
 	private String corundumDescriptionId;
 
-	public RainbowLampBlock(String regname, int color, ZetaModule module, MaterialColor materialColor) {
+	public RainbowLampBlock(String regname, int color, ZetaModule module, MapColor mapColor) {
 		super(regname, module, CreativeModeTab.TAB_REDSTONE, true,
-				Properties.of(Material.GLASS, materialColor)
+				Properties.of(Material.GLASS, mapColor)
 				.strength(0.3F, 0F)
 				.sound(SoundType.AMETHYST)
 				.lightLevel(b -> b.getValue(LIT) ? RainbowLampsModule.lightLevel : 0)

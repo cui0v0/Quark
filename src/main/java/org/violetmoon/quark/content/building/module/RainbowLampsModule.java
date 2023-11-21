@@ -41,6 +41,6 @@ public class RainbowLampsModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		for(CorundumColor color : CorundumColor.values())
-			new RainbowLampBlock(color.name + "_crystal_lamp", color.beaconColor, this, color.materialColor);
+			new RainbowLampBlock(color.name + "_crystal_lamp", color.beaconColor, this, color.mapColor);
 	}
 }
