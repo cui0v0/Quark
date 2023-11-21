@@ -46,7 +46,7 @@ public class CompassAnglePropertyFunction implements ItemPropertyFunction {
 		if(entity == null)
 			return 0;
 
-		if(worldIn == null && entity != null && entity.getCommandSenderWorld() instanceof ClientLevel level)
+		if(worldIn == null && entity != null && entity.level() instanceof ClientLevel level)
 			worldIn = level;
 
 		double angle;

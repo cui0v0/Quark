@@ -72,7 +72,7 @@ public class MonsterBoxModule extends ZetaModule {
 	@PlayEvent
 	public void onDrops(ZLivingDrops event) {
 		LivingEntity entity = event.getEntity();
-		if(enableExtraLootTable && entity.getCommandSenderWorld() instanceof ServerLevel serverLevel
+		if(enableExtraLootTable && entity.level() instanceof ServerLevel serverLevel
 				&& entity.getPersistentData().getBoolean(TAG_MONSTER_BOX_SPAWNED)
 				&& entity.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
 				&& ((AccessorLivingEntity) entity).quark$lastHurtByPlayerTime() > 0) {

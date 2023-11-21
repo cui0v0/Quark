@@ -111,7 +111,7 @@ public class GameNerfsModule extends ZetaModule {
 		if(!staticEnabled || !enableDimensionLockedElytra)
 			return true;
 
-		Level level = entity.getCommandSenderWorld();
+		Level level = entity.level();
 		String dim = level.dimensionTypeId().location().toString();
 		return elytraAllowedDimensions.contains(dim);
 	}

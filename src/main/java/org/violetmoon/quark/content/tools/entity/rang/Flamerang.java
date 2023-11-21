@@ -22,7 +22,7 @@ public class Flamerang extends AbstractPickarang<Flamerang> {
 	@Override
 	protected void emitParticles(Vec3 pos, Vec3 ourMotion) {
 		if(Math.random() < 0.4)
-			this.getCommandSenderWorld().addParticle(ParticleTypes.FLAME,
+			this.level().addParticle(ParticleTypes.FLAME,
 					pos.x - ourMotion.x * 0.25D + (Math.random() - 0.5) * 0.4,
 					pos.y - ourMotion.y * 0.25D + (Math.random() - 0.5) * 0.4,
 					pos.z - ourMotion.z * 0.25D + (Math.random() - 0.5) * 0.4,

@@ -79,7 +79,7 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 		}
 
 		if (!itemstack.isEmpty()) {
-			MapItemSavedData mapitemsaveddata = MapItem.getSavedData(itemstack, dyedItemFrame.getCommandSenderWorld());
+			MapItemSavedData mapitemsaveddata = MapItem.getSavedData(itemstack, dyedItemFrame.level());
 			if (flag) {
 				poseStack.translate(0.0D, 0.0D, 0.5D);
 			} else {

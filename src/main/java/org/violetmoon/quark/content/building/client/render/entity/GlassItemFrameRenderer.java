@@ -130,7 +130,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	protected void renderItemStack(GlassItemFrame itemFrame, PoseStack matrix, MultiBufferSource buff, int light, ItemStack stack) {
 		if (!stack.isEmpty()) {
 			matrix.pushPose();
-			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.getCommandSenderWorld());
+			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.level());
 
 			sign: if(itemFrame.isOnSign()) {
 

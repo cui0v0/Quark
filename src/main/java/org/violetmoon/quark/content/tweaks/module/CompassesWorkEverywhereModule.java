@@ -92,12 +92,12 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 
 	public static void tickCompass(Player player, ItemStack stack) {
 		boolean calculated = isCompassCalculated(stack);
-		boolean nether = player.getCommandSenderWorld().dimension().location().equals(LevelStem.NETHER.location());
+		boolean nether = player.level().dimension().location().equals(LevelStem.NETHER.location());
 
 		if(calculated) {
 			boolean wasInNether = ItemNBTHelper.getBoolean(stack, TAG_WAS_IN_NETHER, false);
 			BlockPos pos = player.blockPosition();
-			boolean isInPortal = player.getCommandSenderWorld().getBlockState(pos).getBlock() == Blocks.NETHER_PORTAL;
+			boolean isInPortal = player.level().getBlockState(pos).getBlock() == Blocks.NETHER_PORTAL;
 
 			if(nether && !wasInNether && isInPortal) {
 				ItemNBTHelper.setInt(stack, TAG_NETHER_TARGET_X, pos.getX());

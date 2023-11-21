@@ -16,9 +16,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canBreak(@NotNull Player player, @NotNull BlockPos pos) {
-        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
+        if (player.level().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.BREAK, pos, true);
         } catch (Exception e) {
@@ -29,9 +29,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canPlace(@NotNull Player player, @NotNull BlockPos pos) {
-        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
+        if (player.level().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.PLACE, pos);
         } catch (Exception e) {
@@ -42,9 +42,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canReplace(@NotNull Player player, @NotNull BlockPos pos) {
-        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
+        if (player.level().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level());
             IPermissionContainer claim = storage.getForPermissionCheck(pos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.PLACE, pos);
         } catch (Exception e) {
@@ -55,9 +55,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canAttack(@NotNull Player player, @NotNull Entity victim) {
-        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
+        if (player.level().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level());
             IPermissionContainer claim = storage.getForPermissionCheck(victim.blockPosition());
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.HURTANIMAL, victim.blockPosition());
         } catch (Exception e) {
@@ -68,9 +68,9 @@ public final class FlanIntegration implements IClaimIntegration{
 
 	@Override
     public boolean canInteract(@NotNull Player player, @NotNull BlockPos targetPos) {
-        if (player.getCommandSenderWorld().isClientSide) return true; //should only be used from server but client can call too
+        if (player.level().isClientSide) return true; //should only be used from server but client can call too
         try {
-            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.getCommandSenderWorld());
+            ClaimStorage storage = ClaimStorage.get((ServerLevel) player.level());
             IPermissionContainer claim = storage.getForPermissionCheck(targetPos);
             return claim.canInteract((ServerPlayer) player, PermissionRegistry.INTERACTBLOCK, targetPos);
         } catch (Exception e) {

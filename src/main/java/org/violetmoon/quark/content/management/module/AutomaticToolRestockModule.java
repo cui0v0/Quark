@@ -169,7 +169,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 
 	@PlayEvent
 	public void onPlayerTick(ZPlayerTick.End event) {
-		if(!event.getPlayer().getCommandSenderWorld().isClientSide && replacements.containsKey(event.getPlayer())) {
+		if(!event.getPlayer().level().isClientSide && replacements.containsKey(event.getPlayer())) {
 			Stack<QueuedRestock> replacementStack = replacements.get(event.getPlayer());
 			synchronized(mutex) {
 				while(!replacementStack.isEmpty()) {

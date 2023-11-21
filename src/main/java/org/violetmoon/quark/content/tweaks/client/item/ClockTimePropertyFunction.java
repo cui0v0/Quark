@@ -30,8 +30,8 @@ public class ClockTimePropertyFunction implements ItemPropertyFunction {
 		boolean carried = entityIn != null;
 		Entity entity = carried ? entityIn : stack.getFrame();
 
-		if(worldIn == null && entity != null && entity.getCommandSenderWorld() instanceof ClientLevel)
-			worldIn = (ClientLevel) entity.getCommandSenderWorld();
+		if(worldIn == null && entity != null && entity.level() instanceof ClientLevel)
+			worldIn = (ClientLevel) entity.level();
 
 		if(worldIn == null)
 			return 0F;

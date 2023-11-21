@@ -98,7 +98,7 @@ public class PigLittersModule extends ZetaModule {
 		Mob mobA = event.getParentA();
 		Mob mobB = event.getParentB();
 		if (mob instanceof Pig) {
-			Level lvl = mob.getCommandSenderWorld();
+			Level lvl = mob.level();
 			if (lvl instanceof ServerLevel level &&
 					mobA instanceof Animal parentA &&
 					mobB instanceof Animal parentB){

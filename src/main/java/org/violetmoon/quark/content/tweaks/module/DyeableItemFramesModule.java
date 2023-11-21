@@ -69,7 +69,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 			BlockHitResult blockhit = event.getHitVec();
 			UseOnContext context = new UseOnContext(player, hand, blockhit);
 
-			Level level = player.getCommandSenderWorld();
+			Level level = player.level();
 			BlockPos pos = event.getPos();
 			BlockState state = level.getBlockState(pos);
 			
@@ -119,7 +119,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 	}
 
 	protected boolean mayPlace(Player player, Direction direction, ItemStack stack, BlockPos pos) {
-		return !player.getCommandSenderWorld().isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
+		return !player.level().isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, stack);
 	}
 
 	@ZetaLoadModule(clientReplacement = true)

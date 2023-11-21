@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class BackpackMenu extends InventoryMenu {
 
 	public BackpackMenu(int windowId, Player player) {
-		super(player.getInventory(), !player.getCommandSenderWorld().isClientSide, player);
+		super(player.getInventory(), !player.level().isClientSide, player);
 		this.containerId = windowId;
 
 		Inventory inventory = player.getInventory();

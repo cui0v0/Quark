@@ -36,7 +36,7 @@ public class CampfiresBoostElytraModule extends ZetaModule {
 			Vec3 motion = player.getDeltaMovement();
 			if(motion.y() < maxSpeed) {
 				BlockPos pos = player.blockPosition();
-				Level world = player.getCommandSenderWorld();
+				Level world = player.level();
 				
 				int moves = 0;
 				while(world.isEmptyBlock(pos) && world.isInWorldBounds(pos) && moves < 20) {

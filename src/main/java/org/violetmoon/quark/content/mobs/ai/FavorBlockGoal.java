@@ -62,7 +62,7 @@ public class FavorBlockGoal extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return timeoutCounter >= -maxStayTicks && timeoutCounter <= 1200 && targetBlock.test(creature.getCommandSenderWorld().getBlockState(destinationBlock));
+		return timeoutCounter >= -maxStayTicks && timeoutCounter <= 1200 && targetBlock.test(creature.level().getBlockState(destinationBlock));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class FavorBlockGoal extends Goal {
 						pos.set(xBase + xShift, yBase + yShift - 1, zBase + zShift);
 
 						if (creature.isWithinRestriction(pos) &&
-								targetBlock.test(creature.getCommandSenderWorld().getBlockState(pos))) {
+								targetBlock.test(creature.level().getBlockState(pos))) {
 							destinationBlock = pos;
 							return true;
 						}

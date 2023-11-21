@@ -105,10 +105,10 @@ public class BackpackModule extends ZetaModule {
 				chance--;
 				amount++;
 			}
-			if(chance > 0 && entity.getCommandSenderWorld().random.nextDouble() < chance)
+			if(chance > 0 && entity.level().random.nextDouble() < chance)
 				amount++;
 
-			event.getDrops().add(new ItemEntity(entity.getCommandSenderWorld(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ravager_hide, amount)));
+			event.getDrops().add(new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), new ItemStack(ravager_hide, amount)));
 		}
 	}
 

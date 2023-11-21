@@ -57,7 +57,7 @@ public class AmbientDiscsModule extends ZetaModule {
 	@PlayEvent
 	public void onMobDeath(ZLivingDeath event) {
 		if(dropOnSpiderKill && event.getEntity() instanceof Spider && event.getSource().getEntity() instanceof Skeleton) {
-			Item item = discs.get(event.getEntity().getCommandSenderWorld().random.nextInt(discs.size()));
+			Item item = discs.get(event.getEntity().level().random.nextInt(discs.size()));
 			event.getEntity().spawnAtLocation(item, 0);
 		}
 	}

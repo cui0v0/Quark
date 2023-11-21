@@ -300,7 +300,7 @@ public class AncientTomesModule extends ZetaModule {
 		ItemStack right = event.getRight();
 
 		if(curseGear && (right.is(ancient_tome) || event.getLeft().is(ancient_tome))){
-			event.getOutput().enchant(curses.get(event.getEntity().getCommandSenderWorld().random.nextInt(curses.size())),1);
+			event.getOutput().enchant(curses.get(event.getEntity().level().random.nextInt(curses.size())),1);
 		}
 
 		if(isOverlevel(output) && (right.getItem() == Items.ENCHANTED_BOOK || right.getItem() == ancient_tome) && event.getEntity() instanceof ServerPlayer sp)

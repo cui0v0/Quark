@@ -142,7 +142,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	protected void checkImpact() {
-		if (getCommandSenderWorld().isClientSide)
+		if (level().isClientSide)
 			return;
 
 		Vec3 motion = getDeltaMovement();
@@ -159,7 +159,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 					onHit(result);
 				else doEntities = false;
 			} else {
-				HitResult result = getCommandSenderWorld().clip(new ClipContext(position, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+				HitResult result = level().clip(new ClipContext(position, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 				if(result.getType() == Type.MISS)
 					return;
 
@@ -177,7 +177,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 	@Nullable
 	protected EntityHitResult raycastEntities(Vec3 from, Vec3 to) {
-		return ProjectileUtil.getEntityHitResult(getCommandSenderWorld(), this, from, to, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), (entity) ->
+		return ProjectileUtil.getEntityHitResult(level(), this, from, to, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), (entity) ->
 			!entity.isSpectator()
 				&& entity.isAlive()
 				&& (entity.isPickable() || entity instanceof AbstractPickarang)
@@ -195,7 +195,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 		if(result.getType() == Type.BLOCK && result instanceof BlockHitResult blockHitResult) {
 			BlockPos hit = blockHitResult.getBlockPos();
-			BlockState state = getCommandSenderWorld().getBlockState(hit);
+			BlockState state = level().getBlockState(hit);
 
 			// TODO find replacement for BlockState#isSolid
 			if(getPiercingModifier() == 0 || state.isSolid())
@@ -204,7 +204,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 			if(!(owner instanceof ServerPlayer player))
 				return;
 			//more general way of doing it instead of just checking hardness
-			float progress = getBlockDestroyProgress(state,player, getCommandSenderWorld(), hit);
+			float progress = getBlockDestroyProgress(state,player, level(), hit);
 			if (progress == 0) return;
 
 			float equivalentHardness = (1) / (progress * 100);
@@ -216,7 +216,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				player.setItemInHand(InteractionHand.MAIN_HAND, getStack());
 
 				if (player.gameMode.destroyBlock(hit))
-					getCommandSenderWorld().levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, hit, Block.getId(state));
+					level().levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, hit, Block.getId(state));
 				else
 					clank();
 
@@ -255,7 +255,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 								if(ore != 0) {
 									addHit(toretoise);
-									if (getCommandSenderWorld() instanceof ServerLevel serverLevel) {
+									if (level() instanceof ServerLevel serverLevel) {
 										LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
 												.withParameter(LootContextParams.TOOL, pickarang);
 										if (owner instanceof Player player)
@@ -291,10 +291,10 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 						manager.addTransientAttributeModifiers(modifiers);
 
 						ItemStack stack = getStack();
-						stack.hurt(1, getCommandSenderWorld().random, null);
+						stack.hurt(1, level().random, null);
 						setStack(stack);
 						// FIXME maybe register custom damage source? - IThundxr
-						hit.hurt(getCommandSenderWorld().damageSources().indirectMagic(this, this),
+						hit.hurt(level().damageSources().indirectMagic(this, this),
 								(float) manager.getValue(Attributes.ATTACK_DAMAGE));
 					}
 				}
@@ -411,7 +411,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		float drag;
 		if (this.isInWater()) {
 			for(int i = 0; i < 4; ++i) {
-				this.getCommandSenderWorld().addParticle(ParticleTypes.BUBBLE, pos.x - ourMotion.x * 0.25D, pos.y - ourMotion.y * 0.25D, pos.z - ourMotion.z * 0.25D, ourMotion.x, ourMotion.y, ourMotion.z);
+				this.level().addParticle(ParticleTypes.BUBBLE, pos.x - ourMotion.x * 0.25D, pos.y - ourMotion.y * 0.25D, pos.z - ourMotion.z * 0.25D, ourMotion.x, ourMotion.y, ourMotion.z);
 			}
 
 			drag = 0.8F;
@@ -434,7 +434,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 		LivingEntity owner = getThrower();
 		if(owner == null || !owner.isAlive() || !(owner instanceof Player)) {
-			if(!getCommandSenderWorld().isClientSide) {
+			if(!level().isClientSide) {
 				while(isInWall())
 					setPos(getX(), getY() + 1, getZ());
 
@@ -448,15 +448,15 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		if(!returning) {
 			if(liveTime > getPickarangType().timeout)
 				setReturning();
-			if (!getCommandSenderWorld().getWorldBorder().isWithinBounds(getBoundingBox()))
+			if (!level().getWorldBorder().isWithinBounds(getBoundingBox()))
 				spark();
 		} else {
 			noPhysics = true;
 
 			int eff = getEfficiencyModifier();
 
-			List<ItemEntity> items = getCommandSenderWorld().getEntitiesOfClass(ItemEntity.class, getBoundingBox().inflate(2));
-			List<ExperienceOrb> xp = getCommandSenderWorld().getEntitiesOfClass(ExperienceOrb.class, getBoundingBox().inflate(2));
+			List<ItemEntity> items = level().getEntitiesOfClass(ItemEntity.class, getBoundingBox().inflate(2));
+			List<ExperienceOrb> xp = level().getEntitiesOfClass(ExperienceOrb.class, getBoundingBox().inflate(2));
 
 			Vec3 ourPos = position();
 			for(ItemEntity item : items) {
@@ -482,7 +482,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				Inventory inventory = player.getInventory();
 				ItemStack stackInSlot = inventory.getItem(slot);
 
-				if(!getCommandSenderWorld().isClientSide) {
+				if(!level().isClientSide) {
 					playSound(QuarkSounds.ENTITY_PICKARANG_PICKUP, 1, 1);
 
 					if(player instanceof ServerPlayer sp && (this instanceof Flamerang) && isOnFire() && getPassengers().size() > 0)
@@ -549,8 +549,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 	@Nullable
 	public LivingEntity getThrower() {
-		if (this.owner == null && this.ownerId != null && this.getCommandSenderWorld() instanceof ServerLevel) {
-			Entity entity = ((ServerLevel) this.getCommandSenderWorld()).getEntity(this.ownerId);
+		if (this.owner == null && this.ownerId != null && this.level() instanceof ServerLevel) {
+			Entity entity = ((ServerLevel) this.level()).getEntity(this.ownerId);
 			if (entity instanceof LivingEntity) {
 				this.owner = (LivingEntity)entity;
 			} else {

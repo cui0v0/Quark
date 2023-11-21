@@ -174,7 +174,7 @@ public class CrateMenu extends AbstractContainerMenu {
 
 	public static CrateMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
-		CrateBlockEntity te = (CrateBlockEntity) playerInventory.player.getCommandSenderWorld().getBlockEntity(pos);
+		CrateBlockEntity te = (CrateBlockEntity) playerInventory.player.level().getBlockEntity(pos);
 		return new CrateMenu(windowId, playerInventory, te);
 	}
 

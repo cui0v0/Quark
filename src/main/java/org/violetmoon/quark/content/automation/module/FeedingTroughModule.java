@@ -87,7 +87,7 @@ public class FeedingTroughModule extends ZetaModule {
 
 	@PlayEvent
 	public void onBreed(ZBabyEntitySpawn.Lowest event) {
-		if (event.getCausedByPlayer() == null && event.getParentA().getCommandSenderWorld().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
+		if (event.getCausedByPlayer() == null && event.getParentA().level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
 			breedingOccurred.set(true);
 	}
 
@@ -135,7 +135,7 @@ public class FeedingTroughModule extends ZetaModule {
 			BlockPos location = pointer.pos();
 			Vec3 eyesPos = goal.mob.position().add(0, goal.mob.getEyeHeight(), 0);
 			Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
-			BlockHitResult ray = goal.mob.getCommandSenderWorld().clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
+			BlockHitResult ray = goal.mob.level().clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
 
 			if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
 				if(!cached)
@@ -202,7 +202,7 @@ public class FeedingTroughModule extends ZetaModule {
 			int z = tag.getInt("z");
 			
 			BlockPos pos = new BlockPos(x, y, z);
-			return getTroughFakePlayer(e.getCommandSenderWorld(), pos, goal);
+			return getTroughFakePlayer(e.level(), pos, goal);
 		}
 		
 	}
