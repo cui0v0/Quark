@@ -62,7 +62,7 @@ public class SeedPouchModule extends ZetaModule {
 				Pair<ItemStack, Integer> contents = SeedPouchItem.getContents(heldStack);
 				if(contents != null) {
 					ItemStack pouchStack = contents.getLeft();
-					if(ItemStack.isSame(pouchStack, stack)) {
+					if(ItemStack.isSameItem(pouchStack, stack)) {
 						int curr = contents.getRight();
 						int missing = maxItems - curr;
 
@@ -72,8 +72,8 @@ public class SeedPouchModule extends ZetaModule {
 						stack.setCount(count - toAdd);
 						SeedPouchItem.setCount(heldStack, curr + toAdd);
 
-						if(player.level instanceof ServerLevel)
-							player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.2F, (player.level.random.nextFloat() - player.level.random.nextFloat()) * 1.4F + 2.0F);
+						if(player.level() instanceof ServerLevel)
+							player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.2F, (player.level().random.nextFloat() - player.level().random.nextFloat()) * 1.4F + 2.0F);
 
 						if(stack.getCount() == 0)
 							break;

@@ -41,7 +41,7 @@ public class ShulkerPackingModule extends ZetaModule {
 			ItemStack mainHand = player.getMainHandItem();
 			ItemStack offHand = player.getOffhandItem();
 			if (mainHand.is(Items.SHULKER_SHELL) && offHand.is(Items.SHULKER_SHELL)) {
-				Level level = player.getLevel();
+				Level level = player.level();
 				BlockState state = level.getBlockState(pos);
 				if (state.is(Tags.Blocks.CHESTS) && !state.is(Blocks.ENDER_CHEST)) {
 					event.setCanceled(true);

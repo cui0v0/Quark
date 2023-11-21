@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,7 +47,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.HarvestMessage;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -115,14 +114,14 @@ public class SimpleHarvestModule extends ZetaModule {
         staticEnabled = enabled;
 
         if (doHarvestingSearch) {
-            Registry.BLOCK.stream()
+            BuiltInRegistries.BLOCK.stream()
                     .filter(b -> !isVanilla(b) && b instanceof CropBlock)
                     .map(b -> (CropBlock) b)
                     //only grabbing blocks whose max age is acceptable
                     .filter(b -> b.isMaxAge(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues()))))
                     .forEach(b -> crops.put(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues())), b.defaultBlockState()));
 
-            Registry.BLOCK.stream()
+            BuiltInRegistries.BLOCK.stream()
                     .filter(b -> !isVanilla(b) && (b instanceof BushBlock || b instanceof GrowingPlantBlock) && b instanceof BonemealableBlock && !(b instanceof CropBlock))
                     .forEach(rightClickCrops::add);
         }
@@ -141,7 +140,7 @@ public class SimpleHarvestModule extends ZetaModule {
         }
 
         for (String blockName : rightClickableBlocks) {
-            Block block = Registry.BLOCK.get(new ResourceLocation(blockName));
+            Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(blockName));
             if (block != Blocks.AIR)
                 rightClickCrops.add(block);
         }
@@ -168,9 +167,7 @@ public class SimpleHarvestModule extends ZetaModule {
     }
 
     private boolean isVanilla(Block entry) {
-        ResourceLocation loc = Registry.BLOCK.getKey(entry);
-        if (loc == null)
-            return true; // Just in case
+        ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(entry);
 
         return loc.getNamespace().equals("minecraft");
     }
@@ -227,10 +224,10 @@ public class SimpleHarvestModule extends ZetaModule {
     }
 
     private static boolean handle(Player player, InteractionHand hand, BlockPos pos, boolean doRightClick, boolean isHoe) {
-        if (!player.level.mayInteract(player, pos) || player == null || player.isSpectator())
+        if (!player.level().mayInteract(player, pos) || player.isSpectator())
             return false;
 
-        BlockState worldBlock = player.level.getBlockState(pos);
+        BlockState worldBlock = player.level().getBlockState(pos);
         if (!worldBlock.is(simpleHarvestBlacklistedTag)) {
             //prevents firing event for non crop blocks
             if (cropBlocks.contains(worldBlock.getBlock()) || (doRightClick && rightClickCrops.contains(worldBlock.getBlock()))) {
@@ -241,19 +238,19 @@ public class SimpleHarvestModule extends ZetaModule {
                 if (event.isCanceled()) return false;
 
                 BlockPos newPos = event.getTargetPos();
-                if (newPos != pos) worldBlock = player.level.getBlockState(newPos);
+                if (newPos != pos) worldBlock = player.level().getBlockState(newPos);
                 action = event.getAction();
 
                 if (action == ActionType.HARVEST) {
-                    harvestAndReplant(player.level, pos, worldBlock, player, player.getMainHandItem());
+                    harvestAndReplant(player.level(), pos, worldBlock, player, player.getMainHandItem());
                     return true;
                 } else if (action == ActionType.CLICK) {
                     var hitResult = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, true);
                     if (player instanceof ServerPlayer serverPlayer) {
-                        return serverPlayer.gameMode.useItemOn(serverPlayer, serverPlayer.level, player.getMainHandItem(), hand,
+                        return serverPlayer.gameMode.useItemOn(serverPlayer, serverPlayer.level(), player.getMainHandItem(), hand,
                             hitResult).consumesAction();
                     } else {
-                        return Quark.proxy.clientUseItem(player, player.level, hand, hitResult).consumesAction();
+                        return Quark.proxy.clientUseItem(player, player.level(), hand, hitResult).consumesAction();
                     }
                 }
             }
@@ -278,7 +275,7 @@ public class SimpleHarvestModule extends ZetaModule {
         if(!IClaimIntegration.INSTANCE.canBreak(player, pos))
             return false;
 
-        BlockState stateAt = player.level.getBlockState(pos);
+        BlockState stateAt = player.level().getBlockState(pos);
         //can you till this block?
         BlockState modifiedState = Quark.ZETA.blockExtensions.get(stateAt).getToolModifiedStateZeta(stateAt, new UseOnContext(player, hand, pick), "hoe_till", true);
         if (modifiedState != null)
@@ -290,7 +287,7 @@ public class SimpleHarvestModule extends ZetaModule {
         if (!emptyHandHarvest && !isHoe)
             return false;
 
-        BlockState stateAbove = player.level.getBlockState(pos.above());
+        BlockState stateAbove = player.level().getBlockState(pos.above());
 
         if (isHoe) {
             boolean aboveValid = !stateAbove.is(simpleHarvestBlacklistedTag) && (cropBlocks.contains(stateAbove.getBlock()) || rightClickCrops.contains(stateAbove.getBlock()));
@@ -320,7 +317,7 @@ public class SimpleHarvestModule extends ZetaModule {
         if (!hasHarvested)
             return false;
 
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             if (inHand.isEmpty())
                 QuarkClient.ZETA_CLIENT.sendToServer(new HarvestMessage(pos, hand));
         } else {

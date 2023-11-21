@@ -1,21 +1,10 @@
 package org.violetmoon.quark.content.mobs.entity;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
-import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
-import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
-import org.violetmoon.quark.content.mobs.module.ShibaModule;
-import org.violetmoon.quark.content.tweaks.ai.NuzzleGoal;
-import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,30 +15,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -59,6 +32,16 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
+import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
+import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
+import org.violetmoon.quark.content.mobs.module.ShibaModule;
+import org.violetmoon.quark.content.tweaks.ai.NuzzleGoal;
+import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
+
+import java.util.List;
+import java.util.UUID;
 
 public class Shiba extends TamableAnimal {
 
@@ -96,10 +79,10 @@ public class Shiba extends TamableAnimal {
 		super.tick();
 
 		AbstractArrow fetching = getFetching();
-		if(fetching != null && (isSleeping() || fetching.level != level || !fetching.isAlive() || fetching.pickup == Pickup.DISALLOWED))
+		if(fetching != null && (isSleeping() || fetching.level() != level() || !fetching.isAlive() || fetching.pickup == Pickup.DISALLOWED))
 			setFetching(null);
 
-		if(!level.isClientSide) {
+		if(!level().isClientSide) {
 			if(hyperfocusCooldown > 0)
 				hyperfocusCooldown--;
 
@@ -109,7 +92,7 @@ public class Shiba extends TamableAnimal {
 				LivingEntity owner = getOwner();
 
 				if(currentHyperfocus != null) {
-					boolean hyperfocusClear = level.getBrightness(LightLayer.BLOCK, currentHyperfocus) > 0; 
+					boolean hyperfocusClear = level().getBrightness(LightLayer.BLOCK, currentHyperfocus) > 0;
 					boolean ownerAbsent = owner == null
 							|| (owner instanceof Player
 								&& (!owner.getMainHandItem().is(Items.TORCH) && !owner.getOffhandItem().is(Items.TORCH)));
@@ -130,10 +113,10 @@ public class Shiba extends TamableAnimal {
 						for(int i = 0; i < 20; i++) {
 							BlockPos test = ourPos.offset(random.nextInt(searchRange * 2 + 1) - searchRange, random.nextInt(searchRange * 2 + 1) - searchRange, random.nextInt(searchRange * 2 + 1) - searchRange);
 							if(hasLineOfSight(test.above(), searchRange)
-									&& level.getBlockState(test).isAir()
-									&& level.getBlockState(test.below()).isSolidRender(level, test.below())
-									&& level.getBrightness(LightLayer.BLOCK, test) == 0
-									&& !(ShibaModule.ignoreAreasWithSkylight && level.canSeeSky(test))) {
+									&& level().getBlockState(test).isAir()
+									&& level().getBlockState(test.below()).isSolidRender(level(), test.below())
+									&& level().getBrightness(LightLayer.BLOCK, test) == 0
+									&& !(ShibaModule.ignoreAreasWithSkylight && level().canSeeSky(test))) {
 
 								currentHyperfocus = test;
 							}
@@ -143,15 +126,15 @@ public class Shiba extends TamableAnimal {
 			}
 		}
 
-		if(!isSleeping() && !level.isClientSide && fetching == null && getMouthItem().isEmpty()) {
+		if(!isSleeping() && !level().isClientSide && fetching == null && getMouthItem().isEmpty()) {
 			LivingEntity owner = getOwner();
 			if(owner != null) {
 				AABB check = owner.getBoundingBox().inflate(2);
-				List<AbstractArrow> arrows = level.getEntitiesOfClass(AbstractArrow.class, check,
+				List<AbstractArrow> arrows = level().getEntitiesOfClass(AbstractArrow.class, check,
 						a -> a.getOwner() == owner && a.pickup != Pickup.DISALLOWED);
 
 				if(arrows.size() > 0) {
-					AbstractArrow arrow = arrows.get(level.random.nextInt(arrows.size()));
+					AbstractArrow arrow = arrows.get(level().random.nextInt(arrows.size()));
 					setFetching(arrow);
 				}
 			}
@@ -164,7 +147,7 @@ public class Shiba extends TamableAnimal {
 		if(vec31.distanceTo(vec3) > maxRange) {
 			return false;
 		} else {
-			return this.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+			return this.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 		}
 	}
 
@@ -173,7 +156,7 @@ public class Shiba extends TamableAnimal {
 		if(id == -1)
 			return null;
 
-		Entity e = level.getEntity(id);
+		Entity e = level().getEntity(id);
 		if(!(e instanceof AbstractArrow))
 			return null;
 
@@ -190,9 +173,8 @@ public class Shiba extends TamableAnimal {
 		return item.isEdible() && item.getFoodProperties().isMeat();
 	}
 
-	@NotNull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -275,7 +257,7 @@ public class Shiba extends TamableAnimal {
 		Item item = itemstack.getItem();
 		if(player.isDiscrete() && player.getMainHandItem().isEmpty()) {
 			if(hand == InteractionHand.MAIN_HAND && WantLoveGoal.canPet(this)) {
-				if(player.level instanceof ServerLevel serverLevel) {
+				if(player.level() instanceof ServerLevel serverLevel) {
 					Vec3 pos = position();
 					serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 					playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
@@ -286,7 +268,7 @@ public class Shiba extends TamableAnimal {
 
 			return InteractionResult.SUCCESS;
 		} else
-			if (this.level.isClientSide) {
+			if (this.level().isClientSide) {
 				boolean flag = this.isOwnedBy(player) || this.isTame() || item == Items.BONE && !this.isTame();
 				return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
 			} else {
@@ -297,7 +279,7 @@ public class Shiba extends TamableAnimal {
 						if(!player.addItem(copy))
 							spawnAtLocation(copy);
 
-						if(player.level instanceof ServerLevel serverLevel) {
+						if(player.level() instanceof ServerLevel serverLevel) {
 							Vec3 pos = position();
 							serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 							playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
@@ -358,9 +340,9 @@ public class Shiba extends TamableAnimal {
 						this.navigation.stop();
 						this.setTarget(null);
 						this.setOrderedToSit(true);
-						this.level.broadcastEntityEvent(this, (byte)7);
+						this.level().broadcastEntityEvent(this, (byte)7);
 					} else {
-						this.level.broadcastEntityEvent(this, (byte)6);
+						this.level().broadcastEntityEvent(this, (byte)6);
 					}
 
 					return InteractionResult.SUCCESS;
