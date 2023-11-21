@@ -13,7 +13,7 @@ import org.violetmoon.quark.content.client.module.LongRangePickBlockModule;
 
 import net.minecraft.client.Minecraft;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {

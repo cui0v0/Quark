@@ -3,7 +3,6 @@ package org.violetmoon.quark.content.building.module;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -15,7 +14,7 @@ public class SoulSandstoneModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.COLOR_BROWN)
+		Block.Properties props = Block.Properties.of(Material.STONE, MapColor.COLOR_BROWN)
 				.requiresCorrectToolForDrops()
 				.strength(0.8F);
 		

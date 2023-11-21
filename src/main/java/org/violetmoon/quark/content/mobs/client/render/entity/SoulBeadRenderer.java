@@ -19,7 +19,7 @@ public class SoulBeadRenderer extends EntityRenderer<SoulBead> {
 	@NotNull
 	@Override
 	public ResourceLocation getTextureLocation(@NotNull SoulBead entity) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 
 	@Override

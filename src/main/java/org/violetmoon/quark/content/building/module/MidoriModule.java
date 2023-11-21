@@ -5,7 +5,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -24,7 +23,7 @@ public class MidoriModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
 		
-		Block.Properties props = Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GREEN)
+		Block.Properties props = Block.Properties.of(Material.STONE, MapColor.COLOR_LIGHT_GREEN)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 

@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class ClockTimePropertyFunction implements ItemPropertyFunction {

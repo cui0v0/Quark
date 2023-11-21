@@ -66,7 +66,7 @@ import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.ai.RaveGoal;
 import org.violetmoon.quark.content.mobs.module.CrabsModule;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.BiConsumer;
 
 public class Crab extends Animal implements IEntityAdditionalSpawnData, Bucketable {

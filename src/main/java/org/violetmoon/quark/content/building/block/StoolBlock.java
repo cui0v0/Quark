@@ -64,7 +64,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public StoolBlock(ZetaModule module, DyeColor color) {
 		super(color.getName() + "_stool", module, CreativeModeTab.TAB_DECORATIONS,
-				BlockBehaviour.Properties.of(Material.WOOL, color.getMaterialColor())
+				BlockBehaviour.Properties.of(Material.WOOL, color.getMapColor())
 				.sound(SoundType.WOOD)
 				.strength(0.2F)
 				.noOcclusion());

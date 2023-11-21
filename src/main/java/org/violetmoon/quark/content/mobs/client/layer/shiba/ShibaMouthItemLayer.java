@@ -1,20 +1,17 @@
 package org.violetmoon.quark.content.mobs.client.layer.shiba;
 
-import com.mojang.math.Axis;
-import net.minecraft.client.renderer.block.model.ItemTransform;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.mobs.client.model.ShibaModel;
 import org.violetmoon.quark.content.mobs.entity.Shiba;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
@@ -51,7 +48,7 @@ public class ShibaMouthItemLayer extends RenderLayer<Shiba, ShibaModel> {
 
 		matrix.mulPose(Axis.YP.rotationDegrees(45));
 		matrix.mulPose(Axis.XP.rotationDegrees(90));
-		itemInHandRenderer.renderItem(entitylivingbaseIn, item, ItemTransform.TransformType.NONE, true, matrix, bufferIn, packedLightIn);
+		itemInHandRenderer.renderItem(entitylivingbaseIn, item, ItemDisplayContext.NONE, true, matrix, bufferIn, packedLightIn);
 		matrix.popPose();
 	}
 }

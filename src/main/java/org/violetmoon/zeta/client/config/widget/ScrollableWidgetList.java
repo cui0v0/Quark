@@ -1,18 +1,17 @@
 package org.violetmoon.zeta.client.config.widget;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetList.Entry<E>> extends ObjectSelectionList<E> {
 	public final S parent;
@@ -86,14 +85,14 @@ public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetLi
 	// list.reenableVisibleWidgets();
 
 	@Override
-	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		//turn off wasOnScreen, then render widget - minecraft does some simple culling when rendering,
 		//and as a side effect of Entry.render, wasOnScreen will be turned back on
 		forEachWidgetWrapper(w -> {
 			w.widget.visible = false;
 			w.wasOnScreen = false;
 		});
-		super.render(mstack, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 
 	public void reenableVisibleWidgets() {
@@ -112,7 +111,7 @@ public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetLi
 		}
 
 		@Override
-		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		public void render(@NotNull GuiGraphics guiGraphics, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 			children.forEach(c -> {
 				c.updatePosition(rowLeft, rowTop);
 
@@ -120,22 +119,22 @@ public class ScrollableWidgetList<S extends Screen, E extends ScrollableWidgetLi
 
 				//only enable the visible flag as long as needed to render the widget
 				c.widget.visible = true;
-				c.widget.render(mstack, mouseX, mouseY, partialTicks);
+				c.widget.render(guiGraphics, mouseX, mouseY, partialTicks);
 				c.widget.visible = false;
 			});
 		}
 
 		//Convenience for drawing a striped background
-		public void drawBackground(PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered) {
+		public void drawBackground(GuiGraphics guiGraphics, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered) {
 			if(index % 2 == 0)
-				fill(mstack, rowLeft, rowTop, rowLeft + rowWidth, rowTop + rowHeight, 0x66000000);
+				guiGraphics.fill(rowLeft, rowTop, rowLeft + rowWidth, rowTop + rowHeight, 0x66000000);
 
 			if(hovered) {
-				fill(mstack, rowLeft, rowTop, rowLeft + 1, rowTop + rowHeight, 0xFFFFFFFF);
-				fill(mstack, rowLeft + rowWidth - 1, rowTop, rowLeft + rowWidth, rowTop + rowHeight, 0xFFFFFFFF);
+				guiGraphics.fill(rowLeft, rowTop, rowLeft + 1, rowTop + rowHeight, 0xFFFFFFFF);
+				guiGraphics.fill(rowLeft + rowWidth - 1, rowTop, rowLeft + rowWidth, rowTop + rowHeight, 0xFFFFFFFF);
 
-				fill(mstack, rowLeft, rowTop, rowLeft + rowWidth, rowTop + 1, 0xFFFFFFFF);
-				fill(mstack, rowLeft, rowTop + rowHeight - 1, rowLeft + rowWidth, rowTop + rowHeight, 0xFFFFFFFF);
+				guiGraphics.fill(rowLeft, rowTop, rowLeft + rowWidth, rowTop + 1, 0xFFFFFFFF);
+				guiGraphics.fill(rowLeft, rowTop + rowHeight - 1, rowLeft + rowWidth, rowTop + rowHeight, 0xFFFFFFFF);
 			}
 		}
 	}

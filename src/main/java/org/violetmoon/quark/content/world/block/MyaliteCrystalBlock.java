@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -17,7 +16,7 @@ public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockCol
 
 	public MyaliteCrystalBlock(ZetaModule module) {
 		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
-				Block.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE)
+				Block.Properties.of(Material.GLASS, MapColor.COLOR_PURPLE)
 				.strength(0.5F, 1200F)
 				.sound(SoundType.GLASS)
 				.lightLevel(b -> 14)

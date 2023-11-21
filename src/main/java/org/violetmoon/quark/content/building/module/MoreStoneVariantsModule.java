@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.function.BooleanSupplier;
-
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,6 +19,8 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherAdditionalFlags;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "building")
 public class MoreStoneVariantsModule extends ZetaModule {

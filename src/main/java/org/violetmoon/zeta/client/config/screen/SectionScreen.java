@@ -1,20 +1,12 @@
 package org.violetmoon.zeta.client.config.screen;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
-import org.violetmoon.zeta.client.TopLayerTooltipHandler;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.config.definition.ClientDefinitionExt;
 import org.violetmoon.zeta.client.config.widget.DefaultDiscardDone;
@@ -23,6 +15,11 @@ import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.Definition;
 import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.ValueDefinition;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SectionScreen extends ZetaScreen {
 	protected final SectionDefinition section;
@@ -71,33 +68,33 @@ public class SectionScreen extends ZetaScreen {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(mstack);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
 
-		list.render(mstack, mouseX, mouseY, partialTicks);
-		super.render(mstack, mouseX, mouseY, partialTicks);
+		list.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		list.reenableVisibleWidgets();
 
 		int left = 20;
 
 		String modName = WordUtils.capitalizeFully(z.modid);
-		font.draw(mstack, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", modName), left, 10, 0x48ddbc);
-		font.draw(mstack, breadcrumbs, left, 20, 0xFFFFFF);
+		guiGraphics.drawString(font, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", modName), left, 10, 0x48ddbc);
+		guiGraphics.drawString(font, breadcrumbs, left, 20, 0xFFFFFF);
 	}
 
 	public abstract static class Entry extends ScrollableWidgetList.Entry<Entry> { }
 
 	public class Divider extends Entry {
 		@Override
-		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		public void render(@NotNull GuiGraphics guiGraphics, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 			assert minecraft != null;
 
 			String s = I18n.get("quark.gui.config.subcategories");
-			minecraft.font.drawShadow(mstack, s, rowLeft + (float) (rowWidth / 2 - minecraft.font.width(s) / 2), rowTop + 7, 0x6666FF);
+			guiGraphics.drawString(minecraft.font, s, rowLeft + (float) (rowWidth / 2 - minecraft.font.width(s) / 2), rowTop + 7, 0x6666FF, true);
 		}
 
 		@Override
-		public Component getNarration() {
+		public @NotNull Component getNarration() {
 			return Component.literal("");
 		}
 	}
@@ -116,7 +113,7 @@ public class SectionScreen extends ZetaScreen {
 		}
 
 		@Override
-		public void render(@NotNull PoseStack mstack, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
+		public void render(@NotNull GuiGraphics guiGraphics, int index, int rowTop, int rowLeft, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTicks) {
 			assert minecraft != null; //thank you intellij, always lookin out for me
 
 			int left = rowLeft + 10;
@@ -125,9 +122,9 @@ public class SectionScreen extends ZetaScreen {
 			int effIndex = index + 1;
 			if(def instanceof SectionDefinition)
 				effIndex--; // compensate for the divider
-			drawBackground(mstack, effIndex, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered);
+			drawBackground(guiGraphics, effIndex, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered);
 
-			super.render(mstack, index, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered, partialTicks);
+			super.render(guiGraphics, index, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered, partialTicks);
 
 			String name = def.getGuiDisplayName(I18n::get);
 			if(changes.isDirty(def))
@@ -166,13 +163,13 @@ public class SectionScreen extends ZetaScreen {
 					zc.topLayerTooltipHandler.setTooltip(tooltip, mouseX, mouseY);
 			}
 
-			minecraft.font.drawShadow(mstack, name, left, top, 0xFFFFFF);
+			guiGraphics.drawString(minecraft.font, name, left, top, 0xFFFFFF, true);
 			if(ext != null)
-				minecraft.font.drawShadow(mstack, ext.getSubtitle(changes, def), left, top + 10, 0x999999); //TODO: getSubtitle
+				guiGraphics.drawString(minecraft.font, ext.getSubtitle(changes, def), left, top + 10, 0x999999, true); //TODO: getSubtitle
 		}
 
 		@Override
-		public Component getNarration() {
+		public @NotNull Component getNarration() {
 			return Component.literal(def.getGuiDisplayName(I18n::get));
 		}
 	}

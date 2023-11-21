@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.client.tooltip;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
@@ -94,8 +95,10 @@ public class ShulkerBoxTooltips {
 
 
 		@Override
-		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull PoseStack pose, @NotNull ItemRenderer itemRenderer, int something) {
+		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			Minecraft mc = Minecraft.getInstance();
+			
+			PoseStack pose = guiGraphics.pose();
 
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
 			if (cmp != null) {
@@ -149,21 +152,19 @@ public class ShulkerBoxTooltips {
 
 						renderTooltipBackground(mc, pose, currentX, currentY, dims[0], dims[1], color);
 
-						ItemRenderer render = mc.getItemRenderer();
-
 						for (int i = 0; i < size; i++) {
 							ItemStack itemstack = capability.getStackInSlot(i);
 							int xp = currentX + 6 + (i % 9) * 18;
 							int yp = currentY + 6 + (i / 9) * 18;
 
 							if (!itemstack.isEmpty()) {
-								render.renderAndDecorateItem(itemstack, xp, yp);
-								render.renderGuiItemDecorations(mc.font, itemstack, xp, yp);
+								guiGraphics.renderItem(itemstack, xp, yp);
+								guiGraphics.renderItemDecorations(mc.font, itemstack, xp, yp);
 							}
 
 							if (!Quark.ZETA.modules.get(ChestSearchingModule.class).namesMatch(itemstack)) {
 								RenderSystem.disableDepthTest();
-								GuiComponent.fill(pose, xp, yp, xp + 16, yp + 16, 0xAA000000);
+								guiGraphics.fill(xp, yp, xp + 16, yp + 16, 0xAA000000);
 							}
 						}
 

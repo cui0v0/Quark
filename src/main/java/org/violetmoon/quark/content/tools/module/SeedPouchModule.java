@@ -73,7 +73,7 @@ public class SeedPouchModule extends ZetaModule {
 						SeedPouchItem.setCount(heldStack, curr + toAdd);
 
 						if(player.level() instanceof ServerLevel)
-							player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.2F, (player.level.random.nextFloat() - player.level.random.nextFloat()) * 1.4F + 2.0F);
+							player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.2F, (player.level().random.nextFloat() - player.level().random.nextFloat()) * 1.4F + 2.0F);
 
 						if(stack.getCount() == 0)
 							break;

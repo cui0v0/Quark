@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.PushReaction;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.BooleanSupplier;
 
 public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {

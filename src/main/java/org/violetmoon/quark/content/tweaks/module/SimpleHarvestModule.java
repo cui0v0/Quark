@@ -48,7 +48,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.HarvestMessage;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -170,8 +169,6 @@ public class SimpleHarvestModule extends ZetaModule {
 
     private boolean isVanilla(Block entry) {
         ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(entry);
-        if (loc == null)
-            return true; // Just in case
 
         return loc.getNamespace().equals("minecraft");
     }
@@ -228,7 +225,7 @@ public class SimpleHarvestModule extends ZetaModule {
     }
 
     private static boolean handle(Player player, InteractionHand hand, BlockPos pos, boolean doRightClick, boolean isHoe) {
-        if (!player.level().mayInteract(player, pos) || player == null || player.isSpectator())
+        if (!player.level().mayInteract(player, pos) || player.isSpectator())
             return false;
 
         BlockState worldBlock = player.level().getBlockState(pos);

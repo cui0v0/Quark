@@ -33,7 +33,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.BooleanSupplier;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {

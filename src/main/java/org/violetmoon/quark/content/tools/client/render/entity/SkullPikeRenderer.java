@@ -24,7 +24,7 @@ public class SkullPikeRenderer extends EntityRenderer<SkullPike> {
 	@NotNull
 	@Override
 	public ResourceLocation getTextureLocation(@NotNull SkullPike arg0) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 
 }

@@ -22,7 +22,7 @@ import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)

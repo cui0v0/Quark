@@ -3,7 +3,7 @@ package org.violetmoon.quark.content.client.resources;
 import net.minecraft.world.entity.EquipmentSlot;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public enum AttributeSlot {
 	MAINHAND(EquipmentSlot.MAINHAND),

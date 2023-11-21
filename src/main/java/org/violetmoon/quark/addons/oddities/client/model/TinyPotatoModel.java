@@ -3,7 +3,7 @@ package org.violetmoon.quark.addons.oddities.client.model;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
 import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
