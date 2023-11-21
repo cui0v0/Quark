@@ -5,10 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -54,8 +54,8 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 		e.enqueueWork(() -> {
 			Map<Item, DispenseItemBehavior> registry = DispenserBlock.DISPENSER_REGISTRY;
 
-			for(Block b : Registry.BLOCK) {
-				ResourceLocation res = Registry.BLOCK.getKey(b);
+			for(Block b : BuiltInRegistries.BLOCK) {
+				ResourceLocation res = BuiltInRegistries.BLOCK.getKey(b);
 				if(!blacklist.contains(Objects.toString(res))) {
 					Item item = b.asItem();
 					if(item instanceof BlockItem) {

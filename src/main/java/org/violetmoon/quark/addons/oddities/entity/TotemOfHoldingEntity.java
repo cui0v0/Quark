@@ -3,6 +3,7 @@ package org.violetmoon.quark.addons.oddities.entity;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.item.BackpackItem;
@@ -205,7 +206,7 @@ public class TotemOfHoldingEntity extends Entity {
 
 	@NotNull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -1,5 +1,6 @@
 package org.violetmoon.quark.addons.oddities.client.render.entity;
 
+import com.mojang.math.Axis;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.entity.TotemOfHoldingEntity;
@@ -7,7 +8,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -46,7 +46,7 @@ public class TotemOfHoldingRenderer extends EntityRenderer<TotemOfHoldingEntity>
 		ModelManager modelManager = mc.getModelManager();
 
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(rotation));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(rotation));
 		matrixStackIn.translate(0, translation, 0);
 		matrixStackIn.scale(scale, scale, scale);
 		matrixStackIn.translate(-0.5, 0, -0.5);

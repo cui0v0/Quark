@@ -102,14 +102,6 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 		return tile != null ? tile.getCollisionShape(worldIn, pos) : Shapes.empty();
 	}
 
-	//Todo: Hey Ithundxr, is this even needed anymore? It seems kinda redundant and is unused. At the very least, its out of date.
-	/*
-	@Nullable
-	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, Vec3 origin) {
-		BlockPos pos = new BlockPos(origin);
-		return getMagnetTileEntity(world, pos);
-	}*/
-
 	@Nullable
 	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);

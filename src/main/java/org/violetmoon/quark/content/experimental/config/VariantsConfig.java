@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
@@ -92,20 +93,20 @@ public class VariantsConfig implements IConfigType {
 		for(String s : manualVariants) {
 			String[] toks = s.split(",");
 			
-			Block block = Registry.BLOCK.get(new ResourceLocation(toks[1]));
-			Block out = Registry.BLOCK.get(new ResourceLocation(toks[2]));
+			Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(toks[1]));
+			Block out = BuiltInRegistries.BLOCK.get(new ResourceLocation(toks[2]));
 			manualVariantMap.put(block, new ManualVariant(toks[0], out));
 		}
 		
 		// Map all variants
-		Registry.BLOCK.forEach(this::getVariants);
+		BuiltInRegistries.BLOCK.forEach(this::getVariants);
 		
 		if(printVariantMapToLog)
 			logVariantMap();
 	}
 	
 	public String getVariantForBlock(Block block) {
-		String name = Registry.BLOCK.getKey(block).getPath();
+		String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
 		
 		for(String suffix : sortedSuffixes) {
 			if(name.endsWith(String.format("_%s", suffix)))
@@ -195,7 +196,7 @@ public class VariantsConfig implements IConfigType {
 	}
 	
 	private Block getSuffixedBlock(Block ogBlock, String suffix) {
-		ResourceLocation resloc = Registry.BLOCK.getKey(ogBlock);
+		ResourceLocation resloc = BuiltInRegistries.BLOCK.getKey(ogBlock);
 		String namespace = resloc.getNamespace();
 		String name = resloc.getPath();
 		
@@ -223,7 +224,7 @@ public class VariantsConfig implements IConfigType {
 		
 		String targetStr = String.format("%s:%s_%s", namespace, name, suffix);
 		ResourceLocation target = new ResourceLocation(targetStr);
-		Block ret = Registry.BLOCK.get(target);
+		Block ret = BuiltInRegistries.BLOCK.get(target);
 		
 		if(ret == Blocks.AIR) {
 			if(aliasMap.containsKey(suffix))
@@ -245,9 +246,9 @@ public class VariantsConfig implements IConfigType {
 
 		String search = "";
 		if(block != null)
-			search += Registry.BLOCK.getKey(block).toString();
+			search += BuiltInRegistries.BLOCK.getKey(block).toString();
 		if(result != null)
-			search += ("=" + Registry.BLOCK.getKey(result).toString());
+			search += ("=" + BuiltInRegistries.BLOCK.getKey(result).toString());
 
 		return !search.isEmpty() && blacklist.contains(search);
 	}

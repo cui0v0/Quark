@@ -3,7 +3,6 @@ package org.violetmoon.quark.addons.oddities.client.render.be;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -124,7 +123,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 				rotY = 270F;
 				break;
 		}
-		ms.mulPose(Vector3f.YN.rotationDegrees(rotY));
+		ms.mulPose(com.mojang.math.Axis.YN.rotationDegrees(rotY));
 
 		float jump = potato.jumpTicks;
 		if (jump > 0) {
@@ -136,7 +135,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 		float wiggle = (float) Math.sin(jump / 10 * Math.PI) * 0.05F;
 
 		ms.translate(wiggle, up, 0F);
-		ms.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(rotZ));
 
 		boolean render = !(info.name().equals("mami") || info.name().equals("soaryn") || info.name().equals("eloraam") && jump != 0);
 		if (render) {
@@ -155,12 +154,12 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 		ms.translate(0F, 1.5F, 0F);
 		ms.pushPose();
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
+		ms.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180F));
 		renderItems(potato, potatoFacing, ms, buffers, light, overlay);
 		ms.popPose();
 
-		ms.mulPose(Vector3f.ZP.rotationDegrees(-rotZ));
-		ms.mulPose(Vector3f.YN.rotationDegrees(-rotY));
+		ms.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(-rotZ));
+		ms.mulPose(com.mojang.math.Axis.YN.rotationDegrees(-rotY));
 
 		renderName(potato, info.name(), ms, buffers, light);
 		ms.popPose();
@@ -198,7 +197,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 	private void renderItems(TinyPotatoBlockEntity potato, Direction facing, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		ms.pushPose();
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180F));
+		ms.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180F));
 		ms.translate(0F, -1F, 0F);
 		float s = 1F / 3.5F;
 		ms.scale(s, s, s);
@@ -258,7 +257,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 					} else if (block) {
 						ms.translate(-0.4F, 0.8F, 0F);
 					} else {
-						ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
+						ms.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-90F));
 					}
 					ms.translate(-0.3F, -1.9F, 0.04F);
 				}
@@ -274,7 +273,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 					} else if (block) {
 						ms.translate(1F, 0.8F, 1F);
 					} else {
-						ms.mulPose(Vector3f.YP.rotationDegrees(-90F));
+						ms.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-90F));
 					}
 					ms.translate(-0.3F, -1.9F, -0.92F);
 				}
@@ -286,7 +285,7 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 				ms.scale(0.5F, 0.5F, 0.5F);
 			}
 			if (block && side == Direction.NORTH) {
-				ms.mulPose(Vector3f.YP.rotationDegrees(180F));
+				ms.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180F));
 			}
 			renderItem(ms, buffers, light, overlay, stack);
 			ms.popPose();
