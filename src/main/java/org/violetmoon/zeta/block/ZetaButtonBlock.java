@@ -5,10 +5,7 @@ import java.util.function.BooleanSupplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ButtonBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -21,7 +18,7 @@ public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaButtonBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaButtonBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(false, properties);
 		this.module = module;
 

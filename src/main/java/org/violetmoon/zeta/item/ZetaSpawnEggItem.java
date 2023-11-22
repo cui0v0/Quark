@@ -3,13 +3,8 @@ package org.violetmoon.zeta.item;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import org.violetmoon.zeta.module.ZetaModule;
 

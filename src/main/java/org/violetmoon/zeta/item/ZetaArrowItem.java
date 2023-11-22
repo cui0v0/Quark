@@ -8,7 +8,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -20,7 +19,7 @@ public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public ZetaArrowItem(String name, ZetaModule module) {
-		super(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT));
+		super(new Item.Properties());
 
 		module.zeta.registry.registerItem(this, name);
 		this.module = module;

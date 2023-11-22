@@ -2,14 +2,10 @@ package org.violetmoon.zeta.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
@@ -29,7 +25,7 @@ public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockCo
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_slab");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
-		parent.getModule().zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		parent.getModule().zeta.registry.setCreativeTab(this, "BUILDING_BLOCKS");
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 

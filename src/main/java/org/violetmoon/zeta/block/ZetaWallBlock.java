@@ -2,13 +2,9 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +24,7 @@ public class ZetaWallBlock extends WallBlock implements IZetaBlock, IZetaBlockCo
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_wall");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
-		parent.getModule().zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		parent.getModule().zeta.registry.setCreativeTab(this, "DECORATIONS");
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 

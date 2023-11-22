@@ -5,7 +5,6 @@ import java.util.function.BooleanSupplier;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.ItemStack;
 import org.violetmoon.zeta.block.IZetaBlock;

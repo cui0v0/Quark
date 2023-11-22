@@ -3,13 +3,8 @@ package org.violetmoon.zeta.item;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluid;
 import org.violetmoon.zeta.module.ZetaModule;

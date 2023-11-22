@@ -2,12 +2,8 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -55,7 +51,7 @@ public class ZetaBlock extends Block implements IZetaBlock {
 
     public interface Constructor<T extends Block> {
 
-        T make(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties);
+        T make(String regname, ZetaModule module, String creativeTab, Properties properties);
 
     }
 

@@ -2,14 +2,10 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
@@ -30,7 +26,7 @@ public class ZetaStairsBlock extends StairBlock implements IZetaBlock, IZetaBloc
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_stairs");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
-		parent.getModule().zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		parent.getModule().zeta.registry.setCreativeTab(this, "BUILDING_BLOCKS");
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 

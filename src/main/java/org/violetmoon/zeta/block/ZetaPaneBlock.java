@@ -2,12 +2,8 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -23,7 +19,7 @@ public class ZetaPaneBlock extends IronBarsBlock implements IZetaBlock {
 
 		this.module = module;
 		module.zeta.registry.registerBlock(this, name, true);
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 
 		if(renderLayer != null)
 			module.zeta.renderLayerRegistry.put(this, renderLayer);

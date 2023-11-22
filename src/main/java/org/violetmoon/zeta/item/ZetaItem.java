@@ -2,12 +2,7 @@ package org.violetmoon.zeta.item;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 import org.violetmoon.zeta.module.ZetaModule;
 

@@ -2,12 +2,7 @@ package org.violetmoon.zeta.item;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -18,7 +13,7 @@ public class ZetaSignItem extends SignItem implements IZetaItem {
 	private BooleanSupplier enabledSupplier = () -> true;
 
 	public ZetaSignItem(ZetaModule module, Block sign, Block wallSign) {
-		super(new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_DECORATIONS), sign, wallSign);
+		super(new Item.Properties().stacksTo(16), sign, wallSign);
 
 		String resloc = module.zeta.registryUtil.inherit(sign, "%s");
 		module.zeta.registry.registerItem(this, resloc);
