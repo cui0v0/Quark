@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonArray;
@@ -61,8 +63,8 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 	@NotNull
 	@Override
-	public ItemStack assemble(@NotNull CraftingContainer inv) {
-		return parent.assemble(inv);
+	public ItemStack assemble(@NotNull CraftingContainer inv, RegistryAccess gaming) {
+		return parent.assemble(inv, gaming);
 	}
 
 	@Override
@@ -72,8 +74,8 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 	@NotNull
 	@Override
-	public ItemStack getResultItem() {
-		return parent.getResultItem();
+	public ItemStack getResultItem(RegistryAccess acc) {
+		return parent.getResultItem(acc);
 	}
 
 	@NotNull
@@ -121,6 +123,11 @@ public class ExclusionRecipe implements CraftingRecipe {
 	@Override
 	public ItemStack getToastSymbol() {
 		return parent.getToastSymbol();
+	}
+
+	@Override
+	public CraftingBookCategory category() {
+		return CraftingBookCategory.MISC;
 	}
 
 	private static class ShapedExclusionRecipe extends ExclusionRecipe implements IShapedRecipe<CraftingContainer> {

@@ -11,6 +11,7 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +36,7 @@ public class DyeablesRegistry {
 	@LoadEvent
 	public void register(ZRegister event) {
 		ResourceLocation id = event.getRegistry().newResourceLocation("dye_item");
-		ZetaDyeRecipe recipe = new ZetaDyeRecipe(id, this);
+		ZetaDyeRecipe recipe = new ZetaDyeRecipe(id, CraftingBookCategory.EQUIPMENT, this);
 		event.getRegistry().register(recipe.getSerializer(), id, Registries.RECIPE_SERIALIZER);
 	}
 

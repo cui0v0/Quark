@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.building.recipe;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
@@ -61,7 +63,7 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 
 	@NotNull
 	@Override
-	public ItemStack assemble(@NotNull CraftingContainer arg0) {
+	public ItemStack assemble(@NotNull CraftingContainer arg0, RegistryAccess acc) {
 		return output.copy();
 	}
 
@@ -73,7 +75,7 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 
 	@NotNull
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess acc) {
 		return output.copy();
 	}
 
@@ -81,6 +83,11 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER;
+	}
+
+	@Override
+	public CraftingBookCategory category() {
+		return CraftingBookCategory.MISC;
 	}
 
 	@Override

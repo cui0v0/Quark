@@ -1,5 +1,8 @@
 package org.violetmoon.quark.content.tweaks.recipe;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tweaks.module.DragonScalesModule;
@@ -13,15 +16,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class ElytraDuplicationRecipe extends CustomRecipe {
 
-	public static final SimpleRecipeSerializer<?> SERIALIZER = new SimpleRecipeSerializer<>(ElytraDuplicationRecipe::new);
+	public static final SimpleCraftingRecipeSerializer<?> SERIALIZER = new SimpleCraftingRecipeSerializer<>(ElytraDuplicationRecipe::new);
 
-	public ElytraDuplicationRecipe(ResourceLocation id) {
-		super(id);
+	public ElytraDuplicationRecipe(ResourceLocation id, CraftingBookCategory cat) {
+		super(id, cat);
 	}
 
 	@Override
@@ -49,13 +51,13 @@ public class ElytraDuplicationRecipe extends CustomRecipe {
 
 	@NotNull
 	@Override
-	public ItemStack assemble(@NotNull CraftingContainer var1) {
+	public ItemStack assemble(@NotNull CraftingContainer var1, RegistryAccess gaming) {
 		return getResultItem();
 	}
 
 	@NotNull
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess gaming) {
 		ItemStack stack = new ItemStack(Items.ELYTRA);
 //		if(EnderdragonScales.dyeBlack && ModuleLoader.isFeatureEnabled(DyableElytra.class))
 //			ItemNBTHelper.setInt(stack, DyableElytra.TAG_ELYTRA_DYE, 0);
