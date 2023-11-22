@@ -18,7 +18,7 @@ public class WantLoveGoal extends Goal {
 	private static final String PET_TIME = "quark:PetTime";
 
 	public static void setPetTime(TamableAnimal entity) {
-		entity.getPersistentData().putLong(PET_TIME, entity.level.getGameTime());
+		entity.getPersistentData().putLong(PET_TIME, entity.level().getGameTime());
 	}
 
 	public static boolean canPet(TamableAnimal entity) {
@@ -37,7 +37,7 @@ public class WantLoveGoal extends Goal {
 			return 0;
 
 		long lastPetAt = entity.getPersistentData().getLong(PET_TIME);
-		return entity.level.getGameTime() - lastPetAt;
+		return entity.level().getGameTime() - lastPetAt;
 	}
 
 	private final TamableAnimal creature;
@@ -63,7 +63,7 @@ public class WantLoveGoal extends Goal {
 			double distanceToTarget = this.creature.distanceToSqr(this.leapTarget);
 
 			return 4 <= distanceToTarget && distanceToTarget <= 16 &&
-					this.creature.isOnGround() && this.creature.getRandom().nextInt(5) == 0;
+					this.creature.onGround() && this.creature.getRandom().nextInt(5) == 0;
 		}
 	}
 
@@ -71,7 +71,7 @@ public class WantLoveGoal extends Goal {
 	public boolean canContinueToUse() {
 		if (!WantLoveGoal.needsPets(creature))
 			return false;
-		return !this.creature.isOnGround();
+		return !this.creature.onGround();
 	}
 
 	@Override

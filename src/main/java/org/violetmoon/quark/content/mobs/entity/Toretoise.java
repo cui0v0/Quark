@@ -169,7 +169,7 @@ public class Toretoise extends Animal {
 		if (angeryTicks > 0 && isAlive()) {
 			angeryTicks--;
 
-			if (isOnGround()) {
+			if (onGround()) {
 				int dangerRange = 3;
 				double x = getX() + getBbWidth() / 2;
 				double y = getY();

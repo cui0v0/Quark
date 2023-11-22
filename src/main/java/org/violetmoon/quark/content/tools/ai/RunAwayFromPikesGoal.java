@@ -38,7 +38,7 @@ public class RunAwayFromPikesGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		avoidTarget = getClosestEntity(entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), entity.getBoundingBox().inflate(avoidDistance, 3.0D, avoidDistance));
+		avoidTarget = getClosestEntity(entity.level(), entity, entity.getX(), entity.getY(), entity.getZ(), entity.getBoundingBox().inflate(avoidDistance, 3.0D, avoidDistance));
 		if(avoidTarget == null)
 			return false;
 

@@ -53,7 +53,7 @@ public class RequiredModTooltipHandler {
 			Map<Item, String> ITEMS = z.requiredModTooltipHandler.items;
 			Map<Block, String> BLOCKS = z.requiredModTooltipHandler.blocks;
 
-			if(!BLOCKS.isEmpty() && event.getEntity() != null && event.getEntity().level != null) {
+			if(!BLOCKS.isEmpty() && event.getEntity() != null && event.getEntity().level() != null) {
 				for(Block b : BLOCKS.keySet())
 					ITEMS.put(b.asItem(), BLOCKS.get(b));
 				BLOCKS.clear();

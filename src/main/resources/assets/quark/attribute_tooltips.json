@@ -141,7 +141,20 @@
     },
     "texture": "quark:attribute/gravity"
   },
-  "forge:reach_distance": {
+  "forge:block_reach": {
+    "display": {
+      "mainhand": "difference",
+      "offhand": "difference",
+      "feet": "difference",
+      "legs": "difference",
+      "chest": "difference",
+      "head": "difference",
+      "potion": "difference"
+    },
+    "texture": "quark:attribute/reach_distance",
+    "compare": "higher_better"
+  },
+  "forge:entity_reach": {
     "display": {
       "mainhand": "difference",
       "offhand": "difference",

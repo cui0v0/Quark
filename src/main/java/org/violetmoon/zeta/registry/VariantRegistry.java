@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaSlabBlock;
 import org.violetmoon.zeta.block.ZetaStairsBlock;
@@ -59,12 +61,12 @@ public class VariantRegistry {
 	}
 
 	public FlowerPotBlock addFlowerPot(Block block, String name, Function<Block.Properties, Block.Properties> propertiesFunc) {
-		Block.Properties props = Block.Properties.of(Material.DECORATION).strength(0F);
+		Block.Properties props = Block.Properties.of().strength(0F).pushReaction(PushReaction.DESTROY);
 		props = propertiesFunc.apply(props);
 
 		FlowerPotBlock potted = new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> block, props);
 		Quark.ZETA.renderLayerRegistry.put(potted, RenderLayerRegistry.Layer.CUTOUT);
-		ResourceLocation resLoc = Quark.ZETA.registry.getRegistryName(block, Registry.BLOCK);
+		ResourceLocation resLoc = Quark.ZETA.registry.getRegistryName(block, BuiltInRegistries.BLOCK);
 		if (resLoc == null)
 			resLoc = new ResourceLocation("missingno");
 

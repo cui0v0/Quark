@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -39,7 +40,8 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 		return WoodSetHandler.boatTypes().collect(ImmutableMap.toImmutableMap(Functions.identity(), name -> {
 			String folder = chest ? "chest_boat" : "boat";
 			ResourceLocation texture = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/" + folder + "/" + name + ".png");
-			BoatModel model = new BoatModel(context.bakeLayer(chest ? ModelHandler.quark_boat_chest : ModelHandler.quark_boat), chest);
+			BoatModel model = (chest) ? new ChestBoatModel(context.bakeLayer(ModelHandler.quark_boat_chest)) :
+					new BoatModel(context.bakeLayer(ModelHandler.quark_boat));
 
 			return new BoatModelTuple(texture, model);
 		}));

@@ -103,12 +103,6 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	}
 
 	@Nullable
-	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, Vec3 origin) {
-		BlockPos pos = new BlockPos(origin);
-		return getMagnetTileEntity(world, pos);
-	}
-
-	@Nullable
 	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
 		return tile instanceof MagnetizedBlockBlockEntity ? (MagnetizedBlockBlockEntity)tile : null;

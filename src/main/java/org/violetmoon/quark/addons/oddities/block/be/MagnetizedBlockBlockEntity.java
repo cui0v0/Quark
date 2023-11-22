@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.block.be;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
@@ -305,7 +306,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 
-		this.magnetState = NbtUtils.readBlockState(compound.getCompound("blockState"));
+		this.magnetState = NbtUtils.readBlockState(level.holderLookup(Registries.BLOCK), compound.getCompound("blockState"));
 		this.magnetFacing = Direction.from3DDataValue(compound.getInt("facing"));
 		this.progress = compound.getFloat("progress");
 		this.lastProgress = this.progress;

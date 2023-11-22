@@ -130,11 +130,11 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 
 	// vanilla copy
 	private static void playRemoveOneSound(Entity entity) {
-		entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getLevel().getRandom().nextFloat() * 0.4F);
+		entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
 	}
 
 	private static void playInsertSound(Entity entity) {
-		entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.getLevel().getRandom().nextFloat() * 0.4F);
+		entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		if(contents == null)
 			return incoming.is(SeedPouchModule.seedPouchHoldableTag);
 
-		return contents.getRight() < SeedPouchModule.maxItems && ItemStack.isSame(incoming, contents.getLeft());
+		return contents.getRight() < SeedPouchModule.maxItems && ItemStack.isSameItem(incoming, contents.getLeft());
 	}
 
 	public static void setItemStack(ItemStack stack, ItemStack target) {

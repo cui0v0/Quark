@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +39,9 @@ public class RopeModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		rope = new RopeBlock("rope", this, CreativeModeTab.TAB_DECORATIONS,
-				Block.Properties.of(Material.WOOL, MapColor.COLOR_BROWN)
+				Block.Properties.of()
+						.mapColor(MapColor.COLOR_BROWN)
+						.ignitedByLava()
 						.strength(0.5f)
 						.sound(SoundType.WOOL));
 	}

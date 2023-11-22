@@ -77,12 +77,12 @@ public class QuarkBoat extends Boat implements IQuarkBoat {
 
 	@NotNull
 	@Override
-	public Type getBoatType() {
+	public Type getVariant() {
 		return Boat.Type.OAK;
 	}
 
 	@Override
-	public void setType(@NotNull Type type) {
+	public void setVariant(@NotNull Type type) {
 		// NO-OP
 	}
 

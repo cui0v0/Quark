@@ -10,10 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -86,9 +86,11 @@ public class NewStoneTypesModule extends ZetaModule {
 		if(raw != null)
 			props = Block.Properties.copy(raw);
 		else
-			props = Block.Properties.of(Material.STONE, color)
-				.requiresCorrectToolForDrops()
-				.strength(1.5F, 6.0F);
+			props = Block.Properties.of()
+					.mapColor(color)
+					.instrument(NoteBlockInstrument.BASEDRUM)
+					.requiresCorrectToolForDrops()
+					.strength(1.5F, 6.0F);
 
 		Block normal;
 		if(raw != null)

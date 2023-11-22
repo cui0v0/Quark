@@ -21,6 +21,7 @@ import net.minecraft.world.level.gameevent.vibrations.VibrationListener;
 import net.minecraft.world.level.gameevent.vibrations.VibrationListener.VibrationListenerConfig;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
@@ -95,7 +96,7 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 
 		gameEvent(GameEvent.PROJECTILE_SHOOT);
 
-		if(level instanceof ServerLevel serverlevel)
+		if (level() instanceof ServerLevel serverlevel)
 			this.dynamicGameEventListener.getListener().tick(serverlevel);
 	}
 
@@ -119,13 +120,13 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 
 		if(compound.contains("listener", 10))
 			VibrationListener.codec(this).parse(new Dynamic<>(NbtOps.INSTANCE, compound.getCompound("listener"))).resultOrPartial(Quark.LOG::error).ifPresent((nbt) -> {
-				dynamicGameEventListener.updateListener(nbt, level);
+				dynamicGameEventListener.updateListener(nbt, level());
 			});
 	}
 
 	@Override
 	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> consumer) {
-		if(level instanceof ServerLevel serverlevel)
+		if (level() instanceof ServerLevel serverlevel)
 			consumer.accept(this.dynamicGameEventListener, serverlevel);
 	}
 

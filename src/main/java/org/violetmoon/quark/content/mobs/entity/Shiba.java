@@ -1,5 +1,17 @@
 package org.violetmoon.quark.content.mobs.entity;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
+import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
+import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
+import org.violetmoon.quark.content.mobs.module.ShibaModule;
+import org.violetmoon.quark.content.tweaks.ai.NuzzleGoal;
+import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

@@ -4,8 +4,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.Material;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
@@ -70,8 +70,10 @@ public class MoreStoneVariantsModule extends ZetaModule {
 	}
 	
 	private void add(ZRegister event, String name, MapColor color, SoundType sound, BooleanSupplier cond, ZetaBlock.Constructor<ZetaBlock> constr, ZetaBlock.Constructor<ZetaPillarBlock> pillarConstr) {
-		Block.Properties props = Block.Properties.of(Material.STONE, color)
+		Block.Properties props = Block.Properties.of()
 				.requiresCorrectToolForDrops()
+				.instrument(NoteBlockInstrument.BASEDRUM)
+				.mapColor(color)
 				.sound(sound)
 				.strength(1.5F, 6.0F);
 		

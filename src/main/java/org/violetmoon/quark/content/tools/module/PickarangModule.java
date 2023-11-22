@@ -122,7 +122,7 @@ public class PickarangModule extends ZetaModule {
 	public final void setup(ZCommonSetup event) {
 		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
 		echorangBreaksAnywayTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "echorang_breaks_anyway"));
-		echorangCanListenTag = TagKey.create(Registry.GAME_EVENT_REGISTRY, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
+		echorangCanListenTag = TagKey.create(Registries.GAME_EVENT, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
 	}
 
 	@LoadEvent

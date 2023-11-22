@@ -46,6 +46,7 @@ public class ParrotEgg extends ThrowableItemProjectile {
 		getEntityData().define(COLOR, 0);
 	}
 
+	//Todo: This COULD just return an enum reference, but Im too lazy to do that rn
 	public int getVariant() {
 		return Mth.clamp(getEntityData().get(COLOR), 0, VARIANTS - 1);
 	}
@@ -68,29 +69,29 @@ public class ParrotEgg extends ThrowableItemProjectile {
 			double motion = 0.08;
 
 			for(int i = 0; i < 8; ++i)
-				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), pos.x, pos.y, pos.z, (random.nextFloat() - 0.5) * motion, (random.nextFloat() - 0.5) * motion, (random.nextFloat() - 0.5) * motion);
+				level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), pos.x, pos.y, pos.z, (random.nextFloat() - 0.5) * motion, (random.nextFloat() - 0.5) * motion, (random.nextFloat() - 0.5) * motion);
 		}
 	}
 
 	@Override
 	protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
 		super.onHitEntity(entityHitResult);
-		entityHitResult.getEntity().hurt(DamageSource.thrown(this, this.getOwner()), 0.0F);
+		entityHitResult.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), 0.0F);
 	}
 
 	@Override
 	protected void onHit(@NotNull HitResult hitResult) {
 		super.onHit(hitResult);
-		if (!this.level.isClientSide) {
-			Parrot parrot = EntityType.PARROT.create(level);
+		if (!this.level().isClientSide) {
+			Parrot parrot = EntityType.PARROT.create(level());
 			if (parrot != null) {
-				parrot.setVariant(getVariant());
+				parrot.setVariant(Parrot.Variant.byId(getVariant()));
 				parrot.setAge(-24000);
 				parrot.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-				level.addFreshEntity(parrot);
+				level().addFreshEntity(parrot);
 			}
 
-			this.level.broadcastEntityEvent(this, (byte)EVENT_BREAK);
+			this.level().broadcastEntityEvent(this, (byte)EVENT_BREAK);
 			this.discard();
 		}
 	}

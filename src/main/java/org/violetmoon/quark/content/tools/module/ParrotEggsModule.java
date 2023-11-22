@@ -7,6 +7,7 @@ import net.minecraft.core.Position;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -85,7 +86,7 @@ public class ParrotEggsModule extends ZetaModule {
 				.updateInterval(10) // update interval
 				.setCustomClientFactory((spawnEntity, world) -> new ParrotEgg(parrotEggType, world))
 				.build("parrot_egg");
-		Quark.ZETA.registry.register(parrotEggType, "parrot_egg", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(parrotEggType, "parrot_egg", Registries.ENTITY_TYPE);
 
 		parrotEggs = new ArrayList<>();
 		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
@@ -156,7 +157,7 @@ public class ParrotEggsModule extends ZetaModule {
 						} else
 							ws.sendParticles(ParticleTypes.SMOKE, parrot.getX(), parrot.getY(), parrot.getZ(), 10, parrot.getBbWidth(), parrot.getBbHeight(), parrot.getBbWidth(), 0);
 					}
-				} else if (parrot.level instanceof ServerLevel ws) {
+				} else if (parrot.level() instanceof ServerLevel ws) {
 					ws.sendParticles(ParticleTypes.HEART, parrot.getX(), parrot.getY(), parrot.getZ(), 1, parrot.getBbWidth(), parrot.getBbHeight(), parrot.getBbWidth(), 0);
 				}
 			}
@@ -170,7 +171,7 @@ public class ParrotEggsModule extends ZetaModule {
 			int time = parrot.getPersistentData().getInt(EGG_TIMER);
 			if(time > 0) {
 				if(time == 1) {
-					e.playSound(QuarkSounds.ENTITY_PARROT_EGG, 1.0F, (parrot.level.random.nextFloat() - parrot.level.random.nextFloat()) * 0.2F + 1.0F);
+					e.playSound(QuarkSounds.ENTITY_PARROT_EGG, 1.0F, (parrot.level().random.nextFloat() - parrot.level().random.nextFloat()) * 0.2F + 1.0F);
 					e.spawnAtLocation(new ItemStack(parrotEggs.get(getResultingEggColor(parrot))), 0);
 				}
 				e.getPersistentData().putInt(EGG_TIMER, time - 1);
@@ -179,8 +180,8 @@ public class ParrotEggsModule extends ZetaModule {
 	}
 
 	private int getResultingEggColor(Parrot parrot) {
-		int color = parrot.getVariant();
-		RandomSource rand = parrot.level.random;
+		int color = parrot.getVariant().getId();
+		RandomSource rand = parrot.level().random;
 		if(rand.nextBoolean())
 			return color;
 		return rand.nextInt(ParrotEgg.VARIANTS);
@@ -194,7 +195,7 @@ public class ParrotEggsModule extends ZetaModule {
 				return null;
 
 			UUID uuid = parrot.getUUID();
-			if (parrot.getVariant() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
+			if (parrot.getVariant().getId() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
 				return KOTO;
 
 			return null;
