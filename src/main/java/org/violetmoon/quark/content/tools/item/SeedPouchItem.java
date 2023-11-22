@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -48,8 +47,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	public SeedPouchItem(ZetaModule module) {
 		super("seed_pouch", module,
 				new Item.Properties()
-				.stacksTo(1)
-				.tab(CreativeModeTab.TAB_TOOLS));
+				.stacksTo(1));
 	}
 
 	@Override
@@ -291,30 +289,31 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		return res;
 	}
 
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		super.fillItemCategory(group, items);
-
-		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
-			List<Item> tagItems;
-
-			try {
-				tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
-			} catch(IllegalStateException e) { // Tag not bound yet
-				return;
-			}
-
-			for(Item i : tagItems) {
-				if(!IDisableable.isEnabled(i))
-					continue;
-
-				ItemStack stack = new ItemStack(this);
-				setItemStack(stack, new ItemStack(i));
-				setCount(stack, SeedPouchModule.maxItems);
-				items.add(stack);
-			}
-		}
-	}
+	//TODO 1.20
+//	@Override
+//	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+//		super.fillItemCategory(group, items);
+//
+//		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
+//			List<Item> tagItems;
+//
+//			try {
+//				tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
+//			} catch(IllegalStateException e) { // Tag not bound yet
+//				return;
+//			}
+//
+//			for(Item i : tagItems) {
+//				if(!IDisableable.isEnabled(i))
+//					continue;
+//
+//				ItemStack stack = new ItemStack(this);
+//				setItemStack(stack, new ItemStack(i));
+//				setCount(stack, SeedPouchModule.maxItems);
+//				items.add(stack);
+//			}
+//		}
+//	}
 
 	@Override
 	public ItemStack getUsageTickerItem(ItemStack stack) {

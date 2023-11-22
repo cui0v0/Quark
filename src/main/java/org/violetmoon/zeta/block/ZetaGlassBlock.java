@@ -20,7 +20,7 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
  */
 public class ZetaGlassBlock extends ZetaBlock {
 
-	public ZetaGlassBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, boolean translucent, Properties properties) {
+	public ZetaGlassBlock(String regname, ZetaModule module, String creativeTab, boolean translucent, Properties properties) {
 		super(regname, module, creativeTab, properties
 				.noOcclusion()
 				.isValidSpawn((state, world, pos, entityType) -> false)

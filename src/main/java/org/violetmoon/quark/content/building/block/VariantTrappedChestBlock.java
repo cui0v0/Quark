@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ChestBlock;
@@ -41,7 +40,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 
 		this.module = module;
 		module.zeta.registry.registerBlock(this, resloc, true);
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_REDSTONE);
+		module.zeta.registry.setCreativeTab(this, "REDSTONE");
 
 		this.type = type;
 
@@ -64,12 +63,6 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

@@ -14,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -71,7 +70,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
 			Quark.ZETA.registry.registerBlock(this, resloc, true);
 		}
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
@@ -180,12 +179,6 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	@Override
 	public @Nullable String getItemColorProviderName() {
 		return "hedge";
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

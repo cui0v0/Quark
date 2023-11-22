@@ -3,12 +3,8 @@ package org.violetmoon.zeta.block;
 import java.util.function.BooleanSupplier;
 
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -21,18 +17,12 @@ public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaB
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties, BlockSetType blockSetType) {
+	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, String creativeTab, Properties properties, BlockSetType blockSetType) {
 		super(sensitivity, properties, blockSetType);
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
 		module.zeta.registry.setCreativeTab(this, creativeTab);
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

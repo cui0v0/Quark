@@ -3,7 +3,6 @@ package org.violetmoon.quark.content.tweaks.block;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
@@ -17,7 +16,7 @@ public class DirtyGlassBlock extends ZetaGlassBlock {
 
 	private static final float[] BEACON_COLOR_MULTIPLIER = new float[] { 0.25F, 0.125F, 0F };
 
-	public DirtyGlassBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public DirtyGlassBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(regname, module, creativeTab, true, properties);
 	}
 

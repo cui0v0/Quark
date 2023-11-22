@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.item.ZetaBlockItem;
@@ -41,9 +44,8 @@ public abstract class ZetaRegistry {
 	private final Map<Block, String> blocksToColorProviderName = new HashMap<>();
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
 
-	// creative tab haxx
-	private final Map<Block, TabInfo> creativeTabInfos = new LinkedHashMap<>();
-	record TabInfo(@Nullable CreativeModeTab tab, BooleanSupplier enabled) { }
+	// creative tab haxx TODO 1.20: replace, this is a dummy system just to *track* creative tabs
+	private final Map<Block, String> creativeTabInfos = new LinkedHashMap<>();
 
 	public ZetaRegistry(Zeta z) {
 		this.z = z;
@@ -81,20 +83,20 @@ public abstract class ZetaRegistry {
 	}
 
 	public void registerItem(Item item, ResourceLocation id) {
-		register(item, id, Registry.ITEM_REGISTRY);
+		register(item, id, Registries.ITEM);
 	}
 
 	public void registerItem(Item item, String resloc) {
-		register(item, newResourceLocation(resloc), Registry.ITEM_REGISTRY);
+		register(item, newResourceLocation(resloc), Registries.ITEM);
 	}
 
 	public void registerBlock(Block block, ResourceLocation id, boolean hasBlockItem) {
-		register(block, id, Registry.BLOCK_REGISTRY);
+		register(block, id, Registries.BLOCK);
 
 		//TODO: this supplier is mostly a load-bearing way to defer calling groups.get(registryName),
 		// until after CreativeTabHandler.finalizeTabs is called
 		if(hasBlockItem)
-			defers.put(Registry.ITEM_REGISTRY.location(), () -> createItemBlock(block));
+			defers.put(Registries.ITEM.location(), () -> createItemBlock(block));
 	}
 
 	public void registerBlock(Block block, String resloc, boolean hasBlockItem) {
@@ -109,26 +111,23 @@ public abstract class ZetaRegistry {
 		registerBlock(block, resloc, true);
 	}
 
-	public void setCreativeTab(IZetaBlock block, CreativeModeTab tab) {
-		setCreativeTab(block.getBlock(), tab, block::isEnabled);
+	@Deprecated
+	public void setCreativeTab(IZetaBlock block, String tabName) {
+		setCreativeTab(block.getBlock(), tabName, block::isEnabled);
 	}
 
-	public void setCreativeTab(Block block, CreativeModeTab tab, BooleanSupplier enabled) {
-		//creative tabs are set and finalized in Item.Properties, so if the item is already registered it's too late
-		//TODO all this creative tab stuff is changing in 1.20 anyway
-		if(Item.byBlock(block) != Items.AIR)
-			throw new IllegalStateException("Too late to register creative tab for " + block + " (" + block.getClass() + ")");
-
-		creativeTabInfos.put(block, new TabInfo(tab, enabled));
+	@Deprecated
+	public void setCreativeTab(Block block, String tabName, BooleanSupplier enabled) {
+		//TODO delete
+		creativeTabInfos.put(block, tabName);
 	}
 
 	private Item createItemBlock(Block block) {
 		Item.Properties props = new Item.Properties();
 		ResourceLocation registryName = internalNames.get(block);
 
-		TabInfo tabInfo = creativeTabInfos.remove(block); //"remove" because we don't need these in-memory anymore
-		if(tabInfo != null && tabInfo.enabled.getAsBoolean() && tabInfo.tab != null)
-			props = props.tab(tabInfo.tab);
+		String tabInfo = creativeTabInfos.remove(block); //"remove" because we don't need these in-memory anymore
+		Quark.LOG.error("id {} tab {}", registryName, tabInfo); //TODO creative tabs are different
 
 		if(block instanceof IZetaItemPropertiesFiller filler)
 			filler.fillItemProperties(props);

@@ -34,7 +34,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ArmorMaterials;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,7 +60,6 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 				new Item.Properties()
 				.stacksTo(1)
 				.durability(0)
-				.tab(CreativeModeTab.TAB_TOOLS)
 				.rarity(Rarity.RARE));
 
 		this.module = module;
@@ -240,12 +238,6 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	@Override
 	public boolean isEnchantable(@NotNull ItemStack stack) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

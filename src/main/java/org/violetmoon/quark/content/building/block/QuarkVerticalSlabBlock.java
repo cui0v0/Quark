@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
@@ -27,7 +26,7 @@ public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IZetaBl
 
 	    this.module = module;
 
-        module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_BUILDING_BLOCKS);
+        module.zeta.registry.setCreativeTab(this, "BUILDING_BLOCKS");
 
         if (module.category.isAddon())
             module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
@@ -38,13 +37,6 @@ public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IZetaBl
 
         if (parent instanceof ZetaSlabBlock quarkSlab)
             setCondition(quarkSlab.parent::isEnabled);
-    }
-
-
-    @Override
-    public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-        if (isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-            super.fillItemCategory(group, items);
     }
 
     @Override

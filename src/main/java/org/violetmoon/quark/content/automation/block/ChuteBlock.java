@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,7 +31,7 @@ public class ChuteBlock extends ZetaBlock implements EntityBlock {
 
 	public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
-	public ChuteBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ChuteBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 		registerDefaultState(defaultBlockState().setValue(ENABLED, true));
 

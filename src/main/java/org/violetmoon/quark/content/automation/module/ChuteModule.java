@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.automation.module;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,7 +26,7 @@ public class ChuteModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		chute = new ChuteBlock("chute", this, CreativeModeTab.TAB_REDSTONE,
+		chute = new ChuteBlock("chute", this, "REDSTONE",
 				Block.Properties.of()
 						.mapColor(MapColor.WOOD)
 						.strength(2.5F)

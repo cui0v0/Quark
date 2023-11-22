@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -29,7 +28,7 @@ public class GravisandModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		gravisand = new GravisandBlock("gravisand", this, CreativeModeTab.TAB_REDSTONE, Block.Properties.copy(Blocks.SAND));
+		gravisand = new GravisandBlock("gravisand", this, "REDSTONE", Block.Properties.copy(Blocks.SAND));
 
 		gravisandType = EntityType.Builder.<Gravisand>of(Gravisand::new, MobCategory.MISC)
 				.sized(0.98F, 0.98F)

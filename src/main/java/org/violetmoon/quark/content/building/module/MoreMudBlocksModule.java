@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -19,8 +18,8 @@ public class MoreMudBlocksModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		BlockBehaviour.Properties props = Properties.copy(Blocks.MUD_BRICKS);
 		
-		new ZetaBlock("carved_mud_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
-		new ZetaPillarBlock("mud_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
+		new ZetaBlock("carved_mud_bricks", this, "BUILDING_BLOCKS", props);
+		new ZetaPillarBlock("mud_pillar", this, "BUILDING_BLOCKS", props);
 		new MudBrickLatticeBlock(this, props);
 	}
 	

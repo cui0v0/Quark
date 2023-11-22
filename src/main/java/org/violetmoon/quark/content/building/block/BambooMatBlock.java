@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.building.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -20,10 +19,10 @@ public class BambooMatBlock extends ZetaBlock {
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
 	
 	public BambooMatBlock(String name, ZetaModule module) {
-		this(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS);
+		this(name, module, "BUILDING_BLOCKS");
 	}
 	
-	public BambooMatBlock(String name, ZetaModule module, CreativeModeTab tab) {
+	public BambooMatBlock(String name, ZetaModule module, String tab) {
 		super(name, module, tab,
 				Block.Properties.of()
 				.mapColor(MapColor.COLOR_YELLOW)

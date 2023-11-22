@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
@@ -24,7 +25,6 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements.Type;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.common.Tags;
@@ -59,14 +59,14 @@ public class StonelingsModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		this.registered = true;
-		diamondHeart = new DiamondHeartItem("diamond_heart", this, new Item.Properties().tab(CreativeModeTab.TAB_MISC));
+		diamondHeart = new DiamondHeartItem("diamond_heart", this, new Item.Properties());
 
 		stonelingType = EntityType.Builder.of(Stoneling::new, MobCategory.CREATURE)
 				.sized(0.5F, 0.9F)
 				.clientTrackingRange(8)
 				.setCustomClientFactory((spawnEntity, world) -> new Stoneling(stonelingType, world))
 				.build("stoneling");
-		Quark.ZETA.registry.register(stonelingType, "stoneling", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(stonelingType, "stoneling", Registries.ENTITY_TYPE);
 
 		makeStonelingTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("make_stoneling");
 

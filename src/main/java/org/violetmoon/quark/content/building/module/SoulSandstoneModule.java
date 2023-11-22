@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Material;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -18,10 +17,10 @@ public class SoulSandstoneModule extends ZetaModule {
 				.requiresCorrectToolForDrops()
 				.strength(0.8F);
 		
-		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock("soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
-		new ZetaBlock("chiseled_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
-		event.getVariantRegistry().addSlab(new ZetaBlock("cut_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
-		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("smooth_soul_sandstone", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
+		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock("soul_sandstone", this, "BUILDING_BLOCKS", props));
+		new ZetaBlock("chiseled_soul_sandstone", this, "BUILDING_BLOCKS", props);
+		event.getVariantRegistry().addSlab(new ZetaBlock("cut_soul_sandstone", this, "BUILDING_BLOCKS", props));
+		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("smooth_soul_sandstone", this, "BUILDING_BLOCKS", props));
 	}
 	
 }

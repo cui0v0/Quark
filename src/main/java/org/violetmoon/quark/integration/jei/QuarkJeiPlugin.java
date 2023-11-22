@@ -38,7 +38,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
@@ -121,12 +120,14 @@ public class QuarkJeiPlugin implements IModPlugin {
 			for (Item item : BuiltInRegistries.ITEM) {
 				ResourceLocation loc = BuiltInRegistries.ITEM.getKey(item);
 				if (loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
-					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
+					//TODO 1.20: this just enumerated the item's variants
+					//item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
 				}
 
 				if (item instanceof PotionItem || item instanceof TippedArrowItem) {
 					NonNullList<ItemStack> potionStacks = NonNullList.create();
-					item.fillItemCategory(CreativeModeTab.TAB_SEARCH, potionStacks);
+					//TODO 1.20: this just enumerated the item's variants
+					//item.fillItemCategory(CreativeModeTab.TAB_SEARCH, potionStacks);
 					potionStacks.stream().filter(it -> hidePotions.contains(PotionUtils.getPotion(it))).forEach(stacksToHide::add);
 				}
 			}

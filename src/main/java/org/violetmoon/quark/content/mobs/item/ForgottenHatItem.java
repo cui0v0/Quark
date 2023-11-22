@@ -34,7 +34,6 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 				new Item.Properties()
 				.stacksTo(1)
 				.durability(0)
-				.tab(CreativeModeTab.TAB_TOOLS)
 				.rarity(Rarity.RARE));
 
 		Quark.ZETA.registry.registerItem(this, "forgotten_hat");
@@ -81,12 +80,6 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 		}
 
 		return slot == this.getEquipmentSlot() ? attributes : super.getDefaultAttributeModifiers(slot);
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 }

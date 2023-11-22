@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -28,7 +27,7 @@ public class VariantFurnaceBlock extends FurnaceBlock implements IZetaBlock {
 		super(props);
 
 		module.zeta.registry.registerBlock(this, type + "_furnace", true);
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 
 		this.module = module;
 	}

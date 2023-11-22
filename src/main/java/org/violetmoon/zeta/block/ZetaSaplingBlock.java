@@ -30,12 +30,6 @@ public abstract class ZetaSaplingBlock extends SaplingBlock implements IZetaBloc
 	}
 
 	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
-
-	@Override
 	public ZetaModule getModule() {
 		return module;
 	}

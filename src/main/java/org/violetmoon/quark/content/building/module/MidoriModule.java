@@ -1,9 +1,9 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
@@ -21,14 +21,14 @@ public class MidoriModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties());
 		
 		Block.Properties props = Block.Properties.of(Material.STONE, MapColor.COLOR_LIGHT_GREEN)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 
-		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("midori_block", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props));
-		new ZetaPillarBlock("midori_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props);
+		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("midori_block", this, "BUILDING_BLOCKS", props));
+		new ZetaPillarBlock("midori_pillar", this, "BUILDING_BLOCKS", props);
 	}
 
 	@LoadEvent

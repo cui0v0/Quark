@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
@@ -20,7 +19,7 @@ public class VerticalPlanksModule extends ZetaModule {
 	}
 	
 	public static ZetaBlock add(String name, Block base, ZetaModule module) {
-		return new ZetaBlock("vertical_" + name + "_planks", module, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(base));
+		return new ZetaBlock("vertical_" + name + "_planks", module, "BUILDING_BLOCKS", Block.Properties.copy(base));
 	}
 	
 }

@@ -37,12 +37,6 @@ public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock 
 	public abstract int getPressDuration();
 
 	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
-
-	@Override
 	public ZetaButtonBlock setCondition(BooleanSupplier enabledSupplier) {
 		this.enabledSupplier = enabledSupplier;
 		return this;

@@ -44,12 +44,6 @@ public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockCo
 		BlockState parentState = parent.getBlock().defaultBlockState();
 		return parent.getModule().zeta.blockExtensions.get(parentState).getFlammabilityZeta(parentState, world, pos, face);
 	}
-	
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(parent.isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
 
 	@Nullable
 	@Override

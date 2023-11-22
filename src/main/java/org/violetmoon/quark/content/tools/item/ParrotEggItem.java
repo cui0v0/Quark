@@ -9,7 +9,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,8 +23,7 @@ public class ParrotEggItem extends ZetaItem {
 	public ParrotEggItem(String suffix, int variant, ZetaModule module) {
 		super("egg_parrot_" + suffix, module,
 				new Item.Properties()
-						.stacksTo(16)
-						.tab(CreativeModeTab.TAB_MATERIALS));
+						.stacksTo(16));
 		this.variant = variant;
 	}
 

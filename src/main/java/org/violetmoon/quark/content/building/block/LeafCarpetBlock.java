@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -32,7 +31,7 @@ public class LeafCarpetBlock extends ZetaBlock implements IZetaBlockColorProvide
 	private ItemStack baseStack;
 
 	public LeafCarpetBlock(String name, Block base, ZetaModule module) {
-		super(name, module, CreativeModeTab.TAB_DECORATIONS,
+		super(name, module, "DECORATIONS",
 				Block.Properties.of()
 						.mapColor(base.defaultBlockState().mapColor)
 						.noCollission()

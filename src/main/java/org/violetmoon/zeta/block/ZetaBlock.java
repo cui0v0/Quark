@@ -19,7 +19,7 @@ public class ZetaBlock extends Block implements IZetaBlock {
     private final ZetaModule module;
     private BooleanSupplier enabledSupplier = () -> true;
 
-    public ZetaBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+    public ZetaBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
         super(properties);
 
         this.module = module;
@@ -28,12 +28,6 @@ public class ZetaBlock extends Block implements IZetaBlock {
 
         if (module.category.isAddon())
             module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
-    }
-
-    @Override
-    public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-        if (isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-            super.fillItemCategory(group, items);
     }
 
     @Override

@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -26,7 +25,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class BottledCloudItem extends ZetaItem {
 
 	public BottledCloudItem(ZetaModule module) {
-		super("bottled_cloud", module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS));
+		super("bottled_cloud", module, new Item.Properties());
 	}
 
 	@NotNull

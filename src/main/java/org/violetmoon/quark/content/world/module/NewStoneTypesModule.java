@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
@@ -96,9 +95,9 @@ public class NewStoneTypesModule extends ZetaModule {
 		if(raw != null)
 			normal = raw;
 		else
-			normal = constr.make(name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
+			normal = constr.make(name, module, "BUILDING_BLOCKS", props).setCondition(enabledCond);
 
-		ZetaBlock polished = constr.make("polished_" + name, module, CreativeModeTab.TAB_BUILDING_BLOCKS, props).setCondition(enabledCond);
+		ZetaBlock polished = constr.make("polished_" + name, module, "BUILDING_BLOCKS", props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
 
 		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond));

@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,8 +32,7 @@ public class TrowelItem extends ZetaItem implements IUsageTickerOverride {
 
 	public TrowelItem(ZetaModule module) {
 		super("trowel", module, new Item.Properties()
-				.durability(255)
-				.tab(CreativeModeTab.TAB_TOOLS));
+				.durability(255));
 	}
 
 	@NotNull

@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +23,7 @@ public class GlowShroomBlock extends ZetaBushBlock implements BonemealableBlock 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
 	public GlowShroomBlock(ZetaModule module) {
-		super("glow_shroom", module, CreativeModeTab.TAB_DECORATIONS,
+		super("glow_shroom", module, "DECORATIONS",
 				Properties.copy(Blocks.RED_MUSHROOM)
 				.randomTicks()
 				.lightLevel(s -> 10));

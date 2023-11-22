@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -34,7 +33,7 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 	private String corundumDescriptionId;
 
 	public RainbowLampBlock(String regname, int color, ZetaModule module, MapColor mapColor) {
-		super(regname, module, CreativeModeTab.TAB_REDSTONE, true,
+		super(regname, module, "REDSTONE", true,
 				Properties.of()
 				.strength(0.3F, 0F)
  				.mapColor(mapColor)

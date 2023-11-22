@@ -3,7 +3,6 @@ package org.violetmoon.quark.content.tweaks.module;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -41,15 +40,15 @@ public class GlassShardModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		dirtyGlass = new DirtyGlassBlock("dirty_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS,
+		dirtyGlass = new DirtyGlassBlock("dirty_glass", this, "BUILDING_BLOCKS",
 				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		new ZetaInheritedPaneBlock(dirtyGlass);
 
-		clearShard = new ZetaItem("clear_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
-		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS));
+		clearShard = new ZetaItem("clear_shard", this, new Item.Properties());
+		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties());
 
 		for(DyeColor color : DyeColor.values())
-			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
+			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties()));
 	}
 
 	@LoadEvent

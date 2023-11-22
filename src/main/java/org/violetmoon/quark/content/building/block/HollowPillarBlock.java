@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -43,7 +42,7 @@ public class HollowPillarBlock extends ZetaPillarBlock implements SimpleWaterlog
     private static final VoxelShape SHAPE_Y = Shapes.or(SHAPE_NORTH, SHAPE_SOUTH, SHAPE_EAST, SHAPE_WEST);
     private static final VoxelShape SHAPE_Z = Shapes.or(SHAPE_BOTTOM, SHAPE_TOP, SHAPE_NORTH, SHAPE_SOUTH);
 
-    public HollowPillarBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+    public HollowPillarBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
         super(regname, module, creativeTab, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

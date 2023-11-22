@@ -51,12 +51,6 @@ public class ZetaVineBlock extends VineBlock implements IZetaBlock {
 		return 300;
 	}
 
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
-
 	@Nullable
 	@Override
 	public ZetaModule getModule() {

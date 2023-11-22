@@ -9,7 +9,6 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -35,7 +34,7 @@ public class CorundumBlock extends ZetaGlassBlock {
 	public CorundumClusterBlock cluster;
 
 	public CorundumBlock(String regname, int color, ZetaModule module, MapColor mapColor, boolean waxed) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS, true,
+		super(regname, module, "DECORATIONS", true,
 				Block.Properties.of()
 				.mapColor(mapColor)
 				.strength(0.3F, 0F)

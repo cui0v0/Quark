@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -42,7 +41,7 @@ public class HollowWoodBlock extends HollowFrameBlock {
     }
 
     public HollowWoodBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {
-        super(name, module, CreativeModeTab.TAB_DECORATIONS,
+        super(name, module, "DECORATIONS",
                 MiscUtil.copyPropertySafe(sourceLog)
                         .isSuffocating((s, g, p) -> false));
 

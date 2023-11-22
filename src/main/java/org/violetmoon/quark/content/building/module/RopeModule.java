@@ -5,7 +5,6 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -38,7 +37,7 @@ public class RopeModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		rope = new RopeBlock("rope", this, CreativeModeTab.TAB_DECORATIONS,
+		rope = new RopeBlock("rope", this, "DECORATIONS",
 				Block.Properties.of()
 						.mapColor(MapColor.COLOR_BROWN)
 						.ignitedByLava()

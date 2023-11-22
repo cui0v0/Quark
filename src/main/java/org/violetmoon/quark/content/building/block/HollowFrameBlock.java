@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -65,7 +64,7 @@ public abstract class HollowFrameBlock extends ZetaBlock implements SimpleWaterl
         }
     }
 
-    public HollowFrameBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+    public HollowFrameBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
         super(regname, module, creativeTab, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

@@ -10,7 +10,6 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -45,7 +44,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<RandomizerPowerState> POWERED = EnumProperty.create("powered", RandomizerPowerState.class);
 
-	public RedstoneRandomizerBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public RedstoneRandomizerBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 
 		registerDefaultState(defaultBlockState()

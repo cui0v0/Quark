@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -42,7 +41,7 @@ public class MagnetBlock extends ZetaBlock implements EntityBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public MagnetBlock(ZetaModule module) {
-		super("magnet", module, CreativeModeTab.TAB_REDSTONE, Properties.copy(Blocks.IRON_BLOCK));
+		super("magnet", module, "REDSTONE", Properties.copy(Blocks.IRON_BLOCK));
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(POWERED, false));
 	}
 

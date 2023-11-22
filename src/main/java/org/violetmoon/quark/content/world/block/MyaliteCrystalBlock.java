@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.world.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -15,7 +14,7 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockColorProvider {
 
 	public MyaliteCrystalBlock(ZetaModule module) {
-		super("myalite_crystal", module, CreativeModeTab.TAB_DECORATIONS, true,
+		super("myalite_crystal", module, "DECORATIONS", true,
 				Block.Properties.of(Material.GLASS, MapColor.COLOR_PURPLE)
 				.strength(0.5F, 1200F)
 				.sound(SoundType.GLASS)

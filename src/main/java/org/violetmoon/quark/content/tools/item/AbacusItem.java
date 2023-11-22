@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -29,7 +28,7 @@ public class AbacusItem extends ZetaItem {
 	private static final int DEFAULT_Y = -999;
 
 	public AbacusItem(ZetaModule module) {
-		super("abacus", module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
+		super("abacus", module, new Item.Properties().stacksTo(1));
 	}
 
 	@NotNull

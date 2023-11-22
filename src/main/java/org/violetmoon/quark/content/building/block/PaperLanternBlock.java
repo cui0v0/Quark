@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -23,7 +22,7 @@ public class PaperLanternBlock extends ZetaBlock {
 	private static final VoxelShape SHAPE = Shapes.or(POST_SHAPE, LANTERN_SHAPE);
 
 	public PaperLanternBlock(String regname, ZetaModule module) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
+		super(regname, module, "DECORATIONS",
 				Block.Properties.of(Material.WOOD, MapColor.SNOW)
 						.sound(SoundType.WOOD)
 						.lightLevel(b -> 15)

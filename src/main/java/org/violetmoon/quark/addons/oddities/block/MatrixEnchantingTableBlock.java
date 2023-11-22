@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -45,7 +44,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		super(Block.Properties.copy(Blocks.ENCHANTING_TABLE));
 
 		this.module = module;
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 		module.zeta.registry.registerBlock(this, "matrix_enchanter", true);
 	}
 
@@ -53,12 +52,6 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 	@Override
 	public MutableComponent getName() {
 		return Blocks.ENCHANTING_TABLE.getName();
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

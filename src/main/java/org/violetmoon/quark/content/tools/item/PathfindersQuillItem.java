@@ -29,7 +29,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -74,7 +73,7 @@ public class PathfindersQuillItem extends ZetaItem {
     }
 
     public PathfindersQuillItem(ZetaModule module) {
-        this(module, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
+        this(module, new Item.Properties().stacksTo(1));
     }
 
     public static ResourceLocation getTargetBiome(ItemStack stack) {
@@ -379,24 +378,25 @@ public class PathfindersQuillItem extends ZetaItem {
         return comp;
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if ((isEnabled() && allowedIn(group)) || group == CreativeModeTab.TAB_SEARCH) {
-            boolean generatedWeald = false;
-
-            for (TradeInfo trade : PathfinderMapsModule.tradeList) {
-                if (trade.biome.equals(GlimmeringWealdModule.BIOME_NAME))
-                    generatedWeald = true;
-                items.add(forBiome(trade.biome.toString(), trade.color));
-            }
-            if (!generatedWeald &&
-            	Quark.ZETA.modules.isEnabled(StonelingsModule.class) &&
-            	Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) &&
-                StonelingsModule.wealdPathfinderMaps) {
-                items.add(forBiome(GlimmeringWealdModule.BIOME_NAME.toString(), 0x317546));
-            }
-        }
-    }
+    //TODO 1.20
+//    @Override
+//    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+//        if ((isEnabled() && allowedIn(group)) || group == CreativeModeTab.TAB_SEARCH) {
+//            boolean generatedWeald = false;
+//
+//            for (TradeInfo trade : PathfinderMapsModule.tradeList) {
+//                if (trade.biome.equals(GlimmeringWealdModule.BIOME_NAME))
+//                    generatedWeald = true;
+//                items.add(forBiome(trade.biome.toString(), trade.color));
+//            }
+//            if (!generatedWeald &&
+//            	Quark.ZETA.modules.isEnabled(StonelingsModule.class) &&
+//            	Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) &&
+//                StonelingsModule.wealdPathfinderMaps) {
+//                items.add(forBiome(GlimmeringWealdModule.BIOME_NAME.toString(), 0x317546));
+//            }
+//        }
+//    }
 
     @Override
     @OnlyIn(Dist.CLIENT)

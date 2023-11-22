@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -26,8 +25,8 @@ public class CelebratoryLampsModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		stone_lamp = new ZetaBlock("stone_lamp", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(Blocks.STONE).lightLevel(s -> lightLevel));
-		stone_brick_lamp = new ZetaBlock("stone_brick_lamp", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.copy(Blocks.STONE_BRICKS).lightLevel(s -> lightLevel));
+		stone_lamp = new ZetaBlock("stone_lamp", this, "BUILDING_BLOCKS", Block.Properties.copy(Blocks.STONE).lightLevel(s -> lightLevel));
+		stone_brick_lamp = new ZetaBlock("stone_brick_lamp", this, "BUILDING_BLOCKS", Block.Properties.copy(Blocks.STONE_BRICKS).lightLevel(s -> lightLevel));
 	}
 
 	@ZetaLoadModule(clientReplacement = true)

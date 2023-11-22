@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -20,10 +19,10 @@ public class FramedGlassModule extends ZetaModule {
 				.strength(3F, 10F)
 				.sound(SoundType.GLASS);
 		
-		new ZetaInheritedPaneBlock(new ZetaGlassBlock("framed_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS, false, props));
+		new ZetaInheritedPaneBlock(new ZetaGlassBlock("framed_glass", this, "BUILDING_BLOCKS", false, props));
 		
 		for(DyeColor dye : DyeColor.values())
-			new ZetaInheritedPaneBlock(new ZetaGlassBlock(dye.getName() + "_framed_glass", this, CreativeModeTab.TAB_BUILDING_BLOCKS, true, props));
+			new ZetaInheritedPaneBlock(new ZetaGlassBlock(dye.getName() + "_framed_glass", this, "BUILDING_BLOCKS", true, props));
 	}
 
 }

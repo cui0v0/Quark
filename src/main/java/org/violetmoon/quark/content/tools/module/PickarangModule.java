@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -106,8 +105,7 @@ public class PickarangModule extends ZetaModule {
 
 	private Item.Properties propertiesFor(int durability, boolean fireResist) {
 		Item.Properties properties = new Item.Properties()
-				.stacksTo(1)
-				.tab(CreativeModeTab.TAB_TOOLS);
+				.stacksTo(1);
 
 		if (durability > 0)
 			properties.durability(durability);

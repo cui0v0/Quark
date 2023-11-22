@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ChestBlock;
@@ -34,7 +33,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IChestT
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
 		module.zeta.registry.registerBlock(this, resloc, true);
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 
 		this.module = module;
 
@@ -57,12 +56,6 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IChestT
 	@Override
 	public boolean isFlammableZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return false;
-	}
-
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
 	}
 
 	@Override

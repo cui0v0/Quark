@@ -13,7 +13,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -38,7 +37,7 @@ public class CrateBlock extends ZetaBlock implements EntityBlock {
 	public static final BooleanProperty PROPERTY_OPEN = BlockStateProperties.OPEN;
 
 	public CrateBlock(ZetaModule module) {
-		super("crate", module, CreativeModeTab.TAB_DECORATIONS, Properties.copy(Blocks.BARREL));
+		super("crate", module, "DECORATIONS", Properties.copy(Blocks.BARREL));
 		registerDefaultState(stateDefinition.any().setValue(PROPERTY_OPEN, false));
 	}
 

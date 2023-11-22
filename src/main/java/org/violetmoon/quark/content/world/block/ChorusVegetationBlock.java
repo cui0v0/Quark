@@ -12,7 +12,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -46,7 +45,7 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 	private final boolean simple;
 
 	public ChorusVegetationBlock(String regname, ZetaModule module, boolean simple) {
-		super(regname, module, CreativeModeTab.TAB_DECORATIONS,
+		super(regname, module, "DECORATIONS",
 				BlockBehaviour.Properties.of()
 				.mapColor(MapColor.PLANT)
 				.replaceable()

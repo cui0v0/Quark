@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -22,8 +21,7 @@ public class HammerItem extends ZetaItem {
 
 	public HammerItem(ZetaModule module) {
 		super("hammer", module, new Item.Properties()
-				.stacksTo(1)
-				.tab(CreativeModeTab.TAB_TOOLS));
+				.stacksTo(1));
 	}
 	
 	@NotNull

@@ -29,12 +29,6 @@ public class ZetaPaneBlock extends IronBarsBlock implements IZetaBlock {
 			module.zeta.renderLayerRegistry.put(this, renderLayer);
 	}
 
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
-
 	@Nullable
 	@Override
 	public ZetaModule getModule() {

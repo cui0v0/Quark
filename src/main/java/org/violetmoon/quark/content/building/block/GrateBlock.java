@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -47,7 +46,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	public static final BooleanProperty LAVALOGGED = BooleanProperty.create("lavalogged");
 
 	public GrateBlock(ZetaModule module) {
-		super("grate", module, CreativeModeTab.TAB_DECORATIONS,
+		super("grate", module, "DECORATIONS",
 			Block.Properties.of()
 				.strength(5, 10)
 				.sound(SoundType.METAL)

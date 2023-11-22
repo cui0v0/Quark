@@ -74,12 +74,12 @@ public class BackpackModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		backpack = new BackpackItem(this);
-		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE).tab(CreativeModeTab.TAB_MATERIALS)).setCondition(() -> enableRavagerHide);
+		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE)).setCondition(() -> enableRavagerHide);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
 		Quark.ZETA.registry.register(menyType, "backpack", Registries.MENU);
 
-		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, CreativeModeTab.TAB_BUILDING_BLOCKS, Block.Properties.of()
+		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, "BUILDING_BLOCKS", Block.Properties.of()
 				.mapColor(DyeColor.BLACK)
 				.instrument(NoteBlockInstrument.GUITAR)
 				.strength(1F)

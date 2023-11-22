@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -77,13 +76,13 @@ public class MoreStoneVariantsModule extends ZetaModule {
 				.sound(sound)
 				.strength(1.5F, 6.0F);
 		
-		ZetaBlock bricks = constr.make(name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		ZetaBlock bricks = constr.make(name + "_bricks", this, "BUILDING_BLOCKS", props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks);
 		event.getVariantRegistry().addSlabStairsWall(bricks);
 		
-		constr.make("chiseled_" + name + "_bricks", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		constr.make("chiseled_" + name + "_bricks", this, "BUILDING_BLOCKS", props)
 				.setCondition(() -> cond.getAsBoolean() && enableBricks && enableChiseledBricks);
-		pillarConstr.make(name + "_pillar", this, CreativeModeTab.TAB_BUILDING_BLOCKS, props)
+		pillarConstr.make(name + "_pillar", this, "BUILDING_BLOCKS", props)
 				.setCondition(() -> cond.getAsBoolean() && enablePillar);
 	}
 	

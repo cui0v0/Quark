@@ -5,8 +5,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,7 +15,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class AncientFruitItem extends ZetaItem {
 
 	public AncientFruitItem(ZetaModule module) {
-		super("ancient_fruit", module, new Item.Properties().tab(CreativeModeTabs.FOOD_AND_DRINKS)
+		super("ancient_fruit", module, new Item.Properties()
 				.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).alwaysEat().build()));
 	}
 	

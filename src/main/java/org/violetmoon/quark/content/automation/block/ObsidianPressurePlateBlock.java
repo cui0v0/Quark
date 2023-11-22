@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.automation.block;
 
 import java.util.List;
 
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,19 +25,9 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class ObsidianPressurePlateBlock extends ZetaPressurePlateBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public ObsidianPressurePlateBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
-		super(null /*Sensitivity is unused*/, regname, module, creativeTab, properties);
+	public ObsidianPressurePlateBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
+		super(null /*Sensitivity is unused*/, regname, module, creativeTab, properties, BlockSetType.STONE);
 		this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
-	}
-
-	@Override
-	protected void playOnSound(@NotNull LevelAccessor worldIn, @NotNull BlockPos pos) {
-		worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.5F);
-	}
-
-	@Override
-	protected void playOffSound(@NotNull LevelAccessor worldIn, @NotNull BlockPos pos) {
-		worldIn.playSound(null, pos, SoundEvents.STONE_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 0.3F, 0.4F);
 	}
 
 	@Override

@@ -32,12 +32,6 @@ public class ZetaWallBlock extends WallBlock implements IZetaBlock, IZetaBlockCo
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if(parent.isEnabled() || group == CreativeModeTab.TAB_SEARCH)
-			super.fillItemCategory(group, items);
-	}
-
 	@Nullable
 	@Override
 	public ZetaModule getModule() {

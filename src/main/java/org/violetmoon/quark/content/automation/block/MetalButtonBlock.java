@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.automation.block;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -20,7 +19,7 @@ public class MetalButtonBlock extends ZetaButtonBlock {
 	private final int speed;
 
 	public MetalButtonBlock(String regname, ZetaModule module, int speed) {
-		super(regname, module, CreativeModeTab.TAB_REDSTONE,
+		super(regname, module, "REDSTONE",
 				Block.Properties.of()
 						.mapColor(MapColor.NONE)
 						.noCollission()

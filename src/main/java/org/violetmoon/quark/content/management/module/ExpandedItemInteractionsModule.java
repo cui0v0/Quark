@@ -380,8 +380,9 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			Screen gui = mc.screen;
 			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 				Slot under = containerGui.getSlotUnderMouse();
-				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
-					return;
+				//TODO 1.20
+//				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
+//					return;
 
 				if (under != null) {
 					ItemStack underStack = under.getItem();

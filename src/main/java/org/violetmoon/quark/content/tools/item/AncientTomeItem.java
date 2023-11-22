@@ -5,11 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +14,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
-import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -51,22 +46,23 @@ public class AncientTomeItem extends ZetaItem {
 		return newStack;
 	}
 
-	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (isEnabled() || group == CreativeModeTab.TAB_SEARCH) {
-			if (group == CreativeModeTab.TAB_SEARCH || group.getEnchantmentCategories().length != 0) {
-				BuiltInRegistries.ENCHANTMENT.forEach(ench -> {
-					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
-						if (!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
-							if (group == CreativeModeTab.TAB_SEARCH || group.hasEnchantmentCategory(ench.category)) {
-								items.add(getEnchantedItemStack(ench));
-							}
-						}
-					}
-				});
-			}
-		}
-	}
+	//TODO 1.20
+//	@Override
+//	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+//		if (isEnabled() || group == CreativeModeTab.TAB_SEARCH) {
+//			if (group == CreativeModeTab.TAB_SEARCH || group.getEnchantmentCategories().length != 0) {
+//				BuiltInRegistries.ENCHANTMENT.forEach(ench -> {
+//					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
+//						if (!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
+//							if (group == CreativeModeTab.TAB_SEARCH || group.hasEnchantmentCategory(ench.category)) {
+//								items.add(getEnchantedItemStack(ench));
+//							}
+//						}
+//					}
+//				});
+//			}
+//		}
+//	}
 
 	public static Component getFullTooltipText(Enchantment ench) {
 		return Component.translatable("quark.misc.ancient_tome_tooltip", Component.translatable(ench.getDescriptionId()), Component.translatable("enchantment.level." + (ench.getMaxLevel() + 1))).withStyle(ChatFormatting.GRAY);

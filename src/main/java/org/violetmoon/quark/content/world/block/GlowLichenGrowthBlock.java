@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -31,7 +30,7 @@ public class GlowLichenGrowthBlock extends ZetaBushBlock implements Bonemealable
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
 	public GlowLichenGrowthBlock(ZetaModule module) {
-		super("glow_lichen_growth", module, CreativeModeTab.TAB_DECORATIONS,
+		super("glow_lichen_growth", module, "DECORATIONS",
 				Properties.copy(Blocks.GLOW_LICHEN)
 				.randomTicks()
 				.lightLevel(s -> 8));

@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.building.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +19,7 @@ public class HollowLogBlock extends HollowPillarBlock {
     }
 
     public HollowLogBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {
-        super(name, module, CreativeModeTab.TAB_DECORATIONS,
+        super(name, module, "DECORATIONS",
                 MiscUtil.copyPropertySafe(sourceLog)
                         .isSuffocating((s, g, p) -> false));
 

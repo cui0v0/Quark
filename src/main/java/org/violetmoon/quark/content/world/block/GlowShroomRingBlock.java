@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -45,7 +44,7 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0.0D, 4.0D, 5.0D, 16.0D, 12.0D, 16.0D), Direction.SOUTH, Block.box(0.0D, 4.0D, 0.0D, 16.0D, 12.0D, 11.0D), Direction.WEST, Block.box(5.0D, 4.0D, 0.0D, 16.0D, 12.0D, 16.0D), Direction.EAST, Block.box(0.0D, 4.0D, 0.0D, 11.0D, 12.0D, 16.0D)));
 
 	public GlowShroomRingBlock(ZetaModule module) {
-		super("glow_shroom_ring", module, CreativeModeTab.TAB_DECORATIONS,
+		super("glow_shroom_ring", module, "DECORATIONS",
 				BlockBehaviour.Properties.of()
 				.mapColor(MapColor.COLOR_LIGHT_GRAY)
 				.noCollission()
@@ -53,7 +52,7 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 				.sound(SoundType.FUNGUS)
 				.pushReaction(PushReaction.DESTROY)
 		);
-		module.zeta.registry.setCreativeTab(this, CreativeModeTab.TAB_DECORATIONS);
+		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}

@@ -12,7 +12,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,7 +57,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 	public static BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public RopeBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public RopeBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(regname, module, creativeTab, properties);
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
