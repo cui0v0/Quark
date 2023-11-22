@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import org.violetmoon.quark.content.automation.module.IronRodModule;
 import org.violetmoon.zeta.api.ICollateralMover;
 import org.violetmoon.zeta.block.IZetaBlock;

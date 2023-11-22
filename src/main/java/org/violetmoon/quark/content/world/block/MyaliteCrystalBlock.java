@@ -1,12 +1,12 @@
 package org.violetmoon.quark.content.world.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
@@ -15,7 +15,8 @@ public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockCol
 
 	public MyaliteCrystalBlock(ZetaModule module) {
 		super("myalite_crystal", module, "DECORATIONS", true,
-				Block.Properties.of(Material.GLASS, MapColor.COLOR_PURPLE)
+				OldMaterials.glass()
+				.mapColor(DyeColor.PURPLE)
 				.strength(0.5F, 1200F)
 				.sound(SoundType.GLASS)
 				.lightLevel(b -> 14)

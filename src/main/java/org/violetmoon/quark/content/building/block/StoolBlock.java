@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +35,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.quark.content.building.entity.Stool;
 import org.violetmoon.quark.content.building.module.StoolsModule;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -63,7 +63,8 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public StoolBlock(ZetaModule module, DyeColor color) {
 		super(color.getName() + "_stool", module, "DECORATIONS",
-				BlockBehaviour.Properties.of(Material.WOOL, color.getMapColor())
+			OldMaterials.wool()
+				.mapColor(color.getMapColor())
 				.sound(SoundType.WOOD)
 				.strength(0.2F)
 				.noOcclusion());

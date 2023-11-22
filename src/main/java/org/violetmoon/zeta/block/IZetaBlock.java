@@ -2,13 +2,13 @@ package org.violetmoon.zeta.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Material;
 import org.violetmoon.zeta.block.ext.IZetaBlockExtensions;
 import org.violetmoon.zeta.module.IDisableable;
 
@@ -27,13 +27,17 @@ public interface IZetaBlock extends IZetaBlockExtensions, IDisableable<IZetaBloc
 		if (state.getValues().containsKey(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
 			return 0;
 
-		Material material = state.getMaterial();
-		if (material == Material.WOOL || material == Material.LEAVES)
+		//TODO 1.20: weird
+		SoundType totallyMaterialTrustMeImADolphin = state.getSoundType();
+		if(totallyMaterialTrustMeImADolphin == SoundType.WOOL)
 			return 60;
-		ResourceLocation loc = Registry.BLOCK.getKey(state.getBlock());
-		if (loc != null && (loc.getPath().endsWith("_log") || loc.getPath().endsWith("_wood")) && state.getMaterial().isFlammable())
+		if(totallyMaterialTrustMeImADolphin == SoundType.WOOD)
+			return 20;
+		ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+		if (loc != null && (loc.getPath().endsWith("_log") || loc.getPath().endsWith("_wood")))
 			return 5;
-		return state.getMaterial().isFlammable() ? 20 : 0;
+		else
+			return 0;
 	}
 
 	@Override
@@ -41,10 +45,14 @@ public interface IZetaBlock extends IZetaBlockExtensions, IDisableable<IZetaBloc
 		if (state.getValues().containsKey(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
 			return 0;
 
-		Material material = state.getMaterial();
-		if (material == Material.WOOL || material == Material.LEAVES)
+		//TODO 1.20: weird
+		SoundType gaming = state.getSoundType();
+		if(gaming == SoundType.WOOL) //or leaves
 			return 30;
-		return state.getMaterial().isFlammable() ? 5 : 0;
+		if(gaming == SoundType.WOOD)
+			return 5;
+		else
+			return 0;
 	}
 
 }

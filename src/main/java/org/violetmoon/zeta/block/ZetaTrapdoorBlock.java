@@ -21,7 +21,7 @@ public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaTrapdoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaTrapdoorBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 

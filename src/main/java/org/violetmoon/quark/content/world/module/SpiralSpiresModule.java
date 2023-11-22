@@ -16,7 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.Config.Max;
@@ -28,6 +28,7 @@ import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MyaliteCrystalBlock;
 import org.violetmoon.quark.content.world.gen.SpiralSpireGenerator;
 import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -70,7 +71,7 @@ public class SpiralSpiresModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		Block.Properties props = Block.Properties.of(Material.STONE, MapColor.TERRACOTTA_PURPLE)
+		Block.Properties props = OldMaterials.stone().mapColor(MapColor.TERRACOTTA_PURPLE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 		dusky_myalite = new ZetaBlock("dusky_myalite", this, "BUILDING_BLOCKS", props);

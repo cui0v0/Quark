@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.world.gen;
 
+import net.minecraft.world.level.material.Fluids;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.material.Material;
 
 public class ObsidianSpikeGenerator extends Generator {
 
@@ -64,7 +64,8 @@ public class ObsidianSpikeGenerator extends Generator {
 			for(int j = 0; j < 5; j++)
 				for(int k = 0; k < checkHeight; k++) {
 					BlockPos checkPos = pos.offset(i - 2, k, j - 2);
-					if(!(world.isEmptyBlock(checkPos) || world.getBlockState(checkPos).getMaterial() == Material.LAVA))
+					//TODO 1.20: formerly a getMaterial == Material.LAVA check
+					if(!(world.isEmptyBlock(checkPos) || world.getFluidState(checkPos).is(Fluids.LAVA) || world.getFluidState(checkPos).is(Fluids.FLOWING_LAVA)))
 						return;
 				}
 		

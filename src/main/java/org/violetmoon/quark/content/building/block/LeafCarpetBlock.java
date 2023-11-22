@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,7 +27,6 @@ public class LeafCarpetBlock extends ZetaBlock implements IZetaBlockColorProvide
 	private static final VoxelShape SHAPE = box(0, 0, 0, 16, 1, 16);
 
 	public final BlockState baseState;
-	private ItemStack baseStack;
 
 	public LeafCarpetBlock(String name, Block base, ZetaModule module) {
 		super(name, module, "DECORATIONS",

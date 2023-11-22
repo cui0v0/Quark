@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.world.level.material.PushReaction;
 import org.violetmoon.quark.content.automation.block.RedstoneRandomizerBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -9,7 +10,6 @@ import org.violetmoon.zeta.util.Hint;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
 
 /**
  * @author WireSegal
@@ -22,6 +22,6 @@ public class RedstoneRandomizerModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		redstone_randomizer = new RedstoneRandomizerBlock("redstone_randomizer", this, "REDSTONE", Block.Properties.of(Material.DECORATION).strength(0).sound(SoundType.WOOD));
+		redstone_randomizer = new RedstoneRandomizerBlock("redstone_randomizer", this, "REDSTONE", Block.Properties.of().pushReaction(PushReaction.DESTROY).strength(0).sound(SoundType.WOOD));
 	}
 }

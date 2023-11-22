@@ -26,17 +26,16 @@ import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -48,7 +47,7 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
 
 	public MovingMagnetizedBlock(ZetaModule module) {
-		super("magnetized_block", module, null, Block.Properties.of(Material.PISTON).strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
+		super("magnetized_block", module, null, OldMaterials.piston().strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 

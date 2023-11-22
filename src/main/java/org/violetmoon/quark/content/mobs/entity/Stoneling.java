@@ -101,8 +101,8 @@ public class Stoneling extends PathfinderMob {
 
 	public Stoneling(EntityType<? extends Stoneling> type, Level worldIn) {
 		super(type, worldIn);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_CACTUS, 1.0F);
-		this.setPathfindingMalus(BlockPathTypes.DANGER_CACTUS, 1.0F);
+		this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 1.0F);
+		this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 1.0F); //TODO 1.20: looks weird to me. formerly both DAMAGE_CACTUS
 	}
 
 	@Override

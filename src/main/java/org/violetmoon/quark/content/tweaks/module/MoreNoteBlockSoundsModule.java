@@ -13,10 +13,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.Material;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +68,7 @@ public class MoreNoteBlockSoundsModule extends ZetaModule {
 		}
 
 		if (enableAmethystSound && event.getInstrument() == NoteBlockInstrument.HARP &&
-			 world instanceof ServerLevel serverLevel && world.getBlockState(pos.below()).getMaterial() == Material.AMETHYST) {
+			 world instanceof ServerLevel serverLevel && world.getBlockState(pos.below()).getSoundType() == SoundType.AMETHYST) { //TODO 1.20 - material -> soundtype
 			event.setCanceled(true);
 			int note = event.getState().getValue(NoteBlock.NOTE);
 			float pitch = (float) Math.pow(2.0D, (double) (note - 12) / 12.0D);

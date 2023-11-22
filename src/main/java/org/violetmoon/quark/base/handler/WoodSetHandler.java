@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
@@ -26,11 +27,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolActions;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaTrapdoorBlock;
 import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
 import org.violetmoon.quark.base.item.boat.QuarkBoat;
@@ -88,8 +90,8 @@ public class WoodSetHandler {
 				.setCustomClientFactory((spawnEntity, world) -> new QuarkChestBoat(quarkChestBoatEntityType, world))
 				.build("quark_chest_boat");
 
-		Quark.ZETA.registry.register(quarkBoatEntityType, "quark_boat", Registry.ENTITY_TYPE_REGISTRY);
-		Quark.ZETA.registry.register(quarkChestBoatEntityType, "quark_chest_boat", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(quarkBoatEntityType, "quark_boat", Registries.ENTITY_TYPE);
+		Quark.ZETA.registry.register(quarkChestBoatEntityType, "quark_chest_boat", Registries.ENTITY_TYPE);
 	}
 
 	@LoadEvent
@@ -108,31 +110,31 @@ public class WoodSetHandler {
 	}
 
 	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MapColor color, MapColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
-		WoodType type = WoodType.register(WoodType.create(Quark.MOD_ID + ":" + name));
+		WoodType type = WoodType.register(new WoodType(Quark.MOD_ID + ":" + name, BlockSetType.OAK)); //TODO 1.20: BlockSetType
 		WoodSet set = new WoodSet(name, module, type);
 
 		if(hasLog) {
 			set.log = log(name + "_log", module, color, barkColor);
-			set.wood = new ZetaPillarBlock(name + "_wood", module, "BUILDING_BLOCKS", BlockBehaviour.Properties.of(Material.WOOD, barkColor).strength(2.0F).sound(SoundType.WOOD));
+			set.wood = new ZetaPillarBlock(name + "_wood", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(barkColor).strength(2.0F).sound(SoundType.WOOD));
 			set.strippedLog = log("stripped_" + name + "_log", module, color, color);
-			set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, "BUILDING_BLOCKS", BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD));
+			set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(color).strength(2.0F).sound(SoundType.WOOD));
 		}
 
-		set.planks = new ZetaBlock(name + "_planks", module, "BUILDING_BLOCKS", Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.planks = new ZetaBlock(name + "_planks", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
 		set.slab = event.getVariantRegistry().addSlab((IZetaBlock) set.planks).getBlock();
 		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks).getBlock();
-		set.fence = new ZetaFenceBlock(name + "_fence", module, "DECORATIONS", BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, "REDSTONE", BlockBehaviour.Properties.of(Material.WOOD, color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fence = new ZetaFenceBlock(name + "_fence", module, "DECORATIONS", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.door = new ZetaDoorBlock(name + "_door", module, "REDSTONE", BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
-		set.trapdoor = new ZetaTrapdoorBlock(name + "_trapdoor", module, "REDSTONE", BlockBehaviour.Properties.of(Material.WOOD, color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
+		set.door = new ZetaDoorBlock(name + "_door", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
+		set.trapdoor = new ZetaTrapdoorBlock(name + "_trapdoor", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
-		set.button = new ZetaWoodenButtonBlock(name + "_button", module, BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD));
-		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.button = new ZetaWoodenButtonBlock(name + "_button", module, OldMaterials.decoration().noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), BlockSetType.OAK); //TODO 1.20 BlockSetType
 
-		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD));
-		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, BlockBehaviour.Properties.of(Material.WOOD, color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
+		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
+		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
 		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantLaddersModule.class));
@@ -186,7 +188,8 @@ public class WoodSetHandler {
 
 	private static RotatedPillarBlock log(String name, ZetaModule module, MapColor topColor, MapColor sideColor) {
 		return new ZetaPillarBlock(name, module, "BUILDING_BLOCKS",
-				BlockBehaviour.Properties.of(Material.WOOD, s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
+			OldMaterials.wood()
+				.mapColor(s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
 				.strength(2.0F).sound(SoundType.WOOD));
 	}
 

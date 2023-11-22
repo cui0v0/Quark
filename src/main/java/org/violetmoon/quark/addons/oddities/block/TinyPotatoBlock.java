@@ -36,7 +36,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -44,6 +43,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.item.TinyPotatoBlockItem;
 import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
@@ -68,7 +68,7 @@ public class TinyPotatoBlock extends ZetaBlock implements SimpleWaterloggedBlock
 
 	public TinyPotatoBlock(ZetaModule module) {
 		super("tiny_potato", module, "DECORATIONS",
-				BlockBehaviour.Properties.of(Material.WOOL).strength(0.25F));
+				OldMaterials.wool().strength(0.25F));
 		registerDefaultState(defaultBlockState()
 				.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
 	}

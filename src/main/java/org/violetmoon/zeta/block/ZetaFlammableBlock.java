@@ -11,7 +11,7 @@ public class ZetaFlammableBlock extends ZetaBlock {
 
 	private final int flammability;
 
-	public ZetaFlammableBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, int flamability, Properties properties) {
+	public ZetaFlammableBlock(String regname, ZetaModule module, String creativeTab, int flamability, Properties properties) {
 		super(regname, module, creativeTab, properties);
 		this.flammability = flamability;
 	}

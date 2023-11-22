@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -129,7 +128,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 			} else if (stack.getItem() == Items.GLASS_BOTTLE) {
 				BlockPos bottomPos = getBottomPos(worldIn, pos);
 				BlockState stateAt = worldIn.getBlockState(bottomPos);
-				if (stateAt.getMaterial() == Material.WATER) {
+				if (stateAt.getFluidState().is(Fluids.WATER)) { //TODO 1.20: material -> fluidState check
 					Vec3 playerPos = player.position();
 					worldIn.playSound(player, playerPos.x, playerPos.y, playerPos.z, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
 					stack.shrink(1);

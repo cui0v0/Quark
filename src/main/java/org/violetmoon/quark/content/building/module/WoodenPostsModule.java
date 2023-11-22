@@ -21,7 +21,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolActions;
 
 @ZetaLoadModule(category = "building")
@@ -34,7 +33,7 @@ public class WoodenPostsModule extends ZetaModule {
 		for(Wood wood : VanillaWoods.ALL) {
 			Block b = wood.fence();
 			
-			boolean nether = b.defaultBlockState().getMaterial() == Material.NETHER_WOOD;
+			boolean nether = wood.nether();
 			WoodPostBlock post = new WoodPostBlock(this, b, "", nether);
 			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", nether);
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, post, stripped);

@@ -3,8 +3,10 @@ package org.violetmoon.quark.content.building.module;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.Material;
+import net.minecraftforge.event.level.NoteBlockEvent;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -23,7 +25,9 @@ public class MidoriModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties());
 		
-		Block.Properties props = Block.Properties.of(Material.STONE, MapColor.COLOR_LIGHT_GREEN)
+		Block.Properties props = Block.Properties.of()
+				.mapColor(MapColor.COLOR_LIGHT_GREEN)
+				.instrument(NoteBlockInstrument.BASEDRUM)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 

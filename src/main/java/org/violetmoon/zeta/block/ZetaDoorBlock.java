@@ -22,7 +22,7 @@ public class ZetaDoorBlock extends DoorBlock implements IZetaBlock, IZetaBlockIt
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaDoorBlock(String regname, ZetaModule module, CreativeModeTab creativeTab, Properties properties) {
+	public ZetaDoorBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
 		super(properties);
 		this.module = module;
 

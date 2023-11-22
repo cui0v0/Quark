@@ -2,11 +2,12 @@ package org.violetmoon.quark.content.world.module;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.content.world.undergroundstyle.PermafrostStyle;
 import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
+import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -21,7 +22,8 @@ public class PermafrostModule extends AbstractUndergroundStyleModule<PermafrostS
 	@LoadEvent
 	public final void register(ZRegister event) {
 		permafrost = new ZetaBlock("permafrost", this, "BUILDING_BLOCKS",
-				Block.Properties.of(Material.STONE, MapColor.COLOR_LIGHT_BLUE)
+			OldMaterials.stone()
+				.mapColor(MapColor.COLOR_LIGHT_BLUE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 10F)
 				.sound(SoundType.STONE));
