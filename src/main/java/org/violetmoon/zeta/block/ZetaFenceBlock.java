@@ -2,11 +2,8 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.FenceBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 

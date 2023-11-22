@@ -110,7 +110,10 @@ public class WoodSetHandler {
 	}
 
 	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MapColor color, MapColor barkColor, boolean hasLog, boolean hasBoat, boolean flammable) {
-		WoodType type = WoodType.register(new WoodType(Quark.MOD_ID + ":" + name, BlockSetType.OAK)); //TODO 1.20: BlockSetType
+		//TODO 1.20: maybe expose stuff like canOpenByHand, sound types, etc
+		BlockSetType setType = new BlockSetType(Quark.MOD_ID + ":" + name);
+
+		WoodType type = WoodType.register(new WoodType(Quark.MOD_ID + ":" + name, setType));
 		WoodSet set = new WoodSet(name, module, type);
 
 		if(hasLog) {
@@ -127,11 +130,11 @@ public class WoodSetHandler {
 		set.fence = new ZetaFenceBlock(name + "_fence", module, "DECORATIONS", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.door = new ZetaDoorBlock(name + "_door", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
-		set.trapdoor = new ZetaTrapdoorBlock(name + "_trapdoor", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
+		set.door = new ZetaDoorBlock(setType, name + "_door", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
+		set.trapdoor = new ZetaTrapdoorBlock(setType, name + "_trapdoor", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
-		set.button = new ZetaWoodenButtonBlock(name + "_button", module, OldMaterials.decoration().noCollission().strength(0.5F).sound(SoundType.WOOD));
-		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), BlockSetType.OAK); //TODO 1.20 BlockSetType
+		set.button = new ZetaWoodenButtonBlock(setType, name + "_button", module, OldMaterials.decoration().noCollission().strength(0.5F).sound(SoundType.WOOD));
+		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
 
 		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
 		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));

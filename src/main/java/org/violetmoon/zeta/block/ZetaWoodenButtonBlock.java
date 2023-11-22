@@ -1,5 +1,6 @@
 package org.violetmoon.zeta.block;
 
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.sounds.SoundEvent;
@@ -8,19 +9,14 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 public class ZetaWoodenButtonBlock extends ZetaButtonBlock {
 
-	public ZetaWoodenButtonBlock(String regname, ZetaModule module, Properties properties) {
-		super(regname, module, "REDSTONE", properties);
+	public ZetaWoodenButtonBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
+		super(setType, 30, true, regname, module, "REDSTONE", properties);
 	}
 
 	@NotNull
 	@Override
 	protected SoundEvent getSound(boolean powered) {
 		return powered ? SoundEvents.WOODEN_BUTTON_CLICK_ON : SoundEvents.WOODEN_BUTTON_CLICK_OFF;
-	}
-
-	@Override
-	public int getPressDuration() {
-		return 30;
 	}
 
 }

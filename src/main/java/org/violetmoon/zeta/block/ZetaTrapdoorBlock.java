@@ -2,6 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -17,8 +18,8 @@ public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaTrapdoorBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-		super(properties);
+	public ZetaTrapdoorBlock(BlockSetType setType, String regname, ZetaModule module, String creativeTab, Properties properties) {
+		super(properties, setType);
 		this.module = module;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);

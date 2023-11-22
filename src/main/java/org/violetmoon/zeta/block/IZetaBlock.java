@@ -28,10 +28,11 @@ public interface IZetaBlock extends IZetaBlockExtensions, IDisableable<IZetaBloc
 			return 0;
 
 		//TODO 1.20: weird
+
 		SoundType totallyMaterialTrustMeImADolphin = state.getSoundType();
 		if(totallyMaterialTrustMeImADolphin == SoundType.WOOL)
 			return 60;
-		if(totallyMaterialTrustMeImADolphin == SoundType.WOOD)
+		if(totallyMaterialTrustMeImADolphin == SoundType.WOOD || state.ignitedByLava()) //i dont know what im doing
 			return 20;
 		ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 		if (loc != null && (loc.getPath().endsWith("_log") || loc.getPath().endsWith("_wood")))
@@ -49,7 +50,7 @@ public interface IZetaBlock extends IZetaBlockExtensions, IDisableable<IZetaBloc
 		SoundType gaming = state.getSoundType();
 		if(gaming == SoundType.WOOL) //or leaves
 			return 30;
-		if(gaming == SoundType.WOOD)
+		if(gaming == SoundType.WOOD || state.ignitedByLava())
 			return 5;
 		else
 			return 0;

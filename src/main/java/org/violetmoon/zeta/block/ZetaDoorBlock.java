@@ -2,13 +2,11 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import org.violetmoon.zeta.item.ZetaDoubleHighBlockItem;
@@ -21,8 +19,8 @@ public class ZetaDoorBlock extends DoorBlock implements IZetaBlock, IZetaBlockIt
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaDoorBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-		super(properties);
+	public ZetaDoorBlock(BlockSetType setType, String regname, ZetaModule module, String creativeTab, Properties properties) {
+		super(properties, setType);
 		this.module = module;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
