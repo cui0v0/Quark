@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.world.generator.IGenerator;
@@ -62,15 +63,15 @@ public class WorldGenHandler {
 			// Always do .toLowerCase(Locale.ENGLISH) with that locale. If you leave it off, computers in
 			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
 			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
-			Quark.ZETA.registry.register(deferredFeature, name, Registry.FEATURE_REGISTRY);
+			Quark.ZETA.registry.register(deferredFeature, name, Registries.FEATURE);
 
 			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
 
 			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
-			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, resloc, feature);
+			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(Registries.CONFIGURED_FEATURE, resloc, feature);
 
 			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());
-			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, resloc, placed);
+			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(Registries.PLACED_FEATURE, resloc, placed);
 
 			defers.put(stage, placedHolder);
 		}

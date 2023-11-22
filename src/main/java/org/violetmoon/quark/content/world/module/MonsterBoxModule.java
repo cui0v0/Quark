@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,7 +62,7 @@ public class MonsterBoxModule extends ZetaModule {
 		monster_box = new MonsterBoxBlock(this);
 
 		blockEntityType = BlockEntityType.Builder.of(MonsterBoxBlockEntity::new, monster_box).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "monster_box", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "monster_box", Registries.BLOCK_ENTITY_TYPE);
 	}
 
 	@LoadEvent

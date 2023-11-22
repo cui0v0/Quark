@@ -1,6 +1,7 @@
 package org.violetmoon.zeta.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -24,7 +25,10 @@ public class RegistryUtil {
 
 	public static <T> List<T> getTagValues(RegistryAccess access, TagKey<T> tag) {
 		Registry<T> registry = access.registryOrThrow(tag.registry());
-		HolderSet<T> holderSet = registry.getTag(tag).orElse(new HolderSet.Named<>(registry, tag));
+		//HolderSet<T> holderSet = registry.getTag(tag).orElse(new HolderSet.Named<>(registry, tag)); //TODO 1.20 i dont know what the shit is going on
+		HolderSet<T> holderSet = registry.getTag(tag).orElse(null);
+		if(holderSet == null)
+			return Collections.emptyList();
 
 		return holderSet.stream().map(Holder::value).toList();
 	}

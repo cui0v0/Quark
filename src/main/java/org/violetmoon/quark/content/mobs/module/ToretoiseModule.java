@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.mobs.module;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -66,7 +67,7 @@ public class ToretoiseModule extends ZetaModule {
 				.setCustomClientFactory((spawnEntity, world) -> new Toretoise(toretoiseType, world))
 				.build("toretoise");
 
-		Quark.ZETA.registry.register(toretoiseType, "toretoise", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(toretoiseType, "toretoise", Registries.ENTITY_TYPE);
 
 		EntitySpawnHandler.registerSpawn(toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, toretoiseType, 0x55413b, 0x383237, spawnConfig);

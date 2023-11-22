@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -96,7 +98,7 @@ public class VariantChestsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registry.RECIPE_SERIALIZER_REGISTRY);
+		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registries.RECIPE_SERIALIZER);
 
 		VANILLA_WOODS.forEach(s -> addChest(s.name(), Blocks.CHEST));
 		MOD_WOODS.forEach(s -> addModChest(s, Blocks.CHEST));
@@ -117,8 +119,8 @@ public class VariantChestsModule extends ZetaModule {
 			VariantTrappedChestBlock::new, VariantTrappedChestBlock.Compat::new, trappedChestMappings,
 			allChests::addAll, trappedChests::addAll);
 
-		Quark.ZETA.registry.register(chestTEType, "variant_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-		Quark.ZETA.registry.register(trappedChestTEType, "variant_trapped_chest", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(chestTEType, "variant_chest", Registries.BLOCK_ENTITY_TYPE);
+		Quark.ZETA.registry.register(trappedChestTEType, "variant_trapped_chest", Registries.BLOCK_ENTITY_TYPE);
 
 		ILootrIntegration.INSTANCE.postRegister();
 	}

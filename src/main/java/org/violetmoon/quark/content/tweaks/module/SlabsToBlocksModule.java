@@ -1,6 +1,8 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +27,7 @@ public class SlabsToBlocksModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		event.getRegistry().register(SlabToBlockRecipe.SERIALIZER, "slab_to_block", Registry.RECIPE_SERIALIZER_REGISTRY);
+		event.getRegistry().register(SlabToBlockRecipe.SERIALIZER, "slab_to_block", Registries.RECIPE_SERIALIZER);
 	}
 
 	//fixme Switch to Zeta - IThundxr

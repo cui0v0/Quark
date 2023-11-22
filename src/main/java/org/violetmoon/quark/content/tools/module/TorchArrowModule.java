@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -40,7 +41,7 @@ public class TorchArrowModule extends ZetaModule {
 				.clientTrackingRange(4)
 				.updateInterval(20) // update interval
 				.build("torch_arrow");
-		Quark.ZETA.registry.register(torchArrowType, "torch_arrow", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(torchArrowType, "torch_arrow", Registries.ENTITY_TYPE);
 	}
 	
 	@LoadEvent

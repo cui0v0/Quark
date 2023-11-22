@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -93,7 +94,7 @@ public class WraithModule extends ZetaModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new Wraith(wraithType, world))
 				.build("wraith");
-		Quark.ZETA.registry.register(wraithType, "wraith", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(wraithType, "wraith", Registries.ENTITY_TYPE);
 
 		soulBeadType = EntityType.Builder.of(SoulBead::new, MobCategory.MISC)
 				.sized(0F, 0F)
@@ -102,7 +103,7 @@ public class WraithModule extends ZetaModule {
 				.fireImmune()
 				.setCustomClientFactory((spawnEntity, world) -> new SoulBead(soulBeadType, world))
 				.build("soul_bead");
-		event.getRegistry().register(soulBeadType, "soul_bead", Registry.ENTITY_TYPE_REGISTRY);
+		event.getRegistry().register(soulBeadType, "soul_bead", Registries.ENTITY_TYPE);
 
 		EntitySpawnHandler.registerSpawn(wraithType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, spawnConfig);
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);

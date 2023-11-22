@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -34,7 +35,7 @@ public class VariantFurnacesModule extends ZetaModule {
 		blackstoneFurnace = new SoulFurnaceBlock("blackstone", this, Properties.copy(Blocks.BLACKSTONE).lightLevel(litBlockEmission(13)));
 
 		blockEntityType = BlockEntityType.Builder.of(VariantFurnaceBlockEntity::new, deepslateFurnace, blackstoneFurnace).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "variant_furnace", Registry.BLOCK_ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(blockEntityType, "variant_furnace", Registries.BLOCK_ENTITY_TYPE);
 	}
 
 	private static ToIntFunction<BlockState> litBlockEmission(int lvl) {

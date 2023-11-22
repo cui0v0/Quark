@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.module;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -52,7 +53,7 @@ public class SkullPikesModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new SkullPike(skullPikeType, world))
 				.build("skull_pike");
-		Quark.ZETA.registry.register(skullPikeType, "skull_pike", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(skullPikeType, "skull_pike", Registries.ENTITY_TYPE);
 	}
 
 	@LoadEvent

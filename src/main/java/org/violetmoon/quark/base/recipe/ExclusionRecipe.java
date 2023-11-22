@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonArray;
@@ -159,7 +160,7 @@ public class ExclusionRecipe implements CraftingRecipe {
 					excludedRecipes.add(loc);
 			}
 
-			RecipeSerializer<?> serializer = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(trueType));
+			RecipeSerializer<?> serializer = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(trueType));
 			if (serializer == null)
 				throw new JsonSyntaxException("Invalid or unsupported recipe type '" + trueType + "'");
 			Recipe<?> parent = serializer.fromJson(recipeId, json);
@@ -183,7 +184,7 @@ public class ExclusionRecipe implements CraftingRecipe {
 			}
 			String trueType = buffer.readUtf(32767);
 
-			RecipeSerializer<?> serializer = Registry.RECIPE_SERIALIZER.get(new ResourceLocation(trueType));
+			RecipeSerializer<?> serializer = BuiltInRegistries.RECIPE_SERIALIZER.get(new ResourceLocation(trueType));
 			if (serializer == null)
 				throw new IllegalArgumentException("Invalid or unsupported recipe type '" + trueType + "'");
 			Recipe<?> parent = serializer.fromNetwork(recipeId, buffer);
@@ -201,7 +202,7 @@ public class ExclusionRecipe implements CraftingRecipe {
 			buffer.writeVarInt(recipe.excluded.size());
 			for (ResourceLocation loc : recipe.excluded)
 				buffer.writeUtf(loc.toString(), 32767);
-			buffer.writeUtf(Objects.toString(Registry.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
+			buffer.writeUtf(Objects.toString(BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.parent.getSerializer())), 32767);
 			((RecipeSerializer<Recipe<?>>) recipe.parent.getSerializer()).toNetwork(buffer, recipe.parent);
 		}
 	}

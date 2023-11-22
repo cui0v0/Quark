@@ -10,6 +10,7 @@
  */
 package org.violetmoon.quark.base.util;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 
 import net.minecraft.core.Registry;
@@ -21,6 +22,6 @@ public class QuarkEffect extends MobEffect {
 	public QuarkEffect(String name, MobEffectCategory type, int color) {
 		super(type, color);
 
-		Quark.ZETA.registry.register(this, name, Registry.MOB_EFFECT_REGISTRY);
+		Quark.ZETA.registry.register(this, name, Registries.MOB_EFFECT);
 	}
 }

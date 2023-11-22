@@ -140,7 +140,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 	private static Holder<PlacedFeature> place(String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
 		String name = Quark.MOD_ID + ":" + featureName;
 
-		Quark.ZETA.registry.register(feature, name, Registry.FEATURE_REGISTRY);
+		Quark.ZETA.registry.register(feature, name, Registries.FEATURE);
 		Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> configured = FeatureUtils.register(name, feature, NoneFeatureConfiguration.NONE);
 		return PlacementUtils.register(name, configured, placer);
 	}

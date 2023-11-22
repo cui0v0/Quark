@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.StoolBlock;
 import org.violetmoon.quark.content.building.client.render.entity.StoolEntityRenderer;
@@ -46,7 +47,7 @@ public class StoolsModule extends ZetaModule {
 				.setShouldReceiveVelocityUpdates(false)
 				.setCustomClientFactory((spawnEntity, world) -> new Stool(stoolEntity, world))
 				.build("stool");
-		Quark.ZETA.registry.register(stoolEntity, "stool", Registry.ENTITY_TYPE_REGISTRY);
+		Quark.ZETA.registry.register(stoolEntity, "stool", Registries.ENTITY_TYPE);
 	}
 	
 	@LoadEvent
