@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -116,7 +117,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 		if (state.getBlock() == Blocks.PISTON_HEAD)
 			return true;
 
-		ResourceLocation res = Registry.BLOCK.getKey(state.getBlock());
+		ResourceLocation res = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 		return res == null || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.toString()) || PistonsMoveTileEntitiesModule.movementBlacklist.contains(res.getNamespace());
 	}
 
@@ -186,7 +187,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 				world.setBlock(pos, state, 0);
 
 			if (entityTag != null && !world.isClientSide) {
-				if (delayedUpdateList.contains(Objects.toString(Registry.BLOCK.getKey(block))))
+				if (delayedUpdateList.contains(Objects.toString(BuiltInRegistries.BLOCK.getKey(block))))
 					registerDelayedUpdate(world, pos, entityTag);
 				else {
 					BlockEntity entity = loadBlockEntitySafe(world, pos, entityTag);
@@ -292,7 +293,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 		if (inWorldEntity == null) {
 			Quark.LOG.warn("No block entity found at {} (expected {})", pos.toShortString(), expectedTypeStr);
 			return null;
-		} else if (inWorldEntity.getType() != Registry.BLOCK_ENTITY_TYPE.get(new ResourceLocation(expectedTypeStr))) {
+		} else if (inWorldEntity.getType() != BuiltInRegistries.BLOCK_ENTITY_TYPE.get(new ResourceLocation(expectedTypeStr))) {
 			Quark.LOG.warn("Wrong block entity found at {} (expected {}, got {})", pos.toShortString(), expectedTypeStr, BlockEntityType.getKey(inWorldEntity.getType()));
 			return null;
 		} else {

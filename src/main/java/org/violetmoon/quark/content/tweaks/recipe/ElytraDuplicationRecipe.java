@@ -52,13 +52,14 @@ public class ElytraDuplicationRecipe extends CustomRecipe {
 	@NotNull
 	@Override
 	public ItemStack assemble(@NotNull CraftingContainer var1, RegistryAccess gaming) {
-		return getResultItem();
+		return getResultItem(gaming);
 	}
 
 	@NotNull
 	@Override
 	public ItemStack getResultItem(RegistryAccess gaming) {
 		ItemStack stack = new ItemStack(Items.ELYTRA);
+
 //		if(EnderdragonScales.dyeBlack && ModuleLoader.isFeatureEnabled(DyableElytra.class))
 //			ItemNBTHelper.setInt(stack, DyableElytra.TAG_ELYTRA_DYE, 0);
 

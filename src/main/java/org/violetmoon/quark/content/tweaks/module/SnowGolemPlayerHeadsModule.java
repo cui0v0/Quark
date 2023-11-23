@@ -49,7 +49,7 @@ public class SnowGolemPlayerHeadsModule extends ZetaModule {
 				Vec3 pos = e.position();
 				event.getDrops().add(new ItemEntity(e.level(), pos.x, pos.y, pos.z, stack));
 				
-				for(Player player : e.getLevel().players()) {
+				for(Player player : e.level().players()) {
 					String pname = player.getName().getString();
 					if(pname.equals(name) && player instanceof ServerPlayer sp && player.distanceTo(snowman) < 16F)
 						getOwnHeadTrigger.trigger(sp);

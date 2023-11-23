@@ -96,7 +96,7 @@ public class VariantSelectorModule extends ZetaModule {
 	}
 
 	public static String getSavedVariant(Player player) {
-		if(player.level.isClientSide)
+		if(player.level().isClientSide)
 			return clientVariant;
 
 		return player.getPersistentData().getString(TAG_CURRENT_VARIANT);
@@ -218,7 +218,7 @@ public class VariantSelectorModule extends ZetaModule {
 						HitResult result = mc.hitResult;
 						if(result instanceof BlockHitResult bhr) {
 							BlockPos pos = bhr.getBlockPos();
-							Block block = mc.player.level.getBlockState(pos).getBlock();
+							Block block = mc.player.level().getBlockState(pos).getBlock();
 							stack = new ItemStack(variants.getOriginalBlock(block));
 						}
 					}
@@ -291,7 +291,7 @@ public class VariantSelectorModule extends ZetaModule {
 					HitResult result = mc.hitResult;
 					if(result instanceof BlockHitResult bhr) {
 						BlockPos pos = bhr.getBlockPos();
-						Block testBlock = player.level.getBlockState(pos).getBlock();
+						Block testBlock = player.level().getBlockState(pos).getBlock();
 
 						displayLeft = new ItemStack(testBlock);
 						variantBlock = getVariantOrOriginal(testBlock, savedVariant);

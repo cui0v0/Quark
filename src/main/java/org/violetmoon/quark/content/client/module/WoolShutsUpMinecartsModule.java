@@ -25,7 +25,7 @@ public class WoolShutsUpMinecartsModule extends ZetaModule {
 	}
 
 	public static boolean canPlay(AbstractMinecart cart) {
-		return !staticEnabled || !cart.level.getBlockState(cart.blockPosition().below()).is(BlockTags.DAMPENS_VIBRATIONS);
+		return !staticEnabled || !cart.level().getBlockState(cart.blockPosition().below()).is(BlockTags.DAMPENS_VIBRATIONS);
 	}
 	
 }

@@ -3,6 +3,7 @@ package org.violetmoon.quark.base.handler;
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
@@ -99,7 +100,7 @@ public class QuarkSounds {
 	@LoadEvent
 	public static void start(ZRegister e) {
 		for (SoundEvent event : REGISTRY_DEFERENCE)
-			Quark.ZETA.registry.register(event, event.getLocation(), Registry.SOUND_EVENT_REGISTRY);
+			Quark.ZETA.registry.register(event, event.getLocation(), Registries.SOUND_EVENT);
 		REGISTRY_DEFERENCE.clear();
 	}
 

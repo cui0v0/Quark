@@ -2,9 +2,8 @@ package org.violetmoon.quark.content.mobs.entity;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.joml.Vector3f;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-
-import com.mojang.math.Vector3f;
 
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -74,13 +73,13 @@ public class SoulBead extends Entity {
 			double px = bpx + (Math.random() - 0.5) * posSpread;
 			double py = bpy + (Math.random() - 0.5) * posSpread;
 			double pz = bpz + (Math.random() - 0.5) * posSpread;
-			level.addParticle(new DustParticleOptions(new Vector3f(0.2F, 0.12F, 0.1F), 1F), px, py, pz, 0, 0, 0);
+			level().addParticle(new DustParticleOptions(new Vector3f(0.2F, 0.12F, 0.1F), 1F), px, py, pz, 0, 0, 0);
 			if(Math.random() < 0.05)
-				level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SOUL_SAND.defaultBlockState()), px, py, pz, 0, 0, 0);
+				level().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SOUL_SAND.defaultBlockState()), px, py, pz, 0, 0, 0);
 		}
 		
 		if(Math.random() < 0.1)
-			level.playSound(null, bpx, bpy, bpz, QuarkSounds.ENTITY_SOUL_BEAD_IDLE, SoundSource.PLAYERS, 0.2F, 1F);
+			level().playSound(null, bpx, bpy, bpz, QuarkSounds.ENTITY_SOUL_BEAD_IDLE, SoundSource.PLAYERS, 0.2F, 1F);
 
 		liveTicks++;
 		if(liveTicks > maxLiveTime)

@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.entity;
 
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tools.module.SkullPikesModule;
@@ -29,14 +30,14 @@ public class SkullPike extends Entity {
 	public void tick() {
 		super.tick();
 
-		if(level instanceof ServerLevel sworld) {
+		if(level() instanceof ServerLevel sworld) {
 			boolean good = false;
 			BlockPos pos = blockPosition();
-			BlockState state = level.getBlockState(pos);
+			BlockState state = level().getBlockState(pos);
 
 			if(state.is(SkullPikesModule.pikeTrophiesTag)) {
 				BlockPos down = pos.below();
-				BlockState downState = level.getBlockState(down);
+				BlockState downState = level().getBlockState(down);
 
 				if(downState.is(BlockTags.FENCES))
 					good = true;
@@ -53,7 +54,7 @@ public class SkullPike extends Entity {
 	public boolean isVisible(Entity entityIn) {
 		Vec3 vector3d = new Vec3(getX(), getY() + 1, getZ());
 		Vec3 vector3d1 = new Vec3(entityIn.getX(), entityIn.getEyeY(), entityIn.getZ());
-		return level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+		return level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class SkullPike extends Entity {
 
 	@NotNull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

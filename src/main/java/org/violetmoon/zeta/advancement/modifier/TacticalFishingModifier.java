@@ -6,6 +6,8 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.FilledBucketTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.ItemLike;
@@ -41,7 +43,7 @@ public class TacticalFishingModifier extends AdvancementModifier {
                 TriggerInstance.filledBucket(ItemPredicate.Builder.item()
                         .of(array).build()));
 
-        String name = Registry.ITEM.getKey(array[0].asItem()).toString();
+        String name = BuiltInRegistries.ITEM.getKey(array[0].asItem()).toString();
         adv.addOrCriterion(name, criterion);
 
         return true;

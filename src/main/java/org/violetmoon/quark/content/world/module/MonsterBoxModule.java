@@ -75,9 +75,9 @@ public class MonsterBoxModule extends ZetaModule {
 		LivingEntity entity = event.getEntity();
 		if(enableExtraLootTable && entity.level() instanceof ServerLevel serverLevel
 				&& entity.getPersistentData().getBoolean(TAG_MONSTER_BOX_SPAWNED)
-				&& entity.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
+				&& entity.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
 				&& ((AccessorLivingEntity) entity).quark$lastHurtByPlayerTime() > 0) {
-			LootTable loot = serverLevel.getServer().getLootTables().get(MONSTER_BOX_LOOT_TABLE);
+			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MONSTER_BOX_LOOT_TABLE);
 			var generatedLoot = loot.getRandomItems(((AccessorLivingEntity) entity).quark$createLootContext(true, event.getSource()).create(LootContextParamSets.ENTITY));
 			entity.captureDrops(new ArrayList<>());
 			for (ItemStack stack : generatedLoot)

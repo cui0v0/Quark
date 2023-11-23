@@ -2,7 +2,7 @@ package org.violetmoon.quark.content.mobs.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.ModelPart.Cube;
@@ -238,7 +238,7 @@ public class ToretoiseModel extends EntityModel<Toretoise> {
 			angeryTime = Math.sin(angeryTime) * -20;
 
 			matrix.translate(0, 1., 1);
-			matrix.mulPose(Vector3f.XP.rotationDegrees((float) angeryTime));
+			matrix.mulPose(Axis.XP.rotationDegrees((float) angeryTime));
 			matrix.translate(0, -1, -1);
 		}
 
@@ -261,7 +261,7 @@ public class ToretoiseModel extends EntityModel<Toretoise> {
 		bodyTrans *= (1F - rideMultiplier);
 
 		matrix.translate(0, bodyTrans, 0);
-		matrix.mulPose(Vector3f.ZP.rotation((bodyTrans - scale) * 0.5F));
+		matrix.mulPose(Axis.ZP.rotation((bodyTrans - scale) * 0.5F));
 
 		body.render(matrix, vb, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 

@@ -104,8 +104,8 @@ public class SpiralSpiresModule extends ZetaModule {
 			return;
 
 		Entity entity = event.getEntity();
-		Level world = entity.level;
-		BlockPos pos = new BlockPos(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+		Level world = entity.level();
+		BlockPos pos = new BlockPos((int) event.getTargetX(), (int) event.getTargetY(), (int) event.getTargetZ());
 
 		List<BlockPos> myalite = getAdjacentMyalite(null, world, pos, null);
 		if (myalite == null || myalite.isEmpty()) {

@@ -144,7 +144,7 @@ public class VariantChestsModule extends ZetaModule {
 				String left = toks[0];
 				String right = toks[1];
 
-				Block block = Registry.BLOCK.get(new ResourceLocation(right));
+				Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(right));
 				if (block != Blocks.AIR) {
 					manualChestMappings.put(new ResourceLocation(left), block);
 					if (chests.contains(block)) {
@@ -228,7 +228,7 @@ public class VariantChestsModule extends ZetaModule {
 				disableable.setCondition(it.condition);
 
 			if (structureMappings != null) {
-				TagKey<Structure> tag = structureTags.computeIfAbsent(it, (info) -> TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Quark.MOD_ID, info.type + "_chest_structures")));
+				TagKey<Structure> tag = structureTags.computeIfAbsent(it, (info) -> TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, info.type + "_chest_structures")));
 				structureMappings.put(tag, block);
 			}
 
@@ -254,7 +254,7 @@ public class VariantChestsModule extends ZetaModule {
 					event.setCanceled(true);
 					event.setCancellationResult(InteractionResult.SUCCESS);
 
-					if (!target.level.isClientSide) {
+					if (!target.level().isClientSide) {
 						ItemStack copy = held.copy();
 						copy.setCount(1);
 						held.shrink(1);

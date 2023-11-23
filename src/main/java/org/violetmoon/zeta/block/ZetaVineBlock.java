@@ -2,6 +2,8 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
