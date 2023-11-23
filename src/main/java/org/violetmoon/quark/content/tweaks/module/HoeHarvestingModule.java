@@ -17,11 +17,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolActions;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -121,15 +123,18 @@ public class HoeHarvestingModule extends ZetaModule {
 			return type != PlantType.WATER && type != PlantType.DESERT;
 		}
 
-		// todo: Would this be fixable via tag?
-		Material mat = state.getMaterial();
-		boolean isHarvestableMaterial =
-					mat == Material.PLANT ||
-					mat == Material.REPLACEABLE_FIREPROOF_PLANT ||
-					mat == Material.REPLACEABLE_PLANT ||
-					mat == Material.WATER_PLANT;
-		return isHarvestableMaterial &&
+		return isHarvestableMaterial(state) &&
 				state.canBeReplaced(new BlockPlaceContext(new UseOnContext(player, InteractionHand.MAIN_HAND, new BlockHitResult(new Vec3(0.5, 0.5, 0.5), Direction.DOWN, pos, false))));
 	}
 
+	public static boolean isHarvestableMaterial(BlockState state) {
+		NoteBlockInstrument instrument = state.instrument();
+
+		boolean PLANT = state.mapColor == MapColor.PLANT && state.getPistonPushReaction() == PushReaction.DESTROY;
+		boolean WATER_PLANT = state.mapColor == MapColor.WATER && instrument == NoteBlockInstrument.BASEDRUM;
+		boolean REPLACEABLE_FIREPROOF_PLANT = state.mapColor == MapColor.PLANT && state.canBeReplaced() && state.getPistonPushReaction() == PushReaction.DESTROY;
+		boolean REPLACEABLE_WATER_PLANT = state.mapColor == MapColor.WATER && state.canBeReplaced() && state.getPistonPushReaction() == PushReaction.DESTROY;
+
+		return PLANT || WATER_PLANT || REPLACEABLE_FIREPROOF_PLANT || REPLACEABLE_WATER_PLANT;
+	}
 }
