@@ -1,23 +1,21 @@
 package org.violetmoon.quark.base.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZLoadComplete;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.mojang.datafixers.util.Pair;
-
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZLoadComplete;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class UndergroundBiomeHandler {
 
@@ -72,7 +70,7 @@ public final class UndergroundBiomeHandler {
 		public void addUndergroundBiomes(OverworldBiomeBuilder builder, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
 			for(UndergroundBiomeSkeleton skeleton : skeletons)
 				if(skeleton.module().enabled) {
-					ResourceKey<Biome> resourceKey = ResourceKey.create(Registry.BIOME_REGISTRY, skeleton.biome());
+					ResourceKey<Biome> resourceKey = ResourceKey.create(Registries.BIOME, skeleton.biome());
 					consumer.accept(Pair.of(skeleton.climate(), resourceKey));
 				}
 		}

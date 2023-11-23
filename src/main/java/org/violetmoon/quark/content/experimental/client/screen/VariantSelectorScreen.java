@@ -3,9 +3,13 @@ package org.violetmoon.quark.content.experimental.client.screen;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -16,13 +20,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 
 public class VariantSelectorScreen extends Screen {
 
@@ -47,8 +50,8 @@ public class VariantSelectorScreen extends Screen {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack ms, int mx, int my, float delta) {
-		super.render(ms, mx, my, delta);
+	public void render(@NotNull GuiGraphics guiGraphics, int mx, int my, float delta) {
+		super.render(guiGraphics, mx, my, delta);
 
 		timeIn += delta;
 
@@ -78,7 +81,6 @@ public class VariantSelectorScreen extends Screen {
 		BufferBuilder buf = tess.getBuilder();
 
 		RenderSystem.disableCull();
-		RenderSystem.disableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -155,13 +157,12 @@ public class VariantSelectorScreen extends Screen {
 		}
 		tess.end();
 
-		RenderSystem.enableTexture();
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		
 		for(DrawStack ds : drawStacks) {
 			if(!ds.stack().isEmpty())
-				mc.getItemRenderer().renderGuiItem(ds.stack(), ds.x(), ds.y());
+				guiGraphics.renderItem(ds.stack(), ds.x(), ds.y());
 		}
 		RenderSystem.disableBlend();
 	}

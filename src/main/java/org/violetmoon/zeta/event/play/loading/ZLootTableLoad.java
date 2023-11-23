@@ -1,21 +1,19 @@
 package org.violetmoon.zeta.event.play.loading;
 
-import java.util.List;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import org.violetmoon.zeta.event.bus.Cancellable;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.mixin.mixins.AccessorLootTable;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTables;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import java.util.List;
 
 public interface ZLootTableLoad extends IZetaPlayEvent, Cancellable {
 	ResourceLocation getName();
 	LootTable getTable();
-	LootTables getLootTableManager();
+	void setTable(LootTable table);
 
 	default void add(LootPoolEntryContainer entry) {
 		LootTable table = getTable();
