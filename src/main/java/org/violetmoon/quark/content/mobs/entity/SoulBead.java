@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.mobs.entity;
 
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import org.jetbrains.annotations.NotNull;
 
 import org.joml.Vector3f;
@@ -98,9 +99,8 @@ public class SoulBead extends Entity {
 		compound.putInt(TAG_TARGET_Z, entityData.get(TARGET_Z));
 	}
 
-	@NotNull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

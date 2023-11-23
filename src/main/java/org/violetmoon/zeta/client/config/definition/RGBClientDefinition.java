@@ -1,17 +1,14 @@
 package org.violetmoon.zeta.client.config.definition;
 
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.base.Preconditions;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
 import org.violetmoon.zeta.client.ZetaClient;
@@ -20,6 +17,8 @@ import org.violetmoon.zeta.client.config.widget.PencilButton;
 import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.ValueDefinition;
+
+import java.util.function.Consumer;
 
 public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinition> {
 	protected final ValueDefinition<Double> r;
@@ -108,16 +107,16 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 				}
 
 				@Override
-				public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-					super.render(mstack, mouseX, mouseY, partialTicks);
+				public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+					super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 					//draw the current value
 					String displayVal = String.format("%.2f", getValue());
 					int valueColor = changes.isDirty(binding) ? ChatFormatting.GOLD.getColor() : 0xFFFFFF;
-					font.drawShadow(mstack, displayVal, x + (float) (getWidth() / 2 - font.width(displayVal) / 2), y + 6, valueColor);
+					guiGraphics.drawString(font, displayVal, x + (float) (getWidth() / 2 - font.width(displayVal) / 2), y + 6, valueColor, true);
 
 					//draw a label
-					font.drawShadow(mstack, label, x - 20, y + 5, labelColor);
+					guiGraphics.drawString(font, label, x - 20, y + 5, labelColor, true);
 				}
 			};
 		}
@@ -128,13 +127,13 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 		}
 
 		@Override
-		public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-			renderBackground(mstack);
+		public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			renderBackground(guiGraphics);
 
-			super.render(mstack, mouseX, mouseY, partialTicks);
+			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			int titleLeft = width / 2;
-			drawCenteredString(mstack, font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+			guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
 			//drawCenteredString(mstack, font, Component.literal(element.getGuiDisplayName()), titleLeft, 30, 0xFFFFFF); //TODO
 
 			//TODO: text
@@ -150,13 +149,13 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 			).getColor();
 
 			//checkerboard
-			fill(mstack, cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
-			fill(mstack, cx, cy, cx + size, cy + size, 0xFF999999);
-			fill(mstack, cx, cy, cx + size / 2, cy + size / 2, 0xFF666666);
-			fill(mstack, cx + size / 2, cy + size / 2, cx + size, cy + size, 0xFF666666);
+			guiGraphics.fill(cx - 1, cy - 1, cx + size + 1, cy + size + 1, 0xFF000000);
+			guiGraphics.fill(cx, cy, cx + size, cy + size, 0xFF999999);
+			guiGraphics.fill(cx, cy, cx + size / 2, cy + size / 2, 0xFF666666);
+			guiGraphics.fill(cx + size / 2, cy + size / 2, cx + size, cy + size, 0xFF666666);
 
 			//color
-			fill(mstack, cx, cy, cx + size, cy + size, color);
+			guiGraphics.fill(cx, cy, cx + size, cy + size, color);
 		}
 
 		private double snap(ForgeSlider s) {

@@ -1,29 +1,15 @@
 package org.violetmoon.quark.content.client.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiGraphics;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
-import org.violetmoon.quark.content.client.module.ChestSearchingModule;
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -39,6 +25,16 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
+import org.violetmoon.quark.content.client.module.ChestSearchingModule;
+import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
+import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShulkerBoxTooltips {
 
@@ -150,7 +146,7 @@ public class ShulkerBoxTooltips {
 							}
 						}
 
-						renderTooltipBackground(mc, pose, currentX, currentY, dims[0], dims[1], color);
+						renderTooltipBackground(guiGraphics, mc, pose, currentX, currentY, dims[0], dims[1], color);
 
 						for (int i = 0; i < size; i++) {
 							ItemStack itemstack = capability.getStackInSlot(i);
@@ -175,43 +171,43 @@ public class ShulkerBoxTooltips {
 			}
 		}
 
-		public static void renderTooltipBackground(Minecraft mc, PoseStack matrix, int x, int y, int width, int height, int color) {
+		public static void renderTooltipBackground(GuiGraphics guiGraphics, Minecraft mc, PoseStack matrix, int x, int y, int width, int height, int color) {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, WIDGET_RESOURCE);
 			RenderSystem.setShaderColor(((color & 0xFF0000) >> 16) / 255f,
 					((color & 0x00FF00) >> 8) / 255f,
 					(color & 0x0000FF) / 255f, 1f);
 
-			GuiComponent.blit(matrix, x, y,
+			guiGraphics.blit(WIDGET_RESOURCE, x, y,
 					0, 0,
 					CORNER, CORNER, 256, 256);
-			GuiComponent.blit(matrix, x + CORNER + EDGE * width, y + CORNER + EDGE * height,
+			guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * width, y + CORNER + EDGE * height,
 					CORNER + BUFFER + EDGE + BUFFER, CORNER + BUFFER + EDGE + BUFFER,
 					CORNER, CORNER, 256, 256);
-			GuiComponent.blit(matrix, x + CORNER + EDGE * width, y,
+			guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * width, y,
 					CORNER + BUFFER + EDGE + BUFFER, 0,
 					CORNER, CORNER, 256, 256);
-			GuiComponent.blit(matrix, x, y + CORNER + EDGE * height,
+			guiGraphics.blit(WIDGET_RESOURCE, x, y + CORNER + EDGE * height,
 					0, CORNER + BUFFER + EDGE + BUFFER,
 					CORNER, CORNER, 256, 256);
 			for (int row = 0; row < height; row++) {
-				GuiComponent.blit(matrix, x, y + CORNER + EDGE * row,
+				guiGraphics.blit(WIDGET_RESOURCE, x, y + CORNER + EDGE * row,
 						0, CORNER + BUFFER,
 						CORNER, EDGE, 256, 256);
-				GuiComponent.blit(matrix, x + CORNER + EDGE * width, y + CORNER + EDGE * row,
+				guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * width, y + CORNER + EDGE * row,
 						CORNER + BUFFER + EDGE + BUFFER, CORNER + BUFFER,
 						CORNER, EDGE, 256, 256);
 				for (int col = 0; col < width; col++) {
 					if (row == 0) {
-						GuiComponent.blit(matrix, x + CORNER + EDGE * col, y,
+						guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * col, y,
 								CORNER + BUFFER, 0,
 								EDGE, CORNER, 256, 256);
-						GuiComponent.blit(matrix, x + CORNER + EDGE * col, y + CORNER + EDGE * height,
+						guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * col, y + CORNER + EDGE * height,
 								CORNER + BUFFER, CORNER + BUFFER + EDGE + BUFFER,
 								EDGE, CORNER, 256, 256);
 					}
 
-					GuiComponent.blit(matrix, x + CORNER + EDGE * col, y + CORNER + EDGE * row,
+					guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * col, y + CORNER + EDGE * row,
 							CORNER + BUFFER, CORNER + BUFFER,
 							EDGE, EDGE, 256, 256);
 				}

@@ -1,10 +1,10 @@
 package org.violetmoon.quark.content.tools.module;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -32,13 +32,14 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.IConfigType;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
 import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
@@ -55,7 +56,6 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -357,6 +357,8 @@ public class PathfinderMapsModule extends ZetaModule {
 		public void drawHUD(ZRenderGuiOverlay.Hotbar.Post event) {
 			if (drawHud) {
 				Minecraft mc = Minecraft.getInstance();
+
+				GuiGraphics guiGraphics = event.getGuiGraphics();
 				if(mc.screen != null)
 					return;
 
@@ -367,8 +369,7 @@ public class PathfinderMapsModule extends ZetaModule {
 					int x = 5;
 					int y = PathfinderMapsModule.hudOnTop ? 20 : (window.getGuiScaledHeight() - 15);
 
-					PoseStack ps = event.getGuiGraphics().pose();
-					mc.font.drawShadow(ps, PathfindersQuillItem.getSearchingComponent(), x, y, 0xFFFFFF);
+					guiGraphics.drawString(mc.font, PathfindersQuillItem.getSearchingComponent(), x, y, 0xFFFFFF, true);
 
 					int qx = x;
 					int qy = y - 15;
@@ -385,7 +386,7 @@ public class PathfinderMapsModule extends ZetaModule {
 					qx += (int) offX;
 					qy += (int) offY;
 
-					mc.getItemRenderer().renderGuiItem(quill, qx, qy);
+					guiGraphics.renderItem(quill, qx, qy);
 				}
 			}
 		}

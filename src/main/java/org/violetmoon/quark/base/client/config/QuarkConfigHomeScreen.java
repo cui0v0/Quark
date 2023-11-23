@@ -1,25 +1,23 @@
 package org.violetmoon.quark.base.client.config;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.zeta.client.config.screen.ZetaConfigHomeScreen;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.handler.ContributorRewardHandler;
+import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.zeta.client.config.screen.ZetaConfigHomeScreen;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 
@@ -48,7 +46,7 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 	protected float partialTicks;
 
 	@Override
-	public void renderBackground(PoseStack mstack) {
+	public void renderBackground(GuiGraphics guiGraphics) {
 		time += partialTicks;
 
 		Minecraft mc = Minecraft.getInstance();
@@ -62,27 +60,27 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 			}
 
 			PANORAMA.render(spin, blur);
-		} else super.renderBackground(mstack);
+		} else super.renderBackground(guiGraphics);
 
 		int boxWidth = 400;
-		fill(mstack, width / 2 - boxWidth / 2, 0, width / 2 + boxWidth / 2, this.height, 0x66000000);
-		fill(mstack, width / 2 - boxWidth / 2 - 1, 0, width / 2 - boxWidth / 2, this.height, 0x66999999); // nice
-		fill(mstack, width / 2 + boxWidth / 2, 0, width / 2 + boxWidth / 2 + 1, this.height, 0x66999999);
+		guiGraphics.fill(width / 2 - boxWidth / 2, 0, width / 2 + boxWidth / 2, this.height, 0x66000000);
+		guiGraphics.fill(width / 2 - boxWidth / 2 - 1, 0, width / 2 - boxWidth / 2, this.height, 0x66999999); // nice
+		guiGraphics.fill(width / 2 + boxWidth / 2, 0, width / 2 + boxWidth / 2 + 1, this.height, 0x66999999);
 	}
 
 	@Override
-	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		this.partialTicks = partialTicks;
 
-		super.render(mstack, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		drawCenteredString(mstack, font, I18n.get("quark.gui.config.subheader1", ChatFormatting.LIGHT_PURPLE, ContributorRewardHandler.featuredPatron, ChatFormatting.RESET), width / 2, 28, 0x9EFFFE);
-		drawCenteredString(mstack, font, I18n.get("quark.gui.config.subheader2"), width / 2, 38, 0x9EFFFE);
+		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.subheader1", ChatFormatting.LIGHT_PURPLE, ContributorRewardHandler.featuredPatron, ChatFormatting.RESET), width / 2, 28, 0x9EFFFE);
+		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.subheader2"), width / 2, 38, 0x9EFFFE);
 
 		//TODO TODO TODO, flesh this out !
 		int changeCount = changeSet.changeCount();
 		if(changeCount != 0)
-			drawCenteredString(mstack, font, changeCount + " unsaved change" + (changeCount > 1 ? "s" : ""), width/2 - 150, height-30, 0xFF8800);
+			guiGraphics.drawCenteredString(font, changeCount + " unsaved change" + (changeCount > 1 ? "s" : ""), width/2 - 150, height-30, 0xFF8800);
 	}
 
 }

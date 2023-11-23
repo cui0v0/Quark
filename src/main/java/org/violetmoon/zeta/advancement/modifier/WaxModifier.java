@@ -3,6 +3,7 @@ package org.violetmoon.zeta.advancement.modifier;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import org.violetmoon.zeta.api.IMutableAdvancement;
 import org.violetmoon.zeta.advancement.AdvancementModifier;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -42,7 +43,7 @@ public class WaxModifier  extends AdvancementModifier {
 	public boolean apply(ResourceLocation res, IMutableAdvancement adv) {
 		String title = res.getPath().replaceAll(".+/", "");
 		Criterion criterion = adv.getCriterion(title);
-		if(criterion != null && criterion.getTrigger() instanceof ItemInteractWithBlockTrigger.TriggerInstance iib) {
+		if(criterion != null && criterion.getTrigger() instanceof ItemUsedOnLocationTrigger.TriggerInstance iib) {
 			Set<Block> blockSet = iib.location.block.blocks;
 			if(blockSet != null) {
 				Set<Block> ourSet = res.equals(TARGET_ON) ? unwaxed : waxed;

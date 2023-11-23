@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.automation.client.render;
 
 import java.util.Objects;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.module.PistonsMoveTileEntitiesModule;
 
@@ -44,7 +45,7 @@ public class QuarkPistonBlockEntityRenderer {
 	
 	public static boolean renderTESafely(Level world, BlockPos truePos, BlockState state, BlockEntity tile, BlockEntity sourceTE, float partialTicks, Vec3 offset, PoseStack matrix, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		Block block = state.getBlock();
-		String id = Objects.toString(Registry.BLOCK.getKey(block));
+		String id = Objects.toString(BuiltInRegistries.BLOCK.getKey(block));
 		
 		PoseStack.Pose currEntry = matrix.last();
 		render: try {

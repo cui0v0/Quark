@@ -1,6 +1,5 @@
 package org.violetmoon.quark.base.handler;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -21,10 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-
-import java.util.*;
-import java.util.function.Predicate;
-
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.inventory.slot.CachedItemHandlerSlot;
 import org.violetmoon.quark.api.ICustomSorting;
@@ -32,6 +27,9 @@ import org.violetmoon.quark.api.ISortingLockedSlots;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.management.module.InventorySortingModule;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 public final class SortingHandler {
 
@@ -409,7 +407,7 @@ public final class SortingHandler {
 		EquipmentSlot slot2 = armor2.getEquipmentSlot();
 
 		if (slot1 == slot2)
-			return armor2.getMaterial().getDefenseForSlot(slot2) - armor2.getMaterial().getDefenseForSlot(slot1);
+			return armor2.getMaterial().getDefenseForType(armor2.getType()) - armor2.getMaterial().getDefenseForType(armor1.getType());
 
 		return slot2.getIndex() - slot1.getIndex();
 	}

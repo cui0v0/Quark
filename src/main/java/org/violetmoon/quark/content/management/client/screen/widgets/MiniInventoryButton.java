@@ -1,20 +1,8 @@
 package org.violetmoon.quark.content.management.client.screen.widgets;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.client.TopLayerTooltipHandler;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
@@ -22,6 +10,14 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.handler.MiscUtil;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 public class MiniInventoryButton extends Button {
 
@@ -33,7 +29,7 @@ public class MiniInventoryButton extends Button {
 	private BooleanSupplier shiftTexture = () -> false;
 
 	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Consumer<List<String>> tooltip, OnPress onPress) {
-		super(parent.getGuiLeft() + x, parent.getGuiTop() + y, 10, 10, Component.literal(""), onPress);
+		super(new Button.Builder(Component.literal(""), onPress).size(10, 10).pos(parent.getGuiLeft() + x, parent.getGuiTop() + y));
 		this.parent = parent;
 		this.type = type;
 		this.tooltip = tooltip;
@@ -50,18 +46,17 @@ public class MiniInventoryButton extends Button {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		if(parent instanceof RecipeUpdateListener)
-			x = parent.getGuiLeft() + startX;
+			setX(parent.getGuiLeft() + startX);
 
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	public void renderButton(@NotNull PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -72,20 +67,23 @@ public class MiniInventoryButton extends Button {
 		if(shiftTexture.getAsBoolean())
 			v += (height * 2);
 
-		blit(matrix, x, y, u, v, width, height);
+		guiGraphics.blit(MiscUtil.GENERAL_ICONS, getX(), getY(), u, v, width, height);
 
 		if(isHovered)
-			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(getTooltip(), mouseX, mouseY);
+			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(local$getToolTip(), mouseX, mouseY);
 	}
 
 	@NotNull
 	@Override
 	protected MutableComponent createNarrationMessage() {
-		List<String> tooltip = getTooltip();
-		return tooltip.isEmpty() ? Component.literal("") : Component.translatable("gui.narrate.button", getTooltip().get(0));
+		List<String> tooltip = local$getToolTip();
+		return tooltip.isEmpty() ? Component.literal("") : Component.translatable("gui.narrate.button", local$getToolTip().get(0));
 	}
 
-	public List<String> getTooltip() {
+	/*
+	 * Prefixed with local$ to prevent clashing
+	 */
+	public List<String> local$getToolTip() {
 		List<String> list = new LinkedList<>();
 		tooltip.accept(list);
 		return list;

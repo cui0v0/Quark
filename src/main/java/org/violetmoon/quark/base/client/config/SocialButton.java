@@ -1,20 +1,17 @@
 package org.violetmoon.quark.base.client.config;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.zeta.client.TopLayerTooltipHandler;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+
+import java.util.List;
 
 public class SocialButton extends Button {
 
@@ -25,7 +22,7 @@ public class SocialButton extends Button {
 	private final int socialId;
 
 	public SocialButton(int x, int y, Component text, int textColor, int socialId, OnPress onClick) {
-		super(x, y, 20, 20, Component.literal(""), onClick);
+		super(new Button.Builder(Component.literal(""), onClick).size(20, 20).pos(x, y));
 		this.textColor = textColor;
 		this.socialId = socialId;
 		this.text = text;
@@ -36,19 +33,18 @@ public class SocialButton extends Button {
 	}
 
 	@Override
-	public void renderButton(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		super.renderButton(mstack, mouseX, mouseY, partialTicks);
+	public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, partialTicks);
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, SOCIAL_ICONS);
 
 		int u = socialId * 20;
 		int v = isHovered ? 20 : 0;
 
-		blit(mstack, x, y, u, v, 20, 20, 128, 64);
+		guiGraphics.blit(SOCIAL_ICONS, getX(), getY(), u, v, 20, 20, 128, 64);
 
 		if(isHovered)
 			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(text.getString()), mouseX, mouseY);

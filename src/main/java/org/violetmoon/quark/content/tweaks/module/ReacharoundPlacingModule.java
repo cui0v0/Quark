@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -190,6 +190,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 		@PlayEvent
 		public void onRender(ZRenderGuiOverlay.Crosshair event) {
+			GuiGraphics guiGraphics = event.getGuiGraphics();
 
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
@@ -211,7 +212,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 				matrix.scale(scale, 1F, 1F);
 				matrix.translate(-mc.font.width(text) / 2f, 0, 0);
-				mc.font.draw(matrix, text, 0, 0, color.getColor() | opacity);
+				guiGraphics.drawString(mc.font, text, 0, 0, color.getColor() | opacity);
 				matrix.popPose();
 			}
 		}
