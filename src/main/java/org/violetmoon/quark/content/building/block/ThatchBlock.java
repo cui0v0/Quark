@@ -27,7 +27,7 @@ public class ThatchBlock extends ZetaFlammableBlock {
 
 	@Override
 	public void fallOn(@NotNull Level worldIn, @NotNull BlockState state, @NotNull BlockPos pos, Entity entityIn, float fallDistance) {
-		entityIn.causeFallDamage(fallDistance, (float) ThatchModule.fallDamageMultiplier, DamageSource.FALL);
+		entityIn.causeFallDamage(fallDistance, (float) ThatchModule.fallDamageMultiplier, entityIn.damageSources().fall());
 	}
 
 }

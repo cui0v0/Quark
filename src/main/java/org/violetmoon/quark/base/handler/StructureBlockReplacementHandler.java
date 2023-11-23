@@ -2,6 +2,7 @@ package org.violetmoon.quark.base.handler;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -28,7 +29,7 @@ public class StructureBlockReplacementHandler {
 
 	@Nullable
 	public static Holder<Structure> getStructure(ServerLevelAccessor accessor, StructureHolder structure) {
-		Optional<? extends Registry<Structure>> registry = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY);
+		Optional<? extends Registry<Structure>> registry = accessor.registryAccess().registry(Registries.STRUCTURE);
 		Optional<Holder<Structure>> holder = registry
 			.flatMap((reg) -> reg.getResourceKey(structure.currentStructure).flatMap(reg::getHolder));
 
@@ -37,7 +38,7 @@ public class StructureBlockReplacementHandler {
 
 	@Nullable
 	public static ResourceKey<Structure> getStructureKey(ServerLevelAccessor accessor, StructureHolder structure) {
-		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY)
+		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registries.STRUCTURE)
 			.flatMap((it) -> it.getResourceKey(structure.currentStructure));
 
 		return res.isEmpty() ? null : res.get();
@@ -45,7 +46,7 @@ public class StructureBlockReplacementHandler {
 
 	@Nullable
 	public static ResourceLocation getStructureRes(ServerLevelAccessor accessor, StructureHolder structure) {
-		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registry.STRUCTURE_REGISTRY)
+		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registries.STRUCTURE)
 			.map((it) -> it.getKey(structure.currentStructure));
 
 		return res.isEmpty() ? null : res.get();

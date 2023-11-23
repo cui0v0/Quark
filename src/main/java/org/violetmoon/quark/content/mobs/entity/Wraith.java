@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.mobs.entity;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.mobs.module.WraithModule;
@@ -100,7 +101,7 @@ public class Wraith extends Zombie {
 
 	public SoundEvent getSound(EntityDataAccessor<String> param) {
 		ResourceLocation loc = new ResourceLocation(entityData.get(param));
-		return Registry.SOUND_EVENT.get(loc);
+		return BuiltInRegistries.SOUND_EVENT.get(loc);
 	}
 
 	@Override
@@ -203,7 +204,7 @@ public class Wraith extends Zombie {
 			if(source != null && source.getDirectEntity() instanceof Player)
 				aggroed = true;
 			
-			return this.level instanceof ServerLevel;
+			return this.level() instanceof ServerLevel;
 		}
 	}
 	

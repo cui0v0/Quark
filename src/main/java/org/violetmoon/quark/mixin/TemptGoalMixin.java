@@ -31,7 +31,7 @@ public class TemptGoalMixin {
 
 	@Inject(method = "canUse", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/ai/goal/TemptGoal;player:Lnet/minecraft/world/entity/player/Player;", ordinal = 0, shift = At.Shift.AFTER))
 	private void findTroughs(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		if (mob.level instanceof ServerLevel level) {
+		if (mob.level() instanceof ServerLevel level) {
 			if (nextScheduledStart == 0L) {
 				nextScheduledStart = level.getGameTime() + level.random.nextInt(RATE);
 			} else if (level.getGameTime() >= nextScheduledStart)
@@ -41,6 +41,6 @@ public class TemptGoalMixin {
 
 	@Inject(method = "start", at = @At(value = "HEAD"))
 	private void updateSchedule(CallbackInfo ci) {
-		nextScheduledStart = mob.level.getGameTime() + mob.level.random.nextInt(RATE);
+		nextScheduledStart = mob.level().getGameTime() + mob.level().random.nextInt(RATE);
 	}
 }

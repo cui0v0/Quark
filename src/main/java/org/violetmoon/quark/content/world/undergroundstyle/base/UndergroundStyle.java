@@ -94,7 +94,7 @@ public abstract class UndergroundStyle {
 			return false;
 
 		BlockPos upPos = pos.above();
-		return world.isEmptyBlock(upPos) || world.getBlockState(upPos).getMaterial().isReplaceable();
+		return world.isEmptyBlock(upPos) || world.getBlockState(upPos).canBeReplaced();
 	}
 
 	public boolean isCeiling(LevelAccessor world, BlockPos pos, BlockState state) {
@@ -102,7 +102,7 @@ public abstract class UndergroundStyle {
 			return false;
 
 		BlockPos downPos = pos.below();
-		return world.isEmptyBlock(downPos) || world.getBlockState(downPos).getMaterial().isReplaceable();
+		return world.isEmptyBlock(downPos) || world.getBlockState(downPos).canBeReplaced();
 	}
 
 	public boolean isWall(LevelAccessor world, BlockPos pos, BlockState state) {
@@ -118,7 +118,7 @@ public abstract class UndergroundStyle {
 			BlockPos offsetPos = pos.relative(facing);
 			BlockState stateAt = world.getBlockState(offsetPos);
 
-			if(state != stateAt && world.isEmptyBlock(offsetPos) || stateAt.getMaterial().isReplaceable())
+			if(state != stateAt && world.isEmptyBlock(offsetPos) || stateAt.canBeReplaced())
 				return facing;
 		}
 

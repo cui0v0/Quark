@@ -93,7 +93,7 @@ public class VariantAnimalTexturesModule extends ZetaModule {
 			if (!shinySparkles)
 				return;
 			LivingEntity entity = event.getEntity();
-			Level level = entity.getLevel();
+			Level level = entity.level();
 			if (level.isClientSide() && level.getGameTime() % 10 == 0) {
 				if (isSparkly(entity)) {
 					double angle = Math.random() * 2 * Math.PI;

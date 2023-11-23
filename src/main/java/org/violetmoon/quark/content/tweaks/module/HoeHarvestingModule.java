@@ -121,6 +121,7 @@ public class HoeHarvestingModule extends ZetaModule {
 			return type != PlantType.WATER && type != PlantType.DESERT;
 		}
 
+		// todo: Would this be fixable via tag?
 		Material mat = state.getMaterial();
 		boolean isHarvestableMaterial =
 					mat == Material.PLANT ||

@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.mobs.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -37,7 +38,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -79,7 +79,7 @@ public class Toretoise extends Animal {
 
 	public Toretoise(EntityType<? extends Toretoise> type, Level world) {
 		super(type, world);
-		maxUpStep = 1.0F;
+		setMaxUpStep(1.0F);
 		setPathfindingMalus(BlockPathTypes.WATER, 1.0F);
 	}
 
@@ -109,7 +109,7 @@ public class Toretoise extends Animal {
 
 	private void computeGoodFood() {
 		goodFood = Ingredient.of(ToretoiseModule.foods.stream()
-				.map(loc -> Registry.ITEM.get(new ResourceLocation(loc)))
+				.map(loc -> BuiltInRegistries.ITEM.get(new ResourceLocation(loc)))
 				.filter(i -> i != Items.AIR)
 				.map(ItemStack::new));
 	}
@@ -175,7 +175,7 @@ public class Toretoise extends Animal {
 				double y = getY();
 				double z = getZ() + getBbWidth() / 2;
 
-				if (level instanceof ServerLevel serverLevel) {
+				if (level() instanceof ServerLevel serverLevel) {
 					if (angeryTicks == 3)
 						playSound(QuarkSounds.ENTITY_TORETOISE_ANGRY, 1F, 0.2F);
 					else if (angeryTicks == 0) {
@@ -186,35 +186,35 @@ public class Toretoise extends Animal {
 
 				if (angeryTicks == 0) {
 					AABB hurtAabb = new AABB(x - dangerRange, y - 1, z - dangerRange, x + dangerRange, y + 1, z + dangerRange);
-					List<LivingEntity> hurtMeDaddy = level.getEntitiesOfClass(LivingEntity.class, hurtAabb, e -> !(e instanceof Toretoise));
+					List<LivingEntity> hurtMeDaddy = level().getEntitiesOfClass(LivingEntity.class, hurtAabb, e -> !(e instanceof Toretoise));
 
 					LivingEntity aggressor = lastAggressor == null ? this : lastAggressor;
-					DamageSource damageSource = DamageSource.mobAttack(aggressor);
+					DamageSource damageSource = damageSources().mobAttack(aggressor);
 					for (LivingEntity e : hurtMeDaddy) {
 						DamageSource useSource = damageSource;
 						if (e == aggressor)
-							useSource = DamageSource.mobAttack(this);
+							useSource = damageSources().mobAttack(this);
 
-						e.hurt(useSource, 4 + level.getDifficulty().ordinal());
+						e.hurt(useSource, 4 + level().getDifficulty().ordinal());
 					}
 				}
 			}
 		}
 
-		if (level instanceof ServerLevel serverLevel) {
+		if (level() instanceof ServerLevel serverLevel) {
 			int ore = getOreType();
 			if (ore != 0) breakOre:{
 				AABB ourBoundingBox = getBoundingBox();
-				BlockPos min = new BlockPos(Math.round(ourBoundingBox.minX), Math.round(ourBoundingBox.minY), Math.round(ourBoundingBox.minZ));
-				BlockPos max = new BlockPos(Math.round(ourBoundingBox.maxX), Math.round(ourBoundingBox.maxY), Math.round(ourBoundingBox.maxZ));
+				BlockPos min = new BlockPos((int) Math.round(ourBoundingBox.minX), (int) Math.round(ourBoundingBox.minY), (int) Math.round(ourBoundingBox.minZ));
+				BlockPos max = new BlockPos((int) Math.round(ourBoundingBox.maxX), (int) Math.round(ourBoundingBox.maxY), (int) Math.round(ourBoundingBox.maxZ));
 
 				for (int ix = min.getX(); ix <= max.getX(); ix++)
 					for (int iy = min.getY(); iy <= max.getY(); iy++)
 						for (int iz = min.getZ(); iz <= max.getZ(); iz++) {
 							BlockPos test = new BlockPos(ix, iy, iz);
-							BlockState state = level.getBlockState(test);
+							BlockState state = level().getBlockState(test);
 							if (state.getBlock() == Blocks.MOVING_PISTON) {
-								BlockEntity tile = level.getBlockEntity(test);
+								BlockEntity tile = level().getBlockEntity(test);
 								if (tile instanceof PistonMovingBlockEntity piston && piston.isExtending()) {
 									BlockState pistonState = piston.getMovedState();
 									if (pistonState.is(BREAKS_TORETOISE_ORE)) {
@@ -240,7 +240,7 @@ public class Toretoise extends Animal {
 			ItemStack held = living.getMainHandItem();
 
 			if (ore != 0 && held.getItem().canPerformAction(held, ToolActions.PICKAXE_DIG)) { //TODO: IForgeItem
-				if (level instanceof ServerLevel serverLevel) {
+				if (level() instanceof ServerLevel serverLevel) {
 					if (held.isDamageableItem() && e instanceof Player)
 						MiscUtil.damageStack((Player) e, InteractionHand.MAIN_HAND, held, 1);
 
@@ -300,16 +300,16 @@ public class Toretoise extends Animal {
 
 	@Override
 	public void setInLoveTime(int ticks) {
-		if (level.isClientSide)
+		if (level().isClientSide)
 			return;
 
-		playSound(eatCooldown == 0 ? QuarkSounds.ENTITY_TORETOISE_EAT : QuarkSounds.ENTITY_TORETOISE_EAT_SATIATED, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+		playSound(eatCooldown == 0 ? QuarkSounds.ENTITY_TORETOISE_EAT : QuarkSounds.ENTITY_TORETOISE_EAT_SATIATED, 0.5F + 0.5F * level().random.nextInt(2), (level().random.nextFloat() - level().random.nextFloat()) * 0.2F + 1.0F);
 		heal(8);
 
 		if (!isTamed) {
 			isTamed = true;
 
-			if (level instanceof ServerLevel serverLevel)
+			if (level() instanceof ServerLevel serverLevel)
 				serverLevel.sendParticles(ParticleTypes.HEART, getX(), getY(), getZ(), 20, 0.5, 0.5, 0.5, 0);
 		} else if (eatCooldown == 0) {
 			popOre(false);
@@ -319,7 +319,7 @@ public class Toretoise extends Animal {
 	private void popOre(boolean natural) {
 		if (!natural && ToretoiseModule.regrowChance == 0)
 			return;
-		if (getOreType() == 0 && (natural || level.random.nextInt(ToretoiseModule.regrowChance) == 0)) {
+		if (getOreType() == 0 && (natural || level().random.nextInt(ToretoiseModule.regrowChance) == 0)) {
 			int ore = random.nextInt(ORE_TYPES) + 1;
 			entityData.set(ORE_TYPE, ore);
 			this.setBoundingBox(this.makeBoundingBox());
@@ -327,7 +327,7 @@ public class Toretoise extends Animal {
 			if (!natural) {
 				eatCooldown = ToretoiseModule.cooldownTicks;
 
-				if (level instanceof ServerLevel serverLevel) {
+				if (level() instanceof ServerLevel serverLevel) {
 					serverLevel.sendParticles(ParticleTypes.CLOUD, getX(), getY() + 0.5, getZ(), 100, 0.6, 0.6, 0.6, 0);
 					playSound(QuarkSounds.ENTITY_TORETOISE_REGROW, 10F, 0.7F);
 				}
@@ -352,6 +352,7 @@ public class Toretoise extends Animal {
 	@Override
 	public boolean checkSpawnRules(@NotNull LevelAccessor world, @NotNull MobSpawnType reason) {
 		BlockState state = world.getBlockState((new BlockPos(position())).below());
+		//Todo: Make this a tag?
 		if (state.getMaterial() != Material.STONE)
 			return false;
 
@@ -429,7 +430,7 @@ public class Toretoise extends Animal {
 
 	@Override // createChild
 	public Toretoise getBreedOffspring(@NotNull ServerLevel sworld, @NotNull AgeableMob otherParent) {
-		Toretoise e = new Toretoise(ToretoiseModule.toretoiseType, level);
+		Toretoise e = new Toretoise(ToretoiseModule.toretoiseType, level());
 		e.kill(); // kill the entity cuz toretoise doesn't make babies
 		return e;
 	}

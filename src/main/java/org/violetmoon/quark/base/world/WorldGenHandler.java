@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
@@ -24,8 +25,6 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
@@ -68,10 +67,10 @@ public class WorldGenHandler {
 			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
 
 			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
-			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltinRegistries.register(Registries.CONFIGURED_FEATURE, resloc, feature);
+			Holder<ConfiguredFeature<?, ?>> featureHolder = BuiltInRegistries.register(Registries.CONFIGURED_FEATURE, resloc, feature);
 
 			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());
-			Holder<PlacedFeature> placedHolder = BuiltinRegistries.register(Registries.PLACED_FEATURE, resloc, placed);
+			Holder<PlacedFeature> placedHolder = BuiltInRegistries.register(Registries.PLACED_FEATURE, resloc, placed);
 
 			defers.put(stage, placedHolder);
 		}

@@ -3,6 +3,7 @@ package org.violetmoon.quark.integration.terrablender;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
@@ -52,7 +53,7 @@ public class TerraBlenderIntegration implements Supplier<UndergroundBiomeHandler
 
 			for(UndergroundBiomeSkeleton skeleton : proxy.skeletons)
 				if(skeleton.module().enabled) {
-					ResourceKey<Biome> resourceKey = ResourceKey.create(Registry.BIOME_REGISTRY, skeleton.biome());
+					ResourceKey<Biome> resourceKey = ResourceKey.create(Registries.BIOME, skeleton.biome());
 					mapper.accept(Pair.of(skeleton.climate(), resourceKey));
 					didAnything = true;
 				}

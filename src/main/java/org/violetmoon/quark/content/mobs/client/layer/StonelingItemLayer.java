@@ -11,15 +11,15 @@
 package org.violetmoon.quark.content.mobs.client.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,14 +44,14 @@ public class StonelingItemLayer extends RenderLayer<Stoneling, StonelingModel> {
 			matrix.translate(0F, 0.515F, 0F);
 
 			if(!isBlock) {
-				matrix.mulPose(Vector3f.YP.rotationDegrees(stoneling.getItemAngle() + 180));
-				matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
-			} else matrix.mulPose(Vector3f.XP.rotationDegrees(180F));
+				matrix.mulPose(Axis.YP.rotationDegrees(stoneling.getItemAngle() + 180));
+				matrix.mulPose(Axis.XP.rotationDegrees(90F));
+			} else matrix.mulPose(Axis.XP.rotationDegrees(180F));
 
 			float scale = 0.8F;
 			matrix.scale(scale, scale, scale);
 			Minecraft mc = Minecraft.getInstance();
-			mc.getItemRenderer().renderStatic(stack, TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buffer, 0);
+			mc.getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, matrix, buffer, stoneling.level(), 0);
 			matrix.popPose();
 		}
 	}

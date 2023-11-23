@@ -6,6 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.minecraft.client.model.ChestBoatModel;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.addons.oddities.client.model.BackpackModel;
 import org.violetmoon.quark.base.Quark;
@@ -62,8 +63,8 @@ public class ModelHandler {
 		toretoise = addModel("toretoise", ToretoiseModel::createBodyLayer, ToretoiseModel::new);
 		wraith = addModel("wraith", WraithModel::createBodyLayer, WraithModel::new);
 		
-		quark_boat = addModel("quark_boat", () -> BoatModel.createBodyModel(false), r -> new BoatModel(r, false));
-		quark_boat_chest = addModel("quark_boat_chest", () -> BoatModel.createBodyModel(true), r -> new BoatModel(r, true));
+		quark_boat = addModel("quark_boat", BoatModel::createBodyModel, BoatModel::new);
+		quark_boat_chest = addModel("quark_boat_chest", ChestBoatModel::createBodyModel, ChestBoatModel::new);
 
 		forgotten_hat = addArmorModel("forgotten_hat", ForgottenHatModel::createBodyLayer);
 		backpack = addArmorModel("backpack", BackpackModel::createBodyLayer);

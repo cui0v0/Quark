@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -34,19 +35,19 @@ public class Stool extends Entity {
 		boolean dead = passengers.isEmpty();
 
 		BlockPos pos = blockPosition();
-		BlockState state = level.getBlockState(pos);
+		BlockState state = level().getBlockState(pos);
 
 		if(!dead) {
 			if(!(state.getBlock() instanceof StoolBlock)) {
 				PistonMovingBlockEntity piston = null;
 				boolean didOffset = false;
 
-				BlockEntity tile = level.getBlockEntity(pos);
+				BlockEntity tile = level().getBlockEntity(pos);
 				if(tile instanceof PistonMovingBlockEntity pistonBE && pistonBE.getMovedState().getBlock() instanceof StoolBlock)
 					piston = pistonBE;
 				else for(Direction d : Direction.values()) {
 					BlockPos offPos = pos.relative(d);
-					tile = level.getBlockEntity(offPos);
+					tile = level().getBlockEntity(offPos);
 
 					if(tile instanceof PistonMovingBlockEntity pistonBE && pistonBE.getMovedState().getBlock() instanceof StoolBlock) {
 						piston = pistonBE;
@@ -65,11 +66,11 @@ public class Stool extends Entity {
 			}
 		}
 
-		if(dead && !level.isClientSide) {
+		if(dead && !level().isClientSide) {
 			removeAfterChangingDimensions();
 
 			if(state.getBlock() instanceof StoolBlock)
-				level.setBlockAndUpdate(pos, state.setValue(StoolBlock.SAT_IN, false));
+				level().setBlockAndUpdate(pos, state.setValue(StoolBlock.SAT_IN, false));
 		}
 	}
 
@@ -93,9 +94,8 @@ public class Stool extends Entity {
 		// NO-OP
 	}
 
-	@NotNull
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

@@ -38,7 +38,7 @@ public class TorchArrow extends AbstractArrow {
 	public void tick() {
 		super.tick();
 
-		if(!inGround && level.isClientSide && tickCount > 2) {
+		if(!inGround && level().isClientSide && tickCount > 2) {
 			Vec3 motion = getDeltaMovement();
 			double rs = 0.03;
 			double ms = 0.08;
@@ -53,19 +53,19 @@ public class TorchArrow extends AbstractArrow {
 				double mx = (Math.random() - 0.5) * rs - motion.x * ms;
 				double my = (Math.random() - 0.5) * rs - motion.y * ms;
 				double mz = (Math.random() - 0.5) * rs - motion.z * ms;
-				
-				level.addParticle(ParticleTypes.FLAME, px, py, pz, mx, my, mz);
+
+				level().addParticle(ParticleTypes.FLAME, px, py, pz, mx, my, mz);
 			}
 		}
 	}
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
-		if(!level.isClientSide) {
+		if(!level().isClientSide) {
 			BlockPos pos = result.getBlockPos();
 			Direction direction = result.getDirection();
 			BlockPos finalPos = pos.relative(direction);
-			BlockState state = level.getBlockState(finalPos);
+			BlockState state = level().getBlockState(finalPos);
 			
 			if((state.isAir() || state.getMaterial().isReplaceable()) && direction != Direction.DOWN) {
 
@@ -77,8 +77,8 @@ public class TorchArrow extends AbstractArrow {
 					setState = Blocks.TORCH.defaultBlockState();
 				else setState = Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, direction);
 				
-				if(setState.canSurvive(level, finalPos)) {
-					level.setBlock(finalPos, setState, 2);
+				if(setState.canSurvive(level(), finalPos)) {
+					level().setBlock(finalPos, setState, 2);
 					playSound(setState.getSoundType().getPlaceSound());
 					discard();
 					return;

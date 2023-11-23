@@ -1,5 +1,12 @@
 package org.violetmoon.zeta.advancement.modifier;
 
+import java.util.Set;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.module.ZetaModule;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.Criterion;
