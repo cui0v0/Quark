@@ -1,13 +1,8 @@
 package org.violetmoon.zeta.client.config.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,6 +12,11 @@ import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.config.widget.ScrollableWidgetList;
 import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.ValueDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class StringListInputScreen extends AbstractInputScreen<List<String>> {
 	protected ScrollableWidgetList<StringListInputScreen, Entry> list;
@@ -52,14 +52,14 @@ public class StringListInputScreen extends AbstractInputScreen<List<String>> {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(mstack);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
 
-		list.render(mstack, mouseX, mouseY, partialTicks);
-		super.render(mstack, mouseX, mouseY, partialTicks);
+		list.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		list.reenableVisibleWidgets();
 
-		drawCenteredString(mstack, font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
 	}
 
 	protected String getString(int index) {
@@ -115,14 +115,14 @@ public class StringListInputScreen extends AbstractInputScreen<List<String>> {
 				field.setResponder(str -> setString(index, str));
 				addScrollingWidget(field);
 
-				addScrollingWidget(new Button(230, 3, 20, 20, Component.literal("-").withStyle(ChatFormatting.RED), b -> remove(index)));
+				addScrollingWidget(new Button.Builder(Component.literal("-").withStyle(ChatFormatting.RED), b -> remove(index)).size(20, 20).pos(230, 3).build());
 			} else {
-				addScrollingWidget(new Button(10, 3, 20, 20, Component.literal("+").withStyle(ChatFormatting.GREEN), b -> add()));
+				addScrollingWidget(new Button.Builder(Component.literal("+").withStyle(ChatFormatting.GREEN), b -> add()).size(20, 20).pos(10, 3).build());
 			}
 		}
 
 		@Override
-		public Component getNarration() {
+		public @NotNull Component getNarration() {
 			return Component.literal(Optional.ofNullable(getString(index)).orElse(""));
 		}
 	}

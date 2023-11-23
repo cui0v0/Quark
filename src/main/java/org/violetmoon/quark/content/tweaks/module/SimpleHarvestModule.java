@@ -15,7 +15,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -50,6 +49,7 @@ import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.network.message.HarvestMessage;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
+import org.violetmoon.quark.mixin.accessor.AccessorCropBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -119,8 +119,8 @@ public class SimpleHarvestModule extends ZetaModule {
                     .filter(b -> !isVanilla(b) && b instanceof CropBlock)
                     .map(b -> (CropBlock) b)
                     //only grabbing blocks whose max age is acceptable
-                    .filter(b -> b.isMaxAge(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues()))))
-                    .forEach(b -> crops.put(b.defaultBlockState().setValue(b.getAgeProperty(), last(b.getAgeProperty().getPossibleValues())), b.defaultBlockState()));
+                    .filter(b -> b.isMaxAge(b.defaultBlockState().setValue(((AccessorCropBlock) b).quark$getAgeProperty(), last(((AccessorCropBlock) b).quark$getAgeProperty().getPossibleValues()))))
+                    .forEach(b -> crops.put(b.defaultBlockState().setValue(((AccessorCropBlock) b).quark$getAgeProperty(), last(((AccessorCropBlock) b).quark$getAgeProperty().getPossibleValues())), b.defaultBlockState()));
 
             BuiltInRegistries.BLOCK.stream()
                     .filter(b -> !isVanilla(b) && (b instanceof BushBlock || b instanceof GrowingPlantBlock) && b instanceof BonemealableBlock && !(b instanceof CropBlock))

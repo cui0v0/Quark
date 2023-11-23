@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.entity;
 
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.content.tools.module.TorchArrowModule;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 
@@ -67,7 +68,7 @@ public class TorchArrow extends AbstractArrow {
 			BlockPos finalPos = pos.relative(direction);
 			BlockState state = level().getBlockState(finalPos);
 			
-			if((state.isAir() || state.getMaterial().isReplaceable()) && direction != Direction.DOWN) {
+			if((state.isAir() || state.canBeReplaced()) && direction != Direction.DOWN) {
 
 				if(this.getOwner() instanceof Player p && !IClaimIntegration.INSTANCE.canPlace(p, finalPos))
 					return;
@@ -98,7 +99,7 @@ public class TorchArrow extends AbstractArrow {
 	}
 
 	@Override
-	protected ItemStack getPickupItem() {
+	protected @NotNull ItemStack getPickupItem() {
 		return new ItemStack(TorchArrowModule.extinguishOnMiss ? Items.ARROW : TorchArrowModule.torch_arrow);
 	}
 

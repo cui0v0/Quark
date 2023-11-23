@@ -37,6 +37,7 @@ import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
@@ -230,7 +231,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				.collect(Collectors.toList());
 
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Item rune : RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, ColorRunesModule.runesTag)) {
+		for (Item rune : RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), ColorRunesModule.runesTag)) {
 			ItemStack runeStack = new ItemStack(rune);
 			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
 					used.stream().map(stack -> {

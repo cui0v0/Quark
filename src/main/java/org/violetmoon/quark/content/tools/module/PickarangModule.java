@@ -1,13 +1,11 @@
 package org.violetmoon.quark.content.tools.module;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -16,14 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.client.render.entity.PickarangRenderer;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
@@ -31,6 +23,7 @@ import org.violetmoon.quark.content.tools.entity.rang.Echorang;
 import org.violetmoon.quark.content.tools.entity.rang.Flamerang;
 import org.violetmoon.quark.content.tools.entity.rang.Pickarang;
 import org.violetmoon.quark.content.tools.item.PickarangItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -39,6 +32,10 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "tools")
 public class PickarangModule extends ZetaModule {
@@ -146,7 +143,9 @@ public class PickarangModule extends ZetaModule {
 		if (pickarang == null)
 			return null;
 
-		return new IndirectEntityDamageSource("player", pickarang, player).setProjectile();
+		//fixme need to register proper damage source
+		//return new IndirectEntityDamageSource("player", pickarang, player).setProjectile();
+		return player.level().damageSources().indirectMagic(pickarang, player);
 	}
 
 	public static boolean getIsFireResistant(boolean vanillaVal, Entity entity) {

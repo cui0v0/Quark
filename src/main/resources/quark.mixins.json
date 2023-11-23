@@ -6,7 +6,6 @@
   "package": "org.violetmoon.quark.mixin",
   "mixins": [
     "AbstractVillagerMixin",
-    "accessor.AccessorMinecraftServer",
     "AnimalMixin",
     "AnvilMenuMixin",
     "ArrowPiercingEnchantmentMixin",
@@ -66,8 +65,10 @@
     "WallBlockMixin",
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
+    "accessor.AccessorCropBlock",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
+    "accessor.AccessorMinecraftServer",
     "accessor.AccessorPotionBrewing"
   ],
   "client": [

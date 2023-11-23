@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.world.module;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -10,6 +9,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -31,7 +31,8 @@ public class AzaleaWoodModule extends ZetaModule {
 	public void enabledStatusChanged(boolean firstLoad, boolean newStatus) {
 		ConfiguredFeature<TreeConfiguration, ?> configured = null;
 		try {
-			configured = TreeFeatures.AZALEA_TREE.value();
+			configured = (ConfiguredFeature<TreeConfiguration, ?>) RegistryAccessUtil.getRegistryAccess()
+					.registryOrThrow(Registries.CONFIGURED_FEATURE).getOrThrow(TreeFeatures.AZALEA_TREE);
 		} catch(IllegalStateException e) {
 			e.printStackTrace();
 		}

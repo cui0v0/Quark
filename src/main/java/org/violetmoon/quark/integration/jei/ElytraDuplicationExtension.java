@@ -8,6 +8,7 @@ import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 
 import java.util.ArrayList;
@@ -31,13 +33,15 @@ public record ElytraDuplicationExtension(ElytraDuplicationRecipe recipe) impleme
 			inputLists.add(expandedInput);
 		}
 		craftingGridHelper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, inputLists, 0, 0);
-		craftingGridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem()));
+		craftingGridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Lists.newArrayList(recipe.getResultItem(RegistryAccessUtil.getRegistryAccess())));
 
 	}
 
 	@Override
 	public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-		Minecraft.getInstance().font.draw(poseStack, I18n.get("quark.jei.makes_copy"), 60, 46, 0x555555);
+		Minecraft mc = Minecraft.getInstance();
+		GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
+		guiGraphics.drawString(mc.font, I18n.get("quark.jei.makes_copy"), 60, 46, 0x555555);
 	}
 
 	@Override

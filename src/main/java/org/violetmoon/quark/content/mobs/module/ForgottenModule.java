@@ -1,7 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -18,14 +18,13 @@ import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.bus.ZResult;
 import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingSpawn;
+import org.violetmoon.zeta.event.play.entity.living.ZMobSpawnEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelAccessor;
@@ -68,8 +67,8 @@ public class ForgottenModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void onSkeletonSpawn(ZLivingSpawn.CheckSpawn.Lowest event) {
-		if (event.getSpawnReason() == MobSpawnType.SPAWNER)
+	public void onSkeletonSpawn(ZMobSpawnEvent.CheckSpawn.Lowest event) {
+		if (event.getSpawnType() == MobSpawnType.SPAWNER)
 			return;
 
 		LivingEntity entity = event.getEntity();
@@ -77,14 +76,14 @@ public class ForgottenModule extends ZetaModule {
 		LevelAccessor world = event.getLevel();
 
 		if (entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != ZResult.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
-			if(result == ZResult.ALLOW || (mob.checkSpawnRules(world, event.getSpawnReason()) && mob.checkSpawnObstruction(world))) {
+			if(result == ZResult.ALLOW || (mob.checkSpawnRules(world, event.getSpawnType()) && mob.checkSpawnObstruction(world))) {
 				Forgotten forgotten = new Forgotten(forgottenType, entity.level());
 				Vec3 epos = entity.position();
 				
 				forgotten.absMoveTo(epos.x, epos.y, epos.z, entity.getYRot(), entity.getXRot());
 				forgotten.prepareEquipment();
 
-				LivingSpawnEvent.CheckSpawn newEvent = new CheckSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), event.getSpawner(), event.getSpawnReason());
+				MobSpawnEvent.FinalizeSpawn newEvent = new MobSpawnEvent.FinalizeSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), event.getSpawner(), event.getSpawnType());
 				MinecraftForge.EVENT_BUS.post(newEvent);
 				
 				if(newEvent.getResult() != Result.DENY) {

@@ -292,7 +292,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 //			List<Item> tagItems;
 //
 //			try {
-//				tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, SeedPouchModule.seedPouchHoldableTag);
+//				tagItems = RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), SeedPouchModule.seedPouchHoldableTag);
 //			} catch(IllegalStateException e) { // Tag not bound yet
 //				return;
 //			}

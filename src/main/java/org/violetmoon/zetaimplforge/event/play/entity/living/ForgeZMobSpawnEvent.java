@@ -1,19 +1,18 @@
 package org.violetmoon.zetaimplforge.event.play.entity.living;
 
-import org.violetmoon.zeta.event.bus.ZResult;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingSpawn;
-import org.violetmoon.zetaimplforge.ForgeZeta;
-
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.BaseSpawner;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import org.violetmoon.zeta.event.bus.ZResult;
+import org.violetmoon.zeta.event.play.entity.living.ZMobSpawnEvent;
+import org.violetmoon.zetaimplforge.ForgeZeta;
 
-public class ForgeZLivingSpawn implements ZLivingSpawn {
-    private final LivingSpawnEvent e;
+public class ForgeZMobSpawnEvent implements ZMobSpawnEvent {
+    private final MobSpawnEvent e;
 
-    public ForgeZLivingSpawn(LivingSpawnEvent e) {
+    public ForgeZMobSpawnEvent(MobSpawnEvent e) {
         this.e = e;
     }
 
@@ -23,7 +22,7 @@ public class ForgeZLivingSpawn implements ZLivingSpawn {
     }
 
     @Override
-    public LevelAccessor getLevel() {
+    public ServerLevelAccessor getLevel() {
         return e.getLevel();
     }
 
@@ -52,10 +51,10 @@ public class ForgeZLivingSpawn implements ZLivingSpawn {
         e.setResult(ForgeZeta.to(value));
     }
 
-    public static class CheckSpawn extends ForgeZLivingSpawn implements ZLivingSpawn.CheckSpawn {
-        private final LivingSpawnEvent.CheckSpawn e;
+    public static class FinalizeSpawn extends ForgeZMobSpawnEvent implements ZMobSpawnEvent.CheckSpawn {
+        private final MobSpawnEvent.FinalizeSpawn e;
 
-        public CheckSpawn(LivingSpawnEvent.CheckSpawn e) {
+        public FinalizeSpawn(MobSpawnEvent.FinalizeSpawn e) {
             super(e);
             this.e = e;
         }
@@ -66,12 +65,12 @@ public class ForgeZLivingSpawn implements ZLivingSpawn {
         }
 
         @Override
-        public MobSpawnType getSpawnReason() {
-            return e.getSpawnReason();
+        public MobSpawnType getSpawnType() {
+            return e.getSpawnType();
         }
 
-        public static class Lowest extends ForgeZLivingSpawn.CheckSpawn implements ZLivingSpawn.CheckSpawn.Lowest {
-            public Lowest(LivingSpawnEvent.CheckSpawn e) {
+        public static class Lowest extends FinalizeSpawn implements ZMobSpawnEvent.CheckSpawn.Lowest {
+            public Lowest(MobSpawnEvent.FinalizeSpawn e) {
                 super(e);
             }
         }

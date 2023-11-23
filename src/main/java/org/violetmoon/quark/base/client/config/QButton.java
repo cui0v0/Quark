@@ -1,5 +1,19 @@
 package org.violetmoon.quark.base.client.config;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.handler.ContributorRewardHandler;
+import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.handler.MiscUtil;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -7,23 +21,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import net.minecraft.client.gui.GuiGraphics;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.MiscUtil;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.Component;
 
 public class QButton extends Button {
 
@@ -91,7 +88,7 @@ public class QButton extends Button {
 	private boolean showBubble;
 
 	public QButton(int x, int y) {
-		super(x, y, 20, 20, Component.literal("q"), QButton::click);
+		super(new Button.Builder(Component.literal("q"), QButton::click).size(20, 20).pos(x, y));
 
 		Calendar calendar = Calendar.getInstance();
 		int month = calendar.get(Calendar.MONTH) + 1;

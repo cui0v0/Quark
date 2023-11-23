@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.quark.mixin.accessor.AccessorMinecraftServer;
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.config.ConfigObjectMapper;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -107,7 +107,7 @@ public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component
 			key = tkey.location().getPath();
 
 		try {
-			List<?> tagItems = RegistryUtil.getTagValues(BuiltinRegistries.ACCESS, tkey);
+			List<?> tagItems = RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), tkey);
 			applyIterable(tagItems, key, extra);
 		} catch(IllegalStateException e) {
 			throw new RuntimeException("TagKey " + tkey + " failed to load.", e);
