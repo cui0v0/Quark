@@ -72,7 +72,7 @@ public class MiniInventoryButton extends Button {
 		if(shiftTexture.getAsBoolean())
 			v += (height * 2);
 
-		blit(matrix, x, y, u, v, width, height);
+		blit(matrix, getX(), getY(), u, v, width, height);
 
 		if(isHovered)
 			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(getTooltip(), mouseX, mouseY);

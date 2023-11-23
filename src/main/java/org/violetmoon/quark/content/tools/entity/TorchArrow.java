@@ -67,7 +67,7 @@ public class TorchArrow extends AbstractArrow {
 			BlockPos finalPos = pos.relative(direction);
 			BlockState state = level().getBlockState(finalPos);
 			
-			if((state.isAir() || state.getMaterial().isReplaceable()) && direction != Direction.DOWN) {
+			if((state.isAir() || state.canBeReplaced()) && direction != Direction.DOWN) {
 
 				if(this.getOwner() instanceof Player p && !IClaimIntegration.INSTANCE.canPlace(p, finalPos))
 					return;

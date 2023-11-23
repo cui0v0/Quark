@@ -198,7 +198,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 				continue;
 
 			if(endRope) {
-				can = wasAirAtEnd || world.isEmptyBlock(pos) || state.getMaterial().isReplaceable();
+				can = wasAirAtEnd || world.isEmptyBlock(pos) || state.canBeReplaced();
 				break;
 			}
 
@@ -212,7 +212,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 			BlockState ropePosState = world.getBlockState(ropePos);
 
-			if(world.isEmptyBlock(ropePos) || ropePosState.getMaterial().isReplaceable()) {
+			if(world.isEmptyBlock(ropePos) || ropePosState.canBeReplaced()) {
 				world.setBlockAndUpdate(ropePos, defaultBlockState().setValue(WATERLOGGED, ropePosState.getFluidState().getType() == Fluids.WATER));
 				return true;
 			}

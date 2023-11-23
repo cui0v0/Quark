@@ -56,7 +56,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	private final ZetaModule module;
 
 	public BackpackItem(ZetaModule module) {
-		super(ArmorMaterials.LEATHER, EquipmentSlot.CHEST,
+		super(ArmorMaterials.LEATHER, Type.CHESTPLATE,
 				new Item.Properties()
 				.stacksTo(1)
 				.durability(0)
