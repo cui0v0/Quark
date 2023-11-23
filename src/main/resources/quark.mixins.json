@@ -6,6 +6,7 @@
   "package": "org.violetmoon.quark.mixin",
   "mixins": [
     "AbstractVillagerMixin",
+    "accessor.AccessorMinecraftServer",
     "AnimalMixin",
     "AnvilMenuMixin",
     "ArrowPiercingEnchantmentMixin",
@@ -67,8 +68,7 @@
     "accessor.AccessorAbstractChestedHorse",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
-    "accessor.AccessorPotionBrewing",
-    "accessor.AccessorServerGamePacketListenerImpl"
+    "accessor.AccessorPotionBrewing"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
@@ -96,7 +96,6 @@
     "client.RenderBuffersMixin",
     "client.ScreenMixin",
     "client.ThrownTridentRendererMixin",
-    "client.accessor.AccessorLocalPlayer",
     "client.accessor.AccessorModelManager",
     "client.accessor.AccessorMultiPlayerGameMode",
     "client.variants.BeeRendererMixin",

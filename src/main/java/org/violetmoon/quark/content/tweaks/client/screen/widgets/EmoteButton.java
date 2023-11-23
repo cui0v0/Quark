@@ -41,7 +41,7 @@ public class EmoteButton extends TranslucentButton {
 			boolean hovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			if (hovered) {
 				String name = desc.getLocalizedName();
-				MiscUtil.Client.drawChatBubble(matrix, getX(), getY(), mc.font, name, 1F, false);
+				MiscUtil.Client.drawChatBubble(guiGraphics, getX(), getY(), mc.font, name, 1F, false);
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package org.violetmoon.zeta.event.play.loading;
 
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
+import org.violetmoon.quark.mixin.accessor.AccessorMinecraftServer;
 import org.violetmoon.zeta.config.ConfigObjectMapper;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.module.ZetaModule;
