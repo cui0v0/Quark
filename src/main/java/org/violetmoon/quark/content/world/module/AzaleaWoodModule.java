@@ -25,10 +25,10 @@ public class AzaleaWoodModule extends ZetaModule {
 		woodSet = WoodSetHandler.addWoodSet(event, this, "azalea", MapColor.COLOR_LIGHT_GREEN, MapColor.COLOR_BROWN, true);
 		//ugly I know but config is fired before this now
 		//TODO: not actually fired by the config lol
-		enabledStatusChanged(true, this.enabled, this.enabled);
+		enabledStatusChanged(true, this.enabled);
 	}
 
-	public void enabledStatusChanged(boolean firstLoad, boolean oldStatus, boolean newStatus) {
+	public void enabledStatusChanged(boolean firstLoad, boolean newStatus) {
 		ConfiguredFeature<TreeConfiguration, ?> configured = null;
 		try {
 			configured = TreeFeatures.AZALEA_TREE.value();

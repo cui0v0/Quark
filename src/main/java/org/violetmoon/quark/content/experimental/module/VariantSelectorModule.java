@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -34,7 +35,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.experimental.PlaceVariantUpdateMessage;
 import org.violetmoon.quark.content.experimental.client.screen.VariantSelectorScreen;
 import org.violetmoon.quark.content.experimental.client.tooltip.VariantsComponent;
@@ -274,6 +274,8 @@ public class VariantSelectorModule extends ZetaModule {
 
 		@PlayEvent
 		public void onRender(ZRenderGuiOverlay.Crosshair.Pre event) {
+			GuiGraphics guiGraphics = event.getGuiGraphics();
+
 			Minecraft mc = Minecraft.getInstance();
 			if(mc.screen instanceof VariantSelectorScreen || !showHud)
 				return;
@@ -328,15 +330,14 @@ public class VariantSelectorModule extends ZetaModule {
 					int posY = y + hudOffsetY;
 
 					if(!showSimpleHud) {
-						mc.getItemRenderer().renderAndDecorateItem(displayLeft, posX, posY);
+						guiGraphics.renderItemDecorations(mc.font, displayLeft, posX, posY);
 
 						RenderSystem.enableBlend();
 						RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 						RenderSystem.setShader(GameRenderer::getPositionTexShader);
 						RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.75F);
-						RenderSystem.setShaderTexture(0, MiscUtil.GENERAL_ICONS);
 
-						Screen.blit(event.getPoseStack(), posX + 8, posY, 0, 141, 22, 15, 256, 256);
+						guiGraphics.blit(MiscUtil.GENERAL_ICONS, posX + 8, posY, 0, 141, 22, 15, 256, 256);
 
 						posX += width * 2;
 					}
@@ -351,13 +352,12 @@ public class VariantSelectorModule extends ZetaModule {
 								RenderSystem.setShaderColor(0.5F, 1.0F, 0.5F, 1.0F);
 							else
 								RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-							RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-							Screen.blit(event.getPoseStack(), posX -3, posY -3, 24, 23, 22, 22, 256, 256);
+							guiGraphics.blit(WIDGETS_LOCATION, posX -3, posY -3, 24, 23, 22, 22, 256, 256);
 						} else
 							posX += width;
 					}
 
-					mc.getItemRenderer().renderAndDecorateItem(displayRight, posX , posY);
+					guiGraphics.renderItemDecorations(mc.font, displayRight, posX , posY);
 				}
 			}
 		}

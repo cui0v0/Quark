@@ -1,10 +1,8 @@
 package org.violetmoon.quark.content.world.block;
 
-import java.util.OptionalInt;
-
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
@@ -17,9 +15,13 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.world.module.BlossomTreesModule;
 import org.violetmoon.zeta.block.ZetaSaplingBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.OptionalInt;
 
 public class BlossomSaplingBlock extends ZetaSaplingBlock {
 
@@ -47,12 +49,17 @@ public class BlossomSaplingBlock extends ZetaSaplingBlock {
 			leaf = leafBlock.defaultBlockState();
 		}
 
-		//fixme tree stuff
+		ResourceKey<ConfiguredFeature<?, ?>> BLOSSOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Quark.asResource("blossom_tree"));
+
 		@Override
-		protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(@NotNull RandomSource rand, boolean hjskfsd) {
-			return Holder.direct(new ConfiguredFeature<>(Feature.TREE, config));
+		protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(@NotNull RandomSource rand, boolean hasFlowers) {
+			return BLOSSOM_TREE;
 		}
 
+		//fixme find how to call this
+		public void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+			context.register(BLOSSOM_TREE, new ConfiguredFeature<>(Feature.TREE, config));
+		}
 	}
 
 }

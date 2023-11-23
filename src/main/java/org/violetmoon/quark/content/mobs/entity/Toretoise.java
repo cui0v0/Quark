@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.mobs.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -39,21 +38,18 @@ import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ToolActions;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.mobs.module.ToretoiseModule;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Toretoise extends Animal {
 
@@ -219,7 +215,7 @@ public class Toretoise extends Animal {
 									BlockState pistonState = piston.getMovedState();
 									if (pistonState.is(BREAKS_TORETOISE_ORE)) {
 										if (!pistonState.hasProperty(RodBlock.FACING) || pistonState.getValue(RodBlock.FACING) == piston.getMovementDirection()) {
-											dropOre(ore, new LootContext.Builder(serverLevel)
+											dropOre(ore, new LootParams.Builder(serverLevel)
 													.withParameter(LootContextParams.TOOL, new ItemStack(Items.IRON_PICKAXE)));
 											break breakOre;
 										}
@@ -244,7 +240,7 @@ public class Toretoise extends Animal {
 					if (held.isDamageableItem() && e instanceof Player)
 						MiscUtil.damageStack((Player) e, InteractionHand.MAIN_HAND, held, 1);
 
-					LootContext.Builder lootBuilder = new LootContext.Builder(serverLevel)
+					LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
 							.withParameter(LootContextParams.TOOL, held);
 					if (living instanceof Player player)
 						lootBuilder.withLuck(player.getLuck());
@@ -351,9 +347,10 @@ public class Toretoise extends Animal {
 
 	@Override
 	public boolean checkSpawnRules(@NotNull LevelAccessor world, @NotNull MobSpawnType reason) {
-		BlockState state = world.getBlockState((new BlockPos(position())).below());
+		BlockPos pos = (BlockPos.containing(position())).below();
+		BlockState state = world.getBlockState(pos);
 		//Todo: Make this a tag?
-		if (state.getMaterial() != Material.STONE)
+		if (!BlockUtils.isStoneBased(state, world, pos))
 			return false;
 
 		return ToretoiseModule.dimensions.canSpawnHere(world);

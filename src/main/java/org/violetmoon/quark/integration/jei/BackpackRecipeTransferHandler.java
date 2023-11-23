@@ -28,7 +28,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
  * @author mezz, tbh
  *
  */
-public class  BackpackRecipeTransferHandler implements IRecipeTransferHandler<BackpackMenu, CraftingRecipe> {
+public class BackpackRecipeTransferHandler implements IRecipeTransferHandler<BackpackMenu, CraftingRecipe> {
 
 	private static final IntSet PLAYER_INV_INDEXES = IntArraySet.of(0, 1, 3, 4);
 

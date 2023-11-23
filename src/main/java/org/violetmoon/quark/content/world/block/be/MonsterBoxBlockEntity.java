@@ -16,17 +16,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
 import org.violetmoon.zeta.block.be.ZetaBlockEntity;
+
+import java.util.List;
 
 public class MonsterBoxBlockEntity extends ZetaBlockEntity {
 
@@ -74,15 +73,16 @@ public class MonsterBoxBlockEntity extends ZetaBlockEntity {
 		if(level instanceof ServerLevel serverLevel) {
 			BlockPos pos = getBlockPos();
 
-			LootTable loot = serverLevel.getServer().getLootTables().get(MonsterBoxModule.MONSTER_BOX_SPAWNS_LOOT_TABLE);
-			LootContext.Builder builder = (new LootContext.Builder(serverLevel))
-					.withRandom(serverLevel.random)
+			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MonsterBoxModule.MONSTER_BOX_SPAWNS_LOOT_TABLE);
+			LootParams.Builder builder = (new LootParams.Builder(serverLevel))
+					//fixme is this even needed anymore?
+					//.withRandom(serverLevel.random)
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 					.withParameter(LootContextParams.BLOCK_STATE, getBlockState())
 					.withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
 					.withParameter(LootContextParams.BLOCK_ENTITY, this);
 
-			LootContext ctx = builder.create(LootContextParamSets.BLOCK);
+			LootParams ctx = builder.create(LootContextParamSets.BLOCK);
 
 			int mobCount = MonsterBoxModule.minMobCount + level.random.nextInt(Math.max(MonsterBoxModule.maxMobCount - MonsterBoxModule.minMobCount + 1, 1));
 

@@ -1,21 +1,19 @@
 package org.violetmoon.quark.content.experimental.client.tooltip;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class VariantsComponent implements ClientTooltipComponent, TooltipComponent {
 
@@ -53,14 +51,14 @@ public class VariantsComponent implements ClientTooltipComponent, TooltipCompone
 		
 		return variants;
 	}
-	
+
 	@Override
-	public void renderImage(Font font, int x, int y, PoseStack stack, ItemRenderer render, int yea) {
+	public void renderImage(@NotNull Font font, int x, int y, @NotNull GuiGraphics guiGraphics) {
 		List<ItemStack> variants = getVariants();
 		
 		for(int i = 0; i < variants.size(); i++) {
 			ItemStack variant = variants.get(i);
-			render.renderGuiItem(variant, x + i * 18, y);
+			guiGraphics.renderItem(variant, x + i * 18, y);
 		}
 	}
 	
@@ -71,7 +69,7 @@ public class VariantsComponent implements ClientTooltipComponent, TooltipCompone
 	}
 
 	@Override
-	public int getWidth(Font font) {
+	public int getWidth(@NotNull Font font) {
 		getVariants();
 		return width;
 	}
