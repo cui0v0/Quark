@@ -4,21 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
-import org.violetmoon.quark.addons.oddities.client.model.TinyPotatoModel;
 import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -31,6 +24,10 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @ZetaLoadModule(category = "oddities", antiOverlap = "botania")
 public class TinyPotatoModule extends ZetaModule {
@@ -60,7 +57,8 @@ public class TinyPotatoModule extends ZetaModule {
 			ResourceLocation tinyPotato = new ModelResourceLocation(new ResourceLocation("quark", "tiny_potato"), "inventory");
 			Map<ResourceLocation, BakedModel> map = event.getModels();
 			BakedModel originalPotato = map.get(tinyPotato);
-			map.put(tinyPotato, new TinyPotatoModel(originalPotato));
+			//fixme tater you fucker you crashed my game :c
+			//map.put(tinyPotato, new TinyPotatoModel(originalPotato));
 		}
 
 		@LoadEvent
