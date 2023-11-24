@@ -12,15 +12,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.DynamicGameEventListener;
-import net.minecraft.world.level.gameevent.EntityPositionSource;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.*;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
-import net.minecraft.world.level.gameevent.GameEventListener;
-import net.minecraft.world.level.gameevent.vibrations.VibrationListener;
-import net.minecraft.world.level.gameevent.vibrations.VibrationListener.VibrationListenerConfig;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tools.config.PickarangType;
@@ -30,22 +27,24 @@ import static org.violetmoon.quark.content.tools.module.PickarangModule.echorang
 
 import java.util.function.BiConsumer;
 
-public class Echorang extends AbstractPickarang<Echorang> implements VibrationListenerConfig {
+public class Echorang extends AbstractPickarang<Echorang> implements VibrationSystem {
+	private final EchorangVibrationUser user = new EchorangVibrationUser();
+	private Data data = new Data();
 
-	private final DynamicGameEventListener<VibrationListener> dynamicGameEventListener;
+	private final DynamicGameEventListener<VibrationSystem.Listener> vibrationListener;
 
 	public Echorang(EntityType<Echorang> type, Level worldIn) {
 		super(type, worldIn);
-		dynamicGameEventListener = makeListener();
+		vibrationListener = makeListener();
 	}
 
 	public Echorang(EntityType<Echorang> type, Level worldIn, Player thrower) {
 		super(type, worldIn, thrower);
-		dynamicGameEventListener = makeListener();
+		vibrationListener = makeListener();
 	}
 
-	private DynamicGameEventListener<VibrationListener> makeListener() {
-		return new DynamicGameEventListener<>(new VibrationListener(new EntityPositionSource(this, this.getEyeHeight()), 16, this, (VibrationListener.ReceivingEvent) null, 0.0F, 0));
+	private DynamicGameEventListener<VibrationSystem.Listener> makeListener() {
+		return new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 	}
 
 	@Override
@@ -71,33 +70,13 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 	}
 
 	@Override
-	public TagKey<GameEvent> getListenableEvents() {
-		return PickarangModule.echorangCanListenTag;
-	}
-
-	@Override
-	public boolean isValidVibration(GameEvent p_223878_, Context p_223879_) {
-		return p_223878_.is(getListenableEvents()) && p_223879_.sourceEntity() == getOwner();
-	}
-
-	@Override
-	public boolean shouldListen(ServerLevel level, GameEventListener listener, BlockPos pos, GameEvent event, Context context) {
-		return !isReturning() && level.getWorldBorder().isWithinBounds(pos) && !isRemoved() && this.level() == level;
-	}
-
-	@Override
-	public void onSignalReceive(ServerLevel level, GameEventListener listener, BlockPos pos, GameEvent event, @Nullable Entity receiving, @Nullable Entity projectileOwner, float distance) {
-		liveTime = 0;
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 
 		gameEvent(GameEvent.PROJECTILE_SHOOT);
 
 		if (level() instanceof ServerLevel serverlevel)
-			this.dynamicGameEventListener.getListener().tick(serverlevel);
+			VibrationSystem.Ticker.tick(serverlevel, getVibrationData(), getVibrationUser());
 	}
 
 	@Override
@@ -106,28 +85,65 @@ public class Echorang extends AbstractPickarang<Echorang> implements VibrationLi
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 
-		VibrationListener.codec(this).encodeStart(NbtOps.INSTANCE, dynamicGameEventListener.getListener()).resultOrPartial(Quark.LOG::error).ifPresent((nbt) -> {
-			compound.put("listener", nbt);
-		});
+		Data.CODEC.encodeStart(NbtOps.INSTANCE, data).resultOrPartial(Quark.LOG::error).ifPresent((nbt) -> compound.put("listener", nbt));
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 
 		if(compound.contains("listener", 10))
-			VibrationListener.codec(this).parse(new Dynamic<>(NbtOps.INSTANCE, compound.getCompound("listener"))).resultOrPartial(Quark.LOG::error).ifPresent((nbt) -> {
-				dynamicGameEventListener.updateListener(nbt, level());
-			});
+			Data.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, compound.getCompound("listener"))).resultOrPartial(Quark.LOG::error).ifPresent((nbt) -> data = nbt);
 	}
 
 	@Override
-	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> consumer) {
+	public void updateDynamicGameEventListener(@NotNull BiConsumer<DynamicGameEventListener<?>, ServerLevel> consumer) {
 		if (level() instanceof ServerLevel serverlevel)
-			consumer.accept(this.dynamicGameEventListener, serverlevel);
+			consumer.accept(this.vibrationListener, serverlevel);
 	}
 
+	@Override
+	public @NotNull Data getVibrationData() {
+		return data;
+	}
+
+	@Override
+	public @NotNull User getVibrationUser() {
+		return user;
+	}
+
+	public class EchorangVibrationUser implements VibrationSystem.User {
+		@Override
+		public int getListenerRadius() {
+			return 16;
+		}
+
+		@Override
+		public @NotNull PositionSource getPositionSource() {
+			return new EntityPositionSource(Echorang.this, Echorang.this.getEyeHeight());
+		}
+
+		@Override
+		public boolean canReceiveVibration(ServerLevel level, BlockPos pos, GameEvent event, Context context) {
+			return !isReturning() && level.getWorldBorder().isWithinBounds(pos) && !isRemoved() && Echorang.this.level() == level;
+		}
+
+		@Override
+		public void onReceiveVibration(ServerLevel level, BlockPos pos, GameEvent event, @Nullable Entity receiving, @Nullable Entity projectileOwner, float distance) {
+			liveTime = 0;
+		}
+
+		@Override
+		public TagKey<GameEvent> getListenableEvents() {
+			return PickarangModule.echorangCanListenTag;
+		}
+
+		@Override
+		public boolean isValidVibration(GameEvent gameEvent, Context context) {
+			return gameEvent.is(getListenableEvents()) && context.sourceEntity() == getOwner();
+		}
+	}
 }
