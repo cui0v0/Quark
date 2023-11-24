@@ -1,20 +1,14 @@
 package org.violetmoon.quark.content.world.module;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-
-import java.util.ArrayList;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
@@ -78,10 +72,11 @@ public class MonsterBoxModule extends ZetaModule {
 				&& entity.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
 				&& ((AccessorLivingEntity) entity).quark$lastHurtByPlayerTime() > 0) {
 			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MONSTER_BOX_LOOT_TABLE);
-			var generatedLoot = loot.getRandomItems(((AccessorLivingEntity) entity).quark$createLootContext(true, event.getSource()).create(LootContextParamSets.ENTITY));
-			entity.captureDrops(new ArrayList<>());
-			for (ItemStack stack : generatedLoot)
-				entity.spawnAtLocation(stack);
+			// fixme - Broken - IThundxr
+			//var generatedLoot = loot.getRandomItems(((AccessorLivingEntity) entity).quark$createLootContext(true, event.getSource()).create(LootContextParamSets.ENTITY));
+			//entity.captureDrops(new ArrayList<>());
+			//for (ItemStack stack : generatedLoot)
+			//	entity.spawnAtLocation(stack);
 			event.getDrops().addAll(entity.captureDrops(null));
 		}
 	}

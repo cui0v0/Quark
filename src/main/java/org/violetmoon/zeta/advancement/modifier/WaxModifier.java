@@ -1,20 +1,16 @@
 package org.violetmoon.zeta.advancement.modifier;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import org.violetmoon.zeta.api.IMutableAdvancement;
-import org.violetmoon.zeta.advancement.AdvancementModifier;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.Set;
 
 public class WaxModifier  extends AdvancementModifier {
 
@@ -44,16 +40,17 @@ public class WaxModifier  extends AdvancementModifier {
 		String title = res.getPath().replaceAll(".+/", "");
 		Criterion criterion = adv.getCriterion(title);
 		if(criterion != null && criterion.getTrigger() instanceof ItemUsedOnLocationTrigger.TriggerInstance iib) {
-			Set<Block> blockSet = iib.location;
-			if(blockSet != null) {
-				Set<Block> ourSet = res.equals(TARGET_ON) ? unwaxed : waxed;
-
-				if (!addToBlockSet(blockSet, ourSet)) {
-					blockSet = new HashSet<>(blockSet);
-					iib.location.block.blocks = blockSet;
-					addToBlockSet(blockSet, ourSet);
-				}
-			}
+			//fixme Broken - Needs Rewrite - IThundxr
+//			Set<Block> blockSet = iib.location;
+//			if(blockSet != null) {
+//				Set<Block> ourSet = res.equals(TARGET_ON) ? unwaxed : waxed;
+//
+//				if (!addToBlockSet(blockSet, ourSet)) {
+//					blockSet = new HashSet<>(blockSet);
+//					iib.location.block.blocks = blockSet;
+//					addToBlockSet(blockSet, ourSet);
+//				}
+//			}
 		}
 		
 		return true;

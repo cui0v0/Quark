@@ -2,6 +2,7 @@ package org.violetmoon.quark.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +15,7 @@ import org.violetmoon.quark.content.client.module.UsesForCursesModule;
 public class GuiMixin {
 
 	@Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
-	public void changeArmorItem(ResourceLocation location, float alpha, CallbackInfo ci) {
+	public void changeArmorItem(GuiGraphics guiGraphics, ResourceLocation location, float alpha, CallbackInfo ci) {
 		Player player = Minecraft.getInstance().player;
 		if (player != null) {
 			if (UsesForCursesModule.shouldHidePumpkinOverlay(location, player))

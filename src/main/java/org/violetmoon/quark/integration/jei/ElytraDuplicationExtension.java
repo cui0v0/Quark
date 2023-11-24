@@ -1,7 +1,6 @@
 package org.violetmoon.quark.integration.jei;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
@@ -13,9 +12,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 
@@ -38,10 +35,8 @@ public record ElytraDuplicationExtension(ElytraDuplicationRecipe recipe) impleme
 	}
 
 	@Override
-	public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-		Minecraft mc = Minecraft.getInstance();
-		GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
-		guiGraphics.drawString(mc.font, I18n.get("quark.jei.makes_copy"), 60, 46, 0x555555);
+	public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		guiGraphics.drawString(Minecraft.getInstance().font, I18n.get("quark.jei.makes_copy"), 60, 46, 0x555555);
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 		public void clientSetup(ZClientSetup e) {
 			e.enqueueWork(() -> {
 				ItemProperties.register(Items.AXOLOTL_BUCKET, new ResourceLocation(Quark.MOD_ID, "variant"),
-					new MobBucketVariantProperty(Axolotl.Variant.BY_ID.length, () -> showAxolotls));
+					new MobBucketVariantProperty(Axolotl.Variant.values().length, () -> showAxolotls));
 				ItemProperties.register(CrabsModule.crab_bucket, new ResourceLocation(Quark.MOD_ID, "variant"),
 					new MobBucketVariantProperty(Crab.COLORS, () -> showCrabs));
 
@@ -62,11 +62,13 @@ public class BucketsShowInhabitantsModule extends ZetaModule {
 					new ShinyMobBucketProperty(() -> showShinySlime && VariantAnimalTexturesModule.staticEnabled && VariantAnimalTexturesModule.enableShinySlime));
 
 				ItemProperties.register(Items.TROPICAL_FISH_BUCKET, new ResourceLocation(Quark.MOD_ID, "base"),
-					new TropicalFishBucketVariantProperty(TropicalFish::getBaseVariant, () -> showTropicalFish));
+						new TropicalFishBucketVariantProperty((b) -> TropicalFish.getBaseColor(b).getId(), () -> showTropicalFish));
 				ItemProperties.register(Items.TROPICAL_FISH_BUCKET, new ResourceLocation(Quark.MOD_ID, "pattern"),
-					new TropicalFishBucketVariantProperty(TropicalFish::getPatternVariant, () -> showTropicalFish));
+						new TropicalFishBucketVariantProperty((p) -> TropicalFish.getPattern(p).getPackedId(), () -> showTropicalFish));
 			});
 		}
+
+
 
 		@LoadEvent
 		public void registerItemColors(ZAddItemColorHandlers evt) {

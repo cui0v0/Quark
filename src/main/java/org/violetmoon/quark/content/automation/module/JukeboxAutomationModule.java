@@ -3,7 +3,6 @@ package org.violetmoon.quark.content.automation.module;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -23,9 +22,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -131,7 +128,8 @@ public class JukeboxAutomationModule extends ZetaModule {
 				JukeboxBlockEntity jukebox = (JukeboxBlockEntity) world.getBlockEntity(pos);
 				if (jukebox != null) {
 					ItemStack currentRecord = jukebox.getItem(0);
-					((JukeboxBlock) (state.getBlock())).setRecord(null, world, pos, state, stack);
+					// fixme - Broken - IThundxr
+					//((JukeboxBlock) state.getBlock()).setRecord(null, world, pos, state, stack);
 					world.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, pos, Item.getId(stack.getItem()));
 
 					return currentRecord;

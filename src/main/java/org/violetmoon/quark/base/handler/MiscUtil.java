@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
@@ -13,9 +12,7 @@ import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -108,7 +105,8 @@ public class MiscUtil {
 				latestWithPriority = wrappedGoal;
 		}
 
-		selector.removeAllGoals();
+		//fixme - Broken - IThundxr
+		//selector.removeAllGoals();
 		if (latestWithPriority == null)
 			selector.addGoal(priority, goal);
 
@@ -198,7 +196,7 @@ public class MiscUtil {
 	public static BlockState fromString(String key) {
 		try {
 			//fixme might not work
-			BlockResult result = BlockStateParser.parseForBlock(Minecraft.getInstance().level.holderLookup(Registries.BLOCK), new StringReader(key), false);
+			BlockResult result = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), new StringReader(key), false);
 			BlockState state = result.blockState();
 			return state == null ? Blocks.AIR.defaultBlockState() : state;
 		} catch (CommandSyntaxException e) {

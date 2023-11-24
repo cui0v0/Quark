@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.experimental.module;
 import com.mojang.text2speech.Narrator;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -20,9 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZInput;
@@ -30,6 +28,8 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class NarratorReadoutModule extends ZetaModule {
@@ -170,7 +170,7 @@ public class NarratorReadoutModule extends ZetaModule {
 					if(stack.isEmpty())
 						sb.append(I18n.get("quark.readout.no_item"));
 					else {
-						List<Component> tooltip = cnt.getTooltipFromItem(mc, stack);
+						List<Component> tooltip = Screen.getTooltipFromItem(mc, stack);
 
 						for(Component t : tooltip) {
 							Component print = t.copy();

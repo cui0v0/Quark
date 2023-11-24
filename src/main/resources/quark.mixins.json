@@ -18,7 +18,7 @@
     "ClimateParameterPointMixin",
     "CrossbowMultishotMixin",
     "DamageEnchantmentMixin",
-    "DamageSourceMixin",
+    "DamageSourcesMixin",
     "DiggerItemMixin",
     "ElytraItemMixin",
     "EnchantBookForEmeraldsMixin",
@@ -67,7 +67,6 @@
     "accessor.AccessorCropBlock",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
-    "accessor.AccessorMinecraftServer",
     "accessor.AccessorPotionBrewing"
   ],
   "client": [

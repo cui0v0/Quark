@@ -1,17 +1,26 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ForgottenRenderer;
 import org.violetmoon.quark.content.mobs.entity.Forgotten;
 import org.violetmoon.quark.content.mobs.item.ForgottenHatItem;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -22,15 +31,6 @@ import org.violetmoon.zeta.event.play.entity.living.ZMobSpawnEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event.Result;
 
 @ZetaLoadModule(category = "mobs")
 public class ForgottenModule extends ZetaModule {
@@ -73,7 +73,7 @@ public class ForgottenModule extends ZetaModule {
 
 		LivingEntity entity = event.getEntity();
 		ZResult result = event.getResult();
-		LevelAccessor world = event.getLevel();
+		ServerLevelAccessor world = event.getLevel();
 
 		if (entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != ZResult.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
 			if(result == ZResult.ALLOW || (mob.checkSpawnRules(world, event.getSpawnType()) && mob.checkSpawnObstruction(world))) {
@@ -83,7 +83,10 @@ public class ForgottenModule extends ZetaModule {
 				forgotten.absMoveTo(epos.x, epos.y, epos.z, entity.getYRot(), entity.getXRot());
 				forgotten.prepareEquipment();
 
-				MobSpawnEvent.FinalizeSpawn newEvent = new MobSpawnEvent.FinalizeSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), event.getSpawner(), event.getSpawnType());
+				BlockPos pos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
+
+				//fixme maybe broken? - IThundxr
+				MobSpawnEvent.FinalizeSpawn newEvent = new MobSpawnEvent.FinalizeSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), world.getCurrentDifficultyAt(pos), event.getSpawnType(), null, null, event.getSpawner());
 				MinecraftForge.EVENT_BUS.post(newEvent);
 				
 				if(newEvent.getResult() != Result.DENY) {

@@ -9,7 +9,7 @@ import org.violetmoon.quark.content.tweaks.module.ImprovedSpongesModule;
 @Mixin(SpongeBlock.class)
 public class SpongeBlockMixin {
 
-	@ModifyConstant(method = "removeWaterBreadthFirstSearch", constant = @Constant(intValue = 64))
+	@ModifyConstant(method = "removeWaterBreadthFirstSearch", constant = @Constant(intValue = 65))
 	public int getDrainLimit(int limit) {
 		return ImprovedSpongesModule.drainLimit(limit);
 	}

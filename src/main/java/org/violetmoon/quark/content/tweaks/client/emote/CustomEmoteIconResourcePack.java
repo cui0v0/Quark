@@ -1,9 +1,19 @@
 package org.violetmoon.quark.content.tweaks.client.emote;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.AbstractPackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.IoSupplier;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.tweaks.module.EmotesModule;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -12,21 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import net.minecraft.server.packs.resources.IoSupplier;
-import org.jetbrains.annotations.NotNull;
-
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tweaks.module.EmotesModule;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-
-import net.minecraft.ResourceLocationException;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.AbstractPackResources;
-import net.minecraft.server.packs.PackType;
 
 public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
@@ -40,14 +35,14 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
 	@Nullable
 	@Override
-	public IoSupplier<InputStream> getRootResource(String... p_252049_) {
+	public IoSupplier<InputStream> getRootResource(String @NotNull ... file) {
 		return null;
 	}
 
 	//Todo: Dawg this shit is probably broken as hell - Siuol
 	@Nullable
 	@Override
-	public IoSupplier<InputStream> getResource(PackType packType, ResourceLocation name) {
+	public IoSupplier<InputStream> getResource(@NotNull PackType packType, ResourceLocation name) {
 		if(name.getPath().equals("pack.mcmeta")) {
 			try {
 				return IoSupplier.create(Path.of(Quark.class.getResource("/proxypack.mcmeta").toURI()));
@@ -76,7 +71,7 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	}
 
 	@Override
-	public void listResources(PackType p_10289_, String p_251379_, String p_251932_, ResourceOutput p_249347_) {
+	public void listResources(@NotNull PackType packType, @NotNull String thing, @NotNull String ugh, @NotNull ResourceOutput resourceOutput) {
 
 	}
 
@@ -144,11 +139,5 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	public boolean isHidden() {
 		return true;
 	}
-
-	/*@NotNull
-	@Override
-	public String getName() {
-		return "quark-emote-pack";
-	}*/
 
 }
