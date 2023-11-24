@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +34,50 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	private final List<String> existingNames = new ArrayList<>();
 
 	public CustomEmoteIconResourcePack() {
-		super(EmotesModule.emotesDir);
+		super("quark-emote-pack", true);
+		//super(EmotesModule.emotesDir);
+	}
+
+	@Nullable
+	@Override
+	public IoSupplier<InputStream> getRootResource(String... p_252049_) {
+		return null;
+	}
+
+	//Todo: Dawg this shit is probably broken as hell - Siuol
+	@Nullable
+	@Override
+	public IoSupplier<InputStream> getResource(PackType packType, ResourceLocation name) {
+		if(name.getPath().equals("pack.mcmeta")) {
+			try {
+				return IoSupplier.create(Path.of(Quark.class.getResource("/proxypack.mcmeta").toURI()));
+			} catch (URISyntaxException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		if(name.getPath().equals("pack.png")) {
+			try {
+				return IoSupplier.create(Path.of(Quark.class.getResource("/proxypack.png").toURI()));
+			} catch (URISyntaxException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		File file = getFile(name.getPath());
+		if(!file.exists())
+			try {
+				throw new FileNotFoundException(name.getPath());
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+
+		return IoSupplier.create(file.toPath());
+	}
+
+	@Override
+	public void listResources(PackType p_10289_, String p_251379_, String p_251932_, ResourceOutput p_249347_) {
+
 	}
 
 	@NotNull
@@ -44,25 +89,8 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	}
 
 	@NotNull
-	@Override
-	protected InputStream getResource(@NotNull String name) throws IOException {
-		if(name.equals("pack.mcmeta"))
-			return Quark.class.getResourceAsStream("/proxypack.mcmeta");
-
-		if(name.equals("pack.png"))
-			return Quark.class.getResourceAsStream("/proxypack.png");
-
-		File file = getFile(name);
-		if(!file.exists())
-			throw new FileNotFoundException(name);
-
-		return new FileInputStream(file);
-	}
-
-	@NotNull
-	@Override
 	public Collection<ResourceLocation> getResources(@NotNull PackType type, @NotNull String pathIn, @NotNull String idk, @NotNull Predicate<ResourceLocation> filter) {
-		File rootPath = new File(this.file, type.getDirectory());
+		File rootPath = new File(this.getFile(idk), type.getDirectory());
 		List<ResourceLocation> allResources = Lists.newArrayList();
 
 		for (String namespace : this.getNamespaces(type))
@@ -94,7 +122,6 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 		// NO-OP
 	}
 
-	@Override
 	protected boolean hasResource(@NotNull String name) {
 		if(!verifiedNames.contains(name)) {
 			File file = getFile(name);
@@ -118,10 +145,10 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 		return true;
 	}
 
-	@NotNull
+	/*@NotNull
 	@Override
 	public String getName() {
 		return "quark-emote-pack";
-	}
+	}*/
 
 }

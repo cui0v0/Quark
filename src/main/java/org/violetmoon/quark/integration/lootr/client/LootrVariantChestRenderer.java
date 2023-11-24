@@ -17,7 +17,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.render.GenericChestBERenderer;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.LootrVariantChestBlockEntity;
-import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 
 public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> extends GenericChestBERenderer<T> {
 	private UUID playerId = null;
@@ -55,32 +54,6 @@ public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> e
 		} else {
 			return batch.unopened;
 		}
-	}
-
-	public static void accept(ZPreTextureStitch event, Block chest) {
-		ResourceLocation atlas = event.getAtlas().location();
-
-		if(chest instanceof VariantChestsModule.IChestTextureProvider prov) {
-
-			String path = prov.getChestTexturePath();
-			if (prov.isTrap())
-				add(event, atlas, chest, path, "trap", "lootr_trap", "lootr_trap_opened");
-			else
-				add(event, atlas, chest, path, "normal", "lootr_normal", "lootr_opened");
-		}
-	}
-
-	private static void add(ZPreTextureStitch event, ResourceLocation atlas, Block chest, String path, String baseSuffix, String unopenedSuffix, String openedSuffix) {
-		ResourceLocation resBase = new ResourceLocation(Quark.MOD_ID, path + baseSuffix);
-		ResourceLocation resUnopened = new ResourceLocation(Quark.MOD_ID, path + unopenedSuffix);
-		ResourceLocation resOpened = new ResourceLocation(Quark.MOD_ID, path + openedSuffix);
-
-		ChestTextureBatch batch = new ChestTextureBatch(atlas, resBase, resUnopened, resOpened);
-		chestTextures.put(chest, batch);
-
-		// No need to register base texture, it will have been handled in VariantChestRenderer
-		event.addSprite(resUnopened);
-		event.addSprite(resOpened);
 	}
 
 

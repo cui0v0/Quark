@@ -13,7 +13,6 @@ import java.util.Map;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.render.GenericChestBERenderer;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
-import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 
 public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntity> {
 
@@ -38,31 +37,6 @@ public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntit
 		};
 	}
 
-	public static void accept(ZPreTextureStitch event, Block chest) {
-		ResourceLocation atlas = event.getAtlas().location();
-
-		if(chest instanceof IChestTextureProvider prov) {
-
-			String path = prov.getChestTexturePath();
-			if (prov.isTrap())
-				add(event, atlas, chest, path, "trap", "trap_left", "trap_right");
-			else
-				add(event, atlas, chest, path, "normal", "left", "right");
-		}
-	}
-
-	private static void add(ZPreTextureStitch event, ResourceLocation atlas, Block chest, String path, String normal, String left, String right) {
-		ResourceLocation resNormal = new ResourceLocation(Quark.MOD_ID, path + normal);
-		ResourceLocation resLeft = new ResourceLocation(Quark.MOD_ID, path + left);
-		ResourceLocation resRight = new ResourceLocation(Quark.MOD_ID, path + right);
-
-		ChestTextureBatch batch = new ChestTextureBatch(atlas, resNormal, resLeft, resRight);
-		chestTextures.put(chest, batch);
-
-		event.addSprite(resNormal);
-		event.addSprite(resLeft);
-		event.addSprite(resRight);
-	}
 
 	private static class ChestTextureBatch {
 		public final Material normal, left, right;

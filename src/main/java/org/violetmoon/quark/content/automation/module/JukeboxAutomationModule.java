@@ -131,7 +131,7 @@ public class JukeboxAutomationModule extends ZetaModule {
 				JukeboxBlockEntity jukebox = (JukeboxBlockEntity) world.getBlockEntity(pos);
 				if (jukebox != null) {
 					ItemStack currentRecord = jukebox.getItem(0);
-					((JukeboxBlock) state.getBlock()).setRecord(null, world, pos, state, stack);
+					((JukeboxBlock) (state.getBlock())).setRecord(null, world, pos, state, stack);
 					world.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, pos, Item.getId(stack.getItem()));
 
 					return currentRecord;
