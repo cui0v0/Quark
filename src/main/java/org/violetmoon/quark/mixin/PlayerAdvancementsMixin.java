@@ -10,7 +10,7 @@ import net.minecraft.server.advancements.AdvancementVisibilityEvaluator;
 public class PlayerAdvancementsMixin {
 
 	@ModifyConstant(method = "evaluateVisibility(Lnet/minecraft/advancements/Advancement;Ljava/util/function/Predicate;Lnet/minecraft/server/advancements/AdvancementVisibilityEvaluator$Output;)V", constant = @Constant(intValue = 2))
-	static int visibility(int curr) {
+	private static int visibility(int curr) {
 		return GeneralConfig.advancementVisibilityDepth;
 	}
 	

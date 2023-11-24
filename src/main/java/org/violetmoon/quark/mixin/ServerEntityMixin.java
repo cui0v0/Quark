@@ -2,6 +2,7 @@ package org.violetmoon.quark.mixin;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import org.spongepowered.asm.mixin.Final;
@@ -32,7 +33,7 @@ public abstract class ServerEntityMixin {
 	}
 
 	@Inject(method = "sendPairingData", at = @At("HEAD"))
-	private void pairTridentData(Consumer<Packet<?>> send, CallbackInfo ci) {
+	private void pairTridentData(ServerPlayer serverPlayer, Consumer<Packet<?>> send, CallbackInfo ci) {
 		if (entity instanceof ThrownTrident trident)
 			ColorRunesModule.syncTrident(send, trident, true);
 	}
