@@ -3,17 +3,17 @@ package org.violetmoon.quark.content.mobs.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeMod;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ZetaArmorItem;
@@ -30,7 +30,7 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 	private Multimap<Attribute, AttributeModifier> attributes;
 
 	public ForgottenHatItem(ZetaModule module) {
-		super(ArmorMaterials.LEATHER, EquipmentSlot.HEAD,
+		super(ArmorMaterials.LEATHER, Type.HELMET,
 				new Item.Properties()
 				.stacksTo(1)
 				.durability(0)

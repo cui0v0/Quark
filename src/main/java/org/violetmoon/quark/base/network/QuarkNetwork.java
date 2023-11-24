@@ -2,20 +2,22 @@ package org.violetmoon.quark.base.network;
 
 import net.minecraft.network.chat.LastSeenMessages;
 import net.minecraft.network.chat.MessageSignature;
-
-import java.time.Instant;
-import java.util.BitSet;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.network.message.*;
 import org.violetmoon.quark.base.network.message.experimental.PlaceVariantUpdateMessage;
 import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 import org.violetmoon.quark.base.network.message.oddities.MatrixEnchanterOperationMessage;
 import org.violetmoon.quark.base.network.message.oddities.ScrollCrateMessage;
-import org.violetmoon.quark.base.network.message.structural.*;
+import org.violetmoon.quark.base.network.message.structural.C2SLoginFlag;
+import org.violetmoon.quark.base.network.message.structural.C2SUpdateFlag;
+import org.violetmoon.quark.base.network.message.structural.S2CLoginFlag;
+import org.violetmoon.quark.base.network.message.structural.S2CUpdateFlag;
 import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
+
+import java.time.Instant;
+import java.util.BitSet;
 
 public final class QuarkNetwork {
 
@@ -26,7 +28,8 @@ public final class QuarkNetwork {
 		Quark.ZETA.network = network;
 
 		network.getSerializer().mapHandlers(Instant.class, (buf, field) -> buf.readInstant(), (buf, field, instant) -> buf.writeInstant(instant));
-		network.getSerializer().mapHandlers(MessageSignature.class, (buf, field) -> new MessageSignature(buf), (buf, field, signature) -> signature.write(buf));
+		                                                                                                    // fixme Is this correct here? - IThundxr
+		network.getSerializer().mapHandlers(MessageSignature.class, (buf, field) -> new MessageSignature(buf.accessByteBufWithCorrectSize()), (buf, field, signature) -> MessageSignature.write(buf, signature));
 		network.getSerializer().mapHandlers(LastSeenMessages.Update.class, (buf, field) -> new LastSeenMessages.Update(buf), (buf, field, update) -> update.write(buf));
 		network.getSerializer().mapHandlers(BitSet.class, (buf, field) -> BitSet.valueOf(buf.readLongArray()), (buf, field, bitSet) -> buf.writeLongArray(bitSet.toLongArray()));
 

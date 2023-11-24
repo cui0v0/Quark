@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -113,7 +113,7 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 
 	@Override
 	public Vec3 getRenderOffset(DyedItemFrame p_115073_, float p_115074_) {
-		return new Vec3((double)((float)p_115073_.getDirection().getStepX() * 0.3F), -0.25D, (double)((float)p_115073_.getDirection().getStepZ() * 0.3F));
+		return new Vec3((float)p_115073_.getDirection().getStepX() * 0.3F, -0.25D, (float)p_115073_.getDirection().getStepZ() * 0.3F);
 	}
 
 	@Override

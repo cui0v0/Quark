@@ -33,6 +33,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -45,8 +46,6 @@ import org.violetmoon.quark.content.client.resources.AttributeSlot;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
@@ -335,7 +334,8 @@ public class AttributeTooltips {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 				Minecraft mc = Minecraft.getInstance();
-				pose.translate(0F, 0F, mc.getItemRenderer().blitOffset);
+				//fixme port 1.20 check if this even does anything
+//				pose.translate(0F, 0F, mc.getItemRenderer().blitOffset);
 
 				int y = tooltipY - 1;
 

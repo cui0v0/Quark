@@ -1,17 +1,15 @@
 package org.violetmoon.zeta.client;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import org.violetmoon.zeta.client.event.play.ZRenderTick;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TopLayerTooltipHandler {
 
@@ -21,10 +19,13 @@ public class TopLayerTooltipHandler {
 	@PlayEvent
 	public void renderTick(ZRenderTick event) {
 		if(tooltip != null && event.isEndPhase()) {
-			Screen screen = Minecraft.getInstance().screen;
+			Minecraft mc = Minecraft.getInstance();
+			Screen screen = mc.screen;
+
+			GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
 
 			if(screen != null)
-				screen.renderTooltip(new PoseStack(), tooltip, Optional.empty(), tooltipX, tooltipY);
+				guiGraphics.renderTooltip(mc.font, tooltip, Optional.empty(), tooltipX, tooltipY);
 
 			tooltip = null;
 		}

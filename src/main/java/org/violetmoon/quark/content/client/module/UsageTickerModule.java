@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.client.module;
 
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlot.Type;
@@ -11,11 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantments;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-
 import org.violetmoon.quark.api.IUsageTickerOverride;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -26,6 +22,10 @@ import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 @ZetaLoadModule(category = "client")
 public class UsageTickerModule extends ZetaModule {
@@ -76,9 +76,11 @@ public class UsageTickerModule extends ZetaModule {
 			Player player = Minecraft.getInstance().player;
 			float partial = event.getPartialTick();
 
+			GuiGraphics guiGraphics = event.getGuiGraphics();
+
 			for(TickerElement ticker : elements)
 				if(ticker != null)
-					ticker.render(window, player, invert, partial);
+					ticker.render(guiGraphics, window, player, invert, partial);
 		}
 
 		public static class TickerElement {
@@ -123,7 +125,7 @@ public class UsageTickerModule extends ZetaModule {
 				currRealStack = realStack;
 			}
 
-			public void render(Window window, Player player, boolean invert, float partialTicks) {
+			public void render(GuiGraphics guiGraphics, Window window, Player player, boolean invert, float partialTicks) {
 				if(liveTicks > 0) {
 					float animProgress;
 
@@ -158,13 +160,13 @@ public class UsageTickerModule extends ZetaModule {
 
 					ItemStack stack = getRenderedStack(player);
 
-					mc.getItemRenderer().renderAndDecorateItem(stack, (int) x, (int) y);
-					mc.getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, stack, (int) x, (int) y);
+					guiGraphics.renderItem(stack, (int) x, (int) y);
+					guiGraphics.renderItemDecorations(Minecraft.getInstance().font, stack, (int) x, (int) y);
 				}
 			}
 
 			public boolean shouldChange(ItemStack currStack, ItemStack prevStack, int currentTotal, int pastTotal) {
-				return !prevStack.sameItem(currStack) || (currStack.isDamageableItem() && currStack.getDamageValue() != prevStack.getDamageValue()) || currentTotal != pastTotal;
+				return !(prevStack == currStack) || (currStack.isDamageableItem() && currStack.getDamageValue() != prevStack.getDamageValue()) || currentTotal != pastTotal;
 			}
 
 			public ItemStack getStack(Player player) {

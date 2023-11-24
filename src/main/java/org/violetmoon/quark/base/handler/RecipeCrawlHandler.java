@@ -2,15 +2,16 @@ package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.*;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.api.event.RecipeCrawlEvent;
 import org.violetmoon.quark.api.event.RecipeCrawlEvent.Visit;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZAddReloadListener;
@@ -18,7 +19,6 @@ import org.violetmoon.zeta.event.load.ZTagsUpdated;
 import org.violetmoon.zeta.event.play.ZServerTick;
 import org.violetmoon.zeta.util.RegistryUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -74,7 +74,7 @@ public class RecipeCrawlHandler {
 
 			for(Recipe<?> recipe : recipes) {
 				try {
-					if (recipe == null || recipe.getIngredients() == null || recipe.getResultItem() == null)
+					if (recipe == null || recipe.getIngredients() == null || recipe.getResultItem(RegistryAccessUtil.getRegistryAccess()) == null)
 						continue;
 
 					RecipeCrawlEvent.Visit<?> event;
@@ -122,7 +122,7 @@ public class RecipeCrawlHandler {
 	}
 
 	private static void digest(Recipe<?> recipe) {
-		ItemStack out = recipe.getResultItem();
+		ItemStack out = recipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
 		Item outItem = out.getItem();
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();

@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import aurelienribon.tweenengine.Tween;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.world.entity.player.Player;
@@ -110,7 +112,6 @@ public class EmotesModule extends ZetaModule {
 				emotesDir.mkdirs();
 
 			mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
-
 				@Override
 				public void loadPacks(@NotNull Consumer<Pack> packConsumer, @NotNull Pack.PackConstructor packInfoFactory) {
 					Client.resourcePack = new CustomEmoteIconResourcePack();
@@ -253,7 +254,8 @@ public class EmotesModule extends ZetaModule {
 		public void drawCrosshair(ZRenderGuiOverlay.Crosshair event) {
 			Minecraft mc = Minecraft.getInstance();
 			Window res = event.getWindow();
-			PoseStack stack = event.getPoseStack();
+			GuiGraphics guiGraphics = event.getGuiGraphics();
+			PoseStack stack = guiGraphics.pose();
 			EmoteBase emote = EmoteHandler.getPlayerEmote(mc.player);
 			if(emote != null && emote.timeDone < emote.totalTime) {
 				ResourceLocation resource = emote.desc.texture;
@@ -270,16 +272,15 @@ public class EmotesModule extends ZetaModule {
 				stack.pushPose();
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, transparency);
-				RenderSystem.setShaderTexture(0, resource);
 
 				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
 
-				Screen.blit(stack, x, y, 0, 0, 32, 32, 32, 32);
+				guiGraphics.blit(resource, x, y, 0, 0, 32, 32, 32, 32);
 				RenderSystem.enableBlend();
 
 				String name = I18n.get(emote.desc.getTranslationKey());
-				mc.font.drawShadow(stack, name, res.getGuiScaledWidth() / 2f - mc.font.width(name) / 2f, y + 34, 0xFFFFFF + (((int) (transparency * 255F)) << 24));
+				guiGraphics.drawString(mc.font, name, res.getGuiScaledWidth() / 2f - mc.font.width(name) / 2f, y + 34, 0xFFFFFF + (((int) (transparency * 255F)) << 24), true);
 				stack.popPose();
 			}
 		}

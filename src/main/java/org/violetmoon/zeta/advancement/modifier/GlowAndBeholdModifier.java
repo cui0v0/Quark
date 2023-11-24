@@ -4,20 +4,18 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.BlockPredicate;
-import net.minecraft.advancements.critereon.ItemInteractWithBlockTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger;
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import org.violetmoon.zeta.advancement.AdvancementModifier;
+import org.violetmoon.zeta.api.IMutableAdvancement;
+import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Set;
-
-import org.violetmoon.zeta.api.IMutableAdvancement;
-import org.violetmoon.zeta.advancement.AdvancementModifier;
-import org.violetmoon.zeta.module.ZetaModule;
 
 public class GlowAndBeholdModifier extends AdvancementModifier {
 
@@ -40,7 +38,7 @@ public class GlowAndBeholdModifier extends AdvancementModifier {
     public boolean apply(ResourceLocation res, IMutableAdvancement adv) {
 
         Block[] array = blocks.toArray(Block[]::new);
-        Criterion criterion = new Criterion(ItemInteractWithBlockTrigger.
+        Criterion criterion = new Criterion(ItemUsedOnLocationTrigger.
                 TriggerInstance.itemUsedOnBlock(
                         LocationPredicate.Builder.location().setBlock(
                                 BlockPredicate.Builder.block()

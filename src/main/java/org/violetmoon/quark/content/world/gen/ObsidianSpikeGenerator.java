@@ -1,5 +1,16 @@
 package org.violetmoon.quark.content.world.gen;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.Fluids;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
@@ -7,19 +18,6 @@ import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.quark.content.building.module.CompressedBlocksModule;
 import org.violetmoon.quark.content.world.module.NetherObsidianSpikesModule;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class ObsidianSpikeGenerator extends Generator {
 
@@ -45,7 +43,7 @@ public class ObsidianSpikeGenerator extends Generator {
 		}
 	}
 	
-	public static void placeSpikeAt(LevelAccessor world, BlockPos pos, RandomSource rand) {
+	public static void placeSpikeAt(WorldGenRegion world, BlockPos pos, RandomSource rand) {
 		int heightBelow = 10;
 		int heightBottom = 3 + rand.nextInt(3);
 		int heightMiddle = 2 + rand.nextInt(4);
@@ -98,7 +96,7 @@ public class ObsidianSpikeGenerator extends Generator {
 				
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.SPAWNER.defaultBlockState(), 0);
-				((SpawnerBlockEntity) world.getBlockEntity(placePos)).getSpawner().setEntityId(EntityType.BLAZE);
+				((SpawnerBlockEntity) world.getBlockEntity(placePos)).getSpawner().setEntityId(EntityType.BLAZE, world.getLevel(), rand, pos);
 				
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.CHEST.defaultBlockState(), 0);

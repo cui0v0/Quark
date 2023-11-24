@@ -33,10 +33,7 @@ import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.ShareItemMessage;
-import org.violetmoon.quark.mixin.accessor.AccessorServerGamePacketListenerImpl;
-import org.violetmoon.quark.mixin.client.accessor.AccessorLocalPlayer;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -112,7 +109,7 @@ public class ItemSharingModule extends ZetaModule {
 
 		((AccessorServerGamePacketListenerImpl) player.connection).quark$chatPreviewCache().set(message, itemComp);
 
-		player.connection.handleChat(new ServerboundChatPacket(message, timeStamp, salt, signature, signedPreview, lastSeenMessages));
+		player.connection.handleChat(new ServerboundChatPacket(message, timeStamp, salt, signature, lastSeenMessages));
 	}
 
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {

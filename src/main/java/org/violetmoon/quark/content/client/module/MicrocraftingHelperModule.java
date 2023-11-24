@@ -24,6 +24,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.client.event.play.ZRenderContainerScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.client.event.play.ZStartClientTick;
@@ -67,7 +68,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 					if(recipeToSet != null) {
 						int ourCount = 0;
 
-						ItemStack testStack = recipeToSet.getResultItem();
+						ItemStack testStack = recipeToSet.getResultItem(RegistryAccessUtil.getRegistryAccess());
 						for(int j = 1; j < ghost.size(); j++) { // start at 1 to skip output
 							GhostIngredient testGhostIngr = ghost.get(j);
 							Ingredient testIngr = testGhostIngr.ingredient;
@@ -88,7 +89,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 							boolean stackIt = true;
 
 							if(recipes.isEmpty()) {
-								ItemStack rootDisplayStack = ghostRecipe.getResultItem();
+								ItemStack rootDisplayStack = ghostRecipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
 								StackedRecipe rootRecipe = new StackedRecipe(null, rootDisplayStack, rootDisplayStack.getCount(), () -> recipes.size() == 1);
 								recipes.add(rootRecipe);
 							} else for(int i = 0; i < recipes.size(); i++) { // check dupes
@@ -244,7 +245,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 							recipeList.sort(this::compareRecipes);
 
 							for(Recipe<?> recipe : recipeList)
-								if(ingr.test(recipe.getResultItem()))
+								if(ingr.test(recipe.getResultItem(RegistryAccessUtil.getRegistryAccess())))
 									return recipe;
 						}
 					}

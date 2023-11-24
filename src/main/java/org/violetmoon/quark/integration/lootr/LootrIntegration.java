@@ -1,7 +1,6 @@
 package org.violetmoon.quark.integration.lootr;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -9,9 +8,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import noobanidus.mods.lootr.init.ModBlocks;
-
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
@@ -19,12 +16,12 @@ import org.violetmoon.quark.integration.lootr.client.LootrVariantChestRenderer;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 
-import static org.violetmoon.quark.content.building.module.VariantChestsModule.registerChests;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static org.violetmoon.quark.content.building.module.VariantChestsModule.registerChests;
 
 /**
  * @author WireSegal

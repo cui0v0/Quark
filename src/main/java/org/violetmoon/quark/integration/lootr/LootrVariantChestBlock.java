@@ -36,16 +36,12 @@ import noobanidus.mods.lootr.LootrTags;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
-
 import org.jetbrains.annotations.Nullable;
-
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantChestBlock;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
-import org.violetmoon.zeta.util.ZetaSide;
 
 import java.util.function.Supplier;
 
@@ -151,7 +147,8 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 
 	@Override
 	public void fillItemProperties(Item.Properties props) {
-		props.tab(null);
+		//fixme
+		//props.tab(null);
 	}
 
 	@Override

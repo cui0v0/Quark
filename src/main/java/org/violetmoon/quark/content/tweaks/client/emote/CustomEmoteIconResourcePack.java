@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import net.minecraft.server.packs.resources.IoSupplier;
 import org.jetbrains.annotations.NotNull;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 

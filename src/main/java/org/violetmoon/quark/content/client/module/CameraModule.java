@@ -212,6 +212,8 @@ public class CameraModule extends ZetaModule {
 		}
 
 		private static void renderCameraHUD(Minecraft mc, PoseStack matrix) {
+			GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
+
 			Window mw = mc.getWindow();
 			int twidth = mw.getGuiScaledWidth();
 			int theight = mw.getGuiScaledHeight();
@@ -258,13 +260,13 @@ public class CameraModule extends ZetaModule {
 
 			// =============================================== DRAW BORDERS ===============================================
 			if(paddingHoriz > 0) {
-				Screen.fill(matrix, 0, 0, paddingHoriz, theight, paddingColor);
-				Screen.fill(matrix, twidth - paddingHoriz, 0, twidth, theight, paddingColor);
+				guiGraphics.fill(0, 0, paddingHoriz, theight, paddingColor);
+				guiGraphics.fill(twidth - paddingHoriz, 0, twidth, theight, paddingColor);
 			}
 
 			if(paddingVert > 0) {
-				Screen.fill(matrix, 0, 0, twidth, paddingVert, paddingColor);
-				Screen.fill(matrix, 0, theight - paddingVert, twidth, theight, paddingColor);
+				guiGraphics.fill(0, 0, twidth, paddingVert, paddingColor);
+				guiGraphics.fill(0, theight - paddingVert, twidth, theight, paddingColor);
 			}
 
 			// =============================================== DRAW OVERLAYS ===============================================
@@ -316,8 +318,8 @@ public class CameraModule extends ZetaModule {
 				matrix.translate(overlayX, overlayY, 0);
 				matrix.scale((float) overlayScale, (float) overlayScale, 1.0F);
 				if(overlayShadow)
-					mc.font.drawShadow(matrix, overlayText, 0, 0, overlayColor);
-				else mc.font.draw(matrix, overlayText, 0, 0, overlayColor);
+					guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor, true);
+				else guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor);
 				matrix.popPose();
 			}
 
@@ -327,22 +329,22 @@ public class CameraModule extends ZetaModule {
 				matrix.translate(paddingHoriz, paddingVert, 0);
 				switch(currRulers) {
 					case 1 -> { // Rule of Thirds
-						vruler(matrix, width / 3, height);
-						vruler(matrix, width / 3 * 2, height);
-						hruler(matrix, height / 3, width);
-						hruler(matrix, height / 3 * 2, width);
+						vruler(guiGraphics, width / 3, height);
+						vruler(guiGraphics, width / 3 * 2, height);
+						hruler(guiGraphics, height / 3, width);
+						hruler(guiGraphics, height / 3 * 2, width);
 					}
 					case 2 -> { // Golden Ratio
 						double phi1 = 1 / 2.61;
 						double phi2 = 1.61 / 2.61;
-						vruler(matrix, (int) (width * phi1), height);
-						vruler(matrix, (int) (width * phi2), height);
-						hruler(matrix, (int) (height * phi1), width);
-						hruler(matrix, (int) (height * phi2), width);
+						vruler(guiGraphics, (int) (width * phi1), height);
+						vruler(guiGraphics, (int) (width * phi2), height);
+						hruler(guiGraphics, (int) (height * phi1), width);
+						hruler(guiGraphics, (int) (height * phi2), width);
 					}
 					case 3 -> { // Center
-						vruler(matrix, width / 2, height);
-						hruler(matrix, height / 2, width);
+						vruler(guiGraphics, width / 2, height);
+						hruler(guiGraphics, height / 2, width);
 					}
 				}
 				matrix.popPose();
@@ -356,31 +358,30 @@ public class CameraModule extends ZetaModule {
 				if(shader != null)
 					text = shader.getPath().replaceAll(".+/(.+)\\.json", "$1");
 				text = ChatFormatting.BOLD + "[1] " + ChatFormatting.RESET + I18n.get("quark.camera.filter") + ChatFormatting.GOLD + I18n.get("quark.camera.filter." + text);
-				mc.font.drawShadow(matrix, text, left, top, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, left, top, 0xFFFFFF, true);
 
 				text = ChatFormatting.BOLD + "[2] " + ChatFormatting.RESET + I18n.get("quark.camera.rulers") + ChatFormatting.GOLD + I18n.get("quark.camera.rulers" + currRulers);
-				mc.font.drawShadow(matrix, text, left, top + 12, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, left, top + 12, 0xFFFFFF, true);
 
 				text = ChatFormatting.BOLD + "[3] " + ChatFormatting.RESET + I18n.get("quark.camera.borders") + ChatFormatting.GOLD + I18n.get("quark.camera.borders" + currBorders);
-				mc.font.drawShadow(matrix, text, left, top + 24, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, left, top + 24, 0xFFFFFF, true);
 
 				text = ChatFormatting.BOLD + "[4] " + ChatFormatting.RESET + I18n.get("quark.camera.overlay") + ChatFormatting.GOLD + I18n.get("quark.camera.overlay" + currOverlay);
-				mc.font.drawShadow(matrix, text, left, top + 36, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, left, top + 36, 0xFFFFFF, true);
 
 				text = ChatFormatting.BOLD + "[5] " + ChatFormatting.RESET + I18n.get("quark.camera.reset");
-				mc.font.drawShadow(matrix, text, left, top + 48, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, left, top + 48, 0xFFFFFF, true);
 
 				text = ChatFormatting.AQUA + I18n.get("quark.camera.header");
-				mc.font.drawShadow(matrix, text, (float) (twidth / 2 - mc.font.width(text) / 2), 6, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, (float) (twidth / 2 - mc.font.width(text) / 2), 6, 0xFFFFFF, true);
 
 				text = I18n.get("quark.camera.info", Component.keybind("quark.keybind.camera_mode").getString());
-				mc.font.drawShadow(matrix, text, (float) (twidth / 2 - mc.font.width(text) / 2), 16, 0xFFFFFF);
+				guiGraphics.drawString(mc.font, text, (float) (twidth / 2 - mc.font.width(text) / 2), 16, 0xFFFFFF, true);
 
 				ResourceLocation CAMERA_TEXTURE = new ResourceLocation(Quark.MOD_ID, "textures/misc/camera.png");
 				RenderSystem.setShader(GameRenderer::getPositionTexShader);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				RenderSystem.setShaderTexture(0, CAMERA_TEXTURE);
-				Screen.blit(matrix, left - 22, top + 18, 0, 0, 0, 16, 16, 16, 16);
+				guiGraphics.blit(CAMERA_TEXTURE, left - 22, top + 18, 0, 0, 0, 16, 16, 16, 16);
 			}
 		}
 
@@ -414,12 +415,12 @@ public class CameraModule extends ZetaModule {
 			render.checkEntityPostEffect(null);
 		}
 
-		private static void vruler(PoseStack matrix, int x, int height) {
-			Screen.fill(matrix, x, 0, x + 1, height, RULER_COLOR);
+		private static void vruler(GuiGraphics guiGraphics, int x, int height) {
+			guiGraphics.fill(x, 0, x + 1, height, RULER_COLOR);
 		}
 
-		private static void hruler(PoseStack matrix, int y, int width) {
-			Screen.fill(matrix, 0, y, width, y + 1, RULER_COLOR);
+		private static void hruler(GuiGraphics guiGraphics, int y, int width) {
+			guiGraphics.fill(0, y, width, y + 1, RULER_COLOR);
 		}
 
 		private static int cycle(int curr, int max, boolean neg) {

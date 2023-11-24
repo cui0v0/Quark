@@ -1,20 +1,16 @@
 package org.violetmoon.zeta.client.config.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.config.widget.CategoryButton;
 import org.violetmoon.zeta.client.config.widget.CheckboxButton;
@@ -22,6 +18,9 @@ import org.violetmoon.zeta.config.ChangeSet;
 import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.ValueDefinition;
 import org.violetmoon.zeta.module.ZetaCategory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ZetaConfigHomeScreen extends ZetaScreen {
 	public ZetaConfigHomeScreen(ZetaClient zc, Screen parent) {
@@ -70,13 +69,15 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 				checkButton.active = active;
 			} else {
 				assert generalSection != null;
-				addRenderableWidget(new Button(x, y, bWidth, 20, componentFor(generalSection),
-					b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, this, changeSet, generalSection))));
+				addRenderableWidget(new Button.Builder(componentFor(generalSection),
+					b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, this, changeSet, generalSection)))
+						.size(bWidth, 20).pos(x, y).build());
 			}
 		}
 
 		//save
-		addRenderableWidget(new Button(width / 2 - 100, height - 30, 200, 20, Component.translatable("quark.gui.config.save"), this::commit));
+		addRenderableWidget(new Button.Builder(Component.translatable("quark.gui.config.save"), this::commit)
+				.size(200, 20).pos(width / 2 - 100, height - 30).build());
 	}
 
 	public List<Integer> centeredRow(int centerX, int buttonWidth, int hpad, int count) {
@@ -112,10 +113,10 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 	}
 
 	@Override
-	public void render(@NotNull PoseStack mstack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(mstack);
+	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(guiGraphics);
 
-		super.render(mstack, mouseX, mouseY, partialTicks);
-		drawCenteredString(mstack, font, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", WordUtils.capitalizeFully(z.modid)), width / 2, 15, 0x48ddbc);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawCenteredString(font, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", WordUtils.capitalizeFully(z.modid)), width / 2, 15, 0x48ddbc);
 	}
 }

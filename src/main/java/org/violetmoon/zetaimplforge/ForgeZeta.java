@@ -30,7 +30,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.zeta.registry.PottedPlantRegistry;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.Zeta;
@@ -220,9 +219,9 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteractRightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(this::playerInteractRightClickItem);
 		MinecraftForge.EVENT_BUS.addListener(this::playerDestroyItem);
-		MinecraftForge.EVENT_BUS.addListener(this::livingSpawn);
-		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawn);
-		MinecraftForge.EVENT_BUS.addListener(this::livingSpawnCheckSpawnLowest);
+		MinecraftForge.EVENT_BUS.addListener(this::mobSpawn);
+		MinecraftForge.EVENT_BUS.addListener(this::mobSpawnFinalizeSpawn);
+		MinecraftForge.EVENT_BUS.addListener(this::mobSpawnFinalizeSpawnLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::livingChangeTarget);
 		MinecraftForge.EVENT_BUS.addListener(this::sleepingLocationCheck);
 		MinecraftForge.EVENT_BUS.addListener(this::villagerTrades);
@@ -424,16 +423,16 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZPlayerDestroyItem(e), ZPlayerDestroyItem.class);
 	}
 
-	public void livingSpawn(LivingSpawnEvent e) {
-		playBus.fire(new ForgeZLivingSpawn(e), ZLivingSpawn.class);
+	public void mobSpawn(MobSpawnEvent e) {
+		playBus.fire(new ForgeZMobSpawnEvent(e), ZMobSpawnEvent.class);
 	}
 
-	public void livingSpawnCheckSpawn(LivingSpawnEvent.CheckSpawn e) {
-		playBus.fire(new ForgeZLivingSpawn.CheckSpawn(e), ZLivingSpawn.CheckSpawn.class);
+	public void mobSpawnFinalizeSpawn(MobSpawnEvent.FinalizeSpawn e) {
+		playBus.fire(new ForgeZMobSpawnEvent.FinalizeSpawn(e), ZMobSpawnEvent.CheckSpawn.class);
 	}
 
-	public void livingSpawnCheckSpawnLowest(LivingSpawnEvent.CheckSpawn e) {
-		playBus.fire(new ForgeZLivingSpawn.CheckSpawn.Lowest(e), ZLivingSpawn.CheckSpawn.Lowest.class);
+	public void mobSpawnFinalizeSpawnLowest(MobSpawnEvent.FinalizeSpawn e) {
+		playBus.fire(new ForgeZMobSpawnEvent.FinalizeSpawn.Lowest(e), ZMobSpawnEvent.CheckSpawn.Lowest.class);
 	}
 
 	public void livingChangeTarget(LivingChangeTargetEvent e) {
