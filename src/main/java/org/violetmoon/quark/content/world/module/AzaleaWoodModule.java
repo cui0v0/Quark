@@ -28,9 +28,11 @@ public class AzaleaWoodModule extends ZetaModule {
 		enabledStatusChanged(true, this.enabled);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void enabledStatusChanged(boolean firstLoad, boolean newStatus) {
 		ConfiguredFeature<TreeConfiguration, ?> configured = null;
 		try {
+			// Complains about unchecked casts but... it works :)
 			configured = (ConfiguredFeature<TreeConfiguration, ?>) RegistryAccessUtil.getRegistryAccess()
 					.registryOrThrow(Registries.CONFIGURED_FEATURE).getOrThrow(TreeFeatures.AZALEA_TREE);
 		} catch(IllegalStateException e) {

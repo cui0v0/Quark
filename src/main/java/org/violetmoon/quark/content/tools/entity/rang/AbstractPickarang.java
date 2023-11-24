@@ -293,7 +293,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 						ItemStack stack = getStack();
 						stack.hurt(1, level().random, null);
 						setStack(stack);
-						// FIXME maybe register custom damage source? - IThundxr
+						//fixme maybe register custom damage source? - IThundxr
 						hit.hurt(level().damageSources().indirectMagic(this, this),
 								(float) manager.getValue(Attributes.ATTACK_DAMAGE));
 					}
