@@ -73,7 +73,6 @@ public class ForgeZetaClient extends ZetaClient {
 		bus.addListener(this::registerReloadListeners);
 		bus.addListener(this::modelBake);
 		bus.addListener(this::modelLayers);
-		bus.addListener(this::textureStitch);
 		bus.addListener(this::registerKeybinds);
 		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientTooltipComponentFactories);
@@ -142,10 +141,6 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void modelLayers(EntityRenderersEvent.AddLayers event) {
 		loadBus.fire(new ForgeZAddModelLayers(event), ZAddModelLayers.class);
-	}
-
-	public void textureStitch(TextureStitchEvent.Pre event) {
-		loadBus.fire(new ForgeZPreTextureStitch(event), ZPreTextureStitch.class);
 	}
 
 	public void registerKeybinds(RegisterKeyMappingsEvent event) {
