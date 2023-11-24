@@ -4,14 +4,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.violetmoon.quark.base.handler.GeneralConfig;
+import net.minecraft.server.advancements.AdvancementVisibilityEvaluator;
 
-import net.minecraft.server.PlayerAdvancements;
-
-@Mixin(PlayerAdvancements.class)
+@Mixin(AdvancementVisibilityEvaluator.class)
 public class PlayerAdvancementsMixin {
 
-	@ModifyConstant(method = "shouldBeVisible", constant = @Constant(intValue = 2))
-	public int visibility(int curr) {
+	@ModifyConstant(method = "evaluateVisibility(Lnet/minecraft/advancements/Advancement;Ljava/util/function/Predicate;Lnet/minecraft/server/advancements/AdvancementVisibilityEvaluator$Output;)V", constant = @Constant(intValue = 2))
+	static int visibility(int curr) {
 		return GeneralConfig.advancementVisibilityDepth;
 	}
 	
