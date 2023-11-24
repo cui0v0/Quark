@@ -15,7 +15,7 @@ public class BannerDuplicateRecipeMixin {
 		return MoreBannerLayersModule.getLimit(curr);
 	}
 
-	@ModifyConstant(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;)Lnet/minecraft/world/item/ItemStack;", constant = @Constant(intValue = 6))
+	@ModifyConstant(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;", constant = @Constant(intValue = 6))
 	public int getLimitAssemble(int curr) {
 		return MoreBannerLayersModule.getLimit(curr);
 	}

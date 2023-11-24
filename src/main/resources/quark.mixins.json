@@ -36,7 +36,6 @@
     "IForgeItemMixin",
     "IronBarsBlockMixin",
     "ItemMixin",
-    "ItemsMixin",
     "ItemStackMixin",
     "LadderBlockMixin",
     "LanternBlockMixin",
