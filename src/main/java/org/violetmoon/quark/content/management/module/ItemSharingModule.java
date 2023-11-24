@@ -75,7 +75,7 @@ public class ItemSharingModule extends ZetaModule {
 						lastShareTimestamp = mc.level.getGameTime();
 					} else return false;
 
-					if (mc.player instanceof AccessorLocalPlayer accessorLocalPlayer) {
+					/*if (mc.player instanceof AccessorLocalPlayer accessorLocalPlayer) {
 						Component itemComp = stack.getDisplayName();
 						String rawMessage = SharedConstants.filterText(itemComp.getString());
 
@@ -93,7 +93,7 @@ public class ItemSharingModule extends ZetaModule {
 
 							return true;
 						}
-					}
+					}*/
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class ItemSharingModule extends ZetaModule {
 
 		Component itemComp = stack.getDisplayName();
 
-		((AccessorServerGamePacketListenerImpl) player.connection).quark$chatPreviewCache().set(message, itemComp);
+		//((AccessorServerGamePacketListenerImpl) player.connection).quark$chatPreviewCache().set(message, itemComp);
 
 		player.connection.handleChat(new ServerboundChatPacket(message, timeStamp, salt, signature, lastSeenMessages));
 	}

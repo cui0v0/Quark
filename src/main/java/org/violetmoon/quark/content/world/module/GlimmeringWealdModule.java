@@ -167,7 +167,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 		settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ORE_LAPIS_EXTRA);
 
-		Music music = Musics.createGameMusic(QuarkSounds.MUSIC_GLIMMERING_WEALD);
+		Music music = Musics.createGameMusic(Holder.direct(QuarkSounds.MUSIC_GLIMMERING_WEALD));
 		Biome biome = OverworldBiomes.biome(Biome.Precipitation.RAIN, 0.8F, 0.4F, mobs, settings, music);
 
 		return biome;

@@ -111,6 +111,8 @@ public class EmotesModule extends ZetaModule {
 			if(!emotesDir.exists())
 				emotesDir.mkdirs();
 
+			//todo: Fixme or something idk - Siuolplex
+			/*
 			mc.getResourcePackRepository().addPackFinder(new RepositorySource() {
 				@Override
 				public void loadPacks(@NotNull Consumer<Pack> packConsumer, @NotNull Pack.PackConstructor packInfoFactory) {
@@ -120,7 +122,7 @@ public class EmotesModule extends ZetaModule {
 					Pack t = Pack.create(name, true, () -> Client.resourcePack, packInfoFactory, Pack.Position.TOP, tx->tx);
 					packConsumer.accept(t);
 				}
-			});
+			});*/
 		}
 
 		@LoadEvent

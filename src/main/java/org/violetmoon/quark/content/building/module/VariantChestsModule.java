@@ -44,7 +44,6 @@ import org.violetmoon.quark.integration.lootr.ILootrIntegration;
 import org.violetmoon.quark.mixin.accessor.AccessorAbstractChestedHorse;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
@@ -331,15 +330,6 @@ public class VariantChestsModule extends ZetaModule {
 				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
 			for(Block b : trappedChests)
 				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
-		}
-
-		@LoadEvent
-		public void textureStitch(ZPreTextureStitch event) {
-			if (event.getAtlas().location().toString().equals("minecraft:textures/atlas/chest.png")) {
-				for (Block b : allChests)
-					VariantChestRenderer.accept(event, b);
-				ILootrIntegration.INSTANCE.stitch(event);
-			}
 		}
 
 	}

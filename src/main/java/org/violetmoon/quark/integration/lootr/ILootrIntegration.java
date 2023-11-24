@@ -10,8 +10,6 @@ import net.minecraftforge.fml.ModList;
 
 import org.jetbrains.annotations.Nullable;
 
-import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
-
 /**
  * @author WireSegal
  * Created at 11:40 AM on 7/3/23.
@@ -51,10 +49,5 @@ public interface ILootrIntegration {
 	@OnlyIn(Dist.CLIENT)
 	default void clientSetup() {
 		// NO-OP
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	default void stitch(ZPreTextureStitch event) {
-
 	}
 }

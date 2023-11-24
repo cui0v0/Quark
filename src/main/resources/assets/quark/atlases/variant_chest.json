@@ -1,0 +1,94 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "model/chest/acacia",
+      "prefix": "model/chest/acacia/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/ancient",
+      "prefix": "model/chest/ancient/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/azelea",
+      "prefix": "model/chest/azelea/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/bamboo",
+      "prefix": "model/chest/bamboo/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/birch",
+      "prefix": "model/chest/birch/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/blossom",
+      "prefix": "model/chest/blossom/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/cherry",
+      "prefix": "model/chest/cherry/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/crimson",
+      "prefix": "model/chest/crimson/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/dark_oak",
+      "prefix": "model/chest/dark_oak/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/jungle",
+      "prefix": "model/chest/jungle/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/mangrove",
+      "prefix": "model/chest/mangrove/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/nether_brick",
+      "prefix": "model/chest/nether_brick/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/oak",
+      "prefix": "model/chest/oak/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/prismarine",
+      "prefix": "model/chest/prismarine/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/purpur",
+      "prefix": "model/chest/purpur/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/spruce",
+      "prefix": "model/chest/spruce/"
+    },
+    {
+      "type": "directory",
+      "source": "model/chest/warped",
+      "prefix": "model/chest/warped/"
+    },
+    {
+      "type": "directory",
+      "source": "todo/make_this_work",
+      "prefix": "from/siuolplex"
+    }
+  ]
+}

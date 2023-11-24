@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -66,7 +67,7 @@ public class QuarkBoatRenderer extends EntityRenderer<Boat> {
 
 		float f2 = boat.getBubbleAngle(partialTicks);
 		if (!Mth.equal(f2, 0.0F)) {
-			matrix.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boat.getBubbleAngle(partialTicks), true));
+			matrix.mulPose(new Quaternionf(1.0F, 0.0F, 1.0F, boat.getBubbleAngle(partialTicks) * ((float)Math.PI / 180F)));
 		}
 
 		BoatModelTuple tuple = getModelWithLocation(boat);

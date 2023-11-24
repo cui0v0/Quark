@@ -14,7 +14,6 @@ import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.client.LootrVariantChestRenderer;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
-import org.violetmoon.zeta.client.event.load.ZPreTextureStitch;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -73,11 +72,6 @@ public class LootrIntegration implements ILootrIntegration {
 	}
 
 	@Override
-	public void loadComplete() {
-		ModBlocks.getSpecialLootChests().addAll(allChests);
-	}
-
-	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void clientSetup() {
 		BlockEntityRenderers.register(chestTEType, LootrVariantChestRenderer::new);
@@ -87,12 +81,5 @@ public class LootrIntegration implements ILootrIntegration {
 			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
 		for(Block b : trappedChests)
 			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void stitch(ZPreTextureStitch event) {
-		for (Block b : allChests)
-			LootrVariantChestRenderer.accept(event, b);
 	}
 }
