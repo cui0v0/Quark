@@ -123,7 +123,7 @@ public abstract class ZetaRegistry {
 		ResourceLocation registryName = internalNames.get(block);
 
 		String tabInfo = creativeTabInfos.remove(block); //"remove" because we don't need these in-memory anymore
-		Quark.LOG.error("id {} tab {}", registryName, tabInfo); //TODO creative tabs are different
+		//Quark.LOG.error("id {} tab {}", registryName, tabInfo); //TODO creative tabs are different
 
 		if(block instanceof IZetaItemPropertiesFiller filler)
 			filler.fillItemProperties(props);
@@ -148,11 +148,6 @@ public abstract class ZetaRegistry {
 
 	public void clearDeferCache(ResourceLocation resourceLocation) {
 		defers.removeAll(resourceLocation);
-	}
-
-	public void assertAllRegistered() {
-		if(!defers.isEmpty())
-			throw new IllegalStateException("Some defers were not registered: " + defers.keySet().stream().map(ResourceLocation::toString).collect(Collectors.joining(", ")));
 	}
 
 	public void finalizeBlockColors(BiConsumer<Block, String> consumer) {
