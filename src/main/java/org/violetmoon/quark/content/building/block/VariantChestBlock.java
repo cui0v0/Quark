@@ -8,8 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,6 +16,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.ModList;
 import org.violetmoon.quark.content.building.block.be.VariantChestBlockEntity;
+import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -27,7 +26,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IChestT
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	private final String path;
+	protected final String path;
 
 	public VariantChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
@@ -82,7 +81,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IChestT
 
 	@Override
 	public String getChestTexturePath() {
-		return "model/chest/" + path;
+		return "quark_variant_chests/" + path;
 	}
 
 	@Override

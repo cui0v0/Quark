@@ -29,8 +29,19 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 
-// A copy of ChestTileEntityRenderer from vanilla but less private
+// A copy of ChestRenderer from vanilla but less private
 public abstract class GenericChestBERenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
+
+	public abstract Material getMaterial(T t, ChestType type);
+
+	// just a handy function (similar to Sheets.chooseMaterial)
+	protected <X> X choose(ChestType type, X single, X left, X right) {
+		return switch(type) {
+			case SINGLE -> single;
+			case LEFT -> left;
+			case RIGHT -> right;
+		};
+	}
 
 	public final ModelPart lid;
 	public final ModelPart bottom;
@@ -139,8 +150,6 @@ public abstract class GenericChestBERenderer<T extends BlockEntity & LidBlockEnt
 
 		return getMaterial(t, type);
 	}
-
-	public abstract Material getMaterial(T t, ChestType type);
 
 	public void render(PoseStack matrix, VertexConsumer vertexConsumer, ModelPart lid, ModelPart lock, ModelPart bottom, float openness, int brightness, int overlay) {
 		lid.xRot = -(openness * ((float)Math.PI / 2F));

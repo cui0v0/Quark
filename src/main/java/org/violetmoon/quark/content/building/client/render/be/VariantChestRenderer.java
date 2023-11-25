@@ -3,50 +3,34 @@ package org.violetmoon.quark.content.building.client.render.be;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.render.GenericChestBERenderer;
-import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
+import org.violetmoon.quark.content.building.module.VariantChestsModule;
 
 public class VariantChestRenderer extends GenericChestBERenderer<ChestBlockEntity> {
-
-	private static final Map<Block, ChestTextureBatch> chestTextures = new HashMap<>();
 
 	public VariantChestRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
 
 	@Override
-	public Material getMaterial(ChestBlockEntity t, ChestType type) {
-		Block block = t.getBlockState().getBlock();
-
-		ChestTextureBatch batch = chestTextures.get(block);
-		if(batch == null)
+	public Material getMaterial(ChestBlockEntity tile, ChestType type) {
+		if(!(tile.getBlockState().getBlock() instanceof VariantChestsModule.IChestTextureProvider prov))
 			return null;
 
-		return switch (type) {
-			case LEFT -> batch.left;
-			case RIGHT -> batch.right;
-			default -> batch.normal;
-		};
-	}
+		StringBuilder tex = new StringBuilder(prov.getChestTexturePath());
 
+		//apply the texture naming convention
+		if(prov.isTrap())
+			tex.append(choose(type, "trap", "trap_left", "trap_right"));
+		else
+			tex.append(choose(type, "normal", "left", "right"));
 
-	private static class ChestTextureBatch {
-		public final Material normal, left, right;
-
-		public ChestTextureBatch(ResourceLocation atlas, ResourceLocation normal, ResourceLocation left, ResourceLocation right) {
-			this.normal = new Material(atlas, normal);
-			this.left = new Material(atlas, left);
-			this.right = new Material(atlas, right);
-		}
-
+		return new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(Quark.MOD_ID, tex.toString()));
 	}
 
 }
