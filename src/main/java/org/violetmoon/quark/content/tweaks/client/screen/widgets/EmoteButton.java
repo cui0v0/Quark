@@ -1,9 +1,9 @@
 package org.violetmoon.quark.content.tweaks.client.screen.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,8 +24,6 @@ public class EmoteButton extends TranslucentButton {
 	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 		super.renderWidget(guiGraphics, mouseX, mouseY, partial);
 
-		PoseStack matrix = guiGraphics.pose();
-
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -34,7 +32,6 @@ public class EmoteButton extends TranslucentButton {
 
 			ResourceLocation tierTexture = desc.getTierTexture();
 			if(tierTexture != null) {
-				RenderSystem.setShaderTexture(0, tierTexture);
 				guiGraphics.blit(tierTexture, getX() + 4, getY() + 4, 0, 0, 16, 16, 16, 16);
 			}
 
