@@ -143,17 +143,17 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 		@Override
 		public CraftingBookCategory category() {
-			return null;
+			return CraftingBookCategory.MISC;
 		}
 
 		@Override
 		public @NotNull ItemStack assemble(@NotNull CraftingContainer craftingContainer, RegistryAccess registryAccess) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		@Override
 		public ItemStack getResultItem(RegistryAccess registryAccess) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 
