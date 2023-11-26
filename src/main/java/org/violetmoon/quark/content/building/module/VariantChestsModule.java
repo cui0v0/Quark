@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,16 +17,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.Tags;
-import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -48,76 +42,93 @@ import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZLoadComplete;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
 import org.violetmoon.zeta.event.play.entity.living.ZLivingDeath;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
-import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VariantChestsModule extends ZetaModule {
 
-	private static final String DONK_CHEST = "Quark:DonkChest";
-
-	private static final ImmutableSet<Wood> VANILLA_WOODS = ImmutableSet.copyOf(VanillaWoods.ALL);
-	private static final ImmutableSet<String> MOD_WOODS = ImmutableSet.of();
-
-	public static BlockEntityType<VariantChestBlockEntity> chestTEType;
-	public static BlockEntityType<VariantTrappedChestBlockEntity> trappedChestTEType;
-
-	private static final List<ChestInfo> chestTypes = new LinkedList<>();
-	private static final Map<ChestInfo, TagKey<Structure>> structureTags = new HashMap<>();
-
-	public static final List<Block> chests = new LinkedList<>();
-	public static final List<Block> trappedChests = new LinkedList<>();
-
-	private static final List<Block> allChests = new LinkedList<>();
-	private static final Map<ResourceLocation, Block> manualChestMappings = new HashMap<>();
-	private static final Map<ResourceLocation, Block> manualTrappedChestMappings = new HashMap<>();
-	private static final Map<TagKey<Structure>, Block> chestMappings = new HashMap<>();
-	private static final Map<TagKey<Structure>, Block> trappedChestMappings = new HashMap<>();
-
-	@Config
-	private static boolean replaceWorldgenChests = true;
 	@Config(flag = "chest_reversion")
 	private static boolean enableRevertingWoodenChests = true;
 
-	private static boolean staticEnabled = false;
+	// blocks
+	protected final List<Block> regularChests = new ArrayList<>();
+	protected final List<Block> trappedChests = new ArrayList<>();
+
+	// the block entity type (all chests share it)
+	public static BlockEntityType<VariantChestBlockEntity> chestTEType;
+	public static BlockEntityType<VariantTrappedChestBlockEntity> trappedChestTEType;
+
+	// structure replacement stuff
+	@Config
+	protected boolean replaceWorldgenChests = true;
 
 	@Config(description = "Chests to put in structures. It's preferred to use worldgen tags for this. The format per entry is \"structure=chest\", where \"structure\" is a structure ID, and \"chest\" is a block ID, which must correspond to a standard chest block.")
-	public static List<String> structureChests = new ArrayList<>();
+	public List<String> structureChests = new ArrayList<>();
+
+	protected final Map<ResourceLocation, Block> manualChestMappings = new HashMap<>();
+	protected final Map<ResourceLocation, Block> manualTrappedChestMappings = new HashMap<>();
+	protected final Map<TagKey<Structure>, Block> chestMappings = new HashMap<>();
+	protected final Map<TagKey<Structure>, Block> trappedChestMappings = new HashMap<>();
+
+	// donk chest!
+	private static final String DONK_CHEST = "Quark:DonkChest";
+
+	public interface IVariantChest {
+		String getChestType();
+	}
+
+	/// BLOCKS ///
 
 	@LoadEvent
 	public final void register(ZRegister event) {
 		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registries.RECIPE_SERIALIZER);
 
-		VANILLA_WOODS.forEach(s -> addChest(s.name(), Blocks.CHEST));
-		MOD_WOODS.forEach(s -> addModChest(s, Blocks.CHEST));
+		for(Wood s : VanillaWoods.ALL)
+			makeChestBlocks(s.name(), Blocks.CHEST);
+		makeChestBlocks("nether_brick", Blocks.NETHER_BRICKS);
+		makeChestBlocks("purpur", Blocks.PURPUR_BLOCK);
+		makeChestBlocks("prismarine", Blocks.PRISMARINE);
 
-		addChest("nether_brick", Blocks.NETHER_BRICKS);
-		addChest("purpur", Blocks.PURPUR_BLOCK);
-		addChest("prismarine", Blocks.PRISMARINE);
-
-		StructureBlockReplacementHandler.addReplacement(VariantChestsModule::getGenerationChestBlockState);
+		StructureBlockReplacementHandler.addReplacement(this::getGenerationChestBlockState);
 	}
+
+	private void makeChestBlocks(String name, Block base) {
+		makeChestBlocks(this, name, base, () -> true);
+	}
+
+	private void makeChestBlocks(ZetaModule module, String name, Block base, BooleanSupplier condition) {
+		VariantChestBlock regularChest = new VariantChestBlock(name, module, () -> chestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+		regularChests.add(regularChest);
+		chestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), regularChest);
+
+		VariantTrappedChestBlock trappedChest = new VariantTrappedChestBlock(name, module, () -> trappedChestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+		trappedChests.add(trappedChest);
+		trappedChestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), trappedChest);
+
+		ILootrIntegration.INSTANCE.makeChestBlocks(module, name, base, condition, regularChest, trappedChest);
+	}
+
+	//only enables the block if the variant chests module is enabled
+	public static void makeChestBlocksExternal(ZetaModule module, String name, Block base, BooleanSupplier condition) {
+		VariantChestsModule me = Quark.ZETA.modules.get(VariantChestsModule.class);
+		me.makeChestBlocks(module, name, base, () -> me.enabled && condition.getAsBoolean());
+	}
+
+	/// STUFF that has to happen after all the makeChestBlocks calls are performed...! ///
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		chestTEType = registerChests(VariantChestBlockEntity::new, () -> chestTEType,
-			VariantChestBlock::new, VariantChestBlock.Compat::new, chestMappings,
-			allChests::addAll, chests::addAll);
-		trappedChestTEType = registerChests(VariantTrappedChestBlockEntity::new, () -> trappedChestTEType,
-			VariantTrappedChestBlock::new, VariantTrappedChestBlock.Compat::new, trappedChestMappings,
-			allChests::addAll, trappedChests::addAll);
+		chestTEType = BlockEntityType.Builder.of(VariantChestBlockEntity::new, regularChests.toArray(new Block[0])).build(null);
+		trappedChestTEType = BlockEntityType.Builder.of(VariantTrappedChestBlockEntity::new, trappedChests.toArray(new Block[0])).build(null);
 
 		Quark.ZETA.registry.register(chestTEType, "variant_chest", Registries.BLOCK_ENTITY_TYPE);
 		Quark.ZETA.registry.register(trappedChestTEType, "variant_trapped_chest", Registries.BLOCK_ENTITY_TYPE);
@@ -125,15 +136,10 @@ public class VariantChestsModule extends ZetaModule {
 		ILootrIntegration.INSTANCE.postRegister();
 	}
 
-	@LoadEvent
-	public void loadComplete(ZLoadComplete e) {
-		ILootrIntegration.INSTANCE.loadComplete();
-	}
+	/// WORLDGEN ///
 
 	@LoadEvent
 	public final void configChanged(ZConfigChanged event) {
-		staticEnabled = enabled;
-
 		manualChestMappings.clear();
 		manualTrappedChestMappings.clear();
 		List<String> chestsClone = new ArrayList<>(structureChests);
@@ -147,8 +153,8 @@ public class VariantChestsModule extends ZetaModule {
 				Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(right));
 				if (block != Blocks.AIR) {
 					manualChestMappings.put(new ResourceLocation(left), block);
-					if (chests.contains(block)) {
-						var trapped = trappedChests.get(chests.indexOf(block));
+					if (regularChests.contains(block)) {
+						var trapped = trappedChests.get(regularChests.indexOf(block));
 						manualTrappedChestMappings.put(new ResourceLocation(left), trapped);
 					}
 				}
@@ -156,8 +162,8 @@ public class VariantChestsModule extends ZetaModule {
 		}
 	}
 
-	private static BlockState getGenerationChestBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
-		if (staticEnabled && replaceWorldgenChests) {
+	private BlockState getGenerationChestBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
+		if (enabled && replaceWorldgenChests) {
 			if (current.getBlock() == Blocks.CHEST) {
 				return replaceChestState(accessor, current, structure, chestMappings, manualChestMappings);
 			} else if (current.getBlock() == Blocks.TRAPPED_CHEST) {
@@ -169,7 +175,7 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	@Nullable
-	private static BlockState replaceChestState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure, Map<TagKey<Structure>, Block> mappings, Map<ResourceLocation, Block> manualMappings) {
+	private BlockState replaceChestState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure, Map<TagKey<Structure>, Block> mappings, Map<ResourceLocation, Block> manualMappings) {
 		Holder<Structure> structureHolder = StructureBlockReplacementHandler.getStructure(accessor, structure);
 		if (structureHolder != null) {
 			for (TagKey<Structure> structureTagKey : mappings.keySet()) {
@@ -188,58 +194,7 @@ public class VariantChestsModule extends ZetaModule {
 		return null; // no change
 	}
 
-	private void addChest(String name, Block from) {
-		addChest(name, () -> Block.Properties.copy(from));
-	}
-
-	public void addChest(String name, Supplier<Block.Properties> props) {
-		addChest(name, this, props, false);
-	}
-
-	public static void addChest(String name, ZetaModule module, Supplier<Block.Properties> props, boolean external) {
-		BooleanSupplier cond = external ? (() -> Quark.ZETA.modules.isEnabled(VariantChestsModule.class)) : (() -> true);
-
-		chestTypes.add(new ChestInfo(name, module, props, cond, null));
-	}
-
-	private void addModChest(String nameRaw, Block from) {
-		String[] toks = nameRaw.split(":");
-		String name = toks[1];
-		String mod = toks[0];
-		addModChest(name, mod, () -> Block.Properties.copy(from));
-	}
-
-	private void addModChest(String name, String mod, Supplier<Block.Properties> props) {
-		chestTypes.add(new ChestInfo(name, this, props, null, mod));
-	}
-
-	@SafeVarargs
-	public static <T extends BlockEntity> BlockEntityType<T> registerChests(BlockEntitySupplier<? extends T> factory,
-																			Supplier<BlockEntityType<? extends ChestBlockEntity>> tileType,
-																			ChestConstructor chestType, CompatChestConstructor compatType,
-																			@Nullable Map<TagKey<Structure>, Block> structureMappings,
-																			Consumer<List<Block>>... toStitch) {
-		List<Block> blockTypes = chestTypes.stream().map(it -> {
-			Block block = it.mod != null ?
-				compatType.createChest(it.type, it.mod, it.module, tileType, it.props.get()) :
-				chestType.createChest(it.type, it.module, tileType, it.props.get());
-
-			if (it.condition != null && block instanceof IDisableable<?> disableable)
-				disableable.setCondition(it.condition);
-
-			if (structureMappings != null) {
-				TagKey<Structure> tag = structureTags.computeIfAbsent(it, (info) -> TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, info.type + "_chest_structures")));
-				structureMappings.put(tag, block);
-			}
-
-			return block;
-		}).toList();
-
-		for (var consumer : toStitch)
-			consumer.accept(blockTypes);
-
-		return BlockEntityType.Builder.<T>of(factory, blockTypes.toArray(new Block[0])).build(null);
-	}
+	/// DONK CHEST ///
 
 	@PlayEvent
 	public void onClickEntity(ZPlayerInteract.EntityInteractSpecific event) {
@@ -293,41 +248,19 @@ public class VariantChestsModule extends ZetaModule {
 		}
 	}
 
-	public interface IChestTextureProvider {
-		String getChestTexturePath();
-
-		boolean isTrap();
-	}
-
-	private record ChestInfo(String type,
-							 ZetaModule module,
-							 Supplier<BlockBehaviour.Properties> props,
-							 @Nullable BooleanSupplier condition,
-							 @Nullable String mod) {
-
-	}
-
-	@FunctionalInterface
-	public interface ChestConstructor {
-		Block createChest(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
-	}
-
-	@FunctionalInterface
-	public interface CompatChestConstructor {
-		Block createChest(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, BlockBehaviour.Properties props);
-	}
+	/// CLIENT STUFF ///
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends VariantChestsModule {
 
 		@LoadEvent
 		public final void clientSetup(ZClientSetup event) {
-			BlockEntityRenderers.register(chestTEType, VariantChestRenderer::new);
-			BlockEntityRenderers.register(trappedChestTEType, VariantChestRenderer::new);
+			BlockEntityRenderers.register(chestTEType, ctx -> new VariantChestRenderer(ctx, false));
+			BlockEntityRenderers.register(trappedChestTEType, ctx -> new VariantChestRenderer(ctx, true));
 
 			ILootrIntegration.INSTANCE.clientSetup();
 
-			for(Block b : chests)
+			for(Block b : regularChests)
 				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
 			for(Block b : trappedChests)
 				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));

@@ -12,7 +12,6 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -25,8 +24,6 @@ import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
@@ -150,7 +147,7 @@ public class WoodSetHandler {
 		if(hasLog)
 			set.hollowLog = new HollowLogBlock(set.log, module, flammable).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(HollowLogsModule.class));
 
-		VariantChestsModule.addChest(name, module, () -> Block.Properties.copy(Blocks.CHEST), true);
+		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, () -> true);
 
 		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
 

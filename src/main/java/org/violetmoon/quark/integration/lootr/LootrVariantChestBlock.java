@@ -198,17 +198,4 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 			return super.onItemUseFirstZeta(stack, context);
 		}
 	}
-
-	public static class Compat extends LootrVariantChestBlock {
-
-		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
-			super(type, module, supplier, props);
-			setCondition(() -> ModList.get().isLoaded(mod));
-		}
-
-		@Override
-		protected boolean isCompat() {
-			return true;
-		}
-	}
 }

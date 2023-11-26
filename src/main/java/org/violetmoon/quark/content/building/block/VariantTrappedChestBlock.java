@@ -18,40 +18,31 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.ModList;
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
-import org.violetmoon.quark.content.building.module.VariantChestsModule;
-import org.violetmoon.quark.content.building.module.VariantChestsModule.IChestTextureProvider;
+import org.violetmoon.quark.content.building.module.VariantChestsModule.IVariantChest;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IChestTextureProvider {
+public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
-	public final String type;
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	protected final String path;
+	protected final String type;
 
 	public VariantTrappedChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
 
-		this.module = module;
 		module.zeta.registry.registerBlock(this, resloc, true);
 		module.zeta.registry.setCreativeTab(this, "REDSTONE");
 
+		this.module = module;
 		this.type = type;
-
-		path = (isCompat() ? "compat/" : "") + type + "/";
 	}
 
 	public VariantTrappedChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		this(null, type, module, supplier, props);
-	}
-
-	protected boolean isCompat() {
-		return false;
 	}
 
 	@Override
@@ -60,7 +51,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	}
 
 	@Override
-	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public boolean isFlammableZeta(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return false;
 	}
 
@@ -82,31 +73,13 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState p_153065_) {
-		return new VariantTrappedChestBlockEntity(pos, p_153065_);
-	}
-
-	public static class Compat extends VariantTrappedChestBlock {
-
-		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
-			super(type, module, supplier, props);
-			setCondition(() -> ModList.get().isLoaded(mod));
-		}
-
-		@Override
-		protected boolean isCompat() {
-			return true;
-		}
+	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+		return new VariantTrappedChestBlockEntity(pos, state);
 	}
 
 	@Override
-	public String getChestTexturePath() {
-		return "quark_variant_chests/" + path;
-	}
-
-	@Override
-	public boolean isTrap() {
-		return true;
+	public String getChestType() {
+		return type;
 	}
 
 	// VANILLA TrappedChestBlock copy

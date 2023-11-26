@@ -58,8 +58,8 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-		return new LootrVariantTrappedChestBlockEntity(pPos, pState); // Modified
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState state) {
+		return new LootrVariantTrappedChestBlockEntity(pPos, state); // Modified
 	}
 
 	@Override
@@ -124,18 +124,5 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 	@Override
 	public BlockItem provideItemBlock(Block block, LootrVariantChestBlock.Item.Properties props) {
 		return new LootrVariantChestBlock.Item(block, props, true);
-	}
-
-	public static class Compat extends LootrVariantTrappedChestBlock {
-
-		public Compat(String type, String mod, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
-			super(type, module, supplier, props);
-			setCondition(() -> ModList.get().isLoaded(mod));
-		}
-
-		@Override
-		protected boolean isCompat() {
-			return true;
-		}
 	}
 }

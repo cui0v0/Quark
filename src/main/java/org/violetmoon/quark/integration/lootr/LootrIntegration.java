@@ -5,22 +5,22 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import noobanidus.mods.lootr.init.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.client.LootrVariantChestRenderer;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
+import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import static org.violetmoon.quark.content.building.module.VariantChestsModule.registerChests;
+import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
@@ -31,11 +31,10 @@ public class LootrIntegration implements ILootrIntegration {
 	private BlockEntityType<LootrVariantChestBlockEntity> chestTEType;
 	private BlockEntityType<LootrVariantTrappedChestBlockEntity> trappedChestTEType;
 
-	private final Map<Block, Block> lootrChests = new HashMap<>();
+	private final Map<Block, Block> chestMappings = new HashMap<>();
 
-	private final List<Block> chests = new LinkedList<>();
-	private final List<Block> trappedChests = new LinkedList<>();
-	private final List<Block> allChests = new LinkedList<>();
+	private final List<Block> lootrRegularChests = new ArrayList<>();
+	private final List<Block> lootrTrappedChests = new ArrayList<>();
 
 	@Override
 	public BlockEntityType<? extends ChestBlockEntity> chestTE() {
@@ -48,24 +47,27 @@ public class LootrIntegration implements ILootrIntegration {
 	}
 
 	@Override
+	public void makeChestBlocks(ZetaModule module, String name, Block base, BooleanSupplier condition, Block quarkRegularChest, Block quarkTrappedChest) {
+		Block regularLootrChest = new LootrVariantChestBlock(name, module, () -> chestTEType, BlockBehaviour.Properties.copy(base));
+		lootrRegularChests.add(regularLootrChest);
+
+		Block trappedLootrChest = new LootrVariantTrappedChestBlock(name, module, () -> trappedChestTEType, BlockBehaviour.Properties.copy(base));
+		lootrTrappedChests.add(trappedLootrChest);
+
+		chestMappings.put(quarkRegularChest, regularLootrChest);
+		chestMappings.put(quarkTrappedChest, trappedLootrChest);
+	}
+
+	@Override
 	@Nullable
 	public Block lootrVariant(Block base) {
-		return lootrChests.get(base);
+		return chestMappings.get(base);
 	}
 
 	@Override
 	public void postRegister() {
-		chestTEType = registerChests(LootrVariantChestBlockEntity::new, () -> chestTEType,
-			LootrVariantChestBlock::new, LootrVariantChestBlock.Compat::new, null,
-			allChests::addAll, chests::addAll);
-		trappedChestTEType = registerChests(LootrVariantTrappedChestBlockEntity::new, () -> trappedChestTEType,
-			LootrVariantTrappedChestBlock::new, LootrVariantTrappedChestBlock.Compat::new, null,
-			allChests::addAll, trappedChests::addAll);
-
-		for (int i = 0; i < chests.size(); i++) {
-			lootrChests.put(VariantChestsModule.chests.get(i), chests.get(i));
-			lootrChests.put(VariantChestsModule.trappedChests.get(i), trappedChests.get(i));
-		}
+		chestTEType = BlockEntityType.Builder.of(LootrVariantChestBlockEntity::new, lootrRegularChests.toArray(new Block[0])).build(null);
+		trappedChestTEType = BlockEntityType.Builder.of(LootrVariantTrappedChestBlockEntity::new, lootrTrappedChests.toArray(new Block[0])).build(null);
 
 		Quark.ZETA.registry.register(chestTEType, "lootr_variant_chest", Registries.BLOCK_ENTITY_TYPE);
 		Quark.ZETA.registry.register(trappedChestTEType, "lootr_variant_trapped_chest", Registries.BLOCK_ENTITY_TYPE);
@@ -74,12 +76,12 @@ public class LootrIntegration implements ILootrIntegration {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void clientSetup() {
-		BlockEntityRenderers.register(chestTEType, LootrVariantChestRenderer::new);
-		BlockEntityRenderers.register(trappedChestTEType, LootrVariantChestRenderer::new);
+		BlockEntityRenderers.register(chestTEType, ctx -> new LootrVariantChestRenderer<>(ctx, false));
+		BlockEntityRenderers.register(trappedChestTEType, ctx -> new LootrVariantChestRenderer<>(ctx, true));
 
-		for(Block b : chests)
+		for(Block b : lootrRegularChests)
 			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));
-		for(Block b : trappedChests)
+		for(Block b : lootrTrappedChests)
 			QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(trappedChestTEType, b.defaultBlockState()));
 	}
 }

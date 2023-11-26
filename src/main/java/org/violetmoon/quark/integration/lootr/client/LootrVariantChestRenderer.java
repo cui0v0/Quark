@@ -1,6 +1,7 @@
 package org.violetmoon.quark.integration.lootr.client;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -12,35 +13,38 @@ import noobanidus.mods.lootr.util.Getter;
 import java.util.UUID;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.client.render.GenericChestBERenderer;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.LootrVariantChestBlockEntity;
 
-public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> extends GenericChestBERenderer<T> {
-	private UUID playerId = null;
+public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> extends ChestRenderer<T> {
 
-	public LootrVariantChestRenderer(BlockEntityRendererProvider.Context context) {
+	private UUID playerIdCache = null;
+	protected final boolean isTrap;
+
+	public LootrVariantChestRenderer(BlockEntityRendererProvider.Context context, boolean isTrap) {
 		super(context);
+		this.isTrap = isTrap;
 	}
 
 	@Override
 	public Material getMaterial(T tile, ChestType type) {
-		if(!(tile.getBlockState().getBlock() instanceof VariantChestsModule.IChestTextureProvider prov))
+		if(!(tile.getBlockState().getBlock() instanceof VariantChestsModule.IVariantChest v))
 			return null;
 
 		//lazy-init pattern
-		if(playerId == null) {
+		if(playerIdCache == null) {
 			Player player = Getter.getPlayer();
 			if(player != null)
-				playerId = player.getUUID();
+				playerIdCache = player.getUUID();
 		}
 
-		boolean opened = tile.isOpened() || tile.getOpeners().contains(playerId);
-
-		StringBuilder tex = new StringBuilder(prov.getChestTexturePath());
+		boolean opened = tile.isOpened() || tile.getOpeners().contains(playerIdCache);
 
 		//apply the texture naming convention
-		if(prov.isTrap()) {
+		StringBuilder tex = new StringBuilder("quark_variant_chests/")
+			.append(v.getChestType())
+			.append('/');
+		if(isTrap) {
 			if(ConfigManager.isVanillaTextures())
 				tex.append("trap");
 			else if(opened)
