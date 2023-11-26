@@ -2,13 +2,15 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.ButtonBlock;
-import org.violetmoon.zeta.module.ZetaModule;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 /**
  * @author WireSegal
@@ -19,12 +21,12 @@ public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaButtonBlock(BlockSetType setType, int ticksToStayPressed, boolean arrowsCanPress, String regname, ZetaModule module, String creativeTab, Properties properties) {
+	public ZetaButtonBlock(BlockSetType setType, int ticksToStayPressed, boolean arrowsCanPress, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType, ticksToStayPressed, arrowsCanPress);
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
-		module.zeta.registry.setCreativeTab(this, creativeTab);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, this);
 	}
 
 	@NotNull

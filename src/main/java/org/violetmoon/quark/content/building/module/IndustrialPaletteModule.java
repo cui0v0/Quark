@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.util.ForgeSoundType;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -40,10 +42,10 @@ public class IndustrialPaletteModule extends ZetaModule {
 		BooleanSupplier ironPlateCond = () -> enableIronPlates;
 		BooleanSupplier ironLadderCond = () -> enableIronLadder;
 
-		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("iron_plate", this, "BUILDING_BLOCKS", props).setCondition(ironPlateCond));
-		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("rusty_iron_plate", this, "BUILDING_BLOCKS", props).setCondition(ironPlateCond));
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("rusty_iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
 
-		new ZetaPillarBlock("iron_pillar", this, "BUILDING_BLOCKS", props).setCondition(ironPlateCond);
+		new ZetaPillarBlock("iron_pillar", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 
 		new VariantLadderBlock("iron", this, Block.Properties.of()
 				.noCollission()

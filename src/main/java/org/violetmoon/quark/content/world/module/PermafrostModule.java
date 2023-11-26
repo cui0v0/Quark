@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.world.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -7,6 +8,7 @@ import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.content.world.undergroundstyle.PermafrostStyle;
 import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -21,15 +23,16 @@ public class PermafrostModule extends AbstractUndergroundStyleModule<PermafrostS
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		permafrost = new ZetaBlock("permafrost", this, "BUILDING_BLOCKS",
+		permafrost = (ZetaBlock) new ZetaBlock("permafrost", this,
 			OldMaterials.stone()
 				.mapColor(MapColor.COLOR_LIGHT_BLUE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 10F)
-				.sound(SoundType.STONE));
+				.sound(SoundType.STONE))
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		
-		event.getVariantRegistry().addSlabStairsWall(permafrost);
-		event.getVariantRegistry().addSlabStairsWall(new ZetaBlock("permafrost_bricks", this, "BUILDING_BLOCKS", Block.Properties.copy(permafrost)));
+		event.getVariantRegistry().addSlabStairsWall(permafrost, null);
+		event.getVariantRegistry().addSlabStairsWall((IZetaBlock) new ZetaBlock("permafrost_bricks", this, Block.Properties.copy(permafrost)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
 		
 		generationSettings.biomeObj.setBlock(permafrost.defaultBlockState());
 	}

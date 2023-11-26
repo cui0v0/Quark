@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,8 +16,9 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 public class GravisandBlock extends ZetaBlock {
 
-	public GravisandBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-		super(regname, module, creativeTab, properties);
+	public GravisandBlock(String regname, ZetaModule module, Properties properties) {
+		super(regname, module, properties);
+		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	@Override

@@ -12,7 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +24,7 @@ import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEn
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IVariantChest;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
@@ -35,7 +38,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
 
 		module.zeta.registry.registerBlock(this, resloc, true);
-		module.zeta.registry.setCreativeTab(this, "REDSTONE");
+		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.REDSTONE_BLOCKS, this, Blocks.TRAPPED_CHEST);
 
 		this.module = module;
 		this.type = type;

@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -74,7 +75,7 @@ public class SpiralSpiresModule extends ZetaModule {
 		Block.Properties props = OldMaterials.stone().mapColor(MapColor.TERRACOTTA_PURPLE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
-		dusky_myalite = new ZetaBlock("dusky_myalite", this, "BUILDING_BLOCKS", props);
+		dusky_myalite = new ZetaBlock("dusky_myalite", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
 		myalite_crystal = new MyaliteCrystalBlock(this);
 		

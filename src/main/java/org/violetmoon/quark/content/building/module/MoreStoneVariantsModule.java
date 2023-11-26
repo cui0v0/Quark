@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -76,14 +77,17 @@ public class MoreStoneVariantsModule extends ZetaModule {
 				.sound(sound)
 				.strength(1.5F, 6.0F);
 		
-		ZetaBlock bricks = constr.make(name + "_bricks", this, "BUILDING_BLOCKS", props)
-				.setCondition(() -> cond.getAsBoolean() && enableBricks);
-		event.getVariantRegistry().addSlabStairsWall(bricks);
+		ZetaBlock bricks = (ZetaBlock) constr.make(name + "_bricks", this,  props)
+				.setCondition(() -> cond.getAsBoolean() && enableBricks)
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		event.getVariantRegistry().addSlabStairsWall(bricks, null);
 		
-		constr.make("chiseled_" + name + "_bricks", this, "BUILDING_BLOCKS", props)
-				.setCondition(() -> cond.getAsBoolean() && enableBricks && enableChiseledBricks);
-		pillarConstr.make(name + "_pillar", this, "BUILDING_BLOCKS", props)
-				.setCondition(() -> cond.getAsBoolean() && enablePillar);
+		constr.make("chiseled_" + name + "_bricks", this, props)
+				.setCondition(() -> cond.getAsBoolean() && enableBricks && enableChiseledBricks)
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		pillarConstr.make(name + "_pillar", this, props)
+				.setCondition(() -> cond.getAsBoolean() && enablePillar)
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 	
 }

@@ -18,7 +18,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class MetalButtonBlock extends ZetaButtonBlock {
 
 	public MetalButtonBlock(String regname, ZetaModule module, int speed) {
-		super(BlockSetType.IRON, speed, false, regname, module, "REDSTONE",
+		super(BlockSetType.IRON, speed, false, regname, module,
 				Block.Properties.of()
 						.mapColor(MapColor.NONE)
 						.noCollission()

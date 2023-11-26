@@ -8,7 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,6 +20,7 @@ import org.violetmoon.quark.content.building.block.be.VariantChestBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IVariantChest;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class VariantChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
@@ -30,7 +33,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IVarian
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
 		module.zeta.registry.registerBlock(this, resloc, true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Blocks.CHEST);
 
 		this.module = module;
 		this.type = type;

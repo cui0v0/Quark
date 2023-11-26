@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.world.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SoundType;
@@ -14,7 +15,7 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockColorProvider {
 
 	public MyaliteCrystalBlock(ZetaModule module) {
-		super("myalite_crystal", module, "DECORATIONS", true,
+		super("myalite_crystal", module, true,
 				OldMaterials.glass()
 				.mapColor(DyeColor.PURPLE)
 				.strength(0.5F, 1200F)
@@ -23,6 +24,8 @@ public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockCol
 				.requiresCorrectToolForDrops()
 				.randomTicks()
 				.noOcclusion());
+		
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 	}
 	
 	private static float[] decompColor(int color) {

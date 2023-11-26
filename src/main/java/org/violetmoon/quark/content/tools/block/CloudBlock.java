@@ -33,7 +33,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class CloudBlock extends ZetaBlock implements EntityBlock {
 
 	public CloudBlock(ZetaModule module) {
-		super("cloud", module, null,
+		super("cloud", module,
 				Block.Properties.of()
 						.mapColor(MapColor.CLAY)
 						.sound(SoundType.WOOL)

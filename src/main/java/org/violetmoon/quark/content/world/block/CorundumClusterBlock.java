@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,7 +54,7 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 	}
 
 	public CorundumClusterBlock(CorundumBlock base) {
-		super(Quark.ZETA.registryUtil.inheritQuark(base, "%s_cluster"), base.getModule(), "DECORATIONS",
+		super(Quark.ZETA.registryUtil.inheritQuark(base, "%s_cluster"), base.getModule(),
 				Block.Properties.copy(base)
 				.sound(SoundType.AMETHYST_CLUSTER));
 
@@ -62,6 +63,7 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 
 		base.getModule().zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false));
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 	}
 
 	@NotNull

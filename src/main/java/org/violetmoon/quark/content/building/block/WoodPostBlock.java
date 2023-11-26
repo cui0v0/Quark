@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -48,7 +49,7 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public WoodPostBlock(ZetaModule module, Block parent, String prefix, boolean nether) {
 		super(Quark.ZETA.registryUtil.inherit(parent, s -> prefix + s.replace("_fence", "_post")),
-				module, "DECORATIONS",
+				module, 
 				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);
@@ -57,6 +58,7 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 		registerDefaultState(state);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, parent, true);
 	}
 
 	@NotNull

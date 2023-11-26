@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.building.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,12 +20,13 @@ public class HollowLogBlock extends HollowPillarBlock {
     }
 
     public HollowLogBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {
-        super(name, module, "DECORATIONS",
+        super(name, module,
                 MiscUtil.copyPropertySafe(sourceLog)
                         .isSuffocating((s, g, p) -> false));
 
         this.flammable = flammable;
         module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
+        setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
     }
 
 

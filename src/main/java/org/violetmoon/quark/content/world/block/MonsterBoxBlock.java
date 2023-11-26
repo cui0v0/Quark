@@ -23,7 +23,7 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
 public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 
 	public MonsterBoxBlock(ZetaModule module) {
-		super("monster_box", module, null,
+		super("monster_box", module,
 				Block.Properties.of()
 				.mapColor(MapColor.METAL)
 				.instrument(NoteBlockInstrument.IRON_XYLOPHONE)

@@ -16,6 +16,7 @@ import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -115,20 +116,20 @@ public class WoodSetHandler {
 
 		if(hasLog) {
 			set.log = log(name + "_log", module, color, barkColor);
-			set.wood = new ZetaPillarBlock(name + "_wood", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(barkColor).strength(2.0F).sound(SoundType.WOOD));
+			set.wood = new ZetaPillarBlock(name + "_wood", module, OldMaterials.wood().mapColor(barkColor).strength(2.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 			set.strippedLog = log("stripped_" + name + "_log", module, color, color);
-			set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(color).strength(2.0F).sound(SoundType.WOOD));
+			set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, OldMaterials.wood().mapColor(color).strength(2.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		}
 
-		set.planks = new ZetaBlock(name + "_planks", module, "BUILDING_BLOCKS", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.planks = new ZetaBlock(name + "_planks", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
-		set.slab = event.getVariantRegistry().addSlab((IZetaBlock) set.planks).getBlock();
-		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks).getBlock();
-		set.fence = new ZetaFenceBlock(name + "_fence", module, "DECORATIONS", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.slab = event.getVariantRegistry().addSlab((IZetaBlock) set.planks, null).getBlock();
+		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks, null).getBlock();
+		set.fence = new ZetaFenceBlock(name + "_fence", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
 
-		set.door = new ZetaDoorBlock(setType, name + "_door", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
-		set.trapdoor = new ZetaTrapdoorBlock(setType, name + "_trapdoor", module, "REDSTONE", OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
+		set.door = new ZetaDoorBlock(setType, name + "_door", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
+		set.trapdoor = new ZetaTrapdoorBlock(setType, name + "_trapdoor", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
 		set.button = new ZetaWoodenButtonBlock(setType, name + "_button", module, OldMaterials.decoration().noCollission().strength(0.5F).sound(SoundType.WOOD));
 		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
@@ -187,10 +188,11 @@ public class WoodSetHandler {
 	}
 
 	private static RotatedPillarBlock log(String name, ZetaModule module, MapColor topColor, MapColor sideColor) {
-		return new ZetaPillarBlock(name, module, "BUILDING_BLOCKS",
+		return (RotatedPillarBlock) new ZetaPillarBlock(name, module,
 			OldMaterials.wood()
 				.mapColor(s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
-				.strength(2.0F).sound(SoundType.WOOD));
+				.strength(2.0F).sound(SoundType.WOOD))
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	public static void addQuarkBoatType(String name, QuarkBoatType type) {

@@ -37,7 +37,7 @@ public class RopeModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		rope = new RopeBlock("rope", this, "DECORATIONS",
+		rope = new RopeBlock("rope", this, 
 				Block.Properties.of()
 						.mapColor(MapColor.COLOR_BROWN)
 						.ignitedByLava()

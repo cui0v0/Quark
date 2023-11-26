@@ -1,7 +1,13 @@
 package org.violetmoon.quark.content.building.block;
 
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -11,19 +17,17 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
 
 public class BambooMatBlock extends ZetaBlock {
 	
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
 	
 	public BambooMatBlock(String name, ZetaModule module) {
-		this(name, module, "BUILDING_BLOCKS");
+		this(name, module, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 	
-	public BambooMatBlock(String name, ZetaModule module, String tab) {
-		super(name, module, tab,
+	public BambooMatBlock(String name, ZetaModule module, ResourceKey<CreativeModeTab> tab) {
+		super(name, module,
 				Block.Properties.of()
 				.mapColor(MapColor.COLOR_YELLOW)
 				.forceSolidOn()
@@ -34,6 +38,7 @@ public class BambooMatBlock extends ZetaBlock {
 				.isRedstoneConductor((s, r, p) -> false)
 		);
 		
+		setCreativeTab(tab);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
 	}
 

@@ -42,8 +42,8 @@ public class HollowPillarBlock extends ZetaPillarBlock implements SimpleWaterlog
     private static final VoxelShape SHAPE_Y = Shapes.or(SHAPE_NORTH, SHAPE_SOUTH, SHAPE_EAST, SHAPE_WEST);
     private static final VoxelShape SHAPE_Z = Shapes.or(SHAPE_BOTTOM, SHAPE_TOP, SHAPE_NORTH, SHAPE_SOUTH);
 
-    public HollowPillarBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-        super(regname, module, creativeTab, properties);
+    public HollowPillarBlock(String regname, ZetaModule module, Properties properties) {
+        super(regname, module, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }

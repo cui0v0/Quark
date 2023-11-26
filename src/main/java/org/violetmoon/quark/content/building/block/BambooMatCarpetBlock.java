@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.building.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -18,7 +19,7 @@ public class BambooMatCarpetBlock extends BambooMatBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
 	public BambooMatCarpetBlock(String name, ZetaModule module) {
-		super(name, module, "DECORATIONS");
+		super(name, module, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	@NotNull

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
@@ -95,13 +96,13 @@ public class NewStoneTypesModule extends ZetaModule {
 		if(raw != null)
 			normal = raw;
 		else
-			normal = constr.make(name, module, "BUILDING_BLOCKS", props).setCondition(enabledCond);
+			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 
-		ZetaBlock polished = constr.make("polished_" + name, module, "BUILDING_BLOCKS", props).setCondition(enabledCond);
+		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 		polishedBlocks.put(normal, polished);
 
-		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond));
-		event.getVariantRegistry().addSlabAndStairs(polished);
+		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond), null);
+		event.getVariantRegistry().addSlabAndStairs(polished, null);
 
 		if(raw == null) {
 			defers.add(() -> {

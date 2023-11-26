@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -18,11 +19,13 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class ThatchBlock extends ZetaFlammableBlock {
 
 	public ThatchBlock(ZetaModule module) {
-		super("thatch", module, "BUILDING_BLOCKS", 300,
+		super("thatch", module, 300,
 			OldMaterials.grass()
 				.mapColor(MapColor.COLOR_YELLOW)
 				.strength(0.5F)
 				.sound(SoundType.GRASS));
+		
+		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	@Override

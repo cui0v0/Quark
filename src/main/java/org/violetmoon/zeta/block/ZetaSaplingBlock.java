@@ -2,6 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -19,7 +20,7 @@ public abstract class ZetaSaplingBlock extends SaplingBlock implements IZetaBloc
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, name + "_sapling", true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}

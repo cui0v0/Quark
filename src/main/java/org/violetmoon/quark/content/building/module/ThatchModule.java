@@ -22,7 +22,7 @@ public class ThatchModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		thatch = new ThatchBlock(this);
-		event.getVariantRegistry().addSlabAndStairs(thatch);
+		event.getVariantRegistry().addSlabAndStairs(thatch, null);
 	}
 
 	@LoadEvent

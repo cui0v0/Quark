@@ -18,7 +18,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class NetherBrickFenceGateModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
-		new ZetaFenceGateBlock("nether_brick_fence_gate", this, "REDSTONE",
+		new ZetaFenceGateBlock("nether_brick_fence_gate", this,
 			OldMaterials.stone()
 				.mapColor(MapColor.NETHER)
 				.requiresCorrectToolForDrops()

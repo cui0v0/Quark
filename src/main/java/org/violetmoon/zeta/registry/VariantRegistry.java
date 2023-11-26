@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
+
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaSlabBlock;
 import org.violetmoon.zeta.block.ZetaStairsBlock;
@@ -31,30 +35,32 @@ public class VariantRegistry {
 	public final List<Block> stairs = new LinkedList<>();
 	public final List<Block> walls = new LinkedList<>();
 
-	public Block addSlabStairsWall(IZetaBlock block) {
-		addSlabAndStairs(block);
-		addWall(block);
+	// ALl @Nullables below will defer to BUILDING_BLOCKS for simplicity sake
+	
+	public Block addSlabStairsWall(IZetaBlock block, @Nullable ResourceKey<CreativeModeTab> tab) {
+		addWall(block, tab);
+		addSlabAndStairs(block, tab);
 		return block.getBlock();
 	}
 
-	public IZetaBlock addSlabAndStairs(IZetaBlock block) {
-		addSlab(block);
-		addStairs(block);
+	public IZetaBlock addSlabAndStairs(IZetaBlock block, @Nullable ResourceKey<CreativeModeTab> tab) {
+		addSlab(block, tab);
+		addStairs(block, tab);
 		return block;
 	}
 
-	public IZetaBlock addSlab(IZetaBlock block) {
-		slabs.add(new ZetaSlabBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addSlab(IZetaBlock block, @Nullable ResourceKey<CreativeModeTab> tab) {
+		slabs.add(new ZetaSlabBlock(block, tab).setCondition(block::doesConditionApply));
 		return block;
 	}
 
-	public IZetaBlock addStairs(IZetaBlock block) {
-		stairs.add(new ZetaStairsBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addStairs(IZetaBlock block, @Nullable ResourceKey<CreativeModeTab> tab) {
+		stairs.add(new ZetaStairsBlock(block, tab).setCondition(block::doesConditionApply));
 		return block;
 	}
 
-	public IZetaBlock addWall(IZetaBlock block) {
-		walls.add(new ZetaWallBlock(block).setCondition(block::doesConditionApply));
+	public IZetaBlock addWall(IZetaBlock block, @Nullable ResourceKey<CreativeModeTab> tab) {
+		walls.add(new ZetaWallBlock(block, tab).setCondition(block::doesConditionApply));
 		return block;
 	}
 
@@ -73,8 +79,6 @@ public class VariantRegistry {
 
 		return potted;
 	}
-
-	// hmm (TODO: unused ever since Quark removed magma bricks)
 
 	public static BlockBehaviour.Properties realStateCopy(IZetaBlock parent) {
 		BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(parent.getBlock());

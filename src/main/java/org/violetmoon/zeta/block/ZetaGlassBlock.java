@@ -19,8 +19,8 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
  */
 public class ZetaGlassBlock extends ZetaBlock {
 
-	public ZetaGlassBlock(String regname, ZetaModule module, String creativeTab, boolean translucent, Properties properties) {
-		super(regname, module, creativeTab, properties
+	public ZetaGlassBlock(String regname, ZetaModule module, boolean translucent, Properties properties) {
+		super(regname, module, properties
 				.noOcclusion()
 				.isValidSpawn((state, world, pos, entityType) -> false)
 				.isRedstoneConductor((state, world, pos) -> false)
