@@ -1,14 +1,13 @@
 package org.violetmoon.zeta.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 public class ZetaBlock extends Block implements IZetaBlock {
 
