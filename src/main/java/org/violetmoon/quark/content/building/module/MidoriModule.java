@@ -1,10 +1,13 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+
+import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -29,8 +32,8 @@ public class MidoriModule extends ZetaModule {
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 
-		event.getVariantRegistry().addSlabAndStairs(new ZetaBlock("midori_block", this, "BUILDING_BLOCKS", props));
-		new ZetaPillarBlock("midori_pillar", this, "BUILDING_BLOCKS", props);
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("midori_block", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
+		new ZetaPillarBlock("midori_pillar", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 	}
 
 	@LoadEvent

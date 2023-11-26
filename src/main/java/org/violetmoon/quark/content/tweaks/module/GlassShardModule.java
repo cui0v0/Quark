@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -40,9 +41,11 @@ public class GlassShardModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		dirtyGlass = new DirtyGlassBlock("dirty_glass", this, "BUILDING_BLOCKS",
-				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
-		new ZetaInheritedPaneBlock(dirtyGlass);
+		dirtyGlass = (ZetaBlock) new DirtyGlassBlock("dirty_glass", this,
+				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS))
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		
+		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 
 		clearShard = new ZetaItem("clear_shard", this, new Item.Properties());
 		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties());

@@ -26,7 +26,7 @@ public class ChuteModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		chute = new ChuteBlock("chute", this, "REDSTONE",
+		chute = new ChuteBlock("chute", this,
 				Block.Properties.of()
 						.mapColor(MapColor.WOOD)
 						.strength(2.5F)

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -48,9 +49,10 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	public static final VoxelShape FULL_SHAPE = Shapes.join(CUBOID_SHAPE, box(2, 6, 2, 14, 8, 14), BooleanOp.ONLY_FIRST);
 	public static final VoxelShape ANIMAL_SHAPE = box(0, 0, 0, 16, 24, 16);
 
-	public FeedingTroughBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-		super(regname, module, creativeTab, properties);
+	public FeedingTroughBlock(String regname, ZetaModule module, Properties properties) {
+		super(regname, module, properties);
 		registerDefaultState(defaultBlockState().setValue(FULL, false));
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 
 	@NotNull

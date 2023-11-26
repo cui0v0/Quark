@@ -79,13 +79,14 @@ public class BackpackModule extends ZetaModule {
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
 		Quark.ZETA.registry.register(menyType, "backpack", Registries.MENU);
 
-		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, "BUILDING_BLOCKS", Block.Properties.of()
+		bonded_ravager_hide = new ZetaBlock("bonded_ravager_hide", this, Block.Properties.of()
 				.mapColor(DyeColor.BLACK)
 				.instrument(NoteBlockInstrument.GUITAR)
 				.strength(1F)
 				.sound(SoundType.WOOL)
 				.ignitedByLava())
-		.setCondition(() -> enableRavagerHide);
+		.setCondition(() -> enableRavagerHide)
+		.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		
 		CauldronInteraction.WATER.put(backpack, CauldronInteraction.DYED_ITEM);
 	}

@@ -176,7 +176,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::tagsUpdated);
 
 		// TODO FIX very ugly & bad
-		modbus.register(CreativeTabManager.class);
+		modbus.addListener(CreativeTabManager::buildContents);
 
 		//play
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);

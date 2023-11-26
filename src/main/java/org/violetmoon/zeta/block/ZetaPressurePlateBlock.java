@@ -5,6 +5,7 @@ import java.util.function.BooleanSupplier;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -22,7 +23,7 @@ public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaB
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
-		module.zeta.registry.setCreativeTab(this, creativeTab);
+		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	@Override

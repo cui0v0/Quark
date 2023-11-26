@@ -1,7 +1,18 @@
 package org.violetmoon.quark.addons.oddities.block;
 
+import java.util.function.BooleanSupplier;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.api.IEnchantmentInfluencer;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,17 +34,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
-import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.api.IEnchantmentInfluencer;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
-import org.jetbrains.annotations.Nullable;
-import java.util.function.BooleanSupplier;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {
 
@@ -44,7 +44,6 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 		super(Block.Properties.copy(Blocks.ENCHANTING_TABLE));
 
 		this.module = module;
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
 		module.zeta.registry.registerBlock(this, "matrix_enchanter", true);
 	}
 

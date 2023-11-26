@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -62,7 +63,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty SAT_IN = BooleanProperty.create("sat_in");
 
 	public StoolBlock(ZetaModule module, DyeColor color) {
-		super(color.getName() + "_stool", module, "DECORATIONS",
+		super(color.getName() + "_stool", module,
 			OldMaterials.wool()
 				.mapColor(color.getMapColor())
 				.sound(SoundType.WOOD)
@@ -70,6 +71,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 				.noOcclusion());
 
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(BIG, false).setValue(SAT_IN, false));
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	public void blockClicked(Level world, BlockPos pos) {

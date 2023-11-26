@@ -34,9 +34,6 @@ public abstract class ZetaRegistry {
 	private final Map<Block, String> blocksToColorProviderName = new HashMap<>();
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
 
-	// creative tab haxx TODO 1.20: replace, this is a dummy system just to *track* creative tabs
-	private final Map<Block, String> creativeTabInfos = new LinkedHashMap<>();
-
 	public ZetaRegistry(Zeta z) {
 		this.z = z;
 	}
@@ -101,23 +98,9 @@ public abstract class ZetaRegistry {
 		registerBlock(block, resloc, true);
 	}
 
-	@Deprecated
-	public void setCreativeTab(IZetaBlock block, String tabName) {
-		setCreativeTab(block.getBlock(), tabName, block::isEnabled);
-	}
-
-	@Deprecated
-	public void setCreativeTab(Block block, String tabName, BooleanSupplier enabled) {
-		//TODO delete
-		creativeTabInfos.put(block, tabName);
-	}
-
 	private Item createItemBlock(Block block) {
 		Item.Properties props = new Item.Properties();
 		ResourceLocation registryName = internalNames.get(block);
-
-		String tabInfo = creativeTabInfos.remove(block); //"remove" because we don't need these in-memory anymore
-		//Quark.LOG.error("id {} tab {}", registryName, tabInfo); //TODO creative tabs are different
 
 		if(block instanceof IZetaItemPropertiesFiller filler)
 			filler.fillItemProperties(props);

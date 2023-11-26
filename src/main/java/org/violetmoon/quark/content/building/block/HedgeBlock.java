@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -33,6 +34,7 @@ import org.violetmoon.quark.content.building.module.HedgesModule;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
@@ -70,7 +72,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
 			Quark.ZETA.registry.registerBlock(this, resloc, true);
 		}
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.NATURAL_BLOCKS, this, leaf);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 

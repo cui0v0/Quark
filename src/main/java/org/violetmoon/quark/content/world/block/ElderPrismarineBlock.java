@@ -8,8 +8,8 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 public class ElderPrismarineBlock extends ZetaBlock {
 
-	public ElderPrismarineBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
-		super(regname, module, creativeTab, properties);
+	public ElderPrismarineBlock(String regname, ZetaModule module, Properties properties) {
+		super(regname, module, properties);
 	}
 	
 	@Override

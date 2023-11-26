@@ -3,31 +3,34 @@ package org.violetmoon.zeta.block;
 import java.util.function.BooleanSupplier;
 
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
+import org.violetmoon.zeta.registry.IZetaItemColorProvider;
+import org.violetmoon.zeta.registry.VariantRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.zeta.registry.VariantRegistry;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
-import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 
 public class ZetaStairsBlock extends StairBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private final IZetaBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaStairsBlock(IZetaBlock parent) {
+	public ZetaStairsBlock(IZetaBlock parent, @Nullable ResourceKey<CreativeModeTab> tab) {
 		super(parent.getBlock()::defaultBlockState, VariantRegistry.realStateCopy(parent));
 
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_stairs");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
-		parent.getModule().zeta.registry.setCreativeTab(this, "BUILDING_BLOCKS");
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
+		setCreativeTab(tab == null ? CreativeModeTabs.BUILDING_BLOCKS : tab, parent.getBlock(), false);
 	}
 
 	@Override

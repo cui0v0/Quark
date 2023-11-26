@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +20,7 @@ import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock {
 
@@ -36,7 +38,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock
 		this.glowing = glowing;
 
 		module.zeta.registry.registerBlock(this, name, true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, this);
 	}
 
 	@Override

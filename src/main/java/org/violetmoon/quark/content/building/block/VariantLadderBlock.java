@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
@@ -29,7 +31,7 @@ public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 
 		this.module = module;
 		module.zeta.registry.registerBlock(this, type + "_ladder", true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Blocks.LADDER);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
 		this.flammable = flammable;

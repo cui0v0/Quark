@@ -1,11 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -14,6 +8,14 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.ZItemTooltip;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 @ZetaLoadModule(category = "building")
 public class CelebratoryLampsModule extends ZetaModule {
@@ -25,8 +27,8 @@ public class CelebratoryLampsModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		stone_lamp = new ZetaBlock("stone_lamp", this, "BUILDING_BLOCKS", Block.Properties.copy(Blocks.STONE).lightLevel(s -> lightLevel));
-		stone_brick_lamp = new ZetaBlock("stone_brick_lamp", this, "BUILDING_BLOCKS", Block.Properties.copy(Blocks.STONE_BRICKS).lightLevel(s -> lightLevel));
+		stone_lamp = new ZetaBlock("stone_lamp", this, Block.Properties.copy(Blocks.STONE).lightLevel(s -> lightLevel)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		stone_brick_lamp = new ZetaBlock("stone_brick_lamp", this, Block.Properties.copy(Blocks.STONE_BRICKS).lightLevel(s -> lightLevel)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 
 	@ZetaLoadModule(clientReplacement = true)

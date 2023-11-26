@@ -1,5 +1,6 @@
 package org.violetmoon.zeta.block;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -33,7 +34,7 @@ public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, name + "_leaves", true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 	}

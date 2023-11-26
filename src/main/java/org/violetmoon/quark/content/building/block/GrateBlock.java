@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -46,7 +47,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	public static final BooleanProperty LAVALOGGED = BooleanProperty.create("lavalogged");
 
 	public GrateBlock(ZetaModule module) {
-		super("grate", module, "DECORATIONS",
+		super("grate", module,
 			Block.Properties.of()
 				.strength(5, 10)
 				.sound(SoundType.METAL)
@@ -56,6 +57,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(LAVALOGGED, false));
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 
 	private static VoxelShape createNewBox(double stepHeight) {

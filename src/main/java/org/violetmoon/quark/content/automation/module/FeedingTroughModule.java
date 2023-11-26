@@ -160,7 +160,7 @@ public class FeedingTroughModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		feeding_trough = new FeedingTroughBlock("feeding_trough", this, "DECORATIONS",
+		feeding_trough = new FeedingTroughBlock("feeding_trough", this,
 				Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().strength(0.6F).sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feeding_trough).build(null);

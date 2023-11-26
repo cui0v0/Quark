@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,6 +23,7 @@ import org.violetmoon.quark.content.automation.module.IronRodModule;
 import org.violetmoon.zeta.api.ICollateralMover;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZetaBlock {
@@ -39,7 +41,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 				.noOcclusion());
 
 		module.zeta.registry.registerBlock(this, "iron_rod", true);
-		module.zeta.registry.setCreativeTab(this, "DECORATIONS");
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, this);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 

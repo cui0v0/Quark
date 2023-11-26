@@ -10,7 +10,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class ZetaWoodenButtonBlock extends ZetaButtonBlock {
 
 	public ZetaWoodenButtonBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
-		super(setType, 30, true, regname, module, "REDSTONE", properties);
+		super(setType, 30, true, regname, module, properties);
 	}
 
 	@NotNull

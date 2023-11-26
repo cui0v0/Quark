@@ -12,11 +12,10 @@ public class ZetaPillarBlock extends RotatedPillarBlock implements IZetaBlock {
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaPillarBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
+	public ZetaPillarBlock(String regname, ZetaModule module, Properties properties) {
 		super(properties);
 		this.module = module;
 		module.zeta.registry.registerBlock(this, regname, true);
-		module.zeta.registry.setCreativeTab(this, creativeTab);
 	}
 
 	@Nullable

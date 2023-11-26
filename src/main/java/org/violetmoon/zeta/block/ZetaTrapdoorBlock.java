@@ -2,30 +2,32 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaTrapdoorBlock(BlockSetType setType, String regname, ZetaModule module, String creativeTab, Properties properties) {
+	public ZetaTrapdoorBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType);
 		this.module = module;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		module.zeta.registry.registerBlock(this, regname, true);
-		module.zeta.registry.setCreativeTab(this, creativeTab);
-
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, this);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, this);
 	}
 
 	@Override

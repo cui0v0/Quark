@@ -42,7 +42,7 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
 
 	public MovingMagnetizedBlock(ZetaModule module) {
-		super("magnetized_block", module, null, OldMaterials.piston().strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
+		super("magnetized_block", module, OldMaterials.piston().strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,13 +30,14 @@ public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
 	public EnderWatcherBlock(ZetaModule module) {
-		super("ender_watcher", module, "REDSTONE",
+		super("ender_watcher", module,
 				Block.Properties.of()
 				.mapColor(MapColor.COLOR_GREEN)
 				.strength(3F, 10F)
 				.sound(SoundType.METAL));
 
 		registerDefaultState(defaultBlockState().setValue(WATCHED, false).setValue(POWER, 0));
+		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 
 	@Override

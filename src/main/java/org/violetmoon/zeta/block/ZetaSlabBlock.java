@@ -2,6 +2,9 @@ package org.violetmoon.zeta.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SlabBlock;
@@ -19,14 +22,14 @@ public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockCo
 	public final IZetaBlock parent;
 	private BooleanSupplier enabledSupplier = () -> true;
 
-	public ZetaSlabBlock(IZetaBlock parent) {
+	public ZetaSlabBlock(IZetaBlock parent, @Nullable ResourceKey<CreativeModeTab> tab) {
 		super(VariantRegistry.realStateCopy(parent));
 
 		this.parent = parent;
 		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_slab");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
-		parent.getModule().zeta.registry.setCreativeTab(this, "BUILDING_BLOCKS");
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
+		setCreativeTab(tab == null ? CreativeModeTabs.BUILDING_BLOCKS : tab, parent.getBlock(), false);
 	}
 
 	@Override

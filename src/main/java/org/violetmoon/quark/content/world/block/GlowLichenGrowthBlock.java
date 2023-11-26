@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -24,13 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class GlowLichenGrowthBlock extends ZetaBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
 	public GlowLichenGrowthBlock(ZetaModule module) {
-		super("glow_lichen_growth", module, "DECORATIONS",
+		super("glow_lichen_growth", module, CreativeModeTabs.NATURAL_BLOCKS,
 				Properties.copy(Blocks.GLOW_LICHEN)
 				.randomTicks()
 				.lightLevel(s -> 8));
