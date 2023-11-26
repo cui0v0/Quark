@@ -233,6 +233,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::block);
 		MinecraftForge.EVENT_BUS.addListener(this::blockBreak);
 		MinecraftForge.EVENT_BUS.addListener(this::blockEntityPlace);
+		MinecraftForge.EVENT_BUS.addListener(this::blockToolModification);
 		MinecraftForge.EVENT_BUS.addListener(this::animalTame);
 		MinecraftForge.EVENT_BUS.addListener(this::bonemeal);
 		MinecraftForge.EVENT_BUS.addListener(this::entityTeleport);
@@ -455,6 +456,10 @@ public class ForgeZeta extends Zeta {
 
 	public void blockEntityPlace(BlockEvent.EntityPlaceEvent e) {
 		playBus.fire(new ForgeZBlock.EntityPlace(e), ZBlock.EntityPlace.class);
+	}
+
+	public void blockToolModification(BlockEvent.BlockToolModificationEvent e) {
+		playBus.fire(new ForgeZBlock.BlockToolModification(e), ZBlock.BlockToolModification.class);
 	}
 
 	public void animalTame(AnimalTameEvent e) {
