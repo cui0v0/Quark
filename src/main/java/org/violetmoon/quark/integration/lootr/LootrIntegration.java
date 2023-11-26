@@ -48,14 +48,14 @@ public class LootrIntegration implements ILootrIntegration {
 
 	@Override
 	public void makeChestBlocks(ZetaModule module, String name, Block base, BooleanSupplier condition, Block quarkRegularChest, Block quarkTrappedChest) {
-		Block regularLootrChest = new LootrVariantChestBlock(name, module, () -> chestTEType, BlockBehaviour.Properties.copy(base));
-		lootrRegularChests.add(regularLootrChest);
+		Block lootrRegularChest = new LootrVariantChestBlock(name, module, () -> chestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+		lootrRegularChests.add(lootrRegularChest);
 
-		Block trappedLootrChest = new LootrVariantTrappedChestBlock(name, module, () -> trappedChestTEType, BlockBehaviour.Properties.copy(base));
-		lootrTrappedChests.add(trappedLootrChest);
+		Block lootrTrappedChest = new LootrVariantTrappedChestBlock(name, module, () -> trappedChestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+		lootrTrappedChests.add(lootrTrappedChest);
 
-		chestMappings.put(quarkRegularChest, regularLootrChest);
-		chestMappings.put(quarkTrappedChest, trappedLootrChest);
+		chestMappings.put(quarkRegularChest, lootrRegularChest);
+		chestMappings.put(quarkTrappedChest, lootrTrappedChest);
 	}
 
 	@Override
