@@ -178,7 +178,6 @@
 
 	"quark.jei.hint.pickarang": "It's a Pickaxe Boomerang! Can be thrown and will mine anything it hits and bring you the drops back. It can also be enchanted for better performance.",
 	"quark.jei.hint.flamerang": "Works like a Pickarang, but any items it picks up become immune to fire and lava damage while they travel.",
-	"quark.jei.hint.echorang": "Works like a Pickarang, but emits constant vibrations, and will increase its flight time if it hears a Sculk Shrieker.",
 	"quark.jei.hint.abacus": "Use this on a block and it'll count the distance between the block you're looking at and the one you clicked, up to 48 blocks.",
 	"quark.jei.hint.ancient_fruit": "Falls from Ancient Trees when they're chopped down. Gives you a small amount of XP when eaten.",
 	"quark.jei.hint.ancient_sapling": "Can be found in Ancient City chests.",
@@ -536,7 +535,6 @@
 	"item.quark.soul_compass": "Soul Compass",
 	"item.quark.bottled_cloud": "Cloud in a Bottle",
 	"item.quark.flamerang": "Flamarang",
-	"item.quark.echorang": "Echorang",
 	"item.quark.seed_pouch": "Seed Pouch",
 	"item.quark.forgotten_hat": "Forgotten Hat",
 	"item.quark.soul_bead": "Soul Bead",

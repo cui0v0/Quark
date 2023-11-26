@@ -13,13 +13,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.client.render.entity.PickarangRenderer;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
-import org.violetmoon.quark.content.tools.entity.rang.Echorang;
 import org.violetmoon.quark.content.tools.entity.rang.Flamerang;
 import org.violetmoon.quark.content.tools.entity.rang.Pickarang;
 import org.violetmoon.quark.content.tools.item.PickarangItem;
@@ -46,28 +44,19 @@ public class PickarangModule extends ZetaModule {
 	@Config(name = "flamerang")
 	public static PickarangType<Flamerang> flamerangType = new PickarangType<>(Items.NETHERITE_INGOT, Items.NETHERITE_PICKAXE, 20, 4, 1040, 20.0, 3, 10);
 
-	@Config(name = "echorang")
-	public static PickarangType<Echorang> echorangType = new PickarangType<Echorang>(Items.ECHO_SHARD, Items.DIAMOND_PICKAXE, 40, 3, 2000, 20.0, 2, 10).canActAsHoe(true);
-
 	@Config(flag = "flamerang")
 	public static boolean enableFlamerang = true;
-
-	@Config(flag = "echorang")
-	public static boolean enableEchorang = true;
 
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "pickarang_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
 
 	@Hint public static Item pickarang;
 	@Hint("flamerang") public static Item flamerang;
-	@Hint("echorang") public static Item echorang;
 
 	private static List<PickarangType<?>> knownTypes = new ArrayList<>();
 	private static boolean isEnabled;
 
 	public static TagKey<Block> pickarangImmuneTag;
-	public static TagKey<Block> echorangBreaksAnywayTag;
-	public static TagKey<GameEvent> echorangCanListenTag;
 
 	public static ManualTrigger throwPickarangTrigger;
 	public static ManualTrigger useFlamerangTrigger;
@@ -76,7 +65,6 @@ public class PickarangModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true);
 		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang);
-		echorang = makePickarang(echorangType, "echorang", Echorang::new, Echorang::new, () -> enableEchorang);
 
 		throwPickarangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_pickarang");
 		useFlamerangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_flamerang");
@@ -116,8 +104,6 @@ public class PickarangModule extends ZetaModule {
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
-		echorangBreaksAnywayTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "echorang_breaks_anyway"));
-		echorangCanListenTag = TagKey.create(Registries.GAME_EVENT, new ResourceLocation(Quark.MOD_ID, "echorang_can_listen"));
 	}
 
 	@LoadEvent
@@ -137,6 +123,7 @@ public class PickarangModule extends ZetaModule {
 		ACTIVE_PICKARANG.set(pickarang);
 	}
 
+	//fixme hook this up somehow
 	public static DamageSource createDamageSource(Player player) {
 		AbstractPickarang<?> pickarang = ACTIVE_PICKARANG.get();
 
