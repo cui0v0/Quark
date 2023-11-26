@@ -13,7 +13,8 @@ package org.violetmoon.quark.content.management.module;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.SharedConstants;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,94 +23,51 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.*;
-import net.minecraft.network.protocol.game.ServerboundChatPacket;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.ForgeHooksClient;
 import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.network.message.ShareItemMessage;
+import org.violetmoon.quark.base.network.message.ShareItemC2SMessage;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import java.time.Instant;
-import java.util.List;
+import java.util.UUID;
 
 @ZetaLoadModule(category = "management")
 public class ItemSharingModule extends ZetaModule {
 
+	@Config(description = "In ticks.")
+	@Config.Min(0)
+	private static int cooldown = 5; //TODO: 100 ticks, it's low for testing
+
 	@Config
 	public static boolean renderItemsInChat = true;
 
-	//global variable to apply 5 sec cooldown
-	private static long lastShareTimestamp = -1;
+	private static final Object2IntMap<UUID> lastSendTimes = new Object2IntOpenHashMap<>();
+	public static boolean canShare(UUID sender, MinecraftServer server) {
+		if(!Quark.ZETA.modules.get(ItemSharingModule.class).enabled)
+			return false;
 
-	// used in a mixin because rendering overrides are cursed by necessity hahayes
-	public static float alphaValue = 1F;
-
-	public boolean click() {
-		Minecraft mc = Minecraft.getInstance();
-		Screen screen = mc.screen;
-
-		if(screen instanceof AbstractContainerScreen<?> gui && Screen.hasShiftDown()) {
-			List<? extends GuiEventListener> children = gui.children();
-			for(GuiEventListener c : children)
-				if(c instanceof EditBox tf) {
-					if(tf.isFocused())
-						return false;
-				}
-
-			Slot slot = gui.getSlotUnderMouse();
-			if(slot != null) {
-				ItemStack stack = slot.getItem();
-
-				if(!stack.isEmpty()) {
-					if(mc.level != null && mc.level.getGameTime() - lastShareTimestamp > 100) {
-						lastShareTimestamp = mc.level.getGameTime();
-					} else return false;
-
-					/*if (mc.player instanceof AccessorLocalPlayer accessorLocalPlayer) {
-						Component itemComp = stack.getDisplayName();
-						String rawMessage = SharedConstants.filterText(itemComp.getString());
-
-						@SuppressWarnings("UnstableApiUsage")
-						String transformedMessage = ForgeHooksClient.onClientSendMessage(rawMessage);
-
-						if (transformedMessage.equals(rawMessage)) {
-							ChatMessageContent content = accessorLocalPlayer.quark$buildSignedContent(rawMessage, itemComp);
-							MessageSigner sign = accessorLocalPlayer.quark$createMessageSigner();
-							LastSeenMessages.Update update = mc.player.connection.generateMessageAcknowledgements();
-							MessageSignature signature = accessorLocalPlayer.quark$signMessage(sign, content, update.lastSeen());
-
-							ShareItemMessage message = new ShareItemMessage(stack, content.plain(), sign.timeStamp(), sign.salt(), signature, content.isDecorated(), update);
-							QuarkClient.ZETA_CLIENT.sendToServer(message);
-
-							return true;
-						}
-					}*/
-				}
-			}
-		}
-
-		return false;
+		// serverside throttling
+		int now = server.getTickCount();
+		int lastSend = lastSendTimes.getOrDefault(sender, -cooldown); //dont do Integer.MIN_VALUE cause the cooldown math underflows :skull:
+		if(now - lastSend >= cooldown) {
+			lastSendTimes.put(sender, now);
+			return true;
+		} else
+			return false;
 	}
 
-	public static void shareItem(ServerPlayer player, String message, ItemStack stack, Instant timeStamp, long salt, MessageSignature signature, boolean signedPreview, LastSeenMessages.Update lastSeenMessages) {
-		if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class))
-			return;
-
-		Component itemComp = stack.getDisplayName();
-
-		//((AccessorServerGamePacketListenerImpl) player.connection).quark$chatPreviewCache().set(message, itemComp);
-
-		player.connection.handleChat(new ServerboundChatPacket(message, timeStamp, salt, signature, lastSeenMessages));
+	//i dont know what im doing
+	public static MutableComponent createStackComponent(ItemStack stack) {
+		return createStackComponent(stack, (MutableComponent) stack.getDisplayName());
 	}
 
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {
@@ -131,6 +89,59 @@ public class ItemSharingModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ItemSharingModule {
+
+		// used in a mixin because rendering overrides are cursed by necessity hahayes
+		public static float alphaValue = 1F;
+
+		// clientside throttling (the server also applies throttling)
+		private static long lastClientShare = -1;
+
+		public static boolean requestShare() {
+			Minecraft mc = Minecraft.getInstance();
+			if(mc.level == null || !Screen.hasShiftDown())
+				return false;
+
+			if(!(mc.screen instanceof AbstractContainerScreen<?> gui))
+				return false;
+
+			for(GuiEventListener c : gui.children())
+				if(c instanceof EditBox tf)
+					if(tf.isFocused())
+						return false;
+
+			Slot slot = gui.getSlotUnderMouse();
+			if(slot == null)
+				return false;
+
+			ItemStack stack = slot.getItem();
+			if(stack.isEmpty())
+				return false;
+
+			if(mc.level.getGameTime() - lastClientShare > cooldown) {
+				lastClientShare = mc.level.getGameTime();
+			} else return false;
+
+			//TODO: smuggle into a correctly signed chat message, so stuff like discord integration picks up on it
+
+			QuarkClient.ZETA_CLIENT.sendToServer(new ShareItemC2SMessage(stack));
+			return true;
+		}
+
+		@PlayEvent
+		public void onKeyInput(ZScreen.KeyPressed.Pre event) {
+			KeyMapping key = getChatKey();
+			if(key.getKey().getType() == InputConstants.Type.KEYSYM && event.getKeyCode() == key.getKey().getValue())
+				event.setCanceled(requestShare());
+		}
+
+		@PlayEvent
+		public void onMouseInput(ZScreen.MouseButtonPressed.Post event) {
+			KeyMapping key = getChatKey();
+			int btn = event.getButton();
+			if(key.getKey().getType() == InputConstants.Type.MOUSE && btn != GLFW.GLFW_MOUSE_BUTTON_LEFT && btn == key.getKey().getValue())
+				event.setCanceled(requestShare());
+		}
+
 		public static void renderItemForMessage(GuiGraphics guiGraphics, FormattedCharSequence sequence, float x, float y, int color) {
 			if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 				return;
@@ -150,22 +161,6 @@ public class ItemSharingModule extends ZetaModule {
 				before.append((char) character);
 				return true;
 			});
-		}
-
-		@PlayEvent
-		public void onKeyInput(ZScreen.KeyPressed.Pre event) {
-			KeyMapping key = getChatKey();
-			if(key.getKey().getType() == InputConstants.Type.KEYSYM && event.getKeyCode() == key.getKey().getValue())
-				event.setCanceled(click());
-
-		}
-
-		@PlayEvent
-		public void onMouseInput(ZScreen.MouseButtonPressed.Post event) {
-			KeyMapping key = getChatKey();
-			int btn = event.getButton();
-			if(key.getKey().getType() == InputConstants.Type.MOUSE && btn != GLFW.GLFW_MOUSE_BUTTON_LEFT && btn == key.getKey().getValue())
-				event.setCanceled(click());
 		}
 
 		private static void render(Minecraft mc, GuiGraphics guiGraphics, String before, float extraShift, float x, float y, Style style, int color) {

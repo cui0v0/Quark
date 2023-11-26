@@ -41,7 +41,7 @@ public final class QuarkNetwork {
 		network.register(RequestEmoteMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
 		network.register(ChangeHotbarMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
 		network.register(SetLockProfileMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
-		network.register(ShareItemMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
+		network.register(ShareItemC2SMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
 		network.register(ScrollOnBundleMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
 		network.getSerializer().mapHandlers(LockRotationModule.LockProfile.class, LockRotationModule.LockProfile::readProfile, LockRotationModule.LockProfile::writeProfile);
 
@@ -56,6 +56,7 @@ public final class QuarkNetwork {
 		// Clientbound
 		network.register(DoEmoteMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 		network.register(UpdateTridentMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
+		network.register(ShareItemS2CMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 
 		// Flag Syncing
 		network.register(S2CUpdateFlag.class, ZetaNetworkDirection.PLAY_TO_CLIENT);

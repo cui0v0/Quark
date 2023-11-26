@@ -62,6 +62,6 @@ public abstract class ItemRendererMixin {
 
 	@ModifyConstant(method = "renderQuadList", constant = @Constant(floatValue = 1F), require = 0) // Allow failure in case of rubidium
 	public float renderQuads(float constant) {
-		return ItemSharingModule.alphaValue * constant;
+		return ItemSharingModule.Client.alphaValue * constant;
 	}
 }
