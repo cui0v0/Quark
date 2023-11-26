@@ -187,16 +187,14 @@ public class ItemSharingModule extends ZetaModule {
 				if (a > 0) {
 					alphaValue = a;
 
-					PoseStack poseStack = RenderSystem.getModelViewStack();
+					guiGraphics.pose().pushPose();
 
-					poseStack.pushPose();
+					guiGraphics.pose().mulPoseMatrix(pose.last().pose());
 
-					poseStack.mulPoseMatrix(pose.last().pose());
-
-					poseStack.translate(shift + x, y, 0);
-					poseStack.scale(0.5f, 0.5f, 0.5f);
+					guiGraphics.pose().translate(shift + x, y, 0);
+					guiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
 					guiGraphics.renderItem(stack, 0, 0);
-					poseStack.popPose();
+					guiGraphics.pose().popPose();
 
 					RenderSystem.applyModelViewMatrix();
 
