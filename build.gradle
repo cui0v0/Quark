@@ -117,7 +117,7 @@ dependencies {
 spotless {
     enforceCheck = false // workaround around jenkins having wrong line endings in some files
     java {
-        target project.fileTree(dir: 'src/main/java/vazkii/quark', include: '**/*.java')
+        target project.fileTree(dir: 'src/main/java/org/violetmoon/quark', include: '**/*.java')
         //indentWithTabs()
         eclipse().configFile 'spotless/eclipseformat.xml'
         removeUnusedImports()
