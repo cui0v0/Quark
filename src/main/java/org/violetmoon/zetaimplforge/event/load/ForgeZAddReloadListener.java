@@ -1,5 +1,6 @@
 package org.violetmoon.zetaimplforge.event.load;
 
+import net.minecraft.core.RegistryAccess;
 import org.violetmoon.zeta.event.load.ZAddReloadListener;
 
 import net.minecraft.server.ReloadableServerResources;
@@ -18,4 +19,7 @@ public class ForgeZAddReloadListener implements ZAddReloadListener {
 
 	@Override
 	public ReloadableServerResources getServerResources() {return e.getServerResources();}
+
+	@Override
+	public RegistryAccess getRegistryAccess() { return e.getRegistryAccess(); }
 }

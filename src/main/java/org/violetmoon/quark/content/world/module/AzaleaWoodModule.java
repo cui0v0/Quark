@@ -9,8 +9,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZAddReloadListener;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -18,35 +18,27 @@ import org.violetmoon.zeta.module.ZetaModule;
 @ZetaLoadModule(category = "world", antiOverlap = { "caverns_and_chasms" })
 public class AzaleaWoodModule extends ZetaModule {
 
-	public static WoodSet woodSet;
+	private WoodSet woodSet;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
 		woodSet = WoodSetHandler.addWoodSet(event, this, "azalea", MapColor.COLOR_LIGHT_GREEN, MapColor.COLOR_BROWN, true);
-		//ugly I know but config is fired before this now
-		//TODO: not actually fired by the config lol
-		enabledStatusChanged(true, this.enabled);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void enabledStatusChanged(boolean firstLoad, boolean newStatus) {
-		ConfiguredFeature<TreeConfiguration, ?> configured = null;
-		try {
-			// Complains about unchecked casts but... it works :)
-			configured = (ConfiguredFeature<TreeConfiguration, ?>) RegistryAccessUtil.getRegistryAccess()
-					.registryOrThrow(Registries.CONFIGURED_FEATURE).getOrThrow(TreeFeatures.AZALEA_TREE);
-		} catch(IllegalStateException e) {
-			e.printStackTrace();
-		}
+	@LoadEvent
+	public final void onServerReload(ZAddReloadListener e) {
+		ConfiguredFeature<?, ?> azaleaFeature = e.getRegistryAccess()
+			.registry(Registries.CONFIGURED_FEATURE)
+			.flatMap(reg -> reg.getOptional(TreeFeatures.AZALEA_TREE))
+			.orElse(null);
 
-		if(configured != null) {
-			TreeConfiguration config = configured.config();
+		if(woodSet == null || azaleaFeature == null || !(azaleaFeature.config() instanceof TreeConfiguration treeConfig))
+			return; // Maybe we interacted with the RegistryAccess too early?
 
-			if(newStatus && woodSet != null)
-				config.trunkProvider = BlockStateProvider.simple(woodSet.log);
-			else if(!firstLoad)
-				config.trunkProvider = BlockStateProvider.simple(Blocks.OAK_LOG);
-		}
+		if(enabled)
+			treeConfig.trunkProvider = BlockStateProvider.simple(woodSet.log);
+		else
+			treeConfig.trunkProvider = BlockStateProvider.simple(Blocks.OAK_LOG);
 	}
 
 }
