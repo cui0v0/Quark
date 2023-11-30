@@ -28,7 +28,7 @@ ext.config = parseConfig(configFile)
 ext.deps = parseConfig(depsFile)
 
 version = "${config.version}-${config.build_number}"
-group = "vazkii.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "org.violetmoon.${config.mod_id}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation"
@@ -117,7 +117,7 @@ dependencies {
 spotless {
     enforceCheck = false // workaround around jenkins having wrong line endings in some files
     java {
-        target project.fileTree(dir: 'src/main/java/vazkii/quark', include: '**/*.java')
+        target project.fileTree(dir: 'src/main/java/org/violetmoon/quark', include: '**/*.java')
         //indentWithTabs()
         eclipse().configFile 'spotless/eclipseformat.xml'
         removeUnusedImports()
