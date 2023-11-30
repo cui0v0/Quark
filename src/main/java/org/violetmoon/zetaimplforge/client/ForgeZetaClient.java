@@ -71,7 +71,10 @@ public class ForgeZetaClient extends ZetaClient {
 		bus.addListener(this::registerItemColors);
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerReloadListeners);
-		bus.addListener(this::modelBake);
+		bus.addListener(this::modelModifyBakingResult);
+		bus.addListener(this::modelBakingCompleted);
+		bus.addListener(this::modelRegisterAdditional);
+		bus.addListener(this::modelRegisterGeometryLoaders);
 		bus.addListener(this::modelLayers);
 		bus.addListener(this::registerKeybinds);
 		bus.addListener(this::registerAdditionalModels);
@@ -135,8 +138,20 @@ public class ForgeZetaClient extends ZetaClient {
 		loadBus.fire(new ZRegisterReloadListeners(event::registerReloadListener), ZRegisterReloadListeners.class);
 	}
 
-	public void modelBake(ModelEvent.BakingCompleted event) {
-		loadBus.fire(new ForgeZModelBakingCompleted(event), ZModelBakingCompleted.class);
+	public void modelModifyBakingResult(ModelEvent.ModifyBakingResult e) {
+		loadBus.fire(new ForgeZModel.ModifyBakingResult(e), ZModel.ModifyBakingResult.class);
+	}
+
+	public void modelBakingCompleted(ModelEvent.BakingCompleted e) {
+		loadBus.fire(new ForgeZModel.BakingCompleted(e), ZModel.BakingCompleted.class);
+	}
+
+	public void modelRegisterAdditional(ModelEvent.RegisterAdditional e) {
+		loadBus.fire(new ForgeZModel.RegisterAdditional(e), ZModel.RegisterAdditional.class);
+	}
+
+	public void modelRegisterGeometryLoaders(ModelEvent.RegisterGeometryLoaders e) {
+		loadBus.fire(new ForgeZModel.RegisterGeometryLoaders(e), ZModel.RegisterGeometryLoaders.class);
 	}
 
 	public void modelLayers(EntityRenderersEvent.AddLayers event) {
