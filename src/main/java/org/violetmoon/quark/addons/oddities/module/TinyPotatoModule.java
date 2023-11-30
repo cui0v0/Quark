@@ -2,8 +2,6 @@ package org.violetmoon.quark.addons.oddities.module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -15,10 +13,10 @@ import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.mixin.client.ModelManagerMixin;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZAddModels;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.load.ZModelBakingCompleted;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -52,14 +50,10 @@ public class TinyPotatoModule extends ZetaModule {
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends TinyPotatoModule {
-		@LoadEvent
-		public void modelBake(ZModelBakingCompleted event) {
-			ResourceLocation tinyPotato = new ModelResourceLocation(new ResourceLocation("quark", "tiny_potato"), "inventory");
-			Map<ResourceLocation, BakedModel> map = event.getModels();
-			BakedModel originalPotato = map.get(tinyPotato);
-			//fixme tater you fucker you crashed my game :c
-			//map.put(tinyPotato, new TinyPotatoModel(originalPotato));
-		}
+		/**
+		 * Moved to {@link ModelManagerMixin}
+		 */
+		public void modelBake() { }
 
 		@LoadEvent
 		public void registerAdditionalModels(ZAddModels event) {

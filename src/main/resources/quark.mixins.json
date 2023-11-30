@@ -90,6 +90,7 @@
     "client.LoomScreenMixin",
     "client.MinecartSoundInstanceMixin",
     "client.MinecraftMixin",
+    "client.ModelManagerMixin",
     "client.ParrotRendererMixin",
     "client.PistonTileEntityRendererMixin",
     "client.RenderBuffersMixin",
