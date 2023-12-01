@@ -2,8 +2,11 @@ package org.violetmoon.quark.content.world.gen;
 
 import java.util.Optional;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.world.generator.Generator;
-import org.violetmoon.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import org.violetmoon.quark.content.world.config.BlossomTreeConfig;
 
 import net.minecraft.core.BlockPos;
@@ -23,30 +26,41 @@ import net.minecraft.world.level.material.Fluids;
 
 public class BlossomTreeGenerator extends Generator {
 
-	private BlossomTreeConfig config;
-	private BlossomTree tree;
+	private final BlossomTreeConfig quarkConfig;
+	private final ResourceKey<ConfiguredFeature<?, ?>> treeKey;
 
-	public BlossomTreeGenerator(BlossomTreeConfig config, BlossomTree tree) {
-		super(config.dimensions);
-		this.config = config;
-		this.tree = tree;
+	public BlossomTreeGenerator(BlossomTreeConfig quarkConfig, ResourceKey<ConfiguredFeature<?, ?>> treeKey) {
+		super(quarkConfig.dimensions);
+		this.quarkConfig = quarkConfig;
+		this.treeKey = treeKey;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos pos) {
 		BlockPos placePos = pos.offset(rand.nextInt(16), 0, rand.nextInt(16));
-		if(config.biomeConfig.canSpawn(getBiome(worldIn, placePos, false)) && rand.nextInt(config.rarity) == 0) {
+		if(quarkConfig.biomeConfig.canSpawn(getBiome(worldIn, placePos, false)) && rand.nextInt(quarkConfig.rarity) == 0) {
 			placePos = worldIn.getHeightmapPos(Types.MOTION_BLOCKING, placePos).below();
 
-			BlockState state = worldIn.getBlockState(placePos);
-			if(state.getBlock().canSustainPlant(state, worldIn, pos, Direction.UP, (SaplingBlock) Blocks.OAK_SAPLING)) {
+			BlockState ground = worldIn.getBlockState(placePos);
+
+			if(ground.getBlock().canSustainPlant(ground, worldIn, pos, Direction.UP, (SaplingBlock) Blocks.OAK_SAPLING)) { //TODO: forge
 				BlockPos up = placePos.above();
 				BlockState upState = worldIn.getBlockState(up);
+
+				Registry<ConfiguredFeature<?, ?>> cfgFeatureRegistry = worldIn.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
+				ConfiguredFeature<?, ?> cfgFeature = cfgFeatureRegistry.get(treeKey);
+
+				if(cfgFeature == null)
+					return; // that's weird
+
+				ConfiguredFeature<TreeConfiguration, ?> cool = (ConfiguredFeature<TreeConfiguration, ?>) cfgFeature;
+				FeaturePlaceContext<TreeConfiguration> placeCtx = new FeaturePlaceContext<>(Optional.of(cool), worldIn, generator, rand, up, cool.config());
+
 				if(upState.canBeReplaced(Fluids.WATER))
 					worldIn.setBlock(up, Blocks.AIR.defaultBlockState(), 0);
 
-				FeaturePlaceContext<TreeConfiguration> context = new FeaturePlaceContext<>(Optional.of(new ConfiguredFeature<>(Feature.TREE, tree.config)), worldIn, generator, rand, up, tree.config);
-				Feature.TREE.place(context);
+				Feature.TREE.place(placeCtx);
 			}
 		}
 	}

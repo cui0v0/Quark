@@ -1,20 +1,28 @@
 package org.violetmoon.quark.content.world.module;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.material.MapColor;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
-import org.violetmoon.quark.content.world.block.BlossomSaplingBlock;
-import org.violetmoon.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import org.violetmoon.quark.content.world.config.BlossomTreeConfig;
 import org.violetmoon.quark.content.world.gen.BlossomTreeGenerator;
+import org.violetmoon.zeta.block.ZetaSaplingBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -25,15 +33,20 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 import com.google.common.base.Functions;
 
-import net.minecraft.core.Registry;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.Tags;
+import org.violetmoon.zeta.world.PassthruTreeGrower;
 
 @ZetaLoadModule(category = "world")
 public class BlossomTreesModule extends ZetaModule {
+
+	public static final ResourceKey<ConfiguredFeature<?, ?>> BLUE_BLOSSOM_KEY = registerKey("blue_blossom");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LAVENDER_BLOSSOM_KEY = registerKey("lavender_blossom");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE_BLOSSOM_KEY = registerKey("orange_blossom");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_BLOSSOM_KEY = registerKey("yellow_blossom");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> RED_BLOSSOM_KEY = registerKey("red_blossom");
 
 	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
 	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);
@@ -43,49 +56,66 @@ public class BlossomTreesModule extends ZetaModule {
 
 	@Config public static boolean dropLeafParticles = true;
 
-	public static Map<BlossomTree, BlossomTreeConfig> trees = new HashMap<>();
-
 	public static WoodSet woodSet;
+
+	public static final List<BlossomTree> blossomTrees = new ArrayList<>(5);
+	public static class BlossomTree {
+		public BlossomTreeConfig quarkConfig;
+
+		public ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey;
+		public AbstractTreeGrower grower;
+
+		public BlossomLeavesBlock leaves;
+		public ZetaSaplingBlock sapling;
+	}
 
 	@LoadEvent
 	public final void register(ZRegister event) {
 		woodSet = WoodSetHandler.addWoodSet(event, this, "blossom", MapColor.COLOR_RED, MapColor.COLOR_BROWN, true);
 
-		add(event, "blue", MapColor.COLOR_LIGHT_BLUE, blue);
-		add(event, "lavender", MapColor.COLOR_PINK, lavender);
-		add(event, "orange", MapColor.TERRACOTTA_ORANGE, orange);
-		add(event, "yellow", MapColor.COLOR_YELLOW, yellow);
-		add(event, "red", MapColor.COLOR_RED, red);
+		blossomTrees.add(make(event, "blue_blossom", MapColor.COLOR_LIGHT_BLUE, blue, BLUE_BLOSSOM_KEY));
+		blossomTrees.add(make(event, "lavender_blossom", MapColor.COLOR_PINK, lavender, LAVENDER_BLOSSOM_KEY));
+		blossomTrees.add(make(event, "orange_blossom", MapColor.TERRACOTTA_ORANGE, orange, ORANGE_BLOSSOM_KEY));
+		blossomTrees.add(make(event, "yellow_blossom", MapColor.COLOR_YELLOW, yellow, YELLOW_BLOSSOM_KEY));
+		blossomTrees.add(make(event, "red_blossom", MapColor.COLOR_RED, red, RED_BLOSSOM_KEY));
+	}
+
+	private BlossomTree make(ZRegister event, String regname, MapColor color, BlossomTreeConfig quarkConfig, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey) {
+		BlossomTree tree = new BlossomTree();
+
+		tree.quarkConfig = quarkConfig;
+
+		tree.configuredFeatureKey = configuredFeatureKey;
+		tree.grower = new PassthruTreeGrower(configuredFeatureKey);
+
+		tree.leaves = new BlossomLeavesBlock(regname, this, color);
+		tree.sapling = new ZetaSaplingBlock(regname, this, tree.grower);
+
+		event.getVariantRegistry().addFlowerPot(tree.sapling, zeta.registry.getRegistryName(tree.sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity()); //sure
+
+		return tree;
 	}
 
 	@LoadEvent
 	public void setup(ZCommonSetup e) {
-		for(BlossomTree tree : trees.keySet())
-			WorldGenHandler.addGenerator(this, new BlossomTreeGenerator(trees.get(tree), tree), Decoration.TOP_LAYER_MODIFICATION, WorldGenWeights.BLOSSOM_TREES);
-
 		e.enqueueWork(() -> {
-			for(BlossomTree tree : trees.keySet()) {
-				if(tree.leaf.getBlock().asItem() != null)
-					ComposterBlock.COMPOSTABLES.put(tree.leaf.getBlock().asItem(), 0.3F);
-				if(tree.sapling.asItem() != null)
-					ComposterBlock.COMPOSTABLES.put(tree.sapling.asItem(), 0.3F);
+			for(BlossomTree tree : blossomTrees) {
+				WorldGenHandler.addGenerator(this, new BlossomTreeGenerator(tree.quarkConfig, tree.configuredFeatureKey), Decoration.TOP_LAYER_MODIFICATION, WorldGenWeights.BLOSSOM_TREES);
+
+				ComposterBlock.COMPOSTABLES.put(tree.leaves.asItem(), 0.3F);
+				ComposterBlock.COMPOSTABLES.put(tree.sapling.asItem(), 0.3F);
 			}
 		});
 	}
 
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints consumer) {
-		for(BlossomTree tree : trees.keySet())
-			consumer.hintItem(tree.sapling.asItem());
+		for(BlossomTree tree : blossomTrees)
+			consumer.hintItem(tree.sapling);
 	}
 
-	private void add(ZRegister event, String colorName, MapColor color, BlossomTreeConfig config) {
-		BlossomLeavesBlock leaves = new BlossomLeavesBlock(colorName, this, color);
-		BlossomTree tree = new BlossomTree(leaves);
-		BlossomSaplingBlock sapling = new BlossomSaplingBlock(colorName, this, tree);
-		event.getVariantRegistry().addFlowerPot(sapling, zeta.registry.getRegistryName(sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity());
-
-		trees.put(tree, config);
+	private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, Quark.asResource(name));
 	}
 
 }

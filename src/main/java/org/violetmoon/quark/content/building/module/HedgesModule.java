@@ -4,7 +4,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.HedgeBlock;
-import org.violetmoon.quark.content.world.block.BlossomSaplingBlock.BlossomTree;
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.quark.content.world.module.BlossomTreesModule;
 import org.violetmoon.zeta.client.AlikeColorHandler;
@@ -38,8 +37,8 @@ public class HedgesModule extends ZetaModule {
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		for (BlossomTree tree : BlossomTreesModule.trees.keySet())
-			new HedgeBlock(this, BlossomTreesModule.woodSet.fence, tree.leaf.getBlock()).setCondition(tree.sapling::isEnabled);
+		for (BlossomTreesModule.BlossomTree tree : BlossomTreesModule.blossomTrees)
+			new HedgeBlock(this, BlossomTreesModule.woodSet.fence, tree.leaves).setCondition(tree.sapling::isEnabled);
 		
 		new HedgeBlock(this, AncientWoodModule.woodSet.fence, AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}

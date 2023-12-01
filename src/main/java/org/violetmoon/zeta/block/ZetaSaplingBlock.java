@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-public abstract class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
+public class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = () -> true;

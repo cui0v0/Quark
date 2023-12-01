@@ -38,7 +38,7 @@ public class LeafCarpetModule extends ZetaModule {
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		BlossomTreesModule.trees.keySet().stream().map(t -> (BlossomLeavesBlock) t.leaf.getBlock()).forEach(this::blossomCarpet);
+		BlossomTreesModule.blossomTrees.stream().map(t -> t.leaves).forEach(this::blossomCarpet);
 		
 		carpetBlock(AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}

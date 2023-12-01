@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlossomLeavesBlock extends ZetaLeavesBlock {
 
-	public BlossomLeavesBlock(String colorName, ZetaModule module, MapColor color) {
-		super(colorName + "_blossom", module, color);
+	public BlossomLeavesBlock(String id, ZetaModule module, MapColor color) {
+		super(id, module, color);
 	}
 
 	@Override
