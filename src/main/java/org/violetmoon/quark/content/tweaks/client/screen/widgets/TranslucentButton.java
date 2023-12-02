@@ -14,6 +14,6 @@ public class TranslucentButton extends Button {
 	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		// FIXME VERY VERY VERY BROKEN!!!!
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.fill(mouseX, mouseY, 75, 20, Integer.MIN_VALUE);
+		//guiGraphics.fill(mouseX, mouseY, 75, 20, Integer.MIN_VALUE);
 	}
 }

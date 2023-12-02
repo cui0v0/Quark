@@ -1,14 +1,10 @@
 package org.violetmoon.quark.content.tools.item;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -22,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -29,13 +26,19 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
+import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class PickarangItem extends ZetaItem {
 
@@ -44,6 +47,7 @@ public class PickarangItem extends ZetaItem {
 	public PickarangItem(String regname, ZetaModule module, Properties properties, PickarangType<?> type) {
 		super(regname, module, properties);
 		this.type = type;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override
@@ -120,6 +124,11 @@ public class PickarangItem extends ZetaItem {
 		}
 
 		playerIn.awardStat(Stats.ITEM_USED.get(this));
+		BuiltInRegistries.ITEM.forEach(item -> {
+			if (item instanceof ZetaItem zetaItem)
+			Zeta.GLOBAL_LOG.info(zetaItem.descriptionId);
+		});
+
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
 	}
 
