@@ -124,10 +124,6 @@ public class PickarangItem extends ZetaItem {
 		}
 
 		playerIn.awardStat(Stats.ITEM_USED.get(this));
-		BuiltInRegistries.ITEM.forEach(item -> {
-			if (item instanceof ZetaItem zetaItem)
-			Zeta.GLOBAL_LOG.info(zetaItem.descriptionId);
-		});
 
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
 	}
