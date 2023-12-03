@@ -47,11 +47,11 @@ public class GlassShardModule extends ZetaModule {
 		
 		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
 
-		clearShard = new ZetaItem("clear_shard", this, new Item.Properties());
-		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties());
+		clearShard = new ZetaItem("clear_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
+		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 
 		for(DyeColor color : DyeColor.values())
-			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties()));
+			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS));
 	}
 
 	@LoadEvent

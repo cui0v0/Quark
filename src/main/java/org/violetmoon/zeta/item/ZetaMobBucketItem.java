@@ -1,13 +1,15 @@
 package org.violetmoon.zeta.item;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluid;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 public class ZetaMobBucketItem extends MobBucketItem implements IZetaItem {
 
@@ -20,6 +22,7 @@ public class ZetaMobBucketItem extends MobBucketItem implements IZetaItem {
 
 		this.module = module;
 		module.zeta.registry.registerItem(this, name);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

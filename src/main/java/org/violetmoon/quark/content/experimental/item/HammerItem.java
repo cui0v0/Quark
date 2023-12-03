@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.experimental.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -16,12 +17,14 @@ import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
 import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class HammerItem extends ZetaItem {
 
 	public HammerItem(ZetaModule module) {
 		super("hammer", module, new Item.Properties()
 				.stacksTo(1));
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 	
 	@NotNull

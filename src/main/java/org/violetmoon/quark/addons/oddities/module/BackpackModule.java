@@ -74,7 +74,7 @@ public class BackpackModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		backpack = new BackpackItem(this);
-		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE)).setCondition(() -> enableRavagerHide);
+		ravager_hide = new ZetaItem("ravager_hide", this, new Item.Properties().rarity(Rarity.RARE)).setCondition(() -> enableRavagerHide).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 
 		menyType = IForgeMenuType.create(BackpackMenu::fromNetwork);
 		Quark.ZETA.registry.register(menyType, "backpack", Registries.MENU);

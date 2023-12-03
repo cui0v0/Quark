@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -26,6 +27,7 @@ import org.violetmoon.quark.api.IUsageTickerOverride;
 import org.violetmoon.quark.content.tools.module.SeedPouchModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		super("seed_pouch", module,
 				new Item.Properties()
 				.stacksTo(1));
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

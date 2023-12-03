@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -21,11 +22,13 @@ import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class BottledCloudItem extends ZetaItem {
 
 	public BottledCloudItem(ZetaModule module) {
 		super("bottled_cloud", module, new Item.Properties());
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@NotNull

@@ -24,7 +24,7 @@ public class MidoriModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties());
+		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 		
 		Block.Properties props = Block.Properties.of()
 				.mapColor(MapColor.COLOR_LIGHT_GREEN)

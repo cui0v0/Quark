@@ -28,7 +28,7 @@ public class HedgesModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		for(Wood wood : VanillaWoods.OVERWORLD)
+		for(Wood wood : VanillaWoods.OVERWORLD_WITH_TREE)
 			new HedgeBlock(this, wood.fence(), wood.leaf());
 		
 		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.AZALEA_LEAVES);

@@ -1,16 +1,5 @@
 package org.violetmoon.zeta.registry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.violetmoon.zeta.Zeta;
-import org.violetmoon.zeta.module.IDisableable;
-
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
@@ -19,6 +8,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.util.MutableHashedLinkedMap;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import org.violetmoon.zeta.Zeta;
+import org.violetmoon.zeta.module.IDisableable;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class CreativeTabManager {
 	
@@ -41,6 +35,11 @@ public class CreativeTabManager {
     	getForTab(tab).appendBehind.put(item, target);
     	mappedItems.add(item);
     }
+
+	public static void addToCreativeTabUniquely(ResourceKey<CreativeModeTab> tab, AppendsUniquely item) {
+		getForTab(tab).uniqueAppending.add(item);
+		mappedItems.add(item);
+	}
     
     private static CreativeTabAdditions getForTab(ResourceKey<CreativeModeTab> tab) {
     	return additions.computeIfAbsent(tab, tabRk -> new CreativeTabAdditions());
@@ -52,21 +51,26 @@ public class CreativeTabManager {
             
             if(additions.containsKey(tabKey)) {
             	CreativeTabAdditions add = additions.get(tabKey);
-            	
+
+				for(AppendsUniquely item : add.uniqueAppending) {
+					if (isItemEnabled(item)) {
+						item.appendItems().forEach(event::accept);
+					}
+				}
+
             	for(ItemLike item : add.appendToEnd)
             		if(isItemEnabled(item))
             			event.accept(item);
             	
-            	MutableHashedLinkedMap<ItemStack, CreativeModeTab.TabVisibility> entries = event.getEntries();
-            	while(true) {
-            		if(!add.appendInFront.isEmpty())
-            			appendNextTo(tabKey, entries, add.appendInFront, false);
-            		if(!add.appendBehind.isEmpty())
-            			appendNextTo(tabKey, entries, add.appendBehind, true);
-            		
-            		if(add.appendBehind.isEmpty() && add.appendInFront.isEmpty())
-            			return;
-            	}
+            	//todo: Right now, it just throws them at the end of the tab, which works I guess? But at the same time like it isnt the intention.
+				for(ItemLike item : add.appendInFront.keySet())
+					if(isItemEnabled(item)) {
+						event.accept(item);
+					}
+				for(ItemLike item : add.appendBehind.keySet())
+					if(isItemEnabled(item)) {
+						event.accept(item);
+					}
             }
     	}
     }
@@ -112,7 +116,12 @@ public class CreativeTabManager {
     	private List<ItemLike> appendToEnd = new ArrayList<>();
     	private Map<ItemLike, ItemLike> appendInFront = new LinkedHashMap<>();
     	private Map<ItemLike, ItemLike> appendBehind = new LinkedHashMap<>();
-    	
-    	
+
+    	private List<AppendsUniquely> uniqueAppending = new ArrayList<>();
     }
+
+	//todo: I hate this code
+	public interface AppendsUniquely extends ItemLike {
+		 List<ItemStack> appendItems();
+	}
 }

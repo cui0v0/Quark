@@ -1,10 +1,5 @@
 package org.violetmoon.quark.base.item.boat;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -21,9 +17,14 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class QuarkBoatItem extends ZetaItem {
 
@@ -38,6 +39,7 @@ public class QuarkBoatItem extends ZetaItem {
 
 		this.type = type;
 		this.chest = chest;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	// Vanilla copy

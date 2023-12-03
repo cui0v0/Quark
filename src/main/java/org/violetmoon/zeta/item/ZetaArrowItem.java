@@ -1,17 +1,16 @@
 package org.violetmoon.zeta.item;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.function.BooleanSupplier;
 
 public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 
@@ -23,6 +22,7 @@ public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 
 		module.zeta.registry.registerItem(this, name);
 		this.module = module;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.COMBAT, this);
 	}
 
 	@Override

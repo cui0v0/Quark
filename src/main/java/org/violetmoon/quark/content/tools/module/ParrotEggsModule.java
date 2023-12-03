@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.Position;
-import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -22,20 +21,19 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.tools.entity.ParrotEgg;
 import org.violetmoon.quark.content.tools.item.ParrotEggItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -92,7 +90,7 @@ public class ParrotEggsModule extends ZetaModule {
 		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
 			int variant = i;
 
-			Item parrotEgg = new ParrotEggItem(NAMES.get(variant), variant, this);
+			Item parrotEgg = new ParrotEggItem(NAMES.get(variant), variant, this).setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
 			parrotEggs.add(parrotEgg);
 
 			DispenserBlock.registerBehavior(parrotEgg, new AbstractProjectileDispenseBehavior() {

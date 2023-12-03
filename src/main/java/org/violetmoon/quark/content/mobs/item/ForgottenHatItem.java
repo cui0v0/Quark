@@ -8,16 +8,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ArmorMaterials;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ZetaArmorItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.UUID;
 import java.util.function.BooleanSupplier;
@@ -38,6 +36,7 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 
 		Quark.ZETA.registry.registerItem(this, "forgotten_hat");
 		this.module = module;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

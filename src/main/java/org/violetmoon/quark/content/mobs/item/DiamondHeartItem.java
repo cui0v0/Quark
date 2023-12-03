@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.mobs.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -24,11 +25,13 @@ import org.violetmoon.quark.content.mobs.entity.Stoneling.StonelingVariant;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class DiamondHeartItem extends ZetaItem {
 
 	public DiamondHeartItem(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, properties);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@NotNull

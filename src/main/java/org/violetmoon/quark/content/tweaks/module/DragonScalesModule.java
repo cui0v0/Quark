@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -25,7 +26,7 @@ public class DragonScalesModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		event.getRegistry().register(ElytraDuplicationRecipe.SERIALIZER, "elytra_duplication", Registries.RECIPE_SERIALIZER);
 
-		dragon_scale = new ZetaItem("dragon_scale", this, new Item.Properties());
+		dragon_scale = new ZetaItem("dragon_scale", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 	}
 
 	@PlayEvent

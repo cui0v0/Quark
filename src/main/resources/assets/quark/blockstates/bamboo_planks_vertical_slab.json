@@ -4,6 +4,6 @@
         "type=south": { "model": "quark:block/bamboo_planks_vertical_slab", "y": 180, "uvlock": true },
         "type=east": { "model": "quark:block/bamboo_planks_vertical_slab", "y": 90, "uvlock": true },
         "type=west": { "model": "quark:block/bamboo_planks_vertical_slab", "y": 270, "uvlock": true },
-        "type=double": { "model": "quark:block/bamboo_planks" }
+        "type=double": { "model": "block/bamboo_planks" }
     }
 }

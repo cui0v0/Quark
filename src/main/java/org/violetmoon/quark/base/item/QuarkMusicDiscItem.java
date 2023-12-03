@@ -1,23 +1,14 @@
 package org.violetmoon.quark.base.item;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.*;
-
-import org.jetbrains.annotations.NotNull;
-
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.RecordItem;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tools.module.AmbientDiscsModule;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -38,6 +29,7 @@ public class QuarkMusicDiscItem extends RecordItem implements IZetaItem {
 		this.module = module;
 		this.isAmbient = lengthInTicks == Integer.MAX_VALUE;
 		this.soundSupplier = sound;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override
