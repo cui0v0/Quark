@@ -35,6 +35,11 @@ public class CreativeTabManager {
     	getForTab(tab).appendBehind.put(item, target);
     	mappedItems.add(item);
     }
+
+	public static void addToCreativeTabUniquely(ResourceKey<CreativeModeTab> tab, AppendsUniquely item) {
+		getForTab(tab).uniqueAppending.add(item);
+		mappedItems.add(item);
+	}
     
     private static CreativeTabAdditions getForTab(ResourceKey<CreativeModeTab> tab) {
     	return additions.computeIfAbsent(tab, tabRk -> new CreativeTabAdditions());
@@ -46,7 +51,13 @@ public class CreativeTabManager {
             
             if(additions.containsKey(tabKey)) {
             	CreativeTabAdditions add = additions.get(tabKey);
-            	
+
+				for(AppendsUniquely item : add.uniqueAppending) {
+					if (isItemEnabled(item)) {
+						item.appendItems().forEach(event::accept);
+					}
+				}
+
             	for(ItemLike item : add.appendToEnd)
             		if(isItemEnabled(item))
             			event.accept(item);
@@ -105,7 +116,12 @@ public class CreativeTabManager {
     	private List<ItemLike> appendToEnd = new ArrayList<>();
     	private Map<ItemLike, ItemLike> appendInFront = new LinkedHashMap<>();
     	private Map<ItemLike, ItemLike> appendBehind = new LinkedHashMap<>();
-    	
-    	
+
+    	private List<AppendsUniquely> uniqueAppending = new ArrayList<>();
     }
+
+	//todo: I hate this code
+	public interface AppendsUniquely extends ItemLike {
+		 List<ItemStack> appendItems();
+	}
 }
