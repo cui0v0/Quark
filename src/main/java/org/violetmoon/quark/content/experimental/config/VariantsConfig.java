@@ -1,27 +1,19 @@
 package org.violetmoon.quark.content.experimental.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class VariantsConfig implements IConfigType {
 
@@ -51,7 +43,7 @@ public class VariantsConfig implements IConfigType {
 		+ "To exclude a block from being turned into other blocks, just include the block ID (e.g. minecraft:cobblestone).\n"
 		+ "To exclude a block from having other blocks turned into it, suffix it with = (e.g. =minecraft:cobblestone_stairs)\n"
 		+ "To exclude a specific block->variant combination, put = between the two (e.g. minecraft:cobblestone=minecraft:cobblestone_stairs)")
-	private List<String> blacklist = Arrays.asList("minecraft:snow", "minecraft:bamboo", "quark:bamboo_block");
+	private List<String> blacklist = Arrays.asList("minecraft:snow", "minecraft:bamboo", "minecraft:bamboo_block");
 	
 	private Map<Block, VariantMap> blockVariants = new HashMap<>();
 	private Map<Block, Block> originals = new HashMap<>();

@@ -43,7 +43,7 @@ public class HollowLogsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		for(Wood wood : VanillaWoods.ALL) {
+		for(Wood wood : VanillaWoods.ALL_WITH_LOGS) {
 			new HollowLogBlock(wood.log(), this, !wood.nether());
 //			new HollowWoodBlock(wood.wood(), this, !wood.nether());
 		}
