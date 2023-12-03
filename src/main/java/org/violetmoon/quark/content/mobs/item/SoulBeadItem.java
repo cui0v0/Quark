@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.mobs.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -19,11 +20,13 @@ import org.violetmoon.quark.content.mobs.entity.SoulBead;
 import org.violetmoon.quark.content.mobs.module.WraithModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class SoulBeadItem extends ZetaItem {
 
 	public SoulBeadItem(ZetaModule module) {
 		super("soul_bead", module, new Item.Properties());
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@NotNull

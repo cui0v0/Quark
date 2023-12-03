@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.phys.Vec3;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 public class SlimeInABucketItem extends ZetaItem {
@@ -40,6 +42,7 @@ public class SlimeInABucketItem extends ZetaItem {
 				new Item.Properties()
 				.stacksTo(1)
 				.craftRemainder(Items.BUCKET));
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

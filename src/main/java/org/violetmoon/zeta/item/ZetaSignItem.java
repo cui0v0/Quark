@@ -1,11 +1,13 @@
 package org.violetmoon.zeta.item;
 
-import java.util.function.BooleanSupplier;
-
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.function.BooleanSupplier;
 
 public class ZetaSignItem extends SignItem implements IZetaItem {
 
@@ -17,6 +19,7 @@ public class ZetaSignItem extends SignItem implements IZetaItem {
 
 		String resloc = module.zeta.registryUtil.inherit(sign, "%s");
 		module.zeta.registry.registerItem(this, resloc);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, this);
 		this.module = module;
 	}
 

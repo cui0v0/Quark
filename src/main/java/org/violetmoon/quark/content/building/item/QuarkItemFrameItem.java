@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.violetmoon.quark.base.util.TriFunction;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 /**
  * @author WireSegal
@@ -28,6 +30,7 @@ public class QuarkItemFrameItem extends ZetaItem {
 	public QuarkItemFrameItem(String name, ZetaModule module, TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider) {
 		super(name, module, new Item.Properties());
 		this.entityProvider = entityProvider;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, this);
 	}
 
 	@NotNull

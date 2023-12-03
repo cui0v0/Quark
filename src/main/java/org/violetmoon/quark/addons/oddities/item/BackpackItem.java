@@ -33,6 +33,7 @@ import org.violetmoon.quark.base.handler.ProxiedItemStackHandler;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import java.util.Map;
@@ -58,6 +59,8 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 
 		if(module.category.isAddon())
 			module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
+
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

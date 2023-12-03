@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -22,6 +19,9 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks", "immersive_weathering" })
 public class LeafCarpetModule extends ZetaModule {
 
@@ -29,7 +29,7 @@ public class LeafCarpetModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		for(Wood wood : VanillaWoods.OVERWORLD)
+		for(Wood wood : VanillaWoods.OVERWORLD_WITH_TREE)
 			carpet(wood.leaf());
 		
 		carpet(Blocks.AZALEA_LEAVES);

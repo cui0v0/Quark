@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 public class AbacusItem extends ZetaItem {
@@ -29,6 +31,7 @@ public class AbacusItem extends ZetaItem {
 
 	public AbacusItem(ZetaModule module) {
 		super("abacus", module, new Item.Properties().stacksTo(1));
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@NotNull

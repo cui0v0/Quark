@@ -3,7 +3,6 @@ package org.violetmoon.quark.content.tweaks.client.screen.widgets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,9 @@ public class EmoteButton extends TranslucentButton {
 
 	@Override
 	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+		//super.setAlpha(0.5f);
 		super.renderWidget(guiGraphics, mouseX, mouseY, partial);
+		//super.setAlpha(1.0f);
 
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();

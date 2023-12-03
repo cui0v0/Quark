@@ -1,13 +1,5 @@
 package org.violetmoon.quark.base.handler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -18,20 +10,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.ToolActions;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.block.OldMaterials;
-import org.violetmoon.zeta.block.ZetaTrapdoorBlock;
 import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
 import org.violetmoon.quark.base.item.boat.QuarkBoat;
 import org.violetmoon.quark.base.item.boat.QuarkBoatDispenseItemBehavior;
@@ -41,28 +27,18 @@ import org.violetmoon.quark.content.building.block.HollowLogBlock;
 import org.violetmoon.quark.content.building.block.VariantBookshelfBlock;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
 import org.violetmoon.quark.content.building.block.WoodPostBlock;
-import org.violetmoon.quark.content.building.module.HollowLogsModule;
-import org.violetmoon.quark.content.building.module.VariantBookshelvesModule;
-import org.violetmoon.quark.content.building.module.VariantChestsModule;
-import org.violetmoon.quark.content.building.module.VariantLaddersModule;
-import org.violetmoon.quark.content.building.module.VerticalPlanksModule;
-import org.violetmoon.quark.content.building.module.WoodenPostsModule;
-import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.block.ZetaDoorBlock;
-import org.violetmoon.zeta.block.ZetaFenceBlock;
-import org.violetmoon.zeta.block.ZetaFenceGateBlock;
-import org.violetmoon.zeta.block.ZetaPillarBlock;
-import org.violetmoon.zeta.block.ZetaPressurePlateBlock;
-import org.violetmoon.zeta.block.ZetaStandingSignBlock;
-import org.violetmoon.zeta.block.ZetaWallSignBlock;
-import org.violetmoon.zeta.block.ZetaWoodenButtonBlock;
+import org.violetmoon.quark.content.building.module.*;
+import org.violetmoon.zeta.block.*;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.item.ZetaHangingSignItem;
 import org.violetmoon.zeta.item.ZetaSignItem;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 public class WoodSetHandler {
 
@@ -137,6 +113,9 @@ public class WoodSetHandler {
 		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
 		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
+		set.ceilingHangingSign = new ZetaCeilingHangingSignBlock(name + "_hanging_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
+		set.wallHangingSign = new ZetaWallHangingSignBlock(name + "_wall_hanging_sign", module, type, OldMaterials.wood().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
+
 		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantLaddersModule.class));
 
@@ -151,6 +130,7 @@ public class WoodSetHandler {
 		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, () -> true);
 
 		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
+		set.signItem = new ZetaHangingSignItem(module, set.ceilingHangingSign, set.wallHangingSign);
 
 		if(hasBoat) {
 			set.boatItem = new QuarkBoatItem(name, module, false);
@@ -216,8 +196,8 @@ public class WoodSetHandler {
 		public Block log, wood, planks, strippedLog, strippedWood,
 		slab, stairs, fence, fenceGate,
 		door, trapdoor, button, pressurePlate, sign, wallSign,
-		bookshelf, ladder, post, strippedPost, verticalPlanks,
-		hollowLog;
+				ceilingHangingSign, wallHangingSign, bookshelf, ladder, post,
+		strippedPost, verticalPlanks, hollowLog;
 
 		public Item signItem, boatItem, chestBoatItem;
 

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -77,17 +78,17 @@ public class CrabsModule extends ZetaModule {
 						.meat()
 						.nutrition(1)
 						.saturationMod(0.3F)
-						.build()));
+						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
 
 		Item cookedCrabLeg = new ZetaItem("cooked_crab_leg", this, new Item.Properties()
 				.food(new FoodProperties.Builder()
 						.meat()
 						.nutrition(8)
 						.saturationMod(0.8F)
-						.build()));
+						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
 
 		crab_shell = new ZetaItem("crab_shell", this, new Item.Properties())
-				.setCondition(() -> enableBrewing);
+				.setCondition(() -> enableBrewing).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 
 		crab_bucket = new ZetaMobBucketItem(() -> crabType, () -> Fluids.WATER, () -> QuarkSounds.BUCKET_EMPTY_CRAB, "crab_bucket", this);
 

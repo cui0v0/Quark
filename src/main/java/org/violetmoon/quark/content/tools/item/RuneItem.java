@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.Item;
@@ -7,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 /**
  * @author WireSegal
@@ -21,6 +23,7 @@ public class RuneItem extends ZetaItem implements IRuneColorProvider {
 		super(regname, module, new Item.Properties());
 		this.color = color;
 		this.glow = glow;
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.INGREDIENTS, this);
 	}
 
 	@Override

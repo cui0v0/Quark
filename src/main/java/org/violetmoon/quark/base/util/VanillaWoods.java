@@ -14,16 +14,23 @@ public class VanillaWoods {
 	public static Wood ACACIA = new Wood("acacia", Blocks.ACACIA_LOG, Blocks.ACACIA_WOOD, Blocks.ACACIA_PLANKS, Blocks.ACACIA_LEAVES, Blocks.ACACIA_FENCE, false);
 	public static Wood DARK_OAK = new Wood("dark_oak", Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_WOOD, Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_LEAVES, Blocks.DARK_OAK_FENCE, false);
 	public static Wood MANGROVE = new Wood("mangrove", Blocks.MANGROVE_LOG, Blocks.MANGROVE_WOOD, Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_LEAVES, Blocks.MANGROVE_FENCE, false);
+	public static Wood BAMBOO = new Wood("bamboo", Blocks.BAMBOO_BLOCK, null, Blocks.BAMBOO_PLANKS, null, Blocks.BAMBOO_FENCE, false);
+	public static Wood CHERRY = new Wood("cherry", Blocks.CHERRY_LOG, Blocks.CHERRY_WOOD, Blocks.CHERRY_PLANKS, Blocks.CHERRY_LEAVES, Blocks.CHERRY_FENCE, false);
 
 	public static Wood CRIMSON = new Wood("crimson", Blocks.CRIMSON_STEM, Blocks.CRIMSON_HYPHAE, Blocks.CRIMSON_PLANKS, null, Blocks.CRIMSON_FENCE, true);
 	public static Wood WARPED = new Wood("warped", Blocks.WARPED_STEM, Blocks.WARPED_HYPHAE, Blocks.WARPED_PLANKS, null, Blocks.WARPED_FENCE, true);
 
+
 	public static final Wood[] OVERWORLD_NON_OAK = new Wood[] {
-			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE
+			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE, BAMBOO, CHERRY
 	};
 
 	public static final Wood[] OVERWORLD = new Wood[] {
-			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE, BAMBOO, CHERRY
+	};
+
+	public static final Wood[] OVERWORLD_WITH_TREE = new Wood[] {
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, MANGROVE, CHERRY
 	};
 
 	public static final Wood[] NETHER = new Wood[] {
@@ -31,10 +38,14 @@ public class VanillaWoods {
 	};
 
 	public static final Wood[] ALL = new Wood[] {
-			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE, BAMBOO, CHERRY
+	};
+
+	public static final Wood[] ALL_WITH_LOGS = new Wood[] {
+			OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE, CHERRY
 	};
 
 	public static final Wood[] NON_OAK = new Wood[] {
-			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE
+			SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK, CRIMSON, WARPED, MANGROVE, BAMBOO, CHERRY
 	};
 }

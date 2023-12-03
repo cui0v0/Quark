@@ -15,10 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -33,6 +30,7 @@ import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import java.util.List;
@@ -60,6 +58,7 @@ public class PathfindersQuillItem extends ZetaItem {
 
     public PathfindersQuillItem(ZetaModule module, Item.Properties properties) {
         super("pathfinders_quill", module, properties);
+        CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
     }
 
     public PathfindersQuillItem(ZetaModule module) {
