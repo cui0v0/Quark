@@ -241,15 +241,16 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::wandererTrades);
 	}
 
-	boolean registerDone = false;
+	private boolean registerDone = false;
 	public void registerHighest(RegisterEvent e) {
 		if(registerDone)
 			return;
 
+		registerDone = true; // do this *before* actually registering to prevent weird ??race conditions?? or something?
+		//idk whats going on, all i know is i started the game, got a log with 136 "duplicate criterion id" errors, and i don't want to see that again
+
 		loadBus.fire(new ZRegister(this));
 		loadBus.fire(new ZRegister.Post());
-
-		registerDone = true;
 	}
 
 	public void commonSetup(FMLCommonSetupEvent e) {

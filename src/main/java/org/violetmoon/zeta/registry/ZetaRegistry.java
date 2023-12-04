@@ -2,20 +2,23 @@ package org.violetmoon.zeta.registry;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.serialization.Lifecycle;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.Zeta;
-import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.item.ZetaBlockItem;
+import org.violetmoon.zeta.util.RegisterDynamicUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 //Mash of arl's RegistryHelper and its ModData innerclass.
@@ -30,9 +33,17 @@ public abstract class ZetaRegistry {
 	protected final Map<Object, ResourceLocation> internalNames = new IdentityHashMap<>();
 	
 	// "named color provider" system allows blocks and items to choose their own color providers in a side-safe way
-	// TODO: should this go somewhere else and not be so tightly-integrated?
+	// TODO: should this go somewhere else and not be so tightly-integrated? (yes - i think a Registrate-like system would be a great spot for this)
 	private final Map<Block, String> blocksToColorProviderName = new HashMap<>();
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
+
+	// Hastily tacked-on dynamic registry bullshit
+	private record DynamicEntry<T>(ResourceKey<T> id, T obj) {
+		void register(WritableRegistry<T> reg) {
+			reg.register(id, obj, Lifecycle.stable());
+		}
+	}
+	private final Map<ResourceKey<Registry<?>>, List<DynamicEntry<?>>> dynamicDefers = new HashMap<>();
 
 	public ZetaRegistry(Zeta z) {
 		this.z = z;
@@ -117,7 +128,7 @@ public abstract class ZetaRegistry {
 		return blockitem;
 	}
 
-	/// performing registration ///
+	/// performing registration (regular startup entries) ///
 
 	public Collection<Supplier<Object>> getDefers(ResourceLocation registryId) {
 		return defers.get(registryId);
@@ -135,5 +146,42 @@ public abstract class ZetaRegistry {
 	public void finalizeItemColors(BiConsumer<Item, String> consumer) {
 		itemsToColorProviderName.forEach(consumer);
 		itemsToColorProviderName.clear();
+	}
+
+	/// performing registration (dynamic registry jank - for registering ConfiguredFeature etc through code) ///
+	/// check out the vanilla RegistryDataLoader.WORLDGEN_REGISTRIES for a list of registries this works on
+
+	// just some java bs dont worry about it
+	@SuppressWarnings({
+		"unchecked",
+		"RedundantCast" // intellij static analysis bug? huh? lol
+	})
+	private <T> ResourceKey<Registry<?>> erase(ResourceKey<? extends Registry<T>> weeeejava) {
+		return (ResourceKey<Registry<?>>) (Object) weeeejava;
+	}
+
+	public <T> void registerDynamic(T obj, ResourceKey<T> id, ResourceKey<? extends Registry<T>> registry) {
+		RegisterDynamicUtil.signup(z);
+		dynamicDefers.computeIfAbsent(erase(registry), __ -> new ArrayList<>()).add(new DynamicEntry<>(id, obj));
+	}
+
+	public <T> void registerDynamic(T obj, ResourceLocation id, ResourceKey<? extends Registry<T>> registry) {
+		registerDynamic(obj, ResourceKey.create(registry, id), registry);
+	}
+
+	public <T> void registerDynamic(T obj, String regname, ResourceKey<? extends Registry<T>> registry) {
+		registerDynamic(obj, newResourceLocation(regname), registry);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> void performDynamicRegistration(ResourceKey<? extends Registry<?>> registryKey, WritableRegistry<T> writable) {
+		Quark.ZETA.log.info("Dynamic Registration wtf {}", registryKey);
+
+		List<DynamicEntry<?>> entries = dynamicDefers.get(registryKey);
+		if(entries == null || entries.isEmpty())
+			return;
+
+		List<DynamicEntry<T>> pun = ((List<DynamicEntry<T>>) (Object) entries);
+		pun.forEach(entry -> entry.register(writable));
 	}
 }

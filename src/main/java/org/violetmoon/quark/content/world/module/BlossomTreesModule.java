@@ -4,14 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalInt;
 
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -62,10 +72,10 @@ public class BlossomTreesModule extends ZetaModule {
 	public static class BlossomTree {
 		public BlossomTreeConfig quarkConfig;
 
+		public BlossomLeavesBlock leaves;
+
 		public ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey;
 		public AbstractTreeGrower grower;
-
-		public BlossomLeavesBlock leaves;
 		public ZetaSaplingBlock sapling;
 	}
 
@@ -84,11 +94,23 @@ public class BlossomTreesModule extends ZetaModule {
 		BlossomTree tree = new BlossomTree();
 
 		tree.quarkConfig = quarkConfig;
+		tree.leaves = new BlossomLeavesBlock(regname, this, color);
+
+		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
+			BlockStateProvider.simple(woodSet.log),
+			new FancyTrunkPlacer(8, 10, 10),
+			BlockStateProvider.simple(tree.leaves),
+			new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
+			new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+		).ignoreVines().build();
+
+		// NOTE: treeFeature is intentionally not stored in a field.
+		// If it was accesible from Quark, overriding it with a datapack (for the 7 people who care about doing that) won't work.
+		ConfiguredFeature<TreeConfiguration, TreeFeature> treeFeature = new ConfiguredFeature<>((TreeFeature) Feature.TREE, treeCfg);
+		event.getRegistry().registerDynamic(treeFeature, configuredFeatureKey, Registries.CONFIGURED_FEATURE);
 
 		tree.configuredFeatureKey = configuredFeatureKey;
 		tree.grower = new PassthruTreeGrower(configuredFeatureKey);
-
-		tree.leaves = new BlossomLeavesBlock(regname, this, color);
 		tree.sapling = new ZetaSaplingBlock(regname, this, tree.grower);
 
 		event.getVariantRegistry().addFlowerPot(tree.sapling, zeta.registry.getRegistryName(tree.sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity()); //sure
