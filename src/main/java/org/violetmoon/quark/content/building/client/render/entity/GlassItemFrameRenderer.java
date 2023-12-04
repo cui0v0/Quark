@@ -1,8 +1,17 @@
 package org.violetmoon.quark.content.building.client.render.entity;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.building.entity.GlassItemFrame;
+import org.violetmoon.quark.content.building.entity.GlassItemFrame.SignAttachment;
+import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
@@ -25,7 +34,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BannerItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPattern;
@@ -33,12 +47,6 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.common.MinecraftForge;
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.building.entity.GlassItemFrame;
-import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
-
-import java.util.List;
 
 /**
  * @author WireSegal
@@ -132,23 +140,47 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 			matrix.pushPose();
 			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.level());
 
-			sign: if(itemFrame.isOnSign()) {
-
+			if(itemFrame.isOnSign()) {
+				SignAttachment attach = itemFrame.getSignAttachment();
+				
 				Direction ourDirection = itemFrame.getDirection().getOpposite();
-
 				int signRotation = itemFrame.getOnSignRotation();
-				Direction signDirection = SIGN_DIRECTIONS.get(signRotation / 4);
-				if(signRotation % 4 == 0 ? (signDirection != ourDirection) : (signDirection.getOpposite() == ourDirection))
-					break sign;
-
+				
 				int ourRotation = SIGN_DIRECTIONS.indexOf(ourDirection) * 4;
 				int rotation = signRotation - ourRotation;
 				float angle = -rotation * 22.5F;
+				float scale = 0.32F;
+				
+				switch(attach) {
+				case STANDING_BEHIND:
+					angle += 180F;
+					break;
+				case WALL_SIGN:
+					angle = 0;
+					matrix.translate(0.0, -0.3, 0.45);
+					break;
+				case HANGING_FROM_WALL:
+					angle = 0;
+					matrix.translate(0.0, -0.52, -0.01);
 
-				matrix.translate(0, 0.35, 0.8);
-				matrix.scale(0.4F, 0.4F, 0.4F);
-				matrix.translate(0, 0, 0.5);
+				default: break; 
+				}
+				
+				matrix.translate(0, 0.35, 0.98);
+				matrix.scale(scale, scale, scale);
 				matrix.mulPose(Axis.YP.rotationDegrees(angle));
+				
+				switch(attach) {
+				case HANGING_IN_FRONT:
+					matrix.translate(0.0, -0.52 / scale, -0.075);
+					break;
+				case HANGING_BEHIND:
+					matrix.translate(0.0, -0.52 / scale, 0.3);
+					break;
+					
+				default: break; 
+				}
+				
 				matrix.translate(0, 0, -0.5);
 				matrix.translate(0, 0, -0.085);
 			}
