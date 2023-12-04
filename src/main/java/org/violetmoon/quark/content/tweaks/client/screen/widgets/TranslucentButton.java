@@ -12,10 +12,11 @@ public class TranslucentButton extends Button {
 
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		// FIXME VERY VERY VERY BROKEN!!!!
 		super.setAlpha(0.5f);
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		super.setAlpha(1.0f);
-		//guiGraphics.fill(mouseX, mouseY, 75, 20, Integer.MIN_VALUE);
 	}
+
+	@Override
+	public void setFocused(boolean focused) { } // NO-OP
 }
