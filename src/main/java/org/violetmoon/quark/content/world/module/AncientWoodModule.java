@@ -40,13 +40,22 @@ public class AncientWoodModule extends ZetaModule {
 	@Min(1)
 	public static int ancientFruitExpValue = 10;
 
-	@Config(description = "Set to 0 to disable loot chest generation")
+	@Config(description = "Set to a value other than 0 to enable Ancient City loot chest generation (8 recommended if you do)")
 	@Min(0)
-	public static int ancientCityLootWeight = 8;
+	public static int ancientCityLootWeight = 0;
 
 	@Config
 	@Min(0)
 	public static int ancientCityLootQuality = 1;
+	
+
+	@Config(description = "Set to 0 to disable sniffer sniffing. The vanilla loot table has every entry at weight 1, so without editing it, it's impossible to make the sapling more rare")
+	@Min(0)
+	public static int sniffingLootWeight = 1;
+
+	@Config
+	@Min(0)
+	public static int sniffingLootQuality = 0;
 
 	public static WoodSet woodSet;
 	public static Block ancient_leaves;
@@ -85,6 +94,9 @@ public class AncientWoodModule extends ZetaModule {
 
 		if(event.getName().equals(BuiltInLootTables.ANCIENT_CITY))
 			weight = ancientCityLootWeight;
+		
+		if(event.getName().equals(BuiltInLootTables.SNIFFER_DIGGING))
+			weight = sniffingLootWeight;
 
 		if(weight > 0) {
 			LootPoolEntryContainer entry = LootItem.lootTableItem(ancient_sapling)
