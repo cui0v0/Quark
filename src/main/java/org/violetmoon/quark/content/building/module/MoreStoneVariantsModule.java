@@ -12,6 +12,7 @@ import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.module.NewStoneTypesModule;
 import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.block.ZetaBlockWrapper;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -19,6 +20,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherAdditionalFlags;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.function.BooleanSupplier;
 
@@ -61,7 +63,10 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		manager.putFlag(this, "tuff", true);
 	}
 	
-	public static void expandVanillaStone(ZRegister event, ZetaModule module, Block raw, String name) {
+	public void expandVanillaStone(ZRegister event, ZetaModule module, Block raw, String name) {
+		ZetaBlockWrapper wrap = new ZetaBlockWrapper(raw, this);
+		CreativeTabManager.addToCreativeTabBehind(CreativeModeTabs.BUILDING_BLOCKS, wrap, Blocks.DEEPSLATE);
+		
 		NewStoneTypesModule.makeStone(event, module, raw, name, null, null, () -> true, null, ZetaBlock::new);
 	}
 	

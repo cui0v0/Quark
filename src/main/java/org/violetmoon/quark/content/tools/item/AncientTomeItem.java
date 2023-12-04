@@ -1,12 +1,8 @@
 package org.violetmoon.quark.content.tools.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.level.Level;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
@@ -14,15 +10,25 @@ import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.Level;
 
 public class AncientTomeItem extends ZetaItem implements CreativeTabManager.AppendsUniquely {
 
 	public AncientTomeItem(ZetaModule module) {
 		super("ancient_tome", module,
 				new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
-		CreativeTabManager.addToCreativeTabUniquely(CreativeModeTabs.INGREDIENTS, this);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.INGREDIENTS, this);
 	}
 
 	@Override
