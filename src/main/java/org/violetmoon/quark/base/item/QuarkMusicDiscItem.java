@@ -3,6 +3,7 @@ package org.violetmoon.quark.base.item;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.RecordItem;
 import org.violetmoon.quark.base.Quark;
@@ -29,7 +30,7 @@ public class QuarkMusicDiscItem extends RecordItem implements IZetaItem {
 		this.module = module;
 		this.isAmbient = lengthInTicks == Integer.MAX_VALUE;
 		this.soundSupplier = sound;
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.MUSIC_DISC_RELIC, false);
 	}
 
 	@Override

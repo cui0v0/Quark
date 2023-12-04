@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -48,7 +49,7 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingDeath;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.BooleanSupplier;
@@ -114,6 +115,9 @@ public class VariantChestsModule extends ZetaModule {
 		trappedChests.add(trappedChest);
 		trappedChestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), trappedChest);
 
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, regularChest, Blocks.CHEST, false);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, trappedChest, Blocks.TRAPPED_CHEST, false);
+		
 		ILootrIntegration.INSTANCE.makeChestBlocks(module, name, base, condition, regularChest, trappedChest);
 	}
 

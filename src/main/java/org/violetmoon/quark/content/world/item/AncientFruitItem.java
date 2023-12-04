@@ -8,6 +8,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.zeta.item.ZetaItem;
@@ -19,7 +20,7 @@ public class AncientFruitItem extends ZetaItem {
 	public AncientFruitItem(ZetaModule module) {
 		super("ancient_fruit", module, new Item.Properties()
 				.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).alwaysEat().build()));
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FOOD_AND_DRINKS, this, Items.CHORUS_FRUIT, false);
 	}
 	
 	@Override

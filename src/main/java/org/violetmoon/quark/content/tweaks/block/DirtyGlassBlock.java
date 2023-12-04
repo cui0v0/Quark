@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -19,7 +20,7 @@ public class DirtyGlassBlock extends ZetaGlassBlock {
 
 	public DirtyGlassBlock(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, true, properties);
-		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.TINTED_GLASS, false);
 	}
 
 	@Nullable

@@ -6,10 +6,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.tweaks.block.DirtyGlassBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
@@ -19,6 +21,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,16 +44,20 @@ public class GlassShardModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
+		CreativeTabManager.daisyChain();
 		dirtyGlass = (ZetaBlock) new DirtyGlassBlock("dirty_glass", this,
 				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		
 		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
+		CreativeTabManager.endDaisyChain();
 
-		clearShard = new ZetaItem("clear_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
+		CreativeTabManager.daisyChain();
+		clearShard = new ZetaItem("clear_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.PINK_DYE, false);
 		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 
-		for(DyeColor color : DyeColor.values())
+		for(DyeColor color : MiscUtil.CREATIVE_COLOR_ORDER)
 			shardColors.put(color, new ZetaItem(color.getSerializedName() + "_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS));
+		CreativeTabManager.endDaisyChain();
 	}
 
 	@LoadEvent

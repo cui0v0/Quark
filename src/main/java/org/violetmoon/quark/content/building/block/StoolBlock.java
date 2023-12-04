@@ -19,6 +19,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -71,7 +72,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 				.noOcclusion());
 
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(BIG, false).setValue(SAT_IN, false));
-		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.PINK_BED, false);
 	}
 
 	public void blockClicked(Level world, BlockPos pos) {

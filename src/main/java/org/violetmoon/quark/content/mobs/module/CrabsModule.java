@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -43,6 +44,7 @@ import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.item.ZetaMobBucketItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 /**
@@ -73,12 +75,13 @@ public class CrabsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
+		CreativeTabManager.daisyChain();
 		crab_leg = new ZetaItem("crab_leg", this, new Item.Properties()
 				.food(new FoodProperties.Builder()
 						.meat()
 						.nutrition(1)
 						.saturationMod(0.3F)
-						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
+						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS, Items.PUFFERFISH, false);
 
 		Item cookedCrabLeg = new ZetaItem("cooked_crab_leg", this, new Item.Properties()
 				.food(new FoodProperties.Builder()
@@ -86,6 +89,7 @@ public class CrabsModule extends ZetaModule {
 						.nutrition(8)
 						.saturationMod(0.8F)
 						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
+		CreativeTabManager.endDaisyChain();
 
 		crab_shell = new ZetaItem("crab_shell", this, new Item.Properties())
 				.setCondition(() -> enableBrewing).setCreativeTab(CreativeModeTabs.INGREDIENTS);

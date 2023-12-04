@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.core.registries.Registries;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.building.block.StoolBlock;
 import org.violetmoon.quark.content.building.client.render.entity.StoolEntityRenderer;
 import org.violetmoon.quark.content.building.entity.Stool;
@@ -13,6 +14,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -37,8 +39,10 @@ public class StoolsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		for(DyeColor dye : DyeColor.values())
+		CreativeTabManager.daisyChain();
+		for(DyeColor dye : MiscUtil.CREATIVE_COLOR_ORDER)
 			new StoolBlock(this, dye);
+		CreativeTabManager.endDaisyChain();
 
 		stoolEntity = EntityType.Builder.of(Stool::new, MobCategory.MISC)
 				.sized(6F / 16F, 0.5F)
