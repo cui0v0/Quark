@@ -4,6 +4,6 @@
         "type=south": { "model": "quark:block/cherry_vertical_slab", "y": 180, "uvlock": true },
         "type=east": { "model": "quark:block/cherry_vertical_slab", "y": 90, "uvlock": true },
         "type=west": { "model": "quark:block/cherry_vertical_slab", "y": 270, "uvlock": true },
-        "type=double": { "model": "block/cherry_planks" }
+        "type=double": { "model": "minecraft:block/cherry_planks" }
     }
 }
