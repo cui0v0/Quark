@@ -54,7 +54,7 @@ public class CreativeTabManager {
 
 				for(AppendsUniquely item : add.uniqueAppending) {
 					if (isItemEnabled(item)) {
-						item.appendItems().forEach(event::accept);
+						item.appendItemsToCreativeTab().forEach(event::accept);
 					}
 				}
 
@@ -122,6 +122,6 @@ public class CreativeTabManager {
 
 	//todo: I hate this code
 	public interface AppendsUniquely extends ItemLike {
-		 List<ItemStack> appendItems();
+		 List<ItemStack> appendItemsToCreativeTab();
 	}
 }

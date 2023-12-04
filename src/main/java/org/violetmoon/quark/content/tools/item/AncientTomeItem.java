@@ -66,7 +66,7 @@ public class AncientTomeItem extends ZetaItem implements CreativeTabManager.Appe
 	}
 
 	@Override
-	public List<ItemStack> appendItems() {
+	public List<ItemStack> appendItemsToCreativeTab() {
 		List<ItemStack> items = new ArrayList<>();
 		BuiltInRegistries.ENCHANTMENT.forEach(ench -> {
 					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
