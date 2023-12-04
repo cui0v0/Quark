@@ -285,7 +285,7 @@ public class MiscUtil {
 			}
 
 			int alphaInt = (int) (256F * alpha) << 24;
-			guiGraphics.drawString(font, text, left + 5, top + 3, alphaInt);
+			guiGraphics.drawString(font, text, left + 5, top + 3, alphaInt, false);
 			matrix.popPose();
 		}
 	}

@@ -21,8 +21,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -35,6 +38,8 @@ import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 import java.util.UUID;
 
 public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnData {
@@ -52,7 +57,8 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		NOT_ATTACHED, 
 		STANDING_IN_FRONT,
 		STANDING_BEHIND,
-		WALL,
+		WALL_SIGN,
+		HANGING_FROM_WALL,
 		HANGING_IN_FRONT,
 		HANGING_BEHIND
 	}
@@ -124,9 +130,44 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		
 		if(this.direction.getAxis() != Direction.Axis.Y){
 			BlockState back = level().getBlockState(getBehindPos());
-			if(back.is(BlockTags.STANDING_SIGNS)) {
-				attachment = SignAttachment.STANDING_IN_FRONT;
-				onSignRotation = back.getValue(StandingSignBlock.ROTATION);
+			boolean standing = back.is(BlockTags.STANDING_SIGNS);
+			boolean hangingCeil = back.is(BlockTags.CEILING_HANGING_SIGNS);
+			
+			if(standing || hangingCeil) {
+				onSignRotation = back.getValue(BlockStateProperties.ROTATION_16);
+				
+				double[] angles = new double[] { 0, 0, 0, 180, -90, 90 };
+				double ourRotation = angles[getDirection().getOpposite().ordinal()];
+				double signRotation = back.getValue(BlockStateProperties.ROTATION_16) / 16.0 * 360.0;
+				
+				if(signRotation > 180)
+					signRotation = signRotation - 360;
+				
+				double diff = ourRotation - signRotation;
+				double absDiff = Math.abs(diff);
+				if(diff < 0)
+					absDiff -= 0.01; // hacky countermeasure to prevent two frames equidistant in different directions from both attaching
+				
+				if(absDiff < 45)
+					attachment = (standing ? SignAttachment.STANDING_IN_FRONT : SignAttachment.HANGING_IN_FRONT);
+				else if(absDiff >= 135 && absDiff < 225)
+					attachment = (standing ? SignAttachment.STANDING_BEHIND : SignAttachment.HANGING_BEHIND);
+				
+				return;
+			}
+			
+			if(back.is(BlockTags.WALL_SIGNS)) {
+				Direction signDir = back.getValue(WallSignBlock.FACING);
+				if(signDir == getDirection())
+					attachment = SignAttachment.WALL_SIGN;
+				
+				return;
+			}
+			
+			if(back.is(BlockTags.WALL_HANGING_SIGNS)) {
+				Direction signDir = back.getValue(WallHangingSignBlock.FACING);
+				if(signDir == getDirection() || signDir == getDirection().getOpposite())
+					attachment = SignAttachment.HANGING_FROM_WALL;
 			}
 		}
 	}

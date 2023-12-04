@@ -200,7 +200,7 @@ public class EmotesModule extends ZetaModule {
 						for (EmoteDescriptor desc : descriptors) {
 							int rowSize = Math.min(descriptors.size() - tierRow * EMOTES_PER_ROW, EMOTES_PER_ROW);
 
-							int x = buttonX + gui.width - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
+							int x = buttonX + gui.width - 2 - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
 							int y = buttonY + (EMOTE_BUTTON_WIDTH * (rows - row)) * (expandDown ? 1 : -1);
 
 							Button button = new EmoteButton(x, y, desc, (b) -> {
@@ -224,7 +224,7 @@ public class EmotesModule extends ZetaModule {
 						row++;
 				}
 
-				event.addListener(new TranslucentButton(buttonX + gui.width - 1 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
+				event.addListener(new TranslucentButton(buttonX + gui.width - 2 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
 					Component.translatable("quark.gui.button.emotes"),
 					(b) -> {
 						for(Button bt : emoteButtons)
