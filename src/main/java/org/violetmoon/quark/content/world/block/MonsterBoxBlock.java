@@ -31,7 +31,7 @@ public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 				.strength(25F)
 				.sound(SoundType.METAL)
 				.noOcclusion());
-		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.SPAWN_EGGS);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
