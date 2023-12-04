@@ -117,7 +117,7 @@ public class CreativeTabManager {
 				Map<ItemSet, ItemLike> behind = new LinkedHashMap<>(add.appendBehind);
 				
 				final int failsafe = 99999;
-				final int printThreshold = failsafe - 10;
+				final int printThreshold = failsafe - 100;
 				
 				int misses = 0;
 				boolean failsafing = false;

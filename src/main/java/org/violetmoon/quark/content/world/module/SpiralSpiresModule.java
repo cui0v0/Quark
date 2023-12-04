@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.Quark;
@@ -75,7 +76,7 @@ public class SpiralSpiresModule extends ZetaModule {
 		Block.Properties props = OldMaterials.stone().mapColor(MapColor.TERRACOTTA_PURPLE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
-		dusky_myalite = new ZetaBlock("dusky_myalite", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		dusky_myalite = new ZetaBlock("dusky_myalite", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.PURPUR_BLOCK, true);
 
 		myalite_crystal = new MyaliteCrystalBlock(this);
 		

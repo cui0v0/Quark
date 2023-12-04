@@ -85,7 +85,7 @@ public class CompressedBlocksModule extends ZetaModule {
 						.strength(5F, 10F)
 						.sound(SoundType.STONE))
 				.setCondition(() -> enableCharcoalBlock)
-				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COAL_BLOCK, true);
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COAL_BLOCK, false);
 		
 		pillar("sugar_cane", MapColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
 		pillar("cactus", MapColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);

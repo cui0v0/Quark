@@ -9,6 +9,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -21,6 +22,7 @@ import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.base.world.generator.OreGenerator;
+import org.violetmoon.quark.content.building.module.MoreStoneVariantsModule;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.block.MyaliteColorLogic;
 import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
@@ -36,6 +38,7 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 import java.util.ArrayDeque;
@@ -73,6 +76,8 @@ public class NewStoneTypesModule extends ZetaModule {
 		jasperBlock = makeStone(event, this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MapColor.TERRACOTTA_RED);
 		shaleBlock = makeStone(event, this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MapColor.ICE);
 		myaliteBlock = makeStone(event, this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MapColor.COLOR_PURPLE, MyaliteBlock::new);
+		
+		MoreStoneVariantsModule.instance.weirdAssHackCallMeFromNewStoneTypesToEnsureTheBlocksExistOhGod(event);
 	}
 
 	public static Block makeStone(ZRegister event, ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MapColor color) {
@@ -94,11 +99,12 @@ public class NewStoneTypesModule extends ZetaModule {
 					.requiresCorrectToolForDrops()
 					.strength(1.5F, 6.0F);
 
+		CreativeTabManager.daisyChain();
 		Block normal;
 		if(isVanilla)
 			normal = raw;
 		else
-			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.DEEPSLATE, true);
 
 		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
@@ -110,7 +116,8 @@ public class NewStoneTypesModule extends ZetaModule {
 		
 		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond), null);
 		event.getVariantRegistry().addSlabAndStairs(polished, null);
-
+		CreativeTabManager.endDaisyChain();
+		
 		if(!isVanilla) {
 			defers.add(() -> {
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenLower, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);

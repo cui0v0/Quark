@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.building.block;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -18,7 +19,7 @@ public class SturdyStoneBlock extends ZetaBlock {
 				.requiresCorrectToolForDrops()
 				.strength(4F, 10F)
 				.sound(SoundType.STONE));
-		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.STONE_BRICKS, true);
 	}
 
 	@NotNull

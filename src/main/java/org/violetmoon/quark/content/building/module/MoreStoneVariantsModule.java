@@ -32,6 +32,8 @@ public class MoreStoneVariantsModule extends ZetaModule {
 	@Config(flag = "stone_chiseled") public boolean enableChiseledBricks = true;
 	@Config(flag = "stone_pillar") public boolean enablePillar = true;
 	
+	public static MoreStoneVariantsModule instance;
+	
 	@LoadEvent
 	public final void register(ZRegister event) {
 		Block polishedCalcite = expandVanillaStone(event, this, Blocks.CALCITE, "calcite");
@@ -46,11 +48,15 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		add(event, "dripstone", MapColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, polishedDripstone, _true);
 		add(event, "tuff", MapColor.TERRACOTTA_GRAY, SoundType.TUFF, polishedTuff, _true);
 		
+		instance = this;
+	}
+	
+	public void weirdAssHackCallMeFromNewStoneTypesToEnsureTheBlocksExistOhGod(ZRegister event) {
 		add(event, "limestone", MapColor.STONE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.limestoneBlock), () -> NewStoneTypesModule.enableLimestone);
-		add(event, "jasper", MapColor.TERRACOTTA_RED, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.jasperBlock),() -> NewStoneTypesModule.enableJasper);
+		add(event, "jasper", MapColor.TERRACOTTA_RED, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.jasperBlock), () -> NewStoneTypesModule.enableJasper);
 		add(event, "shale", MapColor.ICE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.shaleBlock), () -> NewStoneTypesModule.enableShale);
 		
-		add(event, "myalite", MapColor.COLOR_PURPLE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.myaliteBlock), () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
+		add(event, "myalite", MapColor.COLOR_PURPLE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.myaliteBlock), () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);		
 	}
 
 	@PlayEvent

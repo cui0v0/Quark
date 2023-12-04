@@ -7,6 +7,7 @@ import org.violetmoon.zeta.event.load.ZLoadComplete;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import net.minecraft.world.level.block.ComposterBlock;
 
