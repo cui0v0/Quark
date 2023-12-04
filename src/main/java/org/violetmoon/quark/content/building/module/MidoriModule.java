@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.building.module;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -16,6 +17,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 @ZetaLoadModule(category = "building")
 public class MidoriModule extends ZetaModule {
@@ -32,8 +34,11 @@ public class MidoriModule extends ZetaModule {
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 
-		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("midori_block", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
-		new ZetaPillarBlock("midori_pillar", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
+		CreativeTabManager.daisyChain();
+		Block midori = new ZetaBlock("midori_block", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COAL_BLOCK, true);
+		new ZetaPillarBlock("midori_pillar", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) midori, null);
+		CreativeTabManager.endDaisyChain();
 	}
 
 	@LoadEvent

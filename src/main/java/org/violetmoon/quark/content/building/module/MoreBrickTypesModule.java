@@ -37,26 +37,26 @@ public class MoreBrickTypesModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		add(event, "blue_nether", Blocks.NETHER_BRICKS, () -> enableBlueNetherBricks);
+		add(event, "blue_nether", Blocks.NETHER_BRICKS, () -> enableBlueNetherBricks, Blocks.BASALT);
 		
-		add(event, "sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks);
-		add(event, "red_sandstone", Blocks.RED_SANDSTONE, () -> enableSandstoneBricks);
-		add(event, "soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && Quark.ZETA.modules.isEnabled(SoulSandstoneModule.class));
+		add(event, "sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks, Blocks.RED_SANDSTONE);
+		add(event, "red_sandstone", Blocks.RED_SANDSTONE, () -> enableSandstoneBricks, Blocks.SEA_LANTERN);
+		add(event, "soul_sandstone", Blocks.SANDSTONE, () -> enableSandstoneBricks && Quark.ZETA.modules.isEnabled(SoulSandstoneModule.class), Blocks.SEA_LANTERN);
 		
-		add(event, "cobblestone", Blocks.COBBLESTONE, () -> enableCobblestoneBricks);
-		add(event, "mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, () -> enableCobblestoneBricks);
+		add(event, "cobblestone", Blocks.COBBLESTONE, () -> enableCobblestoneBricks, Blocks.MOSSY_COBBLESTONE);
+		add(event, "mossy_cobblestone", Blocks.MOSSY_COBBLESTONE, () -> enableCobblestoneBricks, Blocks.SMOOTH_STONE);
 		
-		add(event, "blackstone", Blocks.BLACKSTONE, () -> enableBlackstoneBricks && enableCobblestoneBricks);
-		add(event, "dirt", Blocks.DIRT, () -> enableDirtBricks && enableCobblestoneBricks);
-		add(event, "netherrack", Blocks.NETHERRACK, () -> enableNetherrackBricks && enableCobblestoneBricks);
+		add(event, "blackstone", Blocks.BLACKSTONE, () -> enableBlackstoneBricks && enableCobblestoneBricks, Blocks.END_STONE);
+		add(event, "dirt", Blocks.DIRT, () -> enableDirtBricks && enableCobblestoneBricks, Blocks.PACKED_MUD);
+		add(event, "netherrack", Blocks.NETHERRACK, () -> enableNetherrackBricks && enableCobblestoneBricks, Blocks.NETHER_BRICKS);
 	}
 	
-	private void add(ZRegister event, String name, Block parent, BooleanSupplier cond) {
+	private void add(ZRegister event, String name, Block parent, BooleanSupplier cond, Block placeBehind) {
 		event.getVariantRegistry().addSlabStairsWall((IZetaBlock) new ZetaBlock(name + "_bricks", this, 
 				Block.Properties.copy(parent)
 				.requiresCorrectToolForDrops())
 				.setCondition(cond)
-				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, placeBehind, true), null);
 	}
 	
 }

@@ -42,10 +42,9 @@ public class GlassShardModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		dirtyGlass = (ZetaBlock) new DirtyGlassBlock("dirty_glass", this,
-				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS))
-				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		
-		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
+		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 
 		clearShard = new ZetaItem("clear_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
 		dirtyShard = new ZetaItem("dirty_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);

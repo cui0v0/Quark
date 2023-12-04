@@ -34,10 +34,7 @@ public interface IZetaBlock extends IZetaBlockExtensions, IDisableable<IZetaBloc
     
     default Block setCreativeTab(ResourceKey<CreativeModeTab> tab, ItemLike parent, boolean behindParent) {
     	Block b = getBlock();
-    	if(behindParent)
-    		CreativeTabManager.addToCreativeTabBehind(tab, b, parent);
-    	else
-    		CreativeTabManager.addToCreativeTabInFrontOf(tab, b, parent);
+    	CreativeTabManager.addToCreativeTabNextTo(tab, b, parent, behindParent);
     	
     	return b;
     }

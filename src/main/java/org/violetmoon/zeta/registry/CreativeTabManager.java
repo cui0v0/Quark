@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.module.IDisableable;
 
 import com.google.common.collect.HashMultimap;
@@ -30,21 +31,63 @@ public class CreativeTabManager {
 	private static final Map<ResourceKey<CreativeModeTab>, CreativeTabAdditions> additions = new HashMap<>();
 	private static final Multimap<ItemLike, ResourceKey<CreativeModeTab>> mappedItems = HashMultimap.create();
 
+	private static boolean daisyChainMode = false;
+	private static ItemSet daisyChainedSet = null;
+	
+	public static void daisyChain() {
+		daisyChainMode = true;
+		daisyChainedSet = null;
+	}
+	
+	public static void endDaisyChain() {
+		daisyChainMode = false;
+		daisyChainedSet = null;
+	}
+	
 	public static void addToCreativeTab(ResourceKey<CreativeModeTab> tab, ItemLike item) {
-		getForTab(tab).appendToEnd.add(item);
+		if(daisyChainMode) {
+			if(daisyChainedSet == null)
+				throw new IllegalArgumentException("Must start daisy chain with addToCreativeTabNextTo");
+			
+			addToDaisyChain(item);
+		} 
+		else 
+			getForTab(tab).appendToEnd.add(item);
+		
 		mappedItems.put(item, tab);
 	}
 
-	public static void addToCreativeTabInFrontOf(ResourceKey<CreativeModeTab> tab, ItemLike item, ItemLike target) {
+	public static void addToCreativeTabNextTo(ResourceKey<CreativeModeTab> tab, ItemLike item, ItemLike target, boolean behind) {
 		tab = guessTab(target, tab);
-		getForTab(tab).appendInFront.put(item, target);
+		CreativeTabAdditions additions = getForTab(tab);
+		Map<ItemSet, ItemLike> map = (behind ? additions.appendBehind : additions.appendInFront);
+		
+		ItemSet toAdd = null;
+		
+		if(daisyChainMode && daisyChainedSet == null) {
+			ItemSet set = addToDaisyChain(item);
+			toAdd = set;
+		} 
+		else
+			toAdd = new ItemSet(item);
+		
+		if(toAdd != null)
+			map.put(toAdd, target);
+		
 		mappedItems.put(item, tab);
 	}
-
-	public static void addToCreativeTabBehind(ResourceKey<CreativeModeTab> tab, ItemLike item, ItemLike target) {
-		tab = guessTab(target, tab);
-		getForTab(tab).appendBehind.put(item, target);
-		mappedItems.put(item, tab);
+	
+	private static ItemSet addToDaisyChain(ItemLike item) {
+		if(daisyChainMode && daisyChainedSet != null) {
+			daisyChainedSet.items.add(item);
+			return daisyChainedSet;
+		}
+		
+		ItemSet set = new ItemSet(item);
+		if(daisyChainMode)
+			daisyChainedSet = set;
+		
+		return set;
 	}
 	
 	private static ResourceKey<CreativeModeTab> guessTab(ItemLike parent, ResourceKey<CreativeModeTab> tab) {
@@ -70,25 +113,32 @@ public class CreativeTabManager {
 
 				MutableHashedLinkedMap<ItemStack, CreativeModeTab.TabVisibility> entries = event.getEntries();
 				
-				Map<ItemLike, ItemLike> front = new LinkedHashMap<>(add.appendInFront);
-				Map<ItemLike, ItemLike> behind = new LinkedHashMap<>(add.appendBehind);
+				Map<ItemSet, ItemLike> front = new LinkedHashMap<>(add.appendInFront);
+				Map<ItemSet, ItemLike> behind = new LinkedHashMap<>(add.appendBehind);
+				
+				final int failsafe = 99999;
+				final int printThreshold = failsafe - 10;
+				
 				int misses = 0;
+				boolean failsafing = false;
 				
             	while(true) {
             		boolean missed = false; 
             		if(!front.isEmpty())
-            			missed = appendNextTo(tabKey, entries, front, false);
+            			missed = appendNextTo(tabKey, entries, front, false, failsafing);
             		if(!behind.isEmpty())
-            			missed |= appendNextTo(tabKey, entries, behind, true);
+            			missed |= appendNextTo(tabKey, entries, behind, true, failsafing);
 
             		if(missed)
             			misses++;
             		
             		// arbitrary failsafe, should never happen
-            		if(misses > 1e6) {
+            		if(misses > failsafe) {
             			new RuntimeException("Creative tab placement misses exceeded failsafe, aborting logic").printStackTrace();
             			return;
             		}
+            		if(misses > printThreshold)
+            			failsafing = true;
             		
             		if(front.isEmpty() && behind.isEmpty())
             			return;
@@ -130,39 +180,63 @@ public class CreativeTabManager {
 	/**
 	 * Returns true if the item needs to be tried again later 
 	 */
-	private static boolean appendNextTo(ResourceKey<CreativeModeTab> tabKey, MutableHashedLinkedMap<ItemStack, CreativeModeTab.TabVisibility> entries, Map<ItemLike, ItemLike> map, boolean behind) {
-		Collection<ItemLike> coll = map.keySet();
+	private static boolean appendNextTo(ResourceKey<CreativeModeTab> tabKey, MutableHashedLinkedMap<ItemStack, CreativeModeTab.TabVisibility> entries, Map<ItemSet, ItemLike> map, boolean behind, boolean log) {
+		Collection<ItemSet> coll = map.keySet();
 		if(coll.isEmpty())
 			throw new RuntimeException("Tab collection is empty, this should never happen.");
 
-		ItemLike firstItem = coll.iterator().next();
-		ItemLike target = map.get(firstItem);
+		ItemSet firstSet = coll.iterator().next();
+		ItemLike firstSetItem = firstSet.items.get(0);
+		ItemLike target = map.get(firstSet);
 		
-		map.remove(firstItem);
+		if(log)
+			Quark.LOG.warn("Creative tab loop found when adding {} next to {}", firstSetItem, target);
 		
-		if(!isItemEnabled(firstItem) || target == null)
+		map.remove(firstSet);
+		
+		if(!isItemEnabled(firstSetItem) || target == null)
 			return false;
 		
 		for(Entry<ItemStack, TabVisibility> entry : entries) {
 			ItemStack stack = entry.getKey();
 			Item item = stack.getItem();
 			if(item == target.asItem()) {
-				addToEntries(stack, entries, firstItem, behind);
+				for(int i = 0; i < firstSet.items.size(); i++) {
+					int j = i;
+					if(!behind)
+						j = firstSet.items.size() - 1 - i;
+					
+					addToEntries(stack, entries, firstSet.items.get(j), behind);
+				}
 				
 				return false;
 			}
 		}
 		
-		// put the item back at the end of the map to try it again after the target is added 
-		map.put(firstItem, target);
+		// put the set back at the end of the map to try it again after the target is added 
+		map.put(firstSet, target);
 		return true;
 	}
 
 	private static class CreativeTabAdditions {
 
 		private List<ItemLike> appendToEnd = new ArrayList<>();
-		private Map<ItemLike, ItemLike> appendInFront = new LinkedHashMap<>();
-		private Map<ItemLike, ItemLike> appendBehind = new LinkedHashMap<>();
+		private Map<ItemSet, ItemLike> appendInFront = new LinkedHashMap<>();
+		private Map<ItemSet, ItemLike> appendBehind = new LinkedHashMap<>();
+		
+	}
+	
+	private static class ItemSet {
+		
+		List<ItemLike> items = new ArrayList<>();
+	
+		public ItemSet(ItemLike item) {
+			items.add(item);
+		}
+		
+		public boolean isFresh() {
+			return items.size() == 1;
+		}
 		
 	}
 

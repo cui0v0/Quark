@@ -63,7 +63,7 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 
 		base.getModule().zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false));
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	@NotNull

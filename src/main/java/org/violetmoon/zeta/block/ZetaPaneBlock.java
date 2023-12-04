@@ -20,7 +20,6 @@ public class ZetaPaneBlock extends IronBarsBlock implements IZetaBlock {
 
 		this.module = module;
 		module.zeta.registry.registerBlock(this, name, true);
-		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
 		if(renderLayer != null)
 			module.zeta.renderLayerRegistry.put(this, renderLayer);

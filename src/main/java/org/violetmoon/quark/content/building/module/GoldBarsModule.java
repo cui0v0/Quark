@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,7 +29,7 @@ public class GoldBarsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		gold_bars = new ZetaPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderLayerRegistry.Layer.CUTOUT);
+		gold_bars = new ZetaPaneBlock("gold_bars", this, Properties.copy(Blocks.IRON_BARS), RenderLayerRegistry.Layer.CUTOUT).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.GOLD_BLOCK, false);
 
 		StructureBlockReplacementHandler.addReplacement(GoldBarsModule::getGenerationBarBlockState);
 	}

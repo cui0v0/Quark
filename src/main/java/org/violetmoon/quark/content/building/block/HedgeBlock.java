@@ -72,7 +72,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
 			Quark.ZETA.registry.registerBlock(this, resloc, true);
 		}
-		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.NATURAL_BLOCKS, this, leaf);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.NATURAL_BLOCKS, this, leaf, false);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 

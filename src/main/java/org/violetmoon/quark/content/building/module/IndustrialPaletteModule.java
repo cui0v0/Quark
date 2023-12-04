@@ -16,6 +16,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.function.BooleanSupplier;
 
@@ -37,15 +38,20 @@ public class IndustrialPaletteModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
+		CreativeTabManager.daisyChain();
 		Block.Properties props = Block.Properties.copy(Blocks.IRON_BLOCK);
 
 		BooleanSupplier ironPlateCond = () -> enableIronPlates;
 		BooleanSupplier ironLadderCond = () -> enableIronLadder;
 
-		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
-		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("rusty_iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
+		Block plate = new ZetaBlock("iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.CHAIN, true);
+		Block rusty = new ZetaBlock("rusty_iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		
+		new ZetaPillarBlock("iron_pillar", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
-		new ZetaPillarBlock("iron_pillar", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) plate, null);
+		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) rusty, null);
+		CreativeTabManager.endDaisyChain();
 
 		new VariantLadderBlock("iron", this, Block.Properties.of()
 				.noCollission()

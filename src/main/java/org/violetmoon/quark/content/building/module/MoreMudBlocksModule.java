@@ -11,6 +11,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 @ZetaLoadModule(category = "building")
 public class MoreMudBlocksModule extends ZetaModule {
@@ -19,9 +20,11 @@ public class MoreMudBlocksModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		BlockBehaviour.Properties props = Properties.copy(Blocks.MUD_BRICKS);
 		
-		new ZetaBlock("carved_mud_bricks", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		CreativeTabManager.daisyChain();
+		new ZetaBlock("carved_mud_bricks", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.MUD_BRICK_STAIRS, false);
 		new ZetaPillarBlock("mud_pillar", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		new MudBrickLatticeBlock(this, props);
+		CreativeTabManager.endDaisyChain();
 	}
 	
 }

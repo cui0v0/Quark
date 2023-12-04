@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -26,8 +27,6 @@ public class ZetaFenceGateBlock extends FenceGateBlock implements IZetaBlock {
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, this);
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, this);
 	}
 
 	@Override

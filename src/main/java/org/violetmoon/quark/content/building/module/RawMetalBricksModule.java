@@ -17,9 +17,9 @@ public class RawMetalBricksModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		IZetaBlock iron = (IZetaBlock) new ZetaBlock("raw_iron_bricks", this, Properties.copy(Blocks.RAW_IRON_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		IZetaBlock gold = (IZetaBlock) new ZetaBlock("raw_gold_bricks", this, Properties.copy(Blocks.RAW_GOLD_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		IZetaBlock copper = (IZetaBlock) new ZetaBlock("raw_copper_bricks", this, Properties.copy(Blocks.RAW_COPPER_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		IZetaBlock iron = (IZetaBlock) new ZetaBlock("raw_iron_bricks", this, Properties.copy(Blocks.RAW_IRON_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.IRON_BLOCK, false);
+		IZetaBlock gold = (IZetaBlock) new ZetaBlock("raw_gold_bricks", this, Properties.copy(Blocks.RAW_GOLD_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.GOLD_BLOCK, false);
+		IZetaBlock copper = (IZetaBlock) new ZetaBlock("raw_copper_bricks", this, Properties.copy(Blocks.RAW_COPPER_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COPPER_BLOCK, false);
 		
 		ImmutableSet.of(iron, gold, copper).forEach(what -> event.getVariantRegistry().addSlabAndStairs(what, null));
 	}

@@ -38,7 +38,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
 
 		module.zeta.registry.registerBlock(this, resloc, true);
-		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.REDSTONE_BLOCKS, this, Blocks.TRAPPED_CHEST);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, this, Blocks.TRAPPED_CHEST, false);
 
 		this.module = module;
 		this.type = type;

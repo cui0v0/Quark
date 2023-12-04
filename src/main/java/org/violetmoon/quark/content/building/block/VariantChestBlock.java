@@ -33,7 +33,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IVarian
 		super(props, supplier);
 		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
 		module.zeta.registry.registerBlock(this, resloc, true);
-		CreativeTabManager.addToCreativeTabInFrontOf(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Blocks.CHEST);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Blocks.CHEST, false);
 
 		this.module = module;
 		this.type = type;

@@ -82,8 +82,10 @@ public class NewStoneTypesModule extends ZetaModule {
 	public static Block makeStone(ZRegister event, ZetaModule module, final Block raw, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MapColor color, ZetaBlock.Constructor<ZetaBlock> constr) {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !Quark.ZETA.modules.isEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
+		boolean isVanilla = raw != null;
+		
 		Block.Properties props;
-		if(raw != null)
+		if(isVanilla)
 			props = Block.Properties.copy(raw);
 		else
 			props = Block.Properties.of()
@@ -93,25 +95,30 @@ public class NewStoneTypesModule extends ZetaModule {
 					.strength(1.5F, 6.0F);
 
 		Block normal;
-		if(raw != null)
+		if(isVanilla)
 			normal = raw;
 		else
-			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
+			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
-		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);;
+		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
-
+		
+		if(isVanilla)
+			polished.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, raw, false);
+		else 
+			polished.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		
 		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond), null);
 		event.getVariantRegistry().addSlabAndStairs(polished, null);
 
-		if(raw == null) {
+		if(!isVanilla) {
 			defers.add(() -> {
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenLower, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenUpper, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);
 			});
 		}
 
-		return normal;
+		return isVanilla ? polished : normal;
 	}
 
 	@LoadEvent

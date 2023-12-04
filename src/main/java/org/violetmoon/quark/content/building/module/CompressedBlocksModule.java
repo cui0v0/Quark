@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -84,7 +85,7 @@ public class CompressedBlocksModule extends ZetaModule {
 						.strength(5F, 10F)
 						.sound(SoundType.STONE))
 				.setCondition(() -> enableCharcoalBlock)
-				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COAL_BLOCK, true);
 		
 		pillar("sugar_cane", MapColor.COLOR_LIGHT_GREEN, true, () -> enableSugarCaneBlock, 200);
 		pillar("cactus", MapColor.COLOR_GREEN, true, () -> enableCactusBlock, 50);

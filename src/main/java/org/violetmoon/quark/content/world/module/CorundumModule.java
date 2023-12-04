@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -107,7 +108,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 		CorundumBlock waxed = new CorundumBlock("waxed_" + name + "_corundum", color, this, mapColor, true);
 		ToolInteractionHandler.registerWaxedBlock(this, crystal, waxed);
 
-		new ZetaInheritedPaneBlock(crystal);
+		new ZetaInheritedPaneBlock(crystal).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 		CorundumClusterBlock cluster = new CorundumClusterBlock(crystal);
 		clusters.add(cluster);
 

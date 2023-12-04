@@ -26,7 +26,7 @@ public class HollowLogBlock extends HollowPillarBlock {
 
         this.flammable = flammable;
         module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
-        setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+        setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, sourceLog, false);
     }
 
 

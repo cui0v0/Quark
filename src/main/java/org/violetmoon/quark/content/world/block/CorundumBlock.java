@@ -51,7 +51,7 @@ public class CorundumBlock extends ZetaGlassBlock {
 		colorComponents = new float[]{r, g, b};
 		this.waxed = waxed;
 		
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	private boolean canGrow(Level world, BlockPos pos) {

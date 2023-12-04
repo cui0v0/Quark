@@ -19,7 +19,7 @@ public class DirtyGlassBlock extends ZetaGlassBlock {
 
 	public DirtyGlassBlock(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, true, properties);
-		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
 
 	@Nullable
