@@ -45,7 +45,17 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	private static final GameProfile DUMMY_PROFILE = new GameProfile(UUID.randomUUID(), "ItemFrame");
 
 	private boolean didHackery = false;
-	private Integer onSignRotation = null; //not on sign
+	private int onSignRotation = 0;
+	private SignAttachment attachment = SignAttachment.NOT_ATTACHED;
+	
+	public  enum SignAttachment {
+		NOT_ATTACHED, 
+		STANDING_IN_FRONT,
+		STANDING_BEHIND,
+		WALL,
+		HANGING_IN_FRONT,
+		HANGING_BEHIND
+	}
 
 	public GlassItemFrame(EntityType<? extends GlassItemFrame> type, Level worldIn) {
 		super(type, worldIn);
@@ -110,10 +120,12 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	}
 
 	private void updateIsOnSign() {
-		onSignRotation = null;
+		attachment = SignAttachment.NOT_ATTACHED;
+		
 		if(this.direction.getAxis() != Direction.Axis.Y){
 			BlockState back = level().getBlockState(getBehindPos());
-			if(back.is(BlockTags.STANDING_SIGNS)){
+			if(back.is(BlockTags.STANDING_SIGNS)) {
+				attachment = SignAttachment.STANDING_IN_FRONT;
 				onSignRotation = back.getValue(StandingSignBlock.ROTATION);
 			}
 		}
@@ -135,11 +147,15 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 		return pos.relative(direction.getOpposite());
 	}
 
+	public SignAttachment getSignAttachment() {
+		return attachment;
+	}
+	
 	public boolean isOnSign() {
-		return onSignRotation != null;
+		return getSignAttachment() != SignAttachment.NOT_ATTACHED;
 	}
 
-	public Integer getOnSignRotation(){
+	public int getOnSignRotation(){
 		return onSignRotation;
 	}
 
