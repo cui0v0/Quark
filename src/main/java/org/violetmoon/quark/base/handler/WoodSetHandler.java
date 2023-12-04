@@ -130,14 +130,14 @@ public class WoodSetHandler {
 		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, () -> true);
 
 		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
-		set.signItem = new ZetaHangingSignItem(module, set.ceilingHangingSign, set.wallHangingSign);
+		set.hangingSignItem = new ZetaHangingSignItem(module, set.ceilingHangingSign, set.wallHangingSign);
 
 		if(hasBoat) {
 			set.boatItem = new QuarkBoatItem(name, module, false);
 			set.chestBoatItem = new QuarkBoatItem(name, module, true);
 		}
 
-		makeSignWork(set.sign, set.wallSign);
+		makeSignWork(set.sign, set.wallSign, set.ceilingHangingSign, set.wallHangingSign);
 
 		if(hasLog) {
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, set.log, set.strippedLog);
@@ -159,12 +159,18 @@ public class WoodSetHandler {
 		return set;
 	}
 
-	public static void makeSignWork(Block sign, Block wallSign) {
+	public static void makeSignWork(Block sign, Block wallSign, Block hangingSign, Block wallHangingSign) {
 		Set<Block> validBlocks = new HashSet<>();
 		validBlocks.add(sign);
 		validBlocks.add(wallSign);
 		validBlocks.addAll(BlockEntityType.SIGN.validBlocks);
 		BlockEntityType.SIGN.validBlocks = ImmutableSet.copyOf(validBlocks);
+		
+		validBlocks.clear();
+		validBlocks.add(hangingSign);
+		validBlocks.add(wallHangingSign);
+		validBlocks.addAll(BlockEntityType.HANGING_SIGN.validBlocks);
+		BlockEntityType.HANGING_SIGN.validBlocks = ImmutableSet.copyOf(validBlocks);
 	}
 
 	private static RotatedPillarBlock log(String name, ZetaModule module, MapColor topColor, MapColor sideColor) {
@@ -199,7 +205,7 @@ public class WoodSetHandler {
 				ceilingHangingSign, wallHangingSign, bookshelf, ladder, post,
 		strippedPost, verticalPlanks, hollowLog;
 
-		public Item signItem, boatItem, chestBoatItem;
+		public Item signItem, boatItem, chestBoatItem, hangingSignItem;
 
 		public WoodSet(String name, ZetaModule module, WoodType type) {
 			this.name = name;
