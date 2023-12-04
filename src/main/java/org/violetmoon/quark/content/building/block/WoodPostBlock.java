@@ -1,6 +1,10 @@
 package org.violetmoon.quark.content.building.block;
 
 import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -24,10 +29,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
@@ -115,7 +116,8 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 			BlockState sideState = world.getBlockState(pos.relative(d));
 			if((sideState.getBlock() instanceof ChainBlock && sideState.getValue(BlockStateProperties.AXIS) == d.getAxis())
-					|| (d == Direction.DOWN && sideState.getBlock() instanceof LanternBlock && sideState.getValue(LanternBlock.HANGING))) {
+					|| (d == Direction.DOWN && sideState.getBlock() instanceof LanternBlock && sideState.getValue(LanternBlock.HANGING))
+					|| (d == Direction.DOWN && sideState.getBlock() instanceof CeilingHangingSignBlock)) {
 				BooleanProperty prop = CHAINED[d.ordinal()];
 				state = state.setValue(prop, true);
 			}

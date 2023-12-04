@@ -15,6 +15,7 @@
     "BeehiveBlockEntityMixin",
     "BlockItemMixin",
     "BoatMixin",
+    "CeilingHangingSignBlockMixin",
     "ClimateParameterPointMixin",
     "CrossbowMultishotMixin",
     "DamageEnchantmentMixin",
