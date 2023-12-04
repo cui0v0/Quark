@@ -92,7 +92,7 @@ public class CrabsModule extends ZetaModule {
 		CreativeTabManager.endDaisyChain();
 
 		crab_shell = new ZetaItem("crab_shell", this, new Item.Properties())
-				.setCondition(() -> enableBrewing).setCreativeTab(CreativeModeTabs.INGREDIENTS);
+				.setCondition(() -> enableBrewing).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.RABBIT_FOOT, false);
 
 		crab_bucket = new ZetaMobBucketItem(() -> crabType, () -> Fluids.WATER, () -> QuarkSounds.BUCKET_EMPTY_CRAB, "crab_bucket", this);
 

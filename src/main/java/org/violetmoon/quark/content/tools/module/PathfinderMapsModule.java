@@ -1,6 +1,36 @@
 package org.violetmoon.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.IConfigType;
+import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
+import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
+import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
 import com.mojang.blaze3d.platform.Window;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
@@ -32,34 +62,6 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.IConfigType;
-import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
-import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
-import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
-import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @ZetaLoadModule(category = "tools")
 public class PathfinderMapsModule extends ZetaModule {
@@ -69,9 +71,9 @@ public class PathfinderMapsModule extends ZetaModule {
 
 	private static final Object mutex = new Object();
 
-	public static List<TradeInfo> builtinTrades = new LinkedList<>();
-	public static List<TradeInfo> customTrades = new LinkedList<>();
-	public static List<TradeInfo> tradeList = new LinkedList<>();
+	public static List<TradeInfo> builtinTrades = new ArrayList<>();
+	public static List<TradeInfo> customTrades = new ArrayList<>();
+	public static List<TradeInfo> tradeList = new ArrayList<>();
 
 	@Config(description = """
 			In this section you can add custom Pathfinder Maps. This works for both vanilla and modded biomes.
@@ -88,7 +90,7 @@ public class PathfinderMapsModule extends ZetaModule {
 
 			Here's an example of a map to locate Ice Mountains:
 			minecraft:ice_mountains,2,8,14,7FE4FF""")
-	private List<String> customs = new LinkedList<>();
+	private List<String> customs = new ArrayList<>();
 
 	public static LootItemFunctionType pathfinderMapType;
 	public static LootItemConditionType inBiomeConditionType;
@@ -128,14 +130,16 @@ public class PathfinderMapsModule extends ZetaModule {
 		loadTradeInfo(Biomes.DESERT, true, 4, 8, 14, 0xCCB94E);
 		loadTradeInfo(Biomes.SAVANNA, true, 4, 8, 14, 0x9BA562);
 		loadTradeInfo(Biomes.SWAMP, true, 4, 12, 18, 0x22370F);
+		loadTradeInfo(Biomes.MANGROVE_SWAMP, true, 4, 12, 18, 0x22370F);
 		loadTradeInfo(Biomes.OLD_GROWTH_PINE_TAIGA, true, 4, 12, 18, 0x5B421F);
 
-		loadTradeInfo(Biomes.FLOWER_FOREST, true, 5, 12, 18, 0xCE46E2);
+		loadTradeInfo(Biomes.FLOWER_FOREST, true, 5, 16, 22, 0xCE46E2);
 		loadTradeInfo(Biomes.JUNGLE, true, 5, 16, 22, 0x22B600);
 		loadTradeInfo(Biomes.BAMBOO_JUNGLE, true, 5, 16, 22, 0x3DE217);
 		loadTradeInfo(Biomes.BADLANDS, true, 5, 16, 22, 0xC67F22);
 		loadTradeInfo(Biomes.MUSHROOM_FIELDS, true, 5, 20, 26, 0x4D4273);
 		loadTradeInfo(Biomes.ICE_SPIKES, true, 5, 20, 26, 0x1EC0C9);
+		loadTradeInfo(Biomes.CHERRY_GROVE, true, 5, 20, 26, 0xE9A9E8);
 
 		inBiomeConditionType = new LootItemConditionType(new InBiomeCondition.InBiomeSerializer());
 		Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, new ResourceLocation(Quark.MOD_ID, "in_biome"), inBiomeConditionType);

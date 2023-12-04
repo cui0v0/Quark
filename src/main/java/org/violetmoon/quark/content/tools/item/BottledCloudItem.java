@@ -28,7 +28,7 @@ public class BottledCloudItem extends ZetaItem {
 
 	public BottledCloudItem(ZetaModule module) {
 		super("bottled_cloud", module, new Item.Properties());
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.MILK_BUCKET, false);
 	}
 
 	@NotNull

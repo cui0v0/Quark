@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -26,7 +27,7 @@ public class SoulBeadItem extends ZetaItem {
 
 	public SoulBeadItem(ZetaModule module) {
 		super("soul_bead", module, new Item.Properties());
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.ENDER_PEARL, true);
 	}
 
 	@NotNull

@@ -9,6 +9,7 @@ import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
@@ -26,7 +27,7 @@ public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock 
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, this, Blocks.STONE_BUTTON, false);
 	}
 
 	@NotNull

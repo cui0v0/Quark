@@ -17,6 +17,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 /**
@@ -49,6 +50,7 @@ public class GlassItemFrameModule extends ZetaModule {
 				.build("glass_frame");
 		Quark.ZETA.registry.register(glassFrameEntity, "glass_frame", Registries.ENTITY_TYPE);
 
+		CreativeTabManager.daisyChain();
 		glassFrame = new QuarkItemFrameItem("glass_item_frame", this, GlassItemFrame::new);
 		glowingGlassFrame = new QuarkItemFrameItem("glowing_glass_item_frame", this, 
 				(w, p, d) -> {
@@ -56,6 +58,7 @@ public class GlassItemFrameModule extends ZetaModule {
 					e.getEntityData().set(GlassItemFrame.IS_SHINY, true);
 					return e;
 				});
+		CreativeTabManager.endDaisyChain();
 	}
 
 	@LoadEvent

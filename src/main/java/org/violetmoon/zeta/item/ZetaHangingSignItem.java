@@ -3,6 +3,7 @@ package org.violetmoon.zeta.item;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -18,7 +19,7 @@ public class ZetaHangingSignItem extends HangingSignItem implements IZetaItem {
 
         String resloc = module.zeta.registryUtil.inherit(sign, "%s");
         module.zeta.registry.registerItem(this, resloc);
-        CreativeTabManager.addToCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, this);
+        CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Items.CHEST, true);
         this.module = module;
     }
 

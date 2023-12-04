@@ -20,7 +20,7 @@ public class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, name + "_sapling", true);
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.AZALEA, true);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}

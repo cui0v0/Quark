@@ -61,7 +61,7 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 
 		this.simple = simple;
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.CHORUS_PLANT, true);
 	}
 
 	@Override

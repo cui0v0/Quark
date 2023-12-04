@@ -40,7 +40,7 @@ public class CrateBlock extends ZetaBlock implements EntityBlock {
 	public CrateBlock(ZetaModule module) {
 		super("crate", module, Properties.copy(Blocks.BARREL));
 		registerDefaultState(stateDefinition.any().setValue(PROPERTY_OPEN, false));
-		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.BARREL, false);
 	}
 
 	@Override

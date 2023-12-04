@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -29,6 +30,7 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 import java.util.ArrayList;
@@ -63,14 +65,14 @@ public class PickarangModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true);
-		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang);
+		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true).setCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.DIAMOND_HOE, false);
+		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang).setCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.NETHERITE_HOE, false);
 
 		throwPickarangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_pickarang");
 		useFlamerangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_flamerang");
 	}
 
-	private <T extends AbstractPickarang<T>> Item makePickarang(PickarangType<T> type, String name,
+	private <T extends AbstractPickarang<T>> PickarangItem makePickarang(PickarangType<T> type, String name,
 			EntityType.EntityFactory<T> entityFactory,
 			PickarangType.PickarangConstructor<T> thrownFactory,
 			BooleanSupplier condition) {
@@ -85,7 +87,7 @@ public class PickarangModule extends ZetaModule {
 
 		knownTypes.add(type);
 		type.setEntityType(entityType, thrownFactory);
-		return new PickarangItem(name, this, propertiesFor(type.durability, type.isFireResistant()), type).setCondition(condition);
+		return (PickarangItem) new PickarangItem(name, this, propertiesFor(type.durability, type.isFireResistant()), type).setCondition(condition);
 	}
 
 	private Item.Properties propertiesFor(int durability, boolean fireResist) {

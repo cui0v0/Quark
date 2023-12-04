@@ -17,12 +17,14 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -52,6 +54,7 @@ import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
 import java.util.List;
@@ -96,11 +99,12 @@ public class GlimmeringWealdModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		glow_shroom = new GlowShroomBlock(this);
-		glow_lichen_growth = new GlowLichenGrowthBlock(this);
+		CreativeTabManager.daisyChain();
+		glow_shroom = new GlowShroomBlock(this).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.HANGING_ROOTS, false);
 		glow_shroom_block = new HugeGlowShroomBlock("glow_shroom_block", this, true);
 		glow_shroom_stem = new HugeGlowShroomBlock("glow_shroom_stem", this, false);
 		glow_shroom_ring = new GlowShroomRingBlock(this);
+		glow_lichen_growth = new GlowLichenGrowthBlock(this);
 
 		event.getVariantRegistry().addFlowerPot(glow_lichen_growth, "glow_lichen_growth", prop -> prop.lightLevel((state) -> 8));
 		event.getVariantRegistry().addFlowerPot(glow_shroom, "glow_shroom", prop -> prop.lightLevel((state) -> 10));

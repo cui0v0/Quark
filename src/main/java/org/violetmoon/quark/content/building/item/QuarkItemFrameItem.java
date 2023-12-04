@@ -12,6 +12,7 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -30,7 +31,7 @@ public class QuarkItemFrameItem extends ZetaItem {
 	public QuarkItemFrameItem(String name, ZetaModule module, TriFunction<? extends HangingEntity, Level, BlockPos, Direction> entityProvider) {
 		super(name, module, new Item.Properties());
 		this.entityProvider = entityProvider;
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, this, Items.GLOW_ITEM_FRAME, false);
 	}
 
 	@NotNull

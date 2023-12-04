@@ -22,7 +22,9 @@ public class ZetaBushBlock extends BushBlock implements IZetaBlock {
 
 		module.zeta.registry.registerBlock(this, regname, true);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		setCreativeTab(tab);
+		
+		if(tab != null)
+			setCreativeTab(tab);
 	}
 
 	@Override

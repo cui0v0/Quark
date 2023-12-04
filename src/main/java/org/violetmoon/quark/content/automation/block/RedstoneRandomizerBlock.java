@@ -53,7 +53,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 				.setValue(POWERED, RandomizerPowerState.OFF));
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
+		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, Blocks.COMPARATOR, false);
 	}
 
 	@Override

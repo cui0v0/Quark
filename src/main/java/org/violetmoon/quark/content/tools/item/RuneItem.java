@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -23,7 +25,8 @@ public class RuneItem extends ZetaItem implements IRuneColorProvider {
 		super(regname, module, new Item.Properties());
 		this.color = color;
 		this.glow = glow;
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.INGREDIENTS, this);
+		
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.INGREDIENTS, this, Items.EXPERIENCE_BOTTLE, true);
 	}
 
 	@Override

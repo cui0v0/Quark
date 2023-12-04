@@ -119,6 +119,8 @@ public class NewStoneTypesModule extends ZetaModule {
 		CreativeTabManager.endDaisyChain();
 		
 		if(!isVanilla) {
+			((IZetaBlock) normal).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.PRISMARINE, true);
+			
 			defers.add(() -> {
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenLower, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenUpper, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);

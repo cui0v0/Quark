@@ -1,7 +1,31 @@
 package org.violetmoon.quark.content.tools.item;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.content.mobs.module.StonelingsModule;
+import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
+import org.violetmoon.quark.content.tools.module.PathfinderMapsModule.TradeInfo;
+import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +39,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -25,22 +54,8 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.content.tools.module.PathfinderMapsModule;
-import org.violetmoon.zeta.item.ZetaItem;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class PathfindersQuillItem extends ZetaItem {
+public class PathfindersQuillItem extends ZetaItem implements CreativeTabManager.AppendsUniquely {
 
     private static final Direction[] DIRECTIONS = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
 
@@ -58,7 +73,7 @@ public class PathfindersQuillItem extends ZetaItem {
 
     public PathfindersQuillItem(ZetaModule module, Item.Properties properties) {
         super("pathfinders_quill", module, properties);
-        CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+        CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.MAP, false);
     }
 
     public PathfindersQuillItem(ZetaModule module) {
@@ -367,26 +382,29 @@ public class PathfindersQuillItem extends ZetaItem {
         return comp;
     }
 
-    //TODO 1.20
-//    @Override
-//    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-//        if ((isEnabled() && allowedIn(group)) || group == CreativeModeTab.TAB_SEARCH) {
-//            boolean generatedWeald = false;
-//
-//            for (TradeInfo trade : PathfinderMapsModule.tradeList) {
-//                if (trade.biome.equals(GlimmeringWealdModule.BIOME_NAME))
-//                    generatedWeald = true;
-//                items.add(forBiome(trade.biome.toString(), trade.color));
-//            }
-//            if (!generatedWeald &&
-//            	Quark.ZETA.modules.isEnabled(StonelingsModule.class) &&
-//            	Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) &&
-//                StonelingsModule.wealdPathfinderMaps) {
-//                items.add(forBiome(GlimmeringWealdModule.BIOME_NAME.toString(), 0x317546));
-//            }
-//        }
-//    }
+	@Override
+	public List<ItemStack> appendItemsToCreativeTab() {
+		List<ItemStack> items = new ArrayList<>();
+        boolean generatedWeald = false;
 
+        for(TradeInfo trade : PathfinderMapsModule.tradeList) {
+            if(trade.biome.equals(GlimmeringWealdModule.BIOME_NAME))
+                generatedWeald = true;
+            
+            items.add(forBiome(trade.biome.toString(), trade.color));
+        }
+        
+        if(!generatedWeald &&
+        	Quark.ZETA.modules.isEnabled(StonelingsModule.class) &&
+        	Quark.ZETA.modules.isEnabled(GlimmeringWealdModule.class) &&
+            StonelingsModule.wealdPathfinderMaps) {
+        	
+            items.add(forBiome(GlimmeringWealdModule.BIOME_NAME.toString(), 0x317546));
+        }
+        
+        return items;
+	}
+    
     @Override
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, Level level, List<Component> comps, TooltipFlag flags) {
@@ -406,5 +424,7 @@ public class PathfindersQuillItem extends ZetaItem {
     private static final Map<Key, InteractionResultHolder<BlockPos>> RESULTS = new ConcurrentHashMap<>();
     private static final Set<Key> COMPUTING = ConcurrentHashMap.newKeySet();
     protected static final ExecutorService EXECUTORS = Executors.newCachedThreadPool();
+
+
 
 }

@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.commons.lang3.tuple.Pair;
@@ -44,7 +45,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		super("seed_pouch", module,
 				new Item.Properties()
 				.stacksTo(1));
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.LEAD, false);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -23,7 +24,7 @@ public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaB
 		this.module = module;
 
 		module.zeta.registry.registerBlock(this, regname, true);
-		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
+		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, false);
 	}
 
 	@Override

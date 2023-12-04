@@ -3,6 +3,30 @@ package org.violetmoon.quark.content.world.module;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.Config.Max;
+import org.violetmoon.quark.base.config.Config.Min;
+import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
+import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.quark.base.world.WorldGenHandler;
+import org.violetmoon.quark.base.world.WorldGenWeights;
+import org.violetmoon.quark.content.world.block.MyaliteCrystalBlock;
+import org.violetmoon.quark.content.world.gen.SpiralSpireGenerator;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.block.OldMaterials;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.ZEntityTeleport;
+import org.violetmoon.zeta.event.play.loading.ZGatherHints;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -19,28 +43,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MapColor;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.Config.Max;
-import org.violetmoon.quark.base.config.Config.Min;
-import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
-import org.violetmoon.quark.content.world.block.MyaliteCrystalBlock;
-import org.violetmoon.quark.content.world.gen.SpiralSpireGenerator;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.block.OldMaterials;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.ZEntityTeleport;
-import org.violetmoon.zeta.event.play.loading.ZGatherHints;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "world")
 public class SpiralSpiresModule extends ZetaModule {
@@ -77,8 +79,10 @@ public class SpiralSpiresModule extends ZetaModule {
 				.requiresCorrectToolForDrops()
 				.strength(1.5F, 6.0F);
 		dusky_myalite = new ZetaBlock("dusky_myalite", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.PURPUR_BLOCK, true);
-
 		myalite_crystal = new MyaliteCrystalBlock(this);
+		
+		((IZetaBlock) dusky_myalite).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.END_STONE, false);
+		((IZetaBlock) myalite_crystal).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.END_STONE, false);
 		
 		useViaductTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_viaduct");
 	}

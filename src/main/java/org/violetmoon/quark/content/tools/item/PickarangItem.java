@@ -47,7 +47,6 @@ public class PickarangItem extends ZetaItem {
 	public PickarangItem(String regname, ZetaModule module, Properties properties, PickarangType<?> type) {
 		super(regname, module, properties);
 		this.type = type;
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import org.violetmoon.quark.base.Quark;
@@ -44,12 +45,10 @@ public class GlassShardModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		CreativeTabManager.daisyChain();
 		dirtyGlass = (ZetaBlock) new DirtyGlassBlock("dirty_glass", this,
 				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		
-		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
-		CreativeTabManager.endDaisyChain();
+		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.WHITE_STAINED_GLASS_PANE, true);
 
 		CreativeTabManager.daisyChain();
 		clearShard = new ZetaItem("clear_shard", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.PINK_DYE, false);

@@ -5,6 +5,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,7 +32,7 @@ public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 				.strength(25F)
 				.sound(SoundType.METAL)
 				.noOcclusion());
-		setCreativeTab(CreativeModeTabs.SPAWN_EGGS);
+		setCreativeTab(CreativeModeTabs.SPAWN_EGGS, Blocks.SPAWNER, false);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 

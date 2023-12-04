@@ -36,7 +36,7 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 
 		Quark.ZETA.registry.registerItem(this, "forgotten_hat");
 		this.module = module;
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.SADDLE, true);
 	}
 
 	@Override

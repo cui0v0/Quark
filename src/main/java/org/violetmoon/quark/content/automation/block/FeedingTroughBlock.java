@@ -15,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -52,7 +53,7 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	public FeedingTroughBlock(String regname, ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 		registerDefaultState(defaultBlockState().setValue(FULL, false));
-		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.COMPOSTER, true);
 	}
 
 	@NotNull

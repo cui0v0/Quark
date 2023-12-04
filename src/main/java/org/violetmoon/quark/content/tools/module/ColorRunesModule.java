@@ -21,6 +21,7 @@ import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.UpdateTridentMessage;
@@ -37,6 +38,7 @@ import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
@@ -136,10 +138,12 @@ public class ColorRunesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		runes = Arrays.stream(DyeColor.values()).map(color -> new RuneItem(color.getSerializedName() + "_rune", this, color.getId(), true)).toList();
+		CreativeTabManager.daisyChain();
+		runes = Arrays.stream(MiscUtil.CREATIVE_COLOR_ORDER).map(color -> new RuneItem(color.getSerializedName() + "_rune", this, color.getId(), true)).toList();
 
 		rainbow_rune = new RuneItem("rainbow_rune", this, 16, true);
 		blank_rune = new RuneItem("blank_rune", this, 17, false);
+		CreativeTabManager.endDaisyChain();
 
 		applyRuneTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("apply_rune");
 		fullRainbowTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("full_rainbow");

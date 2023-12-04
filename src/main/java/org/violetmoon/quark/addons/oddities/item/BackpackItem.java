@@ -60,7 +60,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 		if(module.category.isAddon())
 			module.zeta.requiredModTooltipHandler.map(this, module.category.requiredMod);
 
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.SADDLE, true);
 	}
 
 	@Override

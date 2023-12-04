@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -26,7 +27,7 @@ public class MidoriModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void register(ZRegister event) {
-		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS);
+		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.CLAY_BALL, false);
 		
 		Block.Properties props = Block.Properties.of()
 				.mapColor(MapColor.COLOR_LIGHT_GREEN)

@@ -62,7 +62,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.CHAIN, true);
 	}
 
 	@Override

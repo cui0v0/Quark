@@ -112,7 +112,7 @@ public class CompressedBlocksModule extends ZetaModule {
 				.sound(SoundType.GLASS)
 				.lightLevel(b -> 15))
 		.setCondition(() -> enableBlazeLantern)
-		.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.NETHERRACK, true);
 		
 		new ZetaBlock("bonded_leather", this, Block.Properties.of()
 				.mapColor(MapColor.COLOR_ORANGE)

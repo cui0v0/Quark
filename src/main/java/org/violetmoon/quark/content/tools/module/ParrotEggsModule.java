@@ -1,5 +1,30 @@
 package org.violetmoon.quark.content.tools.module;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.content.tools.entity.ParrotEgg;
+import org.violetmoon.quark.content.tools.item.ParrotEggItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.Hint;
+
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -24,31 +49,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.content.tools.entity.ParrotEgg;
-import org.violetmoon.quark.content.tools.item.ParrotEggItem;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @ZetaLoadModule(category = "tools")
 public class ParrotEggsModule extends ZetaModule {
@@ -86,11 +89,12 @@ public class ParrotEggsModule extends ZetaModule {
 				.build("parrot_egg");
 		Quark.ZETA.registry.register(parrotEggType, "parrot_egg", Registries.ENTITY_TYPE);
 
+		CreativeTabManager.daisyChain();
 		parrotEggs = new ArrayList<>();
 		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
 			int variant = i;
 
-			Item parrotEgg = new ParrotEggItem(NAMES.get(variant), variant, this).setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+			Item parrotEgg = new ParrotEggItem(NAMES.get(variant), variant, this).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.EGG, false);
 			parrotEggs.add(parrotEgg);
 
 			DispenserBlock.registerBehavior(parrotEgg, new AbstractProjectileDispenseBehavior() {
@@ -104,6 +108,7 @@ public class ParrotEggsModule extends ZetaModule {
 				}
 			});
 		}
+		CreativeTabManager.endDaisyChain();
 		
 		throwParrotEggTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_parrot_egg");
 	}

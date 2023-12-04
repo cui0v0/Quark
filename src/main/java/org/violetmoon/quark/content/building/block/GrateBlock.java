@@ -57,7 +57,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(LAVALOGGED, false));
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
+		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.CHAIN, false);
 	}
 
 	private static VoxelShape createNewBox(double stepHeight) {
