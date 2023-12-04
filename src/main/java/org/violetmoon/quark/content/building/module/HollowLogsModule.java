@@ -45,7 +45,6 @@ public class HollowLogsModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		for(Wood wood : VanillaWoods.ALL_WITH_LOGS) {
 			new HollowLogBlock(wood.log(), this, !wood.nether());
-//			new HollowWoodBlock(wood.wood(), this, !wood.nether());
 		}
 
 		crawlTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("hollow_log_crawl");
