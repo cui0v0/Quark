@@ -173,12 +173,11 @@ public class EnchantedBookTooltips {
 
 		@Override
 		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
-			PoseStack modelviewPose = RenderSystem.getModelViewStack();
+			PoseStack pose = guiGraphics.pose();
 
-			modelviewPose.pushPose();
-			modelviewPose.translate(tooltipX, tooltipY, 0);
-			modelviewPose.scale(0.5f, 0.5f, 1.0f);
-			Minecraft mc = Minecraft.getInstance();
+			pose.pushPose();
+			pose.translate(tooltipX, tooltipY, 0);
+			pose.scale(0.5f, 0.5f, 1.0f);
 			List<ItemStack> items = getItemsForEnchantment(enchantment, tableOnly);
 			int drawn = 0;
 			for (ItemStack testStack : items) {
@@ -186,7 +185,7 @@ public class EnchantedBookTooltips {
 				drawn++;
 			}
 
-			modelviewPose.popPose();
+			pose.popPose();
 			RenderSystem.applyModelViewMatrix();
 		}
 
