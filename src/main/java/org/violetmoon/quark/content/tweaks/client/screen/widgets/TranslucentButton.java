@@ -19,4 +19,14 @@ public class TranslucentButton extends Button {
 
 	@Override
 	public void setFocused(boolean focused) { } // NO-OP
+
+	@Override
+	public boolean isFocused() {
+		return false;
+	}
+
+	@Override
+	public boolean keyPressed(int i, int j, int k) {
+		return false;
+	}
 }
