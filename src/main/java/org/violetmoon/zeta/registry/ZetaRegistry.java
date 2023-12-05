@@ -38,11 +38,7 @@ public abstract class ZetaRegistry {
 	private final Map<Item, String> itemsToColorProviderName = new HashMap<>();
 
 	// Hastily tacked-on dynamic registry bullshit
-	private record DynamicEntry<T>(ResourceKey<T> id, T obj) {
-		void register(WritableRegistry<T> reg) {
-			reg.register(id, obj, Lifecycle.stable());
-		}
-	}
+	private record DynamicEntry<T>(ResourceKey<T> id, T obj) { }
 	private final Map<ResourceKey<Registry<?>>, List<DynamicEntry<?>>> dynamicDefers = new HashMap<>();
 
 	public ZetaRegistry(Zeta z) {
@@ -160,6 +156,7 @@ public abstract class ZetaRegistry {
 		return (ResourceKey<Registry<?>>) (Object) weeeejava;
 	}
 
+	//Returns the ResourceKey purely because they are kind of annoying to create
 	public <T> void registerDynamic(T obj, ResourceKey<T> id, ResourceKey<? extends Registry<T>> registry) {
 		RegisterDynamicUtil.signup(z);
 		dynamicDefers.computeIfAbsent(erase(registry), __ -> new ArrayList<>()).add(new DynamicEntry<>(id, obj));
@@ -182,6 +179,6 @@ public abstract class ZetaRegistry {
 			return;
 
 		List<DynamicEntry<T>> pun = ((List<DynamicEntry<T>>) (Object) entries);
-		pun.forEach(entry -> entry.register(writable));
+		pun.forEach(entry -> writable.register(entry.id, entry.obj, Lifecycle.stable()));
 	}
 }

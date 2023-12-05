@@ -1,11 +1,24 @@
 package org.violetmoon.quark.content.world.module;
 
+import java.util.List;
+import java.util.OptionalInt;
+
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -16,11 +29,13 @@ import org.violetmoon.quark.base.config.Config.Min;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
-import org.violetmoon.quark.content.world.block.AncientSaplingBlock;
+import org.violetmoon.quark.content.world.feature.AncientTreeTopperDecorator;
+import org.violetmoon.quark.content.world.feature.MultiFoliageStraightTrunkPlacer;
 import org.violetmoon.quark.content.world.item.AncientFruitItem;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
 import org.violetmoon.zeta.block.ZetaLeavesBlock;
+import org.violetmoon.zeta.block.ZetaSaplingBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -29,6 +44,7 @@ import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.world.PassthruTreeGrower;
 
 @ZetaLoadModule(category = "world")
 public class AncientWoodModule extends ZetaModule {
@@ -61,6 +77,7 @@ public class AncientWoodModule extends ZetaModule {
 	public static Block ancient_leaves;
 	@Hint public static Block ancient_sapling;
 	@Hint public static Item ancient_fruit;
+	public static final ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey = Quark.asResourceKey(Registries.CONFIGURED_FEATURE, "ancient_tree");
 
 	public static ManualTrigger ancientFruitTrigger;
 
@@ -75,17 +92,35 @@ public class AncientWoodModule extends ZetaModule {
 
 	@LoadEvent
 	public void register(ZRegister event) {
+		// wood //
+
 		woodSet = WoodSetHandler.addWoodSet(event, this, "ancient", MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_WHITE, true);
 		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MapColor.PLANT);
-		ancient_sapling = new AncientSaplingBlock(this);
+		ancient_sapling = new ZetaSaplingBlock("ancient", this, new PassthruTreeGrower(configuredFeatureKey)); //actually called "ancient_sapling"
+
+		event.getVariantRegistry().addFlowerPot(ancient_sapling, "ancient_sapling", Functions.identity()); //actually "potted_ancient_sapling"
+
+		// fruit //
+
 		ancient_fruit = new AncientFruitItem(this);
-
-		event.getVariantRegistry().addFlowerPot(ancient_sapling, Quark.ZETA.registry.getRegistryName(ancient_sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity());
-
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit))
 			.setCondition(() -> GeneralConfig.enableAdvancementModification));
-
 		ancientFruitTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("ancient_fruit_overlevel");
+
+		// tree //
+
+		//i don't think these custom tree placer bits *strictly* need to be registered in json, but it doesn't hurt
+		event.getRegistry().registerDynamic(MultiFoliageStraightTrunkPlacer.TYPE, "multi_foliage_straight_trunk_placer", Registries.TRUNK_PLACER_TYPE);
+		event.getRegistry().registerDynamic(AncientTreeTopperDecorator.TYPE, "ancient_tree_topper_decorator", Registries.TREE_DECORATOR_TYPE);
+
+		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
+			BlockStateProvider.simple(woodSet.log),
+			new MultiFoliageStraightTrunkPlacer(17, 4, 6, 5, 3),
+			BlockStateProvider.simple(ancient_leaves),
+			new FancyFoliagePlacer(UniformInt.of(2, 4), ConstantInt.of(-3), 2),
+			new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+		).decorators(List.of(new AncientTreeTopperDecorator())).ignoreVines().build();
+		event.getRegistry().registerDynamic(new ConfiguredFeature<>((TreeFeature) Feature.TREE, treeCfg), configuredFeatureKey, Registries.CONFIGURED_FEATURE);
 	}
 
 	@PlayEvent

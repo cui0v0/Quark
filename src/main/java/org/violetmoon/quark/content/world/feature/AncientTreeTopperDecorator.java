@@ -12,17 +12,16 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 
-//for Ancient Trees, TODO register me
 public class AncientTreeTopperDecorator extends TreeDecorator {
 
 	public static final Codec<AncientTreeTopperDecorator> CODEC = Codec.unit(AncientTreeTopperDecorator::new);
+
+	//Registered in AncientWoodModule
 	public static final TreeDecoratorType<AncientTreeTopperDecorator> TYPE = new TreeDecoratorType<>(CODEC);
 
-	//TODO register me
 	@Override
 	protected TreeDecoratorType<?> type() {
-		//return TYPE;
-		return null;
+		return TYPE;
 	}
 
 	@Override
