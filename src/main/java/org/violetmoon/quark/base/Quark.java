@@ -1,5 +1,7 @@
 package org.violetmoon.quark.base;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -34,5 +36,9 @@ public class Quark {
 
 	public static ResourceLocation asResource(String name) {
 		return new ResourceLocation(MOD_ID, name);
+	}
+
+	public static <T> ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> base, String name) {
+		return ResourceKey.create(base, asResource(name));
 	}
 }

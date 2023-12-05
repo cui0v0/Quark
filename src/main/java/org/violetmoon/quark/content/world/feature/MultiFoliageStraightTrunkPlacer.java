@@ -35,13 +35,12 @@ public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 			)
 		).apply(overengineered, MultiFoliageStraightTrunkPlacer::new));
 
-	//TODO: register me
+	//Registered in AncientWoodModule
 	public static final TrunkPlacerType<MultiFoliageStraightTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
 
 	@Override
 	protected TrunkPlacerType<?> type() {
-		//return TYPE;
-		return null;
+		return TYPE;
 	}
 
 	@Override

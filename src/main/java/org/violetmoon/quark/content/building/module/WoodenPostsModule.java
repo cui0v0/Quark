@@ -45,10 +45,10 @@ public class WoodenPostsModule extends ZetaModule {
 		postsTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "posts"));
 	}
 
-	public static boolean canLanternConnect(BlockState state, LevelReader worldIn, BlockPos pos, boolean prev) {
+	public static boolean canHangingBlockConnect(BlockState state, LevelReader worldIn, BlockPos pos, boolean prev) {
 		return prev ||
 				(Quark.ZETA.modules.isEnabled(WoodenPostsModule.class)
-						&& state.getValue(LanternBlock.HANGING)
+						&& (!state.hasProperty(LanternBlock.HANGING) || state.getValue(LanternBlock.HANGING))
 						&& worldIn.getBlockState(pos.above()).getBlock() instanceof WoodPostBlock);
 	}
 
