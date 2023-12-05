@@ -38,7 +38,7 @@ public class Quark {
 		return new ResourceLocation(MOD_ID, name);
 	}
 
-	public static <T>ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> base, String name) {
+	public static <T> ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> base, String name) {
 		return ResourceKey.create(base, asResource(name));
 	}
 }

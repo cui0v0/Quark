@@ -2,6 +2,8 @@ package org.violetmoon.quark.content.world.module;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
@@ -9,6 +11,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
@@ -31,6 +34,7 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -66,15 +70,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 	public static final ResourceLocation BIOME_NAME = new ResourceLocation(Quark.MOD_ID, "glimmering_weald");
 	public static final ResourceKey<Biome> BIOME_KEY = ResourceKey.create(Registries.BIOME, BIOME_NAME);
 
-	public static final BootstapContext<PlacedFeature> bootstapContext = new RegistrySetBuilder().createState(RegistryAccessUtil.getRegistryAccess()).bootstapContext();
-	public static final BootstapContext<ConfiguredFeature<?,?>> bootstapContextConfig = new RegistrySetBuilder().createState(RegistryAccessUtil.getRegistryAccess()).bootstapContext();
-	public static final BootstapContext<ConfiguredWorldCarver<?>> bootstapContextWorld = new RegistrySetBuilder().createState(RegistryAccessUtil.getRegistryAccess()).bootstapContext();
-
-
-	static {
-	}
-
-	public static final Holder<PlacedFeature> ORE_LAPIS_EXTRA = bootstapContext.register(ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation("quark", "ore_lapis_glimmering_weald")), new PlacedFeature(bootstapContext.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(OreFeatures.ORE_LAPIS), OrePlacements.commonOrePlacement(12, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0)))));
+	public static Holder<PlacedFeature> ore_lapis_extra;
 	public static Holder<PlacedFeature> placed_glow_shrooms;
 	public static Holder<PlacedFeature> placed_glow_extras;
 
@@ -110,14 +106,50 @@ public class GlimmeringWealdModule extends ZetaModule {
 		event.getVariantRegistry().addFlowerPot(glow_lichen_growth, "glow_lichen_growth", prop -> prop.lightLevel((state) -> 8));
 		event.getVariantRegistry().addFlowerPot(glow_shroom, "glow_shroom", prop -> prop.lightLevel((state) -> 10));
 
-		//fixme
-		makeFeatures();
+		// Features, Configured Features, Placed Features //
+
+		placed_glow_shrooms = place(event, "glow_shrooms", new GlowShroomsFeature(), GlowShroomsFeature.placed());
+		placed_glow_extras = place(event, "glow_extras", new GlowExtrasFeature(), GlowExtrasFeature.placed());
+		ore_lapis_extra = event.getRegistry().registerDynamicF(lookup -> {
+			Holder<ConfiguredFeature<?, ?>> lapisConfigured = lookup.lookup(Registries.CONFIGURED_FEATURE)
+				.orElseThrow() //it better exist
+				.getter()
+				.getOrThrow(OreFeatures.ORE_LAPIS); //it better exist
+			return new PlacedFeature(lapisConfigured, OrePlacements.commonOrePlacement(12, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
+		}, Quark.asResourceKey(Registries.PLACED_FEATURE, "ore_lapis_glimmering_weald"), Registries.PLACED_FEATURE);
+
+		// Biomes //
+
+		event.getRegistry().registerDynamicF(lookup -> {
+			HolderGetter<PlacedFeature> placedFeatures = lookup.lookup(Registries.PLACED_FEATURE).orElseThrow().getter();
+			HolderGetter<ConfiguredWorldCarver<?>> configuredCarvers = lookup.lookup(Registries.CONFIGURED_CARVER).orElseThrow().getter();
+
+			MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
+			BiomeDefaultFeatures.commonSpawns(mobs);
+			if(Quark.ZETA.modules.isEnabled(StonelingsModule.class))
+				mobs.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(StonelingsModule.stonelingType, 200, 1, 4));
+			mobs.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 20, 4, 6));
+
+			BiomeGenerationSettings.Builder settings = new BiomeGenerationSettings.Builder(placedFeatures, configuredCarvers);
+			OverworldBiomes.globalOverworldGeneration(settings);
+			BiomeDefaultFeatures.addPlainGrass(settings);
+			BiomeDefaultFeatures.addDefaultOres(settings, true);
+			BiomeDefaultFeatures.addDefaultSoftDisks(settings);
+			BiomeDefaultFeatures.addPlainVegetation(settings);
+			BiomeDefaultFeatures.addDefaultMushrooms(settings);
+			BiomeDefaultFeatures.addDefaultExtraVegetation(settings);
+
+			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_shrooms);
+			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_extras);
+			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ore_lapis_extra);
+
+			Music music = Musics.createGameMusic(Holder.direct(QuarkSounds.MUSIC_GLIMMERING_WEALD));
+			return OverworldBiomes.biome(true, 0.8F, 0.4F, mobs, settings, music);
+		}, BIOME_KEY, Registries.BIOME);
 	}
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		//fixme
-		Quark.ZETA.registry.register(makeBiome(), BIOME_NAME, Registries.BIOME);
 		float wmin = (float) minDepthRange;
 		float wmax = (float) maxDepthRange;
 		if(wmin >= wmax){
@@ -146,48 +178,14 @@ public class GlimmeringWealdModule extends ZetaModule {
 		});
 	}
 
-	//fixme
-	private static void makeFeatures() {
-		placed_glow_shrooms = place("glow_shrooms", new GlowShroomsFeature(), GlowShroomsFeature.placed());
-		placed_glow_extras = place("glow_extras", new GlowExtrasFeature(), GlowExtrasFeature.placed());
-	}
+	@SuppressWarnings("unchecked")
+	private static Holder<PlacedFeature> place(ZRegister event, String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
+		Holder<Feature<?>> featureHolder = event.getRegistry().registerDynamic(feature, featureName, Registries.FEATURE);
 
+		ConfiguredFeature<?, ?> cfg = new ConfiguredFeature<>((Feature<NoneFeatureConfiguration>) featureHolder.get(), NoneFeatureConfiguration.NONE);
+		Holder<ConfiguredFeature<?, ?>> configuredFeatureHolder = event.getRegistry().registerDynamic(cfg, featureName, Registries.CONFIGURED_FEATURE);
 
-	private static Holder<PlacedFeature> place(String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
-		String name = Quark.MOD_ID + ":" + featureName;
-
-		Quark.ZETA.registry.register(feature, name, Registries.FEATURE);
-		Holder<ConfiguredFeature<?, ?>> configured = bootstapContextConfig.register(ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(name)), new ConfiguredFeature<>(feature, NoneFeatureConfiguration.NONE));
-		return bootstapContext.register(ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(name)), new PlacedFeature(configured, placer));
-	}
-
-
-	private static Biome makeBiome() {
-		MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.commonSpawns(mobs);
-
-		if(Quark.ZETA.modules.isEnabled(StonelingsModule.class))
-			mobs.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(StonelingsModule.stonelingType, 200, 1, 4));
-		mobs.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 20, 4, 6));
-
-		BiomeGenerationSettings.Builder settings = new BiomeGenerationSettings.Builder(bootstapContext.lookup(Registries.PLACED_FEATURE), bootstapContextWorld.lookup(Registries.CONFIGURED_CARVER));
-		OverworldBiomes.globalOverworldGeneration(settings);
-		BiomeDefaultFeatures.addPlainGrass(settings);
-		BiomeDefaultFeatures.addDefaultOres(settings, true);
-		BiomeDefaultFeatures.addDefaultSoftDisks(settings);
-		BiomeDefaultFeatures.addPlainVegetation(settings);
-		BiomeDefaultFeatures.addDefaultMushrooms(settings);
-		BiomeDefaultFeatures.addDefaultExtraVegetation(settings);
-
-		settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_shrooms);
-		settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_extras);
-
-		settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ORE_LAPIS_EXTRA);
-
-		Music music = Musics.createGameMusic(Holder.direct(QuarkSounds.MUSIC_GLIMMERING_WEALD));
-		Biome biome = OverworldBiomes.biome(true, 0.8F, 0.4F, mobs, settings, music);
-
-		return biome;
+		return event.getRegistry().registerDynamic(new PlacedFeature(configuredFeatureHolder, placer), featureName, Registries.PLACED_FEATURE);
 	}
 
 }

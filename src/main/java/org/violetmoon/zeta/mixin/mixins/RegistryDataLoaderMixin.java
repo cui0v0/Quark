@@ -20,8 +20,8 @@ import org.violetmoon.zeta.util.RegisterDynamicUtil;
 public class RegistryDataLoaderMixin {
 
 	@Inject(method = "loadRegistryContents", at = @At("RETURN"))
-	private static <E> void zeta$onLoadRegistryContents(RegistryOps.RegistryInfoLookup dfuCrap, ResourceManager mgr, ResourceKey<? extends Registry<E>> registryId, WritableRegistry<E> registry, Decoder<E> whereWereGoingWeDontNeedParsers, Map<ResourceKey<?>, Exception> failed, CallbackInfo ci) {
-		RegisterDynamicUtil.onRegisterDynamic(registryId, registry);
+	private static <E> void zeta$onLoadRegistryContents(RegistryOps.RegistryInfoLookup registryInfoLookup, ResourceManager mgr, ResourceKey<? extends Registry<E>> registryId, WritableRegistry<E> registry, Decoder<E> whereWereGoingWeDontNeedParsers, Map<ResourceKey<?>, Exception> failed, CallbackInfo ci) {
+		RegisterDynamicUtil.onRegisterDynamic(registryInfoLookup, registryId, registry);
 	}
 
 }

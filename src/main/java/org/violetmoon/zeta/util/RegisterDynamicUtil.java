@@ -5,6 +5,7 @@ import java.util.Set;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import org.violetmoon.zeta.Zeta;
 
@@ -25,8 +26,8 @@ public class RegisterDynamicUtil {
 		interestedParties.add(z);
 	}
 
-	public static <E> void onRegisterDynamic(ResourceKey<? extends Registry<E>> registryId, WritableRegistry<E> registry) {
-		interestedParties.forEach(z -> z.registry.performDynamicRegistration(registryId, registry));
+	public static <E> void onRegisterDynamic(RegistryOps.RegistryInfoLookup lookup, ResourceKey<? extends Registry<E>> registryId, WritableRegistry<E> registry) {
+		interestedParties.forEach(z -> z.registry.performDynamicRegistration(lookup, registryId, registry));
 	}
 
 }
