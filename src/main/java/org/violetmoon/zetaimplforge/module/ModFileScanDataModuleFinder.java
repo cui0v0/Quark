@@ -32,7 +32,7 @@ public class ModFileScanDataModuleFinder implements ModuleFinder {
 				try {
 					clazz = (Class<? extends ZetaModule>) Class.forName(ad.clazz().getClassName(), false, ModFileScanDataModuleFinder.class.getClassLoader());
 				} catch (ReflectiveOperationException e) {
-					throw new RuntimeException("Exception getting QuarkModule (legacy)", e);
+					throw new RuntimeException("Exception getting ZetaModule class", e);
 				}
 
 				return ZetaLoadModuleAnnotationData.fromForgeThing(clazz, ad.annotationData());

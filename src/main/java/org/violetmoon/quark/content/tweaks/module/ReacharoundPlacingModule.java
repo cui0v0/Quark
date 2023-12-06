@@ -79,7 +79,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			if(!player.mayUseItemAt(target.pos, target.dir, stack) || !player.level().mayInteract(player, target.pos))
 				return;
 
-			if(!IClaimIntegration.INSTANCE.canPlace(player, target.pos))return;
+			if(!Quark.FLAN_INTEGRATION.canPlace(player, target.pos))return;
 
 			int count = stack.getCount();
 			InteractionHand hand = event.getHand();

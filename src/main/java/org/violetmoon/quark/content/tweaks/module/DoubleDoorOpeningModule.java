@@ -128,7 +128,7 @@ public class DoubleDoorOpeningModule extends ZetaModule {
 			Level world = event.getLevel();
 			BlockPos pos = event.getPos();
 
-			if(!IClaimIntegration.INSTANCE.canInteract(player, pos))
+			if(!Quark.FLAN_INTEGRATION.canInteract(player, pos))
 				return;
 
 			handling = true;

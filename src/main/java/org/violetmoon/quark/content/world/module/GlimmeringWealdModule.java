@@ -34,7 +34,6 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -43,8 +42,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.handler.UndergroundBiomeHandler;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
 import org.violetmoon.quark.content.world.block.GlowLichenGrowthBlock;
 import org.violetmoon.quark.content.world.block.GlowShroomBlock;
@@ -66,7 +63,6 @@ import java.util.List;
 @ZetaLoadModule(category = "world")
 public class GlimmeringWealdModule extends ZetaModule {
 
-	private static final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
 	public static final ResourceLocation BIOME_NAME = new ResourceLocation(Quark.MOD_ID, "glimmering_weald");
 	public static final ResourceKey<Biome> BIOME_KEY = ResourceKey.create(Registries.BIOME, BIOME_NAME);
 
@@ -157,8 +153,9 @@ public class GlimmeringWealdModule extends ZetaModule {
 			wmax = 2;
 			wmin = 1.55f;
 		}
-		UndergroundBiomeHandler.addUndergroundBiome(this, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE,
-				Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F), BIOME_NAME);
+		Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
+		Quark.TERRABLENDER_INTEGRATION.registerUndergroundBiome(this, BIOME_NAME, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE,
+						Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F));
 
 		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY))
 			.setCondition(() -> GeneralConfig.enableAdvancementModification));
