@@ -84,9 +84,16 @@ public class GeneralConfig {
 
 	@Config(description = "Set to true to make the quark big worldgen features such as stone clusters generate as spheres rather than unique shapes. It's faster, but won't look as cool")
 	public static boolean useFastWorldgen = false;
-	
-	@Config(description = "Used for terrablender integration")
+
+	@Config(description = "If 'true' and TerraBlender is present, Quark will add a TerraBlender region. The region will contain vanilla biomes and the Glimmering Weald.")
+	public static boolean terrablenderAddRegion = true;
+
+	@Config(description = "Quark will set this weight for its TerraBlender region.")
 	public static int terrablenderRegionWeight = 1;
+
+	@Config(description = "If 'true', Quark will modify the `minecraft:overworld` MultiNoiseBiomeSourceParamaterList preset, even when Terrablender is installed.\n" +
+		"This will have various knock-on effects but might make the Weald more common, or appear closer to modded biomes. Who knows?")
+	public static boolean terrablenderModifyVanillaAnyway = false;
 
 	@Config(description = "Set to false to stop quark from adding its own items to multi-requirement vanilla advancements")
 	public static boolean enableAdvancementModification = true;

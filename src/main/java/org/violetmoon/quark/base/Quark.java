@@ -13,6 +13,9 @@ import org.violetmoon.quark.integration.claim.FlanIntegration;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.quark.integration.lootr.ILootrIntegration;
 import org.violetmoon.quark.integration.lootr.LootrIntegration;
+import org.violetmoon.quark.integration.terrablender.AbstractUndergroundBiomeHandler;
+import org.violetmoon.quark.integration.terrablender.TerrablenderUndergroundBiomeHandler;
+import org.violetmoon.quark.integration.terrablender.VanillaUndergroundBiomeHandler;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zetaimplforge.ForgeZeta;
 
@@ -36,6 +39,10 @@ public class Quark {
 	public static final ILootrIntegration LOOTR_INTEGRATION = ZETA.modIntegration("lootr",
 		() -> LootrIntegration::new,
 		() -> ILootrIntegration.Dummy::new);
+
+	public static final AbstractUndergroundBiomeHandler TERRABLENDER_INTEGRATION = ZETA.modIntegration("terrablender",
+		() -> TerrablenderUndergroundBiomeHandler::new,
+		() -> VanillaUndergroundBiomeHandler::new);
 
 	public Quark() {
 		instance = this;

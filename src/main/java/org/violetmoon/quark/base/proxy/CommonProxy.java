@@ -64,7 +64,6 @@ public class CommonProxy {
 			.subscribe(WoodSetHandler.class)
 			.subscribe(WorldGenHandler.class)
 			.subscribe(FuelHandler.class)
-			.subscribe(UndergroundBiomeHandler.class)
 			.subscribe(EntitySpawnHandler.class)
 			.subscribe(this);
 

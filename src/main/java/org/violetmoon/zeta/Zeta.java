@@ -127,8 +127,12 @@ public abstract class Zeta {
 	// modloader services
 	public abstract boolean isModLoaded(String modid);
 	public abstract @Nullable String getModDisplayName(String modid);
-	public <T> T modIntegration(String modid, Supplier<Supplier<T>> yes, Supplier<Supplier<T>> no) {
-		return (isModLoaded(modid) ? yes : no).get().get();
+	public <T> T modIntegration(String compatWith, Supplier<Supplier<T>> yes, Supplier<Supplier<T>> no) {
+		try {
+			return (isModLoaded(compatWith) ? yes : no).get().get();
+		} catch (Exception e) {
+			throw new RuntimeException("Zeta: " + modid + " threw exception initializing compat with " + compatWith, e);
+		}
 	}
 
 	// config
