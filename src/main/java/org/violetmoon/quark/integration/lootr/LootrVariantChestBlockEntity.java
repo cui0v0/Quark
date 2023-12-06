@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
+import org.violetmoon.quark.base.Quark;
 
 /**
  * @author WireSegal
@@ -17,7 +18,7 @@ public class LootrVariantChestBlockEntity extends LootrChestBlockEntity {
 	}
 
 	public LootrVariantChestBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		this(ILootrIntegration.INSTANCE.chestTE(), pWorldPosition, pBlockState);
+		this(Quark.LOOTR_INTEGRATION.chestTE(), pWorldPosition, pBlockState);
 	}
 
 	@Override

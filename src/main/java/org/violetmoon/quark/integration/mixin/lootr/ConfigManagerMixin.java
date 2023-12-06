@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.violetmoon.quark.integration.lootr.ILootrIntegration;
+import org.violetmoon.quark.base.Quark;
 
 @Pseudo
 @Mixin(value = ConfigManager.class, remap = false)
@@ -18,7 +18,7 @@ public class ConfigManagerMixin {
 	private static Block replacement(Block original, ResourceLocation location) {
 		Block block = BuiltInRegistries.BLOCK.get(location);
 		if (block != Blocks.AIR) {
-			Block lootrVariant = ILootrIntegration.INSTANCE.lootrVariant(block);
+			Block lootrVariant = Quark.LOOTR_INTEGRATION.lootrVariant(block);
 			if (lootrVariant != null)
 				return lootrVariant;
 		}

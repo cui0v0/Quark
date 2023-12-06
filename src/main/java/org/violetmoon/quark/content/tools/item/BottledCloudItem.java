@@ -42,7 +42,7 @@ public class BottledCloudItem extends ZetaItem {
 			if(!world.isEmptyBlock(pos))
 				pos = pos.relative(bresult.getDirection());
 
-			if(world.isEmptyBlock(pos) && IClaimIntegration.INSTANCE.canPlace(player, pos)) {
+			if(world.isEmptyBlock(pos) && Quark.FLAN_INTEGRATION.canPlace(player, pos)) {
 
 				if(!world.isClientSide) {
 					world.gameEvent(player, GameEvent.BLOCK_PLACE, pos);

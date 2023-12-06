@@ -2,13 +2,11 @@ package org.violetmoon.quark.integration.lootr;
 
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.Util;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.ModList;
 
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -18,15 +16,6 @@ import org.violetmoon.zeta.module.ZetaModule;
  * Created at 11:40 AM on 7/3/23.
  */
 public interface ILootrIntegration {
-
-	ILootrIntegration INSTANCE = Util.make(() -> {
-		if (ModList.get().isLoaded("lootr")) {
-			return new LootrIntegration();
-		}
-		return new ILootrIntegration() {
-			//NO-OP
-		};
-	});
 
 	default BlockEntityType<? extends ChestBlockEntity> chestTE() {
 		return null;
@@ -53,4 +42,7 @@ public interface ILootrIntegration {
 	default void clientSetup() {
 		// NO-OP
 	}
+
+	class Dummy implements ILootrIntegration { }
+
 }

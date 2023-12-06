@@ -36,7 +36,6 @@ import org.violetmoon.quark.content.building.block.be.VariantChestBlockEntity;
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import org.violetmoon.quark.content.building.client.render.be.VariantChestRenderer;
 import org.violetmoon.quark.content.building.recipe.MixedExclusionRecipe;
-import org.violetmoon.quark.integration.lootr.ILootrIntegration;
 import org.violetmoon.quark.mixin.accessor.AccessorAbstractChestedHorse;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
@@ -118,7 +117,7 @@ public class VariantChestsModule extends ZetaModule {
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, regularChest, Blocks.CHEST, false);
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, trappedChest, Blocks.TRAPPED_CHEST, false);
 		
-		ILootrIntegration.INSTANCE.makeChestBlocks(module, name, base, condition, regularChest, trappedChest);
+		Quark.LOOTR_INTEGRATION.makeChestBlocks(module, name, base, condition, regularChest, trappedChest);
 	}
 
 	//only enables the block if the variant chests module is enabled
@@ -137,7 +136,7 @@ public class VariantChestsModule extends ZetaModule {
 		Quark.ZETA.registry.register(chestTEType, "variant_chest", Registries.BLOCK_ENTITY_TYPE);
 		Quark.ZETA.registry.register(trappedChestTEType, "variant_trapped_chest", Registries.BLOCK_ENTITY_TYPE);
 
-		ILootrIntegration.INSTANCE.postRegister();
+		Quark.LOOTR_INTEGRATION.postRegister();
 	}
 
 	/// WORLDGEN ///
@@ -262,7 +261,7 @@ public class VariantChestsModule extends ZetaModule {
 			BlockEntityRenderers.register(chestTEType, ctx -> new VariantChestRenderer(ctx, false));
 			BlockEntityRenderers.register(trappedChestTEType, ctx -> new VariantChestRenderer(ctx, true));
 
-			ILootrIntegration.INSTANCE.clientSetup();
+			Quark.LOOTR_INTEGRATION.clientSetup();
 
 			for(Block b : regularChests)
 				QuarkClient.ZETA_CLIENT.setBlockEntityWithoutLevelRenderer(b.asItem(), new SimpleWithoutLevelRenderer(chestTEType, b.defaultBlockState()));

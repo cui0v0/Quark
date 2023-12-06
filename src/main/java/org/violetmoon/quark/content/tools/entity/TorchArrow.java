@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tools.entity;
 
 import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tools.module.TorchArrowModule;
 import org.violetmoon.quark.integration.claim.IClaimIntegration;
 
@@ -70,7 +71,7 @@ public class TorchArrow extends AbstractArrow {
 			
 			if((state.isAir() || state.canBeReplaced()) && direction != Direction.DOWN) {
 
-				if(this.getOwner() instanceof Player p && !IClaimIntegration.INSTANCE.canPlace(p, finalPos))
+				if(this.getOwner() instanceof Player p && !Quark.FLAN_INTEGRATION.canPlace(p, finalPos))
 					return;
 
 				BlockState setState;

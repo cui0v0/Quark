@@ -273,7 +273,7 @@ public class SimpleHarvestModule extends ZetaModule {
         if (pick.getType() != HitResult.Type.BLOCK || !pick.getBlockPos().equals(pos))
             return false;
 
-        if(!IClaimIntegration.INSTANCE.canBreak(player, pos))
+        if(!Quark.FLAN_INTEGRATION.canBreak(player, pos))
             return false;
 
         BlockState stateAt = player.level().getBlockState(pos);

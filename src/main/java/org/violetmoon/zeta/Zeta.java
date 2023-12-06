@@ -1,5 +1,7 @@
 package org.violetmoon.zeta;
 
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -125,6 +127,9 @@ public abstract class Zeta {
 	// modloader services
 	public abstract boolean isModLoaded(String modid);
 	public abstract @Nullable String getModDisplayName(String modid);
+	public <T> T modIntegration(String modid, Supplier<Supplier<T>> yes, Supplier<Supplier<T>> no) {
+		return (isModLoaded(modid) ? yes : no).get().get();
+	}
 
 	// config
 	public abstract IZetaConfigInternals makeConfigInternals(SectionDefinition rootSection);
@@ -158,9 +163,10 @@ public abstract class Zeta {
 
 	public abstract ZetaNetworkHandler createNetworkHandler(int protocolVersion);
 
+	// event bus
 	public abstract <E, T extends E> T fireExternalEvent(T impl);
 
-	// misc "ah fuck i need to interact with the modloader" stuff
+	// ummmmmm why is this here
 	public abstract boolean fireRightClickBlock(Player player, InteractionHand hand, BlockPos pos, BlockHitResult bhr);
 
 	// Let's Jump

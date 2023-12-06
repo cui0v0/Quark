@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
 
 /**
  * @author WireSegal
@@ -19,7 +20,7 @@ public class LootrVariantTrappedChestBlockEntity extends LootrVariantChestBlockE
 	}
 
 	public LootrVariantTrappedChestBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-		this(ILootrIntegration.INSTANCE.trappedChestTE(), pWorldPosition, pBlockState);
+		this(Quark.LOOTR_INTEGRATION.trappedChestTE(), pWorldPosition, pBlockState);
 	}
 
 	@Override

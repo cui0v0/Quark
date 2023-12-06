@@ -27,6 +27,7 @@ public final class UndergroundBiomeHandler {
 	}
 
 	public static void addUndergroundBiomes(OverworldBiomeBuilder builder, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
+		Quark.LOG.info("GOT HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", new Throwable());
 		proxy().addUndergroundBiomes(builder, consumer);
 	}
 
