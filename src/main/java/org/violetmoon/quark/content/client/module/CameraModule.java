@@ -3,12 +3,12 @@ package org.violetmoon.quark.content.client.module;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexSorting;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
@@ -182,6 +183,19 @@ public class CameraModule extends ZetaModule {
 		public void renderTick(ZRenderTick event) {
 			Minecraft mc = Minecraft.getInstance();
 
+			Window window = mc.getWindow();
+
+			// -------------------------- Cursed Code!!! --------------------------
+			// fixme: Switch to a different event called earlier inside of Minecraft#runTick
+			Matrix4f matrix4f = (new Matrix4f()).setOrtho(0.0F, (float)((double) window.getWidth() / window.getGuiScale()), (float)((double) window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
+			RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
+			PoseStack posestack = RenderSystem.getModelViewStack();
+			posestack.pushPose();
+			posestack.setIdentity();
+			posestack.translate(0.0D, 0.0D, 1000F-net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
+			RenderSystem.applyModelViewMatrix();
+			// --------------------------------------------------------------------
+
 			Player player = mc.player;
 			if(player != null) {
 				Inventory inventory = player.getInventory();
@@ -201,8 +215,7 @@ public class CameraModule extends ZetaModule {
 				if(queueScreenshot)
 					screenshotting = true;
 
-				PoseStack stack = new PoseStack();
-				renderCameraHUD(mc, stack);
+				renderCameraHUD(mc);
 
 				if(queueScreenshot) {
 					queueScreenshot = false;
@@ -211,8 +224,9 @@ public class CameraModule extends ZetaModule {
 			}
 		}
 
-		private static void renderCameraHUD(Minecraft mc, PoseStack matrix) {
+		private static void renderCameraHUD(Minecraft mc) {
 			GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
+			PoseStack matrix = guiGraphics.pose();
 
 			Window mw = mc.getWindow();
 			int twidth = mw.getGuiScaledWidth();
