@@ -9,6 +9,7 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import net.minecraft.world.level.block.Blocks;
 
@@ -19,8 +20,10 @@ public class VariantBookshelvesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
+		CreativeTabManager.daisyChain();
 		for(Wood type : VanillaWoods.NON_OAK)
 			new VariantBookshelfBlock(type.name(), this, !type.nether());
+		CreativeTabManager.endDaisyChain();
 	}
 
 	@LoadEvent

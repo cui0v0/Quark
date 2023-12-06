@@ -89,7 +89,7 @@ public class WoodSetHandler {
 		WoodType type = WoodType.register(new WoodType(Quark.MOD_ID + ":" + name, setType));
 		WoodSet set = new WoodSet(name, module, type);
 
-		set.log = log(name + "_log", module, color, barkColor).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.STONE, true);
+		set.log = log(name + "_log", module, color, barkColor).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.BAMBOO_BLOCK, true);
 		set.wood = new ZetaPillarBlock(name + "_wood", module, OldMaterials.wood().mapColor(barkColor).strength(2.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		set.strippedLog = log("stripped_" + name + "_log", module, color, color).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 		set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, OldMaterials.wood().mapColor(color).strength(2.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
