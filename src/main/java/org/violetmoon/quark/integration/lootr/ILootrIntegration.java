@@ -5,8 +5,6 @@ import java.util.function.BooleanSupplier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -35,11 +33,6 @@ public interface ILootrIntegration {
 	}
 
 	default void postRegister() {
-		// NO-OP
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	default void clientSetup() {
 		// NO-OP
 	}
 
