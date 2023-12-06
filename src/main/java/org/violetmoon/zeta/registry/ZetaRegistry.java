@@ -213,13 +213,11 @@ public abstract class ZetaRegistry {
 
 	@SuppressWarnings("unchecked")
 	public <T> void performDynamicRegistration(RegistryOps.RegistryInfoLookup lookup, ResourceKey<? extends Registry<?>> registryKey, WritableRegistry<T> writable) {
-		Quark.ZETA.log.info("Dynamic Registration wtf {}", registryKey);
-
 		List<DynamicEntry<?>> entries = dynamicDefers.get(registryKey);
 		if(entries == null || entries.isEmpty())
 			return;
 
-		Quark.ZETA.log.info("There are {} things to register", entries.size());
+		Quark.ZETA.log.info("Dynamically registering {} thing{} into {}", entries.size(), entries.size() > 1 ? "s" : "", registryKey.location());
 
 		List<DynamicEntry<T>> typePun = ((List<DynamicEntry<T>>) (Object) entries);
 		typePun.forEach(entry -> {

@@ -18,7 +18,8 @@ public record ZetaLoadModuleAnnotationData(
 	String description,
 	String[] antiOverlap,
 	boolean enabledByDefault,
-	boolean clientReplacement
+	boolean clientReplacement,
+	int loadPhase
 ) {
 	public static ZetaLoadModuleAnnotationData fromAnnotation(Class<?> clazz, ZetaLoadModule annotation) {
 		return new ZetaLoadModuleAnnotationData(
@@ -28,7 +29,8 @@ public record ZetaLoadModuleAnnotationData(
 			annotation.description(),
 			annotation.antiOverlap(),
 			annotation.enabledByDefault(),
-			annotation.clientReplacement()
+			annotation.clientReplacement(),
+			annotation.loadPhase()
 		);
 	}
 
@@ -42,7 +44,8 @@ public record ZetaLoadModuleAnnotationData(
 			(String) data.getOrDefault("description", ""),
 			((List<String>) data.getOrDefault("antiOverlap", new ArrayList<String>())).toArray(new String[0]),
 			(boolean) data.getOrDefault("enabledByDefault", true),
-			(boolean) data.getOrDefault("clientReplacement", false)
+			(boolean) data.getOrDefault("clientReplacement", false),
+			(int) data.getOrDefault("loadPhase", 0)
 		);
 	}
 }

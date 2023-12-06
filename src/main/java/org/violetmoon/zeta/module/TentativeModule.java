@@ -23,7 +23,8 @@ public record TentativeModule(
 	Set<String> antiOverlap,
 	boolean enabledByDefault,
 
-	boolean clientReplacement
+	boolean clientReplacement,
+	int loadPhase
 ) {
 	@SuppressWarnings("unchecked")
 	public static TentativeModule from(ZetaLoadModuleAnnotationData data, Function<String, ZetaCategory> categoryResolver) {
@@ -66,7 +67,8 @@ public record TentativeModule(
 			data.description(),
 			Set.of(data.antiOverlap()),
 			data.enabledByDefault(),
-			clientReplacement
+			clientReplacement,
+			data.loadPhase()
 		);
 	}
 
@@ -80,7 +82,8 @@ public record TentativeModule(
 			this.description,
 			this.antiOverlap,
 			this.enabledByDefault,
-			false
+			false,
+			replacement.loadPhase
 		);
 	}
 

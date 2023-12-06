@@ -76,8 +76,6 @@ public class NewStoneTypesModule extends ZetaModule {
 		jasperBlock = makeStone(event, this, "jasper", jasper, BigStoneClustersModule.jasper, () -> enableJasper, MapColor.TERRACOTTA_RED);
 		shaleBlock = makeStone(event, this, "shale", shale, BigStoneClustersModule.shale, () -> enableShale, MapColor.ICE);
 		myaliteBlock = makeStone(event, this, null, "myalite", myalite, BigStoneClustersModule.myalite, () -> enableMyalite, MapColor.COLOR_PURPLE, MyaliteBlock::new);
-		
-		MoreStoneVariantsModule.instance.weirdAssHackCallMeFromNewStoneTypesToEnsureTheBlocksExistOhGod(event);
 	}
 
 	public static Block makeStone(ZRegister event, ZetaModule module, String name, StoneTypeConfig config, BigStoneClusterConfig bigConfig, BooleanSupplier enabledCond, MapColor color) {

@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
-@ZetaLoadModule(category = "building")
+@ZetaLoadModule(category = "building", loadPhase = 10) //Needs to load after NewStoneTypesModule
 public class MoreStoneVariantsModule extends ZetaModule {
 
 	@Config(flag = "stone_bricks") public boolean enableBricks = true;
@@ -47,16 +47,14 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		add(event, "calcite", MapColor.TERRACOTTA_WHITE, SoundType.CALCITE, polishedCalcite, _true);
 		add(event, "dripstone", MapColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, polishedDripstone, _true);
 		add(event, "tuff", MapColor.TERRACOTTA_GRAY, SoundType.TUFF, polishedTuff, _true);
-		
-		instance = this;
-	}
-	
-	public void weirdAssHackCallMeFromNewStoneTypesToEnsureTheBlocksExistOhGod(ZRegister event) {
+
 		add(event, "limestone", MapColor.STONE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.limestoneBlock), () -> NewStoneTypesModule.enableLimestone);
 		add(event, "jasper", MapColor.TERRACOTTA_RED, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.jasperBlock), () -> NewStoneTypesModule.enableJasper);
 		add(event, "shale", MapColor.ICE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.shaleBlock), () -> NewStoneTypesModule.enableShale);
-		
-		add(event, "myalite", MapColor.COLOR_PURPLE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.myaliteBlock), () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);		
+
+		add(event, "myalite", MapColor.COLOR_PURPLE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.myaliteBlock), () -> NewStoneTypesModule.enableMyalite, MyaliteBlock::new, MyalitePillarBlock::new);
+
+		instance = this;
 	}
 
 	@PlayEvent

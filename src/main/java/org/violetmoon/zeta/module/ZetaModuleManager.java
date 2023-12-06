@@ -92,7 +92,7 @@ public class ZetaModuleManager {
 		Collection<TentativeModule> tentative = finder.get()
 			.map(data -> TentativeModule.from(data, this::getCategory))
 			.filter(tm -> tm.appliesTo(z.side))
-			.sorted(Comparator.comparing(TentativeModule::displayName))
+			.sorted(Comparator.comparing(TentativeModule::loadPhase).thenComparing(TentativeModule::displayName))
 			.toList();
 
 		//this is the part where we handle "client replacement" modules !!

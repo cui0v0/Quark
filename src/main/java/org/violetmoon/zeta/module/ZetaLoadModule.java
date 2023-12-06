@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// IF YOU UDPATE DEFAULT VALUES: make sure to update ZetaLoadModuleAnnotationData as well, it's needed on Forge.
+// Also adding enums is a pain in the ass also due to forge, ur life will be easier if you stick to strings ints bools etc
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ZetaLoadModule {
@@ -48,4 +50,10 @@ public @interface ZetaLoadModule {
 	 * Either way, the module is accessible with `FooModule.class` in APIs like ZetaModuleManager#get.
 	 */
 	boolean clientReplacement() default false;
+
+	/**
+	 * Modules with higher loadPhases will load later.
+	 * Ideally there aren't load-order dependencies between modules, but, yknow, shit happens.
+	 */
+	int loadPhase() default 0;
 }
