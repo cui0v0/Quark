@@ -91,7 +91,7 @@ public class GeneralConfig {
 	@Config(description = "Quark will set this weight for its TerraBlender region.")
 	public static int terrablenderRegionWeight = 1;
 
-	@Config(description = "If 'true', Quark will modify the `minecraft:overworld` MultiNoiseBiomeSourceParamaterList preset, even when Terrablender is installed.\n" +
+	@Config(description = "If 'true', Quark will modify the `minecraft:overworld` MultiNoiseBiomeSourceParameterList preset, even when Terrablender is installed.\n" +
 		"This will have various knock-on effects but might make the Weald more common, or appear closer to modded biomes. Who knows?")
 	public static boolean terrablenderModifyVanillaAnyway = false;
 
