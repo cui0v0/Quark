@@ -53,6 +53,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -99,10 +100,10 @@ public class VariantChestsModule extends ZetaModule {
 		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registries.RECIPE_SERIALIZER);
 
 		for(Wood s : VanillaWoods.ALL)
-			makeChestBlocks(s.name(), Blocks.CHEST);
-		makeChestBlocks("nether_brick", Blocks.NETHER_BRICKS);
-		makeChestBlocks("purpur", Blocks.PURPUR_BLOCK);
-		makeChestBlocks("prismarine", Blocks.PRISMARINE);
+			makeChestBlocks(s.name(), Blocks.CHEST, s.sound());
+		makeChestBlocks("nether_brick", Blocks.NETHER_BRICKS, null);
+		makeChestBlocks("purpur", Blocks.PURPUR_BLOCK, null);
+		makeChestBlocks("prismarine", Blocks.PRISMARINE, null);
 		
 		CreativeTabManager.daisyChain();
 		for(Block regularChest : regularChests)
@@ -117,16 +118,20 @@ public class VariantChestsModule extends ZetaModule {
 		StructureBlockReplacementHandler.addReplacement(this::getGenerationChestBlockState);
 	}
 
-	private void makeChestBlocks(String name, Block base) {
-		makeChestBlocks(this, name, base, () -> true);
+	private void makeChestBlocks(String name, Block base, @Nullable SoundType sound) {
+		makeChestBlocks(this, name, base, sound, () -> true);
 	}
 
-	private void makeChestBlocks(ZetaModule module, String name, Block base, BooleanSupplier condition) {
-		VariantChestBlock regularChest = new VariantChestBlock(name, module, () -> chestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+	private void makeChestBlocks(ZetaModule module, String name, Block base, @Nullable SoundType sound, BooleanSupplier condition) {
+		BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(base);
+		if(sound != null)
+			props = props.sound(sound);
+		
+		VariantChestBlock regularChest = new VariantChestBlock(name, module, () -> chestTEType, props).setCondition(condition);
 		regularChests.add(regularChest);
 		chestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), regularChest);
 
-		VariantTrappedChestBlock trappedChest = new VariantTrappedChestBlock(name, module, () -> trappedChestTEType, BlockBehaviour.Properties.copy(base)).setCondition(condition);
+		VariantTrappedChestBlock trappedChest = new VariantTrappedChestBlock(name, module, () -> trappedChestTEType, props).setCondition(condition);
 		trappedChests.add(trappedChest);
 		trappedChestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), trappedChest);
 		
@@ -134,9 +139,9 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	//only enables the block if the variant chests module is enabled
-	public static void makeChestBlocksExternal(ZetaModule module, String name, Block base, BooleanSupplier condition) {
+	public static void makeChestBlocksExternal(ZetaModule module, String name, Block base, @Nullable SoundType sound, BooleanSupplier condition) {
 		VariantChestsModule me = Quark.ZETA.modules.get(VariantChestsModule.class);
-		me.makeChestBlocks(module, name, base, () -> me.enabled && condition.getAsBoolean());
+		me.makeChestBlocks(module, name, base, sound, () -> me.enabled && condition.getAsBoolean());
 	}
 
 	/// STUFF that has to happen after all the makeChestBlocks calls are performed...! ///

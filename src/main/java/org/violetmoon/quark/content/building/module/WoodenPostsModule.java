@@ -34,8 +34,8 @@ public class WoodenPostsModule extends ZetaModule {
 			Block b = wood.fence();
 			
 			boolean nether = wood.nether();
-			WoodPostBlock post = new WoodPostBlock(this, b, "", nether);
-			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", nether);
+			WoodPostBlock post = new WoodPostBlock(this, b, "", wood.sound());
+			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", wood.sound());
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, post, stripped);
 		}
 	}

@@ -48,10 +48,10 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 			BooleanProperty.create("chain_east")
 	};
 
-	public WoodPostBlock(ZetaModule module, Block parent, String prefix, boolean nether) {
+	public WoodPostBlock(ZetaModule module, Block parent, String prefix, SoundType sound) {
 		super(Quark.ZETA.registryUtil.inherit(parent, s -> prefix + s.replace("_fence", "_post")),
 				module, 
-				Properties.copy(parent).sound(nether ? SoundType.STEM : SoundType.WOOD));
+				Properties.copy(parent).sound(sound));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);
 		for(BooleanProperty prop : CHAINED)

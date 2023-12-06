@@ -85,6 +85,7 @@ public class WoodSetHandler {
 		
 		//TODO 1.20: maybe expose stuff like canOpenByHand, sound types, etc
 		BlockSetType setType = new BlockSetType(Quark.MOD_ID + ":" + name);
+		SoundType sound = SoundType.WOOD;
 
 		WoodType type = WoodType.register(new WoodType(Quark.MOD_ID + ":" + name, setType));
 		WoodSet set = new WoodSet(name, module, type);
@@ -119,15 +120,15 @@ public class WoodSetHandler {
 		set.ceilingHangingSign = new ZetaCeilingHangingSignBlock(name + "_hanging_sign", module, type, OldMaterials.wood().forceSolidOn().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
 		set.wallHangingSign = new ZetaWallHangingSignBlock(name + "_wall_hanging_sign", module, type, OldMaterials.wood().forceSolidOn().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
-		set.bookshelf = new VariantBookshelfBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
+		set.bookshelf = new VariantBookshelfBlock(name, module, true, sound).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantBookshelvesModule.class));
 		set.ladder = new VariantLadderBlock(name, module, true).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VariantLaddersModule.class));
 
-		set.post = new WoodPostBlock(module, set.fence, "", false).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
-		set.strippedPost = new WoodPostBlock(module, set.fence, "stripped_", false).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
+		set.post = new WoodPostBlock(module, set.fence, "", sound).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
+		set.strippedPost = new WoodPostBlock(module, set.fence, "stripped_", sound).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(WoodenPostsModule.class));
 
 		set.hollowLog = new HollowLogBlock(set.log, module, flammable).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(HollowLogsModule.class));
 
-		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, () -> true);
+		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, sound, () -> true);
 
 		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
 		set.hangingSignItem = new ZetaHangingSignItem(module, set.ceilingHangingSign, set.wallHangingSign);

@@ -2,22 +2,19 @@ package org.violetmoon.quark.content.building.block;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 
