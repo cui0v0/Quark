@@ -76,11 +76,6 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 
 		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.subheader1", ChatFormatting.LIGHT_PURPLE, ContributorRewardHandler.featuredPatron, ChatFormatting.RESET), width / 2, 28, 0x9EFFFE);
 		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.subheader2"), width / 2, 38, 0x9EFFFE);
-
-		//TODO TODO TODO, flesh this out !
-		int changeCount = changeSet.changeCount();
-		if(changeCount != 0)
-			guiGraphics.drawCenteredString(font, changeCount + " unsaved change" + (changeCount > 1 ? "s" : ""), width/2 - 150, height-30, 0xFF8800);
 	}
 
 }
