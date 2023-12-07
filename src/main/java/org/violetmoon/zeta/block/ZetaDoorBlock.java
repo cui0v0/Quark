@@ -17,11 +17,12 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaDoorBlock extends DoorBlock implements IZetaBlock, IZetaBlockItemProvider {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaDoorBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType);

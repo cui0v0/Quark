@@ -25,6 +25,7 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -53,8 +54,7 @@ public class BigStoneClustersModule extends ZetaModule {
 	
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
-		BooleanSupplier alwaysTrue = () -> true;
-		add(calcite, Blocks.CALCITE, alwaysTrue);
+		add(calcite, Blocks.CALCITE, BooleanSuppliers.TRUE);
 		
 		add(limestone, NewStoneTypesModule.limestoneBlock, () -> NewStoneTypesModule.enabledWithLimestone);
 		add(jasper, NewStoneTypesModule.jasperBlock, () -> NewStoneTypesModule.enabledWithJasper);

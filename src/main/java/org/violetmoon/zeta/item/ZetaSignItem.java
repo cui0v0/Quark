@@ -9,11 +9,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaSignItem extends SignItem implements IZetaItem {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaSignItem(ZetaModule module, Block sign, Block wallSign) {
 		super(new Item.Properties().stacksTo(16), sign, wallSign);

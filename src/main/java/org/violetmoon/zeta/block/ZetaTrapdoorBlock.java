@@ -14,11 +14,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaTrapdoorBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType);

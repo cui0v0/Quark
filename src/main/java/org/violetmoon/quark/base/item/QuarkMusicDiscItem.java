@@ -10,6 +10,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -20,7 +21,7 @@ public class QuarkMusicDiscItem extends RecordItem implements IZetaItem {
 	public final boolean isAmbient;
 	public final Supplier<SoundEvent> soundSupplier;
 
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public QuarkMusicDiscItem(int comparatorValue, Supplier<SoundEvent> sound, String name, ZetaModule module, int lengthInTicks) {
 		//TODO: This constructor (with the supplier) is a Forge extension

@@ -25,11 +25,12 @@ import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
 

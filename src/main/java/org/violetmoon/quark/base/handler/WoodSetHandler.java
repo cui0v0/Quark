@@ -37,6 +37,7 @@ import org.violetmoon.zeta.item.ZetaHangingSignItem;
 import org.violetmoon.zeta.item.ZetaSignItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -128,7 +129,7 @@ public class WoodSetHandler {
 
 		set.hollowLog = new HollowLogBlock(set.log, module, flammable).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(HollowLogsModule.class));
 
-		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, sound, () -> true);
+		VariantChestsModule.makeChestBlocksExternal(module, name, Blocks.CHEST, sound, BooleanSuppliers.TRUE);
 
 		set.signItem = new ZetaSignItem(module, set.sign, set.wallSign);
 		set.hangingSignItem = new ZetaHangingSignItem(module, set.ceilingHangingSign, set.wallHangingSign);

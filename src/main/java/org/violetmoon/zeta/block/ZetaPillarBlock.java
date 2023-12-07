@@ -6,11 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaPillarBlock extends RotatedPillarBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaPillarBlock(String regname, ZetaModule module, Properties properties) {
 		super(properties);

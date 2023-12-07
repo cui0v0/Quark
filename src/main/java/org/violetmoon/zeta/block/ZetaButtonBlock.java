@@ -12,6 +12,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 /**
  * @author WireSegal
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaButtonBlock(BlockSetType setType, int ticksToStayPressed, boolean arrowsCanPress, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType, ticksToStayPressed, arrowsCanPress);

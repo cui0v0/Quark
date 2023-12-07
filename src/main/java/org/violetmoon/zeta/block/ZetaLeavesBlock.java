@@ -11,12 +11,14 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 import org.jetbrains.annotations.Nullable;
+import org.violetmoon.zeta.util.BooleanSuppliers;
+
 import java.util.function.BooleanSupplier;
 
 public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 	
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 	
 	public ZetaLeavesBlock(String name, ZetaModule module, MapColor color) {
 		super(Block.Properties.of()

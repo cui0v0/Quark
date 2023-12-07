@@ -10,11 +10,12 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.BushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaBushBlock extends BushBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaBushBlock(String regname, ZetaModule module, ResourceKey<CreativeModeTab> tab, Properties properties) {
 		super(properties);

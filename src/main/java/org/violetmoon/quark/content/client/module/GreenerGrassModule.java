@@ -16,8 +16,10 @@ import org.violetmoon.zeta.client.event.play.ZFirstClientTick;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "client")
 public class GreenerGrassModule extends ZetaModule {
@@ -112,11 +114,11 @@ public class GreenerGrassModule extends ZetaModule {
 		// done late, to give other mods a chance to register their blocks
 		@LoadEvent
 		public void firstClientTick(ZFirstClientTick event) {
-			registerGreenerColor(blockList, () -> true);
+			registerGreenerColor(blockList, BooleanSuppliers.TRUE);
 			registerGreenerColor(leavesList, () -> affectLeaves);
 		}
 
-		private void registerGreenerColor(Iterable<String> ids, Supplier<Boolean> condition) {
+		private void registerGreenerColor(Iterable<String> ids, BooleanSupplier condition) {
 			BlockColors colors = Minecraft.getInstance().getBlockColors();
 
 			for(String id : ids) {
@@ -131,10 +133,10 @@ public class GreenerGrassModule extends ZetaModule {
 			}
 		}
 
-		private BlockColor getConvulsedColor(BlockColor color, Supplier<Boolean> condition) {
+		private BlockColor getConvulsedColor(BlockColor color, BooleanSupplier condition) {
 			return (state, world, pos, tintIndex) -> {
 				int originalColor = color.getColor(state, world, pos, tintIndex);
-				if(!enabled || !condition.get())
+				if(!enabled || !condition.getAsBoolean())
 					return originalColor;
 
 				return colorMatrix.convolve(originalColor);

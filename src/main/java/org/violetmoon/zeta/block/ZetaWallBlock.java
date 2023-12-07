@@ -15,11 +15,12 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaWallBlock extends WallBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private final IZetaBlock parent;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaWallBlock(IZetaBlock parent, @Nullable ResourceKey<CreativeModeTab> tab) {
 		super(VariantRegistry.realStateCopy(parent));

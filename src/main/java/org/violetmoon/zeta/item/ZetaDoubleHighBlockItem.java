@@ -9,12 +9,13 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.ItemStack;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaDoubleHighBlockItem extends DoubleHighBlockItem implements IZetaItem {
 
 	private final ZetaModule module;
 
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaDoubleHighBlockItem(IZetaBlock baseBlock, Properties props) {
 		super(baseBlock.getBlock(), props);

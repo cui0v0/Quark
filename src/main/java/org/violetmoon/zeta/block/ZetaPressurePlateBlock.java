@@ -9,6 +9,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 /**
  * @author WireSegal
@@ -17,7 +18,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, String creativeTab, Properties properties, BlockSetType blockSetType) {
 		super(sensitivity, properties, blockSetType);

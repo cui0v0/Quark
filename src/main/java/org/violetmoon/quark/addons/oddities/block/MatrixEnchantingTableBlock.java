@@ -34,11 +34,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public MatrixEnchantingTableBlock(ZetaModule module) {
 		super(Block.Properties.copy(Blocks.ENCHANTING_TABLE));

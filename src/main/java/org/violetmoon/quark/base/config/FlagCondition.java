@@ -7,6 +7,7 @@ import org.violetmoon.zeta.recipe.IZetaConditionSerializer;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 /**
  * @author WireSegal
@@ -42,7 +43,7 @@ public record FlagCondition(ConfigFlagManager cfm, String flag, ResourceLocation
 		}
 
 		public Serializer(ConfigFlagManager cfm, ResourceLocation location) {
-			this(cfm, location, () -> true);
+			this(cfm, location, BooleanSuppliers.TRUE);
 		}
 
 		@Override

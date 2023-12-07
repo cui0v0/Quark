@@ -14,16 +14,15 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public abstract class Generator implements IGenerator {
-	
-	public static final BooleanSupplier NO_COND = () -> true;
-	
+
 	public final DimensionConfig dimConfig;
 	private final BooleanSupplier condition;
 	
 	public Generator(DimensionConfig dimConfig) {
-		this(dimConfig, NO_COND);
+		this(dimConfig, BooleanSuppliers.TRUE);
 	}
 	
 	public Generator(DimensionConfig dimConfig, BooleanSupplier condition) {

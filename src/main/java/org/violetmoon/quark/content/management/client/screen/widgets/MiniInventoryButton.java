@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MiniInventoryButton extends Button {
 	private final AbstractContainerScreen<?> parent;
 	private final int startX;
 
-	private BooleanSupplier shiftTexture = () -> false;
+	private BooleanSupplier shiftTexture = BooleanSuppliers.FALSE;
 
 	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Consumer<List<String>> tooltip, OnPress onPress) {
 		super(new Button.Builder(Component.literal(""), onPress).size(10, 10).pos(parent.getGuiLeft() + x, parent.getGuiTop() + y));

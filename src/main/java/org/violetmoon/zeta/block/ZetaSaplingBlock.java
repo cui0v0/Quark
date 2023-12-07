@@ -9,11 +9,12 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 	
 	public ZetaSaplingBlock(String name, ZetaModule module, AbstractTreeGrower tree) {
 		super(tree, Block.Properties.copy(Blocks.OAK_SAPLING));

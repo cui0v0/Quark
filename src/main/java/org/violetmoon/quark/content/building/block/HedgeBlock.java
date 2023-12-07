@@ -37,6 +37,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 //TODO ZETA: extend QuarkFenceBlock
 public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColorProvider {
@@ -54,7 +55,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 
 	private final ZetaModule module;
 	public final BlockState leafState;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public static final BooleanProperty EXTEND = BooleanProperty.create("extend");
 

@@ -5,13 +5,9 @@ import java.util.function.BooleanSupplier;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FenceGateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 /**
  * @author WireSegal
@@ -20,7 +16,7 @@ import org.violetmoon.zeta.registry.CreativeTabManager;
 public class ZetaFenceGateBlock extends FenceGateBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaFenceGateBlock(String regname, ZetaModule module, Properties properties) {
 		super(properties, WoodType.OAK); //TODO 1.20: change parameter or pass SoundType parameters thru

@@ -15,13 +15,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 
 	private final ZetaModule module;
 	private final boolean flammable;
 
-	private BooleanSupplier condition = () -> true;
+	private BooleanSupplier condition = BooleanSuppliers.TRUE;
 
 	public VariantLadderBlock(String type, ZetaModule module, Block.Properties props, boolean flammable) {
 		super(props);

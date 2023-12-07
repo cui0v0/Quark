@@ -5,10 +5,11 @@ import java.util.function.BooleanSupplier;
 import net.minecraft.world.item.Item;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaItem extends Item implements IZetaItem, IZetaItemExtensions {
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaItem(String regname, ZetaModule module, Properties properties) {
 		super(properties);

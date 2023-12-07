@@ -31,6 +31,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 import org.violetmoon.zeta.util.Hint;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class PickarangModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, () -> true).setCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.DIAMOND_HOE, false);
+		pickarang = makePickarang(pickarangType, "pickarang", Pickarang::new, Pickarang::new, BooleanSuppliers.TRUE).setCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.DIAMOND_HOE, false);
 		flamerang = makePickarang(flamerangType, "flamerang", Flamerang::new, Flamerang::new, () -> enableFlamerang).setCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, Items.NETHERITE_HOE, false);
 
 		throwPickarangTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_pickarang");

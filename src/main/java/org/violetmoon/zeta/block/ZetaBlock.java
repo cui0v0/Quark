@@ -13,11 +13,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaBlock extends Block implements IZetaBlock {
 
     private final ZetaModule module;
-    private BooleanSupplier enabledSupplier = () -> true;
+    private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
     public ZetaBlock(String regname, ZetaModule module, Properties properties) {
         super(properties);

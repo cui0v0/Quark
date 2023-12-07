@@ -9,14 +9,14 @@ import java.util.function.BooleanSupplier;
 
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.world.generator.Generator;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public abstract class ClusterBasedGenerator extends MultiChunkFeatureGenerator {
 
 	public final ClusterShape.Provider shapeProvider;
 
 	public ClusterBasedGenerator(DimensionConfig dimConfig, ClusterSizeConfig sizeConfig, long seedXor) {
-		this(dimConfig, Generator.NO_COND, sizeConfig, seedXor);
+		this(dimConfig, BooleanSuppliers.TRUE, sizeConfig, seedXor);
 	}
 
 	public ClusterBasedGenerator(DimensionConfig dimConfig, BooleanSupplier condition, ClusterSizeConfig sizeConfig, long seedXor) {
