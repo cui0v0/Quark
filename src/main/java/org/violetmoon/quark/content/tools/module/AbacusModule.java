@@ -53,7 +53,7 @@ public class AbacusModule extends ZetaModule {
 
 		@LoadEvent
 		public void clientSetup(ZClientSetup e) {
-			e.enqueueWork(() -> ItemProperties.register(abacus, new ResourceLocation("count"), AbacusItem.Client::count));
+			e.enqueueWork(() -> ItemProperties.register(abacus, new ResourceLocation("count"), AbacusItem.Client.ITEM_PROPERTY_FUNCTION));
 		}
 
 		@PlayEvent

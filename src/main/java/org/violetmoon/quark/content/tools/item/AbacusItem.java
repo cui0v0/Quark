@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,7 +73,7 @@ public class AbacusItem extends ZetaItem {
 		BlockPos pos = getBlockPos(stack);
 
 		if(pos != null && !world.isEmptyBlock(target))
-			return target.distManhattan(pos);
+			return Mth.clamp(target.distManhattan(pos), 0, MAX_COUNT);
 
 		return -1;
 	}
@@ -93,12 +95,12 @@ public class AbacusItem extends ZetaItem {
 			return count;
 		}
 
-		public static float count(ItemStack stack, ClientLevel world, LivingEntity entityIn, int id) {
+		public static final ClampedItemPropertyFunction ITEM_PROPERTY_FUNCTION = (stack, level, entityIn, id) -> {
 			int count = getCount(stack, entityIn);
 			if(count == -1)
-				return 9999;
+				return 1F;
 
 			return 0.01F * count + 0.005F;
-		}
+		};
 	}
 }
