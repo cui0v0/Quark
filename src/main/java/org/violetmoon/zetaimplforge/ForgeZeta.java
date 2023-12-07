@@ -15,6 +15,7 @@ import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.*;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -230,7 +231,6 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::playerLoggedIn);
 		MinecraftForge.EVENT_BUS.addListener(this::playerLoggedOut);
 		MinecraftForge.EVENT_BUS.addListener(this::entityItemPickup);
-		MinecraftForge.EVENT_BUS.addListener(this::block);
 		MinecraftForge.EVENT_BUS.addListener(this::blockBreak);
 		MinecraftForge.EVENT_BUS.addListener(this::blockEntityPlace);
 		MinecraftForge.EVENT_BUS.addListener(this::blockToolModification);
@@ -239,6 +239,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::entityTeleport);
 		MinecraftForge.EVENT_BUS.addListener(this::livingFall);
 		MinecraftForge.EVENT_BUS.addListener(this::wandererTrades);
+		MinecraftForge.EVENT_BUS.addListener(this::furnaceFuelBurnTime);
 	}
 
 	private boolean registerDone = false;
@@ -447,10 +448,6 @@ public class ForgeZeta extends Zeta {
 		playBus.fire(new ForgeZEntityItemPickup(e), ZEntityItemPickup.class);
 	}
 
-	public void block(BlockEvent e) {
-		playBus.fire(new ForgeZBlock(e), ZBlock.class);
-	}
-
 	public void blockBreak(BlockEvent.BreakEvent e) {
 		playBus.fire(new ForgeZBlock.Break(e), ZBlock.Break.class);
 	}
@@ -466,7 +463,6 @@ public class ForgeZeta extends Zeta {
 	public void animalTame(AnimalTameEvent e) {
 		playBus.fire(new ForgeZAnimalTame(e), ZAnimalTame.class);
 	}
-
 
 	public void villagerTrades(VillagerTradesEvent e) {
 		playBus.fire(new ForgeZVillagerTrades(e), ZVillagerTrades.class);
@@ -510,6 +506,10 @@ public class ForgeZeta extends Zeta {
 
 	public void wandererTrades(WandererTradesEvent e) {
 		playBus.fire(new ForgeZWandererTrades(e), ZWandererTrades.class);
+	}
+
+	public void furnaceFuelBurnTime(FurnaceFuelBurnTimeEvent e) {
+		playBus.fire(new ForgeZFurnaceFuelBurnTime(e), ZFurnaceFuelBurnTime.class);
 	}
 
 	public static ZResult from(Event.Result r) {
