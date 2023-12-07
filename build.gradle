@@ -107,6 +107,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     runtimeOnly fg.deobf("dev.emi:emi-forge:${deps.emi}")
+    runtimeOnly fg.deobf("curse.maven:spark-361579:${deps.spark}")
 
     implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${deps.terrablender}")
     implementation fg.deobf("curse.maven:jei-238222:${deps.jei}")

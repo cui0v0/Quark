@@ -96,7 +96,11 @@ public class ObsidianSpikeGenerator extends Generator {
 				
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.SPAWNER.defaultBlockState(), 0);
-				((SpawnerBlockEntity) world.getBlockEntity(placePos)).getSpawner().setEntityId(EntityType.BLAZE, world.getLevel(), rand, pos);
+
+				// passing "null" for the Level parameter to band-aid over a worldgen deadlock that
+				// occurs when SpawnerBlockEntity.spawner attempts to send a block update to the client.
+				// if the level param is null, everything else works it just doesn't try to sync
+				((SpawnerBlockEntity) world.getBlockEntity(placePos)).getSpawner().setEntityId(EntityType.BLAZE, null, rand, pos);
 				
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.CHEST.defaultBlockState(), 0);
