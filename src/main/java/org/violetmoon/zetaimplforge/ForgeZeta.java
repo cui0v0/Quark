@@ -30,7 +30,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.ext.BlockExtensionFactory;
 import org.violetmoon.zeta.capability.ZetaCapabilityManager;
@@ -42,15 +41,16 @@ import org.violetmoon.zeta.event.play.*;
 import org.violetmoon.zeta.event.play.entity.*;
 import org.violetmoon.zeta.event.play.entity.living.*;
 import org.violetmoon.zeta.event.play.entity.player.*;
-import org.violetmoon.zeta.event.play.loading.*;
+import org.violetmoon.zeta.event.play.loading.ZAttachCapabilities;
+import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
+import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
 import org.violetmoon.zeta.item.ext.ItemExtensionFactory;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
-import org.violetmoon.zeta.registry.BrewingRegistry;
-import org.violetmoon.zeta.registry.CraftingExtensionsRegistry;
-import org.violetmoon.zeta.registry.PottedPlantRegistry;
-import org.violetmoon.zeta.registry.ZetaRegistry;
+import org.violetmoon.zeta.registry.*;
 import org.violetmoon.zeta.util.RaytracingUtil;
 import org.violetmoon.zeta.util.ZetaSide;
+import org.violetmoon.zeta.util.mixinevent.MixinFireEventUtil;
 import org.violetmoon.zetaimplforge.api.GatherAdvancementModifiersEvent;
 import org.violetmoon.zetaimplforge.block.IForgeBlockBlockExtensions;
 import org.violetmoon.zetaimplforge.capability.ForgeCapabilityManager;
@@ -64,7 +64,10 @@ import org.violetmoon.zetaimplforge.event.play.*;
 import org.violetmoon.zetaimplforge.event.play.entity.*;
 import org.violetmoon.zetaimplforge.event.play.entity.living.*;
 import org.violetmoon.zetaimplforge.event.play.entity.player.*;
-import org.violetmoon.zetaimplforge.event.play.loading.*;
+import org.violetmoon.zetaimplforge.event.play.loading.ForgeZAttachCapabilities;
+import org.violetmoon.zetaimplforge.event.play.loading.ForgeZLootTableLoad;
+import org.violetmoon.zetaimplforge.event.play.loading.ForgeZVillagerTrades;
+import org.violetmoon.zetaimplforge.event.play.loading.ForgeZWandererTrades;
 import org.violetmoon.zetaimplforge.item.IForgeItemItemExtensions;
 import org.violetmoon.zetaimplforge.network.ForgeZetaNetworkHandler;
 import org.violetmoon.zetaimplforge.registry.ForgeBrewingRegistry;
@@ -78,6 +81,7 @@ import org.violetmoon.zetaimplforge.util.ForgeRaytracingUtil;
 public class ForgeZeta extends Zeta {
 	public ForgeZeta(String modid, Logger log) {
 		super(modid, log, ZetaSide.fromClient(FMLEnvironment.dist.isClient()));
+		MixinFireEventUtil.signup(this);
 	}
 
 	@Override

@@ -36,8 +36,8 @@ public abstract class ZetaClient {
 	}
 
 	public final Zeta zeta;
-	protected final ZetaEventBus<IZetaLoadEvent> loadBus;
-	protected final ZetaEventBus<IZetaPlayEvent> playBus;
+	public final ZetaEventBus<IZetaLoadEvent> loadBus;
+	public final ZetaEventBus<IZetaPlayEvent> playBus;
 
 	public ResourceLocation generalIcons = new ResourceLocation("zeta", "textures/gui/general_icons.png");
 

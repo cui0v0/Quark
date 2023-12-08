@@ -24,14 +24,16 @@ import org.violetmoon.zeta.client.HumanoidArmorModelGetter;
 import org.violetmoon.zeta.client.ZetaClient;
 import org.violetmoon.zeta.client.event.load.*;
 import org.violetmoon.zeta.client.event.play.*;
+import org.violetmoon.zeta.util.mixinevent.MixinFireEventUtilClient;
 import org.violetmoon.zetaimplforge.client.event.load.*;
-import org.violetmoon.zetaimplforge.client.event.player.*;
+import org.violetmoon.zetaimplforge.client.event.play.*;
 import org.violetmoon.zetaimplforge.mixin.client.AccessorBlockColors;
 import org.violetmoon.zetaimplforge.mixin.client.AccessorItemColors;
 
 public class ForgeZetaClient extends ZetaClient {
 	public ForgeZetaClient(Zeta z) {
 		super(z);
+		MixinFireEventUtilClient.signup(this);
 	}
 
 	@Override
