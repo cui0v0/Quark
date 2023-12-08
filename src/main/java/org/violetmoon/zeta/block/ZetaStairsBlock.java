@@ -17,11 +17,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaStairsBlock extends StairBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private final IZetaBlock parent;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaStairsBlock(IZetaBlock parent, @Nullable ResourceKey<CreativeModeTab> tab) {
 		super(parent.getBlock()::defaultBlockState, VariantRegistry.realStateCopy(parent));

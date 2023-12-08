@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 @ZetaLoadModule(category = "building", loadPhase = 10) //Needs to load after NewStoneTypesModule
 public class MoreStoneVariantsModule extends ZetaModule {
@@ -39,14 +40,13 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		Block polishedCalcite = expandVanillaStone(event, this, Blocks.CALCITE, "calcite");
 		Block polishedDripstone = expandVanillaStone(event, this, Blocks.DRIPSTONE_BLOCK, "dripstone");
 		Block polishedTuff = expandVanillaStone(event, this, Blocks.TUFF, "tuff");
-		
-		BooleanSupplier _true = () -> true;
-		add(event, "granite", MapColor.DIRT, SoundType.STONE, Blocks.POLISHED_GRANITE, _true);
-		add(event, "diorite", MapColor.QUARTZ, SoundType.STONE,Blocks.POLISHED_DIORITE, _true);
-		add(event, "andesite", MapColor.STONE, SoundType.STONE, Blocks.POLISHED_ANDESITE, _true);
-		add(event, "calcite", MapColor.TERRACOTTA_WHITE, SoundType.CALCITE, polishedCalcite, _true);
-		add(event, "dripstone", MapColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, polishedDripstone, _true);
-		add(event, "tuff", MapColor.TERRACOTTA_GRAY, SoundType.TUFF, polishedTuff, _true);
+
+		add(event, "granite", MapColor.DIRT, SoundType.STONE, Blocks.POLISHED_GRANITE, BooleanSuppliers.TRUE);
+		add(event, "diorite", MapColor.QUARTZ, SoundType.STONE,Blocks.POLISHED_DIORITE, BooleanSuppliers.TRUE);
+		add(event, "andesite", MapColor.STONE, SoundType.STONE, Blocks.POLISHED_ANDESITE, BooleanSuppliers.TRUE);
+		add(event, "calcite", MapColor.TERRACOTTA_WHITE, SoundType.CALCITE, polishedCalcite, BooleanSuppliers.TRUE);
+		add(event, "dripstone", MapColor.TERRACOTTA_BROWN, SoundType.DRIPSTONE_BLOCK, polishedDripstone, BooleanSuppliers.TRUE);
+		add(event, "tuff", MapColor.TERRACOTTA_GRAY, SoundType.TUFF, polishedTuff, BooleanSuppliers.TRUE);
 
 		add(event, "limestone", MapColor.STONE, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.limestoneBlock), () -> NewStoneTypesModule.enableLimestone);
 		add(event, "jasper", MapColor.TERRACOTTA_RED, SoundType.STONE, NewStoneTypesModule.polishedBlocks.get(NewStoneTypesModule.jasperBlock), () -> NewStoneTypesModule.enableJasper);
@@ -72,7 +72,7 @@ public class MoreStoneVariantsModule extends ZetaModule {
 		ZetaBlockWrapper wrap = new ZetaBlockWrapper(raw, this);
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.BUILDING_BLOCKS, wrap, Blocks.DEEPSLATE, true);
 		
-		return NewStoneTypesModule.makeStone(event, module, raw, name, null, null, () -> true, null, ZetaBlock::new);
+		return NewStoneTypesModule.makeStone(event, module, raw, name, null, null, BooleanSuppliers.TRUE, null, ZetaBlock::new);
 	}
 	
 	private void add(ZRegister event, String name, MapColor color, SoundType sound, Block basePolished, BooleanSupplier cond) {

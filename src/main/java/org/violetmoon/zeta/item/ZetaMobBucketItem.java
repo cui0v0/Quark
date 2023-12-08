@@ -8,6 +8,7 @@ import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.material.Fluid;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -16,7 +17,7 @@ public class ZetaMobBucketItem extends MobBucketItem implements IZetaItem {
 
 	private final ZetaModule module;
 
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaMobBucketItem(Supplier<? extends EntityType<?>> entity, Supplier<? extends Fluid> fluid, Supplier<? extends SoundEvent> sound, String name, ZetaModule module) {
 		super(entity, fluid, sound, (new Properties()).stacksTo(1));

@@ -16,11 +16,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ChorusVegetationGenerator extends MultiChunkFeatureGenerator {
 
 	public ChorusVegetationGenerator() {
-		super(DimensionConfig.end(false), () -> true, 2093);
+		super(DimensionConfig.end(false), BooleanSuppliers.TRUE, 2093);
 	}
 	
 	@Override

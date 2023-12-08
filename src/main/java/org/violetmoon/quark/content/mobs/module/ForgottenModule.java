@@ -30,6 +30,7 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.living.ZMobSpawnEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "mobs")
@@ -55,7 +56,7 @@ public class ForgottenModule extends ZetaModule {
 				.build("forgotten");
 
 		Quark.ZETA.registry.register(forgottenType, "forgotten", Registries.ENTITY_TYPE);
-		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, () -> true);
+		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, BooleanSuppliers.TRUE);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
 			.setCondition(() -> GeneralConfig.enableAdvancementModification));

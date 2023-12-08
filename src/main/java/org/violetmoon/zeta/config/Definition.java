@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.config.type.IConfigType;
 
 /**
  * Common superclass of a... "thing" in a config definition (a value or section).
@@ -31,13 +31,14 @@ public abstract class Definition {
 		this.name = name;
 		this.parent = parent;
 
-		//TODO lol
+		//TODO lol; mainly sanitizing it so it won't blow up when the forge config system reads me
 		this.comment = comment.stream()
 			.flatMap(s -> Arrays.stream(s.split("\n")))
-			.filter(line -> !line.trim().isEmpty()).collect(Collectors.toList());
+			.filter(line -> !line.trim().isEmpty())
+			.collect(Collectors.toList());
 
 		if(parent == null)
-			path = Collections.emptyList(); //TODO: skipping the "root" SectionDefinition
+			path = Collections.emptyList(); //TODO: skipping the "root" SectionDefinition in a clumsy way
 		else {
 			path = new ArrayList<>(parent.path);
 			path.add(name);
@@ -53,14 +54,20 @@ public abstract class Definition {
 		return comment == null ? "" : String.join("\n", comment);
 	}
 
-	//TODO: weird, should probably be moved to GUI code - note this is SHARED code so i cant directly use i18n
+	private static final boolean translationDebug = System.getProperty("zeta.configTranslations", null) != null;
+
+	//note this is SHARED code, so i cant directly use i18n
 	public final String getGuiDisplayName(Function<String, String> i18nDotGet) {
-		String defName = this instanceof SectionDefinition ? name.replace("_", "") : name;
-		String transKey = "quark.config." + String.join(".", path) + "." + name.toLowerCase().replaceAll(" ", "_").replaceAll("[^A-Za-z0-9_]", "") + ".name";
+		String transKey = path.stream()
+			.map(s -> s.toLowerCase(Locale.ROOT).replace(" ", "_").replaceAll("[^A-Za-z0-9_]", ""))
+			.collect(Collectors.joining(".", "quark.config.", ".name"));
+
+		if(translationDebug)
+			return transKey;
 
 		String localized = i18nDotGet.apply(transKey);
-		if(localized.isEmpty() || localized.equals(transKey))
-			return defName;
+		if(localized.isEmpty() || localized.equals(transKey)) //no user-specified translation
+			return name;
 
 		return localized;
 	}

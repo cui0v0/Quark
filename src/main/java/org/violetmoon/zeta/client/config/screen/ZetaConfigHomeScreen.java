@@ -29,6 +29,7 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 	}
 
 	protected final ChangeSet changeSet;
+	protected Button saveButton;
 
 	@Override
 	protected void init() {
@@ -76,8 +77,7 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 		}
 
 		//save
-		addRenderableWidget(new Button.Builder(Component.translatable("quark.gui.config.save"), this::commit)
-				.size(200, 20).pos(width / 2 - 100, height - 30).build());
+		saveButton = addRenderableWidget(new Button.Builder(componentForSaveButton(), this::commit).size(200, 20).pos(width / 2 - 100, height - 30).build());
 	}
 
 	public List<Integer> centeredRow(int centerX, int buttonWidth, int hpad, int count) {
@@ -106,8 +106,18 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 		return comp;
 	}
 
+	private Component componentForSaveButton() {
+		MutableComponent comp = Component.translatable("quark.gui.config.save");
+		int changeCount = changeSet.changeCount();
+		if(changeCount > 0)
+			comp.append(" (")
+				.append(Component.literal(String.valueOf(changeCount)).withStyle(ChatFormatting.GOLD))
+				.append(")");
+
+		return comp;
+	}
+
 	public void commit(Button button) {
-		//IngameConfigHandler.INSTANCE.commit();
 		changeSet.applyAllChanges();
 		returnToParent();
 	}
@@ -118,5 +128,13 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.drawCenteredString(font, ChatFormatting.BOLD + I18n.get("quark.gui.config.header", WordUtils.capitalizeFully(z.modid)), width / 2, 15, 0x48ddbc);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		//done here (instead of in init()), mainly so pressing a category checkbox will update the state of the button
+		saveButton.setMessage(componentForSaveButton());
 	}
 }

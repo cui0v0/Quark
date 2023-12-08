@@ -14,13 +14,14 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.IZetaItemColorProvider;
 import org.violetmoon.zeta.registry.VariantRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 
 public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	public final IZetaBlock parent;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaSlabBlock(IZetaBlock parent, @Nullable ResourceKey<CreativeModeTab> tab) {
 		super(VariantRegistry.realStateCopy(parent));

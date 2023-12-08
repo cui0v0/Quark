@@ -9,11 +9,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry.Layer;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaPaneBlock extends IronBarsBlock implements IZetaBlock {
 
 	public final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaPaneBlock(String name, ZetaModule module, Block.Properties properties, Layer renderLayer) {
 		super(properties);

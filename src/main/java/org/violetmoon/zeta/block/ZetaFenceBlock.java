@@ -10,11 +10,12 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.FenceBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaFenceBlock extends FenceBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaFenceBlock(String regname, ZetaModule module, Properties properties) {
 		super(properties);

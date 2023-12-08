@@ -15,11 +15,12 @@ import org.violetmoon.zeta.block.ZetaSlabBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class QuarkVerticalSlabBlock extends VerticalSlabBlock implements IZetaBlock {
 
     private final ZetaModule module;
-    private BooleanSupplier enabledSupplier = () -> true;
+    private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
     public QuarkVerticalSlabBlock(Block parent, ZetaModule module) {
         super(() -> parent, Block.Properties.copy(parent));

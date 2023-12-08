@@ -59,6 +59,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.Tags;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VariantChestsModule extends ZetaModule {
@@ -119,7 +120,7 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	private void makeChestBlocks(String name, Block base, @Nullable SoundType sound) {
-		makeChestBlocks(this, name, base, sound, () -> true);
+		makeChestBlocks(this, name, base, sound, BooleanSuppliers.TRUE);
 	}
 
 	private void makeChestBlocks(ZetaModule module, String name, Block base, @Nullable SoundType sound, BooleanSupplier condition) {

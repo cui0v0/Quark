@@ -18,11 +18,12 @@ import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaVineBlock extends VineBlock implements IZetaBlock {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public ZetaVineBlock(ZetaModule module, String name, boolean creative) {
 		super(OldMaterials.replaceablePlant().noCollission().randomTicks().strength(0.2F).sound(SoundType.GRASS));

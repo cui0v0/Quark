@@ -30,6 +30,7 @@ import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -153,17 +154,17 @@ public final class InventoryButtonHandler {
 		return currentButtons.get(type);
 	}
 
-	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, KeyMapping binding, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, BooleanSupplier enableCond) {
 		providers.put(type, new ButtonProviderHolder(module, priority, provider, binding, onKeybind, enableCond));
 	}
 
-	public static void addButtonProvider(ZKeyMapping event, ZetaModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZKeyMapping event, ZetaModule module, ButtonTargetType type, int priority, String keybindName, Consumer<AbstractContainerScreen<?>> onKeybind, ButtonProvider provider, BooleanSupplier enableCond) {
 		KeyMapping keybind = event.init(keybindName, null, QuarkClient.INV_GROUP);
 		keybind.setKeyConflictContext(KeyConflictContext.GUI);
 		addButtonProvider(module, type, priority, keybind, onKeybind, provider, enableCond);
 	}
 
-	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+	public static void addButtonProvider(ZetaModule module, ButtonTargetType type, int priority, ButtonProvider provider, BooleanSupplier enableCond) {
 		providers.put(type, new ButtonProviderHolder(module, priority, provider, enableCond));
 	}
 
@@ -185,9 +186,9 @@ public final class InventoryButtonHandler {
 
 		private final KeyMapping keybind;
 		private final Consumer<AbstractContainerScreen<?>> pressed;
-		private final Supplier<Boolean> enableCond;
+		private final BooleanSupplier enableCond;
 		
-		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, Supplier<Boolean> enableCond) {
+		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, BooleanSupplier enableCond) {
 			this.module = module;
 			this.priority = priority;
 			this.provider = provider;
@@ -196,7 +197,7 @@ public final class InventoryButtonHandler {
 			this.enableCond = enableCond;
 		}
 
-		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, Supplier<Boolean> enableCond) {
+		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, BooleanSupplier enableCond) {
 			this(module, priority, provider, null, (screen) -> {}, enableCond);
 		}
 
@@ -206,7 +207,7 @@ public final class InventoryButtonHandler {
 		}
 
 		public Button getButton(AbstractContainerScreen<?> parent, int x, int y) {
-			return (module.enabled && (enableCond == null || enableCond.get())) 
+			return (module.enabled && (enableCond == null || enableCond.getAsBoolean()))
 					? provider.provide(parent, x, y) : null;
 		}
 

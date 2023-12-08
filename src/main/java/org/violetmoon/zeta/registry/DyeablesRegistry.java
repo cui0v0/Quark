@@ -19,10 +19,12 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.recipe.ZetaDyeRecipe;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -30,7 +32,7 @@ import java.util.function.Supplier;
  */
 public class DyeablesRegistry {
 
-	public final Map<Item, Supplier<Boolean>> dyeableConditions = new HashMap<>();
+	public final Map<Item, BooleanSupplier> dyeableConditions = new HashMap<>();
 	public final DyeableLeatherItem SURROGATE = new DyeableLeatherItem() {}; //Simply an accessor for various DyeableLeatherItem default methods
 
 	@LoadEvent
@@ -65,20 +67,20 @@ public class DyeablesRegistry {
 	}
 
 	public void register(Item item) {
-		register(item, () -> true);
+		register(item, BooleanSuppliers.TRUE);
 	}
 
 	public void register(Item item, ZetaModule module) {
 		register(item, () -> module.enabled);
 	}
 
-	public void register(Item item, Supplier<Boolean> cond) {
+	public void register(Item item, BooleanSupplier cond) {
 		dyeableConditions.put(item, cond);
 	}
 
 	public boolean isDyeable(ItemStack stack) {
 		Item item = stack.getItem();
-		return dyeableConditions.containsKey(item) && dyeableConditions.get(item).get();
+		return dyeableConditions.containsKey(item) && dyeableConditions.get(item).getAsBoolean();
 	}
 
 	public boolean isDyed(ItemStack stack) {

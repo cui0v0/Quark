@@ -15,11 +15,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class SpiralSpireGenerator extends MultiChunkFeatureGenerator {
 
 	public SpiralSpireGenerator(DimensionConfig dimConfig) {
-		super(dimConfig, NO_COND, 1892);
+		super(dimConfig, BooleanSuppliers.TRUE, 1892);
 	}
 
 	@Override

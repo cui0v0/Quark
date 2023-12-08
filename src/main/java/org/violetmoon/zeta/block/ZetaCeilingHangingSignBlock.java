@@ -5,12 +5,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 
 public class ZetaCeilingHangingSignBlock extends CeilingHangingSignBlock implements IZetaBlock {
     private final ZetaModule module;
-    private BooleanSupplier enabledSupplier = () -> true;
+    private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
     public ZetaCeilingHangingSignBlock(String regname, ZetaModule module, WoodType type, BlockBehaviour.Properties properties) {
         super(properties, type);

@@ -24,12 +24,12 @@ import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEn
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IVariantChest;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
 	private final ZetaModule module;
-	private BooleanSupplier enabledSupplier = () -> true;
+	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	protected final String type;
 

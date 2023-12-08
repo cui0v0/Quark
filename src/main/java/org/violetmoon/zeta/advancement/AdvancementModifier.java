@@ -6,11 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.zeta.api.IAdvancementModifier;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public abstract class AdvancementModifier implements IAdvancementModifier {
 
 	public final ZetaModule module;
-	private BooleanSupplier cond = () -> true;
+	private BooleanSupplier cond = BooleanSuppliers.TRUE;
 	
 	protected AdvancementModifier(@Nullable ZetaModule module) {
 		this.module = module;

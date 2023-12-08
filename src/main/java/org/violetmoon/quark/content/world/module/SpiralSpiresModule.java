@@ -113,6 +113,9 @@ public class SpiralSpiresModule extends ZetaModule {
 		Level world = entity.level();
 		BlockPos pos = new BlockPos((int) event.getTargetX(), (int) event.getTargetY(), (int) event.getTargetZ());
 
+		if(!world.isLoaded(pos)) //ex. using /tp to teleport very far away; this function will block until the chunks are generated
+			return;
+
 		List<BlockPos> myalite = getAdjacentMyalite(null, world, pos, null);
 		if (myalite == null || myalite.isEmpty()) {
 			pos = pos.below();
