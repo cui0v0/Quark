@@ -1,14 +1,10 @@
 package org.violetmoon.zeta.client;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4f;
 import org.violetmoon.zeta.client.event.play.ZRenderTick;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 
@@ -29,15 +25,16 @@ public class TopLayerTooltipHandler {
 
 			Window window = mc.getWindow();
 
+			//fixme & make sure this works, if not replace event with ZEarlyRender - IThundxr
 			// -------------------------- Cursed Code!!! --------------------------
 			// fixme: Switch to a different event called earlier inside of Minecraft#runTick
-			Matrix4f matrix4f = (new Matrix4f()).setOrtho(0.0F, (float)((double) window.getWidth() / window.getGuiScale()), (float)((double) window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
-			RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
-			PoseStack posestack = RenderSystem.getModelViewStack();
-			posestack.pushPose();
-			posestack.setIdentity();
-			posestack.translate(0.0D, 0.0D, 1000F - net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
-			RenderSystem.applyModelViewMatrix();
+//			Matrix4f matrix4f = (new Matrix4f()).setOrtho(0.0F, (float)((double) window.getWidth() / window.getGuiScale()), (float)((double) window.getHeight() / window.getGuiScale()), 0.0F, 1000.0F, net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
+//			RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
+//			PoseStack posestack = RenderSystem.getModelViewStack();
+//			posestack.pushPose();
+//			posestack.setIdentity();
+//			posestack.translate(0.0D, 0.0D, 1000F - net.minecraftforge.client.ForgeHooksClient.getGuiFarPlane());
+//			RenderSystem.applyModelViewMatrix();
 			// --------------------------------------------------------------------
 
 			GuiGraphics guiGraphics = new GuiGraphics(mc, mc.renderBuffers().bufferSource());
