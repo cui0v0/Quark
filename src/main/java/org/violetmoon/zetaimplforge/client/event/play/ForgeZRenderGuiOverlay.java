@@ -1,4 +1,4 @@
-package org.violetmoon.zetaimplforge.client.event.player;
+package org.violetmoon.zetaimplforge.client.event.play;
 
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;

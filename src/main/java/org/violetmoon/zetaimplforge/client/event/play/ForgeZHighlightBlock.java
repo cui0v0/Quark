@@ -1,4 +1,4 @@
-package org.violetmoon.zetaimplforge.client.event.player;
+package org.violetmoon.zetaimplforge.client.event.play;
 
 import org.violetmoon.zeta.client.event.play.ZHighlightBlock;
 

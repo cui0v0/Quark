@@ -1,4 +1,4 @@
-package org.violetmoon.zetaimplforge.client.event.player;
+package org.violetmoon.zetaimplforge.client.event.play;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.network.chat.FormattedText;

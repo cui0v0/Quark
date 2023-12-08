@@ -1,4 +1,4 @@
-package org.violetmoon.zetaimplforge.client.event.player;
+package org.violetmoon.zetaimplforge.client.event.play;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
