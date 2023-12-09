@@ -3,33 +3,33 @@ package org.violetmoon.zeta.config;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 //TODO: maybe we need "boolean equals(T thing1, T thing2)"
 public class ValueDefinition<T> extends Definition {
-	public final T defaultValue;
+	public final @NotNull T defaultValue;
 	public final @Nullable Predicate<Object> validator;
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue, @Nullable Predicate<Object> validator, @Nullable SectionDefinition parent) {
+	public ValueDefinition(String name, List<String> comment, @NotNull T defaultValue, @Nullable Predicate<Object> validator, @Nullable SectionDefinition parent) {
 		super(name, comment, parent);
 		this.defaultValue = defaultValue;
 		this.validator = validator;
 	}
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue, Predicate<Object> validator) {
+	public ValueDefinition(String name, List<String> comment, @NotNull T defaultValue, Predicate<Object> validator) {
 		this(name, comment, defaultValue, validator, null);
 	}
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue, SectionDefinition parent) {
+	public ValueDefinition(String name, List<String> comment, @NotNull T defaultValue, SectionDefinition parent) {
 		this(name, comment, defaultValue, null, parent);
 	}
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue) {
+	public ValueDefinition(String name, List<String> comment, @NotNull T defaultValue) {
 		this(name, comment, defaultValue, null, null);
 	}
 
 	public boolean isOfType(Class<?> clazz) {
-		//TODO: have "type" as a field, so that defaultValue can be null
 		return clazz.isAssignableFrom(defaultValue.getClass());
 	}
 

@@ -91,6 +91,8 @@ public class ConfigObjectMapper {
 
 			//default value
 			Object defaultValue = getField(obj, field);
+			if(defaultValue == null)
+				throw new IllegalArgumentException("@Config fields can't have null default values - field " + field.getName() + " obj " + obj.getClass());
 
 			//validators
 			Config.Condition condition = field.getDeclaredAnnotation(Config.Condition.class);

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SectionDefinition extends Definition {
@@ -24,13 +25,13 @@ public class SectionDefinition extends Definition {
 		return subsections.computeIfAbsent(name, __ -> new SectionDefinition(name, comment, this));
 	}
 
-	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue) {
+	public <T> ValueDefinition<T> addValue(String name, List<String> comment, @NotNull T defaultValue) {
 		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, this);
 		values.put(val.name, val);
 		return val;
 	}
 
-	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue, Predicate<Object> validator) {
+	public <T> ValueDefinition<T> addValue(String name, List<String> comment, @NotNull T defaultValue, Predicate<Object> validator) {
 		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, validator, this);
 		values.put(val.name, val);
 		return val;
