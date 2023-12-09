@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
 import org.violetmoon.zeta.block.SimpleFluidloggedBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -46,7 +47,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final BooleanProperty LAVALOGGED = BooleanProperty.create("lavalogged");
 
-	public GrateBlock(ZetaModule module) {
+	public GrateBlock(@Nullable ZetaModule module) {
 		super("grate", module,
 			Block.Properties.of()
 				.strength(5, 10)
@@ -56,6 +57,9 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 				.noOcclusion());
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(LAVALOGGED, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.CHAIN, false);
 	}

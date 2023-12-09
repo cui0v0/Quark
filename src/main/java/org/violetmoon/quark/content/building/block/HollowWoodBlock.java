@@ -36,17 +36,16 @@ public class HollowWoodBlock extends HollowFrameBlock {
 
     private final boolean flammable;
 
-    public HollowWoodBlock(Block sourceLog, ZetaModule module, boolean flammable) {
+    public HollowWoodBlock(Block sourceLog, @Nullable ZetaModule module, boolean flammable) {
 	    this(Quark.ZETA.registryUtil.inherit(sourceLog, "hollow_%s"), sourceLog, module, flammable);
     }
 
-    public HollowWoodBlock(String name, Block sourceLog, ZetaModule module, boolean flammable) {
-        super(name, module, "DECORATIONS",
-                MiscUtil.copyPropertySafe(sourceLog)
+    public HollowWoodBlock(String name, Block sourceLog, @Nullable ZetaModule module, boolean flammable) {
+        super(name, module,
+          MiscUtil.copyPropertySafe(sourceLog)
                         .isSuffocating((s, g, p) -> false));
 
         this.flammable = flammable;
-        module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
         registerDefaultState(defaultBlockState()
             .setValue(DOWN, true)
             .setValue(UP, true)
@@ -54,6 +53,10 @@ public class HollowWoodBlock extends HollowFrameBlock {
             .setValue(SOUTH, true)
             .setValue(WEST, true)
             .setValue(EAST, true));
+
+        if(module == null) //auto registration below this line
+            return;
+        module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
     }
 
     @Override

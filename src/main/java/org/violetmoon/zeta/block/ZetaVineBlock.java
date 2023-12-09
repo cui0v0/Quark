@@ -22,12 +22,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaVineBlock extends VineBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaVineBlock(ZetaModule module, String name, boolean creative) {
+	public ZetaVineBlock(@Nullable ZetaModule module, String name, boolean creative) {
 		super(OldMaterials.replaceablePlant().noCollission().randomTicks().strength(0.2F).sound(SoundType.GRASS));
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.registry.registerBlock(this, name, true);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);

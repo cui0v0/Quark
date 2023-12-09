@@ -10,6 +10,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
@@ -19,13 +20,16 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
  */
 public class ZetaGlassBlock extends ZetaBlock {
 
-	public ZetaGlassBlock(String regname, ZetaModule module, boolean translucent, Properties properties) {
+	public ZetaGlassBlock(String regname, @Nullable ZetaModule module, boolean translucent, Properties properties) {
 		super(regname, module, properties
 				.noOcclusion()
 				.isValidSpawn((state, world, pos, entityType) -> false)
 				.isRedstoneConductor((state, world, pos) -> false)
 				.isSuffocating((state, world, pos) -> false)
 				.isViewBlocking((state, world, pos) -> false));
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.renderLayerRegistry.put(this, translucent ? RenderLayerRegistry.Layer.TRANSLUCENT : RenderLayerRegistry.Layer.CUTOUT);
 	}

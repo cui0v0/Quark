@@ -1,5 +1,7 @@
 package org.violetmoon.zeta.block;
 
+import java.util.Objects;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -19,13 +21,16 @@ public class ZetaInheritedPaneBlock extends ZetaPaneBlock implements IZetaBlock,
 
 	public ZetaInheritedPaneBlock(IZetaBlock parent, String name, Block.Properties properties) {
 		super(name, parent.getModule(), properties, null);
-
 		this.parent = parent;
+
+		if(module == null || parent.getModule() == null) //auto registration below this line
+			return;
+
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 	}
 
 	public ZetaInheritedPaneBlock(IZetaBlock parent, Block.Properties properties) {
-		this(parent, parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_pane"), properties);
+		this(parent, Objects.requireNonNull(parent.getModule(), "Can only use this constructor on blocks with a ZetaModule").zeta.registryUtil.inheritQuark(parent, "%s_pane"), properties);
 	}
 
 	public ZetaInheritedPaneBlock(IZetaBlock parent) {

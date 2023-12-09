@@ -11,12 +11,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaStandingSignBlock extends StandingSignBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaStandingSignBlock(String regname, ZetaModule module, WoodType type, Properties properties) {
+	public ZetaStandingSignBlock(String regname, @Nullable ZetaModule module, WoodType type, Properties properties) {
 		super(properties, type);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.registry.registerBlock(this, regname, false);
 	}

@@ -15,12 +15,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
  */
 public class ZetaFenceGateBlock extends FenceGateBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaFenceGateBlock(String regname, ZetaModule module, Properties properties) {
+	public ZetaFenceGateBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(properties, WoodType.OAK); //TODO 1.20: change parameter or pass SoundType parameters thru
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.registry.registerBlock(this, regname, true);
 	}

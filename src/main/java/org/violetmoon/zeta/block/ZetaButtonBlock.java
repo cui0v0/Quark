@@ -20,12 +20,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
  */
 public abstract class ZetaButtonBlock extends ButtonBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaButtonBlock(BlockSetType setType, int ticksToStayPressed, boolean arrowsCanPress, String regname, ZetaModule module, Properties properties) {
+	public ZetaButtonBlock(BlockSetType setType, int ticksToStayPressed, boolean arrowsCanPress, String regname, @Nullable ZetaModule module, Properties properties) {
 		super(properties, setType, ticksToStayPressed, arrowsCanPress);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.registry.registerBlock(this, regname, true);
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, this, Blocks.STONE_BUTTON, false);

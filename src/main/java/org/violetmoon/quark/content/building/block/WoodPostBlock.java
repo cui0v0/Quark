@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.block;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -48,7 +49,7 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 			BooleanProperty.create("chain_east")
 	};
 
-	public WoodPostBlock(ZetaModule module, Block parent, String prefix, SoundType sound) {
+	public WoodPostBlock(@Nullable ZetaModule module, Block parent, String prefix, SoundType sound) {
 		super(Quark.ZETA.registryUtil.inherit(parent, s -> prefix + s.replace("_fence", "_post")),
 				module, 
 				Properties.copy(parent).sound(sound));
@@ -57,6 +58,9 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 		for(BooleanProperty prop : CHAINED)
 			state = state.setValue(prop, false);
 		registerDefaultState(state);
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, parent, true);

@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterloggedBlock {
@@ -61,8 +62,13 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 		this.base = base;
 		base.cluster = this;
 
-		base.getModule().zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(WATERLOGGED, false));
+
+		ZetaModule module = base.getModule();
+		if(module == null) //auto registration below this line
+			return;
+
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
 

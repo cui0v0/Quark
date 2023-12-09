@@ -28,7 +28,12 @@ public class ZetaStairsBlock extends StairBlock implements IZetaBlock, IZetaBloc
 		super(parent.getBlock()::defaultBlockState, VariantRegistry.realStateCopy(parent));
 
 		this.parent = parent;
-		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_stairs");
+
+		ZetaModule module = parent.getModule();
+		if(module == null)
+			throw new IllegalArgumentException("Can only create ZetaStairsBlock with blocks belonging to a module"); //for various reasons
+
+		String resloc = module.zeta.registryUtil.inheritQuark(parent, "%s_stairs");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 		setCreativeTab(tab == null ? CreativeModeTabs.BUILDING_BLOCKS : tab, parent.getBlock(), false);

@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -23,7 +24,7 @@ public class GlowShroomBlock extends ZetaBushBlock implements BonemealableBlock 
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
-	public GlowShroomBlock(ZetaModule module) {
+	public GlowShroomBlock(@Nullable ZetaModule module) {
 		super("glow_shroom", module, null,
 				Properties.copy(Blocks.RED_MUSHROOM)
 				.randomTicks()

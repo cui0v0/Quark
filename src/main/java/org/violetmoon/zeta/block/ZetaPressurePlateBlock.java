@@ -17,12 +17,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
  */
 public class ZetaPressurePlateBlock extends PressurePlateBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, ZetaModule module, String creativeTab, Properties properties, BlockSetType blockSetType) {
+	public ZetaPressurePlateBlock(Sensitivity sensitivity, String regname, @Nullable ZetaModule module, Properties properties, BlockSetType blockSetType) {
 		super(sensitivity, properties, blockSetType);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.registry.registerBlock(this, regname, true);
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, false);

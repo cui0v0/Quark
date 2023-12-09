@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
 import org.violetmoon.quark.content.automation.module.EnderWatcherModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -29,7 +30,7 @@ public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 	public static final BooleanProperty WATCHED = BooleanProperty.create("watched");
 	public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
-	public EnderWatcherBlock(ZetaModule module) {
+	public EnderWatcherBlock(@Nullable ZetaModule module) {
 		super("ender_watcher", module,
 				Block.Properties.of()
 				.mapColor(MapColor.COLOR_GREEN)
@@ -37,6 +38,9 @@ public class EnderWatcherBlock extends ZetaBlock implements EntityBlock {
 				.sound(SoundType.METAL));
 
 		registerDefaultState(defaultBlockState().setValue(WATCHED, false).setValue(POWER, 0));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 

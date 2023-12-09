@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.automation.base.RandomizerPowerState;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -45,13 +46,15 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<RandomizerPowerState> POWERED = EnumProperty.create("powered", RandomizerPowerState.class);
 
-	public RedstoneRandomizerBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
+	public RedstoneRandomizerBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 
 		registerDefaultState(defaultBlockState()
 				.setValue(FACING, Direction.NORTH)
 				.setValue(POWERED, RandomizerPowerState.OFF));
 
+		if(module == null) //auto registration below this line
+			return;
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS, Blocks.COMPARATOR, false);
 	}

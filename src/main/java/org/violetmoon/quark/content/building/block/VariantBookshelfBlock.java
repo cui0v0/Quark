@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -17,9 +18,12 @@ public class VariantBookshelfBlock extends ZetaBlock {
 
 	private final boolean flammable;
 	
-	public VariantBookshelfBlock(String type, ZetaModule module, boolean flammable, SoundType sound) {
+	public VariantBookshelfBlock(String type, @Nullable ZetaModule module, boolean flammable, SoundType sound) {
 		super(type + "_bookshelf", module, Block.Properties.copy(Blocks.BOOKSHELF).sound(sound));
 		this.flammable = flammable;
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.BOOKSHELF, false);
 	}
 	

@@ -18,6 +18,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.automation.block.be.ChuteBlockEntity;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -32,9 +33,12 @@ public class ChuteBlock extends ZetaBlock implements EntityBlock {
 
 	public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
-	public ChuteBlock(String regname, ZetaModule module, Properties properties) {
+	public ChuteBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 		registerDefaultState(defaultBlockState().setValue(ENABLED, true));
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);

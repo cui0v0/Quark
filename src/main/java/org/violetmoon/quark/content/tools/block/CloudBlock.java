@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -32,7 +33,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 public class CloudBlock extends ZetaBlock implements EntityBlock {
 
-	public CloudBlock(ZetaModule module) {
+	public CloudBlock(@Nullable ZetaModule module) {
 		super("cloud", module,
 				Block.Properties.of()
 						.mapColor(MapColor.CLAY)

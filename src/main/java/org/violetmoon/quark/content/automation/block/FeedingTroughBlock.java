@@ -50,9 +50,12 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	public static final VoxelShape FULL_SHAPE = Shapes.join(CUBOID_SHAPE, box(2, 6, 2, 14, 8, 14), BooleanOp.ONLY_FIRST);
 	public static final VoxelShape ANIMAL_SHAPE = box(0, 0, 0, 16, 24, 16);
 
-	public FeedingTroughBlock(String regname, ZetaModule module, Properties properties) {
+	public FeedingTroughBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 		registerDefaultState(defaultBlockState().setValue(FULL, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.COMPOSTER, true);
 	}
 

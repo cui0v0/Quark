@@ -27,7 +27,12 @@ public class ZetaSlabBlock extends SlabBlock implements IZetaBlock, IZetaBlockCo
 		super(VariantRegistry.realStateCopy(parent));
 
 		this.parent = parent;
-		String resloc = parent.getModule().zeta.registryUtil.inheritQuark(parent, "%s_slab");
+
+		ZetaModule module = parent.getModule();
+		if(module == null)
+			throw new IllegalArgumentException("Can only create ZetaSlabBlock with blocks belonging to a module"); //for various reasons
+
+		String resloc = module.zeta.registryUtil.inheritQuark(parent, "%s_slab");
 		parent.getModule().zeta.registry.registerBlock(this, resloc, true);
 		parent.getModule().zeta.renderLayerRegistry.mock(this, parent.getBlock());
 		setCreativeTab(tab == null ? CreativeModeTabs.BUILDING_BLOCKS : tab, parent.getBlock(), false);

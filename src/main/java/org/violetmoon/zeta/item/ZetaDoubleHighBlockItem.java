@@ -2,18 +2,15 @@ package org.violetmoon.zeta.item;
 
 import java.util.function.BooleanSupplier;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaDoubleHighBlockItem extends DoubleHighBlockItem implements IZetaItem {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
@@ -29,6 +26,7 @@ public class ZetaDoubleHighBlockItem extends DoubleHighBlockItem implements IZet
 		return this;
 	}
 
+	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;

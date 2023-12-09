@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -23,13 +24,16 @@ public class PaperLanternBlock extends ZetaBlock {
 	private static final VoxelShape LANTERN_SHAPE = box(2, 2, 2, 14, 14, 14);
 	private static final VoxelShape SHAPE = Shapes.or(POST_SHAPE, LANTERN_SHAPE);
 
-	public PaperLanternBlock(String regname, ZetaModule module) {
+	public PaperLanternBlock(String regname, @Nullable ZetaModule module) {
 		super(regname, module,
 			OldMaterials.wood()
 				.mapColor(MapColor.SNOW)
 				.sound(SoundType.WOOD)
 				.lightLevel(b -> 15)
 				.strength(1.5F));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 

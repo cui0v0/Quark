@@ -18,8 +18,11 @@ public class DirtyGlassBlock extends ZetaGlassBlock {
 
 	private static final float[] BEACON_COLOR_MULTIPLIER = new float[] { 0.25F, 0.125F, 0F };
 
-	public DirtyGlassBlock(String regname, ZetaModule module, Properties properties) {
+	public DirtyGlassBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, true, properties);
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.TINTED_GLASS, false);
 	}
 

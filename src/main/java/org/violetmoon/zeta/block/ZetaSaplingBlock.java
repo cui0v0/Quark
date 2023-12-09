@@ -7,25 +7,29 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaSaplingBlock extends SaplingBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 	
-	public ZetaSaplingBlock(String name, ZetaModule module, AbstractTreeGrower tree) {
+	public ZetaSaplingBlock(String name, @Nullable ZetaModule module, AbstractTreeGrower tree) {
 		super(tree, Block.Properties.copy(Blocks.OAK_SAPLING));
 		this.module = module;
 
-		module.zeta.registry.registerBlock(this, name + "_sapling", true);
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.AZALEA, true);
+		if(module == null) //auto registration below this line
+			return;
 
+		module.zeta.registry.registerBlock(this, name + "_sapling", true);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.AZALEA, true);
 	}
 
+	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;

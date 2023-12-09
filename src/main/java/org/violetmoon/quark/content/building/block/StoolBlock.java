@@ -35,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.building.entity.Stool;
 import org.violetmoon.quark.content.building.module.StoolsModule;
 import org.violetmoon.zeta.block.OldMaterials;
@@ -63,7 +64,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty BIG = BooleanProperty.create("big");
 	public static final BooleanProperty SAT_IN = BooleanProperty.create("sat_in");
 
-	public StoolBlock(ZetaModule module, DyeColor color) {
+	public StoolBlock(@Nullable ZetaModule module, DyeColor color) {
 		super(color.getName() + "_stool", module,
 			OldMaterials.wool()
 				.mapColor(color.getMapColor())
@@ -72,6 +73,9 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 				.noOcclusion());
 
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(BIG, false).setValue(SAT_IN, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.PINK_BED, false);
 	}
 

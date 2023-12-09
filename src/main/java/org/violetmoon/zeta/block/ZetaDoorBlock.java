@@ -21,12 +21,15 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaDoorBlock extends DoorBlock implements IZetaBlock, IZetaBlockItemProvider {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaDoorBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
+	public ZetaDoorBlock(BlockSetType setType, String regname, @Nullable ZetaModule module, Properties properties) {
 		super(properties, setType);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		module.zeta.registry.registerBlock(this, regname, true);

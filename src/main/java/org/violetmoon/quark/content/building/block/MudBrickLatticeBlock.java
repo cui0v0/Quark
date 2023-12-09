@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -23,10 +24,12 @@ public class MudBrickLatticeBlock extends ZetaGlassBlock implements SimpleWaterl
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
-	public MudBrickLatticeBlock(ZetaModule module, Properties properties) {
+	public MudBrickLatticeBlock(@Nullable ZetaModule module, Properties properties) {
 		super("mud_brick_lattice", module, false, properties);
-		
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 

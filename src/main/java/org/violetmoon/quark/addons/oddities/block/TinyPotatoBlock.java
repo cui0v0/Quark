@@ -67,11 +67,14 @@ public class TinyPotatoBlock extends ZetaBlock implements SimpleWaterloggedBlock
 		return ItemNBTHelper.getBoolean(stack, ANGRY, false);
 	}
 
-	public TinyPotatoBlock(ZetaModule module) {
+	public TinyPotatoBlock(@Nullable ZetaModule module) {
 		super("tiny_potato", module,
 				OldMaterials.wool().strength(0.25F));
 		registerDefaultState(defaultBlockState()
 				.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS);
 	}
 

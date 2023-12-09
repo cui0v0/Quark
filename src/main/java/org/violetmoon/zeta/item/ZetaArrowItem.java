@@ -7,6 +7,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.BooleanSuppliers;
@@ -15,14 +16,18 @@ import java.util.function.BooleanSupplier;
 
 public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaArrowItem(String name, ZetaModule module) {
+	public ZetaArrowItem(String name, @Nullable ZetaModule module) {
 		super(new Item.Properties());
 
-		module.zeta.registry.registerItem(this, name);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
+
+		module.zeta.registry.registerItem(this, name);
 		CreativeTabManager.addToCreativeTab(CreativeModeTabs.COMBAT, this);
 	}
 
@@ -32,6 +37,7 @@ public abstract class ZetaArrowItem extends ArrowItem implements IZetaItem {
 		return this;
 	}
 
+	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;

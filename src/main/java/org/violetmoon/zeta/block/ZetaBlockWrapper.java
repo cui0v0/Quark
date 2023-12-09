@@ -2,6 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import net.minecraft.world.item.Item;
@@ -12,11 +13,11 @@ import net.minecraft.world.level.block.Block;
 public class ZetaBlockWrapper implements IZetaBlock, ItemLike {
 
 	private final Block parent;
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	
 	private BooleanSupplier condition;
 	
-	public ZetaBlockWrapper(Block parent, ZetaModule module) {
+	public ZetaBlockWrapper(Block parent, @Nullable ZetaModule module) {
 		this.parent = parent;
 		this.module = module;
 	}
@@ -26,6 +27,7 @@ public class ZetaBlockWrapper implements IZetaBlock, ItemLike {
 		return parent;
 	}
 
+	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;

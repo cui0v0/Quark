@@ -10,12 +10,16 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaPillarBlock extends RotatedPillarBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaPillarBlock(String regname, ZetaModule module, Properties properties) {
+	public ZetaPillarBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(properties);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			return;
+
 		module.zeta.registry.registerBlock(this, regname, true);
 	}
 
