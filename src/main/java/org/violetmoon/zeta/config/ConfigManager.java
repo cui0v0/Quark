@@ -46,7 +46,7 @@ public class ConfigManager {
 		//all modules are enabled by default
 		enabledCategories.addAll(modules.getCategories());
 
-		SectionDefinition.Builder rootConfigBuilder = new SectionDefinition.Builder().name("root");
+		SectionDefinition.Builder rootConfigBuilder = new SectionDefinition.Builder().name("");
 
 		// "general" section
 		if(rootPojo == null)
@@ -77,12 +77,16 @@ public class ConfigManager {
 					// module enablement option
 					moduleEnabledOptions.put(module, categorySectionBuilder.addValue(moduleEnabledOptionBuilder -> moduleEnabledOptionBuilder
 						.name(module.displayName)
+						.englishDisplayName(module.displayName)
 						.comment(module.description)
 						.defaultValue(module.enabledByDefault)));
 
 					// per-module options
 					categorySectionBuilder.addSubsection(moduleSectionBuilder -> {
-						moduleSectionBuilder.name(module.lowercaseName).comment(module.description);
+						moduleSectionBuilder
+							.name(module.lowercaseName)
+							.englishDisplayName(module.displayName)
+							.comment(module.description);
 
 						// @Config options
 						ConfigObjectMapper.readInto(moduleSectionBuilder, module, databindings, cfm);
@@ -125,7 +129,7 @@ public class ConfigManager {
 		});
 
 		this.rootConfig = rootConfigBuilder.build();
-		rootConfig.trimEmptySubsections();
+		rootConfig.finish();
 	}
 
 	public SectionDefinition getRootConfig() {

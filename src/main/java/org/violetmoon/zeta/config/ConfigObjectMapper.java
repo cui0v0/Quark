@@ -69,11 +69,11 @@ public class ConfigObjectMapper {
 			field.setAccessible(true);
 
 			//name
-			String name;
+			String displayName;
 			if(config.name().isEmpty())
-				name = WordUtils.capitalizeFully(field.getName().replaceAll("(?<=.)([A-Z])", " $1"));
+				displayName = WordUtils.capitalizeFully(field.getName().replaceAll("(?<=.)([A-Z])", " $1"));
 			else
-				name = config.name();
+				displayName = config.name();
 
 			//comments
 			Config.Min min = field.getDeclaredAnnotation(Config.Min.class);
@@ -103,7 +103,9 @@ public class ConfigObjectMapper {
 				//it's a subtree
 
 				sect.addSubsection(subsectionBuilder -> {
-					subsectionBuilder.name(name.toLowerCase(Locale.ROOT).replace(" ", "_"))
+					subsectionBuilder
+						.name(displayName.toLowerCase(Locale.ROOT).replace(" ", "_"))
+						.englishDisplayName(displayName)
 						.comment(comment)
 						.hint(configType); //<- the HINT system... a little awkward
 
@@ -118,7 +120,9 @@ public class ConfigObjectMapper {
 				//it's a leaf node
 
 				ValueDefinition<?> def = sect.addValue(defBuilder -> {
-					defBuilder.name(name)
+					defBuilder
+						.name(displayName)
+						.englishDisplayName(displayName)
 						.comment(comment)
 						.defaultValue(defaultValue)
 						.validator(restriction);

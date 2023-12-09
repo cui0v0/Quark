@@ -18,9 +18,17 @@ public class SectionDefinition extends Definition {
 
 		this.subsections = builder.subsections;
 		this.values = builder.values;
+	}
 
-		for(Definition d : Iterables.concat(subsections.values(), values.values()))
-			d.setParent(this);
+	public void finish() {
+		//Remove empty subsections
+		getSubsections().removeIf(sub -> !sub.getAllChildren().iterator().hasNext());
+
+		//Link up the graph
+		getAllChildren().forEach(child -> child.setParent(this));
+
+		//Recurse
+		getSubsections().forEach(SectionDefinition::finish);
 	}
 
 	public @Nullable ValueDefinition<?> getValue(String name) {
@@ -46,9 +54,8 @@ public class SectionDefinition extends Definition {
 		return values.values();
 	}
 
-	public void trimEmptySubsections() {
-		getSubsections().removeIf(sub -> sub.getSubsections().isEmpty() && sub.getValues().isEmpty());
-		getSubsections().forEach(SectionDefinition::trimEmptySubsections);
+	public Iterable<Definition> getAllChildren() {
+		return Iterables.concat(getSubsections(), getValues());
 	}
 
 	@Override

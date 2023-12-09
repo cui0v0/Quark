@@ -40,10 +40,10 @@ public class SectionScreen extends ZetaScreen {
 	protected void init() {
 		super.init();
 
+		//first append the default/discard/done buttons, then add the scrolling list. then the buttons will take click priority
 		this.defaultDiscardDone = new DefaultDiscardDone(this, changes, section);
 		defaultDiscardDone.addWidgets(this::addRenderableWidget);
 
-		//append the scrolling list after, so the save/discard buttons take click priority
 		this.list = new ScrollableWidgetList<>(this);
 		for(ValueDefinition<?> value : section.getValues())
 			list.addEntry(new ValueDefinitionEntry<>(changes, value));
@@ -126,7 +126,7 @@ public class SectionScreen extends ZetaScreen {
 
 			super.render(guiGraphics, index, rowTop, rowLeft, rowWidth, rowHeight, mouseX, mouseY, hovered, partialTicks);
 
-			String name = def.getGuiDisplayName(I18n::get);
+			String name = def.getTranslatedDisplayName(I18n::get);
 			if(changes.isDirty(def))
 				name += ChatFormatting.GOLD + "*";
 
@@ -143,10 +143,9 @@ public class SectionScreen extends ZetaScreen {
 				name += "...";
 			}
 
-			List<String> tooltip = new ArrayList<>(def.comment);
+			List<String> tooltip = new ArrayList<>(def.getTranslatedComment(I18n::get));
 			if(originalName != null) {
 				if(tooltip.isEmpty()) {
-					tooltip = new LinkedList<>();
 					tooltip.add(originalName);
 				} else {
 					tooltip.add(0, "");
@@ -170,7 +169,7 @@ public class SectionScreen extends ZetaScreen {
 
 		@Override
 		public @NotNull Component getNarration() {
-			return Component.literal(def.getGuiDisplayName(I18n::get));
+			return Component.literal(def.getTranslatedDisplayName(I18n::get));
 		}
 	}
 

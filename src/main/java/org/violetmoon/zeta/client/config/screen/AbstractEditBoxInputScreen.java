@@ -28,7 +28,7 @@ public abstract class AbstractEditBoxInputScreen<T> extends AbstractInputScreen<
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		guiGraphics.drawCenteredString(font, Component.literal(def.getTranslatedDisplayName(I18n::get)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
 		guiGraphics.drawCenteredString(font, I18n.get("quark.gui.config.defaultvalue", def.defaultValue), width / 2, 30, 0xFFFFFF);
 
 		input.render(guiGraphics, mouseX, mouseY, partialTicks);
