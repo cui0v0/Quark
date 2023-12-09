@@ -41,59 +41,72 @@ public class ConfigManager {
 	public ConfigManager(Zeta z, Object rootPojo) {
 		this.z = z;
 		this.cfm = new ConfigFlagManager(z);
-
-		//TODO: where to put this lol
-		z.loadBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
-		z.playBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
-
 		ZetaModuleManager modules = z.modules;
 
 		//all modules are enabled by default
 		enabledCategories.addAll(modules.getCategories());
 
-		this.rootConfig = new SectionDefinition("root", List.of());
+		SectionDefinition.Builder rootConfigBuilder = new SectionDefinition.Builder().name("root");
 
+		// "general" section
 		if(rootPojo == null)
 			generalSection = null;
 		else {
-			generalSection = rootConfig.getOrCreateSubsection("general", List.of());
-			ConfigObjectMapper.readInto(generalSection, rootPojo, databindings, cfm);
+			//TODO: where to put this lol
+			z.loadBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
+			z.playBus.subscribe(rootPojo).subscribe(rootPojo.getClass());
+
+			generalSection = rootConfigBuilder.addSubsection(general -> ConfigObjectMapper.readInto(general.name("general"), rootPojo, databindings, cfm));
 		}
 
+		// "categories" section, holding the category enablement options
+		rootConfigBuilder.addSubsection(categories -> {
+			categories.name("categories");
+			for(ZetaCategory category : modules.getInhabitedCategories())
+				categoryEnabledOptions.put(category, categories.addValue(b -> b.name(category.name).defaultValue(true)));
+		});
+
+		// per-category options
 		for(ZetaCategory category : modules.getInhabitedCategories()) {
-			//category enablement option
-			categoryEnabledOptions.put(category, rootConfig.getOrCreateSubsection("categories", List.of()).addValue(category.name, List.of(), true));
+			categoriesToSections.put(category, rootConfigBuilder.addSubsection(categorySectionBuilder -> {
+				categorySectionBuilder.name(category.name);
+				for(ZetaModule module : modules.modulesInCategory(category)) {
+					// module flag
+					cfm.putModuleFlag(module);
 
-			//per-category options:
-			SectionDefinition categorySection = rootConfig.getOrCreateSubsection(category.name, List.of());
-			categoriesToSections.put(category, categorySection);
+					// module enablement option
+					moduleEnabledOptions.put(module, categorySectionBuilder.addValue(moduleEnabledOptionBuilder -> moduleEnabledOptionBuilder
+						.name(module.displayName)
+						.comment(module.description)
+						.defaultValue(module.enabledByDefault)));
 
-			for(ZetaModule module : modules.modulesInCategory(category)) {
-				//module flag
-				cfm.putModuleFlag(module);
+					// per-module options
+					categorySectionBuilder.addSubsection(moduleSectionBuilder -> {
+						moduleSectionBuilder.name(module.lowercaseName).comment(module.description);
 
-				//module enablement option
-				moduleEnabledOptions.put(module, categorySection.addValue(module.displayName, List.of(module.description), module.enabledByDefault));
+						// @Config options
+						ConfigObjectMapper.readInto(moduleSectionBuilder, module, databindings, cfm);
 
-				//module @Config options
-				SectionDefinition moduleSection = categorySection.getOrCreateSubsection(module.lowercaseName, List.of(module.description));
-				ConfigObjectMapper.readInto(moduleSection, module, databindings, cfm);
+						// anti overlap option
+						if(!module.antiOverlap.isEmpty()) {
+							ignoreAntiOverlapOptions.put(module, moduleSectionBuilder.addValue(antiOverlapOptionBuilder -> {
+								antiOverlapOptionBuilder.name("Ignore Anti Overlap")
+									.comment("This feature disables itself if any of the following mods are loaded:")
+									.defaultValue(false);
 
-				//anti overlap
-				if(!module.antiOverlap.isEmpty()) {
-					List<String> antiOverlapComment = new ArrayList<>(module.antiOverlap.size() + 3);
-					antiOverlapComment.add("This feature disables itself if any of the following mods are loaded:");
-					for (String s : module.antiOverlap)
-						antiOverlapComment.add(" - " + s);
-					antiOverlapComment.add("This is done to prevent content overlap.");
-					antiOverlapComment.add("You can turn this on to force the feature to be loaded even if the above mods are also loaded.");
+								for(String modid : module.antiOverlap)
+									antiOverlapOptionBuilder.comment(" - " + modid);
 
-					ignoreAntiOverlapOptions.put(module, moduleSection.addValue("Ignore Anti Overlap", antiOverlapComment, false));
+								antiOverlapOptionBuilder.comment("This is done to prevent content overlap.")
+									.comment("You can turn this on to force the feature to be loaded even if the above mods are also loaded.");
+							}));
+						}
+					});
 				}
-			}
+			}));
 		}
 
-		//update extra flags
+		//grab any extra flags
 		z.playBus.fire(new ZGatherAdditionalFlags(cfm));
 
 		//managing module enablement in one go
@@ -111,6 +124,7 @@ public class ConfigManager {
 			z.playBus.fire(new ZGatherAdditionalFlags(cfm));
 		});
 
+		this.rootConfig = rootConfigBuilder.build();
 		rootConfig.trimEmptySubsections();
 	}
 
@@ -118,7 +132,7 @@ public class ConfigManager {
 		return rootConfig;
 	}
 
-	// mapping between internal and external representations of the config (?)
+	// mapping between internal and external representations of the config (??????)
 
 	public @Nullable SectionDefinition getGeneralSection() {
 		return generalSection;

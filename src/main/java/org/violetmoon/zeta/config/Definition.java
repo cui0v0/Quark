@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -20,22 +22,23 @@ import org.jetbrains.annotations.Nullable;
 public abstract class Definition {
 	public final String name;
 	public final List<String> comment;
-	public final @Nullable SectionDefinition parent;
-	public final Collection<String> path;
 
-	//TODO: awkward, set from ConfigObjectMapper
+	//late-bound from the SectionDefinition constructor (yeah)
+	public @Nullable SectionDefinition parent = null;
+	public Collection<String> path = Collections.emptyList();
+
+	//TODO: awkward, set from ConfigObjectMapper, used in ClientConfigManager
 	// Treat this as immutable and for reference only !!!!
 	public @Nullable Object hint;
 
-	public Definition(String name, List<String> comment, @Nullable SectionDefinition parent) {
-		this.name = name;
-		this.parent = parent;
+	public Definition(Definition.Builder<?, ? extends Definition> builder) {
+		this.name = Preconditions.checkNotNull(builder.name, "Definitions require a name");
+		this.comment = builder.comment;
+		this.hint = builder.hint;
+	}
 
-		//TODO lol; mainly sanitizing it so it won't blow up when the forge config system reads me
-		this.comment = comment.stream()
-			.flatMap(s -> Arrays.stream(s.split("\n")))
-			.filter(line -> !line.trim().isEmpty())
-			.collect(Collectors.toList());
+	public void setParent(SectionDefinition parent) {
+		this.parent = parent;
 
 		if(parent == null)
 			path = Collections.emptyList(); //TODO: skipping the "root" SectionDefinition in a clumsy way
@@ -70,5 +73,42 @@ public abstract class Definition {
 			return name;
 
 		return localized;
+	}
+
+	// i hope this isnt too complicated...
+	public abstract static class Builder<B extends Builder<B, T>, T extends Definition> {
+		protected @Nullable String name;
+		protected List<String> comment = new ArrayList<>(2);
+		protected @Nullable Object hint;
+
+		public abstract T build();
+
+		public B name(String name) {
+			this.name = name;
+			return downcast();
+		}
+
+		public B comment(String comment) {
+			return comment(List.of(comment));
+		}
+
+		public B comment(List<String> comment) {
+			comment.stream()
+				.flatMap(line -> Stream.of(line.split("\n")))
+				.filter(line -> !line.trim().isEmpty())
+				.forEach(this.comment::add);
+
+			return downcast();
+		}
+
+		public B hint(Object hint) {
+			this.hint = hint;
+			return downcast();
+		}
+
+		@SuppressWarnings("unchecked")
+		protected <X> X downcast() {
+			return (X) this;
+		}
 	}
 }
