@@ -52,15 +52,14 @@ public class ConfigObjectMapper {
 		}
 	}
 
-	public static void readInto(SectionDefinition sect, Object obj, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
+	public static void readInto(SectionDefinition.Builder sect, Object obj, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
 		if(obj instanceof ZetaModule zm)
 			readInto(sect, obj, zm, databindings, cfm);
 		else
 			readInto(sect, obj, null, databindings, cfm);
 	}
 
-	//TODO: interaction with ConfigFlagManager
-	public static void readInto(SectionDefinition sect, Object obj, @Nullable ZetaModule enclosingModule, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
+	public static void readInto(SectionDefinition.Builder sect, Object obj, @Nullable ZetaModule enclosingModule, List<Consumer<IZetaConfigInternals>> databindings, ConfigFlagManager cfm) {
 		for(Field field : walkModuleFields(obj.getClass())) {
 			Config config = field.getAnnotation(Config.class);
 
@@ -70,9 +69,11 @@ public class ConfigObjectMapper {
 			field.setAccessible(true);
 
 			//name
-			String name = config.name();
-			if(name.isEmpty())
-				name = WordUtils.capitalizeFully(field.getName().replaceAll("(?<=.)([A-Z])", " $1"));
+			String displayName;
+			if(config.name().isEmpty())
+				displayName = WordUtils.capitalizeFully(field.getName().replaceAll("(?<=.)([A-Z])", " $1"));
+			else
+				displayName = config.name();
 
 			//comments
 			Config.Min min = field.getDeclaredAnnotation(Config.Min.class);
@@ -91,6 +92,8 @@ public class ConfigObjectMapper {
 
 			//default value
 			Object defaultValue = getField(obj, field);
+			if(defaultValue == null)
+				throw new IllegalArgumentException("@Config fields can't have null default values - field " + field.getName() + " obj " + obj.getClass());
 
 			//validators
 			Config.Condition condition = field.getDeclaredAnnotation(Config.Condition.class);
@@ -98,20 +101,32 @@ public class ConfigObjectMapper {
 
 			if(defaultValue instanceof IConfigType configType) {
 				//it's a subtree
-				String asSectionName = name.toLowerCase(Locale.ROOT).replace(" ", "_");
-				SectionDefinition subsection = sect.getOrCreateSubsection(asSectionName, comment);
-				subsection.hint = configType;
 
-				//walk inside the ConfigType and look for its @Config annotations, add databinders, etc
-				readInto(subsection, configType, enclosingModule, databindings, cfm);
+				sect.addSubsection(subsectionBuilder -> {
+					subsectionBuilder
+						.name(displayName.toLowerCase(Locale.ROOT).replace(" ", "_"))
+						.englishDisplayName(displayName)
+						.comment(comment)
+						.hint(configType); //<- the HINT system... a little awkward
+
+					//walk inside the ConfigType and look for its @Config annotations, add databinders, etc
+					readInto(subsectionBuilder, configType, enclosingModule, databindings, cfm);
+				});
 
 				//since databinders are called in order, this will run after the configtype's @Config-annotated
 				//fields have been brought up-to-date
 				databindings.add(z -> configType.onReload(enclosingModule, cfm));
 			} else {
 				//it's a leaf node
-				//add it to the config tree
-				ValueDefinition<?> def = sect.addValue(name, comment, defaultValue, restriction);
+
+				ValueDefinition<?> def = sect.addValue(defBuilder -> {
+					defBuilder
+						.name(displayName)
+						.englishDisplayName(displayName)
+						.comment(comment)
+						.defaultValue(defaultValue)
+						.validator(restriction);
+				});
 
 				//register a data binder
 				databindings.add(z -> setField(obj, field, z.get(def)));

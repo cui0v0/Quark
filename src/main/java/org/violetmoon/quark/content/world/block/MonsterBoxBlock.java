@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -24,7 +25,7 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
 public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 
-	public MonsterBoxBlock(ZetaModule module) {
+	public MonsterBoxBlock(@Nullable ZetaModule module) {
 		super("monster_box", module,
 				Block.Properties.of()
 				.mapColor(MapColor.METAL)
@@ -32,6 +33,9 @@ public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 				.strength(25F)
 				.sound(SoundType.METAL)
 				.noOcclusion());
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.SPAWN_EGGS, Blocks.SPAWNER, false);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}

@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.automation.entity.Gravisand;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -16,8 +17,11 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 public class GravisandBlock extends ZetaBlock {
 
-	public GravisandBlock(String regname, ZetaModule module, Properties properties) {
+	public GravisandBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 

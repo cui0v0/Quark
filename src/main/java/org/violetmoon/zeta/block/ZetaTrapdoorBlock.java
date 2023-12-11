@@ -2,6 +2,7 @@ package org.violetmoon.zeta.block;
 
 import java.util.function.BooleanSupplier;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -24,6 +25,9 @@ public class ZetaTrapdoorBlock extends TrapDoorBlock implements IZetaBlock {
 	public ZetaTrapdoorBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
 		super(properties, setType);
 		this.module = module;
+
+		if(module == null) //auto registration below this line
+			throw new IllegalArgumentException("Must provide a module for ZetaTrapdoorBlock"); //isLadderZeta
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		module.zeta.registry.registerBlock(this, regname, true);

@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.block.pipe;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -18,7 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class EncasedPipeBlock extends BasePipeBlock {
 
-	public EncasedPipeBlock(ZetaModule module) {
+	public EncasedPipeBlock(@Nullable ZetaModule module) {
 		super("encased_pipe", module);
 	}
 	

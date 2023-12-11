@@ -32,12 +32,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.world.module.ChorusVegetationModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
-import org.jetbrains.annotations.NotNull;
 
 public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBlock, IForgeShearable {
 
@@ -45,7 +44,7 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 
 	private final boolean simple;
 
-	public ChorusVegetationBlock(String regname, ZetaModule module, boolean simple) {
+	public ChorusVegetationBlock(String regname, @Nullable ZetaModule module, boolean simple) {
 		super(regname, module,
 				BlockBehaviour.Properties.of()
 				.mapColor(MapColor.PLANT)
@@ -60,6 +59,10 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 		);
 
 		this.simple = simple;
+
+		if(module == null) //auto registration below this line
+			return;
+
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.CHORUS_PLANT, true);
 	}

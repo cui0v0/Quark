@@ -14,6 +14,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.block.IZetaBlock;
 
@@ -43,17 +44,23 @@ public class RegistryUtil {
 		this.z = z;
 	}
 
-	public String inheritQuark(IZetaBlock parent, String format) {
+	public @Nullable String inheritQuark(IZetaBlock parent, String format) {
 		return inherit(parent.getBlock(), format);
 	}
 
-	public String inherit(Block parent, String format) {
+	public @Nullable String inherit(Block parent, String format) {
 		ResourceLocation parentName = z.registry.getRegistryName(parent, BuiltInRegistries.BLOCK);
-		return String.format(String.format("%s:%s", z.modid, format), parentName.getPath());
+		if(parentName == null)
+			return null;
+		else
+			return String.format(String.format("%s:%s", z.modid, format), parentName.getPath());
 	}
 
-	public String inherit(Block parent, Function<String, String> fun) {
+	public @Nullable String inherit(Block parent, Function<String, String> fun) {
 		ResourceLocation parentName = z.registry.getRegistryName(parent, BuiltInRegistries.BLOCK);
-		return String.format(String.format("%s:%s", z.modid, fun.apply(parentName.getPath())));
+		if(parentName == null)
+			return null;
+		else
+			return String.format(String.format("%s:%s", z.modid, fun.apply(parentName.getPath())));
 	}
 }

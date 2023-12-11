@@ -108,7 +108,7 @@ public class WoodSetHandler {
 		set.door = new ZetaDoorBlock(setType, name + "_door", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
 		set.trapdoor = new ZetaTrapdoorBlock(setType, name + "_trapdoor", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));
 
-		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, "REDSTONE", OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
+		set.pressurePlate = new ZetaPressurePlateBlock(Sensitivity.EVERYTHING, name + "_pressure_plate", module, OldMaterials.wood().mapColor(color).noCollission().strength(0.5F).sound(SoundType.WOOD), setType);
 		set.button = new ZetaWoodenButtonBlock(setType, name + "_button", module, OldMaterials.decoration().noCollission().strength(0.5F).sound(SoundType.WOOD));
 
 		CreativeTabManager.endDaisyChain();

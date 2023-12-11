@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -13,15 +12,17 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaPaneBlock extends IronBarsBlock implements IZetaBlock {
 
-	public final ZetaModule module;
+	public final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaPaneBlock(String name, ZetaModule module, Block.Properties properties, Layer renderLayer) {
+	public ZetaPaneBlock(String name, @Nullable ZetaModule module, Block.Properties properties, Layer renderLayer) {
 		super(properties);
-
 		this.module = module;
-		module.zeta.registry.registerBlock(this, name, true);
 
+		if(module == null) //auto registration below this line
+			return;
+
+		module.zeta.registry.registerBlock(this, name, true);
 		if(renderLayer != null)
 			module.zeta.renderLayerRegistry.put(this, renderLayer);
 	}

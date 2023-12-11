@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.client.ZetaClient;
@@ -59,7 +60,7 @@ public class StringListInputScreen extends AbstractInputScreen<List<String>> {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		list.reenableVisibleWidgets();
 
-		guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
+		guiGraphics.drawCenteredString(font, Component.literal(def.getTranslatedDisplayName(I18n::get)).withStyle(ChatFormatting.BOLD), width / 2, 20, 0xFFFFFF);
 	}
 
 	protected String getString(int index) {

@@ -33,6 +33,7 @@ import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -57,7 +58,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public PipeBlock(ZetaModule module) {
+	public PipeBlock(@Nullable ZetaModule module) {
 		super("pipe", module);
 	}
 

@@ -43,6 +43,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidUtil;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.automation.module.PistonsMoveTileEntitiesModule;
 import org.violetmoon.quark.content.building.module.RopeModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -57,10 +58,13 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 	public static BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public RopeBlock(String regname, ZetaModule module, Properties properties) {
+	public RopeBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.CHAIN, true);
 	}

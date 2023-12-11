@@ -17,7 +17,7 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 
 public class CutVineBlock extends ZetaVineBlock implements IZetaBlockColorProvider {
 
-	public CutVineBlock(ZetaModule module) {
+	public CutVineBlock(@Nullable ZetaModule module) {
 		super(module, "cut_vine", false);
 	}
 

@@ -21,17 +21,16 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
 
 public class GlowLichenGrowthBlock extends ZetaBushBlock implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
-	public GlowLichenGrowthBlock(ZetaModule module) {
+	public GlowLichenGrowthBlock(@Nullable ZetaModule module) {
 		super("glow_lichen_growth", module, CreativeModeTabs.NATURAL_BLOCKS,
 				Properties.copy(Blocks.GLOW_LICHEN)
 				.randomTicks()

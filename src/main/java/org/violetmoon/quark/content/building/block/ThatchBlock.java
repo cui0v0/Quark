@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.block;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.building.module.ThatchModule;
 import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaFlammableBlock;
@@ -16,13 +17,15 @@ import net.minecraft.world.level.material.MapColor;
 
 public class ThatchBlock extends ZetaFlammableBlock {
 
-	public ThatchBlock(ZetaModule module) {
+	public ThatchBlock(@Nullable ZetaModule module) {
 		super("thatch", module, 300,
 			OldMaterials.grass()
 				.mapColor(MapColor.COLOR_YELLOW)
 				.strength(0.5F)
 				.sound(SoundType.GRASS));
-		
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 	}
 

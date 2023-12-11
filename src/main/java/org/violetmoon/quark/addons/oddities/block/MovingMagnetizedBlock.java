@@ -41,7 +41,7 @@ import java.util.List;
 public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
 
-	public MovingMagnetizedBlock(ZetaModule module) {
+	public MovingMagnetizedBlock(@Nullable ZetaModule module) {
 		super("magnetized_block", module, OldMaterials.piston().strength(-1.0F).dynamicShape().noLootTable().noOcclusion());
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}

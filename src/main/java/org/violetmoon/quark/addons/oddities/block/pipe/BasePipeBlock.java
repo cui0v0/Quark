@@ -55,7 +55,7 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 		};
 	}
 
-	protected BasePipeBlock(String name, ZetaModule module) {
+	protected BasePipeBlock(String name, @Nullable ZetaModule module) {
 		super(name, module,
 				Block.Properties.of()
 						.instrument(NoteBlockInstrument.HAT)
@@ -65,6 +65,10 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 		);
 
 		registerDefaultState(getDefaultPipeState());
+
+		if(module == null) //auto registration below this line
+			return;
+
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}

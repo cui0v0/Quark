@@ -3,33 +3,23 @@ package org.violetmoon.zeta.config;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 //TODO: maybe we need "boolean equals(T thing1, T thing2)"
 public class ValueDefinition<T> extends Definition {
-	public final T defaultValue;
+	public final @NotNull T defaultValue;
 	public final @Nullable Predicate<Object> validator;
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue, @Nullable Predicate<Object> validator, @Nullable SectionDefinition parent) {
-		super(name, comment, parent);
-		this.defaultValue = defaultValue;
-		this.validator = validator;
-	}
+	public ValueDefinition(ValueDefinition.Builder<T> builder) {
+		super(builder);
 
-	public ValueDefinition(String name, List<String> comment, T defaultValue, Predicate<Object> validator) {
-		this(name, comment, defaultValue, validator, null);
-	}
-
-	public ValueDefinition(String name, List<String> comment, T defaultValue, SectionDefinition parent) {
-		this(name, comment, defaultValue, null, parent);
-	}
-
-	public ValueDefinition(String name, List<String> comment, T defaultValue) {
-		this(name, comment, defaultValue, null, null);
+		this.defaultValue = Preconditions.checkNotNull(builder.defaultValue, "ValueDefinition needs a default value");
+		this.validator = builder.validator;
 	}
 
 	public boolean isOfType(Class<?> clazz) {
-		//TODO: have "type" as a field, so that defaultValue can be null
 		return clazz.isAssignableFrom(defaultValue.getClass());
 	}
 
@@ -42,7 +32,7 @@ public class ValueDefinition<T> extends Definition {
 	}
 
 	public boolean validate(Object underTest) {
-		//you HAVE to start with these two conditions lest forge's config api explode into a million pieces
+		//you HAVE to start with a nullcheck and a subtype check, lest forge's config api explode into a million pieces
 		if(underTest == null)
 			return false;
 
@@ -62,5 +52,25 @@ public class ValueDefinition<T> extends Definition {
 	@Override
 	public String toString() {
 		return "ValueDefinition{" + name + "}";
+	}
+
+	public static class Builder<T> extends Definition.Builder<Builder<T>, ValueDefinition<T>> {
+		protected @Nullable T defaultValue;
+		protected @Nullable Predicate<Object> validator;
+
+		@Override
+		public ValueDefinition<T> build() {
+			return new ValueDefinition<>(this);
+		}
+
+		public Builder<T> defaultValue(T defaultValue) {
+			this.defaultValue = defaultValue;
+			return this;
+		}
+
+		public Builder<T> validator(Predicate<Object> validator) {
+			this.validator = validator;
+			return this;
+		}
 	}
 }

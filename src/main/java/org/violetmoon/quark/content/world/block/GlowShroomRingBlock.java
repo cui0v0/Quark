@@ -32,6 +32,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -45,7 +46,7 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 
 	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0.0D, 4.0D, 5.0D, 16.0D, 12.0D, 16.0D), Direction.SOUTH, Block.box(0.0D, 4.0D, 0.0D, 16.0D, 12.0D, 11.0D), Direction.WEST, Block.box(5.0D, 4.0D, 0.0D, 16.0D, 12.0D, 16.0D), Direction.EAST, Block.box(0.0D, 4.0D, 0.0D, 11.0D, 12.0D, 16.0D)));
 
-	public GlowShroomRingBlock(ZetaModule module) {
+	public GlowShroomRingBlock(@Nullable ZetaModule module) {
 		super("glow_shroom_ring", module,
 				BlockBehaviour.Properties.of()
 				.mapColor(MapColor.COLOR_LIGHT_GRAY)
@@ -54,9 +55,13 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 				.sound(SoundType.FUNGUS)
 				.pushReaction(PushReaction.DESTROY)
 		);
-		CreativeTabManager.addToCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, this);
-		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+
+		if(module == null) //auto registration below this line
+			return;
+
+		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+		CreativeTabManager.addToCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, this);
 		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 	}
 

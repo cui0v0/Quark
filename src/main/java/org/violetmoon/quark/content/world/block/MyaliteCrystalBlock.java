@@ -14,7 +14,7 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 
 public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockColorProvider {
 
-	public MyaliteCrystalBlock(ZetaModule module) {
+	public MyaliteCrystalBlock(@Nullable ZetaModule module) {
 		super("myalite_crystal", module, true,
 				OldMaterials.glass()
 				.mapColor(DyeColor.PURPLE)
@@ -24,7 +24,9 @@ public class MyaliteCrystalBlock extends ZetaGlassBlock implements IZetaBlockCol
 				.requiresCorrectToolForDrops()
 				.randomTicks()
 				.noOcclusion());
-		
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS);
 	}
 	

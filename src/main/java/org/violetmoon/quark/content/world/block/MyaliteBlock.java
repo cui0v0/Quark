@@ -7,7 +7,7 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 
 public class MyaliteBlock extends ZetaBlock implements IZetaBlockColorProvider {
 
-	public MyaliteBlock(String regname, ZetaModule module, Properties properties) {
+	public MyaliteBlock(String regname, @Nullable ZetaModule module, Properties properties) {
 		super(regname, module, properties);
 	}
 

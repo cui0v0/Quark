@@ -4,13 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 
 public class ZetaFlammablePillarBlock extends ZetaPillarBlock {
 
 	private final int flammability;
 
-	public ZetaFlammablePillarBlock(String regname, ZetaModule module, int flamability, Properties properties) {
+	public ZetaFlammablePillarBlock(String regname, @Nullable ZetaModule module, int flamability, Properties properties) {
 		super(regname, module, properties);
 		this.flammability = flamability;
 	}

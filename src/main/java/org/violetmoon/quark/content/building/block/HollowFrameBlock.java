@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -65,7 +66,7 @@ public abstract class HollowFrameBlock extends ZetaBlock implements SimpleWaterl
         }
     }
 
-    public HollowFrameBlock(String regname, ZetaModule module, String creativeTab, Properties properties) {
+    public HollowFrameBlock(String regname, @Nullable ZetaModule module, Properties properties) {
         super(regname, module, properties);
 
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));

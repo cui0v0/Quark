@@ -2,38 +2,33 @@ package org.violetmoon.zeta.config;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
+import com.google.common.collect.Iterables;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SectionDefinition extends Definition {
-	public final Map<String, SectionDefinition> subsections = new LinkedHashMap<>();
-	public final Map<String, ValueDefinition<?>> values = new LinkedHashMap<>();
+	public final @NotNull Map<String, SectionDefinition> subsections;
+	public final @NotNull Map<String, ValueDefinition<?>> values;
 
-	public SectionDefinition(String name, List<String> comment, @Nullable SectionDefinition parent) {
-		super(name, comment, parent);
+	public SectionDefinition(SectionDefinition.Builder builder) {
+		super(builder);
+
+		this.subsections = builder.subsections;
+		this.values = builder.values;
 	}
 
-	public SectionDefinition(String name, List<String> comment) {
-		this(name, comment, null);
-	}
+	public void finish() {
+		//Remove empty subsections
+		getSubsections().removeIf(sub -> !sub.getAllChildren().iterator().hasNext());
 
-	public SectionDefinition getOrCreateSubsection(String name, List<String> comment) {
-		return subsections.computeIfAbsent(name, __ -> new SectionDefinition(name, comment, this));
-	}
+		//Link up the graph
+		getAllChildren().forEach(child -> child.setParent(this));
 
-	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue) {
-		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, this);
-		values.put(val.name, val);
-		return val;
-	}
-
-	public <T> ValueDefinition<T> addValue(String name, List<String> comment, T defaultValue, Predicate<Object> validator) {
-		ValueDefinition<T> val = new ValueDefinition<>(name, comment, defaultValue, validator, this);
-		values.put(val.name, val);
-		return val;
+		//Recurse
+		getSubsections().forEach(SectionDefinition::finish);
 	}
 
 	public @Nullable ValueDefinition<?> getValue(String name) {
@@ -59,13 +54,52 @@ public class SectionDefinition extends Definition {
 		return values.values();
 	}
 
-	public void trimEmptySubsections() {
-		getSubsections().removeIf(sub -> sub.getSubsections().isEmpty() && sub.getValues().isEmpty());
-		getSubsections().forEach(SectionDefinition::trimEmptySubsections);
+	public Iterable<Definition> getAllChildren() {
+		return Iterables.concat(getSubsections(), getValues());
 	}
 
 	@Override
 	public String toString() {
 		return "SectionDefinition{" + name + " (" + subsections.size() + " subsections, " + values.size() + " values)}";
+	}
+
+	public static class Builder extends Definition.Builder<SectionDefinition.Builder, SectionDefinition> {
+		protected final Map<String, SectionDefinition> subsections = new LinkedHashMap<>();
+		protected final Map<String, ValueDefinition<?>> values = new LinkedHashMap<>();
+
+		@Override
+		public SectionDefinition build() {
+			return new SectionDefinition(this);
+		}
+
+		public SectionDefinition.Builder addSubsection(SectionDefinition value) {
+			subsections.put(value.name, value);
+			return this;
+		}
+
+		public SectionDefinition.Builder addValue(ValueDefinition<?> value) {
+			values.put(value.name, value);
+			return this;
+		}
+
+		// more convenient sometimes
+		public SectionDefinition addSubsection(Consumer<Builder> buildAction) {
+			SectionDefinition.Builder childBuilder = new Builder();
+			buildAction.accept(childBuilder);
+			SectionDefinition child = childBuilder.build();
+
+			addSubsection(child);
+			return child;
+		}
+
+		public <T> ValueDefinition<T> addValue(Consumer<ValueDefinition.Builder<T>> buildAction) {
+			ValueDefinition.Builder<T> childBuilder = new ValueDefinition.Builder<>();
+			buildAction.accept(childBuilder);
+			ValueDefinition<T> child = childBuilder.build();
+
+			addValue(child);
+			return child;
+		}
+
 	}
 }

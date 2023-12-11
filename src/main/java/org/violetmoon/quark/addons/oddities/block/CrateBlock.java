@@ -37,9 +37,12 @@ public class CrateBlock extends ZetaBlock implements EntityBlock {
 
 	public static final BooleanProperty PROPERTY_OPEN = BlockStateProperties.OPEN;
 
-	public CrateBlock(ZetaModule module) {
+	public CrateBlock(@Nullable ZetaModule module) {
 		super("crate", module, Properties.copy(Blocks.BARREL));
 		registerDefaultState(stateDefinition.any().setValue(PROPERTY_OPEN, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Blocks.BARREL, false);
 	}
 

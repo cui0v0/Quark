@@ -5,11 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.module.ZetaModule;
 
 public class ZetaWoodenButtonBlock extends ZetaButtonBlock {
 
-	public ZetaWoodenButtonBlock(BlockSetType setType, String regname, ZetaModule module, Properties properties) {
+	public ZetaWoodenButtonBlock(BlockSetType setType, String regname, @Nullable ZetaModule module, Properties properties) {
 		super(setType, 30, true, regname, module, properties);
 	}
 

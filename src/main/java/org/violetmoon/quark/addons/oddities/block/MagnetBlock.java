@@ -41,9 +41,12 @@ public class MagnetBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public MagnetBlock(ZetaModule module) {
+	public MagnetBlock(@Nullable ZetaModule module) {
 		super("magnet", module, Properties.copy(Blocks.IRON_BLOCK));
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(POWERED, false));
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 	}
 

@@ -17,10 +17,10 @@ import java.util.function.BooleanSupplier;
 
 public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 	
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 	
-	public ZetaLeavesBlock(String name, ZetaModule module, MapColor color) {
+	public ZetaLeavesBlock(String name, @Nullable ZetaModule module, MapColor color) {
 		super(Block.Properties.of()
 				.mapColor(color)
 				.strength(0.2F)
@@ -36,10 +36,12 @@ public class ZetaLeavesBlock extends LeavesBlock implements IZetaBlock {
 
 		this.module = module;
 
-		module.zeta.registry.registerBlock(this, name + "_leaves", true);
-		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.BROWN_MUSHROOM_BLOCK, true);
+		if(module == null) //auto registration below this line
+			return;
 
+		module.zeta.registry.registerBlock(this, name + "_leaves", true);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT_MIPPED);
+		setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.BROWN_MUSHROOM_BLOCK, true);
 	}
 	
 	@Nullable

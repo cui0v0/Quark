@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.block;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -22,11 +23,11 @@ public class BambooMatBlock extends ZetaBlock {
 	
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
 	
-	public BambooMatBlock(String name, ZetaModule module) {
+	public BambooMatBlock(String name, @Nullable ZetaModule module) {
 		this(name, module, CreativeModeTabs.BUILDING_BLOCKS);
 	}
 	
-	public BambooMatBlock(String name, ZetaModule module, ResourceKey<CreativeModeTab> tab) {
+	public BambooMatBlock(String name, @Nullable ZetaModule module, ResourceKey<CreativeModeTab> tab) {
 		super(name, module,
 				Block.Properties.of()
 				.mapColor(MapColor.COLOR_YELLOW)
@@ -37,9 +38,13 @@ public class BambooMatBlock extends ZetaBlock {
 				.pushReaction(PushReaction.DESTROY)
 				.isRedstoneConductor((s, r, p) -> false)
 		);
-		
-		setCreativeTab(tab);
+
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+
+		if(module == null) //auto registration below this line
+			return;
+
+		setCreativeTab(tab);
 	}
 
 	@Override

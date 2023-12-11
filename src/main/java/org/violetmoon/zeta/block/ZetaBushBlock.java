@@ -14,16 +14,18 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 public class ZetaBushBlock extends BushBlock implements IZetaBlock {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
-	public ZetaBushBlock(String regname, ZetaModule module, ResourceKey<CreativeModeTab> tab, Properties properties) {
+	public ZetaBushBlock(String regname, @Nullable ZetaModule module, ResourceKey<CreativeModeTab> tab, Properties properties) {
 		super(properties);
 		this.module = module;
 
+		if(module == null) //auto registration below this line
+			return;
+
 		module.zeta.registry.registerBlock(this, regname, true);
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-		
 		if(tab != null)
 			setCreativeTab(tab);
 	}

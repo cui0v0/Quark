@@ -16,7 +16,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class ObsidianPlateModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
-		new ObsidianPressurePlateBlock("obsidian_pressure_plate", this, "REDSTONE",
+		new ObsidianPressurePlateBlock("obsidian_pressure_plate", this,
 			OldMaterials.stone()
 						.mapColor(MapColor.COLOR_BLACK)
 						.requiresCorrectToolForDrops()

@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.block.ZetaButtonBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -17,7 +18,7 @@ import org.violetmoon.zeta.module.ZetaModule;
  */
 public class MetalButtonBlock extends ZetaButtonBlock {
 
-	public MetalButtonBlock(String regname, ZetaModule module, int speed) {
+	public MetalButtonBlock(String regname, @Nullable ZetaModule module, int speed) {
 		super(BlockSetType.IRON, speed, false, regname, module,
 				Block.Properties.of()
 						.mapColor(MapColor.NONE)

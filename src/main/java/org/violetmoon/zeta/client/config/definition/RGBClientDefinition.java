@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
@@ -133,7 +134,7 @@ public class RGBClientDefinition implements ClientDefinitionExt<SectionDefinitio
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			int titleLeft = width / 2;
-			guiGraphics.drawCenteredString(font, Component.literal(ext.getGuiDisplayName(changes, def)).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
+			guiGraphics.drawCenteredString(font, Component.literal(def.getTranslatedDisplayName(I18n::get)).withStyle(ChatFormatting.BOLD), titleLeft, 20, 0xFFFFFF);
 			//drawCenteredString(mstack, font, Component.literal(element.getGuiDisplayName()), titleLeft, 30, 0xFFFFFF); //TODO
 
 			//TODO: text

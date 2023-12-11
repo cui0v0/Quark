@@ -33,7 +33,7 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 
 	private String corundumDescriptionId;
 
-	public RainbowLampBlock(String regname, int color, ZetaModule module, MapColor mapColor) {
+	public RainbowLampBlock(String regname, int color, @Nullable ZetaModule module, MapColor mapColor) {
 		super(regname, module, true,
 				Properties.of()
 				.strength(0.3F, 0F)
@@ -48,6 +48,9 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 		float g = ((color >> 8) & 0xff) / 255f;
 		float b = (color & 0xff) / 255f;
 		colorComponents = new float[]{r, g, b};
+
+		if(module == null) //auto registration below this line
+			return;
 		setCreativeTab(CreativeModeTabs.REDSTONE_BLOCKS);
 		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}

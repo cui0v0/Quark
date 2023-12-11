@@ -34,7 +34,7 @@ public class CorundumBlock extends ZetaGlassBlock {
 
 	public CorundumClusterBlock cluster;
 
-	public CorundumBlock(String regname, int color, ZetaModule module, MapColor mapColor, boolean waxed) {
+	public CorundumBlock(String regname, int color, @Nullable ZetaModule module, MapColor mapColor, boolean waxed) {
 		super(regname, module, true,
 				Block.Properties.of()
 				.mapColor(mapColor)
@@ -50,6 +50,9 @@ public class CorundumBlock extends ZetaGlassBlock {
 		float b = (color & 0xff) / 255f;
 		colorComponents = new float[]{r, g, b};
 		this.waxed = waxed;
+
+		if(module == null) //auto registration below this line
+			return;
 		
 		setCreativeTab(CreativeModeTabs.COLORED_BLOCKS);
 	}
