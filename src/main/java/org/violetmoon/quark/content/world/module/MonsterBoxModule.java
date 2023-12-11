@@ -1,14 +1,21 @@
 package org.violetmoon.quark.content.world.module;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
@@ -25,6 +32,8 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.ArrayList;
 
 @ZetaLoadModule(category = "world")
 public class MonsterBoxModule extends ZetaModule {
@@ -72,13 +81,28 @@ public class MonsterBoxModule extends ZetaModule {
 				&& entity.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
 				&& ((AccessorLivingEntity) entity).quark$lastHurtByPlayerTime() > 0) {
 			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MONSTER_BOX_LOOT_TABLE);
-			// fixme - Broken - IThundxr
-			//var generatedLoot = loot.getRandomItems(((AccessorLivingEntity) entity).quark$createLootContext(true, event.getSource()).create(LootContextParamSets.ENTITY));
-			//entity.captureDrops(new ArrayList<>());
-			//for (ItemStack stack : generatedLoot)
-			//	entity.spawnAtLocation(stack);
+			ObjectArrayList<ItemStack> generatedLoot = loot.getRandomItems(getLootParamsBuilder(entity, true, event.getSource()).create(LootContextParamSets.ENTITY));
+			entity.captureDrops(new ArrayList<>());
+			for (ItemStack stack : generatedLoot)
+				entity.spawnAtLocation(stack);
 			event.getDrops().addAll(entity.captureDrops(null));
 		}
 	}
 
+	private LootParams.Builder getLootParamsBuilder(LivingEntity entity, boolean bl, DamageSource damageSource) {
+		Player lastHurtByPlayer = ((AccessorLivingEntity) this).quark$lastHurtByPlayer();
+
+		LootParams.Builder builder = new LootParams.Builder((ServerLevel) entity.level())
+				.withParameter(LootContextParams.THIS_ENTITY, entity)
+				.withParameter(LootContextParams.ORIGIN, entity.position())
+				.withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
+				.withOptionalParameter(LootContextParams.KILLER_ENTITY, damageSource.getEntity())
+				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, damageSource.getDirectEntity());
+
+		if (bl && lastHurtByPlayer != null) {
+			builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, lastHurtByPlayer).withLuck(lastHurtByPlayer.getLuck());
+		}
+
+		return builder;
+	}
 }
