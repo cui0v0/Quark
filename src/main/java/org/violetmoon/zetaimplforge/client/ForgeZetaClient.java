@@ -184,13 +184,15 @@ public class ForgeZetaClient extends ZetaClient {
 	}
 
 	boolean clientTicked = false;
-	public void clientTick(TickEvent.ClientTickEvent event) {
+	public void clientTick(TickEvent.ClientTickEvent e) {
 		if(!clientTicked) {
 			loadBus.fire(new ZFirstClientTick());
 			clientTicked = true;
 		}
 
-		if(event.phase == TickEvent.Phase.START)
+		playBus.fire(new ForgeZClientTick(e), ZClientTick.class);
+
+		if (e.phase == TickEvent.Phase.START)
 			playBus.fire(new ZStartClientTick());
 		else
 			playBus.fire(new ZEndClientTick());

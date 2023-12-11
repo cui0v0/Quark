@@ -3,7 +3,6 @@ package org.violetmoon.quark.integration.lootr;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -11,7 +10,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,20 +31,15 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.ModList;
 import noobanidus.mods.lootr.LootrTags;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.block.VariantChestBlock;
-import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
-import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
 
 import java.util.function.Supplier;
 
@@ -54,7 +47,7 @@ import java.util.function.Supplier;
  * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrChestBlock.java
  * All modifications are made purely to integrate with VariantChestBlock/quark
  */
-public class LootrVariantChestBlock extends VariantChestBlock implements IZetaItemPropertiesFiller, IZetaBlockItemProvider {
+public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBlockItemProvider {
 	public LootrVariantChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
@@ -149,12 +142,6 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaIt
 	}
 
 	// END LOOTR COPY
-
-	@Override
-	public void fillItemProperties(Item.Properties props) {
-		//fixme
-		//props.tab(null);
-	}
 
 	@Override
 	public BlockItem provideItemBlock(Block block, Item.Properties props) {

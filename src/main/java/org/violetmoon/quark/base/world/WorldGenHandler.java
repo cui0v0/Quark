@@ -3,8 +3,6 @@ package org.violetmoon.quark.base.world;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
@@ -57,7 +55,6 @@ public class WorldGenHandler {
 			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
 
 			ResourceLocation resloc = new ResourceLocation(Quark.MOD_ID, "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT));
-			//fixme IThundxr - ewwww worldgen (i still love you minecraft)
 			Holder<ConfiguredFeature<?, ?>> featureHolder = Holder.direct(feature);
 
 			PlacedFeature placed = new PlacedFeature(featureHolder, List.of());

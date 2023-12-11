@@ -34,8 +34,8 @@ import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZScreen;
-import org.violetmoon.zeta.client.event.play.ZStartClientTick;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -162,8 +162,7 @@ public class BackpackModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		//fixme this was ClientTickEvent before so not sure if this is correct
-		public void clientTick(ZStartClientTick event) {
+		public void clientTick(ZClientTick event) {
 			Minecraft mc = Minecraft.getInstance();
 			if(isInventoryGUI(mc.screen) && !backpackRequested && isEntityWearingBackpack(mc.player) && !mc.player.isInsidePortal) {
 				requestBackpack();

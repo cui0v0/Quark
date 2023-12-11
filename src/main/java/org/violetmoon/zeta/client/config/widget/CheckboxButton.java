@@ -19,8 +19,6 @@ public class CheckboxButton extends Button {
 	private final ChangeSet changes;
 
 	public CheckboxButton(ResourceLocation iconsTexture, int x, int y, ChangeSet changes, ValueDefinition<Boolean> value) {
-		//fixme make sure this is correct
-		//super(x, y, 20, 20, Component.literal(""), CheckboxButton::toggle);
 		super(new Button.Builder(Component.literal(""), CheckboxButton::toggle).pos(x, y).size(20, 20));
 		this.iconsTexture = iconsTexture;
 		this.value = value;

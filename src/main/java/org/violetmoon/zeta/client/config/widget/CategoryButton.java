@@ -17,8 +17,6 @@ public class CategoryButton extends Button {
 	private final Component text;
 
 	public CategoryButton(ZetaClient zc, int x, int y, int w, int h, Component text, ItemStack icon, OnPress onClick) {
-		//fixme make sure this works
-		//super(x, y, w, h, Component.literal(""), onClick);
 		super(new Button.Builder(Component.literal(""), onClick).pos(x, y).size(w, h));
 		this.zc = zc;
 		this.icon = icon;
