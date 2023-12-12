@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
@@ -90,8 +89,6 @@ public class MonsterBoxModule extends ZetaModule {
 	}
 
 	private LootParams.Builder getLootParamsBuilder(LivingEntity entity, boolean bl, DamageSource damageSource) {
-		Player lastHurtByPlayer = ((AccessorLivingEntity) this).quark$lastHurtByPlayer();
-
 		LootParams.Builder builder = new LootParams.Builder((ServerLevel) entity.level())
 				.withParameter(LootContextParams.THIS_ENTITY, entity)
 				.withParameter(LootContextParams.ORIGIN, entity.position())
@@ -99,8 +96,8 @@ public class MonsterBoxModule extends ZetaModule {
 				.withOptionalParameter(LootContextParams.KILLER_ENTITY, damageSource.getEntity())
 				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, damageSource.getDirectEntity());
 
-		if (bl && lastHurtByPlayer != null) {
-			builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, lastHurtByPlayer).withLuck(lastHurtByPlayer.getLuck());
+		if (bl && ((AccessorLivingEntity) entity).quark$lastHurtByPlayer() != null) {
+			builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, ((AccessorLivingEntity) entity).quark$lastHurtByPlayer()).withLuck(((AccessorLivingEntity) entity).quark$lastHurtByPlayer().getLuck());
 		}
 
 		return builder;
