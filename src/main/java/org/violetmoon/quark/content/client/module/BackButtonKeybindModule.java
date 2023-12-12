@@ -72,8 +72,8 @@ public class BackButtonKeybindModule extends ZetaModule {
 				}
 
 			Minecraft mc = Minecraft.getInstance();
-			if(mc.level != null)
-				mc.setScreen(null);
+			if(mc.level != null && mc.screen != null)
+				mc.screen.onClose();
 		}
 
 	}
