@@ -54,6 +54,9 @@ public class TopLayerTooltipHandler {
 				guiGraphics.renderTooltip(mc.font, tooltip, Optional.empty(), tooltipX, tooltipY);
 
 			// Reset projection matrix
+			guiGraphics.flush();
+			posestack.popPose();
+			RenderSystem.applyModelViewMatrix();
 			RenderSystem.setProjectionMatrix(projectionMatrix, vertexSorting);
 			// End
 
