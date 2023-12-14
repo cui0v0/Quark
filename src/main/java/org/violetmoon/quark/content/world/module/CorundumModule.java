@@ -91,14 +91,14 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.corundum_cluster_grow");
 
 		if(Quark.ZETA.modules.isEnabled(BeaconRedirectionModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.corundum_cluster_redirect"));
 
 		for(Block block : clusters)
-			consumer.accept(block.asItem(), comp);
+			event.accept(block.asItem(), comp);
 	}
 
 	private void add(String name, int color, MapColor mapColor) {

@@ -1,10 +1,13 @@
 package org.violetmoon.zetaimplforge.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +19,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.client.ClientRegistryExtension;
@@ -63,6 +68,15 @@ public class ForgeZetaClient extends ZetaClient {
 	@Override
 	public void setHumanoidArmorModel(Item item, HumanoidArmorModelGetter modelGetter) {
 		((IZetaForgeItemStuff) item).zeta$setHumanoidArmorModel(modelGetter);
+	}
+
+	@Override
+	public RegistryAccess hackilyGetCurrentClientLevelRegistryAccess() {
+		if(EffectiveSide.get().isServer())
+			return ServerLifecycleHooks.getCurrentServer().registryAccess();
+
+		ClientPacketListener conn = Minecraft.getInstance().getConnection();
+		return conn == null ? null : conn.registryAccess();
 	}
 
 	@Override

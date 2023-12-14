@@ -6,6 +6,7 @@ import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -75,6 +76,10 @@ public abstract class ZetaClient {
 
 	public abstract void setBlockEntityWithoutLevelRenderer(Item item, BlockEntityWithoutLevelRenderer bewlr);
 	public abstract void setHumanoidArmorModel(Item item, HumanoidArmorModelGetter modelGetter);
+
+	//TODO: CAREFULLY evaluate usages of this function, do not use it willy nilly. Sometimes it is necessary though.
+	// The name is unwieldy on purpose, usages of this function should stick out.
+	public abstract @Nullable RegistryAccess hackilyGetCurrentClientLevelRegistryAccess();
 
 	public abstract void start();
 }

@@ -93,7 +93,7 @@ public class SpiralSpiresModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.myalite_crystal_get");
 		
 		if(enableMyaliteViaducts)
@@ -101,7 +101,7 @@ public class SpiralSpiresModule extends ZetaModule {
 		if(renewableMyalite && Quark.ZETA.modules.isEnabled(CorundumModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_grow"));
 		
-		consumer.accept(myalite_crystal.asItem(), comp);
+		event.accept(myalite_crystal.asItem(), comp);
 	}
 
 	@PlayEvent

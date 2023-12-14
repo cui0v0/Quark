@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZAddReloadListener;

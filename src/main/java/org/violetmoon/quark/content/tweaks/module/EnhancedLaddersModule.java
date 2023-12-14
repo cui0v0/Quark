@@ -32,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.client.event.play.ZInputUpdate;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -73,7 +72,7 @@ public class EnhancedLaddersModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		if(!allowFreestanding && !allowDroppingDown && !allowSliding && !allowInventorySneak)
 			return;
 		
@@ -94,9 +93,9 @@ public class EnhancedLaddersModule extends ZetaModule {
 		if(allowInventorySneak)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.ladder_sneak"));
 		
-		List<Item> ladders = RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), laddersTag);
+		List<Item> ladders = RegistryUtil.getTagValues(event.getRegistryAccess(), laddersTag);
 		for(Item item : ladders)
-			consumer.accept(item, comp);
+			event.accept(item, comp);
 	}
 
 	private static boolean canAttachTo(BlockState state, Block ladder, LevelReader world, BlockPos pos, Direction facing) {

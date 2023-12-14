@@ -15,6 +15,7 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
@@ -36,8 +38,8 @@ import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
 import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
@@ -162,16 +164,26 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 			List<Item> blacklist = RegistryUtil.massRegistryGet(GeneralConfig.suppressedInfo, BuiltInRegistries.ITEM);
 
-			Quark.ZETA.playBus.fire((item, component) -> {
-				if(blacklist.contains(item))
-					return;
+			Quark.ZETA.playBus.fire(new ZGatherHints() {
+				@Override
+				public void accept(ItemLike itemLike, Component extra) {
+					Item item = itemLike.asItem();
 
-				MutableComponent compound = Component.literal("");
-				if(!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(Quark.MOD_ID))
-					compound = compound.append(externalPreamble);
-				compound = compound.append(component);
+					if(blacklist.contains(item))
+						return;
 
-				registration.addItemStackInfo(new ItemStack(item), compound);
+					MutableComponent compound = Component.literal("");
+					if(!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(Quark.MOD_ID))
+						compound = compound.append(externalPreamble);
+					compound = compound.append(extra);
+
+					registration.addItemStackInfo(new ItemStack(item), compound);
+				}
+
+				@Override
+				public RegistryAccess getRegistryAccess() {
+					return QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess();
+				}
 			}, ZGatherHints.class);
 		}
 	}
@@ -231,7 +243,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				.collect(Collectors.toList());
 
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Item rune : RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), ColorRunesModule.runesTag)) {
+		for (Item rune : RegistryUtil.getTagValues(QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess(), ColorRunesModule.runesTag)) {
 			ItemStack runeStack = new ItemStack(rune);
 			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
 					used.stream().map(stack -> {

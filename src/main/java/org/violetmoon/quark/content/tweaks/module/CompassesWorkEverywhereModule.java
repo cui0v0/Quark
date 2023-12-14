@@ -40,7 +40,7 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 	@Hint("clock_nerf") Item clock = Items.CLOCK;
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		if(!enableNether && !enableEnd && !enableCompassNerf)
 			return;
 		
@@ -57,7 +57,7 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 		if(enableCompassNerf)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.compass_nerf"));
 		
-		consumer.accept(Items.COMPASS, comp);
+		event.accept(Items.COMPASS, comp);
 	}
 
 	@PlayEvent

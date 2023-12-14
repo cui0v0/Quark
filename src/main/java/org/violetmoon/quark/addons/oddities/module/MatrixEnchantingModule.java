@@ -176,13 +176,13 @@ public class MatrixEnchantingModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.matrix_enchanting");
 		if(allowInfluencing)
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.matrix_influencing"));
 
-		consumer.accept(Items.ENCHANTING_TABLE, comp);
-		consumer.accept(matrixEnchanter.asItem(), comp);
+		event.accept(Items.ENCHANTING_TABLE, comp);
+		event.accept(matrixEnchanter.asItem(), comp);
 	}
 
 	@LoadEvent

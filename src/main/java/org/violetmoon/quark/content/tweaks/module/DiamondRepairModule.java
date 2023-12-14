@@ -80,13 +80,13 @@ public class DiamondRepairModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		if(!enableJeiHints)
 			return;
 
 		Component removed = Component.translatable("quark.jei.hint.repair_item_removed");
 		for(Item item : unrepairableItems)
-			consumer.accept(item, removed);
+			event.accept(item, removed);
 
 		for(Item item : repairChanges.keySet()) {
 			Collection<Item> options = repairChanges.get(item);
@@ -103,7 +103,7 @@ public class DiamondRepairModule extends ZetaModule {
 				i++;
 			}
 
-			consumer.accept(item, Component.translatable(key, formatParams));
+			event.accept(item, Component.translatable(key, formatParams));
 		}
 	}
 
