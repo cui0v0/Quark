@@ -11,31 +11,11 @@ import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 
 import java.util.Collection;
 
+@Deprecated(forRemoval = true)
 public abstract class RecipeCrawlEvent extends Event {
 
 	public static class Reset extends RecipeCrawlEvent {}
-	public static class CrawlStarting extends RecipeCrawlEvent {}
-	
-	public static class Digest extends RecipeCrawlEvent {
-		
-		private final Multimap<Item, ItemStack> digestion;
-		private final Multimap<Item, ItemStack> backwardsDigestion;
-		
-		public Digest(Multimap<Item, ItemStack> digestion, Multimap<Item, ItemStack> backwardsDigestion) {
-			this.digestion = digestion;
-			this.backwardsDigestion = backwardsDigestion;
-		}
-		
-		public boolean has(Item item, boolean backwards) {
-			return (backwards ? backwardsDigestion : digestion).containsKey(item);
-		}
-		
-		public Collection<ItemStack> get(Item item, boolean backwards) {
-			return (backwards ? backwardsDigestion : digestion).get(item);
-		}
-		
-	}
-	
+
 	public static abstract class Visit<T extends Recipe<?>> extends RecipeCrawlEvent {
 		
 		public final T recipe;
@@ -49,15 +29,7 @@ public abstract class RecipeCrawlEvent extends Event {
 			this.output = recipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
 			this.ingredients = recipe.getIngredients();
 		}
-		
-		public static class Shaped extends Visit<ShapedRecipe> {
 
-			public Shaped(ShapedRecipe recipe) {
-				super(recipe);
-			}
-			
-		}
-		
 		public static class Shapeless extends Visit<ShapelessRecipe> {
 
 			public Shapeless(ShapelessRecipe recipe) {

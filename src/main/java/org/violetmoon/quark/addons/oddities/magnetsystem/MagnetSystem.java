@@ -40,9 +40,6 @@ public class MagnetSystem {
 	}
 
 	public static void tick(boolean start, Level level) {
-		//TODO ZETA: recipe crawl stuff is probably not working at the moment, i just wanna see if magnets work
-		magnetizableBlocks.add(Blocks.IRON_BLOCK);
-
 		IMagnetTracker tracker = getTracker(level);
 		if(tracker == null)
 			return;

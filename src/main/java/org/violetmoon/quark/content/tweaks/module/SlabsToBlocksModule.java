@@ -1,22 +1,20 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.violetmoon.quark.api.event.RecipeCrawlEvent;
 import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.ZRecipeCrawl;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -30,9 +28,8 @@ public class SlabsToBlocksModule extends ZetaModule {
 		event.getRegistry().register(SlabToBlockRecipe.SERIALIZER, "slab_to_block", Registries.RECIPE_SERIALIZER);
 	}
 
-	//fixme Switch to Zeta - IThundxr
-	@SubscribeEvent
-	public void onReset(RecipeCrawlEvent.Reset event) {
+	@PlayEvent
+	public void onReset(ZRecipeCrawl.Reset event) {
 		recipes.clear();
 	}
 
@@ -42,9 +39,8 @@ public class SlabsToBlocksModule extends ZetaModule {
 		return array[0];
 	}
 
-	//fixme Switch to Zeta - IThundxr
-	@SubscribeEvent
-	public void onVisitShaped(RecipeCrawlEvent.Visit.Shaped visit) {
+	@PlayEvent
+	public void onVisitShaped(ZRecipeCrawl.Visit.Shaped visit) {
 		if(visit.ingredients.size() == 3
 				&& visit.recipe.getHeight() == 1
 				&& visit.recipe.getWidth() == 3
