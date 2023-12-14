@@ -2,16 +2,15 @@ package org.violetmoon.quark.base.client.config;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-
-import java.util.List;
 
 public class SocialButton extends Button {
 
@@ -26,6 +25,8 @@ public class SocialButton extends Button {
 		this.textColor = textColor;
 		this.socialId = socialId;
 		this.text = text;
+
+		setTooltip(Tooltip.create(text));
 	}
 
 	public SocialButton(int x, int y, Component text, int textColor, int socialId, String url) {
@@ -46,8 +47,8 @@ public class SocialButton extends Button {
 
 		guiGraphics.blit(SOCIAL_ICONS, getX(), getY(), u, v, 20, 20, 128, 64);
 
-		if(isHovered)
-			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(text.getString()), mouseX, mouseY);
+		//if(isHovered)
+		//	guiGraphics.renderTooltip(Minecraft.getInstance().font, text, mouseX, mouseY);
 	}
 
 	@Override

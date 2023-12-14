@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.client.ZetaClient;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SectionScreen extends ZetaScreen {
 	protected final SectionDefinition section;
@@ -143,13 +145,17 @@ public class SectionScreen extends ZetaScreen {
 				name += "...";
 			}
 
-			List<String> tooltip = new ArrayList<>(def.getTranslatedComment(I18n::get));
+			List<Component> tooltip = def.getTranslatedComment(I18n::get)
+				.stream()
+				.map(Component::literal) //TODO: return a TranslatableComponent from this api instead?
+				.collect(Collectors.toList());
+
 			if(originalName != null) {
 				if(tooltip.isEmpty()) {
-					tooltip.add(originalName);
+					tooltip.add(Component.literal(originalName));
 				} else {
-					tooltip.add(0, "");
-					tooltip.add(0, originalName);
+					tooltip.add(0, Component.empty());
+					tooltip.add(0, Component.literal(originalName));
 				}
 			}
 
@@ -159,7 +165,7 @@ public class SectionScreen extends ZetaScreen {
 
 				name += (ChatFormatting.AQUA + " (?)");
 				if(mouseX >= hoverLeft && mouseX < hoverRight && mouseY >= top && mouseY < (top + 10))
-					zc.topLayerTooltipHandler.setTooltip(tooltip, mouseX, mouseY);
+					guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
 			}
 
 			guiGraphics.drawString(minecraft.font, name, left, top, 0xFFFFFF, true);

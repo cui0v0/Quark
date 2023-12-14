@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -99,6 +100,7 @@ public class QButton extends Button {
 		for(Celebration c : CELEBRATIONS)
 			if(c.running(day, month)) {
 				celebrating = c;
+				setTooltip(Tooltip.create(Component.translatable("quark.gui.celebration." + celebrating.name)));
 				break;
 			}
 		
@@ -137,10 +139,6 @@ public class QButton extends Button {
 				w = 10;
 				h = 10;
 				v = 44;
-
-				boolean hovered = mouseX >= getX() && mouseY >= getY() && mouseX < (getX() + width) && mouseY < (getY() + height);
-				if(hovered)
-					QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.gui.celebration." + celebrating.name)), mouseX, mouseY);
 			}
 
 			int u = 256 - iconIndex * w;

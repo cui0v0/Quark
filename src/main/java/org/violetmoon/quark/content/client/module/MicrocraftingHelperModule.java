@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.client.module;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,6 @@ import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.Slot;
@@ -123,12 +121,9 @@ public class MicrocraftingHelperModule extends ZetaModule {
 		@PlayEvent
 		public void onDrawGui(ZRenderContainerScreen.Background event) {
 			Minecraft mc = Minecraft.getInstance();
-
-			Screen screen = mc.screen;
-			if(screen instanceof CraftingScreen cscreen) {
+			if(mc.screen instanceof CraftingScreen cscreen) {
 				GuiGraphics guiGraphics = event.getGuiGraphics();
 				PoseStack mstack = guiGraphics.pose();
-				ItemRenderer render = mc.getItemRenderer();
 				int left = cscreen.getGuiLeft() + 95;
 				int top = cscreen.getGuiTop() + 6;
 
@@ -160,7 +155,8 @@ public class MicrocraftingHelperModule extends ZetaModule {
 				if(pair != null) {
 					GhostIngredient ingr = pair.getRight();
 					if(ingr != null)
-						QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(Lists.newArrayList(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
+						//TODO: Don't use TopLayerTooltipHandler, it's hacky. But just calling GuiGraphics.renderTooltip from here has Z-ordering issues.
+						QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
 				}
 			}
 		}
