@@ -29,7 +29,7 @@ import java.util.Optional;
 public class ExclusionRecipe implements CraftingRecipe {
 	public static final Serializer SERIALIZER = new Serializer();
 
-	private final CraftingRecipe parent;
+	protected final CraftingRecipe parent;
 	private final List<ResourceLocation> excluded;
 
 	public ExclusionRecipe(CraftingRecipe parent, List<ResourceLocation> excluded) {
@@ -119,41 +119,26 @@ public class ExclusionRecipe implements CraftingRecipe {
 
 	@Override
 	public CraftingBookCategory category() {
-		return CraftingBookCategory.MISC;
+		return parent.category();
 	}
 
 	private static class ShapedExclusionRecipe extends ExclusionRecipe implements IShapedRecipe<CraftingContainer> {
-		private final IShapedRecipe<CraftingContainer> parent;
+		private final IShapedRecipe<CraftingContainer> shapedParent;
 
 		@SuppressWarnings("unchecked")
-		public ShapedExclusionRecipe(CraftingRecipe parent, List<ResourceLocation> excluded) {
-			super(parent, excluded);
-			this.parent = (IShapedRecipe<CraftingContainer>) parent;
+		public ShapedExclusionRecipe(CraftingRecipe shapedParent, List<ResourceLocation> excluded) {
+			super(shapedParent, excluded);
+			this.shapedParent = (IShapedRecipe<CraftingContainer>) shapedParent;
 		}
 
 		@Override
 		public int getRecipeWidth() {
-			return parent.getRecipeWidth();
+			return shapedParent.getRecipeWidth();
 		}
 
 		@Override
 		public int getRecipeHeight() {
-			return parent.getRecipeHeight();
-		}
-
-		@Override
-		public CraftingBookCategory category() {
-			return CraftingBookCategory.MISC;
-		}
-
-		@Override
-		public @NotNull ItemStack assemble(@NotNull CraftingContainer craftingContainer, RegistryAccess registryAccess) {
-			return ItemStack.EMPTY;
-		}
-
-		@Override
-		public ItemStack getResultItem(RegistryAccess registryAccess) {
-			return ItemStack.EMPTY;
+			return shapedParent.getRecipeHeight();
 		}
 	}
 
