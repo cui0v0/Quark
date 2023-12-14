@@ -3,9 +3,10 @@ package org.violetmoon.quark.content.tools.module;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.item.QuarkMusicDiscItem;
-import org.violetmoon.zeta.client.event.play.ZEndClientTick;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -59,7 +60,10 @@ public class EndermoshMusicDiscModule extends ZetaModule {
 		private SimpleSoundInstance sound;
 
 		@PlayEvent
-		public void tick(ZEndClientTick event) {
+		public void clientTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.END)
+				return;
+
 			if(playEndermoshDuringEnderdragonFight) {
 				boolean wasFightingDragon = isFightingDragon;
 

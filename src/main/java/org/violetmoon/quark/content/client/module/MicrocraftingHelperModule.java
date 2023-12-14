@@ -25,10 +25,11 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZRenderContainerScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
-import org.violetmoon.zeta.client.event.play.ZStartClientTick;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -165,7 +166,10 @@ public class MicrocraftingHelperModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		public void onTick(ZStartClientTick event) {
+		public void onTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.START)
+				return;
+
 			Minecraft mc = Minecraft.getInstance();
 			Screen prevScreen = currentScreen;
 			currentScreen = mc.screen;

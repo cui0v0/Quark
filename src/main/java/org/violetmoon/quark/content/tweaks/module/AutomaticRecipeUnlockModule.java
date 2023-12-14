@@ -19,10 +19,11 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.zeta.client.event.play.ZEndClientTick;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayer;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -118,7 +119,10 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		public void clientTick(ZEndClientTick event) {
+		public void clientTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.END)
+				return;
+
 			Minecraft mc = Minecraft.getInstance();
 			if(mc.player != null && mc.player.tickCount < 20) {
 				ToastComponent toasts = mc.getToasts();
