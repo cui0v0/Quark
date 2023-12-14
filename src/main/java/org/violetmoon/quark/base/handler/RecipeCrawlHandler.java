@@ -122,7 +122,7 @@ public class RecipeCrawlHandler {
 				backwardsDigestion.clear();
 
 				for(Recipe<?> recipe : recipesToLazyDigest)
-					digest(recipe);
+					digest(recipe, tick.getServer().registryAccess());
 
 				recipesToLazyDigest.clear();
 				Quark.ZETA.playBus.fire(new ZRecipeCrawl.Digest(recipeDigestion, backwardsDigestion));
@@ -130,8 +130,8 @@ public class RecipeCrawlHandler {
 		}
 	}
 
-	private static void digest(Recipe<?> recipe) {
-		ItemStack out = recipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
+	private static void digest(Recipe<?> recipe, RegistryAccess access) {
+		ItemStack out = recipe.getResultItem(access);
 		Item outItem = out.getItem();
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
