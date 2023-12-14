@@ -88,10 +88,10 @@ public class GrabChickensModule extends ZetaModule {
 				
 				if(level instanceof ServerLevel slevel)
 					slevel.getChunkSource().chunkMap.broadcast(player, new ClientboundSetPassengersPacket(player));
-			} else if(!player.hasEffect(MobEffects.SLOW_FALLING)) {
+			} else {
 				player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 5, 0, true, false));
 				
-				if(slownessLevel > 0 && !player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN))
+				if(slownessLevel > 0)
 					player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, slownessLevel - 1, true, false));
 			}
 		}
