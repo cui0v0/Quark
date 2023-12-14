@@ -22,6 +22,7 @@ import net.minecraftforge.common.extensions.IForgeItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.violetmoon.quark.addons.oddities.item.BackpackItem;
 import org.violetmoon.zeta.item.ZetaArmorItem;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.item.ZetaItem;
@@ -32,6 +33,7 @@ import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 	ZetaArmorItem.class,
 	ZetaBlockItem.class,
 	ZetaItem.class,
+	BackpackItem.class
 })
 public class IZetaItemMixin_FAKE implements IForgeItem, IZetaItemExtensions {
 	@Override
