@@ -88,7 +88,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.piston_te");
 
 		if(Quark.ZETA.modules.isEnabled(SturdyStoneModule.class))
@@ -97,8 +97,8 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 		if(ZetaPistonStructureResolver.GlobalSettings.getPushLimit() != 12)
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.piston_max_blocks", ZetaPistonStructureResolver.GlobalSettings.getPushLimit()));
 
-		consumer.accept(Items.PISTON, comp);
-		consumer.accept(Items.STICKY_PISTON, comp);
+		event.accept(Items.PISTON, comp);
+		event.accept(Items.STICKY_PISTON, comp);
 	}
 
 	// This is called from injected code and subsequently flipped, so to make it move, we return false

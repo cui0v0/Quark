@@ -2,35 +2,37 @@ package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.*;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.api.event.RecipeCrawlEvent;
-import org.violetmoon.quark.api.event.RecipeCrawlEvent.Visit;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZAddReloadListener;
 import org.violetmoon.zeta.event.load.ZTagsUpdated;
 import org.violetmoon.zeta.event.play.ZServerTick;
+import org.violetmoon.zeta.event.play.ZRecipeCrawl;
 import org.violetmoon.zeta.util.RegistryUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+// TODO TODO: split off from Quark
 
 public class RecipeCrawlHandler {
 
-	private static List<Recipe<?>> recipesToLazyDigest = new ArrayList<>();
-	private static Multimap<Item, ItemStack> recipeDigestion = HashMultimap.create();
-	private static Multimap<Item, ItemStack> backwardsDigestion = HashMultimap.create();
+	private static final List<Recipe<?>> recipesToLazyDigest = new ArrayList<>();
+	private static final Multimap<Item, ItemStack> recipeDigestion = HashMultimap.create();
+	private static final Multimap<Item, ItemStack> backwardsDigestion = HashMultimap.create();
 
 	private static final Object mutex = new Object();
 	private static boolean needsCrawl = false;
@@ -38,17 +40,17 @@ public class RecipeCrawlHandler {
 
 	@LoadEvent
 	public static void addListener(ZAddReloadListener event) {
-		event.addListener((barrier, manager, prepFiller, applyFiller, prepExec, applyExec) -> {
-			return
-				CompletableFuture.runAsync(() -> {
-					clear();
-				}, prepExec)
+		event.addListener(new SimplePreparableReloadListener<Void>() {
+			@Override
+			protected Void prepare(ResourceManager mgr, ProfilerFiller prof) {
+				clear();
+				return null;
+			}
 
-				.thenCompose(barrier::wait)
-
-				.thenRunAsync(() -> {
-					needsCrawl = true;
-				}, applyExec);
+			@Override
+			protected void apply(Void what, ResourceManager mgr, ProfilerFiller prof) {
+				needsCrawl = true;
+			}
 		});
 	}
 
@@ -59,52 +61,58 @@ public class RecipeCrawlHandler {
 
 	private static void clear() {
 		mayCrawl = false;
-		MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Reset());
+		Quark.ZETA.playBus.fire(new ZRecipeCrawl.Reset());
 	}
 
-	private static void load(RecipeManager manager) {
+	@SuppressWarnings("ConstantValue") // some nullchecks on stuff that is ostensibly non-null, but you never know with mods
+	private static void load(RecipeManager manager, RegistryAccess access) {
 		if(!manager.getRecipes().isEmpty()) {
-			MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.CrawlStarting());
+			Quark.ZETA.playBus.fire(new ZRecipeCrawl.Starting());
 
 			recipesToLazyDigest.clear();
 			recipeDigestion.clear();
 			backwardsDigestion.clear();
 
-			Collection<Recipe<?>> recipes = manager.getRecipes();
-
-			for(Recipe<?> recipe : recipes) {
+			for(Recipe<?> recipe : manager.getRecipes()) {
 				try {
-					if (recipe == null || recipe.getIngredients() == null || recipe.getResultItem(RegistryAccessUtil.getRegistryAccess()) == null)
-						continue;
+					if(recipe == null)
+						throw new IllegalStateException("Recipe is null");
+					if(recipe.getIngredients() == null)
+						throw new IllegalStateException("Recipe ingredients are null");
+					if(recipe.getResultItem(access) == null)
+						throw new IllegalStateException("Recipe getResultItem is null");
 
-					RecipeCrawlEvent.Visit<?> event;
-
+					ZRecipeCrawl.Visit<?> event;
 					if (recipe instanceof ShapedRecipe sr)
-						event = new Visit.Shaped(sr);
+						event = new ZRecipeCrawl.Visit.Shaped(sr, access);
 					else if (recipe instanceof ShapelessRecipe sr)
-						event = new Visit.Shapeless(sr);
+						event = new ZRecipeCrawl.Visit.Shapeless(sr, access);
 					else if (recipe instanceof CustomRecipe cr)
-						event = new Visit.Custom(cr);
+						event = new ZRecipeCrawl.Visit.Custom(cr, access);
 					else if (recipe instanceof AbstractCookingRecipe acr)
-						event = new Visit.Cooking(acr);
+						event = new ZRecipeCrawl.Visit.Cooking(acr, access);
 					else
-						event = new Visit.Misc(recipe);
+						event = new ZRecipeCrawl.Visit.Misc(recipe, access);
 
 					recipesToLazyDigest.add(recipe);
-					MinecraftForge.EVENT_BUS.post(event);
+					Quark.ZETA.playBus.fire(event);
 				} catch (Exception e) {
-					Quark.LOG.warn("Failed to scan recipe " + recipe.getId() + ". This should be reported to " + recipe.getId().getNamespace() + "!", e);
+					if(recipe == null)
+						Quark.LOG.error("Encountered null recipe in RecipeManager.getRecipes. This is not good");
+					else
+						Quark.LOG.error("Failed to scan recipe " + recipe.getId() + ". This should be reported to " + recipe.getId().getNamespace() + "!", e);
 				}
 			}
 		}
 	}
 
 	@PlayEvent
-	public static void onTick(ZServerTick tick) {
+	public static void onTick(ZServerTick.Start tick) {
 		synchronized(mutex) {
 			if(mayCrawl && needsCrawl) {
 				RecipeManager manager = tick.getServer().getRecipeManager();
-				load(manager);
+				RegistryAccess access = tick.getServer().registryAccess();
+				load(manager, access);
 				needsCrawl = false;
 			}
 
@@ -113,16 +121,16 @@ public class RecipeCrawlHandler {
 				backwardsDigestion.clear();
 
 				for(Recipe<?> recipe : recipesToLazyDigest)
-					digest(recipe);
+					digest(recipe, tick.getServer().registryAccess());
 
 				recipesToLazyDigest.clear();
-				MinecraftForge.EVENT_BUS.post(new RecipeCrawlEvent.Digest(recipeDigestion, backwardsDigestion));
+				Quark.ZETA.playBus.fire(new ZRecipeCrawl.Digest(recipeDigestion, backwardsDigestion));
 			}
 		}
 	}
 
-	private static void digest(Recipe<?> recipe) {
-		ItemStack out = recipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
+	private static void digest(Recipe<?> recipe, RegistryAccess access) {
+		ItemStack out = recipe.getResultItem(access);
 		Item outItem = out.getItem();
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();

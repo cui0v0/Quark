@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.ModList;
 import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 import noobanidus.mods.lootr.config.ConfigManager;
 import noobanidus.mods.lootr.util.ChestUtil;
@@ -31,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.content.building.block.VariantTrappedChestBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
-import org.violetmoon.zeta.registry.IZetaItemPropertiesFiller;
 
 import java.util.function.Supplier;
 
@@ -39,7 +36,7 @@ import java.util.function.Supplier;
  * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrVariantTrappedChestBlock.java
  * All modifications are made purely to integrate with VariantTrappedChestBlock/quark
  */
-public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaItemPropertiesFiller, IZetaBlockItemProvider {
+public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaBlockItemProvider {
 	public LootrVariantTrappedChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties properties) {
 		super("lootr", type, module, supplier, properties.strength(2.5f));
 	}
@@ -114,12 +111,6 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 	}
 
 	// END LOOTR COPY
-
-	@Override
-	public void fillItemProperties(Item.Properties props) {
-		//fixme
-		//props.tab(null);
-	}
 
 	@Override
 	public BlockItem provideItemBlock(Block block, LootrVariantChestBlock.Item.Properties props) {

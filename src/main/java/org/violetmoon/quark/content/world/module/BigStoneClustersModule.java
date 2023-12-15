@@ -63,9 +63,9 @@ public class BigStoneClustersModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void addAdditionalHints(ZGatherHints consumer) {
+	public void addAdditionalHints(ZGatherHints event) {
 		if(calcite.enabled)
-			consumer.hintItem(Items.CALCITE);
+			event.hintItem(Items.CALCITE);
 	}
 	
 	private void add(BigStoneClusterConfig config, Block block, BooleanSupplier condition) {

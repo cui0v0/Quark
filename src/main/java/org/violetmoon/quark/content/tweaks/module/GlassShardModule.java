@@ -24,7 +24,7 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -41,11 +41,11 @@ public class GlassShardModule extends ZetaModule {
 	public static Item clearShard;
 	public static Item dirtyShard;
 
-	public static final Map<DyeColor, Item> shardColors = new HashMap<>();
+	public static final Map<DyeColor, Item> shardColors = new EnumMap<>(DyeColor.class);
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		dirtyGlass = (ZetaBlock) new DirtyGlassBlock("dirty_glass", this,
+		dirtyGlass = new DirtyGlassBlock("dirty_glass", this,
 				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
 		
 		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.WHITE_STAINED_GLASS_PANE, true);

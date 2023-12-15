@@ -61,7 +61,7 @@ public class ZetaConfigHomeScreen extends ZetaScreen {
 				SectionDefinition categorySection = z.configManager.getCategorySection(category);
 
 				bWidth -= 20; //room for the checkbox
-				Button mainButton = addRenderableWidget(new CategoryButton(zc, x, y, bWidth, 20, componentFor(categorySection), category.icon.get(),
+				Button mainButton = addRenderableWidget(new CategoryButton(x, y, bWidth, 20, componentFor(categorySection), category.icon.get(),
 					b -> Minecraft.getInstance().setScreen(new SectionScreen(zc, this, changeSet, categorySection))));
 				Button checkButton = addRenderableWidget(new CheckboxButton(zc, x + bWidth, y, changeSet, categoryEnabled));
 

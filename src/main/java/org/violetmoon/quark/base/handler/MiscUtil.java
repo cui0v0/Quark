@@ -113,8 +113,7 @@ public class MiscUtil {
 				latestWithPriority = wrappedGoal;
 		}
 
-		//fixme - Broken - IThundxr
-		//selector.removeAllGoals();
+		selector.removeAllGoals(g -> true);
 		if (latestWithPriority == null)
 			selector.addGoal(priority, goal);
 
@@ -203,7 +202,6 @@ public class MiscUtil {
 
 	public static BlockState fromString(String key) {
 		try {
-			//fixme might not work
 			BlockResult result = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), new StringReader(key), false);
 			BlockState state = result.blockState();
 			return state == null ? Blocks.AIR.defaultBlockState() : state;

@@ -33,11 +33,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBColorConfig;
-import org.violetmoon.quark.integration.claim.IClaimIntegration;
-import org.violetmoon.zeta.client.event.play.ZEndClientTick;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -218,7 +218,10 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		public void clientTick(ZEndClientTick event) {
+		public void clientTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.END)
+				return;
+
 			currentTarget = null;
 
 			Player player = Minecraft.getInstance().player;

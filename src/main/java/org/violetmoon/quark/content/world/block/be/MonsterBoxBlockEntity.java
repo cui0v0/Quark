@@ -75,8 +75,6 @@ public class MonsterBoxBlockEntity extends ZetaBlockEntity {
 
 			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MonsterBoxModule.MONSTER_BOX_SPAWNS_LOOT_TABLE);
 			LootParams.Builder builder = (new LootParams.Builder(serverLevel))
-					//fixme is this even needed anymore?
-					//.withRandom(serverLevel.random)
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 					.withParameter(LootContextParams.BLOCK_STATE, getBlockState())
 					.withParameter(LootContextParams.TOOL, ItemStack.EMPTY)

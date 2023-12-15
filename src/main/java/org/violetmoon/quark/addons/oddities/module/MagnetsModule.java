@@ -5,14 +5,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.violetmoon.quark.addons.oddities.block.MagnetBlock;
 import org.violetmoon.quark.addons.oddities.block.MovingMagnetizedBlock;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetBlockEntity;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.render.be.MagnetizedBlockRenderer;
 import org.violetmoon.quark.addons.oddities.magnetsystem.MagnetSystem;
-import org.violetmoon.quark.api.event.RecipeCrawlEvent;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
@@ -20,6 +18,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.ZLevelTick;
+import org.violetmoon.zeta.event.play.ZRecipeCrawl;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
@@ -72,15 +71,13 @@ public class MagnetsModule extends ZetaModule {
 		MagnetSystem.tick(false, event.getLevel());
 	}
 
-	//fixme Switch to Zeta - IThundxr
-	@SubscribeEvent
-	public void crawlReset(RecipeCrawlEvent.Reset event) {
+	@PlayEvent
+	public void crawlReset(ZRecipeCrawl.Reset event) {
 		MagnetSystem.onRecipeReset();
 	}
 
-	//fixme Switch to Zeta - IThundxr
-	@SubscribeEvent
-	public void crawlDigest(RecipeCrawlEvent.Digest event) {
+	@PlayEvent
+	public void crawlDigest(ZRecipeCrawl.Digest event) {
 		MagnetSystem.onDigest();
 	}
 

@@ -127,8 +127,8 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		int color = MiscUtil.Client.getGuiTextColor("matrix_enchanting");
 
-		guiGraphics.drawString(font, enchanter.getDisplayName().getString(), 12, 5, color);
-		guiGraphics.drawString(font, playerInv.getDisplayName().getString(), 8, imageHeight - 96 + 2, color);
+		guiGraphics.drawString(font, enchanter.getDisplayName().getString(), 12, 5, color, false);
+		guiGraphics.drawString(font, playerInv.getDisplayName().getString(), 8, imageHeight - 96 + 2, color, false);
 
 		if(enchanter.matrix != null) {
 			boolean needsRefresh = listPieces == null;

@@ -42,12 +42,13 @@ import org.violetmoon.quark.content.experimental.config.VariantsConfig;
 import org.violetmoon.quark.content.experimental.item.HammerItem;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.load.ZTooltipComponents;
-import org.violetmoon.zeta.client.event.play.ZEndClientTick;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZInput;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
 import org.violetmoon.zeta.client.event.play.ZRenderTooltip;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
@@ -261,7 +262,10 @@ public class VariantSelectorModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		public void clientTick(ZEndClientTick event) {
+		public void clientTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.END)
+				return;
+
 			Minecraft mc = Minecraft.getInstance();
 			Level level = mc.level;
 			if(level == null)

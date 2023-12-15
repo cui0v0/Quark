@@ -1,6 +1,5 @@
 package org.violetmoon.quark.content.client.module;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -15,8 +14,8 @@ import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookPage;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -24,11 +23,11 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZRenderContainerScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
-import org.violetmoon.zeta.client.event.play.ZStartClientTick;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -51,6 +50,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 		public void onClick(ZScreen.MouseButtonPressed.Pre event) {
 			Minecraft mc = Minecraft.getInstance();
 			Screen screen = mc.screen;
+			RegistryAccess registryAccess = QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess();
 
 			if(screen instanceof CraftingScreen cscreen && event.getButton() == 1) {
 				RecipeBookComponent recipeBook = cscreen.getRecipeBookComponent();
@@ -68,7 +68,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 					if(recipeToSet != null) {
 						int ourCount = 0;
 
-						ItemStack testStack = recipeToSet.getResultItem(RegistryAccessUtil.getRegistryAccess());
+						ItemStack testStack = recipeToSet.getResultItem(registryAccess);
 						for(int j = 1; j < ghost.size(); j++) { // start at 1 to skip output
 							GhostIngredient testGhostIngr = ghost.get(j);
 							Ingredient testIngr = testGhostIngr.ingredient;
@@ -89,7 +89,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 							boolean stackIt = true;
 
 							if(recipes.isEmpty()) {
-								ItemStack rootDisplayStack = ghostRecipe.getResultItem(RegistryAccessUtil.getRegistryAccess());
+								ItemStack rootDisplayStack = ghostRecipe.getResultItem(registryAccess);
 								StackedRecipe rootRecipe = new StackedRecipe(null, rootDisplayStack, rootDisplayStack.getCount(), () -> recipes.size() == 1);
 								recipes.add(rootRecipe);
 							} else for(int i = 0; i < recipes.size(); i++) { // check dupes
@@ -121,12 +121,9 @@ public class MicrocraftingHelperModule extends ZetaModule {
 		@PlayEvent
 		public void onDrawGui(ZRenderContainerScreen.Background event) {
 			Minecraft mc = Minecraft.getInstance();
-
-			Screen screen = mc.screen;
-			if(screen instanceof CraftingScreen cscreen) {
+			if(mc.screen instanceof CraftingScreen cscreen) {
 				GuiGraphics guiGraphics = event.getGuiGraphics();
 				PoseStack mstack = guiGraphics.pose();
-				ItemRenderer render = mc.getItemRenderer();
 				int left = cscreen.getGuiLeft() + 95;
 				int top = cscreen.getGuiTop() + 6;
 
@@ -158,13 +155,17 @@ public class MicrocraftingHelperModule extends ZetaModule {
 				if(pair != null) {
 					GhostIngredient ingr = pair.getRight();
 					if(ingr != null)
-						QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(Lists.newArrayList(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
+						//TODO: Don't use TopLayerTooltipHandler, it's hacky. But just calling GuiGraphics.renderTooltip from here has Z-ordering issues.
+						QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(List.of(I18n.get("quark.misc.rightclick_to_craft")), event.getMouseX(), event.getMouseY() - 15);
 				}
 			}
 		}
 
 		@PlayEvent
-		public void onTick(ZStartClientTick event) {
+		public void onTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.START)
+				return;
+
 			Minecraft mc = Minecraft.getInstance();
 			Screen prevScreen = currentScreen;
 			currentScreen = mc.screen;
@@ -210,6 +211,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 
 		private Recipe<?> getRecipeToSet(RecipeBookComponent recipeBook, Ingredient ingr, boolean craftableOnly) {
 			EditBox text = recipeBook.searchBox;
+			RegistryAccess registryAccess = QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess();
 
 			for(ItemStack stack : ingr.getItems()) {
 				String itemName = stack.getHoverName().copy().getString().toLowerCase(Locale.ROOT).trim();
@@ -245,7 +247,7 @@ public class MicrocraftingHelperModule extends ZetaModule {
 							recipeList.sort(this::compareRecipes);
 
 							for(Recipe<?> recipe : recipeList)
-								if(ingr.test(recipe.getResultItem(RegistryAccessUtil.getRegistryAccess())))
+								if(ingr.test(recipe.getResultItem(registryAccess)))
 									return recipe;
 						}
 					}

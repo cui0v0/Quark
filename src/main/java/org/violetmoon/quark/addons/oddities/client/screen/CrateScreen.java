@@ -151,7 +151,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 			String s = menu.getTotal() + "/" + CrateModule.maxItems;
 
 			int color = MiscUtil.Client.getGuiTextColor("crate_count");
-			guiGraphics.drawString(font, s, i + this.imageWidth - font.width(s) - 8 - InventoryButtonHandler.getActiveButtons(ButtonTargetType.CONTAINER_INVENTORY).size() * 12, j + 6, color);
+			guiGraphics.drawString(font, s, i + this.imageWidth - font.width(s) - 8 - InventoryButtonHandler.getActiveButtons(ButtonTargetType.CONTAINER_INVENTORY).size() * 12, j + 6, color, false);
 		}
 	}
 
@@ -159,7 +159,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		int color = MiscUtil.Client.getGuiTextColor("crate_count");
 
-		guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, color);
-		guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, color);
+		guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, color, false);
+		guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, color, false);
 	}
 }

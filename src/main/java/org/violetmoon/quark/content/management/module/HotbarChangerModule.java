@@ -17,11 +17,12 @@ import org.lwjgl.opengl.GL11;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.message.ChangeHotbarMessage;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
-import org.violetmoon.zeta.client.event.play.ZEndClientTick;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
 import org.violetmoon.zeta.client.event.play.ZInput;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -139,7 +140,10 @@ public class HotbarChangerModule extends ZetaModule {
 		}
 
 		@PlayEvent
-		public void onTick(ZEndClientTick event) {
+		public void clientTick(ZClientTick event) {
+			if(event.getPhase() != ZPhase.END)
+				return;
+
 			Player player = Minecraft.getInstance().player;
 
 			if(player != null) {

@@ -1,5 +1,6 @@
 package org.violetmoon.zeta.event.play.loading;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.quark.base.util.registryaccess.RegistryAccessUtil;
 import org.violetmoon.zeta.config.ConfigObjectMapper;
 import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -20,9 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
-public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component> {
+public interface ZGatherHints extends IZetaPlayEvent {
+
+	void accept(ItemLike itemLike, Component extra);
+	RegistryAccess getRegistryAccess();
+
 	default void hintItem(ItemLike itemLike, Object... extra) {
 		Item item = itemLike.asItem();
 		ResourceLocation res = BuiltInRegistries.ITEM.getKey(item);
@@ -107,7 +110,7 @@ public interface ZGatherHints extends IZetaPlayEvent, BiConsumer<Item, Component
 			key = tkey.location().getPath();
 
 		try {
-			List<?> tagItems = RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), tkey);
+			List<?> tagItems = RegistryUtil.getTagValues(getRegistryAccess(), tkey);
 			applyIterable(tagItems, key, extra);
 		} catch(IllegalStateException e) {
 			throw new RuntimeException("TagKey " + tkey + " failed to load.", e);

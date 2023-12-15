@@ -58,20 +58,21 @@ public class CommonProxy {
 		// GLOBAL EVENT LISTENERS
 		Quark.ZETA.loadBus
 			.subscribe(ContributorRewardHandler.class)
+			.subscribe(EntitySpawnHandler.class)
+			.subscribe(FuelHandler.class)
 			.subscribe(QuarkSounds.class)
 			.subscribe(RecipeCrawlHandler.class)
 			.subscribe(ToolInteractionHandler.class)
 			.subscribe(WoodSetHandler.class)
 			.subscribe(WorldGenHandler.class)
-			.subscribe(FuelHandler.class)
-			.subscribe(EntitySpawnHandler.class)
 			.subscribe(this);
 
 		Quark.ZETA.playBus
 			.subscribe(CapabilityHandler.class)
-			.subscribe(SyncedFlagHandler.class)
 			.subscribe(ContributorRewardHandler.class)
 			.subscribe(FuelHandler.class)
+			.subscribe(RecipeCrawlHandler.class)
+			.subscribe(SyncedFlagHandler.class)
 			.subscribe(ToolInteractionHandler.class);
 
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);

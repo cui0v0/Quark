@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Deprecated // Very hacky for what it does.
 public class TopLayerTooltipHandler {
 
 	private List<Component> tooltip;
@@ -54,6 +55,9 @@ public class TopLayerTooltipHandler {
 				guiGraphics.renderTooltip(mc.font, tooltip, Optional.empty(), tooltipX, tooltipY);
 
 			// Reset projection matrix
+			guiGraphics.flush();
+			posestack.popPose();
+			RenderSystem.applyModelViewMatrix();
 			RenderSystem.setProjectionMatrix(projectionMatrix, vertexSorting);
 			// End
 

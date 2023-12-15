@@ -2,8 +2,10 @@ package org.violetmoon.quark.content.management.client.screen.widgets;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.renderer.GameRenderer;
@@ -11,7 +13,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
@@ -19,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MiniInventoryButton extends Button {
 
@@ -70,8 +72,10 @@ public class MiniInventoryButton extends Button {
 
 		guiGraphics.blit(MiscUtil.GENERAL_ICONS, getX(), getY(), u, v, width, height);
 
+		//TODO: change API to take Components so this awkward stream/map dance isn't needed
+		//Even better TODO: change API to use vanilla setTooltip
 		if(isHovered)
-			QuarkClient.ZETA_CLIENT.topLayerTooltipHandler.setTooltip(local$getToolTip(), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, local$getToolTip().stream().map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
 	}
 
 	@NotNull
