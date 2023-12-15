@@ -28,7 +28,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.network.message.DoubleDoorMessage;
-import org.violetmoon.quark.integration.claim.IClaimIntegration;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.bus.ZResult;
@@ -101,7 +100,9 @@ public class DoubleDoorOpeningModule extends ZetaModule {
 	
 	private boolean tryOpen(Level level, Player player, BlockState state, BlockPos otherPos, Direction direction, boolean isOpen, Predicate<BlockState> pred) {
 		BlockState other = level.getBlockState(otherPos);
-		if (state.getBlock() instanceof DoorBlock doorBlock && doorBlock.type().canOpenByHand() && other.getBlock() == state.getBlock() && other.getValue(HorizontalDirectionalBlock.FACING) == direction && other.getValue(BlockStateProperties.OPEN) == isOpen && pred.apply(other)) {
+		boolean doorCheck = state.getBlock() instanceof DoorBlock doorBlock && doorBlock.type().canOpenByHand();
+		boolean fenceGateCheck = state.getBlock() instanceof FenceGateBlock;
+		if ((doorCheck || fenceGateCheck) && other.getBlock() == state.getBlock() && other.getValue(HorizontalDirectionalBlock.FACING) == direction && other.getValue(BlockStateProperties.OPEN) == isOpen && pred.apply(other)) {
 			BlockHitResult res = new BlockHitResult(new Vec3(otherPos.getX() + 0.5, otherPos.getY() + 0.5, otherPos.getZ() + 0.5), direction, otherPos, false);
 
 			if(res.getType() == HitResult.Type.BLOCK) {
