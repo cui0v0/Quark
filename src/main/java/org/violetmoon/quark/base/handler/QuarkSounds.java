@@ -1,17 +1,14 @@
 package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.Lists;
-
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-
-import java.util.List;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
+
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -19,6 +16,8 @@ import org.violetmoon.zeta.event.load.ZRegister;
  */
 public class QuarkSounds {
 	private static final List<SoundEvent> REGISTRY_DEFERENCE = Lists.newArrayList();
+
+	public static final SoundEvent ENTITY_SHIBA_EAT_ARROW = register("entity.shiba.eat_arrow");
 
 	public static final SoundEvent ENTITY_STONELING_MEEP = register("entity.stoneling.meep");
 	public static final SoundEvent ENTITY_STONELING_PURR = register("entity.stoneling.purr");
