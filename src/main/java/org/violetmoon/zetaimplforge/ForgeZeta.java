@@ -187,6 +187,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::rightClickBlockLow);
 		MinecraftForge.EVENT_BUS.addListener(this::rightClickItem);
+		MinecraftForge.EVENT_BUS.addListener(this::livingDeath);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::livingDeathLowest);
 		MinecraftForge.EVENT_BUS.addListener(this::livingTick);
 		MinecraftForge.EVENT_BUS.addListener(this::playNoteBlock);
@@ -288,6 +289,10 @@ public class ForgeZeta extends Zeta {
 
 	public void rightClickItem(PlayerInteractEvent.RightClickItem e) {
 		playBus.fire(new ForgeZRightClickItem(e), ZRightClickItem.class);
+	}
+
+	public void livingDeath(LivingDeathEvent e) {
+		playBus.fire(new ForgeZLivingDeath(e), ZLivingDeath.class);
 	}
 
 	public void livingDeathLowest(LivingDeathEvent e) {
