@@ -274,13 +274,13 @@ public class Stoneling extends PathfinderMob {
 
 	@Override
 	public boolean isInvulnerableTo(@NotNull DamageSource source) {
-		return source == damageSources().cactus() ||
+		return damageSources().cactus().equals(source) ||
 				isProjectileWithoutPiercing(source) ||
 				super.isInvulnerableTo(source);
 	}
 
 	private static boolean isProjectileWithoutPiercing(DamageSource source) {
-		if (!(source.getEntity() instanceof Projectile))
+		if (source.getEntity() instanceof Projectile)
 			return false;
 
 		Entity sourceEntity = source.getDirectEntity();
