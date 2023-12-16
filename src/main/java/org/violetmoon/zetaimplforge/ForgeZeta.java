@@ -245,6 +245,7 @@ public class ForgeZeta extends Zeta {
 		MinecraftForge.EVENT_BUS.addListener(this::livingFall);
 		MinecraftForge.EVENT_BUS.addListener(this::wandererTrades);
 		MinecraftForge.EVENT_BUS.addListener(this::furnaceFuelBurnTime);
+		MinecraftForge.EVENT_BUS.addListener(this::itemTooltip);
 	}
 
 	private boolean registerDone = false;
@@ -519,6 +520,10 @@ public class ForgeZeta extends Zeta {
 
 	public void furnaceFuelBurnTime(FurnaceFuelBurnTimeEvent e) {
 		playBus.fire(new ForgeZFurnaceFuelBurnTime(e), ZFurnaceFuelBurnTime.class);
+	}
+
+	public void itemTooltip(ItemTooltipEvent e) {
+		playBus.fire(new ForgeZItemTooltip(e), ZItemTooltip.class);
 	}
 
 	public static ZResult from(Event.Result r) {

@@ -164,19 +164,6 @@
       "head": "difference",
       "potion": "difference"
     },
-    "texture": "quark:attribute/reach_distance",
-    "compare": "higher_better"
-  },
-  "forge:attack_range": {
-    "display": {
-      "mainhand": "difference",
-      "offhand": "difference",
-      "feet": "difference",
-      "legs": "difference",
-      "chest": "difference",
-      "head": "difference",
-      "potion": "difference"
-    },
     "texture": "quark:attribute/attack_range",
     "compare": "higher_better"
   },
