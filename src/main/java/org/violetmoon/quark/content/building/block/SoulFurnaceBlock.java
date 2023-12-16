@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,6 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.zeta.module.ZetaModule;
+
 public class SoulFurnaceBlock extends VariantFurnaceBlock {
 
 	public static final BooleanProperty SOUL = BooleanProperty.create("soul");
@@ -33,19 +33,19 @@ public class SoulFurnaceBlock extends VariantFurnaceBlock {
 	@Override
 	public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
 		if(state.getValue(LIT) && state.getValue(SOUL)) {
-			double d0 = (double)pos.getX() + 0.5D;
+			double d0 = (double) pos.getX() + 0.5D;
 			double d1 = pos.getY();
-			double d2 = (double)pos.getZ() + 0.5D;
-			if (random.nextDouble() < 0.1D) {
+			double d2 = (double) pos.getZ() + 0.5D;
+			if(random.nextDouble() < 0.1D) {
 				level.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 
 			Direction direction = state.getValue(FACING);
 			Direction.Axis direction$axis = direction.getAxis();
 			double d4 = random.nextDouble() * 0.6D - 0.3D;
-			double d5 = direction$axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52D : d4;
+			double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : d4;
 			double d6 = random.nextDouble() * 6.0D / 16.0D;
-			double d7 = direction$axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.52D : d4;
+			double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52D : d4;
 			level.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 			level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 

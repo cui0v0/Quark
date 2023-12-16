@@ -1,6 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block.be;
 
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -88,17 +87,17 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 
 	public void interact(Player player, InteractionHand hand, ItemStack stack, Direction side) {
 		int index = side.get3DDataValue();
-		if (index >= 0) {
+		if(index >= 0) {
 			ItemStack stackAt = getItem(index);
-			if (!stackAt.isEmpty() && stack.isEmpty()) {
+			if(!stackAt.isEmpty() && stack.isEmpty()) {
 				player.setItemInHand(hand, stackAt);
 				setItem(index, ItemStack.EMPTY);
-			} else if (!stack.isEmpty()) {
+			} else if(!stack.isEmpty()) {
 				ItemStack copy = stack.split(1);
 
-				if (stack.isEmpty()) {
+				if(stack.isEmpty()) {
 					player.setItemInHand(hand, stackAt);
-				} else if (!stackAt.isEmpty()) {
+				} else if(!stackAt.isEmpty()) {
 					player.getInventory().placeItemBackInInventory(stackAt);
 				}
 
@@ -106,14 +105,14 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 			}
 		}
 
-		if (level != null && !level.isClientSide) {
+		if(level != null && !level.isClientSide) {
 			jump();
 
-			if (hasCustomName()) {
+			if(hasCustomName()) {
 				TinyPotatoInfo info = TinyPotatoInfo.fromComponent(name);
 
 				String checkName = info.name().toLowerCase().trim();
-				if (SOUNDS.containsKey(checkName) && soundCd == 0) {
+				if(SOUNDS.containsKey(checkName) && soundCd == 0) {
 					SoundEvent playSound = SOUNDS.get(checkName);
 					soundCd = 20;
 					level.playSound(null, worldPosition, playSound, SoundSource.BLOCKS, 1F, 1F);
@@ -122,10 +121,10 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 
 			ItemStack tater = ItemStack.EMPTY;
 			boolean manyTater = false;
-			for (int i = 0; i < getContainerSize(); i++) {
+			for(int i = 0; i < getContainerSize(); i++) {
 				ItemStack stackAt = getItem(i);
-				if (!stackAt.isEmpty() && stackAt.is(TinyPotatoModule.tiny_potato.asItem())) {
-					if (tater.isEmpty())
+				if(!stackAt.isEmpty() && stackAt.is(TinyPotatoModule.tiny_potato.asItem())) {
+					if(tater.isEmpty())
 						tater = stackAt;
 					else {
 						manyTater = true;
@@ -133,27 +132,27 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 					}
 				}
 			}
-			if (!tater.isEmpty()) {
+			if(!tater.isEmpty()) {
 				String taterGender = manyTater ? "children" : "son";
-				if (tater.hasCustomHoverName() && !manyTater) {
+				if(tater.hasCustomHoverName() && !manyTater) {
 					TinyPotatoInfo info = TinyPotatoInfo.fromComponent(tater.getHoverName());
 					taterGender = GENDER.getOrDefault(info.name(), taterGender);
 				}
-				if (player instanceof ServerPlayer serverPlayer)
+				if(player instanceof ServerPlayer serverPlayer)
 					serverPlayer.sendSystemMessage(Component.translatable("quark.misc.my_" + taterGender), true);
 			}
 		}
 	}
 
 	private void jump() {
-		if (level != null && jumpTicks == 0) {
+		if(level != null && jumpTicks == 0) {
 			level.blockEvent(getBlockPos(), getBlockState().getBlock(), JUMP_EVENT, 20);
 		}
 	}
 
 	@Override
 	public boolean triggerEvent(int id, int param) {
-		if (id == JUMP_EVENT) {
+		if(id == JUMP_EVENT) {
 			jumpTicks = param;
 			return true;
 		} else {
@@ -162,15 +161,15 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 	}
 
 	public static void commonTick(Level level, BlockPos pos, BlockState state, TinyPotatoBlockEntity self) {
-		if (self.jumpTicks > 0) {
+		if(self.jumpTicks > 0) {
 			self.jumpTicks--;
 		}
 
-		if (!level.isClientSide) {
-			if (level.random.nextInt(100) == 0) {
+		if(!level.isClientSide) {
+			if(level.random.nextInt(100) == 0) {
 				self.jump();
 			}
-			if (self.soundCd > 0) {
+			if(self.soundCd > 0) {
 				self.soundCd--;
 			}
 		}
@@ -184,7 +183,7 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 	@Override
 	public void setChanged() {
 		super.setChanged();
-		if (level != null && !level.isClientSide) {
+		if(level != null && !level.isClientSide) {
 			sync();
 		}
 	}
@@ -243,12 +242,11 @@ public class TinyPotatoBlockEntity extends SimpleInventoryBlockEntity implements
 	@NotNull
 	@Override
 	public Component getDisplayName() {
-		if (hasCustomName()) {
+		if(hasCustomName()) {
 			Component customName = getCustomName();
-			if (customName != null)
+			if(customName != null)
 				return customName;
 		}
 		return getName();
 	}
 }
-

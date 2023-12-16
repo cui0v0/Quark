@@ -31,8 +31,10 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IForgeShearable;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.world.module.ChorusVegetationModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -47,15 +49,15 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 	public ChorusVegetationBlock(String regname, @Nullable ZetaModule module, boolean simple) {
 		super(regname, module,
 				BlockBehaviour.Properties.of()
-				.mapColor(MapColor.PLANT)
-				.replaceable()
-				.noCollission()
-				.instabreak()
-				.sound(SoundType.GRASS)
-				.offsetType(OffsetType.XZ)
-				.randomTicks()
-				.ignitedByLava()
-				.pushReaction(PushReaction.DESTROY)
+						.mapColor(MapColor.PLANT)
+						.replaceable()
+						.noCollission()
+						.instabreak()
+						.sound(SoundType.GRASS)
+						.offsetType(OffsetType.XZ)
+						.randomTicks()
+						.ignitedByLava()
+						.pushReaction(PushReaction.DESTROY)
 		);
 
 		this.simple = simple;
@@ -128,7 +130,8 @@ public class ChorusVegetationBlock extends ZetaBlock implements BonemealableBloc
 			if(stateAt.getBlock() == Blocks.END_STONE)
 				break;
 
-			else newPos = newPos.below();
+			else
+				newPos = newPos.below();
 		}
 
 		if(worldIn.getBlockState(newPos).getBlock() == Blocks.END_STONE && worldIn.getBlockState(newPos.above()).isAir()) {

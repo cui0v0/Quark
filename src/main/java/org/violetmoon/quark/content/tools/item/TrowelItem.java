@@ -13,7 +13,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -82,12 +84,12 @@ public class TrowelItem extends ZetaItem implements IUsageTickerOverride {
 
 			Player player = context.getPlayer();
 			ItemStack restore = itemstack;
-			if (player != null) {
+			if(player != null) {
 				restore = player.getItemInHand(context.getHand());
 				player.setItemInHand(context.getHand(), itemstack);
 			}
 			InteractionResult res = item.useOn(new TrowelBlockItemUseContext(context, itemstack));
-			if (player != null) {
+			if(player != null) {
 				player.setItemInHand(context.getHand(), restore);
 			}
 			return res;

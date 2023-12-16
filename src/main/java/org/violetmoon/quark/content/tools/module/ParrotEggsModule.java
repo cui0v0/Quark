@@ -1,30 +1,5 @@
 package org.violetmoon.quark.content.tools.module;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.content.tools.entity.ParrotEgg;
-import org.violetmoon.quark.content.tools.item.ParrotEggItem;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -53,6 +28,32 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.content.tools.entity.ParrotEgg;
+import org.violetmoon.quark.content.tools.item.ParrotEggItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.Hint;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @ZetaLoadModule(category = "tools")
 public class ParrotEggsModule extends ZetaModule {
 
@@ -76,7 +77,7 @@ public class ParrotEggsModule extends ZetaModule {
 	public static boolean enableKotobirb = true;
 
 	private static boolean isEnabled;
-	
+
 	public static ManualTrigger throwParrotEggTrigger;
 
 	@LoadEvent
@@ -91,7 +92,7 @@ public class ParrotEggsModule extends ZetaModule {
 
 		CreativeTabManager.daisyChain();
 		parrotEggs = new ArrayList<>();
-		for (int i = 0; i < ParrotEgg.VARIANTS; i++) {
+		for(int i = 0; i < ParrotEgg.VARIANTS; i++) {
 			int variant = i;
 
 			Item parrotEgg = new ParrotEggItem(NAMES.get(variant), variant, this).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.EGG, false);
@@ -109,7 +110,7 @@ public class ParrotEggsModule extends ZetaModule {
 			});
 		}
 		CreativeTabManager.endDaisyChain();
-		
+
 		throwParrotEggTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("throw_parrot_egg");
 	}
 
@@ -133,34 +134,34 @@ public class ParrotEggsModule extends ZetaModule {
 	public void entityInteract(ZPlayerInteract.EntityInteract event) {
 		Entity e = event.getTarget();
 		Player player = event.getEntity();
-		if (e instanceof Parrot parrot) {
+		if(e instanceof Parrot parrot) {
 			ItemStack stack = player.getMainHandItem();
-			if (stack.isEmpty() || !stack.is(feedTag)) {
+			if(stack.isEmpty() || !stack.is(feedTag)) {
 				stack = player.getOffhandItem();
 			}
 
-			if (!stack.isEmpty() && stack.is(feedTag)) {
-				if (e.getPersistentData().getInt(EGG_TIMER) <= 0) {
-					if (!parrot.isTame())
+			if(!stack.isEmpty() && stack.is(feedTag)) {
+				if(e.getPersistentData().getInt(EGG_TIMER) <= 0) {
+					if(!parrot.isTame())
 						return;
 
 					event.setCanceled(true);
-					if (parrot.level().isClientSide || event.getHand() == InteractionHand.OFF_HAND)
+					if(parrot.level().isClientSide || event.getHand() == InteractionHand.OFF_HAND)
 						return;
 
-					if (!player.getAbilities().instabuild)
+					if(!player.getAbilities().instabuild)
 						stack.shrink(1);
 
-					if (parrot.level() instanceof ServerLevel ws) {
+					if(parrot.level() instanceof ServerLevel ws) {
 						ws.playSound(null, parrot.getX(), parrot.getY(), parrot.getZ(), SoundEvents.PARROT_EAT, SoundSource.NEUTRAL, 1.0F, 1.0F + (ws.random.nextFloat() - ws.random.nextFloat()) * 0.2F);
 
-						if (ws.random.nextDouble() < chance) {
+						if(ws.random.nextDouble() < chance) {
 							parrot.getPersistentData().putInt(EGG_TIMER, eggTime);
 							ws.sendParticles(ParticleTypes.HAPPY_VILLAGER, parrot.getX(), parrot.getY(), parrot.getZ(), 10, parrot.getBbWidth(), parrot.getBbHeight(), parrot.getBbWidth(), 0);
 						} else
 							ws.sendParticles(ParticleTypes.SMOKE, parrot.getX(), parrot.getY(), parrot.getZ(), 10, parrot.getBbWidth(), parrot.getBbHeight(), parrot.getBbWidth(), 0);
 					}
-				} else if (parrot.level() instanceof ServerLevel ws) {
+				} else if(parrot.level() instanceof ServerLevel ws) {
 					ws.sendParticles(ParticleTypes.HEART, parrot.getX(), parrot.getY(), parrot.getZ(), 1, parrot.getBbWidth(), parrot.getBbHeight(), parrot.getBbWidth(), 0);
 				}
 			}
@@ -194,11 +195,11 @@ public class ParrotEggsModule extends ZetaModule {
 	public static class Client extends ParrotEggsModule {
 		@Nullable
 		public static ResourceLocation getTextureForParrot(Parrot parrot) {
-			if (!isEnabled || !enableKotobirb)
+			if(!isEnabled || !enableKotobirb)
 				return null;
 
 			UUID uuid = parrot.getUUID();
-			if (parrot.getVariant().getId() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
+			if(parrot.getVariant().getId() == 4 && uuid.getLeastSignificantBits() % 20 == 0)
 				return KOTO;
 
 			return null;

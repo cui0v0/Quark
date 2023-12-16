@@ -1,12 +1,15 @@
 package org.violetmoon.quark.content.tweaks.client.screen.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.tweaks.client.emote.EmoteDescriptor;
 import org.violetmoon.quark.content.tweaks.module.EmotesModule;
@@ -25,7 +28,7 @@ public class EmoteButton extends TranslucentButton {
 		super.renderWidget(guiGraphics, mouseX, mouseY, partial);
 		//super.setAlpha(1.0f);
 
-		if (visible) {
+		if(visible) {
 			Minecraft mc = Minecraft.getInstance();
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -37,7 +40,7 @@ public class EmoteButton extends TranslucentButton {
 			}
 
 			boolean hovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			if (hovered) {
+			if(hovered) {
 				String name = desc.getLocalizedName();
 				MiscUtil.Client.drawChatBubble(guiGraphics, getX(), getY(), mc.font, name, 1F, false);
 			}

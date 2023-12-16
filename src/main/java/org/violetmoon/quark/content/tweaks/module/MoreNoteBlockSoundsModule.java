@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.play.ZPlayNoteBlock;
@@ -29,7 +28,8 @@ public class MoreNoteBlockSoundsModule extends ZetaModule {
 	@Config(flag = "amethyst_note_block")
 	public static boolean enableAmethystSound = true;
 
-	@Hint("amethyst_note_block") Item amethyst_block = Items.AMETHYST_BLOCK;
+	@Hint("amethyst_note_block")
+	Item amethyst_block = Items.AMETHYST_BLOCK;
 
 	@PlayEvent
 	public void noteBlockPlayed(ZPlayNoteBlock event) {
@@ -38,8 +38,8 @@ public class MoreNoteBlockSoundsModule extends ZetaModule {
 		if(world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK)
 			return;
 
-		if (enableAmethystSound && event.getInstrument() == NoteBlockInstrument.HARP &&
-			 world instanceof ServerLevel serverLevel && isAmethyst(world.getBlockState(pos.below()))) {
+		if(enableAmethystSound && event.getInstrument() == NoteBlockInstrument.HARP &&
+				world instanceof ServerLevel serverLevel && isAmethyst(world.getBlockState(pos.below()))) {
 			event.setCanceled(true);
 			int note = event.getState().getValue(NoteBlock.NOTE);
 			float pitch = (float) Math.pow(2.0D, (double) (note - 12) / 12.0D);
@@ -51,10 +51,10 @@ public class MoreNoteBlockSoundsModule extends ZetaModule {
 	//TODO: make a tag?
 	private boolean isAmethyst(BlockState state) {
 		return state.getSoundType() == SoundType.AMETHYST ||
-			state.getSoundType() == SoundType.AMETHYST_CLUSTER ||
-			state.getBlock() == Blocks.LARGE_AMETHYST_BUD ||
-			state.getBlock() == Blocks.MEDIUM_AMETHYST_BUD ||
-			state.getBlock() == Blocks.SMALL_AMETHYST_BUD;
+				state.getSoundType() == SoundType.AMETHYST_CLUSTER ||
+				state.getBlock() == Blocks.LARGE_AMETHYST_BUD ||
+				state.getBlock() == Blocks.MEDIUM_AMETHYST_BUD ||
+				state.getBlock() == Blocks.SMALL_AMETHYST_BUD;
 	}
 
 }

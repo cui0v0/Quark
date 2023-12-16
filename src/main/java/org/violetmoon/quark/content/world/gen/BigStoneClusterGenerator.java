@@ -6,6 +6,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
 import org.violetmoon.quark.content.world.config.AirStoneClusterConfig;
@@ -44,10 +45,11 @@ public class BigStoneClusterGenerator extends ClusterBasedGenerator {
 
 			BlockPos pos = chunkLeft.offset(random.nextInt(16), random.nextInt(range) + lower, random.nextInt(16));
 			sources[0] = pos;
-		} else sources = new BlockPos[0];
+		} else
+			sources = new BlockPos[0];
 
 		return sources;
-	}	
+	}
 
 	@Override
 	public String toString() {

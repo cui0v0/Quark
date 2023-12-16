@@ -1,6 +1,7 @@
 package org.violetmoon.quark.integration.jei;
 
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -12,13 +13,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Block;
 
-import java.util.List;
-
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import java.util.List;
 
 public class InfluenceEntry implements IRecipeCategoryExtension {
 
@@ -53,11 +54,11 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 	private static ItemStack getEnchantedBook(List<Enchantment> enchantments, DyeColor runeColor, ChatFormatting chatColor, String locKey) {
 		ItemStack stack = ItemStack.EMPTY;
 
-		for (Enchantment enchantment : enchantments) {
-			if (!EnchantmentsBegoneModule.shouldBegone(enchantment)) {
-				if (stack.isEmpty()) {
+		for(Enchantment enchantment : enchantments) {
+			if(!EnchantmentsBegoneModule.shouldBegone(enchantment)) {
+				if(stack.isEmpty()) {
 					stack = ColorRunesModule.withRune(new ItemStack(Items.ENCHANTED_BOOK), runeColor)
-						.setHoverName(Component.translatable(locKey).withStyle(chatColor));
+							.setHoverName(Component.translatable(locKey).withStyle(chatColor));
 					ItemNBTHelper.setBoolean(stack, EnchantedBookTooltips.TABLE_ONLY_DISPLAY, true);
 				}
 				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(enchantment, enchantment.getMaxLevel()));
@@ -69,14 +70,14 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 
 	private static List<ItemStack> buildAssociatedBooks(Influence influence) {
 		NonNullList<ItemStack> books = NonNullList.create();
-		for (Enchantment enchantment : influence.boost()) {
-			for (int i = 0; i < enchantment.getMaxLevel(); i++) {
+		for(Enchantment enchantment : influence.boost()) {
+			for(int i = 0; i < enchantment.getMaxLevel(); i++) {
 				books.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i + 1)));
 			}
 		}
 
-		for (Enchantment enchantment : influence.dampen()) {
-			for (int i = 0; i < enchantment.getMaxLevel(); i++) {
+		for(Enchantment enchantment : influence.dampen()) {
+			for(int i = 0; i < enchantment.getMaxLevel(); i++) {
 				books.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i + 1)));
 			}
 		}

@@ -16,7 +16,7 @@ public class CachedItemHandlerSlot extends SlotItemHandler {
 	@NotNull
 	@Override
 	public ItemStack getItem() {
-		if (caching)
+		if(caching)
 			return cached;
 		return super.getItem();
 	}
@@ -24,7 +24,7 @@ public class CachedItemHandlerSlot extends SlotItemHandler {
 	@NotNull
 	@Override
 	public ItemStack remove(int amount) {
-		if (caching) {
+		if(caching) {
 			ItemStack newStack = cached.copy();
 			int trueAmount = Math.min(amount, cached.getCount());
 			cached.shrink(trueAmount);
@@ -37,7 +37,7 @@ public class CachedItemHandlerSlot extends SlotItemHandler {
 	@Override
 	public void set(@NotNull ItemStack stack) {
 		super.set(stack);
-		if (caching)
+		if(caching)
 			cached = stack;
 	}
 
@@ -46,8 +46,8 @@ public class CachedItemHandlerSlot extends SlotItemHandler {
 	private boolean caching = false;
 
 	public static void cache(AbstractContainerMenu container) {
-		for (Slot slot : container.slots) {
-			if (slot instanceof CachedItemHandlerSlot thisSlot) {
+		for(Slot slot : container.slots) {
+			if(slot instanceof CachedItemHandlerSlot thisSlot) {
 				thisSlot.cached = slot.getItem();
 				thisSlot.caching = true;
 			}
@@ -55,9 +55,9 @@ public class CachedItemHandlerSlot extends SlotItemHandler {
 	}
 
 	public static void applyCache(AbstractContainerMenu container) {
-		for (Slot slot : container.slots) {
-			if (slot instanceof CachedItemHandlerSlot thisSlot) {
-				if (thisSlot.caching) {
+		for(Slot slot : container.slots) {
+			if(slot instanceof CachedItemHandlerSlot thisSlot) {
+				if(thisSlot.caching) {
 					slot.set(thisSlot.cached);
 					thisSlot.caching = false;
 				}

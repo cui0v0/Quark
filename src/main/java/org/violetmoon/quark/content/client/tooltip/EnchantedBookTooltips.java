@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +21,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
@@ -29,7 +32,6 @@ import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
 import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +61,7 @@ public class EnchantedBookTooltips {
 			List<EnchantmentInstance> enchants = getEnchantedBookEnchantments(stack);
 			for(EnchantmentInstance ed : enchants) {
 				Component match;
-				if (stack.getItem() == Items.ENCHANTED_BOOK)
+				if(stack.getItem() == Items.ENCHANTED_BOOK)
 					match = ed.enchantment.getFullname(ed.level);
 				else
 					match = AncientTomeItem.getFullTooltipText(ed.enchantment);
@@ -93,14 +95,14 @@ public class EnchantedBookTooltips {
 				continue;
 
 			if(!stack.isEmpty() && e.canEnchant(stack)) {
-				if (onlyForTable && (!e.canApplyAtEnchantingTable(stack) || !stack.isEnchantable() || Quark.ZETA.itemExtensions.get(stack).getEnchantmentValueZeta(stack) <= 0))
+				if(onlyForTable && (!e.canApplyAtEnchantingTable(stack) || !stack.isEnchantable() || Quark.ZETA.itemExtensions.get(stack).getEnchantmentValueZeta(stack) <= 0))
 					continue;
 				list.add(stack);
 			}
 		}
 
-		if (onlyForTable) {
-			if (BOOK == null)
+		if(onlyForTable) {
+			if(BOOK == null)
 				BOOK = new ItemStack(Items.BOOK);
 			list.add(BOOK);
 		}
@@ -117,7 +119,7 @@ public class EnchantedBookTooltips {
 		List<EnchantmentInstance> retList = new ArrayList<>(enchantments.size());
 
 		for(Enchantment enchantment : enchantments.keySet()) {
-			if (enchantment != null) {
+			if(enchantment != null) {
 				int level = enchantments.get(enchantment);
 				retList.add(new EnchantmentInstance(enchantment, level));
 			}
@@ -127,24 +129,24 @@ public class EnchantedBookTooltips {
 	}
 
 	private static Multimap<Enchantment, ItemStack> getAdditionalStacks() {
-		if (additionalStacks == null)
+		if(additionalStacks == null)
 			computeAdditionalStacks();
 		return additionalStacks;
 	}
 
 	public static List<ItemStack> getTestItems() {
-		if (testItems == null)
+		if(testItems == null)
 			computeTestItems();
 		return testItems;
 	}
 
 	private static void computeTestItems() {
 		testItems = ImprovedTooltipsModule.enchantingStacks.stream()
-			.map(ResourceLocation::new)
-			.map(BuiltInRegistries.ITEM::get)
-			.filter(i -> i != Items.AIR)
-			.map(ItemStack::new)
-			.toList();
+				.map(ResourceLocation::new)
+				.map(BuiltInRegistries.ITEM::get)
+				.filter(i -> i != Items.AIR)
+				.map(ItemStack::new)
+				.toList();
 	}
 
 	private static void computeAdditionalStacks() {
@@ -159,17 +161,16 @@ public class EnchantedBookTooltips {
 			String right = tokens[1];
 
 			BuiltInRegistries.ENCHANTMENT.getOptional(new ResourceLocation(left))
-				.ifPresent(ench -> {
-					for(String itemId : right.split(",")) {
-						BuiltInRegistries.ITEM.getOptional(new ResourceLocation(itemId)).ifPresent(item ->
-							additionalStacks.put(ench, new ItemStack(item)));
-					}
-				});
+					.ifPresent(ench -> {
+						for(String itemId : right.split(",")) {
+							BuiltInRegistries.ITEM.getOptional(new ResourceLocation(itemId)).ifPresent(item -> additionalStacks.put(ench, new ItemStack(item)));
+						}
+					});
 		}
 	}
 
 	public record EnchantedBookComponent(int width, int height,
-										 Enchantment enchantment, boolean tableOnly) implements ClientTooltipComponent, TooltipComponent {
+			Enchantment enchantment, boolean tableOnly) implements ClientTooltipComponent, TooltipComponent {
 
 		@Override
 		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
@@ -180,7 +181,7 @@ public class EnchantedBookTooltips {
 			pose.scale(0.5f, 0.5f, 1.0f);
 			List<ItemStack> items = getItemsForEnchantment(enchantment, tableOnly);
 			int drawn = 0;
-			for (ItemStack testStack : items) {
+			for(ItemStack testStack : items) {
 				guiGraphics.renderItem(testStack, 6 + (drawn % 10) * 18, (drawn / 10) * 20);
 				drawn++;
 			}

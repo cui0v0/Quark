@@ -7,5 +7,5 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class BundleRecipeModule extends ZetaModule {
 
 	// this just serves to toggle the flag
-	
+
 }

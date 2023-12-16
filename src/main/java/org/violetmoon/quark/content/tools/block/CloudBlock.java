@@ -24,8 +24,10 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 import org.violetmoon.quark.content.tools.module.BottledCloudModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -92,7 +94,7 @@ public class CloudBlock extends ZetaBlock implements EntityBlock {
 
 	private void fillBottle(Player player, int startIndex) {
 		Inventory inv = player.getInventory();
-		for(int i = startIndex ; i < inv.getContainerSize(); i++) {
+		for(int i = startIndex; i < inv.getContainerSize(); i++) {
 			ItemStack stackInSlot = inv.getItem(i);
 			if(stackInSlot.getItem() == Items.GLASS_BOTTLE) {
 				stackInSlot.shrink(1);

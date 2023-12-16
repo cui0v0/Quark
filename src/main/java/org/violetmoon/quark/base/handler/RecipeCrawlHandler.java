@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.*;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,14 +11,16 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZAddReloadListener;
 import org.violetmoon.zeta.event.load.ZTagsUpdated;
-import org.violetmoon.zeta.event.play.ZServerTick;
 import org.violetmoon.zeta.event.play.ZRecipeCrawl;
+import org.violetmoon.zeta.event.play.ZServerTick;
 import org.violetmoon.zeta.util.RegistryUtil;
 
 import java.util.ArrayList;
@@ -83,13 +86,13 @@ public class RecipeCrawlHandler {
 						throw new IllegalStateException("Recipe getResultItem is null");
 
 					ZRecipeCrawl.Visit<?> event;
-					if (recipe instanceof ShapedRecipe sr)
+					if(recipe instanceof ShapedRecipe sr)
 						event = new ZRecipeCrawl.Visit.Shaped(sr, access);
-					else if (recipe instanceof ShapelessRecipe sr)
+					else if(recipe instanceof ShapelessRecipe sr)
 						event = new ZRecipeCrawl.Visit.Shapeless(sr, access);
-					else if (recipe instanceof CustomRecipe cr)
+					else if(recipe instanceof CustomRecipe cr)
 						event = new ZRecipeCrawl.Visit.Custom(cr, access);
-					else if (recipe instanceof AbstractCookingRecipe acr)
+					else if(recipe instanceof AbstractCookingRecipe acr)
 						event = new ZRecipeCrawl.Visit.Cooking(acr, access);
 					else
 						event = new ZRecipeCrawl.Visit.Misc(recipe, access);
@@ -108,7 +111,7 @@ public class RecipeCrawlHandler {
 
 	@PlayEvent
 	public static void onTick(ZServerTick.Start tick) {
-		synchronized(mutex) {
+		synchronized (mutex) {
 			if(mayCrawl && needsCrawl) {
 				RecipeManager manager = tick.getServer().getRecipeManager();
 				RegistryAccess access = tick.getServer().registryAccess();
@@ -135,7 +138,7 @@ public class RecipeCrawlHandler {
 
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 		for(Ingredient ingredient : ingredients) {
-			for (ItemStack inStack : ingredient.getItems()) {
+			for(ItemStack inStack : ingredient.getItems()) {
 				recipeDigestion.put(inStack.getItem(), out);
 				backwardsDigestion.put(outItem, inStack);
 			}
@@ -150,30 +153,30 @@ public class RecipeCrawlHandler {
 
 	public static void recursivelyFindCraftedItemsFromStrings(@Nullable Collection<String> derivationList, @Nullable Collection<String> whitelist, @Nullable Collection<String> blacklist, Consumer<Item> callback) {
 		List<Item> parsedDerivationList = derivationList == null ? null : RegistryUtil.massRegistryGet(derivationList, BuiltInRegistries.ITEM);
-		List<Item> parsedWhitelist      = whitelist == null      ? null : RegistryUtil.massRegistryGet(whitelist, BuiltInRegistries.ITEM);
-		List<Item> parsedBlacklist      = blacklist == null      ? null : RegistryUtil.massRegistryGet(blacklist, BuiltInRegistries.ITEM);
+		List<Item> parsedWhitelist = whitelist == null ? null : RegistryUtil.massRegistryGet(whitelist, BuiltInRegistries.ITEM);
+		List<Item> parsedBlacklist = blacklist == null ? null : RegistryUtil.massRegistryGet(blacklist, BuiltInRegistries.ITEM);
 
 		recursivelyFindCraftedItems(parsedDerivationList, parsedWhitelist, parsedBlacklist, callback);
 	}
 
 	public static void recursivelyFindCraftedItems(@Nullable Collection<Item> derivationList, @Nullable Collection<Item> whitelist, @Nullable Collection<Item> blacklist, Consumer<Item> callback) {
-		Collection<Item> trueDerivationList = derivationList == null  ? Lists.newArrayList() : derivationList;
-		Collection<Item> trueWhitelist      = whitelist == null       ? Lists.newArrayList() : whitelist;
-		Collection<Item> trueBlacklist      = blacklist == null       ? Lists.newArrayList() : blacklist;
+		Collection<Item> trueDerivationList = derivationList == null ? Lists.newArrayList() : derivationList;
+		Collection<Item> trueWhitelist = whitelist == null ? Lists.newArrayList() : whitelist;
+		Collection<Item> trueBlacklist = blacklist == null ? Lists.newArrayList() : blacklist;
 
 		Streams.concat(trueDerivationList.stream(), trueWhitelist.stream()).forEach(callback);
 
 		Set<Item> scanned = Sets.newHashSet(trueDerivationList);
 		List<Item> toScan = Lists.newArrayList(trueDerivationList);
 
-		while (!toScan.isEmpty()) {
+		while(!toScan.isEmpty()) {
 			Item scan = toScan.remove(0);
 
-			if (recipeDigestion.containsKey(scan)) {
-				for (ItemStack digestedStack : recipeDigestion.get(scan)) {
+			if(recipeDigestion.containsKey(scan)) {
+				for(ItemStack digestedStack : recipeDigestion.get(scan)) {
 					Item candidate = digestedStack.getItem();
 
-					if (!scanned.contains(candidate)) {
+					if(!scanned.contains(candidate)) {
 						scanned.add(candidate);
 						toScan.add(candidate);
 

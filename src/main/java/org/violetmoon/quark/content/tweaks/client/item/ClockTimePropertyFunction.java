@@ -9,10 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
 
 @OnlyIn(Dist.CLIENT)
 public class ClockTimePropertyFunction implements ItemPropertyFunction {

@@ -22,7 +22,7 @@ public class SoulSandstoneModule extends ZetaModule {
 		Block.Properties props = OldMaterials.stone().mapColor(MapColor.COLOR_BROWN)
 				.requiresCorrectToolForDrops()
 				.strength(0.8F);
-		
+
 		CreativeTabManager.daisyChain();
 		event.getVariantRegistry().addSlabStairsWall((IZetaBlock) new ZetaBlock("soul_sandstone", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.SEA_LANTERN, true), null);
 		new ZetaBlock("chiseled_soul_sandstone", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
@@ -30,5 +30,5 @@ public class SoulSandstoneModule extends ZetaModule {
 		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock("smooth_soul_sandstone", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
 		CreativeTabManager.endDaisyChain();
 	}
-	
+
 }

@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
@@ -17,7 +18,8 @@ public class SlimesToMagmaCubesModule extends ZetaModule {
 
 	private static final String TAG_MAGMAED = "quark:damaged_by_magma";
 
-	@Hint Item magma_cream = Items.MAGMA_CREAM;
+	@Hint
+	Item magma_cream = Items.MAGMA_CREAM;
 
 	public static boolean staticEnabled;
 

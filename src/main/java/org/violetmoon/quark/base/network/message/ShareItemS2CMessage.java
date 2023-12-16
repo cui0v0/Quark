@@ -1,14 +1,15 @@
 package org.violetmoon.quark.base.network.message;
 
-import java.util.UUID;
-
 import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+
 import org.violetmoon.quark.content.management.module.ItemSharingModule;
 import org.violetmoon.zeta.network.IZetaMessage;
 import org.violetmoon.zeta.network.IZetaNetworkEventContext;
+
+import java.util.UUID;
 
 public class ShareItemS2CMessage implements IZetaMessage {
 	public UUID senderUuid;
@@ -32,9 +33,9 @@ public class ShareItemS2CMessage implements IZetaMessage {
 				return;
 
 			Minecraft.getInstance().gui.getChat().addMessage(
-				Component.translatable("chat.type.text", senderName, ItemSharingModule.createStackComponent(stack)),
-				null,
-				new GuiMessageTag(0xDEB483, null, null, "Quark shared item")
+					Component.translatable("chat.type.text", senderName, ItemSharingModule.createStackComponent(stack)),
+					null,
+					new GuiMessageTag(0xDEB483, null, null, "Quark shared item")
 			);
 
 		});

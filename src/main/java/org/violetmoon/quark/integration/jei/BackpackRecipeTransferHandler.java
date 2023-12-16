@@ -1,13 +1,8 @@
 package org.violetmoon.quark.integration.jei;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
-
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -16,10 +11,18 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Essentially just a copy of JEI's PlayerRecipeTransferHandler, but for BackpackMenu.
@@ -59,15 +62,15 @@ public class BackpackRecipeTransferHandler implements IRecipeTransferHandler<Bac
 	@Nullable
 	@Override
 	public IRecipeTransferError transferRecipe(BackpackMenu container, CraftingRecipe recipe, IRecipeSlotsView recipeSlotsView, Player player, boolean maxTransfer, boolean doTransfer) {
-		if (!handlerHelper.recipeTransferHasServerSupport()) {
+		if(!handlerHelper.recipeTransferHasServerSupport()) {
 			Component tooltipMessage = Component.translatable("jei.tooltip.error.recipe.transfer.no.server");
 			return this.handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 		}
 
 		List<IRecipeSlotView> slotViews = recipeSlotsView.getSlotViews(RecipeIngredientRole.INPUT);
-		if (!validateIngredientsOutsidePlayerGridAreEmpty(slotViews)) {
+		if(!validateIngredientsOutsidePlayerGridAreEmpty(slotViews)) {
 			Component tooltipMessage = Component.translatable(
-				"jei.tooltip.error.recipe.transfer.too.large.player.inventory"
+					"jei.tooltip.error.recipe.transfer.too.large.player.inventory"
 			);
 			return this.handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 		}
@@ -80,10 +83,10 @@ public class BackpackRecipeTransferHandler implements IRecipeTransferHandler<Bac
 
 	private static boolean validateIngredientsOutsidePlayerGridAreEmpty(List<IRecipeSlotView> slotViews) {
 		int bound = slotViews.size();
-		for (int i = 0; i < bound; i++) {
-			if (!PLAYER_INV_INDEXES.contains(i)) {
+		for(int i = 0; i < bound; i++) {
+			if(!PLAYER_INV_INDEXES.contains(i)) {
 				IRecipeSlotView slotView = slotViews.get(i);
-				if (!slotView.isEmpty()) {
+				if(!slotView.isEmpty()) {
 					return false;
 				}
 			}
@@ -93,7 +96,7 @@ public class BackpackRecipeTransferHandler implements IRecipeTransferHandler<Bac
 
 	private static List<IRecipeSlotView> filterSlots(List<IRecipeSlotView> slotViews) {
 		return PLAYER_INV_INDEXES.intStream()
-			.mapToObj(slotViews::get)
-			.toList();
+				.mapToObj(slotViews::get)
+				.toList();
 	}
 }

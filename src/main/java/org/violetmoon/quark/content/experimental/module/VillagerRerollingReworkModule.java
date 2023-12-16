@@ -1,5 +1,14 @@
 package org.violetmoon.quark.content.experimental.module;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.experimental.hax.PseudoAccessorMerchantOffer;
 import org.violetmoon.quark.mixin.accessor.AccessorMerchantOffer;
@@ -11,15 +20,6 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
-
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class VillagerRerollingReworkModule extends ZetaModule {
 
@@ -29,8 +29,10 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 
 	public static boolean staticEnabled;
 
-	@Config(description = "If enabled, the first two trades a villager generates for a profession will always be the same for a given villager.\n" +
-		"This prevents repeatedly placing down a job site block to reroll the villager's trades.")
+	@Config(
+		description = "If enabled, the first two trades a villager generates for a profession will always be the same for a given villager.\n" +
+				"This prevents repeatedly placing down a job site block to reroll the villager's trades."
+	)
 	public static boolean seedInitialVillagerTrades = true;
 
 	@Config(description = """
@@ -41,12 +43,16 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 	@Config.Max(1)
 	public static double chanceToRerollWhenRestocking = 0.25;
 
-	@Config(description = "Set to 0 to disable the chance to reroll trades when restocking. Set to -1 to allow unlimited rerolling.\n" +
-		"Trades earlier in the list will restock first.")
+	@Config(
+		description = "Set to 0 to disable the chance to reroll trades when restocking. Set to -1 to allow unlimited rerolling.\n" +
+				"Trades earlier in the list will restock first."
+	)
 	public static int maximumRestocksPerDay = 3;
 
-	@Config(description = "If enabled, villagers will reroll when they restock, rather than when they begin work for the day.\n" +
-		"If disabled, players can prevent rerolling by ensuring the villager isn't out of stock on their last restock of the day.")
+	@Config(
+		description = "If enabled, villagers will reroll when they restock, rather than when they begin work for the day.\n" +
+				"If disabled, players can prevent rerolling by ensuring the villager isn't out of stock on their last restock of the day."
+	)
 	public static boolean rerollOnAnyRestock = false;
 
 	@Config(description = "If enabled, villagers will be able to reroll any trade that has been used AT ALL since the last restock.")
@@ -60,10 +66,10 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 	@PlayEvent
 	public void assignSeedIfUnassigned(ZLivingTick event) {
 		LivingEntity entity = event.getEntity();
-		if (canUseSeededRandom(entity)) {
+		if(canUseSeededRandom(entity)) {
 			CompoundTag persistent = entity.getPersistentData();
 
-			if (!persistent.contains(TAG_VILLAGER_SEED, Tag.TAG_LONG))
+			if(!persistent.contains(TAG_VILLAGER_SEED, Tag.TAG_LONG))
 				persistent.putLong(TAG_VILLAGER_SEED, entity.getRandom().nextLong());
 		}
 	}
@@ -72,9 +78,9 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 	public void keepSeedOnConversion(ZLivingConversion.Post event) {
 		LivingEntity original = event.getEntity();
 		LivingEntity outcome = event.getOutcome();
-		if (canUseSeededRandom(original) || canUseSeededRandom(outcome)) {
+		if(canUseSeededRandom(original) || canUseSeededRandom(outcome)) {
 			CompoundTag persistent = original.getPersistentData();
-			if (persistent.contains(TAG_VILLAGER_SEED, Tag.TAG_LONG))
+			if(persistent.contains(TAG_VILLAGER_SEED, Tag.TAG_LONG))
 				outcome.getPersistentData().putLong(TAG_VILLAGER_SEED, persistent.getLong(TAG_VILLAGER_SEED));
 		}
 	}
@@ -84,33 +90,33 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 	}
 
 	public static void attemptToReroll(Villager villager) {
-		if (!staticEnabled || maximumRestocksPerDay == 0 || chanceToRerollWhenRestocking == 0)
+		if(!staticEnabled || maximumRestocksPerDay == 0 || chanceToRerollWhenRestocking == 0)
 			return;
 
 		int restocks = villager.getPersistentData().getInt(TAG_ITEMS_REROLLED_TODAY);
-		if (restocks >= maximumRestocksPerDay && maximumRestocksPerDay > 0)
+		if(restocks >= maximumRestocksPerDay && maximumRestocksPerDay > 0)
 			return;
 
 		MerchantOffers offers = villager.getOffers();
 
-		for (int i = 0; i < offers.size(); i++) {
+		for(int i = 0; i < offers.size(); i++) {
 			MerchantOffer offer = offers.get(i);
-			if ((rerollEvenIfNotOutOfStock && offer.getUses() > 0) || offer.isOutOfStock()) {
+			if((rerollEvenIfNotOutOfStock && offer.getUses() > 0) || offer.isOutOfStock()) {
 				MerchantOffer rerolled = attemptToReroll(villager, offer);
 
-				if (rerolled != null) {
+				if(rerolled != null) {
 					boolean foundEquivalent = false; // We avoid duplicate trades...
-					for (MerchantOffer otherOffer : offers) {
+					for(MerchantOffer otherOffer : offers) {
 
-						if (ItemStack.isSameItemSameTags(otherOffer.getBaseCostA(), rerolled.getBaseCostA()) &&
-							ItemStack.isSameItemSameTags(otherOffer.getCostB(), rerolled.getCostB()) &&
-							ItemStack.isSameItemSameTags(otherOffer.getResult(), rerolled.getResult())) {
+						if(ItemStack.isSameItemSameTags(otherOffer.getBaseCostA(), rerolled.getBaseCostA()) &&
+								ItemStack.isSameItemSameTags(otherOffer.getCostB(), rerolled.getCostB()) &&
+								ItemStack.isSameItemSameTags(otherOffer.getResult(), rerolled.getResult())) {
 							foundEquivalent = true;
 							break;
 						}
 					}
 
-					if (!foundEquivalent) {
+					if(!foundEquivalent) {
 						rerolled.addToSpecialPriceDiff(offer.getSpecialPriceDiff());
 						((AccessorMerchantOffer) rerolled).quark$setRewardExp(rerolled.shouldRewardExp() && offer.shouldRewardExp());
 
@@ -118,34 +124,34 @@ public class VillagerRerollingReworkModule extends ZetaModule {
 
 						offers.set(i, rerolled);
 
-						if (restocks >= maximumRestocksPerDay && maximumRestocksPerDay > 0)
+						if(restocks >= maximumRestocksPerDay && maximumRestocksPerDay > 0)
 							break;
 					}
 				}
 			}
 		}
 
-		if (maximumRestocksPerDay > 0)
+		if(maximumRestocksPerDay > 0)
 			villager.getPersistentData().putInt(TAG_ITEMS_REROLLED_TODAY, restocks);
 	}
 
 	public static MerchantOffer attemptToReroll(Villager villager, MerchantOffer original) {
-		if (((PseudoAccessorMerchantOffer) original).quark$getTier() > VillagerData.MAX_VILLAGER_LEVEL)
+		if(((PseudoAccessorMerchantOffer) original).quark$getTier() > VillagerData.MAX_VILLAGER_LEVEL)
 			return null;
 
-		if (villager.getRandom().nextDouble() >= chanceToRerollWhenRestocking)
+		if(villager.getRandom().nextDouble() >= chanceToRerollWhenRestocking)
 			return null;
 
 		int tier = ((PseudoAccessorMerchantOffer) original).quark$getTier();
-		if (tier >= 0 && tier <= VillagerData.MAX_VILLAGER_LEVEL) {
+		if(tier >= 0 && tier <= VillagerData.MAX_VILLAGER_LEVEL) {
 			VillagerData data = villager.getVillagerData();
 			var trades = VillagerTrades.TRADES.get(data.getProfession());
-			if (trades != null && !trades.isEmpty()) {
+			if(trades != null && !trades.isEmpty()) {
 				var listings = trades.get(tier);
-				if (listings != null && listings.length > 0) {
+				if(listings != null && listings.length > 0) {
 					var listing = listings[villager.getRandom().nextInt(listings.length)];
 					MerchantOffer newOffer = listing.getOffer(villager, villager.getRandom());
-					if (newOffer != null) {
+					if(newOffer != null) {
 						((PseudoAccessorMerchantOffer) newOffer).quark$setTier(tier);
 						return newOffer;
 					}

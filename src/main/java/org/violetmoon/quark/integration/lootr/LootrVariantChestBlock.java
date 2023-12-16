@@ -31,11 +31,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import noobanidus.mods.lootr.LootrTags;
-import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
-import noobanidus.mods.lootr.config.ConfigManager;
-import noobanidus.mods.lootr.util.ChestUtil;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.building.block.VariantChestBlock;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -43,8 +41,14 @@ import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 
 import java.util.function.Supplier;
 
+import noobanidus.mods.lootr.LootrTags;
+import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
+import noobanidus.mods.lootr.config.ConfigManager;
+import noobanidus.mods.lootr.util.ChestUtil;
+
 /**
- * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrChestBlock.java
+ * Copy of
+ * https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrChestBlock.java
  * All modifications are made purely to integrate with VariantChestBlock/quark
  */
 public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBlockItemProvider {
@@ -56,9 +60,9 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 
 	@Override
 	public float getExplosionResistance() {
-		if (ConfigManager.BLAST_IMMUNE.get()) {
+		if(ConfigManager.BLAST_IMMUNE.get()) {
 			return Float.MAX_VALUE;
-		} else if (ConfigManager.BLAST_RESISTANT.get()) {
+		} else if(ConfigManager.BLAST_RESISTANT.get()) {
 			return 16.0f;
 		} else {
 			return super.getExplosionResistance();
@@ -67,9 +71,9 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult trace) {
-		if (player.isShiftKeyDown()) {
+		if(player.isShiftKeyDown()) {
 			ChestUtil.handleLootSneak(this, world, pos, player);
-		} else if (!ChestBlock.isChestBlockedAt(world, pos)) {
+		} else if(!ChestBlock.isChestBlockedAt(world, pos)) {
 			ChestUtil.handleLootChest(this, world, pos, player);
 		}
 		return InteractionResult.SUCCESS;
@@ -82,7 +86,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
+		if(stateIn.getValue(WATERLOGGED)) {
 			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
@@ -119,7 +123,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 
 	@Override
 	public int getAnalogOutputSignal(BlockState pBlockState, Level pLevel, BlockPos pPos) {
-		if (ConfigManager.POWER_COMPARATORS.get()) {
+		if(ConfigManager.POWER_COMPARATORS.get()) {
 			return 1;
 		} else {
 			return 0;
@@ -135,7 +139,7 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 	@Override
 	public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
 		BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-		if (blockentity instanceof LootrChestBlockEntity) {
+		if(blockentity instanceof LootrChestBlockEntity) {
 			((LootrChestBlockEntity) blockentity).recheckOpen();
 		}
 
@@ -159,23 +163,24 @@ public class LootrVariantChestBlock extends VariantChestBlock implements IZetaBl
 
 		@Override
 		public InteractionResult onItemUseFirstZeta(ItemStack stack, UseOnContext context) {
-			if (!context.isSecondaryUseActive()) {
+			if(!context.isSecondaryUseActive()) {
 				Player player = context.getPlayer();
 				Level level = context.getLevel();
 				BlockPos pos = context.getClickedPos();
 				Block block = getBlock();
 
-				if (player != null && player.isCreative()) {
+				if(player != null && player.isCreative()) {
 					BlockState state = level.getBlockState(pos);
 					TagKey<Block> key = trap ? LootrTags.Blocks.TRAPPED_CHESTS : LootrTags.Blocks.CHESTS;
 
-					if (state.is(key) && !state.is(block)) {
+					if(state.is(key) && !state.is(block)) {
 						BlockEntity entity = level.getBlockEntity(pos);
 						CompoundTag nbt = entity == null ? null : entity.serializeNBT();
 						level.setBlock(pos, block.withPropertiesOf(state), 18); // Same as debug stick
 						level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
 						BlockEntity newEntity = level.getBlockEntity(pos);
-						if (newEntity != null && nbt != null) newEntity.load(nbt);
+						if(newEntity != null && nbt != null)
+							newEntity.load(nbt);
 
 						return InteractionResult.SUCCESS;
 					}

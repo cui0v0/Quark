@@ -1,17 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
-import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.api.IEnchantmentInfluencer;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -34,7 +22,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.api.IEnchantmentInfluencer;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.function.BooleanSupplier;
 
 public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements IZetaBlock {
 
@@ -113,7 +114,7 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 						BlockPos blockpos = pos.offset(i, k, j);
 						BlockState state = worldIn.getBlockState(blockpos);
 						BlockPos test = pos.offset(i / 2, 0, j / 2);
-						if(!(worldIn.isEmptyBlock(test) 
+						if(!(worldIn.isEmptyBlock(test)
 								|| (allowUnderwater && worldIn.getBlockState(test).getBlock() == Blocks.WATER)
 								|| (allowShort && MatrixEnchantingTableBlockEntity.isShortBlock(worldIn, test))))
 							break;
@@ -121,30 +122,30 @@ public class MatrixEnchantingTableBlock extends EnchantmentTableBlock implements
 						if(showInfluences) {
 							IEnchantmentInfluencer influencer = MatrixEnchantingTableBlockEntity.getInfluencerFromBlock(state, worldIn, blockpos);
 
-							if (influencer != null) {
+							if(influencer != null) {
 								float[] comp = influencer.getEnchantmentInfluenceColor(worldIn, blockpos, state);
 								ParticleOptions extra = influencer.getExtraParticleOptions(worldIn, blockpos, state);
 								double chance = influencer.getExtraParticleChance(worldIn, blockpos, state);
 
-								if (comp != null || extra != null) {
+								if(comp != null || extra != null) {
 									int steps = 20;
 									double dx = (double) (pos.getX() - blockpos.getX()) / steps;
 									double dy = (double) (pos.getY() - blockpos.getY()) / steps;
 									double dz = (double) (pos.getZ() - blockpos.getZ()) / steps;
 
-									for (int p = 0; p < steps; p++) {
+									for(int p = 0; p < steps; p++) {
 										boolean doDust = comp != null && rand.nextDouble() < 0.5;
 										boolean doExtra = extra != null && rand.nextDouble() < chance;
-										if (!doDust && !doExtra)
+										if(!doDust && !doExtra)
 											continue;
 
 										double px = blockpos.getX() + 0.5 + dx * p + rand.nextDouble() * 0.2 - 0.1;
 										double py = blockpos.getY() + 0.5 + dy * p + Math.sin((double) p / steps * Math.PI) * 0.5 + rand.nextDouble() * 0.2 - 0.1;
 										double pz = blockpos.getZ() + 0.5 + dz * p + rand.nextDouble() * 0.2 - 0.1;
 
-										if (doDust)
+										if(doDust)
 											worldIn.addParticle(new DustParticleOptions(new Vector3f(comp[0], comp[1], comp[2]), 1F), px, py, pz, 0, 0, 0);
-										if (doExtra)
+										if(doExtra)
 											worldIn.addParticle(extra, px, py, pz, 0, 0, 0);
 									}
 								}

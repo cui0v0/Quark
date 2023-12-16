@@ -7,14 +7,16 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.block.ZetaButtonBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
- * Created at 9:14 PM on 10/8/19.
+ *         Created at 9:14 PM on 10/8/19.
  */
 public class MetalButtonBlock extends ZetaButtonBlock {
 

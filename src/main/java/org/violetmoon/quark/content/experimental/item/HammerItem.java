@@ -1,18 +1,19 @@
 package org.violetmoon.quark.content.experimental.item;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
 import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
 import org.violetmoon.zeta.item.ZetaItem;
@@ -26,7 +27,7 @@ public class HammerItem extends ZetaItem {
 				.stacksTo(1));
 		CreativeTabManager.addToCreativeTab(CreativeModeTabs.TOOLS_AND_UTILITIES, this);
 	}
-	
+
 	@NotNull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
@@ -60,16 +61,16 @@ public class HammerItem extends ZetaItem {
 				return InteractionResult.SUCCESS;
 			}
 		}
-		
+
 		return InteractionResult.PASS;
 	}
-	
+
 	private static class YungsBetterBlockPlaceContext extends BlockPlaceContext {
 
 		public YungsBetterBlockPlaceContext(UseOnContext ctx) {
 			super(ctx);
 		}
-		
+
 		// vanilla BlockPlaceContext offsets the original clicked pos if replaceClicked is false
 		// so that the block is placed on the edge, but in this case we want to place it in the
 		// same blockpos that was clicked so we do this nonsense
@@ -81,11 +82,11 @@ public class HammerItem extends ZetaItem {
 
 			replaceClicked = true;
 			BlockPos pos = super.getClickedPos();
-			
+
 			replaceClicked = oldRepl;
 			return pos;
 		}
-		
+
 	}
 
 }

@@ -10,6 +10,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.model.TinyPotatoModel;
@@ -36,7 +37,8 @@ public class TinyPotatoModule extends ZetaModule {
 	public static BlockEntityType<TinyPotatoBlockEntity> blockEntityType;
 	public static ManualTrigger patPotatoTrigger;
 
-	@Hint public static Block tiny_potato;
+	@Hint
+	public static Block tiny_potato;
 
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "tiny_potato_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
@@ -73,10 +75,10 @@ public class TinyPotatoModule extends ZetaModule {
 
 		private void registerTaters(ZAddModels event, String mod, Set<String> usedNames, ResourceManager rm) {
 			Map<ResourceLocation, Resource> resources = rm.listResources("models/tiny_potato", r -> r.getPath().endsWith(".json"));
-			for (ResourceLocation model : resources.keySet()) {
-				if (mod.equals(model.getNamespace())) {
+			for(ResourceLocation model : resources.keySet()) {
+				if(mod.equals(model.getNamespace())) {
 					String path = model.getPath();
-					if ("models/tiny_potato/base.json".equals(path) || usedNames.contains(path))
+					if("models/tiny_potato/base.json".equals(path) || usedNames.contains(path))
 						continue;
 
 					usedNames.add(path);

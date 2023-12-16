@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
 import org.violetmoon.zeta.block.be.ZetaBlockEntity;
@@ -92,7 +93,7 @@ public class MonsterBoxBlockEntity extends ZetaBlockEntity {
 						EntityType<?> entitytype = egg.getType(stack.getTag());
 						e = entitytype.spawn(serverLevel, stack, null, pos, MobSpawnType.SPAWNER, true, true);
 
-						if (e != null) {
+						if(e != null) {
 							double motionMultiplier = 0.4;
 							e.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 							double mx = (level.random.nextFloat() - 0.5) * motionMultiplier;
@@ -105,7 +106,7 @@ public class MonsterBoxBlockEntity extends ZetaBlockEntity {
 				});
 			}
 
-            serverLevel.getLevel().gameEvent(null, GameEvent.ENTITY_PLACE, pos);
+			serverLevel.getLevel().gameEvent(null, GameEvent.ENTITY_PLACE, pos);
 		}
 	}
 

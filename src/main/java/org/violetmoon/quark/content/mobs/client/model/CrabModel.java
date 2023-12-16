@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,9 +13,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import org.violetmoon.quark.content.mobs.entity.Crab;
 
 import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.mobs.entity.Crab;
+
 import java.util.Set;
 
 public class CrabModel extends EntityModel<Crab> {
@@ -69,86 +72,86 @@ public class CrabModel extends EntityModel<Crab> {
 
 		PartDefinition body = group.addOrReplaceChild("body",
 				CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -2.5F, -3.0F, 8, 5, 6),
+						.texOffs(0, 0)
+						.addBox(-4.0F, -2.5F, -3.0F, 8, 5, 6),
 				PartPose.offsetAndRotation(0.0F, 20.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
 		group.addOrReplaceChild("leftLeg4",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(0, 19)
-				.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
+						.mirror()
+						.texOffs(0, 19)
+						.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(3.0F, 20.0F, -1.0F, 0.0F, 0.4363323129985824F, 0.7853981633974483F));
 
 		group.addOrReplaceChild("leftLeg3",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(0, 19)
-				.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
+						.mirror()
+						.texOffs(0, 19)
+						.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(3.0F, 20.0F, 0.0F, 0.0F, 0.2181661564992912F, 0.7853981633974483F));
 
 		body.addOrReplaceChild("rightEye",
 				CubeListBuilder.create()
-				.texOffs(0, 11)
-				.addBox(-3.0F, -3.5F, -2.85F, 1, 3, 1),
+						.texOffs(0, 11)
+						.addBox(-3.0F, -3.5F, -2.85F, 1, 3, 1),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.39269908169872414F, 0.0F, 0.0F));
 
 		group.addOrReplaceChild("rightLeg4",
 				CubeListBuilder.create()
-				.texOffs(0, 19)
-				.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
+						.texOffs(0, 19)
+						.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(-3.0F, 20.0F, -1.0F, 0.0F, -0.4363323129985824F, -0.7853981633974483F));
 
 		group.addOrReplaceChild("rightClaw",
 				CubeListBuilder.create()
-				.texOffs(14, 11)
-				.addBox(-3.0F, -2.5F, -6.0F, 3, 5, 6),
+						.texOffs(14, 11)
+						.addBox(-3.0F, -2.5F, -6.0F, 3, 5, 6),
 				PartPose.offsetAndRotation(-3.0F, 20.0F, -4.0F, 0.0F, 0.39269908169872414F, -0.39269908169872414F));
 
 		group.addOrReplaceChild("leftLeg1",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(0, 19)
-				.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
+						.mirror()
+						.texOffs(0, 19)
+						.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(3.0F, 20.0F, 2.0F, 0.0F, -0.4363323129985824F, 0.7853981633974483F));
 
 		group.addOrReplaceChild("rightLeg2",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(0, 19)
-				.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
+						.mirror()
+						.texOffs(0, 19)
+						.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(-3.0F, 20.0F, 0.9F, 0.0F, 0.2181661564992912F, -0.7853981633974483F));
 
 		group.addOrReplaceChild("leftClaw",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(14, 11)
-				.addBox(0.0F, -2.5F, -6.0F, 3, 5, 6),
+						.mirror()
+						.texOffs(14, 11)
+						.addBox(0.0F, -2.5F, -6.0F, 3, 5, 6),
 				PartPose.offsetAndRotation(3.0F, 20.0F, -4.0F, 0.0F, -0.39269908169872414F, 0.39269908169872414F));
 
 		group.addOrReplaceChild("rightLeg1",
 				CubeListBuilder.create()
-				.texOffs(0, 19)
-				.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
+						.texOffs(0, 19)
+						.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(-3.0F, 20.0F, 2.0F, 0.0F, 0.4363323129985824F, -0.7853981633974483F));
 
 		body.addOrReplaceChild("leftEye",
 				CubeListBuilder.create()
-				.texOffs(0, 11)
-				.addBox(2.0F, -3.5F, -2.85F, 1, 3, 1),
+						.texOffs(0, 11)
+						.addBox(2.0F, -3.5F, -2.85F, 1, 3, 1),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.39269908169872414F, 0.0F, 0.0F));
 
 		group.addOrReplaceChild("leftLeg2",
 				CubeListBuilder.create()
-				.mirror()
-				.texOffs(0, 19)
-				.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
+						.mirror()
+						.texOffs(0, 19)
+						.addBox(0.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(3.0F, 20.0F, 0.9F, 0.0F, -0.2181661564992912F, 0.7853981633974483F));
 
 		group.addOrReplaceChild("rightLeg3",
 				CubeListBuilder.create()
-				.texOffs(0, 19)
-				.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
+						.texOffs(0, 19)
+						.addBox(-6.0F, -0.5F, -0.5F, 6, 1, 1),
 				PartPose.offsetAndRotation(-3.0F, 20.0F, 0.0F, 0.0F, -0.2181661564992912F, -0.7853981633974483F));
 
 		return LayerDefinition.create(mesh, 32, 32);
@@ -206,7 +209,6 @@ public class CrabModel extends EntityModel<Crab> {
 		}
 	}
 
-
 	@Override
 	public void renderToBuffer(PoseStack matrix, @NotNull VertexConsumer vb, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		matrix.pushPose();
@@ -217,6 +219,5 @@ public class CrabModel extends EntityModel<Crab> {
 		group.render(matrix, vb, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		matrix.popPose();
 	}
-
 
 }

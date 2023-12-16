@@ -6,5 +6,5 @@ public interface IQuarkBoat {
 
 	public void setQuarkBoatTypeObj(QuarkBoatType type);
 	public QuarkBoatType getQuarkBoatTypeObj();
-	
+
 }

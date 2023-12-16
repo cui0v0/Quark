@@ -8,8 +8,10 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 @ZetaLoadModule(category = "experimental", enabledByDefault = false)
 public class AdjustableChatModule extends ZetaModule {
-	@Config public static int horizontalShift = 0;
-	@Config public static int verticalShift = 0;
+	@Config
+	public static int horizontalShift = 0;
+	@Config
+	public static int verticalShift = 0;
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends AdjustableChatModule {

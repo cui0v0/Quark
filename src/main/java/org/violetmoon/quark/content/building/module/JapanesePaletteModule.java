@@ -10,8 +10,6 @@
  */
 package org.violetmoon.quark.content.building.module;
 
-import java.util.function.BooleanSupplier;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.BambooMatBlock;
 import org.violetmoon.quark.content.building.block.BambooMatCarpetBlock;
@@ -23,15 +21,17 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.function.BooleanSupplier;
+
 @ZetaLoadModule(category = "building")
 public class JapanesePaletteModule extends ZetaModule {
 
 	@Config(flag = "paper_decor")
 	public static boolean enablePaperBlocks = true;
-	
+
 	@Config(flag = "bamboo_mat")
 	public static boolean enableBambooMats = true;
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		BooleanSupplier paperBlockCond = () -> enablePaperBlocks;
@@ -43,10 +43,9 @@ public class JapanesePaletteModule extends ZetaModule {
 		new PaperWallBlock(parent, "paper_wall").setCondition(paperBlockCond);
 		new PaperWallBlock(parent, "paper_wall_big").setCondition(paperBlockCond);
 		new PaperWallBlock(parent, "paper_wall_sakura").setCondition(paperBlockCond);
-		
+
 		new BambooMatBlock("bamboo_mat", this).setCondition(bambooMatCond);
 		new BambooMatCarpetBlock("bamboo_mat_carpet", this).setCondition(bambooMatCond);
 	}
-	
-}
 
+}

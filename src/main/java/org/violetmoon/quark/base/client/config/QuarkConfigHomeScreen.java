@@ -9,7 +9,9 @@ import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
@@ -60,7 +62,8 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 			}
 
 			PANORAMA.render(spin, blur);
-		} else super.renderBackground(guiGraphics);
+		} else
+			super.renderBackground(guiGraphics);
 
 		int boxWidth = 400;
 		guiGraphics.fill(width / 2 - boxWidth / 2, 0, width / 2 + boxWidth / 2, this.height, 0x66000000);

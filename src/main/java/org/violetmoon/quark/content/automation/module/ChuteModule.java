@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.MapColor;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.ChuteBlock;
 import org.violetmoon.quark.content.automation.block.be.ChuteBlockEntity;
@@ -16,13 +17,14 @@ import org.violetmoon.zeta.util.Hint;
 
 /**
  * @author WireSegal
- * Created at 10:25 AM on 9/29/19.
+ *         Created at 10:25 AM on 9/29/19.
  */
 @ZetaLoadModule(category = "automation")
 public class ChuteModule extends ZetaModule {
 
 	public static BlockEntityType<ChuteBlockEntity> blockEntityType;
-	@Hint Block chute;
+	@Hint
+	Block chute;
 
 	@LoadEvent
 	public final void register(ZRegister event) {

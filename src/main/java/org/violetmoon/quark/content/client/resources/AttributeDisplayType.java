@@ -12,7 +12,8 @@ public enum AttributeDisplayType {
 	DIFFERENCE,
 	/**
 	 * Displays as a percentage of a chance.
-	 * Use for either percentage chances, or for things where the base value is 1 and representing as a chance makes sense.
+	 * Use for either percentage chances, or for things where the base value is 1 and representing as a chance makes
+	 * sense.
 	 *
 	 * Examples:
 	 * For an item that increases luck by 1, this will show "+100%".

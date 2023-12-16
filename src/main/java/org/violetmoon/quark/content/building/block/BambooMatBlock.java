@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -19,24 +15,29 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+
 public class BambooMatBlock extends ZetaBlock {
-	
+
 	private static final EnumProperty<Direction> FACING = BlockStateProperties.FACING_HOPPER;
-	
+
 	public BambooMatBlock(String name, @Nullable ZetaModule module) {
 		this(name, module, CreativeModeTabs.BUILDING_BLOCKS);
 	}
-	
+
 	public BambooMatBlock(String name, @Nullable ZetaModule module, ResourceKey<CreativeModeTab> tab) {
 		super(name, module,
 				Block.Properties.of()
-				.mapColor(MapColor.COLOR_YELLOW)
-				.forceSolidOn()
-				.strength(0.5F)
-				.sound(SoundType.BAMBOO)
-				.ignitedByLava()
-				.pushReaction(PushReaction.DESTROY)
-				.isRedstoneConductor((s, r, p) -> false)
+						.mapColor(MapColor.COLOR_YELLOW)
+						.forceSolidOn()
+						.strength(0.5F)
+						.sound(SoundType.BAMBOO)
+						.ignitedByLava()
+						.pushReaction(PushReaction.DESTROY)
+						.isRedstoneConductor((s, r, p) -> false)
 		);
 
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
@@ -52,24 +53,24 @@ public class BambooMatBlock extends ZetaBlock {
 		Direction dir = ctx.getHorizontalDirection();
 		if(ctx.getPlayer().getXRot() > 70)
 			dir = Direction.DOWN;
-		
+
 		if(dir != Direction.DOWN) {
 			Direction opposite = dir.getOpposite();
 			BlockPos target = ctx.getClickedPos().relative(opposite);
 			BlockState state = ctx.getLevel().getBlockState(target);
-			
+
 			if(state.getBlock() != this || state.getValue(FACING) != opposite) {
 				target = ctx.getClickedPos().relative(dir);
 				state = ctx.getLevel().getBlockState(target);
-				
+
 				if(state.getBlock() == this && state.getValue(FACING) == dir)
 					dir = opposite;
 			}
 		}
-		
+
 		return defaultBlockState().setValue(FACING, dir);
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING);

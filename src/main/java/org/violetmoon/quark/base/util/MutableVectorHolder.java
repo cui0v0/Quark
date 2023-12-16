@@ -4,7 +4,7 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * @author WireSegal
- * Created at 11:48 AM on 9/2/19.
+ *         Created at 11:48 AM on 9/2/19.
  */
 public class MutableVectorHolder {
 	public double x, y, z;

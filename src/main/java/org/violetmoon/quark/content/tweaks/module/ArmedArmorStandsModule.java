@@ -1,25 +1,26 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-
 /**
  * @author WireSegal
- * Created at 8:40 AM on 8/27/19.
+ *         Created at 8:40 AM on 8/27/19.
  *
- * modified by quat
+ *         modified by quat
  * @see org.violetmoon.quark.mixin.ArmorStandMixin
  */
 @ZetaLoadModule(category = "tweaks")
 public class ArmedArmorStandsModule extends ZetaModule {
 
-	@Hint Item armor_stand = Items.ARMOR_STAND;
+	@Hint
+	Item armor_stand = Items.ARMOR_STAND;
 
 	public static boolean staticEnabled = true;
 

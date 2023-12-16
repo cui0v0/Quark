@@ -8,6 +8,7 @@ public interface IClientLootrIntegration {
 
 	}
 
-	class Dummy implements IClientLootrIntegration { }
+	class Dummy implements IClientLootrIntegration {
+	}
 
 }

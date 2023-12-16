@@ -1,17 +1,5 @@
 package org.violetmoon.quark.content.mobs.entity;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
-import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
-import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
-import org.violetmoon.quark.content.mobs.module.ShibaModule;
-import org.violetmoon.quark.content.tweaks.ai.NuzzleGoal;
-import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +32,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
 import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
 import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
@@ -107,12 +97,12 @@ public class Shiba extends TamableAnimal {
 					boolean hyperfocusClear = level().getBrightness(LightLayer.BLOCK, currentHyperfocus) > 0;
 					boolean ownerAbsent = owner == null
 							|| (owner instanceof Player
-								&& (!owner.getMainHandItem().is(Items.TORCH) && !owner.getOffhandItem().is(Items.TORCH)));
-					
+									&& (!owner.getMainHandItem().is(Items.TORCH) && !owner.getOffhandItem().is(Items.TORCH)));
+
 					if(hyperfocusClear || ownerAbsent) {
 						currentHyperfocus = null;
 						hyperfocusCooldown = 40;
-						
+
 						if(hyperfocusClear && !ownerAbsent && owner instanceof ServerPlayer sp)
 							ShibaModule.shibaHelpTrigger.trigger(sp);
 					}
@@ -221,16 +211,16 @@ public class Shiba extends TamableAnimal {
 
 	@Override
 	public boolean canMate(@NotNull Animal otherAnimal) {
-		if (otherAnimal == this) {
+		if(otherAnimal == this) {
 			return false;
-		} else if (!this.isTame()) {
+		} else if(!this.isTame()) {
 			return false;
-		} else if (!(otherAnimal instanceof Shiba wolfentity)) {
+		} else if(!(otherAnimal instanceof Shiba wolfentity)) {
 			return false;
 		} else {
-			if (!wolfentity.isTame()) {
+			if(!wolfentity.isTame()) {
 				return false;
-			} else if (wolfentity.isSleeping()) {
+			} else if(wolfentity.isSleeping()) {
 				return false;
 			} else {
 				return this.isInLove() && wolfentity.isInLove();
@@ -241,7 +231,7 @@ public class Shiba extends TamableAnimal {
 	@Override
 	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putByte("CollarColor", (byte)this.getCollarColor().getId());
+		compound.putByte("CollarColor", (byte) this.getCollarColor().getId());
 
 		CompoundTag itemcmp = new CompoundTag();
 		ItemStack holding = getMouthItem();
@@ -253,7 +243,7 @@ public class Shiba extends TamableAnimal {
 	@Override
 	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.contains("CollarColor"))
+		if(compound.contains("CollarColor"))
 			this.setCollarColor(DyeColor.byId(compound.getInt("CollarColor")));
 
 		if(compound.contains("MouthItem")) {
@@ -273,95 +263,95 @@ public class Shiba extends TamableAnimal {
 					Vec3 pos = position();
 					serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 					playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
-				} else player.swing(InteractionHand.MAIN_HAND);
+				} else
+					player.swing(InteractionHand.MAIN_HAND);
 
 				WantLoveGoal.setPetTime(this);
 			}
 
 			return InteractionResult.SUCCESS;
-		} else
-			if (this.level().isClientSide) {
-				boolean flag = this.isOwnedBy(player) || this.isTame() || item == Items.BONE && !this.isTame();
-				return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-			} else {
-				if (this.isTame()) {
-					ItemStack mouthItem = getMouthItem();
-					if(!mouthItem.isEmpty()) {
-						ItemStack copy = mouthItem.copy();
-						if(!player.addItem(copy))
-							spawnAtLocation(copy);
+		} else if(this.level().isClientSide) {
+			boolean flag = this.isOwnedBy(player) || this.isTame() || item == Items.BONE && !this.isTame();
+			return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+		} else {
+			if(this.isTame()) {
+				ItemStack mouthItem = getMouthItem();
+				if(!mouthItem.isEmpty()) {
+					ItemStack copy = mouthItem.copy();
+					if(!player.addItem(copy))
+						spawnAtLocation(copy);
 
-						if(player.level() instanceof ServerLevel serverLevel) {
-							Vec3 pos = position();
-							serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
-							playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
-						}
-						setMouthItem(ItemStack.EMPTY);
-						return InteractionResult.SUCCESS;
+					if(player.level() instanceof ServerLevel serverLevel) {
+						Vec3 pos = position();
+						serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
+						playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
 					}
+					setMouthItem(ItemStack.EMPTY);
+					return InteractionResult.SUCCESS;
+				}
 
-					if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-						if (!player.getAbilities().instabuild) {
-							itemstack.shrink(1);
-						}
-
-						this.heal((float)item.getFoodProperties().getNutrition());
-						return InteractionResult.SUCCESS;
-					}
-
-					if (!(item instanceof DyeItem)) {
-						if(!itemstack.isEmpty() && mouthItem.isEmpty() && itemstack.getItem() instanceof SwordItem) {
-							ItemStack copy = itemstack.copy();
-							copy.setCount(1);
-							itemstack.setCount(itemstack.getCount() - 1);
-
-							setMouthItem(copy);
-							return InteractionResult.SUCCESS;
-						}
-
-						InteractionResult actionresulttype = super.mobInteract(player, hand);
-						if ((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-							this.setOrderedToSit(!this.isOrderedToSit());
-							this.jumping = false;
-							this.navigation.stop();
-							this.setTarget(null);
-							return InteractionResult.SUCCESS;
-						}
-
-						return actionresulttype;
-					}
-
-					DyeColor dyecolor = ((DyeItem)item).getDyeColor();
-					if (dyecolor != this.getCollarColor()) {
-						this.setCollarColor(dyecolor);
-						if (!player.getAbilities().instabuild) {
-							itemstack.shrink(1);
-						}
-
-						return InteractionResult.SUCCESS;
-					}
-				} else if (item == Items.BONE) {
-					if (!player.getAbilities().instabuild) {
+				if(this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+					if(!player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 					}
 
-					if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-						WantLoveGoal.setPetTime(this);
+					this.heal((float) item.getFoodProperties().getNutrition());
+					return InteractionResult.SUCCESS;
+				}
 
-						this.tame(player);
+				if(!(item instanceof DyeItem)) {
+					if(!itemstack.isEmpty() && mouthItem.isEmpty() && itemstack.getItem() instanceof SwordItem) {
+						ItemStack copy = itemstack.copy();
+						copy.setCount(1);
+						itemstack.setCount(itemstack.getCount() - 1);
+
+						setMouthItem(copy);
+						return InteractionResult.SUCCESS;
+					}
+
+					InteractionResult actionresulttype = super.mobInteract(player, hand);
+					if((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+						this.setOrderedToSit(!this.isOrderedToSit());
+						this.jumping = false;
 						this.navigation.stop();
 						this.setTarget(null);
-						this.setOrderedToSit(true);
-						this.level().broadcastEntityEvent(this, (byte)7);
-					} else {
-						this.level().broadcastEntityEvent(this, (byte)6);
+						return InteractionResult.SUCCESS;
+					}
+
+					return actionresulttype;
+				}
+
+				DyeColor dyecolor = ((DyeItem) item).getDyeColor();
+				if(dyecolor != this.getCollarColor()) {
+					this.setCollarColor(dyecolor);
+					if(!player.getAbilities().instabuild) {
+						itemstack.shrink(1);
 					}
 
 					return InteractionResult.SUCCESS;
 				}
+			} else if(item == Items.BONE) {
+				if(!player.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
 
-				return super.mobInteract(player, hand);
+				if(this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+					WantLoveGoal.setPetTime(this);
+
+					this.tame(player);
+					this.navigation.stop();
+					this.setTarget(null);
+					this.setOrderedToSit(true);
+					this.level().broadcastEntityEvent(this, (byte) 7);
+				} else {
+					this.level().broadcastEntityEvent(this, (byte) 6);
+				}
+
+				return InteractionResult.SUCCESS;
 			}
+
+			return super.mobInteract(player, hand);
+		}
 	}
 
 	@Override
@@ -370,7 +360,8 @@ public class Shiba extends TamableAnimal {
 		if(tamed) {
 			getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
 			setHealth(20);
-		} getAttribute(Attributes.MAX_HEALTH).setBaseValue(8);
+		}
+		getAttribute(Attributes.MAX_HEALTH).setBaseValue(8);
 
 		getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
 	}
@@ -407,7 +398,7 @@ public class Shiba extends TamableAnimal {
 	public AgeableMob getBreedOffspring(@NotNull ServerLevel world, @NotNull AgeableMob mate) {
 		Shiba wolfentity = ShibaModule.shibaType.create(world);
 		UUID uuid = this.getOwnerUUID();
-		if (uuid != null) {
+		if(uuid != null) {
 			wolfentity.setOwnerUUID(uuid);
 			wolfentity.setTame(true);
 		}

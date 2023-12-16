@@ -1,11 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block.pipe;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -17,17 +11,23 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
+import org.violetmoon.zeta.module.ZetaModule;
+
 public class EncasedPipeBlock extends BasePipeBlock {
 
 	public EncasedPipeBlock(@Nullable ZetaModule module) {
 		super("encased_pipe", module);
 	}
-	
+
 	@Override
 	public boolean allowsFullConnection(ConnectionType conn) {
 		return conn.isFlared || conn.isSolid;
 	}
-	
+
 	@Override
 	public boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
 		return adjacentBlockState.is(this) || adjacentBlockState.is(Blocks.GLASS) || super.skipRendering(state, adjacentBlockState, side);

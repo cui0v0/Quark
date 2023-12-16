@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.client.module;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -15,7 +16,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+
 import org.lwjgl.glfw.GLFW;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -65,37 +68,37 @@ public class CameraModule extends ZetaModule {
 		private static final int BORERS = 6;
 		private static final int OVERLAYS = 5;
 
-		private static final ResourceLocation[] SHADERS = new ResourceLocation[]{
-			null,
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/grayscale.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/sepia.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/desaturate.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/oversaturate.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/cool.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/warm.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/conjugate.json"),
+		private static final ResourceLocation[] SHADERS = new ResourceLocation[] {
+				null,
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/grayscale.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/sepia.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/desaturate.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/oversaturate.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/cool.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/warm.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/conjugate.json"),
 
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/redfocus.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/greenfocus.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/bluefocus.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/yellowfocus.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/redfocus.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/greenfocus.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/bluefocus.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/yellowfocus.json"),
 
-			new ResourceLocation("shaders/post/bumpy.json"),
-			new ResourceLocation("shaders/post/notch.json"),
-			new ResourceLocation("shaders/post/creeper.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/enderman.json"),
+				new ResourceLocation("shaders/post/bumpy.json"),
+				new ResourceLocation("shaders/post/notch.json"),
+				new ResourceLocation("shaders/post/creeper.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/enderman.json"),
 
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/bits.json"),
-			new ResourceLocation("shaders/post/blobs.json"),
-			new ResourceLocation("shaders/post/pencil.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/watercolor.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/monochrome.json"),
-			new ResourceLocation("shaders/post/sobel.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/bits.json"),
+				new ResourceLocation("shaders/post/blobs.json"),
+				new ResourceLocation("shaders/post/pencil.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/watercolor.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/monochrome.json"),
+				new ResourceLocation("shaders/post/sobel.json"),
 
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/deuteranopia.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/protanopia.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/tritanopia.json"),
-			new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/achromatopsia.json")
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/deuteranopia.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/protanopia.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/tritanopia.json"),
+				new ResourceLocation(Quark.MOD_ID, "shaders/post/colorblind/achromatopsia.json")
 		};
 
 		private static KeyMapping cameraModeKey;
@@ -137,36 +140,36 @@ public class CameraModule extends ZetaModule {
 					boolean affected = false;
 					boolean sneak = mc.player.isDiscrete();
 					switch(key) {
-						case 49: // 1
-							currShader = cycle(currShader, SHADERS.length, sneak);
+					case 49: // 1
+						currShader = cycle(currShader, SHADERS.length, sneak);
+						affected = true;
+						break;
+					case 50: // 2
+						currRulers = cycle(currRulers, RULERS, sneak);
+						affected = true;
+						break;
+					case 51: // 3
+						currBorders = cycle(currBorders, BORERS, sneak);
+						affected = true;
+						break;
+					case 52: // 4
+						currOverlay = cycle(currOverlay, OVERLAYS, sneak);
+						affected = true;
+						break;
+					case 53: // 5
+						if(sneak) {
+							currShader = 0;
+							currRulers = 0;
+							currBorders = 0;
+							currOverlay = 0;
 							affected = true;
-							break;
-						case 50: // 2
-							currRulers = cycle(currRulers, RULERS, sneak);
-							affected = true;
-							break;
-						case 51: // 3
-							currBorders = cycle(currBorders, BORERS, sneak);
-							affected = true;
-							break;
-						case 52: // 4
-							currOverlay = cycle(currOverlay, OVERLAYS, sneak);
-							affected = true;
-							break;
-						case 53: // 5
-							if(sneak) {
-								currShader = 0;
-								currRulers = 0;
-								currBorders = 0;
-								currOverlay = 0;
-								affected = true;
-							}
-							break;
-						case 257: // ENTER
-							if(!queueScreenshot && !screenshotting)
-								mc.getSoundManager().play(SimpleSoundInstance.forUI(QuarkSounds.ITEM_CAMERA_SHUTTER, 1.0F));
+						}
+						break;
+					case 257: // ENTER
+						if(!queueScreenshot && !screenshotting)
+							mc.getSoundManager().play(SimpleSoundInstance.forUI(QuarkSounds.ITEM_CAMERA_SHUTTER, 1.0F));
 
-							queueScreenshot = true;
+						queueScreenshot = true;
 					}
 
 					if(affected) {
@@ -225,20 +228,20 @@ public class CameraModule extends ZetaModule {
 			double targetAspect = -1;
 
 			switch(currBorders) {
-				case 1 -> // Square
-					targetAspect = 1;
-				case 2 -> // 4:3
-					targetAspect = 4.0 / 3.0;
-				case 3 -> // 16:9
-					targetAspect = 16.0 / 9.0;
-				case 4 -> // 21:9
-					targetAspect = 21.0 / 9.0;
-				case 5 -> { // Polaroid
-					int border = (int) (20.0 * ((double) (twidth * theight) / 518400));
-					paddingHoriz = border;
-					paddingVert = border;
-					paddingColor = 0xFFFFFFFF;
-				}
+			case 1 -> // Square
+				targetAspect = 1;
+			case 2 -> // 4:3
+				targetAspect = 4.0 / 3.0;
+			case 3 -> // 16:9
+				targetAspect = 16.0 / 9.0;
+			case 4 -> // 21:9
+				targetAspect = 21.0 / 9.0;
+			case 5 -> { // Polaroid
+				int border = (int) (20.0 * ((double) (twidth * theight) / 518400));
+				paddingHoriz = border;
+				paddingVert = border;
+				paddingColor = 0xFFFFFFFF;
+			}
 			}
 
 			if(targetAspect > 0) {
@@ -276,33 +279,33 @@ public class CameraModule extends ZetaModule {
 			int overlayY = -1;
 
 			switch(currOverlay) {
-				case 1 -> { // Date
-					overlayText = new SimpleDateFormat(dateFormat).format(new Date(System.currentTimeMillis()));
-					overlayColor = 0xf77700;
-				}
-				case 2 -> { // Postcard
-					String worldName = "N/A";
-					if(mc.getSingleplayerServer() != null)
-						worldName = mc.getSingleplayerServer().name();
-					else if(mc.getCurrentServer() != null)
-						worldName = mc.getCurrentServer().name;
-					overlayText = I18n.get("quark.camera.greetings", worldName);
-					overlayX = paddingHoriz + 20;
-					overlayY = paddingVert + 20;
-					overlayScale = 3;
-					overlayColor = 0xef5425;
-				}
-				case 3 -> { // Watermark
-					overlayText = mc.player.getGameProfile().getName();
-					overlayScale = 6;
-					overlayShadow = false;
-					overlayColor = 0x44000000;
-				}
-				case 4 -> { // Held Item
-					overlayText = mc.player.getMainHandItem().getHoverName().getString();
-					overlayX = twidth / 2 - mc.font.width(overlayText);
-					overlayY = paddingVert + 40;
-				}
+			case 1 -> { // Date
+				overlayText = new SimpleDateFormat(dateFormat).format(new Date(System.currentTimeMillis()));
+				overlayColor = 0xf77700;
+			}
+			case 2 -> { // Postcard
+				String worldName = "N/A";
+				if(mc.getSingleplayerServer() != null)
+					worldName = mc.getSingleplayerServer().name();
+				else if(mc.getCurrentServer() != null)
+					worldName = mc.getCurrentServer().name;
+				overlayText = I18n.get("quark.camera.greetings", worldName);
+				overlayX = paddingHoriz + 20;
+				overlayY = paddingVert + 20;
+				overlayScale = 3;
+				overlayColor = 0xef5425;
+			}
+			case 3 -> { // Watermark
+				overlayText = mc.player.getGameProfile().getName();
+				overlayScale = 6;
+				overlayShadow = false;
+				overlayColor = 0x44000000;
+			}
+			case 4 -> { // Held Item
+				overlayText = mc.player.getMainHandItem().getHoverName().getString();
+				overlayX = twidth / 2 - mc.font.width(overlayText);
+				overlayY = paddingVert + 40;
+			}
 			}
 
 			if(overlayX == -1)
@@ -310,14 +313,14 @@ public class CameraModule extends ZetaModule {
 			if(overlayY == -1)
 				overlayY = theight - paddingVert - 10 - (10 * (int) overlayScale);
 
-
 			if(!overlayText.isEmpty()) {
 				matrix.pushPose();
 				matrix.translate(overlayX, overlayY, 0);
 				matrix.scale((float) overlayScale, (float) overlayScale, 1.0F);
 				if(overlayShadow)
 					guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor, true);
-				else guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor);
+				else
+					guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor);
 				matrix.popPose();
 			}
 
@@ -326,24 +329,24 @@ public class CameraModule extends ZetaModule {
 				matrix.pushPose();
 				matrix.translate(paddingHoriz, paddingVert, 0);
 				switch(currRulers) {
-					case 1 -> { // Rule of Thirds
-						vruler(guiGraphics, width / 3, height);
-						vruler(guiGraphics, width / 3 * 2, height);
-						hruler(guiGraphics, height / 3, width);
-						hruler(guiGraphics, height / 3 * 2, width);
-					}
-					case 2 -> { // Golden Ratio
-						double phi1 = 1 / 2.61;
-						double phi2 = 1.61 / 2.61;
-						vruler(guiGraphics, (int) (width * phi1), height);
-						vruler(guiGraphics, (int) (width * phi2), height);
-						hruler(guiGraphics, (int) (height * phi1), width);
-						hruler(guiGraphics, (int) (height * phi2), width);
-					}
-					case 3 -> { // Center
-						vruler(guiGraphics, width / 2, height);
-						hruler(guiGraphics, height / 2, width);
-					}
+				case 1 -> { // Rule of Thirds
+					vruler(guiGraphics, width / 3, height);
+					vruler(guiGraphics, width / 3 * 2, height);
+					hruler(guiGraphics, height / 3, width);
+					hruler(guiGraphics, height / 3 * 2, width);
+				}
+				case 2 -> { // Golden Ratio
+					double phi1 = 1 / 2.61;
+					double phi2 = 1.61 / 2.61;
+					vruler(guiGraphics, (int) (width * phi1), height);
+					vruler(guiGraphics, (int) (width * phi2), height);
+					hruler(guiGraphics, (int) (height * phi1), width);
+					hruler(guiGraphics, (int) (height * phi2), width);
+				}
+				case 3 -> { // Center
+					vruler(guiGraphics, width / 2, height);
+					hruler(guiGraphics, height / 2, width);
+				}
 				}
 				matrix.popPose();
 
@@ -434,4 +437,3 @@ public class CameraModule extends ZetaModule {
 	}
 
 }
-

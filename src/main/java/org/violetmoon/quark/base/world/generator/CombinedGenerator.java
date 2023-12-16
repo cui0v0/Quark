@@ -1,7 +1,5 @@
 package org.violetmoon.quark.base.world.generator;
 
-import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -9,9 +7,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 
+import java.util.List;
+
 /**
  * @author WireSegal
- * Created at 9:02 PM on 10/1/19.
+ *         Created at 9:02 PM on 10/1/19.
  */
 public class CombinedGenerator implements IGenerator {
 
@@ -23,8 +23,8 @@ public class CombinedGenerator implements IGenerator {
 
 	@Override
 	public int generate(int seedIncrement, long seed, GenerationStep.Decoration stage, WorldGenRegion worldIn, ChunkGenerator generator, WorldgenRandom rand, BlockPos pos) {
-		for (IGenerator child : children) {
-			if (child.canGenerate(worldIn))
+		for(IGenerator child : children) {
+			if(child.canGenerate(worldIn))
 				seedIncrement = child.generate(seedIncrement, seed, stage, worldIn, generator, rand, pos);
 		}
 		return seedIncrement;

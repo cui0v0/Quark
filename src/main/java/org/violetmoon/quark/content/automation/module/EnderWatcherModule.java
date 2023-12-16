@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.automation.module;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.EnderWatcherBlock;
 import org.violetmoon.quark.content.automation.block.be.EnderWatcherBlockEntity;
@@ -17,9 +18,10 @@ import org.violetmoon.zeta.util.Hint;
 public class EnderWatcherModule extends ZetaModule {
 
 	public static BlockEntityType<EnderWatcherBlockEntity> blockEntityType;
-	
+
 	public static ManualTrigger watcherCenterTrigger;
-	@Hint Block ender_watcher;
+	@Hint
+	Block ender_watcher;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -29,5 +31,5 @@ public class EnderWatcherModule extends ZetaModule {
 
 		watcherCenterTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("watcher_center");
 	}
-	
+
 }

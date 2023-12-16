@@ -20,15 +20,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.content.world.block.CorundumClusterBlock;
 import org.violetmoon.quark.content.world.module.CorundumModule;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
@@ -37,6 +33,10 @@ import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 @ZetaLoadModule(category = "tools")
 public class BeaconRedirectionModule extends ZetaModule {
@@ -49,7 +49,8 @@ public class BeaconRedirectionModule extends ZetaModule {
 	@Config(flag = "tinted_glass_dims")
 	public static boolean allowTintedGlassTransparency = true;
 
-	@Hint("tinted_glass_dims") Item tinted_glass = Items.TINTED_GLASS;
+	@Hint("tinted_glass_dims")
+	Item tinted_glass = Items.TINTED_GLASS;
 
 	public static boolean staticEnabled;
 
@@ -115,14 +116,14 @@ public class BeaconRedirectionModule extends ZetaModule {
 					break;
 				}
 
-
 				lastDir = currSegment.dir;
 			}
 
 			currPos = currPos.relative(currSegment.dir);
 			if(currSegment.dir.getAxis().isHorizontal())
 				horizontalMoves--;
-			else horizontalMoves = horizontalMoveLimit;
+			else
+				horizontalMoves = horizontalMoveLimit;
 
 			BlockState blockstate = world.getBlockState(currPos);
 			Block block = blockstate.getBlock();
@@ -146,7 +147,7 @@ public class BeaconRedirectionModule extends ZetaModule {
 					if(targetColor[0] == 1F && targetColor[1] == 1F && targetColor[2] == 1F)
 						targetColor = currColor;
 
-					float[] mixedColor = new float[]{(currColor[0] + targetColor[0] * 3) / 4.0F, (currColor[1] + targetColor[1] * 3) / 4.0F, (currColor[2] + targetColor[2] * 3) / 4.0F};
+					float[] mixedColor = new float[] { (currColor[0] + targetColor[0] * 3) / 4.0F, (currColor[1] + targetColor[1] * 3) / 4.0F, (currColor[2] + targetColor[2] * 3) / 4.0F };
 					currColor = mixedColor;
 					alpha = 1F;
 					didRedirection = true;
@@ -162,7 +163,7 @@ public class BeaconRedirectionModule extends ZetaModule {
 
 					float[] mixedColor = currColor;
 					if(targetColor != null) {
-						mixedColor = new float[]{(currColor[0] + targetColor[0]) / 2.0F, (currColor[1] + targetColor[1]) / 2.0F, (currColor[2] + targetColor[2]) / 2.0F};
+						mixedColor = new float[] { (currColor[0] + targetColor[0]) / 2.0F, (currColor[1] + targetColor[1]) / 2.0F, (currColor[2] + targetColor[2]) / 2.0F };
 
 						if(!hardColorSet) {
 							mixedColor = targetColor;
@@ -223,8 +224,8 @@ public class BeaconRedirectionModule extends ZetaModule {
 			int i = beaconPos.getX();
 			int j = beaconPos.getY();
 			int k = beaconPos.getZ();
-            for(ServerPlayer serverplayer : beacon.getLevel().getEntitiesOfClass(ServerPlayer.class, (new AABB((double)i, (double)j, (double)k, (double)i, (double)(j - 4), (double)k)).inflate(10.0D, 5.0D, 10.0D)))
-                redirectTrigger.trigger(serverplayer);
+			for(ServerPlayer serverplayer : beacon.getLevel().getEntitiesOfClass(ServerPlayer.class, (new AABB((double) i, (double) j, (double) k, (double) i, (double) (j - 4), (double) k)).inflate(10.0D, 5.0D, 10.0D)))
+				redirectTrigger.trigger(serverplayer);
 		}
 
 		return Integer.MAX_VALUE;
@@ -235,7 +236,7 @@ public class BeaconRedirectionModule extends ZetaModule {
 	}
 
 	private static float[] getTargetColor(Block block) {
-		return block instanceof CorundumClusterBlock cc? cc.base.colorComponents : new float[] { 1F, 1F, 1F };
+		return block instanceof CorundumClusterBlock cc ? cc.base.colorComponents : new float[] { 1F, 1F, 1F };
 	}
 
 	public static class ExtendedBeamSegment extends BeaconBeamSection {

@@ -3,6 +3,7 @@ package org.violetmoon.quark.addons.oddities.client.screen;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.renderer.GameRenderer;
@@ -67,11 +68,11 @@ public class MatrixEnchantingPieceList extends ObjectSelectionList<MatrixEnchant
 
 	private void renderScroll(GuiGraphics guiGraphics, int i, int j) {
 		int j1 = this.getMaxScroll2();
-		if (j1 > 0) {
-			int k1 = (int)((float)((this.y1 - this.y0) * (this.y1 - this.y0)) / (float)this.getMaxPosition());
+		if(j1 > 0) {
+			int k1 = (int) ((float) ((this.y1 - this.y0) * (this.y1 - this.y0)) / (float) this.getMaxPosition());
 			k1 = Mth.clamp(k1, 32, this.y1 - this.y0 - 8);
-			int l1 = (int)this.getScrollAmount() * (this.y1 - this.y0 - k1) / j1 + this.y0;
-			if (l1 < this.y0) {
+			int l1 = (int) this.getScrollAmount() * (this.y1 - this.y0 - k1) / j1 + this.y0;
+			if(l1 < this.y0) {
 				l1 = this.y0;
 			}
 

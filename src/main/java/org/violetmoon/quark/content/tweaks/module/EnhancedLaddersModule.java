@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.play.ZInputUpdate;
@@ -53,10 +54,14 @@ public class EnhancedLaddersModule extends ZetaModule {
 	@Config
 	public double fallSpeed = -0.2;
 
-	@Config public static boolean allowFreestanding = true;
-	@Config public static boolean allowDroppingDown = true;
-	@Config public static boolean allowSliding = true;
-	@Config public static boolean allowInventorySneak = true;
+	@Config
+	public static boolean allowFreestanding = true;
+	@Config
+	public static boolean allowDroppingDown = true;
+	@Config
+	public static boolean allowSliding = true;
+	@Config
+	public static boolean allowInventorySneak = true;
 
 	private static boolean staticEnabled;
 	private static TagKey<Item> laddersTag;
@@ -75,7 +80,7 @@ public class EnhancedLaddersModule extends ZetaModule {
 	public void addAdditionalHints(ZGatherHints event) {
 		if(!allowFreestanding && !allowDroppingDown && !allowSliding && !allowInventorySneak)
 			return;
-		
+
 		MutableComponent comp = Component.empty();
 		String pad = "";
 		if(allowDroppingDown) {
@@ -92,14 +97,14 @@ public class EnhancedLaddersModule extends ZetaModule {
 		}
 		if(allowInventorySneak)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.ladder_sneak"));
-		
+
 		List<Item> ladders = RegistryUtil.getTagValues(event.getRegistryAccess(), laddersTag);
 		for(Item item : ladders)
 			event.accept(item, comp);
 	}
 
 	private static boolean canAttachTo(BlockState state, Block ladder, LevelReader world, BlockPos pos, Direction facing) {
-		if (ladder instanceof LadderBlock) {
+		if(ladder instanceof LadderBlock) {
 			if(allowFreestanding)
 				return canLadderSurvive(state, world, pos);
 
@@ -192,8 +197,8 @@ public class EnhancedLaddersModule extends ZetaModule {
 
 			Player player = event.getEntity();
 			if(player.onClimbable() && !player.getAbilities().flying &&
-				!isScaffolding(player.level().getBlockState(player.blockPosition()), player)
-				&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.onGround()) {
+					!isScaffolding(player.level().getBlockState(player.blockPosition()), player)
+					&& Minecraft.getInstance().screen != null && !(player.zza == 0 && player.getXRot() > 70) && !player.onGround()) {
 				Input input = event.getInput();
 				if(input != null)
 					input.shiftKeyDown = true; // sneaking
@@ -212,13 +217,13 @@ public class EnhancedLaddersModule extends ZetaModule {
 
 				boolean scaffold = isScaffolding(player.level().getBlockState(playerPos), player);
 				if(player.isCrouching() == scaffold &&
-					player.zza == 0 &&
-					player.yya <= 0 &&
-					player.xxa == 0 &&
-					player.getXRot() > 70 &&
-					!player.jumping &&
-					!player.getAbilities().flying &&
-					player.level().getBlockState(downPos).isLadder(player.level(), downPos, player)) {
+						player.zza == 0 &&
+						player.yya <= 0 &&
+						player.xxa == 0 &&
+						player.getXRot() > 70 &&
+						!player.jumping &&
+						!player.getAbilities().flying &&
+						player.level().getBlockState(downPos).isLadder(player.level(), downPos, player)) {
 
 					Vec3 move = new Vec3(0, fallSpeed, 0);
 					AABB target = player.getBoundingBox().move(move);
@@ -237,6 +242,5 @@ public class EnhancedLaddersModule extends ZetaModule {
 	protected boolean isScaffolding(BlockState state, LivingEntity entity) {
 		return zeta.blockExtensions.get(state).isScaffoldingZeta(state, entity.level(), entity.blockPosition(), entity);
 	}
-
 
 }

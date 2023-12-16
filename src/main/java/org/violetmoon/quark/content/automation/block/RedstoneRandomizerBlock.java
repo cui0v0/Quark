@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.automation.block;
 
-import java.util.EnumSet;
-
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -28,15 +24,20 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.event.ForgeEventFactory;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.automation.base.RandomizerPowerState;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
+import java.util.EnumSet;
+
 /**
  * @author WireSegal
- * Created at 9:57 AM on 8/26/19.
+ *         Created at 9:57 AM on 8/26/19.
  */
 
 public class RedstoneRandomizerBlock extends ZetaBlock {
@@ -64,7 +65,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 		boolean isPowered = isPowered(state);
 		boolean willBePowered = shouldBePowered(world, pos, state);
 		if(isPowered != willBePowered) {
-			if (!willBePowered)
+			if(!willBePowered)
 				state = state.setValue(POWERED, RandomizerPowerState.OFF);
 			else
 				state = state.setValue(POWERED, rand.nextBoolean() ? RandomizerPowerState.LEFT : RandomizerPowerState.RIGHT);
@@ -76,7 +77,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 	protected void updateState(Level world, BlockPos pos, BlockState state) {
 		boolean isPowered = isPowered(state);
 		boolean willBePowered = shouldBePowered(world, pos, state);
-		if (isPowered != willBePowered && !world.getBlockTicks().willTickThisTick(pos, this)) {
+		if(isPowered != willBePowered && !world.getBlockTicks().willTickThisTick(pos, this)) {
 			TickPriority priority = isPowered ? TickPriority.VERY_HIGH : TickPriority.HIGH;
 
 			world.scheduleTick(pos, this, 2, priority);
@@ -112,16 +113,16 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 	@Override
 	public int getSignal(BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
 		RandomizerPowerState powerState = blockState.getValue(POWERED);
-		return switch (powerState) {
-			case RIGHT -> blockState.getValue(FACING).getClockWise() == side ? 15 : 0;
-			case LEFT -> blockState.getValue(FACING).getCounterClockWise() == side ? 15 : 0;
-			default -> 0;
+		return switch(powerState) {
+		case RIGHT -> blockState.getValue(FACING).getClockWise() == side ? 15 : 0;
+		case LEFT -> blockState.getValue(FACING).getCounterClockWise() == side ? 15 : 0;
+		default -> 0;
 		};
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos, boolean isMoving) {
-		if (state.canSurvive(world, pos))
+		if(state.canSurvive(world, pos))
 			this.updateState(world, pos, state);
 		else
 			breakAndDrop(this, state, world, pos);
@@ -143,7 +144,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 		Direction face = state.getValue(FACING);
 		BlockPos checkPos = pos.relative(face);
 		int strength = world.getSignal(checkPos, face);
-		if (strength >= 15) {
+		if(strength >= 15) {
 			return strength;
 		} else {
 			BlockState checkState = world.getBlockState(checkPos);
@@ -163,7 +164,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 
 	@Override
 	public void setPlacedBy(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity placer, @NotNull ItemStack stack) {
-		if (this.shouldBePowered(world, pos, state)) {
+		if(this.shouldBePowered(world, pos, state)) {
 			world.scheduleTick(pos, this, 1);
 		}
 	}
@@ -175,7 +176,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 
 	@Override
 	public void onRemove(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
-		if (!isMoving && state.getBlock() != newState.getBlock()) {
+		if(!isMoving && state.getBlock() != newState.getBlock()) {
 			super.onRemove(state, world, pos, newState, false);
 			notifyNeighbors(this, world, pos, state);
 		}
@@ -184,7 +185,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 	public static void notifyNeighbors(Block block, Level world, BlockPos pos, BlockState state) {
 		Direction face = state.getValue(FACING);
 		BlockPos neighborPos = pos.relative(face.getOpposite());
-		if (ForgeEventFactory.onNeighborNotify(world, pos, world.getBlockState(pos), EnumSet.of(face.getOpposite()), false).isCanceled())
+		if(ForgeEventFactory.onNeighborNotify(world, pos, world.getBlockState(pos), EnumSet.of(face.getOpposite()), false).isCanceled())
 			return;
 		world.neighborChanged(neighborPos, block, pos);
 		world.updateNeighborsAtExceptFromFacing(neighborPos, block, face);
@@ -192,7 +193,7 @@ public class RedstoneRandomizerBlock extends ZetaBlock {
 
 	@Override
 	public void animateTick(BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
-		if (stateIn.getValue(POWERED) != RandomizerPowerState.OFF) {
+		if(stateIn.getValue(POWERED) != RandomizerPowerState.OFF) {
 			double x = (pos.getX() + 0.5D) + (rand.nextFloat() - 0.5D) * 0.2D;
 			double y = (pos.getY() + 0.4D) + (rand.nextFloat() - 0.5D) * 0.2D;
 			double z = (pos.getZ() + 0.5D) + (rand.nextFloat() - 0.5D) * 0.2D;

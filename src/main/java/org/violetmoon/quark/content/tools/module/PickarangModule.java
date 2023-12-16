@@ -14,6 +14,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.client.render.entity.PickarangRenderer;
@@ -30,7 +31,6 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 import org.violetmoon.zeta.util.Hint;
 
@@ -53,8 +53,10 @@ public class PickarangModule extends ZetaModule {
 	@Config(description = "Set this to true to use the recipe without the Heart of Diamond, even if the Heart of Diamond is enabled.", flag = "pickarang_never_uses_heart")
 	public static boolean neverUseHeartOfDiamond = false;
 
-	@Hint public static Item pickarang;
-	@Hint("flamerang") public static Item flamerang;
+	@Hint
+	public static Item pickarang;
+	@Hint("flamerang")
+	public static Item flamerang;
 
 	private static List<PickarangType<?>> knownTypes = new ArrayList<>();
 	private static boolean isEnabled;
@@ -95,7 +97,7 @@ public class PickarangModule extends ZetaModule {
 		Item.Properties properties = new Item.Properties()
 				.stacksTo(1);
 
-		if (durability > 0)
+		if(durability > 0)
 			properties.durability(durability);
 
 		if(fireResist)
@@ -126,15 +128,12 @@ public class PickarangModule extends ZetaModule {
 		ACTIVE_PICKARANG.set(pickarang);
 	}
 
-	//fixme hook this up somehow
 	public static DamageSource createDamageSource(Player player) {
 		AbstractPickarang<?> pickarang = ACTIVE_PICKARANG.get();
 
-		if (pickarang == null)
+		if(pickarang == null)
 			return null;
 
-		//fixme need to register proper damage source
-		//return new IndirectEntityDamageSource("player", pickarang, player).setProjectile();
 		return player.level().damageSources().indirectMagic(pickarang, player);
 	}
 

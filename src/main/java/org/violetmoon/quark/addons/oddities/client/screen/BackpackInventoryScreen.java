@@ -1,6 +1,7 @@
 package org.violetmoon.quark.addons.oddities.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.Quark;
@@ -54,10 +56,10 @@ public class BackpackInventoryScreen extends InventoryScreen {
 
 		buttonYs.clear();
 
-		for (Renderable renderable : renderables)
-			if (renderable instanceof Button b)
-				if (b.getClass().getName().contains("GuiButtonInventoryBook")) { // class check for Patchouli
-					if (!buttonYs.containsKey(b)) {
+		for(Renderable renderable : renderables)
+			if(renderable instanceof Button b)
+				if(b.getClass().getName().contains("GuiButtonInventoryBook")) { // class check for Patchouli
+					if(!buttonYs.containsKey(b)) {
 						b.setY(b.getY() - 29);
 						buttonYs.put(b, b.getY());
 					}
@@ -103,10 +105,10 @@ public class BackpackInventoryScreen extends InventoryScreen {
 	}
 
 	private void moveCharmsButtons() {
-		for (Renderable renderable : renderables) {
+		for(Renderable renderable : renderables) {
 			//Charms buttons have a static Y pos, so use that to only focus on them.
-			if (renderable instanceof ImageButton img) {
-				if (img.getY() == height / 2 - 22)
+			if(renderable instanceof ImageButton img) {
+				if(img.getY() == height / 2 - 22)
 					img.setPosition(img.getX(), img.getY() - 29);
 			}
 		}

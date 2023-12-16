@@ -1,9 +1,11 @@
 package org.violetmoon.quark.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
 import net.minecraft.world.item.enchantment.ArrowPiercingEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

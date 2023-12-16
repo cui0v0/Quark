@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tools.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -15,18 +16,18 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraftforge.network.NetworkDirection;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.UpdateTridentMessage;
 import org.violetmoon.quark.content.tools.client.render.GlintRenderTypes;
 import org.violetmoon.quark.content.tools.item.RuneItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -48,8 +49,8 @@ import java.util.function.Supplier;
 
 /**
  * @author WireSegal
- * Hacked by svenhjol
- * Created at 1:52 PM on 8/17/19.
+ *         Hacked by svenhjol
+ *         Created at 1:52 PM on 8/17/19.
  */
 @ZetaLoadModule(category = "tools")
 public class ColorRunesModule extends ZetaModule {
@@ -66,18 +67,25 @@ public class ColorRunesModule extends ZetaModule {
 	public static boolean colorBlendingRunes = true;
 
 	private static final ThreadLocal<ItemStack> targetStack = new ThreadLocal<>();
-	@Hint public static TagKey<Item> runesTag;
+	@Hint
+	public static TagKey<Item> runesTag;
 	public static TagKey<Item> runesLootableTag;
 	public static List<RuneItem> runes;
 	public static Item rainbow_rune;
 	public static Item blank_rune;
 
-	@Config public static int dungeonWeight = 10;
-	@Config public static int netherFortressWeight = 8;
-	@Config public static int jungleTempleWeight = 8;
-	@Config public static int desertTempleWeight = 8;
-	@Config public static int itemQuality = 0;
-	@Config public static int applyCost = 5;
+	@Config
+	public static int dungeonWeight = 10;
+	@Config
+	public static int netherFortressWeight = 8;
+	@Config
+	public static int jungleTempleWeight = 8;
+	@Config
+	public static int desertTempleWeight = 8;
+	@Config
+	public static int itemQuality = 0;
+	@Config
+	public static int applyCost = 5;
 
 	public static ManualTrigger applyRuneTrigger;
 	public static ManualTrigger fullRainbowTrigger;
@@ -93,34 +101,36 @@ public class ColorRunesModule extends ZetaModule {
 	}
 
 	private static int getStackColor(ItemStack target) {
-		if (target == null)
+		if(target == null)
 			return -1;
 
-		@Nullable IRuneColorProvider cap = get(target);
+		@Nullable
+		IRuneColorProvider cap = get(target);
 
-		if (cap != null) {
+		if(cap != null) {
 			int color = cap.getRuneColor(target);
-			if (color != -1)
+			if(color != -1)
 				return color;
 		}
 
-		if (!ItemNBTHelper.getBoolean(target, TAG_RUNE_ATTACHED, false))
+		if(!ItemNBTHelper.getBoolean(target, TAG_RUNE_ATTACHED, false))
 			return -1;
 
 		ItemStack proxied = ItemStack.of(ItemNBTHelper.getCompound(target, TAG_RUNE_COLOR, false));
-		@Nullable IRuneColorProvider proxyCap = get(proxied);
+		@Nullable
+		IRuneColorProvider proxyCap = get(proxied);
 		if(proxyCap != null)
 			return proxyCap.getRuneColor(target);
 
 		return -1;
 	}
-	
+
 	private static final Map<ThrownTrident, ItemStack> TRIDENT_STACK_REFERENCES = new WeakHashMap<>();
 
 	public static void syncTrident(Consumer<Packet<?>> packetConsumer, ThrownTrident trident, boolean force) {
 		ItemStack stack = trident.getPickupItem();
 		ItemStack prev = TRIDENT_STACK_REFERENCES.get(trident);
-		if (force || prev == null || ItemStack.isSameItemSameTags(stack, prev))
+		if(force || prev == null || ItemStack.isSameItemSameTags(stack, prev))
 			packetConsumer.accept(Quark.ZETA.network.wrapInVanilla(new UpdateTridentMessage(trident.getId(), stack), ZetaNetworkDirection.PLAY_TO_CLIENT));
 		else
 			TRIDENT_STACK_REFERENCES.put(trident, stack);
@@ -252,36 +262,29 @@ public class ColorRunesModule extends ZetaModule {
 			return renderType(GlintRenderTypes.glint, RenderType::glint);
 		}
 
-
 		public static RenderType getGlintTranslucent() {
 			return renderType(GlintRenderTypes.glintTranslucent, RenderType::glintTranslucent);
 		}
-
 
 		public static RenderType getEntityGlint() {
 			return renderType(GlintRenderTypes.entityGlint, RenderType::entityGlint);
 		}
 
-
 		public static RenderType getGlintDirect() {
 			return renderType(GlintRenderTypes.glintDirect, RenderType::glintDirect);
 		}
-
 
 		public static RenderType getEntityGlintDirect() {
 			return renderType(GlintRenderTypes.entityGlintDirect, RenderType::entityGlintDirect);
 		}
 
-
 		public static RenderType getArmorGlint() {
 			return renderType(GlintRenderTypes.armorGlint, RenderType::armorGlint);
 		}
 
-
 		public static RenderType getArmorEntityGlint() {
 			return renderType(GlintRenderTypes.armorEntityGlint, RenderType::armorEntityGlint);
 		}
-
 
 		private static RenderType renderType(List<RenderType> list, Supplier<RenderType> vanilla) {
 			int color = changeColor();

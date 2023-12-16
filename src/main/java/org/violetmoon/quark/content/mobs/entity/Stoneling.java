@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.mobs.entity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,8 +48,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.NetworkHooks;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -125,7 +128,7 @@ public class Stoneling extends PathfinderMob {
 	public void tick() {
 		super.tick();
 
-		if (wasTouchingWater)
+		if(wasTouchingWater)
 			setMaxUpStep(1f);
 		else
 			setMaxUpStep(0.6f);
@@ -136,7 +139,7 @@ public class Stoneling extends PathfinderMob {
 
 	@Override
 	public MobCategory getClassification(boolean forSpawnCount) {
-		if (isTame)
+		if(isTame)
 			return MobCategory.CREATURE;
 		return MobCategory.MONSTER;
 	}
@@ -150,9 +153,9 @@ public class Stoneling extends PathfinderMob {
 	public void checkDespawn() {
 		boolean wasAlive = isAlive();
 		super.checkDespawn();
-		if (!isAlive() && wasAlive)
-			for (Entity passenger : getIndirectPassengers())
-				if (!(passenger instanceof Player))
+		if(!isAlive() && wasAlive)
+			for(Entity passenger : getIndirectPassengers())
+				if(!(passenger instanceof Player))
 					passenger.discard();
 	}
 
@@ -175,14 +178,14 @@ public class Stoneling extends PathfinderMob {
 			Vec3 pos = position();
 
 			if(!level().isClientSide) {
-				if (isPlayerMade()) {
-					if (!player.isDiscrete() && !playerItem.isEmpty()) {
+				if(isPlayerMade()) {
+					if(!player.isDiscrete() && !playerItem.isEmpty()) {
 						StonelingVariant currentVariant = getVariant();
 						StonelingVariant targetVariant = null;
 						Block targetBlock = null;
-						mainLoop: for (StonelingVariant variant : StonelingVariant.values()) {
-							for (Block block : variant.getBlocks()) {
-								if (block.asItem() == playerItem.getItem()) {
+						mainLoop: for(StonelingVariant variant : StonelingVariant.values()) {
+							for(Block block : variant.getBlocks()) {
+								if(block.asItem() == playerItem.getItem()) {
 									targetVariant = variant;
 									targetBlock = block;
 									break mainLoop;
@@ -190,14 +193,14 @@ public class Stoneling extends PathfinderMob {
 							}
 						}
 
-						if (targetVariant != null) {
-							if (level() instanceof ServerLevel serverLevel) {
+						if(targetVariant != null) {
+							if(level() instanceof ServerLevel serverLevel) {
 								serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + getBbHeight(), pos.z, 1, 0.1, 0.1, 0.1, 0.1);
-								if (targetVariant != currentVariant)
+								if(targetVariant != currentVariant)
 									serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, targetBlock.defaultBlockState()), pos.x, pos.y + getBbHeight() / 2, pos.z, 16, 0.1, 0.1, 0.1, 0.25);
 							}
 
-							if (targetVariant != currentVariant) {
+							if(targetVariant != currentVariant) {
 								playSound(QuarkSounds.ENTITY_STONELING_EAT, 1F, 1F);
 								entityData.set(VARIANT, targetVariant.getIndex());
 							}
@@ -206,7 +209,7 @@ public class Stoneling extends PathfinderMob {
 
 							heal(1);
 
-							if (!player.getAbilities().instabuild)
+							if(!player.getAbilities().instabuild)
 								playerItem.shrink(1);
 
 							return InteractionResult.SUCCESS;
@@ -217,25 +220,26 @@ public class Stoneling extends PathfinderMob {
 
 					ItemStack stonelingItem = entityData.get(CARRYING_ITEM);
 
-					if (!stonelingItem.isEmpty() || !playerItem.isEmpty()) {
+					if(!stonelingItem.isEmpty() || !playerItem.isEmpty()) {
 						player.setItemInHand(hand, stonelingItem.copy());
 						entityData.set(CARRYING_ITEM, playerItem.copy());
 
-						if (playerItem.isEmpty())
+						if(playerItem.isEmpty())
 							playSound(QuarkSounds.ENTITY_STONELING_GIVE, 1F, 1F);
-						else playSound(QuarkSounds.ENTITY_STONELING_TAKE, 1F, 1F);
+						else
+							playSound(QuarkSounds.ENTITY_STONELING_TAKE, 1F, 1F);
 					}
-				} else if (StonelingsModule.tamableStonelings && playerItem.is(temptTag())) {
+				} else if(StonelingsModule.tamableStonelings && playerItem.is(temptTag())) {
 					heal(8);
 
 					setPlayerMade(true);
 
 					playSound(QuarkSounds.ENTITY_STONELING_PURR, 1F, 1F + level().random.nextFloat());
 
-					if (!player.getAbilities().instabuild)
+					if(!player.getAbilities().instabuild)
 						playerItem.shrink(1);
 
-					if (level() instanceof ServerLevel)
+					if(level() instanceof ServerLevel)
 						((ServerLevel) level()).sendParticles(ParticleTypes.HEART, pos.x, pos.y + getBbHeight(), pos.z, 4, 0.1, 0.1, 0.1, 0.1);
 
 					return InteractionResult.SUCCESS;
@@ -251,7 +255,7 @@ public class Stoneling extends PathfinderMob {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag compound) {
 		RandomSource rand = world.getRandom();
 		byte variant;
-		if (data instanceof StonelingVariant stonelingVariant)
+		if(data instanceof StonelingVariant stonelingVariant)
 			variant = stonelingVariant.getIndex();
 		else
 			variant = (byte) rand.nextInt(StonelingVariant.values().length);
@@ -265,7 +269,7 @@ public class Stoneling extends PathfinderMob {
 					.getLootTable(CARRY_LOOT_TABLE).getRandomItems(new LootParams.Builder((ServerLevel) world)
 							.withParameter(LootContextParams.ORIGIN, position())
 							.create(LootContextParamSets.CHEST));
-			if (!items.isEmpty())
+			if(!items.isEmpty())
 				entityData.set(CARRYING_ITEM, items.get(0));
 		}
 
@@ -274,20 +278,20 @@ public class Stoneling extends PathfinderMob {
 
 	@Override
 	public boolean isInvulnerableTo(@NotNull DamageSource source) {
-		return source == damageSources().cactus() ||
+		return damageSources().cactus().equals(source) ||
 				isProjectileWithoutPiercing(source) ||
 				super.isInvulnerableTo(source);
 	}
 
 	private static boolean isProjectileWithoutPiercing(DamageSource source) {
-		if (!(source.getEntity() instanceof Projectile))
+		if(source.getEntity() instanceof Projectile)
 			return false;
 
 		Entity sourceEntity = source.getDirectEntity();
 
-		if (sourceEntity instanceof Pickarang pickarang)
+		if(sourceEntity instanceof Pickarang pickarang)
 			return pickarang.getPiercingModifier() <= 0;
-		else if (sourceEntity instanceof AbstractArrow arrow)
+		else if(sourceEntity instanceof AbstractArrow arrow)
 			return arrow.getPierceLevel() <= 0;
 		return true;
 	}
@@ -296,7 +300,6 @@ public class Stoneling extends PathfinderMob {
 	public boolean canBreatheUnderwater() {
 		return true;
 	}
-
 
 	@Override
 	public boolean checkSpawnObstruction(LevelReader worldReader) {
@@ -329,10 +332,10 @@ public class Stoneling extends PathfinderMob {
 
 		if(!isPlayerMade() && damageSrc.getEntity() instanceof Player) {
 			startle();
-			for (Entity entity : level().getEntities(this,
+			for(Entity entity : level().getEntities(this,
 					getBoundingBox().inflate(16))) {
-				if (entity instanceof Stoneling stoneling) {
-					if (!stoneling.isPlayerMade() && stoneling.getSensing().hasLineOfSight(this)) {
+				if(entity instanceof Stoneling stoneling) {
+					if(!stoneling.isPlayerMade() && stoneling.getSensing().hasLineOfSight(this)) {
 						startle();
 					}
 				}
@@ -348,8 +351,8 @@ public class Stoneling extends PathfinderMob {
 		waryGoal.startle();
 		Set<WrappedGoal> entries = Sets.newHashSet(goalSelector.getAvailableGoals());
 
-		for (WrappedGoal task : entries)
-			if (task.getGoal() instanceof TemptGoal)
+		for(WrappedGoal task : entries)
+			if(task.getGoal() instanceof TemptGoal)
 				goalSelector.removeGoal(task.getGoal());
 	}
 
@@ -405,8 +408,8 @@ public class Stoneling extends PathfinderMob {
 
 		Vec3 origin = new Vec3(pos.x, pos.y + getEyeHeight(), pos.z);
 		float otherEyes = entityIn.getEyeHeight();
-		for (float height = 0; height <= otherEyes; height += otherEyes / 8) {
-			if (this.level().clip(new ClipContext(origin, epos.add(0, height, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS)
+		for(float height = 0; height <= otherEyes; height += otherEyes / 8) {
+			if(this.level().clip(new ClipContext(origin, epos.add(0, height, 0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS)
 				return true;
 		}
 
@@ -435,7 +438,7 @@ public class Stoneling extends PathfinderMob {
 	public boolean checkSpawnRules(@NotNull LevelAccessor world, @NotNull MobSpawnType reason) {
 		BlockPos pos = new BlockPos((int) position().x(), (int) position().y(), (int) position().z()).below();
 		BlockState state = world.getBlockState(pos);
-		if (!BlockUtils.isStoneBased(state, world, pos))
+		if(!BlockUtils.isStoneBased(state, world, pos))
 			return false;
 
 		return StonelingsModule.dimensions.canSpawnHere(world) && super.checkSpawnRules(world, reason);
@@ -462,15 +465,16 @@ public class Stoneling extends PathfinderMob {
 	public void playAmbientSound() {
 		SoundEvent sound = this.getAmbientSound();
 
-		if (sound != null) this.playSound(sound, this.getSoundVolume(), 1f);
+		if(sound != null)
+			this.playSound(sound, this.getSoundVolume(), 1f);
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		if (hasCustomName()) {
+		if(hasCustomName()) {
 			String customName = getName().getString();
-			if (customName.equalsIgnoreCase("michael stevens") || customName.equalsIgnoreCase("vsauce"))
+			if(customName.equalsIgnoreCase("michael stevens") || customName.equalsIgnoreCase("vsauce"))
 				return QuarkSounds.ENTITY_STONELING_MICHAEL;
 		}
 

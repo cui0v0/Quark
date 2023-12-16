@@ -24,11 +24,11 @@ import org.violetmoon.zeta.registry.CreativeTabManager;
 public class MidoriModule extends ZetaModule {
 
 	private static Item moss_paste;
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		moss_paste = new ZetaItem("moss_paste", this, new Item.Properties()).setCreativeTab(CreativeModeTabs.INGREDIENTS, Items.CLAY_BALL, false);
-		
+
 		Block.Properties props = Block.Properties.of()
 				.mapColor(MapColor.COLOR_LIGHT_GREEN)
 				.instrument(NoteBlockInstrument.BASEDRUM)
@@ -48,5 +48,5 @@ public class MidoriModule extends ZetaModule {
 			ComposterBlock.COMPOSTABLES.put(moss_paste, 0.5F);
 		});
 	}
-	
+
 }

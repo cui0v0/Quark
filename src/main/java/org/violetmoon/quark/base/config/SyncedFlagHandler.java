@@ -6,14 +6,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.structural.S2CUpdateFlag;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SyncedFlagHandler {
 	private static ConfigFlagManager flagManager;
@@ -29,7 +28,8 @@ public class SyncedFlagHandler {
 	public static BitSet compileFlagInfo() {
 		BitSet set = new BitSet();
 		int i = 0;
-		for (String flag : sortedFlags) set.set(i++, flagManager.getFlag(flag));
+		for(String flag : sortedFlags)
+			set.set(i++, flagManager.getFlag(flag));
 
 		return set;
 	}
@@ -45,7 +45,7 @@ public class SyncedFlagHandler {
 	private static Set<String> decodeFlags(BitSet bitSet) {
 		Set<String> enabledFlags = new HashSet<>();
 
-		for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i + 1)) {
+		for(int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i + 1)) {
 			enabledFlags.add(sortedFlags.get(i));
 		}
 
@@ -71,7 +71,7 @@ public class SyncedFlagHandler {
 
 	public static boolean getFlagForPlayer(ServerPlayer player, String flag) {
 		Set<String> enabledFlags = flagsFromPlayers.get(player);
-		if (enabledFlags == null)
+		if(enabledFlags == null)
 			return flagManager.getFlag(flag);
 
 		return enabledFlags.contains(flag);
@@ -79,9 +79,9 @@ public class SyncedFlagHandler {
 
 	@OnlyIn(Dist.CLIENT)
 	public static boolean getFlagForServer(String flag) {
-		for (PacketListener listener : flagsFromServer.keySet()) {
+		for(PacketListener listener : flagsFromServer.keySet()) {
 			Set<String> enabledFlags = flagsFromServer.get(listener);
-			if (enabledFlags != null)
+			if(enabledFlags != null)
 				return enabledFlags.contains(flag);
 		}
 

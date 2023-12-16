@@ -2,17 +2,12 @@ package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.client.event.play.ZRenderPlayer;
@@ -20,6 +15,12 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayer;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class ContributorRewardHandler {
 
@@ -52,7 +53,7 @@ public class ContributorRewardHandler {
 	}
 
 	public static void init() {
-		if (thread != null && thread.isAlive())
+		if(thread != null && thread.isAlive())
 			return;
 
 		thread = new ThreadContributorListLoader();
@@ -99,8 +100,8 @@ public class ContributorRewardHandler {
 			try {
 				URL url = new URL("https://raw.githubusercontent.com/VazkiiMods/Quark/master/contributors.properties");
 				URLConnection conn = url.openConnection();
-				conn.setConnectTimeout(10*1000);
-				conn.setReadTimeout(10*1000);
+				conn.setConnectTimeout(10 * 1000);
+				conn.setReadTimeout(10 * 1000);
 
 				Properties patreonTiers = new Properties();
 				try (InputStreamReader reader = new InputStreamReader(conn.getInputStream())) {

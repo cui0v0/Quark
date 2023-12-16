@@ -1,13 +1,13 @@
 package org.violetmoon.quark.base.config.type;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
 
 import org.violetmoon.quark.base.config.Config;
 
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.biome.Biome;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class StrictBiomeConfig implements IBiomeConfig, IConfigType {
 
@@ -29,7 +29,7 @@ public class StrictBiomeConfig implements IBiomeConfig, IConfigType {
 		return res.unwrap().map(
 				key -> biomeStrings.contains(key.location().toString()) != isBlacklist,
 				unbound -> false
-				);
+		);
 	}
 
 }

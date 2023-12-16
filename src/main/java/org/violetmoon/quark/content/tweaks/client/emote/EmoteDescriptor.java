@@ -21,11 +21,11 @@ public class EmoteDescriptor {
 	public final EmoteTemplate template;
 
 	private int tier;
-	
+
 	public EmoteDescriptor(Class<? extends EmoteBase> clazz, String name, String regName, int index) {
 		this(clazz, name, regName, index, new ResourceLocation("quark", "textures/emote/" + name + ".png"), new EmoteTemplate(name + ".emote"));
 	}
-	
+
 	public EmoteDescriptor(Class<? extends EmoteBase> clazz, String name, String regName, int index, ResourceLocation texture, EmoteTemplate template) {
 		this.clazz = clazz;
 		this.index = index;
@@ -39,7 +39,7 @@ public class EmoteDescriptor {
 	public void updateTier(EmoteTemplate template) {
 		this.tier = template.tier;
 	}
-	
+
 	public String getTranslationKey() {
 		return "quark.emote." + name;
 	}
@@ -47,25 +47,25 @@ public class EmoteDescriptor {
 	public String getLocalizedName() {
 		return I18n.get(getTranslationKey());
 	}
-	
+
 	public String getRegistryName() {
 		return regName;
 	}
-	
+
 	public int getTier() {
 		return tier;
 	}
 
 	public ResourceLocation getTierTexture() {
-		if (tier >= 99)
+		if(tier >= 99)
 			return TIER_GOD;
-		if (tier >= 4)
+		if(tier >= 4)
 			return TIER_4;
-		if (tier >= 3)
+		if(tier >= 3)
 			return TIER_3;
-		if (tier >= 2)
+		if(tier >= 2)
 			return TIER_2;
-		if (tier >= 1)
+		if(tier >= 1)
 			return TIER_1;
 		return null;
 	}
@@ -82,5 +82,5 @@ public class EmoteDescriptor {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }

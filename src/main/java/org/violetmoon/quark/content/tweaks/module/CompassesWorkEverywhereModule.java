@@ -1,9 +1,18 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.LevelStem;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tweaks.client.item.ClockTimePropertyFunction;
 import org.violetmoon.quark.content.tweaks.client.item.CompassAnglePropertyFunction;
@@ -15,35 +24,29 @@ import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
 @ZetaLoadModule(category = "tweaks")
 public class CompassesWorkEverywhereModule extends ZetaModule {
 
-
-	@Config public static boolean enableCompassNerf = true;
-	@Config(flag = "clock_nerf") 
+	@Config
+	public static boolean enableCompassNerf = true;
+	@Config(flag = "clock_nerf")
 	public static boolean enableClockNerf = true;
 
-	@Config public static boolean enableNether = true;
-	@Config public static boolean enableEnd = true;
-	
-	@Hint("clock_nerf") Item clock = Items.CLOCK;
+	@Config
+	public static boolean enableNether = true;
+	@Config
+	public static boolean enableEnd = true;
+
+	@Hint("clock_nerf")
+	Item clock = Items.CLOCK;
 
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints event) {
 		if(!enableNether && !enableEnd && !enableCompassNerf)
 			return;
-		
+
 		MutableComponent comp = Component.literal("");
 		String pad = "";
 		if(enableNether) {
@@ -56,7 +59,7 @@ public class CompassesWorkEverywhereModule extends ZetaModule {
 		}
 		if(enableCompassNerf)
 			comp = comp.append(pad).append(Component.translatable("quark.jei.hint.compass_nerf"));
-		
+
 		event.accept(Items.COMPASS, comp);
 	}
 

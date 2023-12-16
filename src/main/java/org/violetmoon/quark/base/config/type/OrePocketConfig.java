@@ -1,11 +1,11 @@
 package org.violetmoon.quark.base.config.type;
 
-import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 
 import org.violetmoon.quark.base.config.Config;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
+import java.util.function.Consumer;
 
 public class OrePocketConfig implements IConfigType {
 
@@ -41,8 +41,8 @@ public class OrePocketConfig implements IConfigType {
 	public void forEach(BlockPos chunkCorner, RandomSource rand, Consumer<BlockPos> callback) {
 		if(clusterCount < 1 && clusterCount > 0)
 			clusterCount = (rand.nextDouble() < clusterCount ? 1 : 0);
-		
-		for (int i = 0; i < clusterCount; i++) {
+
+		for(int i = 0; i < clusterCount; i++) {
 			int x = chunkCorner.getX() + rand.nextInt(16);
 			int y = getRandomHeight(rand);
 			int z = chunkCorner.getZ() + rand.nextInt(16);

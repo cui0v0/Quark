@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.mobs.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -11,9 +12,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import org.violetmoon.quark.content.mobs.entity.Foxhound;
 
 import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.mobs.entity.Foxhound;
 
 /**
  * ModelFoxhound - McVinnyq
@@ -55,68 +57,68 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 
 		PartDefinition head = root.addOrReplaceChild("head",
 				CubeListBuilder.create()
-				.texOffs(0, 20)
-				.addBox(-4.0F, -3.0F, -6.0F, 8, 6, 6),
+						.texOffs(0, 20)
+						.addBox(-4.0F, -3.0F, -6.0F, 8, 6, 6),
 				PartPose.offsetAndRotation(0.0F, 14.5F, 0.0F, 0.0F, 0.0F, 0.0F));
 
 		PartDefinition body = root.addOrReplaceChild("body",
 				CubeListBuilder.create()
-				.texOffs(0, 2)
-				.addBox(-4.0F, -12.0F, 0.0F, 8, 12, 6),
+						.texOffs(0, 2)
+						.addBox(-4.0F, -12.0F, 0.0F, 8, 12, 6),
 				PartPose.offsetAndRotation(0.0F, 17.0F, 12.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
 		root.addOrReplaceChild("leftBackLeg",
 				CubeListBuilder.create()
-				.texOffs(36, 32)
-				.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
+						.texOffs(36, 32)
+						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offsetAndRotation(3.0F, 12.0F, 9.5F, 0.0F, 0.0F, 0.0F));
 
 		root.addOrReplaceChild("rightFrontLeg",
 				CubeListBuilder.create()
-				.texOffs(0, 32)
-				.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
+						.texOffs(0, 32)
+						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offsetAndRotation(-2.0F, 12.0F, 2.0F, 0.0F, 0.0F, 0.0F));
 
 		head.addOrReplaceChild("rightEar",
 				CubeListBuilder.create()
-				.texOffs(0, 47)
-				.addBox(-4.0F, -5.0F, -5.0F, 2, 2, 3),
+						.texOffs(0, 47)
+						.addBox(-4.0F, -5.0F, -5.0F, 2, 2, 3),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("tail",
 				CubeListBuilder.create()
-				.texOffs(36, 16)
-				.addBox(-2.0F, -4.0F, 0.0F, 4, 5, 10),
+						.texOffs(36, 16)
+						.addBox(-2.0F, -4.0F, 0.0F, 4, 5, 10),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 1.5F, -1.3089969389957472F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("fluff",
 				CubeListBuilder.create()
-				.texOffs(28, 0)
-				.addBox(-5.0F, 0.0F, -4.0F, 10, 8, 8),
+						.texOffs(28, 0)
+						.addBox(-5.0F, 0.0F, -4.0F, 10, 8, 8),
 				PartPose.offsetAndRotation(0.0F, -13.0F, 3.0F, 0.0F, 0.0F, 0.0F));
 
 		root.addOrReplaceChild("leftFrontLeg",
 				CubeListBuilder.create()
-				.texOffs(12, 32)
-				.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
+						.texOffs(12, 32)
+						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offsetAndRotation(2.0F, 12.0F, 2.0F, 0.0F, 0.0F, 0.0F));
 
 		root.addOrReplaceChild("rightBackLeg",
 				CubeListBuilder.create()
-				.texOffs(24, 32)
-				.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
+						.texOffs(24, 32)
+						.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3),
 				PartPose.offsetAndRotation(-3.0F, 12.0F, 9.5F, 0.0F, 0.0F, 0.0F));
 
 		head.addOrReplaceChild("leftEar",
 				CubeListBuilder.create()
-				.texOffs(10, 47)
-				.addBox(2.0F, -5.0F, -5.0F, 2, 2, 3),
+						.texOffs(10, 47)
+						.addBox(2.0F, -5.0F, -5.0F, 2, 2, 3),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
 		head.addOrReplaceChild("snout",
 				CubeListBuilder.create()
-				.texOffs(29, 18)
-				.addBox(-2.0F, 1.0F, -10.0F, 4, 2, 4),
+						.texOffs(29, 18)
+						.addBox(-2.0F, 1.0F, -10.0F, 4, 2, 4),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 64);
@@ -125,7 +127,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 	@Override
 	public void prepareMobModel(Foxhound hound, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		this.entity = hound;
-		if (hound.isOrderedToSit() || hound.getRemainingPersistentAngerTime() > 0)
+		if(hound.isOrderedToSit() || hound.getRemainingPersistentAngerTime() > 0)
 			this.tail.xRot = -0.6544984695F;
 		else
 			this.tail.xRot = -1.3089969389957472F + Mth.cos(limbSwing * 0.6662F) * limbSwingAmount;
@@ -135,7 +137,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 		this.body.yRot = hound.getBodyRollAngle(partialTickTime, -0.16F);
 		this.tail.yRot = hound.getBodyRollAngle(partialTickTime, -0.2F);
 
-		if (hound.isSleeping()) {
+		if(hound.isSleeping()) {
 			this.head.setPos(1.0F, 20.5F, 0.0F);
 			this.setRotateAngle(head, 0.0F, 0.7853981633974483F, -0.04363323129985824F);
 
@@ -152,7 +154,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 			this.setRotateAngle(leftFrontLeg, 0.0F, 0.0F, 1.3962634015954636F);
 			this.setRotateAngle(rightBackLeg, -1.0471975511965976F, -0.08726646259971647F, 1.48352986419518F);
 			this.setRotateAngle(leftBackLeg, -0.7853981633974483F, 0.0F, 1.2217304763960306F);
-		} else if (hound.isInSittingPose()) {
+		} else if(hound.isInSittingPose()) {
 			this.head.setPos(0.0F, 12.0F, 2.0F);
 			this.body.setPos(0.0F, 23.0F, 7.0F);
 			this.setRotateAngle(body, 0.7853981633974483F, this.body.yRot, 0F);
@@ -185,7 +187,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 
 	@Override
 	public void setupAnim(Foxhound entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!entity.isSleeping()) {
+		if(!entity.isSleeping()) {
 			head.yRot += netHeadYaw * 0.017453292F;
 			head.xRot += headPitch * 0.017453292F;
 		} else
@@ -204,7 +206,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 
 		matrix.pushPose();
 
-		if (young)
+		if(young)
 			matrix.translate(0.0F, 5.0F / 16F, 0F);
 
 		head.render(matrix, vb, packedLightIn, packedOverlayIn, red, green, blue, alpha);
@@ -212,7 +214,7 @@ public class FoxhoundModel extends EntityModel<Foxhound> {
 		matrix.popPose();
 
 		matrix.pushPose();
-		if (young) {
+		if(young) {
 			matrix.translate(0.0F, 12.0F / 16F, 0F);
 			matrix.scale(0.5F, 0.5F, 0.5F);
 		}

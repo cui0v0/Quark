@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.play.ZClientTick;
@@ -37,10 +39,14 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 	@Config(description = "A list of recipe names that should NOT be added in by default")
 	public static List<String> ignoredRecipes = Lists.newArrayList();
 
-	@Config public static boolean forceLimitedCrafting = false;
-	@Config public static boolean disableRecipeBook = false;
-	@Config(description = "If enabled, advancements granting recipes will be stopped from loading, " +
-			"potentially reducing the lagspike on first world join.")
+	@Config
+	public static boolean forceLimitedCrafting = false;
+	@Config
+	public static boolean disableRecipeBook = false;
+	@Config(
+		description = "If enabled, advancements granting recipes will be stopped from loading, " +
+				"potentially reducing the lagspike on first world join."
+	)
 	public static boolean filterRecipeAdvancements = true;
 
 	private static boolean staticEnabled;
@@ -56,14 +62,13 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 
 		if(player instanceof ServerPlayer spe) {
 			MinecraftServer server = spe.getServer();
-			if (server != null) {
+			if(server != null) {
 				List<Recipe<?>> recipes = new ArrayList<>(server.getRecipeManager().getRecipes());
 				recipes.removeIf(
-						(recipe) ->
-						recipe == null
-						|| recipe.getResultItem(event.getPlayer().level().registryAccess()) == null
-						|| ignoredRecipes.contains(Objects.toString(recipe.getId()))
-						|| recipe.getResultItem(event.getPlayer().level().registryAccess()).isEmpty());
+						(recipe) -> recipe == null
+								|| recipe.getResultItem(event.getPlayer().level().registryAccess()) == null
+								|| ignoredRecipes.contains(Objects.toString(recipe.getId()))
+								|| recipe.getResultItem(event.getPlayer().level().registryAccess()).isEmpty());
 
 				int idx = 0;
 				int maxShift = 1000;
@@ -78,21 +83,20 @@ public class AutomaticRecipeUnlockModule extends ZetaModule {
 					idx += effShift;
 				} while(shift > maxShift);
 
-
-				if (forceLimitedCrafting)
+				if(forceLimitedCrafting)
 					player.level().getGameRules().getRule(GameRules.RULE_LIMITED_CRAFTING).set(true, server);
 			}
 		}
 	}
 
 	public static void removeRecipeAdvancements(Map<ResourceLocation, Advancement.Builder> builders) {
-		if (!staticEnabled || !filterRecipeAdvancements)
+		if(!staticEnabled || !filterRecipeAdvancements)
 			return;
 
 		int i = 0;
-		for (var iterator = builders.entrySet().iterator(); iterator.hasNext(); ) {
+		for(var iterator = builders.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<ResourceLocation, Advancement.Builder> entry = iterator.next();
-			if (entry.getKey().getPath().startsWith("recipes/") && entry.getValue().getCriteria().containsKey("has_the_recipe")) {
+			if(entry.getKey().getPath().startsWith("recipes/") && entry.getValue().getCriteria().containsKey("has_the_recipe")) {
 				iterator.remove();
 				i++;
 			}

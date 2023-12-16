@@ -7,14 +7,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import noobanidus.mods.lootr.config.ConfigManager;
-import noobanidus.mods.lootr.util.Getter;
-
-import java.util.UUID;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.module.VariantChestsModule;
 import org.violetmoon.quark.integration.lootr.LootrVariantChestBlockEntity;
+
+import java.util.UUID;
+
+import noobanidus.mods.lootr.config.ConfigManager;
+import noobanidus.mods.lootr.util.Getter;
 
 public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> extends ChestRenderer<T> {
 
@@ -42,8 +43,8 @@ public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> e
 
 		//apply the texture naming convention
 		StringBuilder tex = new StringBuilder("quark_variant_chests/")
-			.append(v.getChestType())
-			.append('/');
+				.append(v.getChestType())
+				.append('/');
 		if(isTrap) {
 			if(ConfigManager.isVanillaTextures())
 				tex.append("trap");

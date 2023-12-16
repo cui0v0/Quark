@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.world.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,11 +12,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.function.BooleanSupplier;
 
 public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock {
 
@@ -30,7 +31,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock
 	public HugeGlowShroomBlock(String name, ZetaModule module, final boolean glowing) {
 		super(Block.Properties.copy(Blocks.RED_MUSHROOM_BLOCK)
 				.lightLevel(b -> glowing ? 12 : 0)
-				.hasPostProcess((a,b,c)-> glowing).emissiveRendering((a,b,c)-> glowing)
+				.hasPostProcess((a, b, c) -> glowing).emissiveRendering((a, b, c) -> glowing)
 				.randomTicks()
 				.noOcclusion());
 
@@ -67,7 +68,7 @@ public class HugeGlowShroomBlock extends HugeMushroomBlock implements IZetaBlock
 
 	public static boolean place(LevelAccessor worldIn, RandomSource rand, BlockPos pos) {
 		Block block = worldIn.getBlockState(pos.below()).getBlock();
-		if (block != Blocks.DEEPSLATE) {
+		if(block != Blocks.DEEPSLATE) {
 			return false;
 		} else {
 			BlockPos placePos = pos;

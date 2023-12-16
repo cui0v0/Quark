@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.tweaks.client.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -23,7 +24,9 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.Vec3;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
 
@@ -56,44 +59,44 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 		Direction direction = dyedItemFrame.getDirection();
 		Vec3 vec3 = this.getRenderOffset(dyedItemFrame, p_115078_);
 		poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
-		poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+		poseStack.translate((double) direction.getStepX() * 0.46875D, (double) direction.getStepY() * 0.46875D, (double) direction.getStepZ() * 0.46875D);
 		poseStack.mulPose(Axis.XP.rotationDegrees(dyedItemFrame.getXRot()));
 		poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - dyedItemFrame.getYRot()));
 		boolean flag = dyedItemFrame.isInvisible();
 		ItemStack itemstack = dyedItemFrame.getItem();
-		if (!flag) {
+		if(!flag) {
 			ModelManager modelmanager = this.blockRenderer.getBlockModelShaper().getModelManager();
 			boolean map = dyedItemFrame.getItem().getItem() instanceof MapItem;
 			ModelResourceLocation modelresourcelocation = map ? MAP_FRAME_LOCATION : FRAME_LOCATION;
-			
+
 			poseStack.pushPose();
 			poseStack.translate(-0.5D, -0.5D, -0.5D);
-			
+
 			int color = dyedItemFrame.getColor();
 			float r = ((float) ((color >> 16) & 0xFF)) / 255F;
-			float g = ((float) ((color >>  8) & 0xFF)) / 255F;
-			float b = ((float) ((color      ) & 0xFF)) / 255F;
-			
-			blockRenderer.getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(modelresourcelocation), r, g, b, p_115081_, OverlayTexture.NO_OVERLAY);
+			float g = ((float) ((color >> 8) & 0xFF)) / 255F;
+			float b = ((float) ((color) & 0xFF)) / 255F;
+
+			blockRenderer.getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(Sheets.solidBlockSheet()), (BlockState) null, modelmanager.getModel(modelresourcelocation), r, g, b, p_115081_, OverlayTexture.NO_OVERLAY);
 			poseStack.popPose();
 		}
 
-		if (!itemstack.isEmpty()) {
+		if(!itemstack.isEmpty()) {
 			MapItemSavedData mapitemsaveddata = MapItem.getSavedData(itemstack, dyedItemFrame.level());
-			if (flag) {
+			if(flag) {
 				poseStack.translate(0.0D, 0.0D, 0.5D);
 			} else {
 				poseStack.translate(0.0D, 0.0D, 0.4375D);
 			}
 
 			int j = mapitemsaveddata != null ? dyedItemFrame.getRotation() % 4 * 2 : dyedItemFrame.getRotation();
-			poseStack.mulPose(Axis.ZP.rotationDegrees((float)j * 360.0F / 8.0F));
-			if (mapitemsaveddata != null) {
+			poseStack.mulPose(Axis.ZP.rotationDegrees((float) j * 360.0F / 8.0F));
+			if(mapitemsaveddata != null) {
 				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 				poseStack.scale(0.0078125F, 0.0078125F, 0.0078125F);
 				poseStack.translate(-64.0D, -64.0D, 0.0D);
 				poseStack.translate(0.0D, 0.0D, -1.0D);
-				if (mapitemsaveddata != null) {
+				if(mapitemsaveddata != null) {
 					int i = this.getLightVal(dyedItemFrame, 15728850, p_115081_);
 					Minecraft.getInstance().gameRenderer.getMapRenderer().render(poseStack, multiBufferSource, dyedItemFrame.getFramedMapId().getAsInt(), mapitemsaveddata, true, i);
 				}
@@ -113,7 +116,7 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 
 	@Override
 	public Vec3 getRenderOffset(DyedItemFrame p_115073_, float p_115074_) {
-		return new Vec3((float)p_115073_.getDirection().getStepX() * 0.3F, -0.25D, (float)p_115073_.getDirection().getStepZ() * 0.3F);
+		return new Vec3((float) p_115073_.getDirection().getStepX() * 0.3F, -0.25D, (float) p_115073_.getDirection().getStepZ() * 0.3F);
 	}
 
 	@Override
@@ -123,10 +126,10 @@ public class DyedItemFrameRenderer extends EntityRenderer<DyedItemFrame> {
 
 	@Override
 	protected boolean shouldShowName(DyedItemFrame p_115091_) {
-		if (Minecraft.renderNames() && !p_115091_.getItem().isEmpty() && p_115091_.getItem().hasCustomHoverName() && this.entityRenderDispatcher.crosshairPickEntity == p_115091_) {
+		if(Minecraft.renderNames() && !p_115091_.getItem().isEmpty() && p_115091_.getItem().hasCustomHoverName() && this.entityRenderDispatcher.crosshairPickEntity == p_115091_) {
 			double d0 = this.entityRenderDispatcher.distanceToSqr(p_115091_);
 			float f = p_115091_.isDiscrete() ? 32.0F : 64.0F;
-			return d0 < (double)(f * f);
+			return d0 < (double) (f * f);
 		} else {
 			return false;
 		}

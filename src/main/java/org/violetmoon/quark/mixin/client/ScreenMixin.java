@@ -1,9 +1,12 @@
 package org.violetmoon.quark.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
 import net.minecraft.client.gui.screens.Screen;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
 import org.violetmoon.quark.content.management.module.EasyTransferingModule;
 
 @Mixin(Screen.class)

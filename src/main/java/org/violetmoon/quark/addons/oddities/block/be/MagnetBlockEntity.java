@@ -1,9 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block.be;
 
-import org.violetmoon.quark.addons.oddities.block.MagnetBlock;
-import org.violetmoon.quark.addons.oddities.magnetsystem.MagnetSystem;
-import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,6 +8,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+
+import org.violetmoon.quark.addons.oddities.block.MagnetBlock;
+import org.violetmoon.quark.addons.oddities.magnetsystem.MagnetSystem;
+import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
 
 public class MagnetBlockEntity extends BlockEntity {
 
@@ -22,7 +22,7 @@ public class MagnetBlockEntity extends BlockEntity {
 	public static void tick(Level level, BlockPos pos, BlockState state, MagnetBlockEntity be) {
 		be.tick();
 	}
-	
+
 	public void tick() {
 		BlockState state = getBlockState();
 		boolean powered = state.getValue(MagnetBlock.POWERED);
@@ -36,7 +36,7 @@ public class MagnetBlockEntity extends BlockEntity {
 	}
 
 	private void magnetize(Direction dir, Direction moveDir, int power) {
-		if (level == null)
+		if(level == null)
 			return;
 
 		double magnitude = (dir == moveDir ? 1 : -1);
@@ -51,12 +51,12 @@ public class MagnetBlockEntity extends BlockEntity {
 			BlockPos targetPos = worldPosition.relative(dir, i);
 			BlockState targetState = level.getBlockState(targetPos);
 
-			if (targetState.getBlock() == MagnetsModule.magnetized_block)
+			if(targetState.getBlock() == MagnetsModule.magnetized_block)
 				break;
 
 			if(!level.isClientSide && targetState.getBlock() != Blocks.MOVING_PISTON && targetState.getBlock() != MagnetsModule.magnetized_block) {
 				PushReaction reaction = MagnetSystem.getPushAction(this, targetPos, targetState, moveDir);
-				if (reaction == PushReaction.IGNORE || reaction == PushReaction.DESTROY) {
+				if(reaction == PushReaction.IGNORE || reaction == PushReaction.DESTROY) {
 					BlockPos frontPos = targetPos.relative(moveDir);
 					BlockState frontState = level.getBlockState(frontPos);
 					if(frontState.isAir())
@@ -67,7 +67,7 @@ public class MagnetBlockEntity extends BlockEntity {
 			if(!targetState.isAir())
 				break;
 
-			if (level.isClientSide && Math.random() <= particleChance) {
+			if(level.isClientSide && Math.random() <= particleChance) {
 				double x = targetPos.getX() + (xOff == 0 ? 0.5 : Math.random());
 				double y = targetPos.getY() + (yOff == 0 ? 0.5 : Math.random());
 				double z = targetPos.getZ() + (zOff == 0 ? 0.5 : Math.random());
@@ -77,19 +77,19 @@ public class MagnetBlockEntity extends BlockEntity {
 	}
 
 	private int getPower(Direction curr) {
-		if (level == null)
+		if(level == null)
 			return 0;
 
 		int power = 0;
 		Direction opp = curr.getOpposite();
-		
+
 		for(Direction dir : Direction.values()) {
 			if(dir != opp && dir != curr) {
 				int offPower = level.getSignal(worldPosition.relative(dir), dir);
 				power = Math.max(offPower, power);
 			}
 		}
-		
+
 		return power;
 	}
 

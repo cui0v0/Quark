@@ -18,7 +18,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -49,36 +51,36 @@ public class QuarkBoatItem extends ZetaItem {
 	public InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		HitResult hitresult = getPlayerPOVHitResult(world, player, ClipContext.Fluid.ANY);
-		if (hitresult.getType() == HitResult.Type.MISS) {
+		if(hitresult.getType() == HitResult.Type.MISS) {
 			return InteractionResultHolder.pass(itemstack);
 		} else {
 			Vec3 view = player.getViewVector(1.0F);
 			List<Entity> list = world.getEntities(player, player.getBoundingBox().expandTowards(view.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
-			if (!list.isEmpty()) {
+			if(!list.isEmpty()) {
 				Vec3 eyes = player.getEyePosition();
 
 				for(Entity entity : list) {
 					AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
-					if (aabb.contains(eyes)) {
+					if(aabb.contains(eyes)) {
 						return InteractionResultHolder.pass(itemstack);
 					}
 				}
 			}
 
-			if (hitresult.getType() == HitResult.Type.BLOCK) {
+			if(hitresult.getType() == HitResult.Type.BLOCK) {
 				Boat boat =
 						chest ? new QuarkChestBoat(world, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z)
 								: new QuarkBoat(world, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
 
 				((IQuarkBoat) boat).setQuarkBoatTypeObj(WoodSetHandler.getQuarkBoatType(type));
 				boat.setYRot(player.getYRot());
-				if (!world.noCollision(boat, boat.getBoundingBox())) {
+				if(!world.noCollision(boat, boat.getBoundingBox())) {
 					return InteractionResultHolder.fail(itemstack);
 				} else {
-					if (!world.isClientSide) {
+					if(!world.isClientSide) {
 						world.addFreshEntity(boat);
 						world.gameEvent(player, GameEvent.ENTITY_PLACE, BlockPos.containing(hitresult.getLocation()));
-						if (!player.getAbilities().instabuild) {
+						if(!player.getAbilities().instabuild) {
 							itemstack.shrink(1);
 						}
 					}

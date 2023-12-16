@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tools.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
@@ -10,8 +11,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+
 import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule;
 import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule.ExtendedBeamSegment;
 
@@ -21,14 +24,14 @@ import java.util.List;
 public class QuarkBeaconBlockEntityRenderer {
 
 	public static boolean render(BeaconBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		if (!BeaconRedirectionModule.staticEnabled)
+		if(!BeaconRedirectionModule.staticEnabled)
 			return false;
 
 		long i = tileEntityIn.getLevel().getGameTime();
 		List<BeaconBlockEntity.BeaconBeamSection> list = tileEntityIn.getBeamSections();
 
-		for (BeaconBlockEntity.BeaconBeamSection segment : list) {
-			if (!(segment instanceof ExtendedBeamSegment extension))
+		for(BeaconBlockEntity.BeaconBeamSection segment : list) {
+			if(!(segment instanceof ExtendedBeamSegment extension))
 				return false; // Defer back to the vanilla one
 
 			renderBeamSegment(matrixStackIn, bufferIn, extension, partialTicks, i);
@@ -60,13 +63,13 @@ public class QuarkBeaconBlockEntityRenderer {
 		matrixStackIn.mulPose(Axis.YP.rotationDegrees(angle * 2.25F - 45.0F));
 
 		float renderTime = -(totalWorldTime + partialTicks);
-		float partAngle = Mth.frac(renderTime * 0.2F - (float)Mth.floor(angle * 0.1F));
+		float partAngle = Mth.frac(renderTime * 0.2F - (float) Mth.floor(angle * 0.1F));
 		float v2 = -1.0F + partAngle;
-		float v1 = (float)height * textureScale * (0.5F / beamRadius) + v2;
+		float v1 = (float) height * textureScale * (0.5F / beamRadius) + v2;
 
 		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, alpha < 1F)), r, g, b, alpha, height, 0.0F, beamRadius, beamRadius, 0.0F, -beamRadius, 0.0F, 0.0F, -beamRadius, 0.0F, 1.0F, v1, v2);
 		matrixStackIn.popPose();
-		v1 = (float)height * textureScale + v2;
+		v1 = (float) height * textureScale + v2;
 		renderPart(matrixStackIn, bufferIn.getBuffer(RenderType.beaconBeam(textureLocation, true)), r, g, b, alpha * 0.125F, height, -glowRadius, -glowRadius, glowRadius, -glowRadius, -glowRadius, glowRadius, glowRadius, glowRadius, 0.0F, 1.0F, v1, v2);
 		matrixStackIn.popPose();
 	}
@@ -89,7 +92,7 @@ public class QuarkBeaconBlockEntityRenderer {
 	}
 
 	private static void addVertex(Matrix4f matrixPos, Matrix3f matrixNormal, VertexConsumer bufferIn, float red, float green, float blue, float alpha, int y, float x, float z, float texU, float texV) {
-		bufferIn.vertex(matrixPos, x, (float)y, z).color(red, green, blue, alpha).uv(texU, texV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(matrixNormal, 0.0F, 1.0F, 0.0F).endVertex();
+		bufferIn.vertex(matrixPos, x, (float) y, z).color(red, green, blue, alpha).uv(texU, texV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(matrixNormal, 0.0F, 1.0F, 0.0F).endVertex();
 	}
 
 }

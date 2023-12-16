@@ -1,9 +1,12 @@
 package org.violetmoon.quark.content.mobs.ai;
 
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
+
+import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.entity.Shiba;
 import org.violetmoon.quark.mixin.accessor.AccessorAbstractArrow;
 
@@ -30,17 +33,25 @@ public class FetchArrowGoal extends Goal {
 			return;
 
 		this.shiba.getLookControl().setLookAt(fetching, 10.0F, shiba.getMaxHeadXRot());
-		if (--this.timeToRecalcPath <= 0) {
+		if(--this.timeToRecalcPath <= 0) {
 			this.timeToRecalcPath = 10;
-			if (!shiba.isLeashed() && !shiba.isPassenger()) {
+			if(!shiba.isLeashed() && !shiba.isPassenger()) {
 				this.navigator.moveTo(fetching, 1.1);
 			}
 		}
 
 		double dist = shiba.distanceTo(fetching);
-		if(dist < 3 && fetching.isAlive() && fetching.pickup == Pickup.ALLOWED) {
-			shiba.setMouthItem(((AccessorAbstractArrow) fetching).quark$getPickupItem());
-			fetching.discard();
+		if(dist < 3 && fetching.isAlive()) {
+			// Eat infinity arrows
+			if(fetching.pickup == Pickup.DISALLOWED || fetching.pickup == Pickup.CREATIVE_ONLY) {
+				shiba.level().playSound(null, shiba.blockPosition(), QuarkSounds.ENTITY_SHIBA_EAT_ARROW, SoundSource.NEUTRAL);
+				fetching.discard();
+
+				// Fetch normal arrow
+			} else if(fetching.pickup == Pickup.ALLOWED) {
+				shiba.setMouthItem(((AccessorAbstractArrow) fetching).quark$getPickupItem());
+				fetching.discard();
+			}
 		}
 
 		timeTilNextJump--;

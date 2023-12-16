@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tools.module;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +21,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.joml.Matrix4f;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
 import org.violetmoon.quark.content.tools.item.AbacusItem;
@@ -39,9 +42,11 @@ import java.util.List;
 @ZetaLoadModule(category = "tools")
 public class AbacusModule extends ZetaModule {
 
-	@Hint public Item abacus;
+	@Hint
+	public Item abacus;
 
-	@Config RGBAColorConfig highlightColor = RGBAColorConfig.forColor(0, 0, 0, 0.4);
+	@Config
+	RGBAColorConfig highlightColor = RGBAColorConfig.forColor(0, 0, 0, 0.4);
 
 	@LoadEvent
 	public void register(ZRegister event) {
@@ -75,7 +80,6 @@ public class AbacusModule extends ZetaModule {
 
 						guiGraphics.renderItem(stack, x, y);
 
-
 						String distStr = distance < AbacusItem.MAX_COUNT ? Integer.toString(distance + 1) : (AbacusItem.MAX_COUNT + "+");
 						guiGraphics.drawString(mc.font, distStr, x + 17, y + 5, 0xFFFFFF, true);
 					}
@@ -98,7 +102,7 @@ public class AbacusModule extends ZetaModule {
 					int distance = AbacusItem.Client.getCount(stack, player);
 					if(distance > -1 && distance <= AbacusItem.MAX_COUNT) {
 						BlockPos target = AbacusItem.getBlockPos(stack);
-						if (target != null) {
+						if(target != null) {
 
 							Camera info = event.getCamera();
 							Vec3 view = info.getPosition();
@@ -106,22 +110,22 @@ public class AbacusModule extends ZetaModule {
 							VoxelShape shape = Shapes.create(new AABB(target));
 
 							HitResult result = mc.hitResult;
-							if (result != null && result.getType() == HitResult.Type.BLOCK) {
+							if(result != null && result.getType() == HitResult.Type.BLOCK) {
 								BlockPos source = ((BlockHitResult) result).getBlockPos();
 
 								int diffX = source.getX() - target.getX();
 								int diffY = source.getY() - target.getY();
 								int diffZ = source.getZ() - target.getZ();
 
-								if (diffX != 0)
+								if(diffX != 0)
 									shape = Shapes.or(shape, Shapes.create(new AABB(target).expandTowards(diffX, 0, 0)));
-								if (diffY != 0)
+								if(diffY != 0)
 									shape = Shapes.or(shape, Shapes.create(new AABB(target.offset(diffX, 0, 0)).expandTowards(0, diffY, 0)));
-								if (diffZ != 0)
+								if(diffZ != 0)
 									shape = Shapes.or(shape, Shapes.create(new AABB(target.offset(diffX, diffY, 0)).expandTowards(0, 0, diffZ)));
 							}
 
-							if (shape != null) {
+							if(shape != null) {
 								List<AABB> list = shape.toAabbs();
 								PoseStack poseStack = event.getPoseStack();
 
@@ -131,7 +135,7 @@ public class AbacusModule extends ZetaModule {
 								double yIn = -view.y;
 								double zIn = -view.z;
 
-								for (AABB aabb : list) {
+								for(AABB aabb : list) {
 									float r = (float) highlightColor.getElement(0);
 									float g = (float) highlightColor.getElement(1);
 									float b = (float) highlightColor.getElement(2);

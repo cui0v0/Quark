@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.mobs.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.ModelPart.Cube;
@@ -81,144 +82,144 @@ public class ToretoiseModel extends EntityModel<Toretoise> {
 		PartDefinition root = mesh.getRoot();
 
 		PartDefinition body = root.addOrReplaceChild("body",
-			CubeListBuilder.create()
-			.texOffs(0, 0)
-			.addBox(-11.0F, 0.0F, -13.0F, 22, 12, 26),
-		PartPose.offset(0.0F, 8.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-11.0F, 0.0F, -13.0F, 22, 12, 26),
+				PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		PartDefinition head = root.addOrReplaceChild("head",
-			CubeListBuilder.create()
-			.texOffs(0, 38)
-			.addBox(-4.0F, -4.0F, -8.0F, 8, 5, 8),
-		PartPose.offset(0.0F, 16.0F, -13.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 38)
+						.addBox(-4.0F, -4.0F, -8.0F, 8, 5, 8),
+				PartPose.offset(0.0F, 16.0F, -13.0F));
 
 		head.addOrReplaceChild("mouth",
-			CubeListBuilder.create()
-			.texOffs(66, 38)
-			.addBox(-4.5F, -2.5F, -8.0F, 9, 4, 8),
-		PartPose.offset(0.0F, 1.0F, -1.0F));
+				CubeListBuilder.create()
+						.texOffs(66, 38)
+						.addBox(-4.5F, -2.5F, -8.0F, 9, 4, 8),
+				PartPose.offset(0.0F, 1.0F, -1.0F));
 
 		root.addOrReplaceChild("leftFrontLeg",
-			CubeListBuilder.create()
-			.mirror()
-			.texOffs(34, 38)
-			.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
-		PartPose.offsetAndRotation(10.0F, 16.0F, -12.0F, 0.0F, -0.7853981633974483F, 0.0F));
+				CubeListBuilder.create()
+						.mirror()
+						.texOffs(34, 38)
+						.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
+				PartPose.offsetAndRotation(10.0F, 16.0F, -12.0F, 0.0F, -0.7853981633974483F, 0.0F));
 
 		root.addOrReplaceChild("rightBackLeg",
-			CubeListBuilder.create()
-			.texOffs(34, 38)
-			.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
-		PartPose.offsetAndRotation(-10.0F, 16.0F, 12.0F, 0.0F, 0.7853981633974483F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(34, 38)
+						.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
+				PartPose.offsetAndRotation(-10.0F, 16.0F, 12.0F, 0.0F, 0.7853981633974483F, 0.0F));
 
 		root.addOrReplaceChild("rightFrontLeg",
-			CubeListBuilder.create()
-			.texOffs(34, 38)
-			.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
-		PartPose.offsetAndRotation(-10.0F, 16.0F, -12.0F, 0.0F, 0.7853981633974483F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(34, 38)
+						.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
+				PartPose.offsetAndRotation(-10.0F, 16.0F, -12.0F, 0.0F, 0.7853981633974483F, 0.0F));
 
 		root.addOrReplaceChild("leftBackLeg",
-			CubeListBuilder.create()
-			.mirror()
-			.texOffs(34, 38)
-			.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
-		PartPose.offsetAndRotation(10.0F, 16.0F, 12.0F, 0.0F, -0.7853981633974483F, 0.0F));
+				CubeListBuilder.create()
+						.mirror()
+						.texOffs(34, 38)
+						.addBox(-4.0F, -2.0F, -4.0F, 8, 10, 8),
+				PartPose.offsetAndRotation(10.0F, 16.0F, 12.0F, 0.0F, -0.7853981633974483F, 0.0F));
 
 		body.addOrReplaceChild("CoalOre1",
-			CubeListBuilder.create()
-			.texOffs(36, 56)
-			.addBox(0.0F, -7.0F, -6.0F, 3, 3, 3),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(36, 56)
+						.addBox(0.0F, -7.0F, -6.0F, 3, 3, 3),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("CoalOre2",
-			CubeListBuilder.create()
-			.texOffs(42, 56)
-			.addBox(7.0F, -2.0F, -10.0F, 6, 6, 6),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(42, 56)
+						.addBox(7.0F, -2.0F, -10.0F, 6, 6, 6),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("CoalOre3",
-			CubeListBuilder.create()
-			.texOffs(66, 50)
-			.addBox(-2.0F, -7.0F, -4.0F, 7, 7, 7),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(66, 50)
+						.addBox(-2.0F, -7.0F, -4.0F, 7, 7, 7),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("CoalOre4",
-			CubeListBuilder.create()
-			.texOffs(60, 64)
-			.addBox(-15.0F, 0.0F, 1.0F, 4, 6, 6),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(60, 64)
+						.addBox(-15.0F, 0.0F, 1.0F, 4, 6, 6),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("IronOre1",
-			CubeListBuilder.create()
-			.texOffs(36, 89)
-			.addBox(1.0F, -3.0F, 1.0F, 8, 3, 8),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(36, 89)
+						.addBox(1.0F, -3.0F, 1.0F, 8, 3, 8),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("IronOre2",
-			CubeListBuilder.create()
-			.texOffs(32, 81)
-			.addBox(-7.0F, -2.0F, -11.0F, 6, 2, 6),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(32, 81)
+						.addBox(-7.0F, -2.0F, -11.0F, 6, 2, 6),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("IronOre3",
-			CubeListBuilder.create()
-			.texOffs(30, 76)
-			.addBox(-9.0F, -1.0F, 6.0F, 4, 1, 4),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(30, 76)
+						.addBox(-9.0F, -1.0F, 6.0F, 4, 1, 4),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("LapisOre1",
-			CubeListBuilder.create()
-			.texOffs(0, 51)
-			.addBox(-5.0F, -8.0F, 0.0F, 8, 8, 0),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 51)
+						.addBox(-5.0F, -8.0F, 0.0F, 8, 8, 0),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("LapisOre2",
-			CubeListBuilder.create()
-			.texOffs(0, 53)
-			.addBox(-1.0F, -8.0F, -4.0F, 0, 8, 8),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 53)
+						.addBox(-1.0F, -8.0F, -4.0F, 0, 8, 8),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("LapisOre3",
-			CubeListBuilder.create()
-			.texOffs(18, 51)
-			.addBox(-10.0F, -8.0F, 8.0F, 8, 8, 0),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(18, 51)
+						.addBox(-10.0F, -8.0F, 8.0F, 8, 8, 0),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("LapisOre4",
-			CubeListBuilder.create()
-			.texOffs(18, 53)
-			.addBox(-6.0F, -8.0F, 4.0F, 0, 8, 8),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(18, 53)
+						.addBox(-6.0F, -8.0F, 4.0F, 0, 8, 8),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("RedstoneOre1",
-			CubeListBuilder.create()
-			.texOffs(0, 83)
-			.addBox(-8.0F, -12.0F, -6.0F, 5, 12, 5),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 83)
+						.addBox(-8.0F, -12.0F, -6.0F, 5, 12, 5),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("RedstoneOre2",
-			CubeListBuilder.create()
-			.texOffs(0, 74)
-			.addBox(6.0F, -6.0F, -1.0F, 3, 6, 3),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(0, 74)
+						.addBox(6.0F, -6.0F, -1.0F, 3, 6, 3),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("RedstoneOre3",
-			CubeListBuilder.create()
-			.texOffs(12, 76)
-			.addBox(-7.0F, -4.0F, 2.0F, 2, 4, 2),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(12, 76)
+						.addBox(-7.0F, -4.0F, 2.0F, 2, 4, 2),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("RedstoneOre4",
-			CubeListBuilder.create()
-			.texOffs(20, 87)
-			.addBox(1.0F, -9.0F, -9.0F, 4, 9, 4),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(20, 87)
+						.addBox(1.0F, -9.0F, -9.0F, 4, 9, 4),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		body.addOrReplaceChild("RedstoneOre5",
-			CubeListBuilder.create()
-			.texOffs(15, 77)
-			.addBox(-1.0F, -5.0F, 5.0F, 5, 5, 5),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create()
+						.texOffs(15, 77)
+						.addBox(-1.0F, -5.0F, 5.0F, 5, 5, 5),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 100, 100);
 	}

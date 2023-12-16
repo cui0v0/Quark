@@ -3,6 +3,7 @@ package org.violetmoon.quark.base.config;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -56,7 +57,7 @@ public final class ConfigFlagManager {
 
 	public void putFlag(ZetaModule module, String flag, boolean value) {
 		flags.put(flag, value && module.enabled);
-		if (!allFlags.contains(flag)) {
+		if(!allFlags.contains(flag)) {
 			allFlags.add(flag);
 		}
 	}

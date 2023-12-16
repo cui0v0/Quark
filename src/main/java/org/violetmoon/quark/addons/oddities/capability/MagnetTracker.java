@@ -2,19 +2,20 @@ package org.violetmoon.quark.addons.oddities.capability;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Collection;
-
 import org.violetmoon.quark.api.IMagnetTracker;
+
+import java.util.Collection;
 
 /**
  * @author WireSegal
- * Created at 4:29 PM on 3/1/20.
+ *         Created at 4:29 PM on 3/1/20.
  */
 public class MagnetTracker implements IMagnetTracker {
 
@@ -29,7 +30,7 @@ public class MagnetTracker implements IMagnetTracker {
 	@Override
 	public Vec3i getNetForce(BlockPos pos) {
 		Vec3i net = Vec3i.ZERO;
-		for (Force force : forcesActing.get(pos))
+		for(Force force : forcesActing.get(pos))
 			net = force.add(net);
 		return net;
 	}
@@ -43,13 +44,13 @@ public class MagnetTracker implements IMagnetTracker {
 	public void actOnForces(BlockPos pos) {
 		Vec3i net = getNetForce(pos);
 
-		if (net.equals(Vec3i.ZERO))
+		if(net.equals(Vec3i.ZERO))
 			return;
 
 		Direction target = Direction.getNearest(net.getX(), net.getY(), net.getZ());
 
-		for (Force force : forcesActing.get(pos)) {
-			if (force.direction() == target) {
+		for(Force force : forcesActing.get(pos)) {
+			if(force.direction() == target) {
 				BlockState origin = world.getBlockState(force.origin());
 				world.blockEvent(force.origin(), origin.getBlock(), force.pushing() ? 0 : 1, force.distance());
 			}

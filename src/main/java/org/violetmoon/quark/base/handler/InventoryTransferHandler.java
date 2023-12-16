@@ -11,14 +11,16 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.api.ITransferManager;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.management.module.EasyTransferingModule;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -76,7 +78,7 @@ public class InventoryTransferHandler {
 	}
 
 	public static boolean accepts(AbstractContainerMenu container, Player player) {
-		if (hasProvider(container))
+		if(hasProvider(container))
 			return getProvider(container).acceptsTransfer(player);
 
 		return container instanceof IQuarkButtonAllowed || (container.slots.size() - player.getInventory().items.size() >= 27);
@@ -104,7 +106,8 @@ public class InventoryTransferHandler {
 
 			if(smart)
 				smartTransfer();
-			else roughTransfer();
+			else
+				roughTransfer();
 
 			player.inventoryMenu.broadcastChanges();
 			//			if(useContainer)
@@ -264,9 +267,9 @@ public class InventoryTransferHandler {
 		private final AbstractContainerMenu container;
 
 		public static IItemHandler provideWrapper(Slot slot, AbstractContainerMenu container) {
-			if (slot instanceof SlotItemHandler slotItemHandler) {
+			if(slot instanceof SlotItemHandler slotItemHandler) {
 				IItemHandler handler = slotItemHandler.getItemHandler();
-				if (hasProvider(handler)) {
+				if(hasProvider(handler)) {
 					return getProvider(handler).getTransferItemHandler(() -> handler);
 				} else {
 					return handler;
@@ -308,6 +311,7 @@ public class InventoryTransferHandler {
 
 	}
 
-	public interface TransferPredicate extends BiPredicate<ItemStack, IItemHandler> { }
+	public interface TransferPredicate extends BiPredicate<ItemStack, IItemHandler> {
+	}
 
 }

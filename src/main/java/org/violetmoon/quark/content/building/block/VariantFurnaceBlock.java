@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
@@ -16,11 +12,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.content.building.block.be.VariantFurnaceBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.function.BooleanSupplier;
 
 public class VariantFurnaceBlock extends FurnaceBlock implements IZetaBlock {
 

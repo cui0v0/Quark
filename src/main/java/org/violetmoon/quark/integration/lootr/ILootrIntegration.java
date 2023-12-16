@@ -1,17 +1,18 @@
 package org.violetmoon.quark.integration.lootr;
 
-import java.util.function.BooleanSupplier;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
- * Created at 11:40 AM on 7/3/23.
+ *         Created at 11:40 AM on 7/3/23.
  */
 public interface ILootrIntegration {
 
@@ -36,6 +37,7 @@ public interface ILootrIntegration {
 		// NO-OP
 	}
 
-	class Dummy implements ILootrIntegration { }
+	class Dummy implements ILootrIntegration {
+	}
 
 }

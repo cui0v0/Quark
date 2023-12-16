@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
@@ -49,7 +51,7 @@ import org.violetmoon.zeta.util.Hint;
 
 /**
  * @author WireSegal
- * Created at 7:28 PM on 9/22/19.
+ *         Created at 7:28 PM on 9/22/19.
  */
 @ZetaLoadModule(category = "mobs")
 public class CrabsModule extends ZetaModule {
@@ -65,13 +67,18 @@ public class CrabsModule extends ZetaModule {
 	@Config(flag = "crab_brewing")
 	public static boolean enableBrewing = true;
 
-	@Config(description = "Whether Resilience should be required for 'How Did We Get Here?' and (if brewing is enabled) 'A Furious Cocktail'.\n" +
-		"Keep this on when brewing is disabled if your pack adds an alternative source for the effect.")
+	@Config(
+		description = "Whether Resilience should be required for 'How Did We Get Here?' and (if brewing is enabled) 'A Furious Cocktail'.\n" +
+				"Keep this on when brewing is disabled if your pack adds an alternative source for the effect."
+	)
 	public static boolean resilienceRequiredForAllEffects = true;
 
-	@Hint(key = "crab_info") Item crab_leg;
-	@Hint(key = "crab_info") Item crab_shell;
-	@Hint(key = "crab_info") public static Item crab_bucket;
+	@Hint(key = "crab_info")
+	Item crab_leg;
+	@Hint(key = "crab_info")
+	Item crab_shell;
+	@Hint(key = "crab_info")
+	public static Item crab_bucket;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -81,14 +88,16 @@ public class CrabsModule extends ZetaModule {
 						.meat()
 						.nutrition(1)
 						.saturationMod(0.3F)
-						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS, Items.PUFFERFISH, false);
+						.build()))
+				.setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS, Items.PUFFERFISH, false);
 
 		Item cookedCrabLeg = new ZetaItem("cooked_crab_leg", this, new Item.Properties()
 				.food(new FoodProperties.Builder()
 						.meat()
 						.nutrition(8)
 						.saturationMod(0.8F)
-						.build())).setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
+						.build()))
+				.setCreativeTab(CreativeModeTabs.FOOD_AND_DRINKS);
 		CreativeTabManager.endDaisyChain();
 
 		crab_shell = new ZetaItem("crab_shell", this, new Item.Properties())
@@ -112,11 +121,11 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
 		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

@@ -45,15 +45,16 @@ public class Stool extends Entity {
 				BlockEntity tile = level().getBlockEntity(pos);
 				if(tile instanceof PistonMovingBlockEntity pistonBE && pistonBE.getMovedState().getBlock() instanceof StoolBlock)
 					piston = pistonBE;
-				else for(Direction d : Direction.values()) {
-					BlockPos offPos = pos.relative(d);
-					tile = level().getBlockEntity(offPos);
+				else
+					for(Direction d : Direction.values()) {
+						BlockPos offPos = pos.relative(d);
+						tile = level().getBlockEntity(offPos);
 
-					if(tile instanceof PistonMovingBlockEntity pistonBE && pistonBE.getMovedState().getBlock() instanceof StoolBlock) {
-						piston = pistonBE;
-						break;
+						if(tile instanceof PistonMovingBlockEntity pistonBE && pistonBE.getMovedState().getBlock() instanceof StoolBlock) {
+							piston = pistonBE;
+							break;
+						}
 					}
-				}
 
 				if(piston != null) {
 					Direction dir = piston.getMovementDirection();

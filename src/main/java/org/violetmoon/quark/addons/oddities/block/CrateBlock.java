@@ -1,8 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +25,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.CrateBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -68,7 +69,6 @@ public class CrateBlock extends ZetaBlock implements EntityBlock {
 		return be instanceof MenuProvider provider ? provider : null;
 	}
 
-
 	@NotNull
 	@Override
 	public InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
@@ -100,7 +100,7 @@ public class CrateBlock extends ZetaBlock implements EntityBlock {
 	public void tick(@NotNull BlockState state, ServerLevel worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		BlockEntity tileentity = worldIn.getBlockEntity(pos);
 		if(tileentity instanceof CrateBlockEntity)
-			((CrateBlockEntity)tileentity).crateTick();
+			((CrateBlockEntity) tileentity).crateTick();
 	}
 
 	@Override

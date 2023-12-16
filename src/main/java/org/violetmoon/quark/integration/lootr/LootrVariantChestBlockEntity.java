@@ -4,12 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
+
 import org.violetmoon.quark.base.Quark;
+
+import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
 
 /**
  * @author WireSegal
- * Created at 11:32 AM on 7/3/23.
+ *         Created at 11:32 AM on 7/3/23.
  */
 public class LootrVariantChestBlockEntity extends LootrChestBlockEntity {
 

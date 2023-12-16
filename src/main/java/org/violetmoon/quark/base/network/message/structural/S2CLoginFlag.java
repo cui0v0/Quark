@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.network.message.structural;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.base.config.SyncedFlagHandler;
 import org.violetmoon.zeta.network.IZetaNetworkEventContext;
 import org.violetmoon.zeta.network.ZetaHandshakeMessage;
@@ -23,14 +24,12 @@ public class S2CLoginFlag extends ZetaHandshakeMessage {
 
 	//what The fuck is forge doing
 	public static List<Pair<String, S2CLoginFlag>> generateRegistryPackets(boolean isLocal) {
-		return !isLocal ?
-			Collections.singletonList(Pair.of(S2CLoginFlag.class.getName(), new S2CLoginFlag())) :
-			Collections.emptyList();
+		return !isLocal ? Collections.singletonList(Pair.of(S2CLoginFlag.class.getName(), new S2CLoginFlag())) : Collections.emptyList();
 	}
 
 	@Override
 	public boolean receive(IZetaNetworkEventContext context) {
-		if (expectedLength == SyncedFlagHandler.expectedLength() && expectedHash == SyncedFlagHandler.expectedHash())
+		if(expectedLength == SyncedFlagHandler.expectedLength() && expectedHash == SyncedFlagHandler.expectedHash())
 			SyncedFlagHandler.receiveFlagInfoFromServer(flags);
 		context.reply(new C2SLoginFlag());
 		return true;

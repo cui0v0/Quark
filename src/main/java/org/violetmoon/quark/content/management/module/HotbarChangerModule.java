@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.management.module;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.message.ChangeHotbarMessage;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
@@ -62,7 +65,7 @@ public class HotbarChangerModule extends ZetaModule {
 		@PlayEvent
 		public void hudHeathPre(ZRenderGuiOverlay.PlayerHealth.Pre event) {
 			float shift = -getRealHeight(event.getPartialTick()) + 22;
-			if (shift < 0) {
+			if(shift < 0) {
 				event.getGuiGraphics().pose().translate(0, shift, 0);
 				shifting = true;
 			}
@@ -80,7 +83,7 @@ public class HotbarChangerModule extends ZetaModule {
 
 		public void hudOverlay(ZRenderGuiOverlay event) {
 			float shift = -getRealHeight(event.getPartialTick()) + 22;
-			if (shifting) {
+			if(shifting) {
 				event.getGuiGraphics().pose().translate(0, -shift, 0);
 				shifting = false;
 			}
@@ -161,7 +164,8 @@ public class HotbarChangerModule extends ZetaModule {
 			} else if(!hotbarChangeOpen && height > 0) {
 				height -= ANIM_PER_TICK;
 				animating = true;
-			} else animating = false;
+			} else
+				animating = false;
 		}
 
 		private void acceptInput(int currInput) {

@@ -1,5 +1,16 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolActions;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.util.VanillaWoods;
@@ -12,34 +23,24 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LanternBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolActions;
-
 @ZetaLoadModule(category = "building")
 public class WoodenPostsModule extends ZetaModule {
 
-	@Hint TagKey<Item> postsTag;
-	
+	@Hint
+	TagKey<Item> postsTag;
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		for(Wood wood : VanillaWoods.ALL) {
 			Block b = wood.fence();
-			
+
 			boolean nether = wood.nether();
 			WoodPostBlock post = new WoodPostBlock(this, b, "", wood.sound());
 			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", wood.sound());
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, post, stripped);
 		}
 	}
-	
+
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		postsTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "posts"));

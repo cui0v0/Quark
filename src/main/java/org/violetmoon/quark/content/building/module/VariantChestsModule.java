@@ -1,13 +1,32 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.BooleanSupplier;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraftforge.common.Tags;
 
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -34,32 +53,14 @@ import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
-
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.Tags;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VariantChestsModule extends ZetaModule {
@@ -105,17 +106,17 @@ public class VariantChestsModule extends ZetaModule {
 		makeChestBlocks("nether_brick", Blocks.NETHER_BRICKS, null);
 		makeChestBlocks("purpur", Blocks.PURPUR_BLOCK, null);
 		makeChestBlocks("prismarine", Blocks.PRISMARINE, null);
-		
+
 		CreativeTabManager.daisyChain();
 		for(Block regularChest : regularChests)
 			CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FUNCTIONAL_BLOCKS, regularChest, Blocks.CHEST, false);
 		CreativeTabManager.endDaisyChain();
-		
+
 		CreativeTabManager.daisyChain();
 		for(Block trappedChest : trappedChests)
 			CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.REDSTONE_BLOCKS, trappedChest, Blocks.TRAPPED_CHEST, false);
 		CreativeTabManager.endDaisyChain();
-		
+
 		StructureBlockReplacementHandler.addReplacement(this::getGenerationChestBlockState);
 	}
 
@@ -127,7 +128,7 @@ public class VariantChestsModule extends ZetaModule {
 		BlockBehaviour.Properties props = BlockBehaviour.Properties.copy(base);
 		if(sound != null)
 			props = props.sound(sound);
-		
+
 		VariantChestBlock regularChest = new VariantChestBlock(name, module, () -> chestTEType, props).setCondition(condition);
 		regularChests.add(regularChest);
 		chestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), regularChest);
@@ -135,7 +136,7 @@ public class VariantChestsModule extends ZetaModule {
 		VariantTrappedChestBlock trappedChest = new VariantTrappedChestBlock(name, module, () -> trappedChestTEType, props).setCondition(condition);
 		trappedChests.add(trappedChest);
 		trappedChestMappings.put(TagKey.create(Registries.STRUCTURE, new ResourceLocation(Quark.MOD_ID, name + "_chest_structures")), trappedChest);
-		
+
 		Quark.LOOTR_INTEGRATION.makeChestBlocks(module, name, base, condition, regularChest, trappedChest);
 	}
 
@@ -166,16 +167,16 @@ public class VariantChestsModule extends ZetaModule {
 		manualTrappedChestMappings.clear();
 		List<String> chestsClone = new ArrayList<>(structureChests);
 
-		for (String s : chestsClone) {
+		for(String s : chestsClone) {
 			String[] toks = s.split("=");
-			if (toks.length == 2) {
+			if(toks.length == 2) {
 				String left = toks[0];
 				String right = toks[1];
 
 				Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(right));
-				if (block != Blocks.AIR) {
+				if(block != Blocks.AIR) {
 					manualChestMappings.put(new ResourceLocation(left), block);
-					if (regularChests.contains(block)) {
+					if(regularChests.contains(block)) {
 						var trapped = trappedChests.get(regularChests.indexOf(block));
 						manualTrappedChestMappings.put(new ResourceLocation(left), trapped);
 					}
@@ -185,10 +186,10 @@ public class VariantChestsModule extends ZetaModule {
 	}
 
 	private BlockState getGenerationChestBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
-		if (enabled && replaceWorldgenChests) {
-			if (current.getBlock() == Blocks.CHEST) {
+		if(enabled && replaceWorldgenChests) {
+			if(current.getBlock() == Blocks.CHEST) {
 				return replaceChestState(accessor, current, structure, chestMappings, manualChestMappings);
-			} else if (current.getBlock() == Blocks.TRAPPED_CHEST) {
+			} else if(current.getBlock() == Blocks.TRAPPED_CHEST) {
 				return replaceChestState(accessor, current, structure, trappedChestMappings, manualTrappedChestMappings);
 			}
 		}
@@ -199,19 +200,18 @@ public class VariantChestsModule extends ZetaModule {
 	@Nullable
 	private BlockState replaceChestState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure, Map<TagKey<Structure>, Block> mappings, Map<ResourceLocation, Block> manualMappings) {
 		Holder<Structure> structureHolder = StructureBlockReplacementHandler.getStructure(accessor, structure);
-		if (structureHolder != null) {
-			for (TagKey<Structure> structureTagKey : mappings.keySet()) {
-				if (structureHolder.is(structureTagKey)) {
+		if(structureHolder != null) {
+			for(TagKey<Structure> structureTagKey : mappings.keySet()) {
+				if(structureHolder.is(structureTagKey)) {
 					Block block = mappings.get(structureTagKey);
 					return block.withPropertiesOf(current);
 				}
 			}
 
 			Optional<Block> manualMapping = structureHolder.unwrapKey().map(ResourceKey::location).map(manualMappings::get);
-			if (manualMapping.isPresent())
+			if(manualMapping.isPresent())
 				return manualMapping.get().withPropertiesOf(current);
 		}
-
 
 		return null; // no change
 	}
@@ -224,14 +224,14 @@ public class VariantChestsModule extends ZetaModule {
 		Player player = event.getEntity();
 		ItemStack held = player.getItemInHand(event.getHand());
 
-		if (!held.isEmpty() && target instanceof AbstractChestedHorse horse) {
+		if(!held.isEmpty() && target instanceof AbstractChestedHorse horse) {
 
-			if (!horse.hasChest() && held.getItem() != Items.CHEST) {
-				if (held.is(Tags.Items.CHESTS_WOODEN)) {
+			if(!horse.hasChest() && held.getItem() != Items.CHEST) {
+				if(held.is(Tags.Items.CHESTS_WOODEN)) {
 					event.setCanceled(true);
 					event.setCancellationResult(InteractionResult.SUCCESS);
 
-					if (!target.level().isClientSide) {
+					if(!target.level().isClientSide) {
 						ItemStack copy = held.copy();
 						copy.setCount(1);
 						held.shrink(1);
@@ -252,9 +252,9 @@ public class VariantChestsModule extends ZetaModule {
 	@PlayEvent
 	public void onDeath(ZLivingDeath event) {
 		Entity target = event.getEntity();
-		if (target instanceof AbstractChestedHorse horse) {
+		if(target instanceof AbstractChestedHorse horse) {
 			ItemStack chest = ItemStack.of(horse.getPersistentData().getCompound(DONK_CHEST));
-			if (!chest.isEmpty() && horse.hasChest())
+			if(!chest.isEmpty() && horse.hasChest())
 				WAIT_TO_REPLACE_CHEST.set(chest);
 		}
 	}
@@ -262,9 +262,9 @@ public class VariantChestsModule extends ZetaModule {
 	@PlayEvent
 	public void onEntityJoinWorld(ZEntityJoinLevel event) {
 		Entity target = event.getEntity();
-		if (target instanceof ItemEntity item && item.getItem().getItem() == Items.CHEST) {
+		if(target instanceof ItemEntity item && item.getItem().getItem() == Items.CHEST) {
 			ItemStack local = WAIT_TO_REPLACE_CHEST.get();
-			if (local != null && !local.isEmpty())
+			if(local != null && !local.isEmpty())
 				((ItemEntity) target).setItem(local);
 			WAIT_TO_REPLACE_CHEST.remove();
 		}

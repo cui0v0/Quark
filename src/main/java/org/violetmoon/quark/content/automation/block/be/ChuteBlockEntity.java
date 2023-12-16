@@ -20,7 +20,7 @@ import org.violetmoon.zeta.block.be.ZetaBlockEntity;
 
 /**
  * @author WireSegal
- * Created at 10:18 AM on 9/29/19.
+ *         Created at 10:18 AM on 9/29/19.
  */
 public class ChuteBlockEntity extends ZetaBlockEntity {
 
@@ -53,7 +53,7 @@ public class ChuteBlockEntity extends ZetaBlockEntity {
 		@NotNull
 		@Override
 		public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-			if (!canDropItem())
+			if(!canDropItem())
 				return stack;
 
 			if(!simulate && level != null && !stack.isEmpty()) {
@@ -85,7 +85,7 @@ public class ChuteBlockEntity extends ZetaBlockEntity {
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (side != Direction.DOWN && cap == ForgeCapabilities.ITEM_HANDLER)
+		if(side != Direction.DOWN && cap == ForgeCapabilities.ITEM_HANDLER)
 			return LazyOptional.of(() -> handler).cast();
 		return super.getCapability(cap, side);
 	}

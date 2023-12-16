@@ -3,8 +3,8 @@ package org.violetmoon.quark.content.tools.item;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -26,16 +25,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.tools.config.PickarangType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
-import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,24 +56,24 @@ public class PickarangItem extends ZetaItem {
 
 	@Override
 	public boolean isCorrectToolForDrops(@NotNull BlockState blockIn) {
-		return switch (type.harvestLevel) {
-			case 0 -> Items.WOODEN_PICKAXE.isCorrectToolForDrops(blockIn) ||
+		return switch(type.harvestLevel) {
+		case 0 -> Items.WOODEN_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.WOODEN_AXE.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsShovel && Items.WOODEN_SHOVEL.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsHoe && Items.WOODEN_HOE.isCorrectToolForDrops(blockIn));
-			case 1 -> Items.STONE_PICKAXE.isCorrectToolForDrops(blockIn) ||
+		case 1 -> Items.STONE_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.STONE_AXE.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsShovel && Items.STONE_SHOVEL.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsHoe && Items.STONE_HOE.isCorrectToolForDrops(blockIn));
-			case 2 -> Items.IRON_PICKAXE.isCorrectToolForDrops(blockIn) ||
+		case 2 -> Items.IRON_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.IRON_AXE.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsShovel && Items.IRON_SHOVEL.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsHoe && Items.IRON_HOE.isCorrectToolForDrops(blockIn));
-			case 3 -> Items.DIAMOND_PICKAXE.isCorrectToolForDrops(blockIn) ||
+		case 3 -> Items.DIAMOND_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.DIAMOND_AXE.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsShovel && Items.DIAMOND_SHOVEL.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsHoe && Items.DIAMOND_HOE.isCorrectToolForDrops(blockIn));
-			default -> Items.NETHERITE_PICKAXE.isCorrectToolForDrops(blockIn) ||
+		default -> Items.NETHERITE_PICKAXE.isCorrectToolForDrops(blockIn) ||
 				(type.canActAsAxe && Items.NETHERITE_AXE.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsShovel && Items.NETHERITE_SHOVEL.isCorrectToolForDrops(blockIn)) ||
 				(type.canActAsHoe && Items.NETHERITE_HOE.isCorrectToolForDrops(blockIn));
@@ -88,7 +87,7 @@ public class PickarangItem extends ZetaItem {
 
 	@Override
 	public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level worldIn, BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entityLiving) {
-		if (state.getDestroySpeed(worldIn, pos) != 0)
+		if(state.getDestroySpeed(worldIn, pos) != 0)
 			stack.hurtAndBreak(1, entityLiving, (player) -> player.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		return true;
 	}
@@ -118,7 +117,7 @@ public class PickarangItem extends ZetaItem {
 
 		if(!playerIn.getAbilities().instabuild && type.cooldown > 0) {
 			int cooldown = type.cooldown - eff;
-			if (cooldown > 0)
+			if(cooldown > 0)
 				playerIn.getCooldowns().addCooldown(this, cooldown);
 		}
 
@@ -133,7 +132,7 @@ public class PickarangItem extends ZetaItem {
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot slot) {
 		Multimap<Attribute, AttributeModifier> multimap = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 
-		if (slot == EquipmentSlot.MAINHAND) {
+		if(slot == EquipmentSlot.MAINHAND) {
 			multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", type.attackDamage, AttributeModifier.Operation.ADDITION));
 			multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.8, AttributeModifier.Operation.ADDITION));
 		}

@@ -1,19 +1,22 @@
 package org.violetmoon.quark.base.config.type.inputtable;
 
-import java.util.Objects;
+import net.minecraft.util.Mth;
 
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.util.Mth;
+import java.util.Objects;
 
 public class RGBColorConfig implements IConfigType {
 
-	@Config public double r;
-	@Config public double g;
-	@Config public double b;
+	@Config
+	public double r;
+	@Config
+	public double g;
+	@Config
+	public double b;
 
 	protected double dr, dg, db;
 	protected int color;
@@ -83,10 +86,13 @@ public class RGBColorConfig implements IConfigType {
 	void setAlphaComponent(double c) {
 		// NO-OP
 	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if(this == o)
+			return true;
+		if(o == null || getClass() != o.getClass())
+			return false;
 		RGBColorConfig that = (RGBColorConfig) o;
 		return Double.compare(that.r, r) == 0 && Double.compare(that.g, g) == 0 && Double.compare(that.b, b) == 0;
 	}

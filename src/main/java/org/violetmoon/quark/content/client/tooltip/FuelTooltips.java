@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.client.tooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,13 +14,13 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
 import org.violetmoon.zeta.client.event.play.ZGatherTooltipComponents;
-
-import org.jetbrains.annotations.NotNull;
 
 public class FuelTooltips {
 
@@ -31,14 +32,14 @@ public class FuelTooltips {
 				int count = Quark.ZETA.itemExtensions.get(stack).getBurnTimeZeta(stack, RecipeType.SMELTING);
 				if(count > 0) {
 					Font font = Minecraft.getInstance().font;
-					
+
 					String time = getDisplayString(count);
 					event.getTooltipElements().add(Either.right(new FuelComponent(stack, 18 + font.width(time), count)));
 				}
 			}
 		}
 	}
-	
+
 	private static String getDisplayString(int count) {
 		float items = (float) count / (float) Math.max(1, ImprovedTooltipsModule.fuelTimeDivisor);
 		String time = String.format(((items - (int) items) == 0) ? "x%.0f" : "x%.1f", items);
@@ -73,5 +74,5 @@ public class FuelTooltips {
 			return width;
 		}
 	}
-	
+
 }

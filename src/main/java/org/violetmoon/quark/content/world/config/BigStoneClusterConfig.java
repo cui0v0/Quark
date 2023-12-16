@@ -1,13 +1,13 @@
 package org.violetmoon.quark.content.world.config;
 
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.IBiomeConfig;
-
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
 
 public class BigStoneClusterConfig extends ClusterSizeConfig {
 
@@ -22,16 +22,15 @@ public class BigStoneClusterConfig extends ClusterSizeConfig {
 	public BigStoneClusterConfig(DimensionConfig dimensions, int clusterSize, int sizeVariation, int rarity, int minYLevel, int maxYLevel, IBiomeConfig biomes) {
 		super(rarity, clusterSize, clusterSize, sizeVariation, sizeVariation, biomes);
 		this.dimensions = dimensions;
-		
+
 		this.minYLevel = minYLevel;
 		this.maxYLevel = maxYLevel;
 	}
-	
+
 	public BigStoneClusterConfig setVertical(int vertical, int verticalVariation) {
 		this.verticalSize = vertical;
 		this.verticalVariation = verticalVariation;
 		return this;
 	}
-	
 
 }

@@ -1,15 +1,15 @@
 package org.violetmoon.quark.base.util;
 
-import java.util.EnumSet;
-import java.util.function.BooleanSupplier;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.world.entity.ai.goal.Goal;
+import java.util.EnumSet;
+import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
- * Created at 12:32 PM on 9/8/19.
+ *         Created at 12:32 PM on 9/8/19.
  */
 public class IfFlagGoal extends Goal {
 	private final Goal parent;

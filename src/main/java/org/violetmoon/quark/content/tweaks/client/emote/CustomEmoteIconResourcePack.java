@@ -2,13 +2,16 @@ package org.violetmoon.quark.content.tweaks.client.emote;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.IoSupplier;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tweaks.module.EmotesModule;
 
@@ -35,7 +38,7 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
 	@Nullable
 	@Override
-	public IoSupplier<InputStream> getRootResource(String @NotNull ... file) {
+	public IoSupplier<InputStream> getRootResource(String @NotNull... file) {
 		return null;
 	}
 
@@ -78,7 +81,7 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	@NotNull
 	@Override
 	public Set<String> getNamespaces(@NotNull PackType type) {
-		if (type == PackType.CLIENT_RESOURCES)
+		if(type == PackType.CLIENT_RESOURCES)
 			return ImmutableSet.of(EmoteHandler.CUSTOM_EMOTE_NAMESPACE);
 		return ImmutableSet.of();
 	}
@@ -88,7 +91,7 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 		File rootPath = new File(this.getFile(idk), type.getDirectory());
 		List<ResourceLocation> allResources = Lists.newArrayList();
 
-		for (String namespace : this.getNamespaces(type))
+		for(String namespace : this.getNamespaces(type))
 			this.crawl(new File(new File(rootPath, namespace), pathIn), 32, namespace, allResources, pathIn + "/", filter);
 
 		return allResources;
@@ -96,12 +99,12 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 
 	private void crawl(File rootPath, int maxDepth, String namespace, List<ResourceLocation> allResources, String path, Predicate<ResourceLocation> filter) {
 		File[] files = rootPath.listFiles();
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory()) {
-					if (maxDepth > 0)
+		if(files != null) {
+			for(File file : files) {
+				if(file.isDirectory()) {
+					if(maxDepth > 0)
 						this.crawl(file, maxDepth - 1, namespace, allResources, path + file.getName() + "/", filter);
-				} else if (!file.getName().endsWith(".mcmeta") && filter.test(new ResourceLocation(namespace, path + file.getName()))) {
+				} else if(!file.getName().endsWith(".mcmeta") && filter.test(new ResourceLocation(namespace, path + file.getName()))) {
 					try {
 						allResources.add(new ResourceLocation(namespace, path + file.getName()));
 					} catch (ResourceLocationException e) {
@@ -131,7 +134,7 @@ public class CustomEmoteIconResourcePack extends AbstractPackResources {
 	private File getFile(String name) {
 		String filename = name.substring(name.indexOf(":") + 1) + ".png";
 		filename = filename.replaceAll("(.+/)+", "");
-		
+
 		return new File(EmotesModule.emotesDir, filename);
 	}
 

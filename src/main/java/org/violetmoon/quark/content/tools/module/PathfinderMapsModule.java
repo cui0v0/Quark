@@ -1,37 +1,9 @@
 package org.violetmoon.quark.content.tools.module;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.IConfigType;
-import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
-import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
-import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
-import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import com.mojang.blaze3d.platform.Window;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.GuiGraphics;
@@ -62,6 +34,36 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.phys.Vec3;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.IConfigType;
+import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
+import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZConfigChanged;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
+import org.violetmoon.zeta.event.play.loading.ZWandererTrades;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @ZetaLoadModule(category = "tools")
 public class PathfinderMapsModule extends ZetaModule {
@@ -97,7 +99,8 @@ public class PathfinderMapsModule extends ZetaModule {
 
 	public static ManualTrigger pathfinderMapTrigger;
 
-	@Hint public static Item pathfinders_quill;
+	@Hint
+	public static Item pathfinders_quill;
 
 	@Config(description = "Set to false to make it so the default quark Pathfinder Map Built-In don't get added, and only the custom ones do")
 	public static boolean applyDefaultTrades = true;
@@ -111,16 +114,24 @@ public class PathfinderMapsModule extends ZetaModule {
 	@Config(description = "Allows retrying after a pathfinder quill fails to find a biome nearby. Turn off if you think its op")
 	public static boolean allowRetrying = true;
 
-	@Config public static int searchRadius = 6400;
-	@Config public static int xpFromTrade = 5;
+	@Config
+	public static int searchRadius = 6400;
+	@Config
+	public static int xpFromTrade = 5;
 
-	@Config public static boolean addToCartographer = true;
-	@Config public static boolean addToWanderingTraderForced = true;
-	@Config public static boolean addToWanderingTraderGeneric = false;
-	@Config public static boolean addToWanderingTraderRare = false;
+	@Config
+	public static boolean addToCartographer = true;
+	@Config
+	public static boolean addToWanderingTraderForced = true;
+	@Config
+	public static boolean addToWanderingTraderGeneric = false;
+	@Config
+	public static boolean addToWanderingTraderRare = false;
 
-	@Config public static boolean drawHud = true;
-	@Config public static boolean hudOnTop = false;
+	@Config
+	public static boolean drawHud = true;
+	@Config
+	public static boolean hudOnTop = false;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -194,7 +205,7 @@ public class PathfinderMapsModule extends ZetaModule {
 
 				PathfinderQuillTrade trade = new PathfinderQuillTrade(info, false);
 				MerchantOffer offer = trade.getOffer(wt, wt.level().random);
-				if (offer != null) {
+				if(offer != null) {
 					offers.add(0, offer);
 				}
 			}
@@ -217,13 +228,13 @@ public class PathfinderMapsModule extends ZetaModule {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(stack.getItem() == Items.FILLED_MAP && stack.hasTag() && ItemNBTHelper.getBoolean(stack, TAG_IS_PATHFINDER, false)) {
-			 ListTag decorations = stack.getTag().getList("Decorations", stack.getTag().getId());
+			ListTag decorations = stack.getTag().getList("Decorations", stack.getTag().getId());
 
-			for (Tag tag : decorations) {
-				if (tag instanceof CompoundTag cmp) {
+			for(Tag tag : decorations) {
+				if(tag instanceof CompoundTag cmp) {
 					String id = cmp.getString("id");
 
-					if (id.equals("+")) {
+					if(id.equals("+")) {
 						double x = cmp.getDouble("x");
 						double z = cmp.getDouble("z");
 
@@ -232,7 +243,7 @@ public class PathfinderMapsModule extends ZetaModule {
 						double pz = pp.z;
 
 						double distSq = (px - x) * (px - x) + (pz - z) * (pz - z);
-						if (distSq < 200) {
+						if(distSq < 200) {
 							pathfinderMapTrigger.trigger((ServerPlayer) player);
 							return true;
 						}
@@ -285,7 +296,7 @@ public class PathfinderMapsModule extends ZetaModule {
 		for(String s : lines)
 			try {
 				loadCustomTradeInfo(s);
-			} catch(IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				Quark.LOG.warn("[Custom Pathfinder Maps] Error while reading custom map string \"{}\"", s);
 				Quark.LOG.warn("[Custom Pathfinder Maps] - {}", e.getMessage());
 			}
@@ -306,13 +317,13 @@ public class PathfinderMapsModule extends ZetaModule {
 
 		@Override
 		public MerchantOffer getOffer(@NotNull Entity entity, @NotNull RandomSource random) {
-			if (!info.enabled)
+			if(!info.enabled)
 				return null;
 
 			int i = random.nextInt(info.maxPrice - info.minPrice + 1) + info.minPrice;
 
 			ItemStack itemstack = PathfindersQuillItem.forBiome(info.biome.toString(), info.color);
-			if (itemstack.isEmpty())
+			if(itemstack.isEmpty())
 				return null;
 
 			int xp = xpFromTrade * Math.max(1, (info.level - 1));
@@ -323,15 +334,19 @@ public class PathfinderMapsModule extends ZetaModule {
 		}
 	}
 
-	public static class TradeInfo implements Predicate<Holder<Biome>>, IConfigType  {
+	public static class TradeInfo implements Predicate<Holder<Biome>>, IConfigType {
 
 		public final ResourceLocation biome;
 		public final int color;
 
-		@Config public boolean enabled;
-		@Config public final int level;
-		@Config public final int minPrice;
-		@Config public final int maxPrice;
+		@Config
+		public boolean enabled;
+		@Config
+		public final int level;
+		@Config
+		public final int minPrice;
+		@Config
+		public final int maxPrice;
 
 		TradeInfo(ResourceLocation biome, boolean enabled, int level, int minPrice, int maxPrice, int color) {
 			this.biome = biome;
@@ -359,7 +374,7 @@ public class PathfinderMapsModule extends ZetaModule {
 
 		@PlayEvent
 		public void drawHUD(ZRenderGuiOverlay.Hotbar.Post event) {
-			if (drawHud) {
+			if(drawHud) {
 				Minecraft mc = Minecraft.getInstance();
 
 				GuiGraphics guiGraphics = event.getGuiGraphics();
@@ -394,7 +409,7 @@ public class PathfinderMapsModule extends ZetaModule {
 				}
 			}
 		}
-		
+
 		@LoadEvent
 		public void registerItemColors(ZAddItemColorHandlers event) {
 			ItemColor color = (stack, id) -> id == 0 ? 0xFFFFFF : PathfindersQuillItem.getOverlayColor(stack);

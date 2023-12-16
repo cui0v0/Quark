@@ -27,17 +27,18 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.common.util.ForgeSoundType;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
 import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 /**
  * @author WireSegal
- * Created at 9:39 AM on 9/20/19.
+ *         Created at 9:39 AM on 9/20/19.
  */
 public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 
@@ -88,14 +89,14 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public SoundType getSoundTypeZeta(BlockState state, LevelReader world, BlockPos pos, @Nullable Entity entity) {
-		if (state.getValue(FULL))
+		if(state.getValue(FULL))
 			return WOOD_WITH_PLANT_STEP;
 		return super.getSoundTypeZeta(state, world, pos, entity);
 	}
 
 	@Override
 	public void fallOn(Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull Entity entity, float distance) {
-		if (level.getBlockState(pos).getValue(FULL))
+		if(level.getBlockState(pos).getValue(FULL))
 			entity.causeFallDamage(distance, 0.2F, level.damageSources().fall());
 		else
 			super.fallOn(level, state, pos, entity, distance);
@@ -103,10 +104,10 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public void onRemove(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
+		if(state.getBlock() != newState.getBlock()) {
 			BlockEntity tile = world.getBlockEntity(pos);
-			if (tile instanceof FeedingTroughBlockEntity) {
-				Containers.dropContents(world, pos, (FeedingTroughBlockEntity)tile);
+			if(tile instanceof FeedingTroughBlockEntity) {
+				Containers.dropContents(world, pos, (FeedingTroughBlockEntity) tile);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -124,15 +125,14 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(world.getBlockEntity(pos));
 	}
 
-
 	@NotNull
 	@Override
 	public InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult trace) {
-		if (world.isClientSide)
+		if(world.isClientSide)
 			return InteractionResult.SUCCESS;
 		else {
 			MenuProvider container = this.getMenuProvider(state, world, pos);
-			if (container != null)
+			if(container != null)
 				player.openMenu(container);
 
 			return InteractionResult.SUCCESS;
@@ -150,7 +150,7 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	@Nullable
 	public MenuProvider getMenuProvider(@NotNull BlockState state, Level world, @NotNull BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
-		return tile instanceof MenuProvider ? (MenuProvider)tile : null;
+		return tile instanceof MenuProvider ? (MenuProvider) tile : null;
 	}
 
 	@Override

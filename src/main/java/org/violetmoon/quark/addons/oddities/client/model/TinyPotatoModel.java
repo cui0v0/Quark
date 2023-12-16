@@ -1,13 +1,5 @@
 package org.violetmoon.quark.addons.oddities.client.model;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
-import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
-
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -19,6 +11,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
+import org.violetmoon.quark.addons.oddities.client.render.be.TinyPotatoRenderer;
+
+import java.util.List;
 
 public record TinyPotatoModel(BakedModel originalModel) implements BakedModel {
 
@@ -66,7 +66,7 @@ public record TinyPotatoModel(BakedModel originalModel) implements BakedModel {
 		return new ItemOverrides() {
 			@Override
 			public BakedModel resolve(@NotNull BakedModel model, @NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
-				if (stack.hasCustomHoverName() || TinyPotatoBlock.isAngry(stack)) {
+				if(stack.hasCustomHoverName() || TinyPotatoBlock.isAngry(stack)) {
 					return TinyPotatoRenderer.getModelFromDisplayName(stack.getHoverName(), TinyPotatoBlock.isAngry(stack));
 				}
 				return originalModel;

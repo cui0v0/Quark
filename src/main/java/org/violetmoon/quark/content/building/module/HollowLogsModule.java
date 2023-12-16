@@ -1,21 +1,5 @@
 package org.violetmoon.quark.content.building.module;
 
-import org.violetmoon.quark.api.ICrawlSpaceBlock;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.quark.base.util.VanillaWoods;
-import org.violetmoon.quark.base.util.VanillaWoods.Wood;
-import org.violetmoon.quark.content.building.block.HollowLogBlock;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -27,6 +11,22 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.violetmoon.quark.api.ICrawlSpaceBlock;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.util.VanillaWoods;
+import org.violetmoon.quark.base.util.VanillaWoods.Wood;
+import org.violetmoon.quark.content.building.block.HollowLogBlock;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "building")
 public class HollowLogsModule extends ZetaModule {
@@ -61,19 +61,19 @@ public class HollowLogsModule extends ZetaModule {
 			Player player = event.getPlayer();
 			BlockPos playerPos = player.blockPosition();
 			boolean isTrying = player.isVisuallyCrawling() ||
-				(player.isCrouching() && !player.isColliding(playerPos, player.level().getBlockState(playerPos)));
+					(player.isCrouching() && !player.isColliding(playerPos, player.level().getBlockState(playerPos)));
 			boolean wasTrying = player.getPersistentData().getBoolean(TAG_TRYING_TO_CRAWL);
 
-			if (!player.isVisuallyCrawling()) {
-				if (isTrying && !wasTrying) {
+			if(!player.isVisuallyCrawling()) {
+				if(isTrying && !wasTrying) {
 					Direction dir = player.getDirection();
 					Direction opp = dir.getOpposite();
-					if (dir.getAxis() != Axis.Y) {
+					if(dir.getAxis() != Axis.Y) {
 						BlockPos pos = playerPos.relative(dir);
 
-						if (!tryClimb(player, opp, playerPos)) // Crawl out
-							if (!tryClimb(player, opp, playerPos.above())) // Crawl out
-								if (!tryClimb(player, dir, pos)) // Crawl into
+						if(!tryClimb(player, opp, playerPos)) // Crawl out
+							if(!tryClimb(player, opp, playerPos.above())) // Crawl out
+								if(!tryClimb(player, dir, pos)) // Crawl into
 									tryClimb(player, dir, pos.above()); // Crawl into
 					}
 				}

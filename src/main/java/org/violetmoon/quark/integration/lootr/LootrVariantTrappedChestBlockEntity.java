@@ -7,11 +7,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 
 /**
  * @author WireSegal
- * Created at 11:34 AM on 7/3/23.
+ *         Created at 11:34 AM on 7/3/23.
  */
 public class LootrVariantTrappedChestBlockEntity extends LootrVariantChestBlockEntity {
 
@@ -26,7 +27,7 @@ public class LootrVariantTrappedChestBlockEntity extends LootrVariantChestBlockE
 	@Override
 	protected void signalOpenCount(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, int prevOpenCount, int openCount) {
 		super.signalOpenCount(world, pos, state, prevOpenCount, openCount);
-		if (prevOpenCount != openCount) {
+		if(prevOpenCount != openCount) {
 			Block block = state.getBlock();
 			world.updateNeighborsAt(pos, block);
 			world.updateNeighborsAt(pos.below(), block);

@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.item.BackpackItem;
@@ -58,16 +59,20 @@ public class BackpackModule extends ZetaModule {
 	@Config
 	public static boolean itemsInBackpackTick = true;
 
-	@Config public static int baseRavagerHideDrop = 1;
-	@Config public static double extraChancePerLooting = 0.5;
+	@Config
+	public static int baseRavagerHideDrop = 1;
+	@Config
+	public static double extraChancePerLooting = 0.5;
 
-	@Hint public static Item backpack;
-	@Hint("ravager_hide") public static Item ravager_hide;
+	@Hint
+	public static Item backpack;
+	@Hint("ravager_hide")
+	public static Item ravager_hide;
 
 	public static Block bonded_ravager_hide;
 
 	public static TagKey<Item> backpackBlockedTag;
-	
+
 	public static MenuType<BackpackMenu> menyType;
 	private static ItemStack heldStack = null;
 
@@ -85,12 +90,12 @@ public class BackpackModule extends ZetaModule {
 				.strength(1F)
 				.sound(SoundType.WOOL)
 				.ignitedByLava())
-		.setCondition(() -> enableRavagerHide)
-		.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		
+				.setCondition(() -> enableRavagerHide)
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+
 		CauldronInteraction.WATER.put(backpack, CauldronInteraction.DYED_ITEM);
 	}
-	
+
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		backpackBlockedTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "backpack_blocked"));
@@ -146,7 +151,7 @@ public class BackpackModule extends ZetaModule {
 				MenuScreens.register(menyType, BackpackInventoryScreen::new);
 
 				ItemProperties.register(backpack, new ResourceLocation("has_items"),
-					(stack, world, entity, i) -> (!BackpackModule.superOpMode && BackpackItem.doesBackpackHaveItems(stack)) ? 1 : 0);
+						(stack, world, entity, i) -> (!BackpackModule.superOpMode && BackpackItem.doesBackpackHaveItems(stack)) ? 1 : 0);
 
 				QuarkClient.ZETA_CLIENT.setHumanoidArmorModel(backpack.asItem(), (living, stack, slot, original) -> ModelHandler.armorModel(ModelHandler.backpack, slot));
 			});
@@ -177,8 +182,7 @@ public class BackpackModule extends ZetaModule {
 				backpackRequested = false;
 			}
 		}
-		
-		
+
 		@LoadEvent
 		public void registerItemColors(ZAddItemColorHandlers event) {
 			ItemColor color = (stack, i) -> i > 0 ? -1 : ((DyeableArmorItem) stack.getItem()).getColor(stack);

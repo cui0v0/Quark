@@ -1,17 +1,10 @@
 package org.violetmoon.quark.content.automation.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EndRodBlock;
@@ -19,6 +12,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.automation.module.IronRodModule;
 import org.violetmoon.zeta.api.ICollateralMover;
 import org.violetmoon.zeta.block.IZetaBlock;
@@ -26,6 +23,8 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.function.BooleanSupplier;
 
 public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZetaBlock {
 
@@ -75,7 +74,7 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 	@Override
 	public boolean isCollateralMover(Level world, BlockPos source, Direction moveDirection, BlockPos pos) {
 		return moveDirection == world.getBlockState(pos).getValue(FACING) &&
-			!world.getBlockState(pos.relative(moveDirection)).is(IronRodModule.ironRodImmuneTag);
+				!world.getBlockState(pos.relative(moveDirection)).is(IronRodModule.ironRodImmuneTag);
 	}
 
 	@Override
@@ -87,6 +86,5 @@ public class IronRodBlock extends EndRodBlock implements ICollateralMover, IZeta
 	public void animateTick(@NotNull BlockState stateIn, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull RandomSource rand) {
 		// NO-OP
 	}
-
 
 }

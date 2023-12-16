@@ -27,14 +27,14 @@ public record TinyPotatoInfo(int runeColor, boolean enchanted, String name) {
 	public static TinyPotatoInfo fromString(String string) {
 		string = ChatFormatting.stripFormatting(string);
 
-		if (string == null)
+		if(string == null)
 			return new TinyPotatoInfo(-1, false, "");
 
 		string = string.trim().toLowerCase(Locale.ROOT);
 
 		boolean enchanted = false;
-		for (String enchant : ENCHANTMENT_NAMES) {
-			if (matches(string, enchant)) {
+		for(String enchant : ENCHANTMENT_NAMES) {
+			if(matches(string, enchant)) {
 				enchanted = true;
 				string = removeFromFront(string, enchant);
 				break;
@@ -43,25 +43,25 @@ public record TinyPotatoInfo(int runeColor, boolean enchanted, String name) {
 
 		int color = -1;
 
-		if (enchanted) {
-			for (DyeColor dyeColor : DyeColor.values()) {
+		if(enchanted) {
+			for(DyeColor dyeColor : DyeColor.values()) {
 				String key = dyeColor.getSerializedName().replace("_", " ");
-				if (matches(string, key)) {
+				if(matches(string, key)) {
 					color = dyeColor.getId();
 					string = removeFromFront(string, key);
 					break;
-				} else if (key.contains("gray")) {
+				} else if(key.contains("gray")) {
 					key = key.replace("gray", "grey");
-					if (matches(string, key)) {
+					if(matches(string, key)) {
 						color = dyeColor.getId();
 						string = removeFromFront(string, key);
 						break;
 					}
 				}
 			}
-			if (color == -1) {
-				for (String rainbow : RAINBOW_NAMES) {
-					if (matches(string, rainbow)) {
+			if(color == -1) {
+				for(String rainbow : RAINBOW_NAMES) {
+					if(matches(string, rainbow)) {
 						color = 16;
 						string = removeFromFront(string, rainbow);
 						break;

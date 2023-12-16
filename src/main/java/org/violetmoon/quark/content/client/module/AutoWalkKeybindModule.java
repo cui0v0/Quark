@@ -1,6 +1,16 @@
 package org.violetmoon.quark.content.client.module;
 
+import com.mojang.blaze3d.platform.Window;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.player.Player;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
@@ -12,21 +22,13 @@ import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import com.mojang.blaze3d.platform.Window;
-
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.OptionInstance;
-import net.minecraft.client.player.Input;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.entity.player.Player;
-
 @ZetaLoadModule(category = "client")
 public class AutoWalkKeybindModule extends ZetaModule {
 
-	@Config public static boolean drawHud = true;
-	@Config public static int hudHeight = 10;
+	@Config
+	public static boolean drawHud = true;
+	@Config
+	public static int hudHeight = 10;
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends AutoWalkKeybindModule {
@@ -69,8 +71,8 @@ public class AutoWalkKeybindModule extends ZetaModule {
 				String displayMessage = message;
 				int dots = (QuarkClient.ticker.ticksInGame / 10) % 2;
 				switch(dots) {
-					case 0 -> displayMessage = "OoO " + message + " oOo";
-					case 1 -> displayMessage = "oOo " + message + " OoO";
+				case 0 -> displayMessage = "OoO " + message + " oOo";
+				case 1 -> displayMessage = "oOo " + message + " OoO";
 				}
 
 				guiGraphics.drawString(mc.font, displayMessage, x, y, 0xFFFFFFFF, true);
@@ -100,9 +102,11 @@ public class AutoWalkKeybindModule extends ZetaModule {
 
 							if(height < 1)
 								opt.set(true);
-						} else opt.set(hadAutoJump);
+						} else
+							opt.set(hadAutoJump);
 					}
-				} else shouldAccept = true;
+				} else
+					shouldAccept = true;
 			}
 		}
 

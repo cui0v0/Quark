@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.Fluids;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -30,7 +31,7 @@ public class ObsidianSpikeGenerator extends Generator {
 		if(rand.nextFloat() < NetherObsidianSpikesModule.chancePerChunk) {
 			for(int i = 0; i < NetherObsidianSpikesModule.triesPerChunk; i++) {
 				BlockPos pos = chunkCorner.offset(rand.nextInt(16), 50, rand.nextInt(16));
-				
+
 				while(pos.getY() > 10) {
 					BlockState state = world.getBlockState(pos);
 					if(state.getBlock() == Blocks.LAVA) {
@@ -42,13 +43,13 @@ public class ObsidianSpikeGenerator extends Generator {
 			}
 		}
 	}
-	
+
 	public static void placeSpikeAt(WorldGenRegion world, BlockPos pos, RandomSource rand) {
 		int heightBelow = 10;
 		int heightBottom = 3 + rand.nextInt(3);
 		int heightMiddle = 2 + rand.nextInt(4);
 		int heightTop = 2 + rand.nextInt(3);
-		
+
 		boolean addSpawner = false;
 		if(rand.nextFloat() < NetherObsidianSpikesModule.bigSpikeChance) {
 			heightBottom += 7;
@@ -56,7 +57,7 @@ public class ObsidianSpikeGenerator extends Generator {
 			heightTop += 4;
 			addSpawner = NetherObsidianSpikesModule.bigSpikeSpawners;
 		}
-		
+
 		int checkHeight = heightBottom + heightMiddle + heightTop + 2;
 		for(int i = 0; i < 5; i++)
 			for(int j = 0; j < 5; j++)
@@ -66,9 +67,9 @@ public class ObsidianSpikeGenerator extends Generator {
 					if(!(world.isEmptyBlock(checkPos) || world.getFluidState(checkPos).is(Fluids.LAVA) || world.getFluidState(checkPos).is(Fluids.FLOWING_LAVA)))
 						return;
 				}
-		
+
 		BlockState obsidian = Blocks.OBSIDIAN.defaultBlockState();
-		
+
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 3; j++)
 				for(int k = 0; k < heightBottom + heightBelow; k++) {
@@ -77,23 +78,23 @@ public class ObsidianSpikeGenerator extends Generator {
 					if(world.getBlockState(placePos).getDestroySpeed(world, placePos) != -1)
 						world.setBlock(placePos, obsidian, 0);
 				}
-		
+
 		for(int i = 0; i < heightMiddle; i++) {
 			BlockPos placePos = pos.offset(0, heightBottom + i, 0);
-			
+
 			world.setBlock(placePos, obsidian, 0);
 			for(Direction face : MiscUtil.HORIZONTALS)
 				world.setBlock(placePos.relative(face), obsidian, 0);
 		}
-		
+
 		for(int i = 0; i < heightTop; i++) {
 			BlockPos placePos = pos.offset(0, heightBottom + heightMiddle + i, 0);
 			world.setBlock(placePos, obsidian, 0);
-			
+
 			if(addSpawner && i == 0) {
 				boolean useBlazeLantern = Quark.ZETA.modules.isEnabled(CompressedBlocksModule.class) && CompressedBlocksModule.enableBlazeLantern;
 				world.setBlock(placePos, useBlazeLantern ? CompressedBlocksModule.blaze_lantern.defaultBlockState() : Blocks.GLOWSTONE.defaultBlockState(), 0);
-				
+
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.SPAWNER.defaultBlockState(), 0);
 
@@ -101,7 +102,7 @@ public class ObsidianSpikeGenerator extends Generator {
 				// occurs when SpawnerBlockEntity.spawner attempts to send a block update to the client.
 				// if the level param is null, everything else works it just doesn't try to sync
 				((SpawnerBlockEntity) world.getBlockEntity(placePos)).getSpawner().setEntityId(EntityType.BLAZE, null, rand, pos);
-				
+
 				placePos = placePos.below();
 				world.setBlock(placePos, Blocks.CHEST.defaultBlockState(), 0);
 				RandomizableContainerBlockEntity.setLootTable(world, rand, placePos, new ResourceLocation("minecraft", "chests/nether_bridge"));

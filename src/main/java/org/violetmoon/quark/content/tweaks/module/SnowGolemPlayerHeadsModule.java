@@ -1,18 +1,5 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.SnowGolem;
@@ -24,19 +11,32 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
+import java.util.Arrays;
+import java.util.List;
+
 @ZetaLoadModule(category = "tweaks")
 public class SnowGolemPlayerHeadsModule extends ZetaModule {
 
 	public static ManualTrigger getOwnHeadTrigger;
-	
+
 	@Hint(key = "snow_golem_player_heads")
 	List<Item> items = Arrays.asList(Items.PLAYER_HEAD, Items.NAME_TAG, Items.CARVED_PUMPKIN);
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		getOwnHeadTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("own_head");
 	}
-	
+
 	@PlayEvent
 	public void onDrops(ZLivingDrops event) {
 		Entity e = event.getEntity();
@@ -48,7 +48,7 @@ public class SnowGolemPlayerHeadsModule extends ZetaModule {
 				ItemNBTHelper.setString(stack, "SkullOwner", name);
 				Vec3 pos = e.position();
 				event.getDrops().add(new ItemEntity(e.level(), pos.x, pos.y, pos.z, stack));
-				
+
 				for(Player player : e.level().players()) {
 					String pname = player.getName().getString();
 					if(pname.equals(name) && player instanceof ServerPlayer sp && player.distanceTo(snowman) < 16F)

@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.mobs.entity;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -35,14 +36,16 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.mobs.module.ForgottenModule;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 import org.violetmoon.zeta.util.RegistryUtil;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -86,8 +89,8 @@ public class Forgotten extends Skeleton {
 			LivingEntity target = getTarget();
 			boolean shouldUseBow = target == null;
 			if(!shouldUseBow) {
-				 MobEffectInstance eff = target.getEffect(MobEffects.BLINDNESS);
-				 shouldUseBow = eff == null || eff.getDuration() < 20;
+				MobEffectInstance eff = target.getEffect(MobEffects.BLINDNESS);
+				shouldUseBow = eff == null || eff.getDuration() < 20;
 			}
 
 			boolean isUsingBow = getMainHandItem().getItem() instanceof BowItem;
@@ -97,7 +100,7 @@ public class Forgotten extends Skeleton {
 
 		double w = getBbWidth() * 2;
 		double h = getBbHeight();
-		level().addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w/2, getY() + Math.random() * h, getZ() + Math.random() * w - w/2, 0, 0, 0);
+		level().addParticle(ParticleTypes.AMBIENT_ENTITY_EFFECT, getX() + Math.random() * w - w / 2, getY() + Math.random() * h, getZ() + Math.random() * w - w / 2, 0, 0, 0);
 	}
 
 	private void swap() {
@@ -109,12 +112,11 @@ public class Forgotten extends Skeleton {
 
 		Stream<WrappedGoal> stream = goalSelector.getRunningGoals();
 		stream.map(WrappedGoal::getGoal)
-		.filter(g -> g instanceof MeleeAttackGoal || g instanceof RangedBowAttackGoal<?>)
-		.forEach(Goal::stop);
+				.filter(g -> g instanceof MeleeAttackGoal || g instanceof RangedBowAttackGoal<?>)
+				.forEach(Goal::stop);
 
 		reassessWeaponGoal();
 	}
-
 
 	@NotNull
 	@Override
@@ -148,12 +150,12 @@ public class Forgotten extends Skeleton {
 	protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHitIn) {
 		// NO-OP
 	}
-	
+
 	@Override
 	public boolean canPickUpLoot() {
 		return false;
 	}
-	
+
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource rand, @NotNull DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(rand, difficulty);
@@ -170,7 +172,7 @@ public class Forgotten extends Skeleton {
 
 		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class) && random.nextBoolean()) {
 			List<Item> items = RegistryUtil.getTagValues(level().registryAccess(), ColorRunesModule.runesLootableTag);
-			if (!items.isEmpty()) {
+			if(!items.isEmpty()) {
 				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
 				CompoundTag runeNbt = item.serializeNBT();
 

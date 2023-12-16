@@ -2,6 +2,7 @@ package org.violetmoon.quark.integration.lootr.client;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.Block;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.integration.lootr.LootrIntegration;

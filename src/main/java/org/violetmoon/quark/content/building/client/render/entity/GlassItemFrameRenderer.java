@@ -1,13 +1,5 @@
 package org.violetmoon.quark.content.building.client.render.entity;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.building.entity.GlassItemFrame;
-import org.violetmoon.quark.content.building.entity.GlassItemFrame.SignAttachment;
-import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
@@ -48,9 +40,18 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.common.MinecraftForge;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.building.entity.GlassItemFrame;
+import org.violetmoon.quark.content.building.entity.GlassItemFrame.SignAttachment;
+import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
+
+import java.util.List;
+
 /**
  * @author WireSegal
- * Created at 11:58 AM on 8/25/19.
+ *         Created at 11:58 AM on 8/25/19.
  */
 
 public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
@@ -84,7 +85,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 		Direction direction = frame.getDirection();
 		Vec3 Vector3d = this.getRenderOffset(frame, partialTicks);
 		matrix.translate(-Vector3d.x(), -Vector3d.y(), -Vector3d.z());
-		matrix.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+		matrix.translate((double) direction.getStepX() * 0.46875D, (double) direction.getStepY() * 0.46875D, (double) direction.getStepZ() * 0.46875D);
 		matrix.mulPose(Axis.XP.rotationDegrees(frame.getXRot()));
 		matrix.mulPose(Axis.YP.rotationDegrees(180.0F - frame.getYRot()));
 		BlockRenderDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
@@ -95,7 +96,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 		if(frame.getEntityData().get(GlassItemFrame.IS_SHINY))
 			light = 0xF000F0;
 
-		if (itemstack.isEmpty()) {
+		if(itemstack.isEmpty()) {
 			matrix.pushPose();
 			matrix.translate(-0.5D, -0.5D, -0.5D);
 			blockrendererdispatcher.getModelRenderer().renderModel(matrix.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, modelmanager.getModel(LOCATION_MODEL), 1.0F, 1.0F, 1.0F, light, OverlayTexture.NO_OVERLAY);
@@ -110,7 +111,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	@NotNull
 	@Override
 	public Vec3 getRenderOffset(GlassItemFrame frame, float partialTicks) {
-		return new Vec3((float)frame.getDirection().getStepX() * 0.3F, -0.25D, (float)frame.getDirection().getStepZ() * 0.3F);
+		return new Vec3((float) frame.getDirection().getStepX() * 0.3F, -0.25D, (float) frame.getDirection().getStepZ() * 0.3F);
 	}
 
 	@NotNull
@@ -121,10 +122,10 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 
 	@Override
 	protected boolean shouldShowName(@NotNull GlassItemFrame frame) {
-		if (Minecraft.renderNames() && !frame.getItem().isEmpty() && frame.getItem().hasCustomHoverName() && this.entityRenderDispatcher.crosshairPickEntity == frame) {
+		if(Minecraft.renderNames() && !frame.getItem().isEmpty() && frame.getItem().hasCustomHoverName() && this.entityRenderDispatcher.crosshairPickEntity == frame) {
 			double d0 = this.entityRenderDispatcher.distanceToSqr(frame);
 			float f = frame.isDiscrete() ? 32.0F : 64.0F;
-			return d0 < (double)(f * f);
+			return d0 < (double) (f * f);
 		} else {
 			return false;
 		}
@@ -136,21 +137,21 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 	}
 
 	protected void renderItemStack(GlassItemFrame itemFrame, PoseStack matrix, MultiBufferSource buff, int light, ItemStack stack) {
-		if (!stack.isEmpty()) {
+		if(!stack.isEmpty()) {
 			matrix.pushPose();
 			MapItemSavedData mapdata = MapItem.getSavedData(stack, itemFrame.level());
 
 			if(itemFrame.isOnSign()) {
 				SignAttachment attach = itemFrame.getSignAttachment();
-				
+
 				Direction ourDirection = itemFrame.getDirection().getOpposite();
 				int signRotation = itemFrame.getOnSignRotation();
-				
+
 				int ourRotation = SIGN_DIRECTIONS.indexOf(ourDirection) * 4;
 				int rotation = signRotation - ourRotation;
 				float angle = -rotation * 22.5F;
 				float scale = 0.32F;
-				
+
 				switch(attach) {
 				case STANDING_BEHIND:
 					angle += 180F;
@@ -163,13 +164,14 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 					angle = 0;
 					matrix.translate(0.0, -0.52, -0.01);
 
-				default: break; 
+				default:
+					break;
 				}
-				
+
 				matrix.translate(0, 0.35, 0.98);
 				matrix.scale(scale, scale, scale);
 				matrix.mulPose(Axis.YP.rotationDegrees(angle));
-				
+
 				switch(attach) {
 				case HANGING_IN_FRONT:
 					matrix.translate(0.0, -0.52 / scale, -0.075);
@@ -177,10 +179,11 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 				case HANGING_BEHIND:
 					matrix.translate(0.0, -0.52 / scale, 0.3);
 					break;
-					
-				default: break; 
+
+				default:
+					break;
 				}
-				
+
 				matrix.translate(0, 0, -0.5);
 				matrix.translate(0, 0, -0.085);
 			}
@@ -188,8 +191,8 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 			int rotation = mapdata != null ? itemFrame.getRotation() % 4 * 2 : itemFrame.getRotation();
 			matrix.mulPose(Axis.ZP.rotationDegrees((float) rotation * 360.0F / 8.0F));
 
-			if (!MinecraftForge.EVENT_BUS.post(new RenderItemInFrameEvent(itemFrame, defaultRenderer, matrix, buff, light))) {
-				if (mapdata != null) {
+			if(!MinecraftForge.EVENT_BUS.post(new RenderItemInFrameEvent(itemFrame, defaultRenderer, matrix, buff, light))) {
+				if(mapdata != null) {
 					matrix.mulPose(Axis.ZP.rotationDegrees(180.0F));
 					matrix.scale(0.0078125F, 0.0078125F, 0.0078125F);
 					matrix.translate(-64.0F, -64.0F, 62.5F); // <- Use 62.5 instead of 64 to prevent z-fighting
@@ -198,7 +201,7 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 					this.mc.gameRenderer.getMapRenderer().render(matrix, buff, mapID, mapdata, true, light);
 				} else {
 					float s = (float) GlassItemFrameModule.itemRenderScale;
-					if (stack.getItem() instanceof BannerItem bannerItem) {
+					if(stack.getItem() instanceof BannerItem bannerItem) {
 						banner.fromItem(stack, bannerItem.getColor());
 						List<Pair<Holder<BannerPattern>, DyeColor>> patterns = banner.getPatterns();
 
@@ -207,9 +210,8 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 						matrix.scale(0.799999F, 0.399999F, 0.5F);
 						BannerRenderer.renderPatterns(matrix, buff, light, OverlayTexture.NO_OVERLAY, bannerModel, ModelBakery.BANNER_BASE, true, patterns);
 						matrix.popPose();
-					}
-					else {
-						if (stack.getItem() instanceof ShieldItem) {
+					} else {
+						if(stack.getItem() instanceof ShieldItem) {
 							s *= 2.66666667F;
 							matrix.translate(-0.25F, 0F, 0.5F);
 							matrix.scale(s, s, s);

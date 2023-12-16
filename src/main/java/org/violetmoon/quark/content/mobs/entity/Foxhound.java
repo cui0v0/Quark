@@ -57,6 +57,9 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.block.TinyPotatoBlock;
 import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -66,7 +69,6 @@ import org.violetmoon.quark.content.mobs.module.FoxhoundModule;
 import org.violetmoon.quark.content.tweaks.ai.WantLoveGoal;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -140,27 +142,27 @@ public class Foxhound extends Wolf implements Enemy {
 		} else if(pose == Pose.SLEEPING)
 			setPose(Pose.STANDING);
 
-		if (!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL && !isTame()) {
+		if(!level().isClientSide && level().getDifficulty() == Difficulty.PEACEFUL && !isTame()) {
 			discard();
 			return;
 		}
 
-		if (!level().isClientSide && timeUntilPotatoEmerges > 0) {
-			if (--timeUntilPotatoEmerges == 0) {
+		if(!level().isClientSide && timeUntilPotatoEmerges > 0) {
+			if(--timeUntilPotatoEmerges == 0) {
 				setTatering(false);
 				ItemStack stack = new ItemStack(TinyPotatoModule.tiny_potato);
 				ItemNBTHelper.setBoolean(stack, TinyPotatoBlock.ANGRY, true);
 				spawnAtLocation(stack);
 				playSound(QuarkSounds.BLOCK_POTATO_HURT, 1f, 1f);
-			} else if (!isTatering())
+			} else if(!isTatering())
 				setTatering(true);
 		}
 
 		if(isSleeping()) {
 			Optional<BlockPos> sleepPos = getSleepingPos();
-			if (sleepPos.isPresent()) {
+			if(sleepPos.isPresent()) {
 				BlockPos pos = sleepPos.get();
-				if (distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 1)
+				if(distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 1)
 					stopSleeping();
 			}
 
@@ -169,9 +171,9 @@ public class Foxhound extends Wolf implements Enemy {
 				setBoundingBox(new AABB(aabb.minX - 0.2, aabb.minY, aabb.minZ - 0.2, aabb.maxX + 0.2, aabb.maxY + 0.5, aabb.maxZ + 0.2));
 		}
 
-		if (WantLoveGoal.needsPets(this)) {
+		if(WantLoveGoal.needsPets(this)) {
 			Entity owner = getOwner();
-			if (owner != null && owner.distanceToSqr(this) < 1 && !owner.isInWater() && !owner.fireImmune() && (!(owner instanceof Player player) || !player.getAbilities().invulnerable))
+			if(owner != null && owner.distanceToSqr(this) < 1 && !owner.isInWater() && !owner.fireImmune() && (!(owner instanceof Player player) || !player.getAbilities().invulnerable))
 				owner.setSecondsOnFire(5);
 		}
 
@@ -185,7 +187,7 @@ public class Foxhound extends Wolf implements Enemy {
 
 			level().addParticle(particle, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
 
-			if (isTatering() && random.nextDouble() < 0.1) {
+			if(isTatering() && random.nextDouble() < 0.1) {
 				level().addParticle(ParticleTypes.LARGE_SMOKE, pos.x + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), pos.y + (this.random.nextDouble() - 0.5D) * this.getBbHeight(), pos.z + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0.0D, 0.0D, 0.0D);
 
 				level().playLocalSound(pos.x, pos.y, pos.z, QuarkSounds.ENTITY_FOXHOUND_CRACKLE, getSoundSource(), 1.0F, 1.0F, false);
@@ -196,14 +198,14 @@ public class Foxhound extends Wolf implements Enemy {
 		if(isTame() && FoxhoundModule.foxhoundsSpeedUpFurnaces) {
 			BlockPos below = blockPosition().below();
 			BlockEntity tile = level().getBlockEntity(below);
-			if (tile instanceof AbstractFurnaceBlockEntity furnace) {
+			if(tile instanceof AbstractFurnaceBlockEntity furnace) {
 				int cookTime = furnace.cookingProgress;
-				if (cookTime > 0 && cookTime % 3 == 0) {
+				if(cookTime > 0 && cookTime % 3 == 0) {
 					List<Foxhound> foxhounds = level().getEntitiesOfClass(Foxhound.class, new AABB(blockPosition()),
 							(fox) -> fox != null && fox.isTame());
 					if(!foxhounds.isEmpty() && foxhounds.get(0) == this) {
 						furnace.cookingProgress = furnace.cookingProgress == 3 ? 5 : Math.min(furnace.cookingTotalTime - 1, cookTime + 1);
-						
+
 						LivingEntity owner = getOwner();
 						if(owner != null && owner instanceof ServerPlayer sp)
 							FoxhoundModule.foxhoundFurnaceTrigger.trigger(sp);
@@ -255,23 +257,23 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	public int getRemainingPersistentAngerTime() {
-		if (!isTame() && level().getDifficulty() != Difficulty.PEACEFUL)
+		if(!isTame() && level().getDifficulty() != Difficulty.PEACEFUL)
 			return 0;
 		return super.getRemainingPersistentAngerTime();
 	}
 
 	@Override
 	public boolean doHurtTarget(Entity entityIn) {
-		if (entityIn.getType().fireImmune()) {
-			if (entityIn instanceof Player)
+		if(entityIn.getType().fireImmune()) {
+			if(entityIn instanceof Player)
 				return false;
 			return super.doHurtTarget(entityIn);
 		}
 
 		boolean flag = entityIn.hurt(level().damageSources().onFire(),
-				((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+				((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 
-		if (flag) {
+		if(flag) {
 			entityIn.setSecondsOnFire(5);
 			this.doEnchantDamageEffects(this, entityIn);
 		}
@@ -293,19 +295,19 @@ public class Foxhound extends Wolf implements Enemy {
 		if(itemstack.getItem() == Items.BONE && !isTame())
 			return InteractionResult.PASS;
 
-		if (this.isTame()) {
-			if (timeUntilPotatoEmerges <= 0 && itemstack.is(TinyPotatoModule.tiny_potato.asItem())) {
+		if(this.isTame()) {
+			if(timeUntilPotatoEmerges <= 0 && itemstack.is(TinyPotatoModule.tiny_potato.asItem())) {
 				timeUntilPotatoEmerges = 600;
 
 				playSound(QuarkSounds.ENTITY_FOXHOUND_EAT, 1f, 1f);
-				if (!player.getAbilities().instabuild)
+				if(!player.getAbilities().instabuild)
 					itemstack.shrink(1);
 				return InteractionResult.SUCCESS;
 			}
 		} else {
-			if (!itemstack.isEmpty()) {
-				if (itemstack.getItem() == Items.COAL && (level().getDifficulty() == Difficulty.PEACEFUL || player.getAbilities().invulnerable || player.getEffect(MobEffects.FIRE_RESISTANCE) != null) && !level().isClientSide) {
-					if (random.nextDouble() < FoxhoundModule.tameChance) {
+			if(!itemstack.isEmpty()) {
+				if(itemstack.getItem() == Items.COAL && (level().getDifficulty() == Difficulty.PEACEFUL || player.getAbilities().invulnerable || player.getEffect(MobEffects.FIRE_RESISTANCE) != null) && !level().isClientSide) {
+					if(random.nextDouble() < FoxhoundModule.tameChance) {
 						this.tame(player);
 						this.navigation.stop();
 						this.setTarget(null);
@@ -316,7 +318,7 @@ public class Foxhound extends Wolf implements Enemy {
 						this.level().broadcastEntityEvent(this, (byte) 6);
 					}
 
-					if (!player.getAbilities().instabuild)
+					if(!player.getAbilities().instabuild)
 						itemstack.shrink(1);
 					return InteractionResult.SUCCESS;
 				}
@@ -340,7 +342,7 @@ public class Foxhound extends Wolf implements Enemy {
 		Foxhound kid = new Foxhound(FoxhoundModule.foxhoundType, this.level());
 		UUID uuid = this.getOwnerUUID();
 
-		if (uuid != null) {
+		if(uuid != null) {
 			kid.setOwnerUUID(uuid);
 			kid.setTame(true);
 		}
@@ -371,12 +373,12 @@ public class Foxhound extends Wolf implements Enemy {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		if (isSleeping()) {
+		if(isSleeping()) {
 			return null;
 		}
-		if (this.isAngry()) {
+		if(this.isAngry()) {
 			return QuarkSounds.ENTITY_FOXHOUND_GROWL;
-		} else if (this.random.nextInt(3) == 0) {
+		} else if(this.random.nextInt(3) == 0) {
 			return this.isTame() && this.getHealth() < 10.0F ? QuarkSounds.ENTITY_FOXHOUND_WHINE : QuarkSounds.ENTITY_FOXHOUND_PANT;
 		} else {
 			return QuarkSounds.ENTITY_FOXHOUND_IDLE;
@@ -410,7 +412,7 @@ public class Foxhound extends Wolf implements Enemy {
 	}
 
 //	public static boolean canSpawnHere(IServerWorld world, BlockPos pos, Random rand) {
-//		if (world.getLightFor(LightType.SKY, pos) > rand.nextInt(32)) {
+//		if(world.getLightFor(LightType.SKY, pos) > rand.nextInt(32)) {
 //			return false;
 //		} else {
 //			int light = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(pos, 10) : world.getLight(pos);

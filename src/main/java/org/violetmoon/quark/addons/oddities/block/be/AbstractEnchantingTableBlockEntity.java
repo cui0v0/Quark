@@ -1,12 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block.be;
 
-import java.util.Random;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.base.util.SimpleInventoryBlockEntity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,6 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.base.util.SimpleInventoryBlockEntity;
+
+import java.util.Random;
+
 public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventoryBlockEntity implements Nameable {
 
 	public int tickCount;
@@ -28,7 +28,7 @@ public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventory
 
 	private static final Random rand = new Random();
 	private Component customName;
-	
+
 	public AbstractEnchantingTableBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 	}
@@ -42,16 +42,16 @@ public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventory
 	public boolean isAutomationEnabled() {
 		return false;
 	}
-	
+
 	@Override
 	protected void saveAdditional(CompoundTag compoundTag) {
 		super.saveAdditional(compoundTag);
-		
+
 		if(hasCustomName())
 			compoundTag.putString("CustomName", Component.Serializer.toJson(customName));
 	}
 
-	@Override 
+	@Override
 	public void load(CompoundTag compound) {
 		super.load(compound);
 
@@ -68,54 +68,46 @@ public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventory
 		this.bookRotationPrev = this.bookRotation;
 		Player entityplayer = this.level.getNearestPlayer((this.worldPosition.getX() + 0.5F), (this.worldPosition.getY() + 0.5F), (this.worldPosition.getZ() + 0.5F), 3.0D, false);
 
-		if (entityplayer != null)
-		{
+		if(entityplayer != null) {
 			double d0 = entityplayer.getX() - (this.worldPosition.getX() + 0.5F);
 			double d1 = entityplayer.getZ() - (this.worldPosition.getZ() + 0.5F);
-			this.tRot = (float)Mth.atan2(d1, d0);
+			this.tRot = (float) Mth.atan2(d1, d0);
 			this.bookSpread += 0.1F;
 
-			if (this.bookSpread < 0.5F || rand.nextInt(40) == 0)
-			{
+			if(this.bookSpread < 0.5F || rand.nextInt(40) == 0) {
 				float f1 = this.flipT;
 
 				do {
 					this.flipT += (rand.nextInt(4) - rand.nextInt(4));
-				} while (!(f1 != this.flipT));
+				} while(!(f1 != this.flipT));
 			}
-		}
-		else
-		{
+		} else {
 			this.tRot += 0.02F;
 			this.bookSpread -= 0.1F;
 		}
 
-		while (this.bookRotation >= (float)Math.PI)
-		{
-			this.bookRotation -= ((float)Math.PI * 2F);
+		while(this.bookRotation >= (float) Math.PI) {
+			this.bookRotation -= ((float) Math.PI * 2F);
 		}
 
-		while (this.bookRotation < -(float)Math.PI)
-		{
-			this.bookRotation += ((float)Math.PI * 2F);
+		while(this.bookRotation < -(float) Math.PI) {
+			this.bookRotation += ((float) Math.PI * 2F);
 		}
 
-		while (this.tRot >= (float)Math.PI)
-		{
-			this.tRot -= ((float)Math.PI * 2F);
+		while(this.tRot >= (float) Math.PI) {
+			this.tRot -= ((float) Math.PI * 2F);
 		}
 
-		while (this.tRot < -(float)Math.PI)
-		{
-			this.tRot += ((float)Math.PI * 2F);
+		while(this.tRot < -(float) Math.PI) {
+			this.tRot += ((float) Math.PI * 2F);
 		}
 
 		float f2 = this.tRot - this.bookRotation;
 
-		while (f2 >= Math.PI)
+		while(f2 >= Math.PI)
 			f2 -= (Math.PI * 2F);
 
-		while (f2 < -Math.PI)
+		while(f2 < -Math.PI)
 			f2 += (Math.PI * 2F);
 
 		this.bookRotation += f2 * 0.4F;
@@ -154,20 +146,20 @@ public abstract class AbstractEnchantingTableBlockEntity extends SimpleInventory
 		super.inventoryChanged(i);
 		sync();
 	}
-	
+
 	@Override
 	protected boolean needsToSyncInventory() {
 		return true;
 	}
-	
+
 	@Override
 	public void sync() {
 		MiscUtil.syncTE(this);
 	}
-	
+
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
-	
+
 }

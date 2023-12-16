@@ -37,7 +37,7 @@ public enum AttributeSlot {
 
 	@NotNull
 	public EquipmentSlot getCanonicalSlot() {
-		if (canonicalSlot == null)
+		if(canonicalSlot == null)
 			throw new IllegalStateException("Potions have no canonical slot");
 		return canonicalSlot;
 	}
@@ -47,25 +47,25 @@ public enum AttributeSlot {
 	}
 
 	public static AttributeSlot fromCanonicalSlot(@NotNull EquipmentSlot slot) {
-		switch (slot) {
-			case OFFHAND -> {
-				return OFFHAND;
-			}
-			case FEET -> {
-				return FEET;
-			}
-			case LEGS -> {
-				return LEGS;
-			}
-			case CHEST -> {
-				return CHEST;
-			}
-			case HEAD -> {
-				return HEAD;
-			}
-			default -> {
-				return MAINHAND;
-			}
+		switch(slot) {
+		case OFFHAND -> {
+			return OFFHAND;
+		}
+		case FEET -> {
+			return FEET;
+		}
+		case LEGS -> {
+			return LEGS;
+		}
+		case CHEST -> {
+			return CHEST;
+		}
+		case HEAD -> {
+			return HEAD;
+		}
+		default -> {
+			return MAINHAND;
+		}
 		}
 	}
 }

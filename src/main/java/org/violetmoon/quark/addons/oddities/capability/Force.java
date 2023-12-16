@@ -6,10 +6,10 @@ import net.minecraft.core.Vec3i;
 
 /**
  * @author WireSegal
- * Created at 4:30 PM on 3/1/20.
+ *         Created at 4:30 PM on 3/1/20.
  */
 public record Force(int magnitude, boolean pushing, Direction direction, int distance,
-					BlockPos origin) {
+		BlockPos origin) {
 
 	public Vec3i add(Vec3i force) {
 		return new Vec3i(force.getX() + direction.getStepX() * magnitude,

@@ -1,15 +1,5 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
-import org.violetmoon.zeta.event.play.entity.living.ZBabyEntitySpawn;
-import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +17,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.play.entity.ZEntityJoinLevel;
+import org.violetmoon.zeta.event.play.entity.living.ZBabyEntitySpawn;
+import org.violetmoon.zeta.event.play.entity.living.ZLivingTick;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
 
 @ZetaLoadModule(category = "tweaks")
 public class PigLittersModule extends ZetaModule {
@@ -55,7 +55,7 @@ public class PigLittersModule extends ZetaModule {
 	}
 
 	public static void onEat(Animal animal, ItemStack stack) {
-		if (animal instanceof Pig && canEat(stack))
+		if(animal instanceof Pig && canEat(stack))
 			animal.getPersistentData().putBoolean(GOLDEN_CARROT_TAG, true);
 	}
 
@@ -68,18 +68,18 @@ public class PigLittersModule extends ZetaModule {
 
 	@PlayEvent
 	public void onPigAppear(ZEntityJoinLevel event) {
-		if (pigsEatGoldenCarrots && event.getEntity() instanceof Pig pig) {
+		if(pigsEatGoldenCarrots && event.getEntity() instanceof Pig pig) {
 			boolean alreadySetUp = pig.goalSelector.getAvailableGoals().stream()
 					.anyMatch(goal -> goal.getGoal() instanceof TemptGoal tempt && tempt.items.test(new ItemStack(Items.GOLDEN_CARROT)));
 
-			if (!alreadySetUp) {
+			if(!alreadySetUp) {
 				int priority = pig.goalSelector.getAvailableGoals().stream()
 						.filter(goal -> goal.getGoal() instanceof TemptGoal)
 						.findFirst()
 						.map(WrappedGoal::getPriority)
 						.orElse(-1);
 
-				if (priority >= 0)
+				if(priority >= 0)
 					MiscUtil.addGoalJustAfterLatestWithPriority(pig.goalSelector, 4, new TemptGoal(pig, 1.2D, Ingredient.of(Items.GOLDEN_CARROT), false));
 			}
 		}
@@ -88,7 +88,7 @@ public class PigLittersModule extends ZetaModule {
 	@PlayEvent
 	public void onEntityUpdate(ZLivingTick event) {
 		LivingEntity entity = event.getEntity();
-		if (entity instanceof Animal animal && !animal.isInLove())
+		if(entity instanceof Animal animal && !animal.isInLove())
 			animal.getPersistentData().remove(GOLDEN_CARROT_TAG);
 	}
 
@@ -97,25 +97,25 @@ public class PigLittersModule extends ZetaModule {
 		AgeableMob mob = event.getChild();
 		Mob mobA = event.getParentA();
 		Mob mobB = event.getParentB();
-		if (mob instanceof Pig) {
+		if(mob instanceof Pig) {
 			Level lvl = mob.level();
-			if (lvl instanceof ServerLevel level &&
+			if(lvl instanceof ServerLevel level &&
 					mobA instanceof Animal parentA &&
-					mobB instanceof Animal parentB){
+					mobB instanceof Animal parentB) {
 				int litterSize = getNumberBetween(level.random, minPigLitterSize, maxPigLitterSize);
 
-				if (mobA.getPersistentData().getBoolean(GOLDEN_CARROT_TAG))
+				if(mobA.getPersistentData().getBoolean(GOLDEN_CARROT_TAG))
 					litterSize += getNumberBetween(level.random, minGoldenCarrotBoost, maxGoldenCarrotBoost);
 
-				if (mobB.getPersistentData().getBoolean(GOLDEN_CARROT_TAG))
+				if(mobB.getPersistentData().getBoolean(GOLDEN_CARROT_TAG))
 					litterSize += getNumberBetween(level.random, minGoldenCarrotBoost, maxGoldenCarrotBoost);
 
-				if (litterSize > 1) {
-					for (int i = 1; i < litterSize; i++) {
+				if(litterSize > 1) {
+					for(int i = 1; i < litterSize; i++) {
 						AgeableMob newChild = parentA.getBreedOffspring(level, parentB);
-						if (newChild != null) {
+						if(newChild != null) {
 							Player cause = event.getCausedByPlayer();
-							if (cause instanceof ServerPlayer player) {
+							if(cause instanceof ServerPlayer player) {
 								player.awardStat(Stats.ANIMALS_BRED);
 								CriteriaTriggers.BRED_ANIMALS.trigger(player, parentA, parentB, newChild);
 							}

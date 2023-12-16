@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.client.screen;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -9,7 +10,9 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.inventory.CrateMenu;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
 import org.violetmoon.quark.base.Quark;
@@ -18,7 +21,6 @@ import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTar
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.client.module.ChestSearchingModule;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
@@ -61,7 +63,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	private boolean canScroll() {
 		return (menu.getStackCount() / CrateMenu.numCols) > 0;
 	}
-	
+
 	private float getPxPerScroll() {
 		return 95F / (menu.getStackCount() / CrateMenu.numCols);
 	}
@@ -78,7 +80,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	public boolean mouseClicked(double p_98531_, double p_98532_, int p_98533_) {
 		if(p_98533_ == 0 && insideScrollbar(p_98531_, p_98532_)) {
 			scrolling = canScroll();
-			
+
 			return true;
 		}
 
@@ -98,30 +100,31 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 	public boolean mouseDragged(double mouseX, double mouseY, int p_98537_, double p_98538_, double p_98539_) {
 		if(scrolling) {
 			int top = topPos + 18;
-			
+
 			double relative = mouseY - top - 6;
 			if(relative < 0)
 				relative = 0;
 			else if(relative > 95)
 				relative = 95;
-			
+
 			scrollOffs = (int) relative;
-			
+
 			float diff = (float) (scrollOffs - lastScroll);
 			float pixelsNeeded = getPxPerScroll();
-			
+
 			while(Math.abs(diff) >= pixelsNeeded) {
 				boolean up = diff > 0;
-				
+
 				menu.scroll(up, true);
 				lastScroll = Math.round((menu.scroll / CrateMenu.numCols) * pixelsNeeded);
 				diff = (float) (scrollOffs - lastScroll);
 			}
-			
+
 			return true;
-		} 
-		
-		else return super.mouseDragged(mouseX, mouseY, p_98537_, p_98538_, p_98539_);
+		}
+
+		else
+			return super.mouseDragged(mouseX, mouseY, p_98537_, p_98538_, p_98539_);
 	}
 
 	@Override
@@ -147,7 +150,7 @@ public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
 		int by = j + 18 + scrollOffs;
 		guiGraphics.blit(TEXTURE, i + imageWidth, by, u, 0, 12, 15);
 
-		if (!Quark.ZETA.modules.get(ChestSearchingModule.class).searchBarShown()) {
+		if(!Quark.ZETA.modules.get(ChestSearchingModule.class).searchBarShown()) {
 			String s = menu.getTotal() + "/" + CrateModule.maxItems;
 
 			int color = MiscUtil.Client.getGuiTextColor("crate_count");

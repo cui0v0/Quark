@@ -1,12 +1,6 @@
 package org.violetmoon.quark.base.item.boat;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.handler.WoodSetHandler;
-import org.violetmoon.quark.base.handler.WoodSetHandler.QuarkBoatType;
-
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,6 +12,11 @@ import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.base.handler.WoodSetHandler;
+import org.violetmoon.quark.base.handler.WoodSetHandler.QuarkBoatType;
 
 public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 
@@ -58,7 +57,7 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 	@Override
 	protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		if (tag.contains("QuarkType", 8)) {
+		if(tag.contains("QuarkType", 8)) {
 			setQuarkBoatType(tag.getString("QuarkType"));
 		}
 	}
@@ -86,7 +85,7 @@ public class QuarkChestBoat extends ChestBoat implements IQuarkBoat {
 	public void setVariant(@NotNull Type type) {
 		// NO-OP
 	}
-	
+
 	@Override
 	public void setQuarkBoatTypeObj(QuarkBoatType type) {
 		setQuarkBoatType(type.name());

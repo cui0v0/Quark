@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.experimental.module;
 
 import com.mojang.text2speech.Narrator;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZInput;
@@ -70,10 +72,11 @@ public class NarratorReadoutModule extends ZetaModule {
 					return (keybind.matchesMouse(key) &&
 							(keybind.getKeyModifier() == KeyModifier.NONE || keybind.getKeyModifier().isActive(KeyConflictContext.GUI)));
 
-				else return (keybind.matches(key, scancode) &&
-						(keybind.getKeyModifier() == KeyModifier.NONE || keybind.getKeyModifier().isActive(KeyConflictContext.GUI)));
-			}
-			else return keybind.isDown();
+				else
+					return (keybind.matches(key, scancode) &&
+							(keybind.getKeyModifier() == KeyModifier.NONE || keybind.getKeyModifier().isActive(KeyConflictContext.GUI)));
+			} else
+				return keybind.isDown();
 		}
 
 		private void acceptInput(boolean down, boolean full) {
@@ -151,7 +154,8 @@ public class NarratorReadoutModule extends ZetaModule {
 					if(!stack.isEmpty()) {
 						if(!stack2.isEmpty())
 							sb.append(I18n.get("quark.readout.holding_with_off", stack.getCount(), stack.getHoverName().getString(), stack2.getCount(), stack2.getHoverName().getString()));
-						else sb.append(I18n.get("quark.readout.holding", stack.getCount(), stack.getHoverName().getString()));
+						else
+							sb.append(I18n.get("quark.readout.holding", stack.getCount(), stack.getHoverName().getString()));
 
 						sb.append(", ");
 					}
@@ -193,10 +197,9 @@ public class NarratorReadoutModule extends ZetaModule {
 							sb.append(", ");
 						}
 					}
-				}
-				else sb.append(mc.screen.getNarrationMessage());
+				} else
+					sb.append(mc.screen.getNarrationMessage());
 			}
-
 
 			return sb.toString();
 		}

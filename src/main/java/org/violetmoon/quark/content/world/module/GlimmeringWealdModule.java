@@ -1,17 +1,14 @@
 package org.violetmoon.quark.content.world.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
@@ -38,6 +35,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
@@ -70,21 +68,27 @@ public class GlimmeringWealdModule extends ZetaModule {
 	public static Holder<PlacedFeature> placed_glow_shrooms;
 	public static Holder<PlacedFeature> placed_glow_extras;
 
-	@Hint public static Block glow_shroom;
-	@Hint public static Block glow_lichen_growth;
+	@Hint
+	public static Block glow_shroom;
+	@Hint
+	public static Block glow_lichen_growth;
 	public static Block glow_shroom_block;
 	public static Block glow_shroom_stem;
 	public static Block glow_shroom_ring;
 
 	public static TagKey<Item> glowShroomFeedablesTag;
 
-	@Config(name = "Min Depth Range",
-			description = "Experimental, dont change if you dont know what you are doing. Depth min value from which biome will spawn. Decreasing will make biome appear more often")
+	@Config(
+		name = "Min Depth Range",
+		description = "Experimental, dont change if you dont know what you are doing. Depth min value from which biome will spawn. Decreasing will make biome appear more often"
+	)
 	@Config.Min(-2)
 	@Config.Max(2)
 	public static double minDepthRange = 1.55F;
-	@Config(name = "Max Weirdness Range",
-			description = "Experimental, dont change if you dont know what you are doing. Depth max value until which biome will spawn. Increasing will make biome appear more often")
+	@Config(
+		name = "Max Weirdness Range",
+		description = "Experimental, dont change if you dont know what you are doing. Depth max value until which biome will spawn. Increasing will make biome appear more often"
+	)
 	@Config.Min(-2)
 	@Config.Max(2)
 	public static double maxDepthRange = 2;
@@ -108,9 +112,9 @@ public class GlimmeringWealdModule extends ZetaModule {
 		placed_glow_extras = place(event, "glow_extras", new GlowExtrasFeature(), GlowExtrasFeature.placed());
 		ore_lapis_extra = event.getRegistry().registerDynamicF(lookup -> {
 			Holder<ConfiguredFeature<?, ?>> lapisConfigured = lookup.lookup(Registries.CONFIGURED_FEATURE)
-				.orElseThrow() //it better exist
-				.getter()
-				.getOrThrow(OreFeatures.ORE_LAPIS); //it better exist
+					.orElseThrow() //it better exist
+					.getter()
+					.getOrThrow(OreFeatures.ORE_LAPIS); //it better exist
 			return new PlacedFeature(lapisConfigured, OrePlacements.commonOrePlacement(12, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
 		}, Quark.asResourceKey(Registries.PLACED_FEATURE, "ore_lapis_glimmering_weald"), Registries.PLACED_FEATURE);
 
@@ -148,17 +152,17 @@ public class GlimmeringWealdModule extends ZetaModule {
 	public void postRegister(ZRegister.Post e) {
 		float wmin = (float) minDepthRange;
 		float wmax = (float) maxDepthRange;
-		if(wmin >= wmax){
+		if(wmin >= wmax) {
 			Quark.LOG.warn("Incorrect value for Glimmering Weald biome parameters. Using default");
 			wmax = 2;
 			wmin = 1.55f;
 		}
 		Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0F, 1.0F);
 		Quark.TERRABLENDER_INTEGRATION.registerUndergroundBiome(this, BIOME_NAME, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE,
-						Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F));
+				Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F));
 
 		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

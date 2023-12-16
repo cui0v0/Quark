@@ -1,10 +1,12 @@
 package org.violetmoon.quark.addons.oddities.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import org.violetmoon.quark.addons.oddities.block.MagnetBlock;
 import org.violetmoon.quark.addons.oddities.block.MovingMagnetizedBlock;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetBlockEntity;
@@ -34,12 +36,14 @@ public class MagnetsModule extends ZetaModule {
 	@Config(description = "Any items you place in this list will be derived so that any block made of it will become magnetizable")
 	public static List<String> magneticDerivationList = Lists.newArrayList("minecraft:iron_ingot", "minecraft:copper_ingot", "minecraft:exposed_copper", "minecraft:weathered_copper", "minecraft:oxidized_copper", "minecraft:raw_iron", "minecraft:raw_copper", "minecraft:iron_ore", "minecraft:deepslate_iron_ore", "minecraft:copper_ore", "minecraft:deepslate_copper_ore");
 
-	@Config public static List<String> magneticWhitelist = Lists.newArrayList("minecraft:chipped_anvil", "minecraft:damaged_anvil");
-	@Config public static List<String> magneticBlacklist = Lists.newArrayList("minecraft:tripwire_hook");
+	@Config
+	public static List<String> magneticWhitelist = Lists.newArrayList("minecraft:chipped_anvil", "minecraft:damaged_anvil");
+	@Config
+	public static List<String> magneticBlacklist = Lists.newArrayList("minecraft:tripwire_hook");
 
-	@Config(flag = "magnet_pre_end")  
+	@Config(flag = "magnet_pre_end")
 	public static boolean usePreEndRecipe = false;
-	
+
 	@Hint
 	public static Block magnet;
 	public static Block magnetized_block;

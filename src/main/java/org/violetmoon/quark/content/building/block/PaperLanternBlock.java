@@ -1,19 +1,19 @@
 package org.violetmoon.quark.content.building.block;
 
-import net.minecraft.world.level.material.MapColor;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.block.OldMaterials;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -26,11 +26,11 @@ public class PaperLanternBlock extends ZetaBlock {
 
 	public PaperLanternBlock(String regname, @Nullable ZetaModule module) {
 		super(regname, module,
-			OldMaterials.wood()
-				.mapColor(MapColor.SNOW)
-				.sound(SoundType.WOOD)
-				.lightLevel(b -> 15)
-				.strength(1.5F));
+				OldMaterials.wood()
+						.mapColor(MapColor.SNOW)
+						.sound(SoundType.WOOD)
+						.lightLevel(b -> 15)
+						.strength(1.5F));
 
 		if(module == null) //auto registration below this line
 			return;

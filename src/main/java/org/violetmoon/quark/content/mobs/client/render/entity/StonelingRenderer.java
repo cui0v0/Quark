@@ -1,5 +1,9 @@
 package org.violetmoon.quark.content.mobs.client.render.entity;
 
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -7,10 +11,6 @@ import org.violetmoon.quark.content.mobs.client.layer.StonelingItemLayer;
 import org.violetmoon.quark.content.mobs.client.layer.StonelingLichenLayer;
 import org.violetmoon.quark.content.mobs.client.model.StonelingModel;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
-
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
 
 public class StonelingRenderer extends MobRenderer<Stoneling, StonelingModel> {
 

@@ -2,12 +2,15 @@ package org.violetmoon.quark.content.client.module;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.platform.InputConstants.Type;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.resources.language.I18n;
+
 import org.lwjgl.glfw.GLFW;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZScreen;
@@ -53,12 +56,12 @@ public class BackButtonKeybindModule extends ZetaModule {
 
 		private void clicc() {
 			ImmutableSet<String> buttons = ImmutableSet.of(
-				I18n.get("gui.back"),
-				I18n.get("gui.done"),
-				I18n.get("gui.cancel"),
-				I18n.get("gui.toTitle"),
-				I18n.get("gui.toMenu"),
-				I18n.get("quark.gui.config.save"));
+					I18n.get("gui.back"),
+					I18n.get("gui.done"),
+					I18n.get("gui.cancel"),
+					I18n.get("gui.toTitle"),
+					I18n.get("gui.toMenu"),
+					I18n.get("quark.gui.config.save"));
 
 			// Iterate this way to ensure we match the more important back buttons first
 			for(String b : buttons)

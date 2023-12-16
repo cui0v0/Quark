@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * @author WireSegal
- * Created at 4:27 PM on 3/1/20.
+ *         Created at 4:27 PM on 3/1/20.
  */
 public interface IMagnetTracker {
 	Vec3i getNetForce(BlockPos pos);

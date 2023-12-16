@@ -56,7 +56,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	public float getProgress(float ticks) {
-		if (ticks > 1.0F) {
+		if(ticks > 1.0F) {
 			ticks = 1.0F;
 		}
 
@@ -80,7 +80,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	private void moveCollidedEntities(float progress) {
-		if (this.level == null)
+		if(this.level == null)
 			return;
 
 		boolean sticky = Quark.ZETA.blockExtensions.get(magnetState).isStickyBlockZeta(magnetState);
@@ -88,23 +88,23 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 		Direction direction = this.magnetFacing;
 		double movement = (progress - this.progress);
 		VoxelShape collision = magnetState.getCollisionShape(this.level, this.getBlockPos());
-		if (!collision.isEmpty()) {
+		if(!collision.isEmpty()) {
 			List<AABB> boundingBoxes = collision.toAabbs();
 			AABB containingBox = this.moveByPositionAndProgress(this.getEnclosingBox(boundingBoxes));
 			List<Entity> entities = this.level.getEntities(null, this.getMovementArea(containingBox, direction, movement).minmax(containingBox));
-			if (!entities.isEmpty()) {
+			if(!entities.isEmpty()) {
 
-				for (Entity entity : entities) {
-					if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
-						if (sticky) {
+				for(Entity entity : entities) {
+					if(entity.getPistonPushReaction() != PushReaction.IGNORE) {
+						if(sticky) {
 							Vec3 motion = entity.getDeltaMovement();
 							double dX = motion.x;
 							double dY = motion.y;
 							double dZ = motion.z;
-							switch (direction.getAxis()) {
-								case X -> dX = direction.getStepX();
-								case Y -> dY = direction.getStepY();
-								case Z -> dZ = direction.getStepZ();
+							switch(direction.getAxis()) {
+							case X -> dX = direction.getStepX();
+							case Y -> dY = direction.getStepY();
+							case Z -> dZ = direction.getStepZ();
 							}
 
 							entity.setDeltaMovement(dX, dY, dZ);
@@ -112,18 +112,18 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 
 						double motion = 0.0D;
 
-						for (AABB aList : boundingBoxes) {
+						for(AABB aList : boundingBoxes) {
 							AABB movementArea = this.getMovementArea(this.moveByPositionAndProgress(aList), direction, movement);
 							AABB entityBox = entity.getBoundingBox();
-							if (movementArea.intersects(entityBox)) {
+							if(movementArea.intersects(entityBox)) {
 								motion = Math.max(motion, this.getMovement(movementArea, direction, entityBox));
-								if (motion >= movement) {
+								if(motion >= movement) {
 									break;
 								}
 							}
 						}
 
-						if (motion > 0) {
+						if(motion > 0) {
 							motion = Math.min(motion, movement) + 0.01D;
 							MOVING_ENTITY.set(direction);
 							entity.move(MoverType.PISTON, new Vec3(motion * direction.getStepX(), motion * direction.getStepY(), motion * direction.getStepZ()));
@@ -157,10 +157,10 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	private double getMovement(AABB bb1, Direction facing, AABB bb2) {
-		return switch (facing.getAxis()) {
-			case X -> getDeltaX(bb1, facing, bb2);
-			case Z -> getDeltaZ(bb1, facing, bb2);
-			default -> getDeltaY(bb1, facing, bb2);
+		return switch(facing.getAxis()) {
+		case X -> getDeltaX(bb1, facing, bb2);
+		case Z -> getDeltaZ(bb1, facing, bb2);
+		default -> getDeltaY(bb1, facing, bb2);
 		};
 	}
 
@@ -173,13 +173,13 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 		double d0 = movement * dir.getAxisDirection().getStep();
 		double d1 = Math.min(d0, 0.0D);
 		double d2 = Math.max(d0, 0.0D);
-		return switch (dir) {
-			case WEST -> new AABB(bb.minX + d1, bb.minY, bb.minZ, bb.minX + d2, bb.maxY, bb.maxZ);
-			case EAST -> new AABB(bb.maxX + d1, bb.minY, bb.minZ, bb.maxX + d2, bb.maxY, bb.maxZ);
-			case DOWN -> new AABB(bb.minX, bb.minY + d1, bb.minZ, bb.maxX, bb.minY + d2, bb.maxZ);
-			case NORTH -> new AABB(bb.minX, bb.minY, bb.minZ + d1, bb.maxX, bb.maxY, bb.minZ + d2);
-			case SOUTH -> new AABB(bb.minX, bb.minY, bb.maxZ + d1, bb.maxX, bb.maxY, bb.maxZ + d2);
-			default -> new AABB(bb.minX, bb.maxY + d1, bb.minZ, bb.maxX, bb.maxY + d2, bb.maxZ);
+		return switch(dir) {
+		case WEST -> new AABB(bb.minX + d1, bb.minY, bb.minZ, bb.minX + d2, bb.maxY, bb.maxZ);
+		case EAST -> new AABB(bb.maxX + d1, bb.minY, bb.minZ, bb.maxX + d2, bb.maxY, bb.maxZ);
+		case DOWN -> new AABB(bb.minX, bb.minY + d1, bb.minZ, bb.maxX, bb.minY + d2, bb.maxZ);
+		case NORTH -> new AABB(bb.minX, bb.minY, bb.minZ + d1, bb.maxX, bb.maxY, bb.minZ + d2);
+		case SOUTH -> new AABB(bb.minX, bb.minY, bb.maxZ + d1, bb.maxX, bb.maxY, bb.maxZ + d2);
+		default -> new AABB(bb.minX, bb.maxY + d1, bb.minZ, bb.maxX, bb.maxY + d2, bb.maxZ);
 		};
 	}
 
@@ -208,14 +208,14 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	public void finalizeContents(BlockState blockState) {
-		if (level == null || level.isClientSide)
+		if(level == null || level.isClientSide)
 			return;
 
 		SoundType soundType = blockState.getSoundType();
 		level.playSound(null, worldPosition, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1) * 0.05F, soundType.getPitch() * 0.8F);
 
 		BlockEntity newTile = getSubTile(worldPosition);
-		if (newTile != null)
+		if(newTile != null)
 			level.setBlockEntity(newTile);
 
 		IMagnetMoveAction action = getMoveAction();
@@ -224,7 +224,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	public BlockEntity getSubTile(BlockPos pos) {
-		if (subTile != null && !subTile.isEmpty()) {
+		if(subTile != null && !subTile.isEmpty()) {
 			CompoundTag tileData = subTile.copy();
 			tileData.putInt("x", this.worldPosition.getX());
 			tileData.putInt("y", this.worldPosition.getY());
@@ -236,13 +236,13 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	public void clearMagnetTileEntity() {
-		if (this.lastProgress < 1.0F && this.level != null) {
+		if(this.lastProgress < 1.0F && this.level != null) {
 			this.progress = 1.0F;
 			this.lastProgress = this.progress;
 
 			this.level.removeBlockEntity(this.worldPosition);
 			this.setRemoved();
-			if (this.level.getBlockState(this.worldPosition).getBlock() == MagnetsModule.magnetized_block) {
+			if(this.level.getBlockState(this.worldPosition).getBlock() == MagnetsModule.magnetized_block) {
 				BlockState blockstate = Block.updateFromNeighbourShapes(this.magnetState, this.level, this.worldPosition);
 				setAndUpdateBlock(blockstate, 3);
 			}
@@ -251,11 +251,11 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	private void setAndUpdateBlock(BlockState blockstate, int flag) {
-		if (this.level == null)
+		if(this.level == null)
 			return;
 		this.level.setBlock(this.worldPosition, blockstate, flag);
 		this.level.neighborChanged(this.worldPosition, blockstate.getBlock(), this.worldPosition);
-		if ((blockstate.getBlock() instanceof ButtonBlock || blockstate.getBlock() instanceof BasePressurePlateBlock) &&
+		if((blockstate.getBlock() instanceof ButtonBlock || blockstate.getBlock() instanceof BasePressurePlateBlock) &&
 				this.level instanceof ServerLevel serverLevel) {
 			blockstate.tick(serverLevel, this.worldPosition, serverLevel.random);
 			blockstate = this.level.getBlockState(this.worldPosition);
@@ -269,20 +269,20 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 	}
 
 	public void tick() {
-		if (this.level == null)
+		if(this.level == null)
 			return;
 		this.lastTicked = this.level.getGameTime();
 		this.lastProgress = this.progress;
-		if (this.lastProgress >= 1.0F) {
+		if(this.lastProgress >= 1.0F) {
 			this.level.removeBlockEntity(this.worldPosition);
 			this.setRemoved();
-			if (this.magnetState != null && this.level.getBlockState(this.worldPosition).getBlock() == MagnetsModule.magnetized_block) {
+			if(this.magnetState != null && this.level.getBlockState(this.worldPosition).getBlock() == MagnetsModule.magnetized_block) {
 				BlockState blockstate = Block.updateFromNeighbourShapes(this.magnetState, this.level, this.worldPosition);
-				if (blockstate.isAir()) {
+				if(blockstate.isAir()) {
 					this.level.setBlock(this.worldPosition, this.magnetState, 84);
 					Block.updateOrDestroy(this.magnetState, blockstate, this.level, this.worldPosition, 3);
 				} else {
-					if (blockstate.getValues().containsKey(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED)) {
+					if(blockstate.getValues().containsKey(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED)) {
 						blockstate = blockstate.setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE);
 					}
 
@@ -294,13 +294,12 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 			float newProgress = this.progress + 0.5F;
 			this.moveCollidedEntities(newProgress);
 			this.progress = newProgress;
-			if (this.progress >= 1.0F) {
+			if(this.progress >= 1.0F) {
 				this.progress = 1.0F;
 			}
 
 		}
 	}
-
 
 	@Override
 	public void load(@NotNull CompoundTag compound) {
@@ -327,7 +326,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 
 	private CompoundTag writeNBTData(CompoundTag compound, boolean includeSubTile) {
 		compound.put("blockState", NbtUtils.writeBlockState(this.magnetState));
-		if (includeSubTile)
+		if(includeSubTile)
 			compound.put("subTile", subTile);
 		compound.putInt("facing", this.magnetFacing.get3DDataValue());
 		compound.putFloat("progress", this.lastProgress);
@@ -336,7 +335,7 @@ public class MagnetizedBlockBlockEntity extends BlockEntity {
 
 	public VoxelShape getCollisionShape(BlockGetter world, BlockPos pos) {
 		Direction direction = MOVING_ENTITY.get();
-		if (this.progress < 1.0D && direction == this.magnetFacing) {
+		if(this.progress < 1.0D && direction == this.magnetFacing) {
 			return Shapes.empty();
 		} else {
 

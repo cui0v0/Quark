@@ -1,6 +1,13 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.GravisandBlock;
 import org.violetmoon.quark.content.automation.entity.Gravisand;
@@ -11,20 +18,13 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.core.Registry;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-
 @ZetaLoadModule(category = "automation")
 public class GravisandModule extends ZetaModule {
 
 	public static EntityType<Gravisand> gravisandType;
 
-	@Hint public static Block gravisand;
+	@Hint
+	public static Block gravisand;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -38,7 +38,6 @@ public class GravisandModule extends ZetaModule {
 				.build("gravisand");
 		Quark.ZETA.registry.register(gravisandType, "gravisand", Registries.ENTITY_TYPE);
 	}
-
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends GravisandModule {

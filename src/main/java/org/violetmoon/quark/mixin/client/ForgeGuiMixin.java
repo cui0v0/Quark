@@ -1,12 +1,13 @@
 package org.violetmoon.quark.mixin.client;
 
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.client.module.ElytraIndicatorModule;
-
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 @Mixin(ForgeGui.class)
 public class ForgeGuiMixin {
@@ -16,5 +17,5 @@ public class ForgeGuiMixin {
 		ElytraIndicatorModule module = Quark.ZETA.modules.get(ElytraIndicatorModule.class);
 		return module == null ? curr : module.getArmorLimit(curr);
 	}
-	
+
 }

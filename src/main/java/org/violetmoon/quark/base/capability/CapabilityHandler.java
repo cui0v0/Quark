@@ -1,5 +1,8 @@
 package org.violetmoon.quark.base.capability;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+
 import org.violetmoon.quark.addons.oddities.capability.MagnetTracker;
 import org.violetmoon.quark.api.ICustomSorting;
 import org.violetmoon.quark.api.IRuneColorProvider;
@@ -9,10 +12,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.play.loading.ZAttachCapabilities;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-
-//TODO: push these event handlers into their respective modules
+// TODO: push these event handlers into their respective modules
 public class CapabilityHandler {
 	private static final ResourceLocation DROPOFF_MANAGER = new ResourceLocation(Quark.MOD_ID, "dropoff");
 	private static final ResourceLocation SORTING_HANDLER = new ResourceLocation(Quark.MOD_ID, "sort");
@@ -35,7 +35,7 @@ public class CapabilityHandler {
 		if(event.getObject() instanceof ITransferManager impl)
 			event.addCapability(DROPOFF_MANAGER, QuarkCapabilities.TRANSFER, impl);
 	}
-	
+
 	@PlayEvent
 	public static void attachLevelCapabilities(ZAttachCapabilities.LevelCaps event) {
 		event.addCapability(MAGNET_TRACKER, QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, new MagnetTracker(event.getObject()));

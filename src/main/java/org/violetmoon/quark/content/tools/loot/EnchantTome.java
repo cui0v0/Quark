@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.tools.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -11,15 +12,15 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-import static org.violetmoon.quark.content.tools.module.AncientTomesModule.validEnchants;
-
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
 
+import static org.violetmoon.quark.content.tools.module.AncientTomesModule.validEnchants;
+
 /**
  * @author WireSegal
- * Created at 1:48 PM on 7/4/20.
+ *         Created at 1:48 PM on 7/4/20.
  */
 public class EnchantTome extends LootItemConditionalFunction {
 	public EnchantTome(LootItemCondition[] conditions) {

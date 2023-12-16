@@ -1,10 +1,8 @@
 package org.violetmoon.quark.content.world.module;
 
-import java.util.List;
-import java.util.OptionalInt;
-
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -23,6 +21,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.Config.Min;
@@ -46,6 +45,9 @@ import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.world.PassthruTreeGrower;
 
+import java.util.List;
+import java.util.OptionalInt;
+
 @ZetaLoadModule(category = "world")
 public class AncientWoodModule extends ZetaModule {
 
@@ -63,7 +65,6 @@ public class AncientWoodModule extends ZetaModule {
 	@Config
 	@Min(0)
 	public static int ancientCityLootQuality = 1;
-	
 
 	@Config(description = "Set to 0 to disable sniffer sniffing. The vanilla loot table has every entry at weight 1, so without editing it, it's impossible to make the sapling more rare")
 	@Min(0)
@@ -75,8 +76,10 @@ public class AncientWoodModule extends ZetaModule {
 
 	public static WoodSet woodSet;
 	public static Block ancient_leaves;
-	@Hint public static Block ancient_sapling;
-	@Hint public static Item ancient_fruit;
+	@Hint
+	public static Block ancient_sapling;
+	@Hint
+	public static Item ancient_fruit;
 	public static final ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey = Quark.asResourceKey(Registries.CONFIGURED_FEATURE, "ancient_tree");
 
 	public static ManualTrigger ancientFruitTrigger;
@@ -104,7 +107,7 @@ public class AncientWoodModule extends ZetaModule {
 
 		ancient_fruit = new AncientFruitItem(this);
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 		ancientFruitTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("ancient_fruit_overlevel");
 
 		// tree //
@@ -114,11 +117,11 @@ public class AncientWoodModule extends ZetaModule {
 		event.getRegistry().registerDynamic(AncientTreeTopperDecorator.TYPE, "ancient_tree_topper_decorator", Registries.TREE_DECORATOR_TYPE);
 
 		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
-			BlockStateProvider.simple(woodSet.log),
-			new MultiFoliageStraightTrunkPlacer(17, 4, 6, 5, 3),
-			BlockStateProvider.simple(ancient_leaves),
-			new FancyFoliagePlacer(UniformInt.of(2, 4), ConstantInt.of(-3), 2),
-			new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+				BlockStateProvider.simple(woodSet.log),
+				new MultiFoliageStraightTrunkPlacer(17, 4, 6, 5, 3),
+				BlockStateProvider.simple(ancient_leaves),
+				new FancyFoliagePlacer(UniformInt.of(2, 4), ConstantInt.of(-3), 2),
+				new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
 		).decorators(List.of(new AncientTreeTopperDecorator())).ignoreVines().build();
 		event.getRegistry().registerDynamic(new ConfiguredFeature<>((TreeFeature) Feature.TREE, treeCfg), configuredFeatureKey, Registries.CONFIGURED_FEATURE);
 	}
@@ -129,7 +132,7 @@ public class AncientWoodModule extends ZetaModule {
 
 		if(event.getName().equals(BuiltInLootTables.ANCIENT_CITY))
 			weight = ancientCityLootWeight;
-		
+
 		if(event.getName().equals(BuiltInLootTables.SNIFFER_DIGGING))
 			weight = sniffingLootWeight;
 

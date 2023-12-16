@@ -8,8 +8,10 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.automation.entity.Gravisand;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -70,7 +72,8 @@ public class GravisandBlock extends ZetaBlock {
 		if(!worldIn.isClientSide) {
 			if(tryFall(state, worldIn, pos, Direction.DOWN))
 				return true;
-			else return tryFall(state, worldIn, pos, Direction.UP);
+			else
+				return tryFall(state, worldIn, pos, Direction.UP);
 		}
 
 		return false;

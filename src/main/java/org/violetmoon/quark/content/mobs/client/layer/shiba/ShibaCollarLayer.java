@@ -33,7 +33,7 @@ public class ShibaCollarLayer extends RenderLayer<Shiba, ShibaModel> {
 
 	@Override
 	public void render(@NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light, Shiba foxhound, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch) {
-		if (foxhound.isTame() && !foxhound.isInvisible()) {
+		if(foxhound.isTame() && !foxhound.isInvisible()) {
 			float[] afloat = foxhound.getCollarColor().getTextureDiffuseColors();
 			renderColoredCutoutModel(getParentModel(), WOLF_COLLAR, matrix, buffer, light, foxhound, afloat[0], afloat[1], afloat[2]);
 		}

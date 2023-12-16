@@ -6,7 +6,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Parrot;
@@ -82,16 +81,16 @@ public class ParrotEgg extends ThrowableItemProjectile {
 	@Override
 	protected void onHit(@NotNull HitResult hitResult) {
 		super.onHit(hitResult);
-		if (!this.level().isClientSide) {
+		if(!this.level().isClientSide) {
 			Parrot parrot = EntityType.PARROT.create(level());
-			if (parrot != null) {
+			if(parrot != null) {
 				parrot.setVariant(Parrot.Variant.byId(getVariant()));
 				parrot.setAge(-24000);
 				parrot.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				level().addFreshEntity(parrot);
 			}
 
-			this.level().broadcastEntityEvent(this, (byte)EVENT_BREAK);
+			this.level().broadcastEntityEvent(this, (byte) EVENT_BREAK);
 			this.discard();
 		}
 	}

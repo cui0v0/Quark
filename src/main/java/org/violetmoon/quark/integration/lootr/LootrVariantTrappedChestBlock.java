@@ -22,18 +22,22 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
-import noobanidus.mods.lootr.config.ConfigManager;
-import noobanidus.mods.lootr.util.ChestUtil;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.building.block.VariantTrappedChestBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.IZetaBlockItemProvider;
 
 import java.util.function.Supplier;
 
+import noobanidus.mods.lootr.block.entities.LootrChestBlockEntity;
+import noobanidus.mods.lootr.config.ConfigManager;
+import noobanidus.mods.lootr.util.ChestUtil;
+
 /**
- * Copy of https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrVariantTrappedChestBlock.java
+ * Copy of
+ * https://github.com/noobanidus/Lootr/blob/ded29b761ebf271f53a1b976cf859e0f4bfc8d60/src/main/java/noobanidus/mods/lootr/block/LootrVariantTrappedChestBlock.java
  * All modifications are made purely to integrate with VariantTrappedChestBlock/quark
  */
 public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock implements IZetaBlockItemProvider {
@@ -45,9 +49,9 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 
 	@Override
 	public float getExplosionResistance() {
-		if (ConfigManager.BLAST_IMMUNE.get()) {
+		if(ConfigManager.BLAST_IMMUNE.get()) {
 			return Float.MAX_VALUE;
-		} else if (ConfigManager.BLAST_RESISTANT.get()) {
+		} else if(ConfigManager.BLAST_RESISTANT.get()) {
 			return 16.0f;
 		} else {
 			return super.getExplosionResistance();
@@ -76,9 +80,9 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult trace) {
-		if (player.isShiftKeyDown()) {
+		if(player.isShiftKeyDown()) {
 			ChestUtil.handleLootSneak(this, world, pos, player);
-		} else if (!ChestBlock.isChestBlockedAt(world, pos)) {
+		} else if(!ChestBlock.isChestBlockedAt(world, pos)) {
 			ChestUtil.handleLootChest(this, world, pos, player);
 		}
 		return InteractionResult.SUCCESS;
@@ -86,7 +90,7 @@ public class LootrVariantTrappedChestBlock extends VariantTrappedChestBlock impl
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
+		if(stateIn.getValue(WATERLOGGED)) {
 			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 

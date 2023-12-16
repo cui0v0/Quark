@@ -10,13 +10,13 @@
  */
 package org.violetmoon.quark.content.mobs.ai;
 
-import java.util.EnumSet;
-
-import org.violetmoon.quark.content.mobs.entity.Foxhound;
-
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.Goal;
+
+import org.violetmoon.quark.content.mobs.entity.Foxhound;
+
+import java.util.EnumSet;
 
 public class SleepGoal extends Goal {
 
@@ -31,17 +31,18 @@ public class SleepGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.foxhound.isTame() || this.foxhound.isInWater() || !this.foxhound.onGround())
+		if(!this.foxhound.isTame() || this.foxhound.isInWater() || !this.foxhound.onGround())
 			return false;
 		else {
 			LivingEntity living = this.foxhound.getOwner();
 
-			if (living == null) return true;
+			if(living == null)
+				return true;
 			else
 				return (!(this.foxhound.distanceToSqr(living) < 144.0D) || living.getLastHurtByMob() == null) && this.isSleeping;
 		}
 	}
-	
+
 	@Override
 	public boolean canContinueToUse() {
 		return foxhound.getPose() == Pose.SLEEPING;
@@ -50,7 +51,7 @@ public class SleepGoal extends Goal {
 	@Override
 	public void start() {
 		this.foxhound.getNavigation().stop();
-		wasSitting = foxhound.isOrderedToSit(); 
+		wasSitting = foxhound.isOrderedToSit();
 		this.foxhound.setOrderedToSit(true); // setSitting
 		this.foxhound.setInSittingPose(true);
 	}

@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.client.render.entity.GlassItemFrameRenderer;
@@ -22,20 +23,23 @@ import org.violetmoon.zeta.util.Hint;
 
 /**
  * @author WireSegal
- * Created at 11:00 AM on 8/25/19.
+ *         Created at 11:00 AM on 8/25/19.
  */
 @ZetaLoadModule(category = "building")
 public class GlassItemFrameModule extends ZetaModule {
 
-	@Config public static boolean glassItemFramesUpdateMaps = true;
+	@Config
+	public static boolean glassItemFramesUpdateMaps = true;
 	@Config(description = "Set to true for faster map updates. Default is every 3s")
 	public static boolean glassItemFramesUpdateMapsEveryTick = false;
 
-	@Hint public static Item glassFrame;
-	@Hint public static Item glowingGlassFrame;
+	@Hint
+	public static Item glassFrame;
+	@Hint
+	public static Item glowingGlassFrame;
 
 	public static EntityType<GlassItemFrame> glassFrameEntity;
-	
+
 	@Config(description = "The scale at which items render in the Glass Item Frame. To match the vanilla Item Frame size, set to 1.0")
 	public static double itemRenderScale = 1.5;
 
@@ -52,7 +56,7 @@ public class GlassItemFrameModule extends ZetaModule {
 
 		CreativeTabManager.daisyChain();
 		glassFrame = new QuarkItemFrameItem("glass_item_frame", this, GlassItemFrame::new);
-		glowingGlassFrame = new QuarkItemFrameItem("glowing_glass_item_frame", this, 
+		glowingGlassFrame = new QuarkItemFrameItem("glowing_glass_item_frame", this,
 				(w, p, d) -> {
 					GlassItemFrame e = new GlassItemFrame(w, p, d);
 					e.getEntityData().set(GlassItemFrame.IS_SHINY, true);

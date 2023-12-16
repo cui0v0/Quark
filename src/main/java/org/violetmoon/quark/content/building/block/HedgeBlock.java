@@ -1,21 +1,15 @@
 package org.violetmoon.quark.content.building.block;
 
-import java.util.function.BooleanSupplier;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableList;
+
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -28,7 +22,10 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.module.HedgesModule;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
@@ -39,9 +36,11 @@ import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
-//TODO ZETA: extend QuarkFenceBlock
+import java.util.function.BooleanSupplier;
+
+// TODO ZETA: extend QuarkFenceBlock
 public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColorProvider {
-	
+
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);
 	private static final VoxelShape HEDGE_CENTER_SHAPE = box(2F, 1F, 2F, 14F, 16F, 14F);
 	private static final VoxelShape NORTH_SHAPE = box(2F, 1F, 0F, 14F, 16F, 2F);
@@ -49,7 +48,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	private static final VoxelShape EAST_SHAPE = box(14F, 1F, 2F, 16F, 16F, 14F);
 	private static final VoxelShape WEST_SHAPE = box(0F, 1F, 2F, 2F, 16F, 14F);
 	private static final VoxelShape EXTEND_SHAPE = box(2F, 0F, 2F, 14F, 1F, 14F);
-	
+
 	private final Object2IntMap<BlockState> hedgeStateToIndex;
 	private final VoxelShape[] hedgeShapes;
 
@@ -66,7 +65,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 		this.leafState = leaf.defaultBlockState();
 
 		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, BuiltInRegistries.BLOCK);
-		if (leaf instanceof BlossomLeavesBlock) {
+		if(leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			Quark.ZETA.registry.registerBlock(this, colorName + "_blossom_hedge", true);
 		} else {
@@ -78,7 +77,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 
 		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
-		
+
 		hedgeStateToIndex = new Object2IntOpenHashMap<>();
 		hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
 	}
@@ -90,11 +89,11 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return hedgeShapes[getHedgeAABBIndex(state)];
-	}	
-	
+	}
+
 	private VoxelShape[] cacheHedgeShapes(ImmutableList<BlockState> possibleStates) {
 		VoxelShape[] shapes = new VoxelShape[possibleStates.size()];
-		
+
 		for(int i = 0; i < shapes.length; i++) {
 			BlockState state = possibleStates.get(i);
 			int realIndex = getHedgeAABBIndex(state);
@@ -108,10 +107,10 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 				finishedShape = Shapes.or(finishedShape, EAST_SHAPE);
 			if(state.getValue(FenceBlock.WEST))
 				finishedShape = Shapes.or(finishedShape, WEST_SHAPE);
-			
+
 			shapes[realIndex] = finishedShape;
 		}
-		
+
 		return shapes;
 	}
 
@@ -158,7 +157,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState stateIn, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor worldIn, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
+		if(stateIn.getValue(WATERLOGGED)) {
 			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 

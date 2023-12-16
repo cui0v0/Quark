@@ -1,26 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraft.core.registries.Registries;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.zeta.advancement.ManualTrigger;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
-import org.violetmoon.quark.content.mobs.client.render.entity.StonelingRenderer;
-import org.violetmoon.quark.content.mobs.entity.Stoneling;
-import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -28,6 +9,24 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.common.Tags;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
+import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.quark.base.world.EntitySpawnHandler;
+import org.violetmoon.quark.content.mobs.client.render.entity.StonelingRenderer;
+import org.violetmoon.quark.content.mobs.entity.Stoneling;
+import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
+import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
 
 @ZetaLoadModule(category = "mobs")
 public class StonelingsModule extends ZetaModule {
@@ -51,9 +50,10 @@ public class StonelingsModule extends ZetaModule {
 	public static boolean wealdPathfinderMaps = true;
 
 	public static ManualTrigger makeStonelingTrigger;
-	
-	@Hint("stoneling_drop_diamond_heart") public static Item diamondHeart;
-	
+
+	@Hint("stoneling_drop_diamond_heart")
+	public static Item diamondHeart;
+
 	public boolean registered = false;
 
 	@LoadEvent

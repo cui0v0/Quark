@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.tweaks.block.DirtyGlassBlock;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 /**
  * @author WireSegal
- * Created at 12:26 PM on 8/24/19.
+ *         Created at 12:26 PM on 8/24/19.
  */
 @ZetaLoadModule(category = "tweaks")
 public class GlassShardModule extends ZetaModule {
@@ -47,7 +48,7 @@ public class GlassShardModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		dirtyGlass = new DirtyGlassBlock("dirty_glass", this,
 				Block.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(0.3F).sound(SoundType.GLASS));
-		
+
 		new ZetaInheritedPaneBlock(dirtyGlass).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, Blocks.WHITE_STAINED_GLASS_PANE, true);
 
 		CreativeTabManager.daisyChain();

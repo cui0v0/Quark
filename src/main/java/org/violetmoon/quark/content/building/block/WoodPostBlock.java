@@ -1,12 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.block.ZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -31,6 +24,14 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.block.ZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
+
 public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape SHAPE_X = Block.box(0F, 6F, 6F, 16F, 10F, 10F);
@@ -51,7 +52,7 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public WoodPostBlock(@Nullable ZetaModule module, Block parent, String prefix, SoundType sound) {
 		super(Quark.ZETA.registryUtil.inherit(parent, s -> prefix + s.replace("_fence", "_post")),
-				module, 
+				module,
 				Properties.copy(parent).sound(sound));
 
 		BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(AXIS, Axis.Y);
@@ -69,10 +70,10 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 	@NotNull
 	@Override
 	public VoxelShape getShape(BlockState state, @NotNull BlockGetter worldIn, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-		return switch (state.getValue(AXIS)) {
-			case X -> SHAPE_X;
-			case Y -> SHAPE_Y;
-			default -> SHAPE_Z;
+		return switch(state.getValue(AXIS)) {
+		case X -> SHAPE_X;
+		case Y -> SHAPE_Y;
+		default -> SHAPE_Z;
 		};
 	}
 
@@ -95,7 +96,7 @@ public class WoodPostBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 

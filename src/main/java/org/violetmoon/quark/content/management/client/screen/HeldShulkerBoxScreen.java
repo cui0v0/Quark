@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.management.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -13,8 +14,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
+
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxMenu;
@@ -64,16 +67,16 @@ public class HeldShulkerBoxScreen extends AbstractContainerScreen<HeldShulkerBox
 		if(player != null) {
 			double mx = mc.mouseHandler.xpos();
 			double my = mc.mouseHandler.ypos();
-			
+
 			player.playSound(SoundEvents.SHULKER_BOX_CLOSE, 1F, 1F);
-			
+
 			if(player.getItemBySlot(EquipmentSlot.CHEST).is(BackpackModule.backpack))
 				BackpackModule.requestBackpack();
 			else {
 				player.closeContainer();
 				mc.setScreen(new InventoryScreen(player));
 			}
-			
+
 			GLFW.glfwSetCursorPos(mc.getWindow().getWindow(), mx, my);
 		}
 	}

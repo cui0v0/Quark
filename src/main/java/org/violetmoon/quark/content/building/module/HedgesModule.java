@@ -1,5 +1,11 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
@@ -15,34 +21,28 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-
 @ZetaLoadModule(category = "building")
 public class HedgesModule extends ZetaModule {
 
 	public static TagKey<Block> hedgesTag;
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		for(Wood wood : VanillaWoods.OVERWORLD_WITH_TREE)
 			new HedgeBlock(this, wood.fence(), wood.leaf());
-		
+
 		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.AZALEA_LEAVES);
 		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.FLOWERING_AZALEA_LEAVES);
 	}
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
-		for (BlossomTreesModule.BlossomTree tree : BlossomTreesModule.blossomTrees)
+		for(BlossomTreesModule.BlossomTree tree : BlossomTreesModule.blossomTrees)
 			new HedgeBlock(this, BlossomTreesModule.woodSet.fence, tree.leaves).setCondition(tree.sapling::isEnabled);
-		
+
 		new HedgeBlock(this, AncientWoodModule.woodSet.fence, AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}
-	
+
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		hedgesTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "hedges"));

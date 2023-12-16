@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
@@ -46,13 +48,20 @@ public class MonsterBoxModule extends ZetaModule {
 	@Config(description = "The chance for the monster box generator to try and place one in a chunk, 1 is 100%\nThis can be higher than 100% if you want multiple per chunk, , 0 is 0%")
 	public static double chancePerChunk = 0.2;
 
-	@Config public static int minY = -50;
-	@Config public static int maxY = 0;
-	@Config public static int minMobCount = 5;
-	@Config public static int maxMobCount = 8;
-	@Config public static DimensionConfig dimensions = DimensionConfig.overworld(false);
-	@Config public static boolean enableExtraLootTable = true;
-	@Config public static double activationRange = 2.5;
+	@Config
+	public static int minY = -50;
+	@Config
+	public static int maxY = 0;
+	@Config
+	public static int minMobCount = 5;
+	@Config
+	public static int maxMobCount = 8;
+	@Config
+	public static DimensionConfig dimensions = DimensionConfig.overworld(false);
+	@Config
+	public static boolean enableExtraLootTable = true;
+	@Config
+	public static double activationRange = 2.5;
 
 	@Config(description = "How many blocks to search vertically from a position before trying to place a block. Higher means you'll get more boxes in open spaces.")
 	public static int searchRange = 15;
@@ -82,7 +91,7 @@ public class MonsterBoxModule extends ZetaModule {
 			LootTable loot = serverLevel.getServer().getLootData().getLootTable(MONSTER_BOX_LOOT_TABLE);
 			ObjectArrayList<ItemStack> generatedLoot = loot.getRandomItems(getLootParamsBuilder(entity, true, event.getSource()).create(LootContextParamSets.ENTITY));
 			entity.captureDrops(new ArrayList<>());
-			for (ItemStack stack : generatedLoot)
+			for(ItemStack stack : generatedLoot)
 				entity.spawnAtLocation(stack);
 			event.getDrops().addAll(entity.captureDrops(null));
 		}
@@ -96,7 +105,7 @@ public class MonsterBoxModule extends ZetaModule {
 				.withOptionalParameter(LootContextParams.KILLER_ENTITY, damageSource.getEntity())
 				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, damageSource.getDirectEntity());
 
-		if (bl && ((AccessorLivingEntity) entity).quark$lastHurtByPlayer() != null) {
+		if(bl && ((AccessorLivingEntity) entity).quark$lastHurtByPlayer() != null) {
 			builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, ((AccessorLivingEntity) entity).quark$lastHurtByPlayer()).withLuck(((AccessorLivingEntity) entity).quark$lastHurtByPlayer().getLuck());
 		}
 

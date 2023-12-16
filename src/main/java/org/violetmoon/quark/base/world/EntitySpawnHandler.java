@@ -1,9 +1,5 @@
 package org.violetmoon.quark.base.world;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +14,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
@@ -25,6 +22,10 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.item.ZetaSpawnEggItem;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class EntitySpawnHandler {
 
@@ -47,7 +48,7 @@ public class EntitySpawnHandler {
 	public static void addEgg(EntityType<? extends Mob> entityType, int color1, int color2, ZetaModule module, BooleanSupplier enabledSupplier) {
 		new ZetaSpawnEggItem(() -> entityType, color1, color2, Quark.ZETA.registry.getRegistryName(entityType, BuiltInRegistries.ENTITY_TYPE) + "_spawn_egg", module,
 				new Item.Properties())
-		.setCondition(enabledSupplier);
+				.setCondition(enabledSupplier);
 	}
 
 	public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder biomeInfoBuilder) {

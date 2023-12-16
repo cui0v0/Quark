@@ -1,18 +1,18 @@
 package org.violetmoon.quark.content.building.block;
 
-import java.util.Optional;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.zeta.block.ext.CustomWeatheringCopper;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.zeta.block.ext.CustomWeatheringCopper;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.Optional;
 
 public class WeatheringCopperVerticalSlabBlock extends QuarkVerticalSlabBlock implements CustomWeatheringCopper {
 	private final WeatheringCopper.WeatherState weatherState;

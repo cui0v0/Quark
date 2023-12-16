@@ -36,7 +36,7 @@ public class StonelingItemLayer extends RenderLayer<Stoneling, StonelingModel> {
 	@Override
 	public void render(@NotNull PoseStack matrix, @NotNull MultiBufferSource buffer, int light, Stoneling stoneling, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch) {
 		ItemStack stack = stoneling.getCarryingItem();
-		if (!stack.isEmpty()) {
+		if(!stack.isEmpty()) {
 			boolean isBlock = stack.getItem() instanceof BlockItem;
 
 			matrix.pushPose();
@@ -46,7 +46,8 @@ public class StonelingItemLayer extends RenderLayer<Stoneling, StonelingModel> {
 			if(!isBlock) {
 				matrix.mulPose(Axis.YP.rotationDegrees(stoneling.getItemAngle() + 180));
 				matrix.mulPose(Axis.XP.rotationDegrees(90F));
-			} else matrix.mulPose(Axis.XP.rotationDegrees(180F));
+			} else
+				matrix.mulPose(Axis.XP.rotationDegrees(180F));
 
 			float scale = 0.8F;
 			matrix.scale(scale, scale, scale);

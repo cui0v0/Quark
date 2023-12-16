@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.building.block.VerticalSlabBlock;
@@ -36,7 +37,8 @@ public class FuelHandler {
 			return; //do nothing if block is crimson or warped, since they aren't flammable. #3549
 		if(block instanceof VerticalSlabBlock || block instanceof SlabBlock)
 			addFuel(block, 150);
-		else addFuel(block, 300);
+		else
+			addFuel(block, 300);
 	}
 
 	@LoadEvent

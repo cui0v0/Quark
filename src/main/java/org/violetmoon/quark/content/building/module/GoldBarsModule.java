@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
@@ -21,7 +22,8 @@ import org.violetmoon.zeta.registry.RenderLayerRegistry;
 @ZetaLoadModule(category = "building")
 public class GoldBarsModule extends ZetaModule {
 
-	@Config public static boolean generateInNetherFortress = true;
+	@Config
+	public static boolean generateInNetherFortress = true;
 
 	public static boolean staticEnabled;
 
@@ -40,15 +42,14 @@ public class GoldBarsModule extends ZetaModule {
 	}
 
 	private static BlockState getGenerationBarBlockState(ServerLevelAccessor accessor, BlockState current, StructureHolder structure) {
-		if(staticEnabled && generateInNetherFortress 
-				&& current.getBlock() == Blocks.NETHER_BRICK_FENCE 
+		if(staticEnabled && generateInNetherFortress
+				&& current.getBlock() == Blocks.NETHER_BRICK_FENCE
 				&& StructureBlockReplacementHandler.isStructure(accessor, structure, BuiltinStructures.FORTRESS)) {
-			
+
 			return gold_bars.withPropertiesOf(current);
 		}
 
 		return null; // no change
 	}
-
 
 }

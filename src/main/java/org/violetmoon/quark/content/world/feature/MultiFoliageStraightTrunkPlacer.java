@@ -1,12 +1,8 @@
 package org.violetmoon.quark.content.world.feature;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -16,7 +12,12 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
-//for Ancient Saplings, TODO register me
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+
+// for Ancient Saplings, TODO register me
 public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 	final int foliageDistance;
 	final int maxBlobs;
@@ -27,13 +28,12 @@ public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 		this.maxBlobs = maxBlobs;
 	}
 
-	public static final Codec<MultiFoliageStraightTrunkPlacer> CODEC = RecordCodecBuilder.create(overengineered ->
-		trunkPlacerParts(overengineered).and(
+	public static final Codec<MultiFoliageStraightTrunkPlacer> CODEC = RecordCodecBuilder.create(overengineered -> trunkPlacerParts(overengineered).and(
 			overengineered.group(
-				Codec.INT.fieldOf("foliageDistance").forGetter(x -> x.foliageDistance),
-				Codec.INT.fieldOf("maxBlobs").forGetter(x -> x.maxBlobs)
+					Codec.INT.fieldOf("foliageDistance").forGetter(x -> x.foliageDistance),
+					Codec.INT.fieldOf("maxBlobs").forGetter(x -> x.maxBlobs)
 			)
-		).apply(overengineered, MultiFoliageStraightTrunkPlacer::new));
+	).apply(overengineered, MultiFoliageStraightTrunkPlacer::new));
 
 	//Registered in AncientWoodModule
 	public static final TrunkPlacerType<MultiFoliageStraightTrunkPlacer> TYPE = new TrunkPlacerType<>(CODEC);
@@ -60,7 +60,8 @@ public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 					folliagePositions.add(target);
 					j = foliageDistance;
 					placed++;
-				} else j--;
+				} else
+					j--;
 			}
 
 		}

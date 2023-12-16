@@ -29,14 +29,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
 
 public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
@@ -55,7 +55,6 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape[] shapeCache = new VoxelShape[64];
 
-
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public PipeBlock(@Nullable ZetaModule module) {
@@ -69,7 +68,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 			if(worldIn.getBlockEntity(pos) instanceof PipeBlockEntity be) {
 				CompoundTag cmp = be.saveWithoutMetadata();
 
-				if (!worldIn.isClientSide) {
+				if(!worldIn.isClientSide) {
 					worldIn.removeBlockEntity(pos);
 					BlockState target = ((BasePipeBlock) PipesModule.encasedPipe).getTargetState(worldIn, pos);
 					worldIn.setBlock(pos, target, 1 | 2);
@@ -83,7 +82,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 				SoundEvent sound = type.getPlaceSound();
 				worldIn.playSound(player, pos, sound, SoundSource.BLOCKS, (type.getVolume() + 1.0F) / 2.0F, type.getPitch() * 0.8F);
 
-				if (!player.getAbilities().instabuild) {
+				if(!player.getAbilities().instabuild) {
 					stack.shrink(1);
 				}
 			}
@@ -118,7 +117,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction direction, @NotNull BlockState neighbor, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-		if (isPipeWaterlogged(state)) {
+		if(isPipeWaterlogged(state)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		return super.updateShape(state, direction, neighbor, level, pos, neighborPos);
@@ -155,6 +154,5 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
 		return cached;
 	}
-
 
 }

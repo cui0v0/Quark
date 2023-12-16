@@ -1,6 +1,6 @@
 package org.violetmoon.quark.base.handler;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -8,7 +8,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.piston.ZetaPistonStructureResolver;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class GeneralConfig {
 
@@ -20,7 +20,7 @@ public class GeneralConfig {
 			"net.mehvahdjukaar.supplementaries.client.screens.SackScreen",
 			"vazkii.quark.addons.oddities.client.screen.CrateScreen",
 			"vazkii.quark.addons.oddities.client.screen.BackpackInventoryScreen"
-			);
+	);
 
 	private static final List<String> STATIC_DENIED_SCREENS = Lists.newArrayList(
 			"blusunrize.immersiveengineering.client.gui.CraftingTableScreen",
@@ -38,7 +38,7 @@ public class GeneralConfig {
 			"com.resourcefulbees.resourcefulbees.client.gui.screen.CentrifugeMultiblockScreen",
 			"com.refinedmods.refinedstorage.screen.FilterScreen",
 			"de.markusbordihn.dailyrewards.client.screen.RewardScreen"
-			);
+	);
 
 	@Config(name = "Enable 'q' Button")
 	public static boolean enableQButton = true;
@@ -52,8 +52,10 @@ public class GeneralConfig {
 	@Config(description = "Disable this to turn off the quark system that makes features turn off when specified mods with the same content are loaded")
 	public static boolean useAntiOverlap = true;
 
-	@Config(name = "Use Piston Logic Replacement",
-			description = "Enable Zeta's piston structure resolver, needed for some Quark features. If you're having troubles, try turning this off, but be aware other Zeta-using mods can enable it too.")
+	@Config(
+		name = "Use Piston Logic Replacement",
+		description = "Enable Zeta's piston structure resolver, needed for some Quark features. If you're having troubles, try turning this off, but be aware other Zeta-using mods can enable it too."
+	)
 	public static boolean usePistonLogicRepl = true;
 
 	@Config(description = "Ask Zeta to set the piston push limit. Only has an effect if Zeta's piston structure resolver is in use.")
@@ -91,28 +93,30 @@ public class GeneralConfig {
 	@Config(description = "Quark will set this weight for its TerraBlender region.")
 	public static int terrablenderRegionWeight = 1;
 
-	@Config(description = "If 'true', Quark will modify the `minecraft:overworld` MultiNoiseBiomeSourceParameterList preset, even when Terrablender is installed.\n" +
-		"This will have various knock-on effects but might make the Weald more common, or appear closer to modded biomes. Who knows?")
+	@Config(
+		description = "If 'true', Quark will modify the `minecraft:overworld` MultiNoiseBiomeSourceParameterList preset, even when Terrablender is installed.\n" +
+				"This will have various knock-on effects but might make the Weald more common, or appear closer to modded biomes. Who knows?"
+	)
 	public static boolean terrablenderModifyVanillaAnyway = false;
 
 	@Config(description = "Set to false to stop quark from adding its own items to multi-requirement vanilla advancements")
 	public static boolean enableAdvancementModification = true;
-	
+
 	@Config(description = "Set to false to stop quark from adding its own advancements")
 	public static boolean enableQuarkAdvancements = true;
-	
+
 	@Config(description = "Set to false to disable the popup message telling you that you can config quark in the q menu")
 	public static boolean enableOnboarding = true;
-	
+
 	@Config(description = "Set to false to disable the behavior where quark will automatically hide any disabled items")
 	public static boolean hideDisabledContent = true;
-	
+
 	@Config(description = "Set to false to disable Quark's item info when viewing recipe/uses for an item in JEI")
 	public static boolean enableJeiItemInfo = true;
-	
+
 	@Config(description = "For JEI info purposes, add any items here to specifically disable their JEI info from Quark. Note that Quark already only shows info that's relevant to which features are enabled")
 	public static List<String> suppressedInfo = Lists.newArrayList();
-	
+
 	private GeneralConfig() {
 		// NO-OP
 	}

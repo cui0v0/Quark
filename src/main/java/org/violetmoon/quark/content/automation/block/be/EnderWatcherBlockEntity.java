@@ -17,7 +17,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.joml.Vector3f;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.block.EnderWatcherBlock;
 import org.violetmoon.quark.content.automation.module.EnderWatcherModule;
@@ -60,7 +62,7 @@ public class EnderWatcherBlockEntity extends ZetaBlockEntity {
 				double z = Math.abs(vec.z - be.worldPosition.getZ() - 0.5) * (1 - Math.abs(dir.getStepZ()));
 
 				// 0.7071067811865476 being the hypotenuse of an isosceles triangle with cathetus of length 0.5
-				double fract = 1 - (Math.sqrt(x*x + y*y + z*z) / 0.7071067811865476);
+				double fract = 1 - (Math.sqrt(x * x + y * y + z * z) / 0.7071067811865476);
 				int playerWatch = (int) Math.ceil(fract * 15);
 
 				if(playerWatch == 15 && player instanceof ServerPlayer sp)

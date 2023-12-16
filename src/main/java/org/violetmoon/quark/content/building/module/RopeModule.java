@@ -27,7 +27,8 @@ import org.violetmoon.zeta.util.Hint;
 @ZetaLoadModule(category = "building")
 public class RopeModule extends ZetaModule {
 
-	@Hint public static Block rope;
+	@Hint
+	public static Block rope;
 
 	@Config(description = "Set to true to allow ropes to move Tile Entities even if Pistons Push TEs is disabled.\nNote that ropes will still use the same blacklist.")
 	public static boolean forceEnableMoveTileEntities = false;
@@ -37,7 +38,7 @@ public class RopeModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		rope = new RopeBlock("rope", this, 
+		rope = new RopeBlock("rope", this,
 				Block.Properties.of()
 						.mapColor(MapColor.COLOR_BROWN)
 						.ignitedByLava()

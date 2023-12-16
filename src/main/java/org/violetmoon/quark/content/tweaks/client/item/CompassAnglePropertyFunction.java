@@ -18,11 +18,13 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import org.violetmoon.quark.content.tweaks.module.CompassesWorkEverywhereModule;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
@@ -88,7 +90,8 @@ public class CompassAnglePropertyFunction implements ItemPropertyFunction {
 				if(normalAngle.needsUpdate(gameTime))
 					normalAngle.wobble(gameTime, 0.5D - (d1 - 0.25D));
 				angle = d2 + normalAngle.rotation;
-			} else angle = 0.5D - (d1 - 0.25D - d2);
+			} else
+				angle = 0.5D - (d1 - 0.25D - d2);
 		} else {
 			if(unknownAngle.needsUpdate(gameTime))
 				unknownAngle.wobble(gameTime, Math.random());
@@ -98,7 +101,6 @@ public class CompassAnglePropertyFunction implements ItemPropertyFunction {
 
 		return Mth.positiveModulo((float) angle, 1.0F);
 	}
-
 
 	private double getFrameRotation(ItemFrame frame) {
 		return Mth.wrapDegrees(180 + frame.getDirection().toYRot());

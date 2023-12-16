@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.mobs.client.layer.forgotten;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,14 +10,15 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.violetmoon.quark.content.mobs.entity.Forgotten;
 
 import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.mobs.entity.Forgotten;
 
 public class ForgottenSheathedItemLayer<M extends EntityModel<Forgotten>> extends RenderLayer<Forgotten, M> {
 
 	private final ItemInHandRenderer itemInHandRenderer;
-	
+
 	public ForgottenSheathedItemLayer(RenderLayerParent<Forgotten, M> parent, ItemInHandRenderer itemInHandRenderer) {
 		super(parent);
 		this.itemInHandRenderer = itemInHandRenderer;

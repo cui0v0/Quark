@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -15,15 +12,20 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.building.module.RainbowLampsModule;
 import org.violetmoon.zeta.block.ZetaGlassBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
 /**
  * @author WireSegal
- * Created at 12:31 PM on 9/19/19.
+ *         Created at 12:31 PM on 9/19/19.
  */
 public class RainbowLampBlock extends ZetaGlassBlock {
 
@@ -36,18 +38,18 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 	public RainbowLampBlock(String regname, int color, @Nullable ZetaModule module, MapColor mapColor) {
 		super(regname, module, true,
 				Properties.of()
-				.strength(0.3F, 0F)
- 				.mapColor(mapColor)
-				.instrument(NoteBlockInstrument.HAT)
-				.sound(SoundType.AMETHYST)
-				.lightLevel(b -> b.getValue(LIT) ? RainbowLampsModule.lightLevel : 0)
-				.requiresCorrectToolForDrops()
-				.noOcclusion());
+						.strength(0.3F, 0F)
+						.mapColor(mapColor)
+						.instrument(NoteBlockInstrument.HAT)
+						.sound(SoundType.AMETHYST)
+						.lightLevel(b -> b.getValue(LIT) ? RainbowLampsModule.lightLevel : 0)
+						.requiresCorrectToolForDrops()
+						.noOcclusion());
 
 		float r = ((color >> 16) & 0xff) / 255f;
 		float g = ((color >> 8) & 0xff) / 255f;
 		float b = (color & 0xff) / 255f;
-		colorComponents = new float[]{r, g, b};
+		colorComponents = new float[] { r, g, b };
 
 		if(module == null) //auto registration below this line
 			return;
@@ -58,8 +60,8 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 	@NotNull
 	@Override
 	public String getDescriptionId() {
-		if (RainbowLampsModule.isCorundum()) {
-			if (corundumDescriptionId == null) {
+		if(RainbowLampsModule.isCorundum()) {
+			if(corundumDescriptionId == null) {
 				corundumDescriptionId = super.getDescriptionId().replaceAll("crystal", "corundum");
 			}
 			return corundumDescriptionId;
@@ -67,7 +69,6 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 
 		return super.getDescriptionId();
 	}
-
 
 	@Nullable
 	@Override
@@ -77,10 +78,10 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 
 	@Override
 	public void neighborChanged(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos, boolean isMoving) {
-		if (!world.isClientSide) {
+		if(!world.isClientSide) {
 			boolean flag = state.getValue(LIT);
-			if (flag != world.hasNeighborSignal(pos)) {
-				if (flag) {
+			if(flag != world.hasNeighborSignal(pos)) {
+				if(flag) {
 					world.scheduleTick(pos, this, 4);
 				} else {
 					world.setBlock(pos, state.cycle(LIT), 2);
@@ -91,7 +92,7 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 
 	@Override
 	public void tick(@NotNull BlockState state, @NotNull ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource rand) {
-		if (state.getValue(LIT) && !world.hasNeighborSignal(pos)) {
+		if(state.getValue(LIT) && !world.hasNeighborSignal(pos)) {
 			world.setBlock(pos, state.cycle(LIT), 2);
 		}
 	}

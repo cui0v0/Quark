@@ -10,10 +10,10 @@
  */
 package org.violetmoon.quark.api;
 
-import java.util.function.Supplier;
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.items.IItemHandler;
+
+import java.util.function.Supplier;
 
 /**
  * Implement on a TileEntity or provide as a capability
@@ -26,12 +26,12 @@ import net.minecraftforge.items.IItemHandler;
 public interface ITransferManager {
 
 	boolean acceptsTransfer(Player player);
-	
+
 	/**
 	 * Override this if you want to add a custom IItemHandler for transfering.
 	 */
 	default IItemHandler getTransferItemHandler(Supplier<IItemHandler> defaultSupplier) {
 		return defaultSupplier.get();
 	}
-	
+
 }

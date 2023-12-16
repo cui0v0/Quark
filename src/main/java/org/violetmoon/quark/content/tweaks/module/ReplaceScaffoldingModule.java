@@ -1,13 +1,5 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -28,13 +20,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.play.entity.player.ZRightClickBlock;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+
 @ZetaLoadModule(category = "tweaks")
 public class ReplaceScaffoldingModule extends ZetaModule {
 
 	@Config(description = "How many times the algorithm for finding out where a block would be placed is allowed to turn. If you set this to large values (> 3) it may start producing weird effects.")
 	public int maxBounces = 1;
-	
-	@Hint Item scaffold = Items.SCAFFOLDING;
+
+	@Hint
+	Item scaffold = Items.SCAFFOLDING;
 
 	@PlayEvent
 	public void onInteract(ZRightClickBlock event) {
@@ -134,7 +135,8 @@ public class ReplaceScaffoldingModule extends ZetaModule {
 			BlockState testState = world.getBlockState(test);
 			if(testState.getBlock() == currBlock)
 				curr = test;
-			else break;
+			else
+				break;
 		}
 
 		if(!curr.equals(start) && bouncesAllowed > 0) {

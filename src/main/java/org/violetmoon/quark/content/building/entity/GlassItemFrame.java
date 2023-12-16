@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.entity;
 
 import com.mojang.authlib.GameProfile;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,12 +34,12 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
-import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import org.violetmoon.quark.content.building.module.GlassItemFrameModule;
+
 import java.util.UUID;
 
 public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnData {
@@ -52,9 +52,9 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	private boolean didHackery = false;
 	private int onSignRotation = 0;
 	private SignAttachment attachment = SignAttachment.NOT_ATTACHED;
-	
-	public  enum SignAttachment {
-		NOT_ATTACHED, 
+
+	public enum SignAttachment {
+		NOT_ATTACHED,
 		STANDING_IN_FRONT,
 		STANDING_BEHIND,
 		WALL_SIGN,
@@ -98,7 +98,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	@Override
 	public void tick() {
 		super.tick();
-        boolean shouldUpdateMaps = GlassItemFrameModule.glassItemFramesUpdateMapsEveryTick;
+		boolean shouldUpdateMaps = GlassItemFrameModule.glassItemFramesUpdateMapsEveryTick;
 		//same update as normal frames
 		if(level().getGameTime() % 100 == 0) {
 			updateIsOnSign();
@@ -106,7 +106,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 			shouldUpdateMaps = true;
 		}
 
-		if(!level().isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps &&  shouldUpdateMaps) {
+		if(!level().isClientSide && GlassItemFrameModule.glassItemFramesUpdateMaps && shouldUpdateMaps) {
 			ItemStack stack = getItem();
 			if(stack.getItem() instanceof MapItem map && level() instanceof ServerLevel sworld) {
 				ItemStack clone = stack.copy();
@@ -127,43 +127,43 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 
 	private void updateIsOnSign() {
 		attachment = SignAttachment.NOT_ATTACHED;
-		
-		if(this.direction.getAxis() != Direction.Axis.Y){
+
+		if(this.direction.getAxis() != Direction.Axis.Y) {
 			BlockState back = level().getBlockState(getBehindPos());
 			boolean standing = back.is(BlockTags.STANDING_SIGNS);
 			boolean hangingCeil = back.is(BlockTags.CEILING_HANGING_SIGNS);
-			
+
 			if(standing || hangingCeil) {
 				onSignRotation = back.getValue(BlockStateProperties.ROTATION_16);
-				
+
 				double[] angles = new double[] { 0, 0, 0, 180, -90, 90 };
 				double ourRotation = angles[getDirection().getOpposite().ordinal()];
 				double signRotation = back.getValue(BlockStateProperties.ROTATION_16) / 16.0 * 360.0;
-				
+
 				if(signRotation > 180)
 					signRotation = signRotation - 360;
-				
+
 				double diff = ourRotation - signRotation;
 				double absDiff = Math.abs(diff);
 				if(diff < 0)
 					absDiff -= 0.01; // hacky countermeasure to prevent two frames equidistant in different directions from both attaching
-				
+
 				if(absDiff < 45)
 					attachment = (standing ? SignAttachment.STANDING_IN_FRONT : SignAttachment.HANGING_IN_FRONT);
 				else if(absDiff >= 135 && absDiff < 225)
 					attachment = (standing ? SignAttachment.STANDING_BEHIND : SignAttachment.HANGING_BEHIND);
-				
+
 				return;
 			}
-			
+
 			if(back.is(BlockTags.WALL_SIGNS)) {
 				Direction signDir = back.getValue(WallSignBlock.FACING);
 				if(signDir == getDirection())
 					attachment = SignAttachment.WALL_SIGN;
-				
+
 				return;
 			}
-			
+
 			if(back.is(BlockTags.WALL_HANGING_SIGNS)) {
 				Direction signDir = back.getValue(WallHangingSignBlock.FACING);
 				if(signDir == getDirection() || signDir == getDirection().getOpposite())
@@ -191,19 +191,19 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	public SignAttachment getSignAttachment() {
 		return attachment;
 	}
-	
+
 	public boolean isOnSign() {
 		return getSignAttachment() != SignAttachment.NOT_ATTACHED;
 	}
 
-	public int getOnSignRotation(){
+	public int getOnSignRotation() {
 		return onSignRotation;
 	}
 
 	@Nullable
 	@Override
 	public ItemEntity spawnAtLocation(@NotNull ItemStack stack, float offset) {
-		if (stack.getItem() == Items.ITEM_FRAME && !didHackery) {
+		if(stack.getItem() == Items.ITEM_FRAME && !didHackery) {
 			stack = new ItemStack(getDroppedItem());
 			didHackery = true;
 		}
@@ -215,7 +215,7 @@ public class GlassItemFrame extends ItemFrame implements IEntityAdditionalSpawnD
 	@Override
 	public ItemStack getPickedResult(HitResult target) {
 		ItemStack held = getItem();
-		if (held.isEmpty())
+		if(held.isEmpty())
 			return new ItemStack(getDroppedItem());
 		else
 			return held.copy();

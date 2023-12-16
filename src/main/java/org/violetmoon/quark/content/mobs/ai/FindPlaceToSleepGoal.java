@@ -70,11 +70,11 @@ public class FindPlaceToSleepGoal extends MoveToBlockGoal {
 
 		Vec3 motion = foxhound.getDeltaMovement();
 
-		if (!this.isReachedTarget() || motion.x > 0 || motion.z > 0) {
+		if(!this.isReachedTarget() || motion.x > 0 || motion.z > 0) {
 			this.foxhound.setOrderedToSit(false); // setSitting
 			this.foxhound.getSleepGoal().setSleeping(false);
 			this.foxhound.setInSittingPose(false);
-		} else if (!this.foxhound.isOrderedToSit()) {
+		} else if(!this.foxhound.isOrderedToSit()) {
 			this.foxhound.setOrderedToSit(true); // setSitting
 			this.foxhound.getSleepGoal().setSleeping(true);
 			this.foxhound.setInSittingPose(true);
@@ -85,17 +85,17 @@ public class FindPlaceToSleepGoal extends MoveToBlockGoal {
 
 	@Override
 	protected boolean isValidTarget(@NotNull LevelReader world, @NotNull BlockPos pos) {
-		if (!world.isEmptyBlock(pos.above())) {
+		if(!world.isEmptyBlock(pos.above())) {
 			return false;
 		} else {
 			BlockState state = world.getBlockState(pos);
 			BlockEntity tileentity = world.getBlockEntity(pos);
 			int light = Quark.ZETA.blockExtensions.get(state).getLightEmissionZeta(state, world, pos);
 
-			return switch (target) {
-				case LIT_FURNACE -> tileentity instanceof FurnaceBlockEntity && light > 2;
-				case FURNACE -> tileentity instanceof FurnaceBlockEntity && light <= 2;
-				case GLOWING -> light > 2;
+			return switch(target) {
+			case LIT_FURNACE -> tileentity instanceof FurnaceBlockEntity && light > 2;
+			case FURNACE -> tileentity instanceof FurnaceBlockEntity && light <= 2;
+			case GLOWING -> light > 2;
 			};
 		}
 	}

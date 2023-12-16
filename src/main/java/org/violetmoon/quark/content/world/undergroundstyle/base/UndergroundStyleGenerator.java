@@ -1,19 +1,19 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+
+import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class UndergroundStyleGenerator<T extends UndergroundStyle> extends ClusterBasedGenerator {
 
@@ -39,7 +39,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 
 		return new BlockPos[0];
 	}
-	
+
 	@Override
 	public IGenerationContext createContext(BlockPos src, ChunkGenerator generator, Random random, BlockPos chunkCorner, WorldGenRegion world) {
 		return new Context(world, src, generator, random, info);
@@ -51,7 +51,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		Holder<Biome> biome = getBiome(world, check, true);
 		return info.biomes.canSpawn(biome);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "UndergroundBiomeGenerator[" + info.biomeObj + "]";
@@ -70,7 +70,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		public final List<BlockPos> insideList = new LinkedList<>();
 
 		public final Map<BlockPos, Direction> wallMap = new HashMap<>();
-		
+
 		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig<?> info) {
 			this.world = world;
 			this.source = source;
@@ -81,7 +81,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 
 		@Override
 		public void consume(BlockPos pos, double noise) {
-			info.biomeObj.fill(this, pos);			
+			info.biomeObj.fill(this, pos);
 		}
 
 		@Override
@@ -89,8 +89,8 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 			floorList.forEach(pos -> info.biomeObj.finalFloorPass(this, pos));
 			ceilingList.forEach(pos -> info.biomeObj.finalCeilingPass(this, pos));
 			wallMap.keySet().forEach(pos -> info.biomeObj.finalWallPass(this, pos));
-			insideList.forEach(pos -> info.biomeObj.finalInsidePass(this, pos));			
+			insideList.forEach(pos -> info.biomeObj.finalInsidePass(this, pos));
 		}
-		
+
 	}
 }

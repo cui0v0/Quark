@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.mobs.item;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
@@ -21,6 +19,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 import org.violetmoon.quark.content.mobs.entity.Stoneling.StonelingVariant;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
@@ -44,20 +45,20 @@ public class DiamondHeartItem extends ZetaItem {
 		InteractionHand hand = context.getHand();
 		Direction facing = context.getClickedFace();
 
-		if (player != null) {
+		if(player != null) {
 			BlockState stateAt = world.getBlockState(pos);
 			ItemStack stack = player.getItemInHand(hand);
 
-			if (player.mayUseItemAt(pos, facing, stack) && stateAt.getDestroySpeed(world, pos) != -1) {
+			if(player.mayUseItemAt(pos, facing, stack) && stateAt.getDestroySpeed(world, pos) != -1) {
 
 				StonelingVariant variant = null;
-				for (StonelingVariant possibleVariant : StonelingVariant.values()) {
-					if (possibleVariant.getBlocks().contains(stateAt.getBlock()))
+				for(StonelingVariant possibleVariant : StonelingVariant.values()) {
+					if(possibleVariant.getBlocks().contains(stateAt.getBlock()))
 						variant = possibleVariant;
 				}
 
-				if (variant != null) {
-					if (!world.isClientSide && world instanceof ServerLevelAccessor serverLevel) {
+				if(variant != null) {
+					if(!world.isClientSide && world instanceof ServerLevelAccessor serverLevel) {
 						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 						world.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(stateAt));
 
@@ -73,7 +74,7 @@ public class DiamondHeartItem extends ZetaItem {
 							StonelingsModule.makeStonelingTrigger.trigger(serverPlayer);
 						}
 
-						if (!player.getAbilities().instabuild)
+						if(!player.getAbilities().instabuild)
 							stack.shrink(1);
 					}
 

@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
 import com.google.common.collect.Maps;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
@@ -13,16 +14,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.base.world.generator.OreGenerator;
-import org.violetmoon.quark.content.building.module.MoreStoneVariantsModule;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.block.MyaliteColorLogic;
 import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
@@ -49,22 +50,34 @@ import java.util.function.BooleanSupplier;
 @ZetaLoadModule(category = "world")
 public class NewStoneTypesModule extends ZetaModule {
 
-	@Config(flag = "limestone") public static boolean enableLimestone = true;
-	@Config(flag = "jasper") public static boolean enableJasper = true;
-	@Config(flag = "shale") public static boolean enableShale = true;
-	@Config(flag = "myalite") public static boolean enableMyalite = true;
+	@Config(flag = "limestone")
+	public static boolean enableLimestone = true;
+	@Config(flag = "jasper")
+	public static boolean enableJasper = true;
+	@Config(flag = "shale")
+	public static boolean enableShale = true;
+	@Config(flag = "myalite")
+	public static boolean enableMyalite = true;
 
 	public static boolean enabledWithLimestone, enabledWithJasper, enabledWithShale, enabledWithMyalite;
 
-	@Config public static StoneTypeConfig limestone = new StoneTypeConfig();
-	@Config public static StoneTypeConfig jasper = new StoneTypeConfig();
-	@Config public static StoneTypeConfig shale = new StoneTypeConfig();
-	@Config public static StoneTypeConfig myalite = new StoneTypeConfig(DimensionConfig.end(false));
+	@Config
+	public static StoneTypeConfig limestone = new StoneTypeConfig();
+	@Config
+	public static StoneTypeConfig jasper = new StoneTypeConfig();
+	@Config
+	public static StoneTypeConfig shale = new StoneTypeConfig();
+	@Config
+	public static StoneTypeConfig myalite = new StoneTypeConfig(DimensionConfig.end(false));
 
-	@Hint("limestone") public static Block limestoneBlock;
-	@Hint("jasper") public static Block jasperBlock;
-	@Hint("shale") public static Block shaleBlock;
-	@Hint("myalite") public static Block myaliteBlock;
+	@Hint("limestone")
+	public static Block limestoneBlock;
+	@Hint("jasper")
+	public static Block jasperBlock;
+	@Hint("shale")
+	public static Block shaleBlock;
+	@Hint("myalite")
+	public static Block myaliteBlock;
 
 	public static Map<Block, Block> polishedBlocks = Maps.newHashMap();
 
@@ -86,7 +99,7 @@ public class NewStoneTypesModule extends ZetaModule {
 		BooleanSupplier trueEnabledCond = () -> (bigConfig == null || !bigConfig.enabled || !Quark.ZETA.modules.isEnabled(BigStoneClustersModule.class)) && enabledCond.getAsBoolean();
 
 		boolean isVanilla = raw != null;
-		
+
 		Block.Properties props;
 		if(isVanilla)
 			props = Block.Properties.copy(raw);
@@ -106,19 +119,19 @@ public class NewStoneTypesModule extends ZetaModule {
 
 		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
-		
+
 		if(isVanilla)
 			polished.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, raw, false);
-		else 
+		else
 			polished.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		
+
 		event.getVariantRegistry().addSlabStairsWall(normal instanceof IZetaBlock quarkBlock ? quarkBlock : new ZetaBlockWrapper(normal, module).setCondition(enabledCond), null);
 		event.getVariantRegistry().addSlabAndStairs(polished, null);
 		CreativeTabManager.endDaisyChain();
-		
+
 		if(!isVanilla) {
 			((IZetaBlock) normal).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.PRISMARINE, true);
-			
+
 			defers.add(() -> {
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenLower, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);
 				WorldGenHandler.addGenerator(module, new OreGenerator(config.dimensions, config.oregenUpper, normal.defaultBlockState(), OreGenerator.ALL_DIMS_STONE_MATCHER, trueEnabledCond), Decoration.UNDERGROUND_ORES, WorldGenWeights.NEW_STONES);
