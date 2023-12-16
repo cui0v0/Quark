@@ -128,15 +128,12 @@ public class PickarangModule extends ZetaModule {
 		ACTIVE_PICKARANG.set(pickarang);
 	}
 
-	//fixme hook this up somehow
 	public static DamageSource createDamageSource(Player player) {
 		AbstractPickarang<?> pickarang = ACTIVE_PICKARANG.get();
 
 		if(pickarang == null)
 			return null;
 
-		//fixme need to register proper damage source
-		//return new IndirectEntityDamageSource("player", pickarang, player).setProjectile();
 		return player.level().damageSources().indirectMagic(pickarang, player);
 	}
 
