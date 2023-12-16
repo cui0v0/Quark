@@ -11,7 +11,9 @@ import java.util.function.Predicate;
 public @interface Config {
 
 	String name() default "";
+
 	String description() default "";
+
 	String flag() default "";
 
 	@Target(ElementType.FIELD)
@@ -24,6 +26,7 @@ public @interface Config {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface Min {
 		double value();
+
 		boolean exclusive() default false;
 	}
 
@@ -31,6 +34,7 @@ public @interface Config {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface Max {
 		double value();
+
 		boolean exclusive() default false;
 	}
 

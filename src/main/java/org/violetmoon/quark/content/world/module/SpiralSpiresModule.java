@@ -1,7 +1,21 @@
 package org.violetmoon.quark.content.world.module;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.material.MapColor;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -27,22 +41,8 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.MapColor;
+import java.util.ArrayList;
+import java.util.List;
 
 @ZetaLoadModule(category = "world")
 public class SpiralSpiresModule extends ZetaModule {
@@ -53,25 +53,27 @@ public class SpiralSpiresModule extends ZetaModule {
 	@Config
 	public static CompoundBiomeConfig biomes = CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:end_highlands");
 
-	@Config public static int rarity = 200;
-	@Config public static int radius = 15;
+	@Config
+	public static int rarity = 200;
+	@Config
+	public static int radius = 15;
 
 	@Config(flag = "myalite_viaduct")
 	public static boolean enableMyaliteViaducts = true;
-	
+
 	@Config
 	@Min(2)
 	@Max(1024)
 	public static int myaliteConduitDistance = 24;
 
-	@Config public static boolean renewableMyalite = true;
+	@Config
+	public static boolean renewableMyalite = true;
 
 	public static ManualTrigger useViaductTrigger;
-	
-	@Hint 
+
+	@Hint
 	public static Block dusky_myalite;
 	public static Block myalite_crystal;
-
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -80,10 +82,10 @@ public class SpiralSpiresModule extends ZetaModule {
 				.strength(1.5F, 6.0F);
 		dusky_myalite = new ZetaBlock("dusky_myalite", this, props).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.PURPUR_BLOCK, true);
 		myalite_crystal = new MyaliteCrystalBlock(this);
-		
+
 		((IZetaBlock) dusky_myalite).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.END_STONE, false);
 		((IZetaBlock) myalite_crystal).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.END_STONE, false);
-		
+
 		useViaductTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("use_viaduct");
 	}
 
@@ -95,12 +97,12 @@ public class SpiralSpiresModule extends ZetaModule {
 	@PlayEvent
 	public void addAdditionalHints(ZGatherHints event) {
 		MutableComponent comp = Component.translatable("quark.jei.hint.myalite_crystal_get");
-		
+
 		if(enableMyaliteViaducts)
-			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_viaduct")); 
+			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_viaduct"));
 		if(renewableMyalite && Quark.ZETA.modules.isEnabled(CorundumModule.class))
 			comp = comp.append(" ").append(Component.translatable("quark.jei.hint.myalite_crystal_grow"));
-		
+
 		event.accept(myalite_crystal.asItem(), comp);
 	}
 
@@ -117,12 +119,12 @@ public class SpiralSpiresModule extends ZetaModule {
 			return;
 
 		List<BlockPos> myalite = getAdjacentMyalite(null, world, pos, null);
-		if (myalite == null || myalite.isEmpty()) {
+		if(myalite == null || myalite.isEmpty()) {
 			pos = pos.below();
 			myalite = getAdjacentMyalite(null, world, pos, null);
 		}
 
-		if (myalite != null && !myalite.isEmpty()) {
+		if(myalite != null && !myalite.isEmpty()) {
 			BlockPos prev;
 			BlockPos cond = pos;
 
@@ -135,19 +137,17 @@ public class SpiralSpiresModule extends ZetaModule {
 				myalite = getAdjacentMyalite(found, world, cond, null);
 
 				moves++;
-				if (myalite == null || moves > myaliteConduitDistance)
+				if(myalite == null || moves > myaliteConduitDistance)
 					return;
-			} while (!myalite.isEmpty());
-
+			} while(!myalite.isEmpty());
 
 			BlockPos test = cond.offset(cond.getX() - prev.getX(), cond.getY() - prev.getY(), cond.getZ() - prev.getZ());
 
-			find:
-			if (!world.getBlockState(test).isAir()) {
-				for (Direction d : Direction.values()) {
+			find: if(!world.getBlockState(test).isAir()) {
+				for(Direction d : Direction.values()) {
 					test = cond.relative(d);
-					if (world.getBlockState(test).isAir()) {
-						if (d.getAxis() == Axis.Y)
+					if(world.getBlockState(test).isAir()) {
+						if(d.getAxis() == Axis.Y)
 							test = test.relative(d);
 
 						break find;
@@ -160,12 +160,12 @@ public class SpiralSpiresModule extends ZetaModule {
 			event.setTargetX(test.getX() + 0.5);
 			event.setTargetY(test.getY() + 0.5);
 			event.setTargetZ(test.getZ() + 0.5);
-			
+
 			if(event.getEntity() instanceof ServerPlayer sp)
 				useViaductTrigger.trigger(sp);
 
-			if (world instanceof ServerLevel sworld) {
-				for (BlockPos f : found)
+			if(world instanceof ServerLevel sworld) {
+				for(BlockPos f : found)
 					sworld.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, myalite_crystal.defaultBlockState()), f.getX() + 0.5, f.getY() + 0.5, f.getZ() + 0.5, 30, 0.25, 0.25, 0.25, 0);
 			}
 		}
@@ -181,7 +181,8 @@ public class SpiralSpiresModule extends ZetaModule {
 				if(world.getBlockState(off).getBlock() == myalite_crystal) {
 					if(found != null && found.contains(off))
 						collisions.add(off);
-					else ret.add(off);
+					else
+						ret.add(off);
 				}
 			}
 

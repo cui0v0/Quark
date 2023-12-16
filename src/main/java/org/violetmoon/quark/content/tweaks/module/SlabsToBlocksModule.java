@@ -7,9 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.SlabBlock;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -17,6 +14,9 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.ZRecipeCrawl;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ZetaLoadModule(category = "tweaks")
 public class SlabsToBlocksModule extends ZetaModule {
@@ -34,7 +34,7 @@ public class SlabsToBlocksModule extends ZetaModule {
 	}
 
 	private ItemStack extract(ItemStack[] array) {
-		if (array.length == 0)
+		if(array.length == 0)
 			return ItemStack.EMPTY;
 		return array[0];
 	}

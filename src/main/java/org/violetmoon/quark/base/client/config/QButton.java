@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.client.config;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,7 +10,9 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.handler.GeneralConfig;
@@ -44,7 +47,7 @@ public class QButton extends Button {
 		celebrate("adrian", 4, Month.MAY, ORANGE);
 		celebrate("train", 16, Month.AUGUST, ORANGE);
 		celebrate("zemmy", 9, Month.JUNE, ORANGE);
-		
+
 		celebrate("iad", 6, Month.APRIL, RAINBOW);
 		celebrate("iad2", 26, Month.OCTOBER, RAINBOW);
 		celebrate("idr", 8, Month.NOVEMBER, RAINBOW);
@@ -66,7 +69,7 @@ public class QButton extends Button {
 		celebrate("iyd", 12, Month.AUGUST, PURPLE);
 		celebrate("hrd", 9, Month.DECEMBER, PURPLE);
 		celebrate("ny", 1, 3, Month.JANUARY, PURPLE);
-		
+
 		celebrate("edballs", 28, Month.APRIL, ORANGE);
 		celebrate("doyouremember", 21, Month.SEPTEMBER, ORANGE);
 
@@ -103,7 +106,7 @@ public class QButton extends Button {
 				setTooltip(Tooltip.create(Component.translatable("quark.gui.celebration." + celebrating.name)));
 				break;
 			}
-		
+
 		showBubble = !getQuarkMarkerFile().exists();
 	}
 
@@ -145,17 +148,17 @@ public class QButton extends Button {
 
 			guiGraphics.blit(MiscUtil.GENERAL_ICONS, rx, ry, u, v, w, h);
 		}
-		
+
 		if(showBubble && GeneralConfig.enableOnboarding) {
 			Font font = Minecraft.getInstance().font;
 			int cy = getY() - 2;
 			if(QuarkClient.ticker.total % 20 > 10)
 				cy++;
-			
+
 			MiscUtil.Client.drawChatBubble(guiGraphics, getX() + 16, cy, font, I18n.get("quark.misc.configure_quark_here"), alpha, true);
 		}
 	}
-	
+
 	private static File getQuarkMarkerFile() {
 		return new File(Minecraft.getInstance().gameDirectory, ".qmenu_opened.marker");
 	}

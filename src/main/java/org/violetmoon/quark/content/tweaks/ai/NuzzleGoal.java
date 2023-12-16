@@ -10,8 +10,6 @@
  */
 package org.violetmoon.quark.content.tweaks.ai;
 
-import java.util.EnumSet;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -20,6 +18,8 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+
+import java.util.EnumSet;
 
 public class NuzzleGoal extends Goal {
 
@@ -43,18 +43,18 @@ public class NuzzleGoal extends Goal {
 		this.whine = whine;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
 
-		if (!(creature.getNavigation() instanceof GroundPathNavigation) && !(creature.getNavigation() instanceof FlyingPathNavigation))
+		if(!(creature.getNavigation() instanceof GroundPathNavigation) && !(creature.getNavigation() instanceof FlyingPathNavigation))
 			throw new IllegalArgumentException("Unsupported mob type for NuzzleOwnerGoal");
 	}
 
 	@Override
 	public boolean canUse() {
-		if (!WantLoveGoal.needsPets(creature))
+		if(!WantLoveGoal.needsPets(creature))
 			return false;
 
 		LivingEntity living = this.creature.getOwner();
 
-		if (living == null || living.isSpectator() ||
+		if(living == null || living.isSpectator() ||
 				this.creature.isOrderedToSit())
 			return false;
 		else {
@@ -65,7 +65,7 @@ public class NuzzleGoal extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		if (!WantLoveGoal.needsPets(creature))
+		if(!WantLoveGoal.needsPets(creature))
 			return false;
 		return !this.petPathfinder.isDone() && this.creature.distanceToSqr(this.owner) > (this.maxDist * this.maxDist) && !this.creature.isOrderedToSit();
 	}
@@ -89,16 +89,16 @@ public class NuzzleGoal extends Goal {
 	public void tick() {
 		this.creature.getLookControl().setLookAt(this.owner, 10.0F, this.creature.getMaxHeadXRot());
 
-		if (!this.creature.isOrderedToSit()) {
-			if (--this.timeUntilRebuildPath <= 0) {
+		if(!this.creature.isOrderedToSit()) {
+			if(--this.timeUntilRebuildPath <= 0) {
 				this.timeUntilRebuildPath = 10;
 
 				this.petPathfinder.moveTo(this.owner, this.followSpeed);
 			}
 		}
 
-		if (creature.distanceToSqr(owner) < whineDist) {
-			if (--this.whineCooldown <= 0) {
+		if(creature.distanceToSqr(owner) < whineDist) {
+			if(--this.whineCooldown <= 0) {
 				this.whineCooldown = 80 + creature.getRandom().nextInt(40);
 				creature.playSound(whine, 1F, 0.5F + (float) Math.random() * 0.5F);
 			}

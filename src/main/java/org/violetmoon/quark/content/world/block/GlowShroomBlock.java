@@ -1,22 +1,22 @@
 package org.violetmoon.quark.content.world.block;
 
-import net.minecraft.world.level.LevelReader;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -27,8 +27,8 @@ public class GlowShroomBlock extends ZetaBushBlock implements BonemealableBlock 
 	public GlowShroomBlock(@Nullable ZetaModule module) {
 		super("glow_shroom", module, null,
 				Properties.copy(Blocks.RED_MUSHROOM)
-				.randomTicks()
-				.lightLevel(s -> 10));
+						.randomTicks()
+						.lightLevel(s -> 10));
 	}
 
 	@Override

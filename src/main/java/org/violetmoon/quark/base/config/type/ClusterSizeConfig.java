@@ -1,9 +1,9 @@
 package org.violetmoon.quark.base.config.type;
 
-import org.violetmoon.quark.base.config.Config;
-
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
+
+import org.violetmoon.quark.base.config.Config;
 
 public class ClusterSizeConfig implements IConfigType {
 
@@ -38,7 +38,7 @@ public class ClusterSizeConfig implements IConfigType {
 	@Config
 	@Config.Min(0)
 	public int verticalVariation;
-	
+
 	@SafeVarargs
 	public ClusterSizeConfig(int rarity, int horizontal, int vertical, int horizontalVariation, int verticalVariation, boolean isBlacklist, TagKey<Biome>... tags) {
 		this(rarity, horizontal, vertical, horizontalVariation, verticalVariation, new BiomeTagConfig(isBlacklist, tags));
@@ -52,11 +52,11 @@ public class ClusterSizeConfig implements IConfigType {
 		this.verticalVariation = verticalVariation;
 		this.biomes = biomes;
 	}
-	
+
 	public ClusterSizeConfig setYLevels(int min, int max) {
 		this.minYLevel = min;
 		this.maxYLevel = max;
 		return this;
 	}
-	
+
 }

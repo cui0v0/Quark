@@ -1,9 +1,11 @@
 package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -12,7 +14,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- * Created at 12:40 PM on 9/9/19.
+ *         Created at 12:40 PM on 9/9/19.
  */
 public class QuarkSounds {
 	private static final List<SoundEvent> REGISTRY_DEFERENCE = Lists.newArrayList();
@@ -98,7 +100,7 @@ public class QuarkSounds {
 
 	@LoadEvent
 	public static void start(ZRegister e) {
-		for (SoundEvent event : REGISTRY_DEFERENCE)
+		for(SoundEvent event : REGISTRY_DEFERENCE)
 			Quark.ZETA.registry.register(event, event.getLocation(), Registries.SOUND_EVENT);
 		REGISTRY_DEFERENCE.clear();
 	}

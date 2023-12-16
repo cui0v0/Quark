@@ -2,12 +2,14 @@ package org.violetmoon.quark.content.tweaks.module;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -24,11 +26,13 @@ import java.util.List;
 @ZetaLoadModule(category = "tweaks")
 public class DiamondRepairModule extends ZetaModule {
 
-	@Config(name = "Repair Item Changes",
-			description = "List of changes to apply to repair items, format is \"<item>=<repair_item>\" as seen in the defualt.\n"
-					+ "Multiple repair items can be applied for the same base item, and as long as at least one is provided, any vanilla option will be removed.\n"
-					+ "To use multiple items, comma separate them (e.g. \"minecraft:diamond_sword=minecraft:diamond,minecraft:emerald\")"
-					+ "If you want the vanilla option back, you must add it again manually.")
+	@Config(
+		name = "Repair Item Changes",
+		description = "List of changes to apply to repair items, format is \"<item>=<repair_item>\" as seen in the defualt.\n"
+				+ "Multiple repair items can be applied for the same base item, and as long as at least one is provided, any vanilla option will be removed.\n"
+				+ "To use multiple items, comma separate them (e.g. \"minecraft:diamond_sword=minecraft:diamond,minecraft:emerald\")"
+				+ "If you want the vanilla option back, you must add it again manually."
+	)
 	public static List<String> repairChangesList = Arrays.asList(
 			"minecraft:netherite_sword=minecraft:diamond",
 			"minecraft:netherite_pickaxe=minecraft:diamond",
@@ -39,12 +43,13 @@ public class DiamondRepairModule extends ZetaModule {
 			"minecraft:netherite_chestplate=minecraft:diamond",
 			"minecraft:netherite_leggings=minecraft:diamond",
 			"minecraft:netherite_boots=minecraft:diamond"
-			);
+	);
 
 	@Config(name = "Unrepairable Items")
 	public static List<String> unrepairableItemsList = Arrays.asList();
 
-	@Config private static boolean enableJeiHints = true;
+	@Config
+	private static boolean enableJeiHints = true;
 
 	private static boolean staticEnabled;
 	public static Multimap<Item, Item> repairChanges = HashMultimap.create();

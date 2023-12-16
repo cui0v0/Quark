@@ -9,5 +9,5 @@ import net.minecraft.world.level.block.state.BlockState;
 public interface IMagnetMoveAction {
 
 	void onMagnetMoved(Level world, BlockPos pos, Direction direction, BlockState state, BlockEntity tile);
-	
+
 }

@@ -12,10 +12,11 @@ package org.violetmoon.quark.content.tweaks.client.emote;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import aurelienribon.tweenengine.Timeline;
-import aurelienribon.tweenengine.TweenManager;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.player.Player;
+
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.TweenManager;
 
 public abstract class EmoteBase {
 
@@ -81,6 +82,5 @@ public abstract class EmoteBase {
 	public boolean isDone() {
 		return timeDone >= totalTime || player.attackAnim > 0 || player.hurtTime > 0;
 	}
-
 
 }

@@ -2,6 +2,7 @@ package org.violetmoon.quark.base.network;
 
 import net.minecraft.network.chat.LastSeenMessages;
 import net.minecraft.network.chat.MessageSignature;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.network.message.*;
 import org.violetmoon.quark.base.network.message.experimental.PlaceVariantUpdateMessage;

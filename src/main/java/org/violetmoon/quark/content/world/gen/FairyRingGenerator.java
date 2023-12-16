@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.Tags;
+
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.base.world.generator.Generator;
@@ -39,28 +40,27 @@ public class FairyRingGenerator extends Generator {
 		Holder<Biome> biome = getBiome(worldIn, center, false);
 
 		double chance = 0;
-		if (biome.is(BiomeTags.IS_FOREST))
+		if(biome.is(BiomeTags.IS_FOREST))
 			chance = FairyRingsModule.forestChance;
-		else if (biome.is(Tags.Biomes.IS_PLAINS))
+		else if(biome.is(Tags.Biomes.IS_PLAINS))
 			chance = FairyRingsModule.plainsChance;
 
-		if (rand.nextDouble() < chance) {
+		if(rand.nextDouble() < chance) {
 			BlockPos pos = center;
 			BlockState state = worldIn.getBlockState(pos);
 
-			while (BlockUtils.isGlassBased(state, worldIn, corner) && pos.getY() > 30) {
+			while(BlockUtils.isGlassBased(state, worldIn, corner) && pos.getY() > 30) {
 				pos = pos.below();
 				state = worldIn.getBlockState(pos);
 			}
 
-			if (BlockUtils.isGlassBased(state, worldIn, corner))
+			if(BlockUtils.isGlassBased(state, worldIn, corner))
 				spawnFairyRing(worldIn, generator, pos.below(), biome, rand);
 		}
 	}
 
 	public static void spawnFairyRing(WorldGenLevel world, ChunkGenerator generator, BlockPos pos, Holder<Biome> biome, RandomSource rand) {
 		List<ConfiguredFeature<?, ?>> features = biome.value().getGenerationSettings().getFlowerFeatures();
-
 
 		Holder<PlacedFeature> holder = features.isEmpty() ? null : ((RandomPatchConfiguration) features.get(0).config()).feature();
 		BlockState flowerState = holder == null ? Blocks.OXEYE_DAISY.defaultBlockState() : null;
@@ -69,21 +69,21 @@ public class FairyRingGenerator extends Generator {
 			for(int j = -3; j <= 3; j++) {
 				float dist = (i * i) + (j * j);
 				if(dist < 7 || dist > 10)
-					for (int k = 6; k > -3; k--) {
+					for(int k = 6; k > -3; k--) {
 						BlockPos fpos = pos.offset(i, k, j);
 						BlockState state = world.getBlockState(fpos);
-						if (state.is(BlockTags.SMALL_FLOWERS)) {
+						if(state.is(BlockTags.SMALL_FLOWERS)) {
 							world.setBlock(fpos, Blocks.AIR.defaultBlockState(), 2);
 							break;
 						}
 					}
 				else {
-					for (int k = 5; k > -4; k--) {
+					for(int k = 5; k > -4; k--) {
 						BlockPos fpos = pos.offset(i, k, j);
 						BlockPos fposUp = fpos.above();
 						BlockState state = world.getBlockState(fpos);
-						if (state.getBlock() instanceof AbstractGlassBlock && world.isEmptyBlock(fposUp)) {
-							if (flowerState == null) {
+						if(state.getBlock() instanceof AbstractGlassBlock && world.isEmptyBlock(fposUp)) {
+							if(flowerState == null) {
 								holder.value().place(world, generator, rand, fposUp);
 								flowerState = world.getBlockState(fposUp);
 							} else

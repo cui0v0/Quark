@@ -1,10 +1,10 @@
 package org.violetmoon.quark.base.network.message.structural;
 
-import java.util.BitSet;
-
 import org.violetmoon.quark.base.config.SyncedFlagHandler;
 import org.violetmoon.zeta.network.IZetaNetworkEventContext;
 import org.violetmoon.zeta.network.ZetaHandshakeMessage;
+
+import java.util.BitSet;
 
 public class C2SLoginFlag extends ZetaHandshakeMessage {
 
@@ -20,7 +20,7 @@ public class C2SLoginFlag extends ZetaHandshakeMessage {
 
 	@Override
 	public boolean receive(IZetaNetworkEventContext context) {
-		if (expectedLength == SyncedFlagHandler.expectedLength() && expectedHash == SyncedFlagHandler.expectedHash())
+		if(expectedLength == SyncedFlagHandler.expectedLength() && expectedHash == SyncedFlagHandler.expectedHash())
 			SyncedFlagHandler.receiveFlagInfoFromPlayer(context.getSender(), flags);
 		return true;
 	}

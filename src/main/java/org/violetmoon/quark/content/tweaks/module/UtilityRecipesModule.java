@@ -1,5 +1,9 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.ComposterBlock;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -9,13 +13,9 @@ import org.violetmoon.zeta.event.play.ZLevelTick;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.ComposterBlock;
-
 /**
  * @author WireSegal
- * Created at 7:34 PM on 9/28/19.
+ *         Created at 7:34 PM on 9/28/19.
  */
 @ZetaLoadModule(category = "tweaks")
 public class UtilityRecipesModule extends ZetaModule {
@@ -34,7 +34,7 @@ public class UtilityRecipesModule extends ZetaModule {
 
 	@Config(description = "Can you craft a minecart around blocks which can be placed inside?", flag = "minecart_upgrade")
 	public static boolean enableMinecarts = true;
-	
+
 	@Config(description = "Can you craft a boat around a chest to directly make a chest boat?", flag = "direct_chest_boat")
 	public static boolean enableChestBoats = true;
 
@@ -59,19 +59,19 @@ public class UtilityRecipesModule extends ZetaModule {
 
 	@Config(description = "Can bones be smelted down to bone meal?", flag = "bone_meal_utility")
 	public static boolean boneMealUtility = true;
-	
+
 	@Config(description = "Can Charcoal be crafted into Black Dye?", flag = "charcoal_to_dye")
 	public static boolean charcoalToBlackDye = true;
 
 	@Config(description = "Can two Logs be used instead of a Chest to make a Hopper?", flag = "easy_hopper")
 	public static boolean easyHopper = true;
-	
+
 	@Config(description = "Can two Logs be used to craft 16 sticks?", flag = "easy_sticks")
 	public static boolean easySticks = true;
 
 	@Config(description = "Can raw ore blocks be smelted, taking 9x the time a normal item?", flag = "smelt_ore_blocks")
 	public static boolean smeltRawOreBlocks = true;
-	
+
 	private boolean needsChange = false;
 
 	@LoadEvent
@@ -83,12 +83,12 @@ public class UtilityRecipesModule extends ZetaModule {
 	@PlayEvent
 	public void worldTick(ZLevelTick event) {
 		if(needsChange) {
-			if (effectiveDragonBreath)
+			if(effectiveDragonBreath)
 				Items.DRAGON_BREATH.craftingRemainingItem = null;
 			else
 				Items.DRAGON_BREATH.craftingRemainingItem = Items.GLASS_BOTTLE;
 
-			if (compostableToxins) {
+			if(compostableToxins) {
 				ComposterBlock.COMPOSTABLES.put(Items.POISONOUS_POTATO, 0.85F);
 				ComposterBlock.COMPOSTABLES.put(Items.ROTTEN_FLESH, 0.3F);
 			} else {
@@ -102,9 +102,9 @@ public class UtilityRecipesModule extends ZetaModule {
 
 	@PlayEvent
 	public void torchBurnTime(ZFurnaceFuelBurnTime event) {
-		if (torchesBurn) {
+		if(torchesBurn) {
 			Item item = event.getItemStack().getItem();
-			if (item == Items.TORCH || item == Items.SOUL_TORCH)
+			if(item == Items.TORCH || item == Items.SOUL_TORCH)
 				event.setBurnTime(400);
 		}
 	}

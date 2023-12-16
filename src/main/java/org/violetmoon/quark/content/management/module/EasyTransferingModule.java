@@ -1,10 +1,12 @@
 package org.violetmoon.quark.content.management.module;
 
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.InventoryTransferMessage;
 import org.violetmoon.quark.content.management.client.screen.widgets.MiniInventoryButton;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
@@ -12,15 +14,13 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.resources.language.I18n;
-
 @ZetaLoadModule(category = "management")
 public class EasyTransferingModule extends ZetaModule {
 
 	public static boolean shiftLocked = false;
 
-	@Config public static boolean enableShiftLock = true;
+	@Config
+	public static boolean enableShiftLock = true;
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends EasyTransferingModule {

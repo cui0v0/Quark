@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.client.module;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -20,7 +21,9 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.client.event.play.ZClientTick;
@@ -92,17 +95,18 @@ public class MicrocraftingHelperModule extends ZetaModule {
 								ItemStack rootDisplayStack = ghostRecipe.getResultItem(registryAccess);
 								StackedRecipe rootRecipe = new StackedRecipe(null, rootDisplayStack, rootDisplayStack.getCount(), () -> recipes.size() == 1);
 								recipes.add(rootRecipe);
-							} else for(int i = 0; i < recipes.size(); i++) { // check dupes
-								StackedRecipe currRecipe = recipes.get(recipes.size() - i - 1);
-								if(currRecipe.recipe == recipeToSet) {
-									for(int j = 0; j <= i; j++)
-										recipes.pop();
+							} else
+								for(int i = 0; i < recipes.size(); i++) { // check dupes
+									StackedRecipe currRecipe = recipes.get(recipes.size() - i - 1);
+									if(currRecipe.recipe == recipeToSet) {
+										for(int j = 0; j <= i; j++)
+											recipes.pop();
 
-									stackIt = false;
-									compoundCount = currRecipe.count;
-									break;
+										stackIt = false;
+										compoundCount = currRecipe.count;
+										break;
+									}
 								}
-							}
 
 							if(stackIt)
 								recipes.add(stackedRecipe);
@@ -309,8 +313,8 @@ public class MicrocraftingHelperModule extends ZetaModule {
 		}
 
 		private record StackedRecipe(Recipe<?> recipe,
-			ItemStack displayItem, int count,
-			BooleanSupplier clearCondition) {
+				ItemStack displayItem, int count,
+				BooleanSupplier clearCondition) {
 
 			private StackedRecipe(Recipe<?> recipe, ItemStack displayItem, int count, BooleanSupplier clearCondition) {
 				this.recipe = recipe;

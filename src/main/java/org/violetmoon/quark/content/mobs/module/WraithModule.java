@@ -2,8 +2,8 @@ package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -17,22 +17,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.SoulBeadRenderer;
 import org.violetmoon.quark.content.mobs.client.render.entity.WraithRenderer;
 import org.violetmoon.quark.content.mobs.entity.SoulBead;
 import org.violetmoon.quark.content.mobs.entity.Wraith;
 import org.violetmoon.quark.content.mobs.item.SoulBeadItem;
+import org.violetmoon.zeta.advancement.modifier.MonsterHunterModifier;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -42,6 +39,9 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ZetaLoadModule(category = "mobs")
 public class WraithModule extends ZetaModule {
@@ -71,7 +71,7 @@ public class WraithModule extends ZetaModule {
 			"entity.llama.ambient|entity.llama.hurt|entity.llama.death",
 			"|quark:entity.stoneling.cry|quark:entity.stoneling.die",
 			"quark:entity.frog.idle|quark:entity.frog.hurt|quark:entity.frog.die"
-			);
+	);
 
 	@Config
 	public static EntitySpawnConfig spawnConfig = new CostSensitiveEntitySpawnConfig(5, 1, 3, 0.7, 0.15, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:soul_sand_valley"));
@@ -81,8 +81,9 @@ public class WraithModule extends ZetaModule {
 	public static TagKey<Structure> soulBeadTargetTag;
 
 	public static List<String> validWraithSounds;
-	
-	@Hint Item soul_bead;
+
+	@Hint
+	Item soul_bead;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -109,7 +110,7 @@ public class WraithModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

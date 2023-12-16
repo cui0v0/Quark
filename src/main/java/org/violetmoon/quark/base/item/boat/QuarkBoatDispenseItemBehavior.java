@@ -32,15 +32,15 @@ public class QuarkBoatDispenseItemBehavior extends DefaultDispenseItemBehavior {
 	public ItemStack execute(BlockSource world, @NotNull ItemStack stack) {
 		Direction direction = world.getBlockState().getValue(DispenserBlock.FACING);
 		Level level = world.getLevel();
-		double boatX = world.x() + (double)((float)direction.getStepX() * 1.125F);
-		double boatY = world.y() + (double)((float)direction.getStepY() * 1.125F);
-		double boatZ = world.z() + (double)((float)direction.getStepZ() * 1.125F);
+		double boatX = world.x() + (double) ((float) direction.getStepX() * 1.125F);
+		double boatY = world.y() + (double) ((float) direction.getStepY() * 1.125F);
+		double boatZ = world.z() + (double) ((float) direction.getStepZ() * 1.125F);
 		BlockPos pos = world.getPos().relative(direction);
 		double offset;
-		if (level.getFluidState(pos).is(FluidTags.WATER)) {
+		if(level.getFluidState(pos).is(FluidTags.WATER)) {
 			offset = 1.0D;
 		} else {
-			if (!level.getBlockState(pos).isAir() || !level.getFluidState(pos.below()).is(FluidTags.WATER)) {
+			if(!level.getBlockState(pos).isAir() || !level.getFluidState(pos.below()).is(FluidTags.WATER)) {
 				return this.defaultDispenseItemBehavior.dispense(world, stack);
 			}
 

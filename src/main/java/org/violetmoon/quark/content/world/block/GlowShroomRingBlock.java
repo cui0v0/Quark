@@ -1,13 +1,8 @@
 package org.violetmoon.quark.content.world.block;
 
-import java.util.Map;
-
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -30,13 +25,20 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
+
+import java.util.Map;
 
 // Mostly a copy of BaseCoralWallFanBlock
 public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedBlock {
@@ -49,11 +51,11 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 	public GlowShroomRingBlock(@Nullable ZetaModule module) {
 		super("glow_shroom_ring", module,
 				BlockBehaviour.Properties.of()
-				.mapColor(MapColor.COLOR_LIGHT_GRAY)
-				.noCollission()
-				.instabreak()
-				.sound(SoundType.FUNGUS)
-				.pushReaction(PushReaction.DESTROY)
+						.mapColor(MapColor.COLOR_LIGHT_GRAY)
+						.noCollission()
+						.instabreak()
+						.sound(SoundType.FUNGUS)
+						.pushReaction(PushReaction.DESTROY)
 		);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 
@@ -97,7 +99,7 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 
@@ -120,9 +122,9 @@ public class GlowShroomRingBlock extends ZetaBlock implements SimpleWaterloggedB
 		Direction[] adirection = context.getNearestLookingDirections();
 
 		for(Direction direction : adirection) {
-			if (direction.getAxis().isHorizontal()) {
+			if(direction.getAxis().isHorizontal()) {
 				blockstate = blockstate.setValue(FACING, direction.getOpposite());
-				if (blockstate.canSurvive(levelreader, blockpos)) {
+				if(blockstate.canSurvive(levelreader, blockpos)) {
 					return blockstate;
 				}
 			}

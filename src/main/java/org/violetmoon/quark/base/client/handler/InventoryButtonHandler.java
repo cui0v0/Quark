@@ -1,8 +1,8 @@
 package org.violetmoon.quark.base.client.handler;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -68,9 +68,9 @@ public final class InventoryButtonHandler {
 
 	private static Collection<ButtonProviderHolder> forGui(Screen gui) {
 		Set<ButtonProviderHolder> holders = new HashSet<>();
-		if (gui instanceof AbstractContainerScreen<?> screen) {
+		if(gui instanceof AbstractContainerScreen<?> screen) {
 
-			if (gui instanceof InventoryScreen)
+			if(gui instanceof InventoryScreen)
 				holders.addAll(providers.get(ButtonTargetType.PLAYER_INVENTORY));
 			else {
 				Minecraft mc = Minecraft.getInstance();
@@ -87,14 +87,14 @@ public final class InventoryButtonHandler {
 	@PlayEvent
 	public static void mouseInputEvent(ZScreen.MouseButtonPressed.Pre pressed) {
 		Screen gui = pressed.getScreen();
-		if (gui instanceof AbstractContainerScreen<?> screen) {
+		if(gui instanceof AbstractContainerScreen<?> screen) {
 			if(!GeneralConfig.isScreenAllowed(screen))
 				return;
 
 			Collection<ButtonProviderHolder> holders = forGui(screen);
 
-			for (ButtonProviderHolder holder : holders) {
-				if (holder.keybind != null &&
+			for(ButtonProviderHolder holder : holders) {
+				if(holder.keybind != null &&
 						holder.keybind.matchesMouse(pressed.getButton()) &&
 						(holder.keybind.getKeyModifier() == KeyModifier.NONE || holder.keybind.getKeyModifier().isActive(KeyConflictContext.GUI))) {
 					holder.pressed.accept(screen);
@@ -107,14 +107,14 @@ public final class InventoryButtonHandler {
 	@PlayEvent
 	public static void keyboardInputEvent(ZScreen.KeyPressed.Pre pressed) {
 		Screen gui = pressed.getScreen();
-		if (gui instanceof AbstractContainerScreen<?> screen) {
+		if(gui instanceof AbstractContainerScreen<?> screen) {
 			if(!GeneralConfig.isScreenAllowed(screen))
 				return;
 
 			Collection<ButtonProviderHolder> holders = forGui(screen);
 
-			for (ButtonProviderHolder holder : holders) {
-				if (holder.keybind != null &&
+			for(ButtonProviderHolder holder : holders) {
+				if(holder.keybind != null &&
 						holder.keybind.matches(pressed.getKeyCode(), pressed.getScanCode()) &&
 						(holder.keybind.getKeyModifier() == KeyModifier.NONE || holder.keybind.getKeyModifier().isActive(KeyConflictContext.GUI))) {
 					holder.pressed.accept(screen);
@@ -187,7 +187,7 @@ public final class InventoryButtonHandler {
 		private final KeyMapping keybind;
 		private final Consumer<AbstractContainerScreen<?>> pressed;
 		private final BooleanSupplier enableCond;
-		
+
 		public ButtonProviderHolder(ZetaModule module, int priority, ButtonProvider provider, KeyMapping keybind, Consumer<AbstractContainerScreen<?>> onPressed, BooleanSupplier enableCond) {
 			this.module = module;
 			this.priority = priority;

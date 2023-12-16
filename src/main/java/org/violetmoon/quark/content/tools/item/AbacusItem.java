@@ -1,16 +1,13 @@
 package org.violetmoon.quark.content.tools.item;
 
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTabs;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,6 +15,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -44,7 +44,8 @@ public class AbacusItem extends ZetaItem {
 		BlockPos curr = getBlockPos(stack);
 		if(curr != null)
 			setBlockPos(stack, null);
-		else setBlockPos(stack, context.getClickedPos());
+		else
+			setBlockPos(stack, context.getClickedPos());
 
 		return InteractionResult.SUCCESS;
 	}

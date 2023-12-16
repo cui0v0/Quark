@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.handler;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.Direction;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.ToolActions;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.render.QuarkBoatRenderer;
 import org.violetmoon.quark.base.item.boat.QuarkBoat;
@@ -44,7 +46,9 @@ import java.util.stream.Stream;
 
 public class WoodSetHandler {
 
-	public record QuarkBoatType(String name, Item boat, Item chestBoat, Block planks) {}
+	public record QuarkBoatType(String name, Item boat, Item chestBoat, Block planks) {
+	}
+
 	private static final Map<String, QuarkBoatType> quarkBoatTypes = new HashMap<>();
 
 	public static EntityType<QuarkBoat> quarkBoatEntityType = null;
@@ -83,7 +87,7 @@ public class WoodSetHandler {
 
 	public static WoodSet addWoodSet(ZRegister event, ZetaModule module, String name, MapColor color, MapColor barkColor, boolean flammable) {
 		CreativeTabManager.daisyChain();
-		
+
 		//TODO 1.20: maybe expose stuff like canOpenByHand, sound types, etc
 		BlockSetType setType = new BlockSetType(Quark.MOD_ID + ":" + name);
 		SoundType sound = SoundType.WOOD;
@@ -97,7 +101,7 @@ public class WoodSetHandler {
 		set.strippedWood = new ZetaPillarBlock("stripped_" + name + "_wood", module, OldMaterials.wood().mapColor(color).strength(2.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
 		set.planks = new ZetaBlock(name + "_planks", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-	
+
 		set.verticalPlanks = VerticalPlanksModule.add(name, set.planks, module).setCondition(() -> Quark.ZETA.modules.isEnabledOrOverlapping(VerticalPlanksModule.class));
 		set.slab = event.getVariantRegistry().addSlab((IZetaBlock) set.planks, null).getBlock();
 		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks, null).getBlock();
@@ -114,7 +118,7 @@ public class WoodSetHandler {
 		CreativeTabManager.endDaisyChain();
 
 		((IZetaBlock) set.log).setCreativeTab(CreativeModeTabs.NATURAL_BLOCKS, Blocks.WARPED_STEM, false);
-		
+
 		set.sign = new ZetaStandingSignBlock(name + "_sign", module, type, OldMaterials.wood().forceSolidOn().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD));
 		set.wallSign = new ZetaWallSignBlock(name + "_wall_sign", module, type, OldMaterials.wood().forceSolidOn().mapColor(color).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> set.sign));
 
@@ -151,7 +155,7 @@ public class WoodSetHandler {
 		addQuarkBoatType(name, new QuarkBoatType(name, set.boatItem, set.chestBoatItem, set.planks));
 
 		woodSets.add(set);
-		
+
 		return set;
 	}
 
@@ -161,7 +165,7 @@ public class WoodSetHandler {
 		validBlocks.add(wallSign);
 		validBlocks.addAll(BlockEntityType.SIGN.validBlocks);
 		BlockEntityType.SIGN.validBlocks = ImmutableSet.copyOf(validBlocks);
-		
+
 		validBlocks.clear();
 		validBlocks.add(hangingSign);
 		validBlocks.add(wallHangingSign);
@@ -171,9 +175,9 @@ public class WoodSetHandler {
 
 	private static ZetaPillarBlock log(String name, ZetaModule module, MapColor topColor, MapColor sideColor) {
 		return new ZetaPillarBlock(name, module,
-			OldMaterials.wood()
-				.mapColor(s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
-				.strength(2.0F).sound(SoundType.WOOD));
+				OldMaterials.wood()
+						.mapColor(s -> s.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor)
+						.strength(2.0F).sound(SoundType.WOOD));
 	}
 
 	public static void addQuarkBoatType(String name, QuarkBoatType type) {
@@ -195,10 +199,10 @@ public class WoodSetHandler {
 		public final ZetaModule module;
 
 		public Block log, wood, planks, strippedLog, strippedWood,
-		slab, stairs, fence, fenceGate,
-		door, trapdoor, button, pressurePlate, sign, wallSign,
+				slab, stairs, fence, fenceGate,
+				door, trapdoor, button, pressurePlate, sign, wallSign,
 				ceilingHangingSign, wallHangingSign, bookshelf, ladder, post,
-		strippedPost, verticalPlanks, hollowLog;
+				strippedPost, verticalPlanks, hollowLog;
 
 		public Item signItem, boatItem, chestBoatItem, hangingSignItem;
 
@@ -217,7 +221,7 @@ public class WoodSetHandler {
 			EntityRenderers.register(quarkChestBoatEntityType, r -> new QuarkBoatRenderer(r, true));
 
 			event.enqueueWork(() -> {
-				for (WoodSet set : woodSets) {
+				for(WoodSet set : woodSets) {
 					Sheets.addWoodType(set.type);
 				}
 			});

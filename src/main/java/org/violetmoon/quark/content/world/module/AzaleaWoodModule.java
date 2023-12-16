@@ -7,6 +7,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.MapColor;
+
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -28,9 +29,9 @@ public class AzaleaWoodModule extends ZetaModule {
 	@LoadEvent
 	public final void onServerReload(ZAddReloadListener e) {
 		ConfiguredFeature<?, ?> azaleaFeature = e.getRegistryAccess()
-			.registry(Registries.CONFIGURED_FEATURE)
-			.flatMap(reg -> reg.getOptional(TreeFeatures.AZALEA_TREE))
-			.orElse(null);
+				.registry(Registries.CONFIGURED_FEATURE)
+				.flatMap(reg -> reg.getOptional(TreeFeatures.AZALEA_TREE))
+				.orElse(null);
 
 		if(woodSet == null || azaleaFeature == null || !(azaleaFeature.config() instanceof TreeConfiguration treeConfig))
 			return; // Maybe we interacted with the RegistryAccess too early?

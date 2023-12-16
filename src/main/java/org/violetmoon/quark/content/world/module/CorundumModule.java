@@ -1,8 +1,7 @@
 package org.violetmoon.quark.content.world.module;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,7 +14,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
@@ -36,6 +37,8 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.util.Hint;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "world")
 public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle> {
@@ -66,17 +69,19 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	@Config(flag = "cave_corundum_runes")
 	public static boolean crystalsCraftRunes = true;
 
-	@Config public static boolean enableCollateralMovement = true;
+	@Config
+	public static boolean enableCollateralMovement = true;
 
 	public static boolean staticEnabled;
 
 	public static List<CorundumBlock> crystals = Lists.newArrayList();
 	public static List<CorundumClusterBlock> clusters = Lists.newArrayList();
-	@Hint public static TagKey<Block> corundumTag;
+	@Hint
+	public static TagKey<Block> corundumTag;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		for (CorundumColor color : CorundumColor.values())
+		for(CorundumColor color : CorundumColor.values())
 			add(color.name, color.beaconColor, color.mapColor);
 	}
 
@@ -140,7 +145,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 		@Override
 		public boolean canConnectIndirectly(Level world, BlockPos ourPos, BlockPos sourcePos, BlockState ourState, BlockState sourceState) {
 			BlockPos offsetPos = ourPos.relative(ourState.getValue(CorundumClusterBlock.FACING).getOpposite());
-			if (!offsetPos.equals(sourcePos))
+			if(!offsetPos.equals(sourcePos))
 				return false;
 
 			return sourceState.getBlock() == cluster.base;

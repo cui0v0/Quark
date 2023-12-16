@@ -1,13 +1,16 @@
 package org.violetmoon.quark.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseCoralPlantTypeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
 import org.violetmoon.quark.content.tweaks.module.CoralOnCactusModule;
 
 @Mixin(BaseCoralPlantTypeBlock.class)

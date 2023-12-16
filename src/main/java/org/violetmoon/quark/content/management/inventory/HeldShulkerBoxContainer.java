@@ -1,9 +1,5 @@
 package org.violetmoon.quark.content.management.inventory;
 
-import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
-import org.violetmoon.quark.content.management.module.ExpandedItemInteractionsModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -14,29 +10,33 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 
+import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
+import org.violetmoon.quark.content.management.module.ExpandedItemInteractionsModule;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
 public class HeldShulkerBoxContainer implements Container, MenuProvider {
 
 	public final Player player;
 	public final ItemStack stack;
 	public final ShulkerBoxBlockEntity be;
 	public final int slot;
-	
+
 	public HeldShulkerBoxContainer(Player player, int slot) {
 		this.player = player;
 		this.slot = slot;
-		
+
 		stack = player.getInventory().getItem(slot);
 		ShulkerBoxBlockEntity gotBe = null;
-		
+
 		if(SimilarBlockTypeHandler.isShulkerBox(stack)) {
 			BlockEntity tile = ExpandedItemInteractionsModule.getShulkerBoxEntity(stack);
 			if(tile instanceof ShulkerBoxBlockEntity shulker)
 				gotBe = shulker;
 		}
-		
+
 		be = gotBe;
 	}
-	
+
 	@Override
 	public AbstractContainerMenu createMenu(int p_39954_, Inventory p_39955_, Player p_39956_) {
 		return new HeldShulkerBoxMenu(p_39954_, p_39955_, this, slot);
@@ -85,7 +85,7 @@ public class HeldShulkerBoxContainer implements Container, MenuProvider {
 	@Override
 	public void setChanged() {
 		be.setChanged();
-		
+
 		ItemNBTHelper.setCompound(stack, "BlockEntityTag", be.saveWithId());
 	}
 

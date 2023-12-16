@@ -1,8 +1,5 @@
 package org.violetmoon.quark.addons.oddities.magnetsystem;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -12,7 +9,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.MagnetBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
 import org.violetmoon.quark.api.IMagnetMoveAction;
@@ -20,6 +19,9 @@ import org.violetmoon.quark.api.IMagnetTracker;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.RecipeCrawlHandler;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class MagnetSystem {
 
@@ -54,14 +56,14 @@ public class MagnetSystem {
 	public static void onRecipeReset() {
 		magnetizableBlocks.clear();
 	}
-	
+
 	public static void onDigest() {
 		RecipeCrawlHandler.recursivelyFindCraftedItemsFromStrings(MagnetsModule.magneticDerivationList, MagnetsModule.magneticWhitelist, MagnetsModule.magneticBlacklist, i -> {
 			if(i instanceof BlockItem bi)
 				magnetizableBlocks.add(bi.getBlock());
 		});
 	}
-	
+
 	public static void applyForce(Level world, BlockPos pos, int magnitude, boolean pushing, Direction dir, int distance, BlockPos origin) {
 		IMagnetTracker tracker = getTracker(world);
 		if(tracker != null)
@@ -73,9 +75,9 @@ public class MagnetSystem {
 		if(world != null && isBlockMagnetic(state)) {
 			BlockPos targetLocation = pos.relative(moveDir);
 			BlockState stateAtTarget = world.getBlockState(targetLocation);
-			if (stateAtTarget.isAir())
+			if(stateAtTarget.isAir())
 				return PushReaction.IGNORE;
-			else if (stateAtTarget.getPistonPushReaction() == PushReaction.DESTROY)
+			else if(stateAtTarget.getPistonPushReaction() == PushReaction.DESTROY)
 				return PushReaction.DESTROY;
 		}
 
@@ -85,8 +87,8 @@ public class MagnetSystem {
 	public static boolean isBlockMagnetic(BlockState state) {
 		Block block = state.getBlock();
 
-		if (block == Blocks.PISTON || block == Blocks.STICKY_PISTON) {
-			if (state.getValue(PistonBaseBlock.EXTENDED))
+		if(block == Blocks.PISTON || block == Blocks.STICKY_PISTON) {
+			if(state.getValue(PistonBaseBlock.EXTENDED))
 				return false;
 		}
 

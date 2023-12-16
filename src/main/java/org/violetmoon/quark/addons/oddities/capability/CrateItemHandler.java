@@ -11,16 +11,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
 import org.violetmoon.quark.base.handler.SortingHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author WireSegal
- * Created at 8:53 AM on 4/8/22.
+ *         Created at 8:53 AM on 4/8/22.
  */
 public class CrateItemHandler extends ItemStackHandler {
 
@@ -43,7 +44,7 @@ public class CrateItemHandler extends ItemStackHandler {
 			return cachedTotal;
 
 		int items = 0;
-		for (ItemStack stack : stacks) 
+		for(ItemStack stack : stacks)
 			items += stack.getCount();
 
 		cachedTotal = items;
@@ -61,7 +62,7 @@ public class CrateItemHandler extends ItemStackHandler {
 	}
 
 	public void recalculate() {
-		if (!needsUpdate)
+		if(!needsUpdate)
 			return;
 		needsUpdate = false;
 
@@ -70,8 +71,8 @@ public class CrateItemHandler extends ItemStackHandler {
 
 		NonNullList<ItemStack> newStacks = NonNullList.withSize(maxItems, ItemStack.EMPTY);
 		int idx = 0;
-		for (ItemStack stack : stacks) {
-			if (!stack.isEmpty()) {
+		for(ItemStack stack : stacks) {
+			if(!stack.isEmpty()) {
 				newStacks.set(idx, stack);
 				displayTotal += stack.getCount();
 				displaySlots++;
@@ -90,8 +91,8 @@ public class CrateItemHandler extends ItemStackHandler {
 	}
 
 	public boolean isEmpty() {
-		for (ItemStack stack : stacks)
-			if (!stack.isEmpty())
+		for(ItemStack stack : stacks)
+			if(!stack.isEmpty())
 				return false;
 		return true;
 	}
@@ -139,7 +140,7 @@ public class CrateItemHandler extends ItemStackHandler {
 		ItemStack oldStack = stacks.get(slot).copy();
 		ItemStack retStack = super.extractItem(slot, amount, simulate);
 		ItemStack newStack = stacks.get(slot).copy();
-	
+
 		if(!simulate)
 			changeTotal(oldStack, newStack);
 
@@ -160,8 +161,8 @@ public class CrateItemHandler extends ItemStackHandler {
 	@Override
 	public CompoundTag serializeNBT() {
 		ListTag items = new ListTag();
-		for (ItemStack stack : stacks) {
-			if (!stack.isEmpty())
+		for(ItemStack stack : stacks) {
+			if(!stack.isEmpty())
 				items.add(stack.save(new CompoundTag()));
 		}
 		CompoundTag nbt = new CompoundTag();
@@ -174,7 +175,7 @@ public class CrateItemHandler extends ItemStackHandler {
 		stacks = NonNullList.withSize(maxItems, ItemStack.EMPTY);
 
 		ListTag items = nbt.getList("stacks", Tag.TAG_COMPOUND);
-		for (int i = 0; i < items.size(); i++)
+		for(int i = 0; i < items.size(); i++)
 			stacks.set(i, ItemStack.of(items.getCompound(i)));
 		onLoad();
 	}

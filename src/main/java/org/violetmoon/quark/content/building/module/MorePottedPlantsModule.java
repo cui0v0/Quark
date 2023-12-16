@@ -2,16 +2,13 @@ package org.violetmoon.quark.content.building.module;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -20,14 +17,18 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @ZetaLoadModule(category = "building")
 public class MorePottedPlantsModule extends ZetaModule {
 
 	private static Map<Block, Block> tintedBlocks = new HashMap<>();
-	
+
 	@Hint(key = "pottable_stuff")
 	List<Block> pottableBlocks = Lists.newArrayList();
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		add(event, Blocks.BEETROOTS, "beetroot");
@@ -54,19 +55,19 @@ public class MorePottedPlantsModule extends ZetaModule {
 		add(event, Blocks.WEEPING_VINES, "weeping_vines");
 		add(event, Blocks.WHEAT, "wheat");
 		event.getVariantRegistry().addFlowerPot(Blocks.CAVE_VINES, "cave_vines", p -> p.lightLevel(b -> 14));
-		
+
 		tintedBlocks.put(grass, Blocks.GRASS);
 		tintedBlocks.put(largeFern, Blocks.LARGE_FERN);
 		tintedBlocks.put(sugarCane, Blocks.SUGAR_CANE);
 		tintedBlocks.put(tallGrass, Blocks.TALL_GRASS);
 		tintedBlocks.put(vine, Blocks.VINE);
 	}
-	
+
 	private FlowerPotBlock add(ZRegister event, Block block, String name) {
 		pottableBlocks.add(block);
 		return event.getVariantRegistry().addFlowerPot(block, name, Functions.identity());
 	}
-	
+
 	@LoadEvent
 	public final void clientSetup(ZClientSetup event) {
 		for(Block b : tintedBlocks.keySet()) {
@@ -75,5 +76,5 @@ public class MorePottedPlantsModule extends ZetaModule {
 			Minecraft.getInstance().getBlockColors().register(color, b);
 		}
 	}
-	
+
 }

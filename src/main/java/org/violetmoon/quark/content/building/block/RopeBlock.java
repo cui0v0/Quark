@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -43,7 +41,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidUtil;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.automation.module.PistonsMoveTileEntitiesModule;
 import org.violetmoon.quark.content.building.module.RopeModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -109,7 +110,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
@@ -129,23 +130,22 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 					worldIn.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, 0.5F, 1F);
 					return InteractionResult.SUCCESS;
 				}
-			} else if (stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
+			} else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
 				return FluidUtil.interactWithFluidHandler(player, hand, worldIn, getBottomPos(worldIn, pos), Direction.UP) ? InteractionResult.SUCCESS : InteractionResult.PASS;
-			} else if (stack.getItem() == Items.GLASS_BOTTLE) {
+			} else if(stack.getItem() == Items.GLASS_BOTTLE) {
 				BlockPos bottomPos = getBottomPos(worldIn, pos);
 				BlockState stateAt = worldIn.getBlockState(bottomPos);
-				if (stateAt.getFluidState().is(Fluids.WATER)) { //TODO 1.20: material -> fluidState check
+				if(stateAt.getFluidState().is(Fluids.WATER)) { //TODO 1.20: material -> fluidState check
 					Vec3 playerPos = player.position();
 					worldIn.playSound(player, playerPos.x, playerPos.y, playerPos.z, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
 					stack.shrink(1);
 					ItemStack bottleStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
 					player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 
-					if (stack.isEmpty())
+					if(stack.isEmpty())
 						player.setItemInHand(hand, bottleStack);
-					else if (!player.getInventory().add(bottleStack))
+					else if(!player.getInventory().add(bottleStack))
 						player.drop(bottleStack, false);
-
 
 					return InteractionResult.SUCCESS;
 				}
@@ -194,7 +194,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 		do {
 			pos = pos.below();
-			if (!world.isInWorldBounds(pos))
+			if(!world.isInWorldBounds(pos))
 				return false;
 
 			BlockState state = world.getBlockState(pos);
@@ -229,7 +229,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 	private BlockPos getBottomPos(Level worldIn, BlockPos pos) {
 		Block block = this;
-		while (block == this) {
+		while(block == this) {
 			pos = pos.below();
 			BlockState state = worldIn.getBlockState(pos);
 			block = state.getBlock();
@@ -270,7 +270,7 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 
 		if(tile != null) {
 			BlockEntity target = BlockEntity.loadStatic(dstPos, state, tile.saveWithFullMetadata());
-			if (target != null) {
+			if(target != null) {
 				world.setBlockEntity(target);
 				target.setBlockState(state);
 				target.setChanged();

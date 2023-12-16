@@ -1,15 +1,14 @@
 package org.violetmoon.quark.content.management.module;
 
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -40,14 +39,11 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import net.minecraftforge.network.NetworkHooks;
 
-import java.util.List;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.ScrollOnBundleMessage;
 import org.violetmoon.quark.content.management.client.screen.HeldShulkerBoxScreen;
 import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxContainer;
@@ -65,6 +61,8 @@ import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 import org.violetmoon.zeta.util.RegistryUtil;
 
+import java.util.List;
+
 @ZetaLoadModule(category = "management")
 public class ExpandedItemInteractionsModule extends ZetaModule {
 
@@ -79,8 +77,10 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	@Config(flag = "allow_rotating_bundles")
 	public static boolean allowRotatingBundles = true;
 
-	@Hint("lava_interaction") Item lava_bucket = Items.LAVA_BUCKET;
-	@Hint(value = "allow_rotating_bundles", key = "rotating_bundles") Item bundle = Items.BUNDLE;
+	@Hint("lava_interaction")
+	Item lava_bucket = Items.LAVA_BUCKET;
+	@Hint(value = "allow_rotating_bundles", key = "rotating_bundles")
+	Item bundle = Items.BUNDLE;
 	@Hint(value = "shulker_box_interaction", key = "shulker_box_right_click")
 	List<Item> shulkers;
 
@@ -107,12 +107,12 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	public static boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		if (!staticEnabled || action == ClickAction.PRIMARY)
+		if(!staticEnabled || action == ClickAction.PRIMARY)
 			return false;
 
 		ItemStack stackAt = slot.getItem();
-		if (enableShulkerBoxInteraction && shulkerOverride(stack, stackAt, slot, action, player, false)) {
-			if (player.containerMenu != null)
+		if(enableShulkerBoxInteraction && shulkerOverride(stack, stackAt, slot, action, player, false)) {
+			if(player.containerMenu != null)
 				player.containerMenu.slotsChanged(slot.container);
 			return true;
 		}
@@ -121,42 +121,43 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	public static boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, SlotAccess accessor) {
-		if (!staticEnabled || action == ClickAction.PRIMARY)
+		if(!staticEnabled || action == ClickAction.PRIMARY)
 			return false;
 
-		if (enableLavaInteraction && lavaBucketOverride(stack, incoming, slot, action, player))
+		if(enableLavaInteraction && lavaBucketOverride(stack, incoming, slot, action, player))
 			return true;
 
-		if (enableArmorInteraction && armorOverride(stack, incoming, slot, action, player, false))
+		if(enableArmorInteraction && armorOverride(stack, incoming, slot, action, player, false))
 			return true;
 
 		return enableShulkerBoxInteraction && shulkerOverride(stack, incoming, slot, action, player, true);
 	}
 
 	public static void scrollOnBundle(ServerPlayer player, int containerId, int stateId, int slotNum, double scrollDelta) {
-		if (!staticEnabled || !allowRotatingBundles)
+		if(!staticEnabled || !allowRotatingBundles)
 			return;
 
-		if (-0.1 <= scrollDelta && scrollDelta <= 0.1) return;
+		if(-0.1 <= scrollDelta && scrollDelta <= 0.1)
+			return;
 
 		player.resetLastActionTime();
-		if (player.containerMenu.containerId == containerId) {
-			if (player.isSpectator()) {
+		if(player.containerMenu.containerId == containerId) {
+			if(player.isSpectator()) {
 				player.containerMenu.sendAllDataToRemote();
-			} else if (!player.containerMenu.stillValid(player)) {
+			} else if(!player.containerMenu.stillValid(player)) {
 				Quark.LOG.debug("Player {} interacted with invalid menu {}", player, player.containerMenu);
 			} else {
 				boolean flag = stateId != player.containerMenu.getStateId();
 				player.containerMenu.suppressRemoteUpdates();
 
 				Slot under = player.containerMenu.getSlot(slotNum);
-				if (under != null) {
+				if(under != null) {
 					ItemStack underStack = under.getItem();
 					rotateBundle(underStack, scrollDelta);
 				}
 
 				player.containerMenu.resumeRemoteUpdates();
-				if (flag) {
+				if(flag) {
 					player.containerMenu.broadcastFullState();
 				} else {
 					player.containerMenu.broadcastChanges();
@@ -166,18 +167,18 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	private static void rotateBundle(ItemStack stack, double scrollDelta) {
-		if (stack.is(Items.BUNDLE)) {
+		if(stack.is(Items.BUNDLE)) {
 			CompoundTag tag = stack.getTag();
-			if (tag != null) {
+			if(tag != null) {
 				ListTag items = tag.getList("Items", Tag.TAG_COMPOUND);
-				if (items.size() > 1) {
+				if(items.size() > 1) {
 					ListTag rotatedItems = new ListTag();
-					if (scrollDelta < 0) {
+					if(scrollDelta < 0) {
 						rotatedItems.add(items.get(items.size() - 1));
-						for (int i = 0; i < items.size() - 1; i++)
+						for(int i = 0; i < items.size() - 1; i++)
 							rotatedItems.add(items.get(i));
 					} else {
-						for (int i = 1; i < items.size(); i++)
+						for(int i = 1; i < items.size(); i++)
 							rotatedItems.add(items.get(i));
 						rotatedItems.add(items.get(0));
 					}
@@ -188,24 +189,25 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	private static boolean armorOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean simulate) {
-		if (incoming.isEmpty()) {
+		if(incoming.isEmpty()) {
 			//disallow stacks with more than one since it would prevent from de stacking
-			if (stack.getCount() >1) return false;
+			if(stack.getCount() > 1)
+				return false;
 			EquipmentSlot equipSlot = null;
 
-			if (stack.getItem() instanceof ArmorItem armor) {
+			if(stack.getItem() instanceof ArmorItem armor) {
 				equipSlot = armor.getEquipmentSlot();
-			} else if (stack.getItem() instanceof ElytraItem)
+			} else if(stack.getItem() instanceof ElytraItem)
 				equipSlot = EquipmentSlot.CHEST;
 
-			if (equipSlot != null) {
+			if(equipSlot != null) {
 				ItemStack currArmor = player.getItemBySlot(equipSlot);
 
-				if (slot.mayPickup(player) && slot.mayPlace(currArmor))
-					if (currArmor.isEmpty() || (!EnchantmentHelper.hasBindingCurse(currArmor) && currArmor != stack)) {
+				if(slot.mayPickup(player) && slot.mayPlace(currArmor))
+					if(currArmor.isEmpty() || (!EnchantmentHelper.hasBindingCurse(currArmor) && currArmor != stack)) {
 						int index = slot.getSlotIndex();
-						if (index < slot.container.getContainerSize()) {
-							if (!simulate) {
+						if(index < slot.container.getContainerSize()) {
+							if(!simulate) {
 								player.setItemSlot(equipSlot, stack.copy());
 
 								slot.container.setItem(index, currArmor.copy());
@@ -231,10 +233,10 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	public static boolean lavaBucketOverride(ItemStack stack, ItemStack incoming, Slot slot, ClickAction action, Player player) {
-		if (canTrashItem(stack, incoming, slot, player)) {
+		if(canTrashItem(stack, incoming, slot, player)) {
 
 			incoming.setCount(0);
-			if (!player.level().isClientSide)
+			if(!player.level().isClientSide)
 				player.level().playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 2F + (float) Math.random());
 
 			return true;
@@ -254,26 +256,26 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 	private static boolean shulkerOverride(ItemStack shulkerStack, ItemStack incoming, Slot slot, ClickAction action, Player player, boolean isStackedOnMe) {
 		//sanity check since some mods like to ignore max shulkerStack size...
-		if (shulkerStack.getCount() != 1) return false;
+		if(shulkerStack.getCount() != 1)
+			return false;
 
-		if (isStackedOnMe && canOpenShulkerBox(shulkerStack, incoming, slot, player)) {
+		if(isStackedOnMe && canOpenShulkerBox(shulkerStack, incoming, slot, player)) {
 			int lockedSlot = slot.getSlotIndex();
 			if(player instanceof ServerPlayer splayer) {
 				HeldShulkerBoxContainer container = new HeldShulkerBoxContainer(splayer, lockedSlot);
 
 				NetworkHooks.openScreen(splayer, container, buf -> buf.writeInt(lockedSlot));
-			}
-			else
+			} else
 				player.playSound(SoundEvents.SHULKER_BOX_OPEN, 1F, 1F);
 
 			return true;
 		}
 
-		if (!incoming.isEmpty() && tryAddToShulkerBox(player, shulkerStack, incoming, slot, true, true, isStackedOnMe) != null) {
+		if(!incoming.isEmpty() && tryAddToShulkerBox(player, shulkerStack, incoming, slot, true, true, isStackedOnMe) != null) {
 			ItemStack finished = tryAddToShulkerBox(player, shulkerStack, incoming, slot, false, isStackedOnMe, isStackedOnMe);
 
-			if (finished != null) {
-				if (isStackedOnMe) {
+			if(finished != null) {
+				if(isStackedOnMe) {
 					player.playSound(SoundEvents.SHULKER_BOX_OPEN, 0.7F, 1.5F);
 					slot.set(finished);
 				}
@@ -286,18 +288,18 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 	public static BlockEntity getShulkerBoxEntity(ItemStack shulkerBox) {
 		CompoundTag cmp = ItemNBTHelper.getCompound(shulkerBox, "BlockEntityTag", false);
-		if (cmp.contains("LootTable"))
+		if(cmp.contains("LootTable"))
 			return null;
 
 		BlockEntity te = null;
 		cmp = cmp.copy();
 		cmp.putString("id", "minecraft:shulker_box");
-		if (shulkerBox.getItem() instanceof BlockItem) {
+		if(shulkerBox.getItem() instanceof BlockItem) {
 			Block shulkerBoxBlock = Block.byItem(shulkerBox.getItem());
 			BlockState defaultState = shulkerBoxBlock.defaultBlockState();
-			if (shulkerBoxBlock instanceof EntityBlock) {
+			if(shulkerBoxBlock instanceof EntityBlock) {
 				te = ((EntityBlock) shulkerBoxBlock).newBlockEntity(BlockPos.ZERO, defaultState);
-				if (te != null)
+				if(te != null)
 					te.load(cmp);
 			}
 		}
@@ -306,28 +308,28 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	}
 
 	private static ItemStack tryAddToShulkerBox(Player player, ItemStack shulkerBox, ItemStack stack, Slot slot, boolean simulate, boolean useCopy, boolean allowDump) {
-		if (!SimilarBlockTypeHandler.isShulkerBox(shulkerBox) || !slot.mayPickup(player))
+		if(!SimilarBlockTypeHandler.isShulkerBox(shulkerBox) || !slot.mayPickup(player))
 			return null;
 
 		BlockEntity tile = getShulkerBoxEntity(shulkerBox);
 
-		if (tile != null) {
+		if(tile != null) {
 			LazyOptional<IItemHandler> handlerHolder = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
-			if (handlerHolder.isPresent()) {
+			if(handlerHolder.isPresent()) {
 				IItemHandler handler = handlerHolder.orElseGet(EmptyHandler::new);
-				if (SimilarBlockTypeHandler.isShulkerBox(stack) && allowDump) {
+				if(SimilarBlockTypeHandler.isShulkerBox(stack) && allowDump) {
 					BlockEntity otherShulker = getShulkerBoxEntity(stack);
-					if (otherShulker != null) {
+					if(otherShulker != null) {
 						LazyOptional<IItemHandler> otherHolder = otherShulker.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
-						if (otherHolder.isPresent()) {
+						if(otherHolder.isPresent()) {
 							IItemHandler otherHandler = otherHolder.orElseGet(EmptyHandler::new);
 							boolean any = false;
-							for (int i = 0; i < otherHandler.getSlots(); i++) {
+							for(int i = 0; i < otherHandler.getSlots(); i++) {
 								ItemStack inserting = otherHandler.extractItem(i, 64, true);
-								if (!inserting.isEmpty()) {
+								if(!inserting.isEmpty()) {
 									ItemStack result = ItemHandlerHelper.insertItem(handler, inserting, true);
-									if (result.isEmpty() || result.getCount() != inserting.getCount()) {
-										if (simulate) {
+									if(result.isEmpty() || result.getCount() != inserting.getCount()) {
+										if(simulate) {
 											return shulkerBox;
 										} else {
 											ItemHandlerHelper.insertItem(handler, otherHandler.extractItem(i, inserting.getCount() - result.getCount(), false), false);
@@ -338,13 +340,13 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 								}
 							}
 
-							if (any) {
+							if(any) {
 								ItemStack workStack = useCopy ? shulkerBox.copy() : shulkerBox;
 
 								ItemNBTHelper.setCompound(workStack, "BlockEntityTag", tile.saveWithId());
 								ItemNBTHelper.setCompound(stack, "BlockEntityTag", otherShulker.saveWithId());
 
-								if (slot.mayPlace(workStack))
+								if(slot.mayPlace(workStack))
 									return workStack;
 							}
 						}
@@ -353,14 +355,14 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 				ItemStack result = ItemHandlerHelper.insertItem(handler, stack.copy(), simulate);
 				boolean did = result.isEmpty() || result.getCount() != stack.getCount();
 
-				if (did) {
+				if(did) {
 					ItemStack workStack = useCopy ? shulkerBox.copy() : shulkerBox;
-					if (!simulate)
+					if(!simulate)
 						stack.setCount(result.getCount());
 
 					ItemNBTHelper.setCompound(workStack, "BlockEntityTag", tile.saveWithId());
 
-					if (slot.mayPlace(workStack))
+					if(slot.mayPlace(workStack))
 						return workStack;
 				}
 			}
@@ -373,21 +375,21 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	public static class Client extends ExpandedItemInteractionsModule {
 		@PlayEvent
 		public void gatherTooltip(ZRenderTooltip.GatherComponents.Low event) {
-			if (!enableArmorInteraction && (!enableShulkerBoxInteraction || !allowOpeningShulkerBoxes))
+			if(!enableArmorInteraction && (!enableShulkerBoxInteraction || !allowOpeningShulkerBoxes))
 				return;
 
 			Minecraft mc = Minecraft.getInstance();
 			Screen gui = mc.screen;
-			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
+			if(mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 				Slot under = containerGui.getSlotUnderMouse();
 				//TODO 1.20
-//				if (containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
+//				if(containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
 //					return;
 
-				if (under != null) {
+				if(under != null) {
 					ItemStack underStack = under.getItem();
 
-					if (event.getItemStack() == underStack)
+					if(event.getItemStack() == underStack)
 						if(enableArmorInteraction && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
 							event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
 
@@ -403,23 +405,23 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			Screen gui = mc.screen;
 			GuiGraphics guiGraphics = event.getGuiGraphics();
 
-			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
+			if(mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
 				ItemStack held = containerGui.getMenu().getCarried();
-				if (!held.isEmpty()) {
+				if(!held.isEmpty()) {
 					Slot under = containerGui.getSlotUnderMouse();
 
-					if (under != null) {
+					if(under != null) {
 						ItemStack underStack = under.getItem();
 
 						int x = event.getMouseX();
 						int y = event.getMouseY();
-						if (enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
+						if(enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
 							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
-						} else if (enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
+						} else if(enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
 							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable(
 									SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
 							).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
-						} else if (enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
+						} else if(enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
 							guiGraphics.renderComponentTooltip(mc.font, Screen.getTooltipFromItem(mc, underStack), x, y, underStack);
 						}
 					}
@@ -430,7 +432,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 		@PlayEvent
 		public void onScroll(ZScreen.MouseScrolled.Pre event) {
-			if (!allowRotatingBundles)
+			if(!allowRotatingBundles)
 				return;
 
 			Minecraft mc = Minecraft.getInstance();
@@ -438,18 +440,18 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 			double scrollDelta = event.getScrollDelta();
 
-			if (mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
+			if(mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
 				Slot under = containerGui.getSlotUnderMouse();
-				if (under != null) {
+				if(under != null) {
 					ItemStack underStack = under.getItem();
-					if (underStack.is(Items.BUNDLE)) {
+					if(underStack.is(Items.BUNDLE)) {
 						CompoundTag tag = underStack.getTag();
-						if (tag != null) {
+						if(tag != null) {
 							ListTag items = tag.getList("Items", Tag.TAG_COMPOUND);
-							if (items.size() > 1) {
+							if(items.size() > 1) {
 								var menu = containerGui.getMenu();
 								event.setCanceled(true);
-								if (scrollDelta < -0.1 || scrollDelta > 0.1) {
+								if(scrollDelta < -0.1 || scrollDelta > 0.1) {
 									rotateBundle(underStack, scrollDelta);
 									QuarkClient.ZETA_CLIENT.sendToServer(new ScrollOnBundleMessage(menu.containerId, menu.getStateId(), under.index, scrollDelta));
 								}

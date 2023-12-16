@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -72,7 +73,7 @@ public class BiomeTagConfig implements IBiomeConfig, IConfigType {
 
 	public void updateTypes() {
 		tags = new LinkedList<>();
-		for (String s : biomeTagStrings) {
+		for(String s : biomeTagStrings) {
 			TagKey<Biome> tag = TagKey.create(Registries.BIOME, new ResourceLocation(s));
 
 			if(tag != null)

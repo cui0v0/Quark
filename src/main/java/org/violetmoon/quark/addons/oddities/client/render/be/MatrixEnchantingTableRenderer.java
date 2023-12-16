@@ -3,6 +3,7 @@ package org.violetmoon.quark.addons.oddities.client.render.be;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BookModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -17,7 +18,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 
 public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<MatrixEnchantingTableBlockEntity> {
@@ -34,9 +37,9 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 		float time = te.tickCount + partialTicks;
 
 		float f1 = te.bookRotation - te.bookRotationPrev;
-		while (f1 >= Math.PI)
+		while(f1 >= Math.PI)
 			f1 -= (Math.PI * 2F);
-		while (f1 < -Math.PI)
+		while(f1 < -Math.PI)
 			f1 += (Math.PI * 2F);
 
 		float rot = te.bookRotationPrev + f1 * partialTicks;
@@ -66,7 +69,7 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 		matrix.translate(0F, trans, 0F);
 
 		ItemRenderer render = Minecraft.getInstance().getItemRenderer();
-		render.renderStatic(item, ItemDisplayContext.FIXED, light, overlay, matrix, buffer, level, 0 );
+		render.renderStatic(item, ItemDisplayContext.FIXED, light, overlay, matrix, buffer, level, 0);
 		matrix.popPose();
 	}
 
@@ -79,12 +82,12 @@ public class MatrixEnchantingTableRenderer implements BlockEntityRenderer<Matrix
 
 		float f1;
 		f1 = tileEntityIn.bookRotation - tileEntityIn.bookRotationPrev;
-		while (f1 >= (float)Math.PI) {
+		while(f1 >= (float) Math.PI) {
 			f1 -= ((float) Math.PI * 2F);
 		}
 
-		while(f1 < -(float)Math.PI) {
-			f1 += ((float)Math.PI * 2F);
+		while(f1 < -(float) Math.PI) {
+			f1 += ((float) Math.PI * 2F);
 		}
 
 		float f2 = tileEntityIn.bookRotationPrev + f1 * partialTicks;

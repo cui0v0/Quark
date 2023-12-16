@@ -5,7 +5,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.module.ZetaModule;
 
@@ -17,7 +19,7 @@ import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
- * Created at 11:40 AM on 7/3/23.
+ *         Created at 11:40 AM on 7/3/23.
  */
 public class LootrIntegration implements ILootrIntegration {
 

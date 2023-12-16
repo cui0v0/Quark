@@ -3,9 +3,11 @@ package org.violetmoon.quark.mixin;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+
 import org.violetmoon.quark.content.tweaks.module.ArmedArmorStandsModule;
 
 @Mixin(ArmorStand.class)

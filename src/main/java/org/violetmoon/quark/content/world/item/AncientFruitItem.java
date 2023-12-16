@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -22,21 +23,21 @@ public class AncientFruitItem extends ZetaItem {
 				.food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).alwaysEat().build()));
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.FOOD_AND_DRINKS, this, Items.CHORUS_FRUIT, false);
 	}
-	
+
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
 		ItemStack ret = super.finishUsingItem(stack, level, living);
-		
+
 		if(AncientWoodModule.ancientFruitGivesExp && living instanceof Player player) {
 			if(player instanceof ServerPlayer sp) {
 				if(sp.experienceLevel >= 100)
 					AncientWoodModule.ancientFruitTrigger.trigger(sp);
 			}
-			
+
 			player.giveExperiencePoints(AncientWoodModule.ancientFruitExpValue);
 			player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1F, 1F);
 		}
-		
+
 		return ret;
 	}
 

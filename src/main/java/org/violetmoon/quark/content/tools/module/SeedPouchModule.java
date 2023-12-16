@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tools.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +12,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.client.tooltip.SeedPouchClientTooltipComponent;
@@ -30,13 +33,17 @@ import org.violetmoon.zeta.util.Hint;
 @ZetaLoadModule(category = "tools")
 public class SeedPouchModule extends ZetaModule {
 
-	@Hint public static Item seed_pouch;
+	@Hint
+	public static Item seed_pouch;
 
 	public static TagKey<Item> seedPouchHoldableTag;
 
-	@Config public static int maxItems = 640;
-	@Config public static boolean showAllVariantsInCreative = true;
-	@Config public static int shiftRange = 3;
+	@Config
+	public static int maxItems = 640;
+	@Config
+	public static boolean showAllVariantsInCreative = true;
+	@Config
+	public static int shiftRange = 3;
 
 	@LoadEvent
 	public final void register(ZRegister event) {

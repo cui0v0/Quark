@@ -1,7 +1,5 @@
 package org.violetmoon.quark.base.client.render;
 
-import java.util.function.Consumer;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -17,6 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 public class QuarkArmorModel extends HumanoidModel<LivingEntity> {
 
@@ -48,7 +48,7 @@ public class QuarkArmorModel extends HumanoidModel<LivingEntity> {
 	// This fixes the armor "breathing" and helmets always facing south on armor stands
 	@Override
 	public void setupAnim(@NotNull LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!(entity instanceof ArmorStand entityIn)) {
+		if(!(entity instanceof ArmorStand entityIn)) {
 			super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 			return;
 		}
@@ -86,26 +86,27 @@ public class QuarkArmorModel extends HumanoidModel<LivingEntity> {
 	// [VanillaCopy] HumanoidArmorLayer
 	private void setPartVisibility(EquipmentSlot slot) {
 		setAllVisible(false);
-		switch (slot) {
-			case HEAD -> {
-				head.visible = true;
-				hat.visible = true;
-			}
-			case CHEST -> {
-				body.visible = true;
-				rightArm.visible = true;
-				leftArm.visible = true;
-			}
-			case LEGS -> {
-				body.visible = true;
-				rightLeg.visible = true;
-				leftLeg.visible = true;
-			}
-			case FEET -> {
-				rightLeg.visible = true;
-				leftLeg.visible = true;
-			}
-			default -> {}
+		switch(slot) {
+		case HEAD -> {
+			head.visible = true;
+			hat.visible = true;
+		}
+		case CHEST -> {
+			body.visible = true;
+			rightArm.visible = true;
+			leftArm.visible = true;
+		}
+		case LEGS -> {
+			body.visible = true;
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
+		case FEET -> {
+			rightLeg.visible = true;
+			leftLeg.visible = true;
+		}
+		default -> {
+		}
 		}
 	}
 }

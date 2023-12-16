@@ -1,19 +1,15 @@
 package org.violetmoon.quark.content.world.module;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.OptionalInt;
+import com.google.common.base.Functions;
 
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
@@ -23,6 +19,8 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePla
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.Tags;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
@@ -40,14 +38,11 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-
-import com.google.common.base.Functions;
-
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraftforge.common.Tags;
 import org.violetmoon.zeta.world.PassthruTreeGrower;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalInt;
 
 @ZetaLoadModule(category = "world")
 public class BlossomTreesModule extends ZetaModule {
@@ -58,17 +53,24 @@ public class BlossomTreesModule extends ZetaModule {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_BLOSSOM_KEY = registerKey("yellow_blossom");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RED_BLOSSOM_KEY = registerKey("red_blossom");
 
-	@Config public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
-	@Config public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);
-	@Config public BlossomTreeConfig orange = new BlossomTreeConfig(100, BiomeTags.IS_SAVANNA);
-	@Config public BlossomTreeConfig yellow = new BlossomTreeConfig(200, Tags.Biomes.IS_PLAINS);
-	@Config public BlossomTreeConfig red = new BlossomTreeConfig(30, BiomeTags.IS_BADLANDS);
+	@Config
+	public BlossomTreeConfig blue = new BlossomTreeConfig(200, Tags.Biomes.IS_SNOWY);
+	@Config
+	public BlossomTreeConfig lavender = new BlossomTreeConfig(100, Tags.Biomes.IS_SWAMP);
+	@Config
+	public BlossomTreeConfig orange = new BlossomTreeConfig(100, BiomeTags.IS_SAVANNA);
+	@Config
+	public BlossomTreeConfig yellow = new BlossomTreeConfig(200, Tags.Biomes.IS_PLAINS);
+	@Config
+	public BlossomTreeConfig red = new BlossomTreeConfig(30, BiomeTags.IS_BADLANDS);
 
-	@Config public static boolean dropLeafParticles = true;
+	@Config
+	public static boolean dropLeafParticles = true;
 
 	public static WoodSet woodSet;
 
 	public static final List<BlossomTree> blossomTrees = new ArrayList<>(5);
+
 	public static class BlossomTree {
 		public BlossomTreeConfig quarkConfig;
 
@@ -97,11 +99,11 @@ public class BlossomTreesModule extends ZetaModule {
 		tree.leaves = new BlossomLeavesBlock(regname, this, color);
 
 		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
-			BlockStateProvider.simple(woodSet.log),
-			new FancyTrunkPlacer(8, 10, 10),
-			BlockStateProvider.simple(tree.leaves),
-			new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
-			new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+				BlockStateProvider.simple(woodSet.log),
+				new FancyTrunkPlacer(8, 10, 10),
+				BlockStateProvider.simple(tree.leaves),
+				new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
+				new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
 		).ignoreVines().build();
 
 		// NOTE: treeFeature is intentionally not stored in a field.

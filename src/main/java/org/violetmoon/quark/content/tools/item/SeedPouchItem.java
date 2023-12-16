@@ -21,8 +21,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
 import org.violetmoon.quark.content.tools.module.SeedPouchModule;
@@ -44,7 +46,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	public SeedPouchItem(ZetaModule module) {
 		super("seed_pouch", module,
 				new Item.Properties()
-				.stacksTo(1));
+						.stacksTo(1));
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.LEAD, false);
 	}
 
@@ -53,7 +55,8 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		if(action == ClickAction.SECONDARY) {
 			if(!incoming.isEmpty())
 				return addItemToMe(player, stack, incoming, slot);
-			else return removeItemFromMe(player, stack, slot, accessor);
+			else
+				return removeItemFromMe(player, stack, slot, accessor);
 		}
 
 		return false;
@@ -200,7 +203,7 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	public static void setCount(ItemStack stack, int count) {
 		if(count <= 0) {
 			CompoundTag tag = stack.getTag();
-			if (tag != null) {
+			if(tag != null) {
 				tag.remove(TAG_STORED_ITEM);
 				tag.remove(TAG_COUNT);
 			}
@@ -272,12 +275,12 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 	private InteractionResult placeSeed(UseOnContext context, ItemStack target, BlockPos pos, int total) {
 		Player player = context.getPlayer();
 		ItemStack restore = target;
-		if (player != null) {
+		if(player != null) {
 			restore = player.getItemInHand(context.getHand());
 			player.setItemInHand(context.getHand(), target);
 		}
 		InteractionResult res = target.getItem().useOn(new PouchItemUseContext(context, target, pos));
-		if (player != null) {
+		if(player != null) {
 			player.setItemInHand(context.getHand(), restore);
 		}
 		int diff = res == InteractionResult.CONSUME ? 1 : 0;

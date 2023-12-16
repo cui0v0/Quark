@@ -24,8 +24,8 @@ public class QuarkClient {
 	public static final String EMOTE_GROUP = "quark.gui.keygroup.emote";
 
 	public static final IClientLootrIntegration LOOTR_INTEGRATION = Quark.ZETA.modIntegration("lootr",
-		() -> ClientLootrIntegration::new,
-		() -> IClientLootrIntegration.Dummy::new);
+			() -> ClientLootrIntegration::new,
+			() -> IClientLootrIntegration.Dummy::new);
 
 	public static void start() {
 		instance = new QuarkClient();

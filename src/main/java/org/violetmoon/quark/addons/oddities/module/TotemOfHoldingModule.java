@@ -3,7 +3,6 @@ package org.violetmoon.quark.addons.oddities.module;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -11,9 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.Collection;
-import java.util.Objects;
 
 import org.violetmoon.quark.addons.oddities.client.render.entity.TotemOfHoldingRenderer;
 import org.violetmoon.quark.addons.oddities.entity.TotemOfHoldingEntity;
@@ -28,9 +24,12 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingDrops;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.Collection;
+import java.util.Objects;
+
 /**
  * @author WireSegal
- * Created at 1:21 PM on 3/30/20.
+ *         Created at 1:21 PM on 3/30/20.
  */
 @ZetaLoadModule(category = "oddities")
 public class TotemOfHoldingModule extends ZetaModule {
@@ -68,11 +67,11 @@ public class TotemOfHoldingModule extends ZetaModule {
 				.build("totem");
 		Quark.ZETA.registry.register(totemType, "totem", Registries.ENTITY_TYPE);
 	}
-	
+
 	@PlayEvent
 	public void onPlayerDrops(ZLivingDrops.Lowest event) {
 		LivingEntity entity = event.getEntity();
-		if (!(entity instanceof Player player))
+		if(!(entity instanceof Player player))
 			return;
 
 		Collection<ItemEntity> drops = event.getDrops();
@@ -87,17 +86,18 @@ public class TotemOfHoldingModule extends ZetaModule {
 				totem.setOwner(player);
 				totem.setCustomName(player.getDisplayName());
 				drops.stream()
-				.filter(Objects::nonNull)
-				.map(ItemEntity::getItem)
-				.filter(stack -> !stack.isEmpty())
-				.forEach(totem::addItem);
-				if (!player.level().isClientSide)
+						.filter(Objects::nonNull)
+						.map(ItemEntity::getItem)
+						.filter(stack -> !stack.isEmpty())
+						.forEach(totem::addItem);
+				if(!player.level().isClientSide)
 					player.level().addFreshEntity(totem);
 
 				persistent.putString(TAG_LAST_TOTEM, totem.getUUID().toString());
 
 				event.setCanceled(true);
-			} else persistent.putString(TAG_LAST_TOTEM, "");
+			} else
+				persistent.putString(TAG_LAST_TOTEM, "");
 
 			BlockPos pos = player.blockPosition(); // getPosition
 			persistent.putInt(TAG_DEATH_X, pos.getX());

@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.block.CloudBlock;
@@ -29,39 +30,40 @@ public class BottledCloudModule extends ZetaModule {
 
 	public static BlockEntityType<CloudBlockEntity> blockEntityType;
 	public static Block cloud;
-	@Hint public static Item bottled_cloud;
-	
+	@Hint
+	public static Item bottled_cloud;
+
 	@Config
 	public static int cloudLevelBottom = 191;
-	
-	@Config 
+
+	@Config
 	public static int cloudLevelTop = 196;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
 		cloud = new CloudBlock(this);
 		bottled_cloud = new BottledCloudItem(this);
-		
+
 		blockEntityType = BlockEntityType.Builder.of(CloudBlockEntity::new, cloud).build(null);
 		Quark.ZETA.registry.register(blockEntityType, "cloud", Registries.BLOCK_ENTITY_TYPE);
 	}
-	
+
 	@PlayEvent
 	public void onRightClick(ZPlayerInteract.RightClickItem event) {
 		ItemStack stack = event.getItemStack();
 		Player player = event.getEntity();
 		if(stack.getItem() == Items.GLASS_BOTTLE && player.getY() > cloudLevelBottom && player.getY() < cloudLevelTop) {
 			stack.shrink(1);
-			
+
 			ItemStack returnStack = new ItemStack(bottled_cloud);
 			if(!player.addItem(returnStack))
 				player.drop(returnStack, false);
-			
+
 			event.setCanceled(true);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 		}
 	}
-	
+
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends BottledCloudModule {
 		@LoadEvent
@@ -70,5 +72,5 @@ public class BottledCloudModule extends ZetaModule {
 		}
 
 	}
-	
+
 }

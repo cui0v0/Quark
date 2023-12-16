@@ -144,8 +144,8 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 		ItemStack itemstack = useContext.getItemInHand();
 		VerticalSlabType slabtype = state.getValue(TYPE);
 		return slabtype != VerticalSlabType.DOUBLE && itemstack.getItem() == this.asItem() &&
-			(useContext.replacingClickedOnBlock() && (useContext.getClickedFace() == slabtype.direction && getDirectionForPlacement(useContext) == slabtype.direction) ||
-			(!useContext.replacingClickedOnBlock() && useContext.getClickedFace() != slabtype.direction));
+				(useContext.replacingClickedOnBlock() && (useContext.getClickedFace() == slabtype.direction && getDirectionForPlacement(useContext) == slabtype.direction) ||
+						(!useContext.replacingClickedOnBlock() && useContext.getClickedFace() != slabtype.direction));
 	}
 
 	@NotNull
@@ -215,7 +215,8 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 
 				if(direction.getAxis() == Axis.X)
 					shape = Block.box(min, 0, 0, max, 16, 16);
-				else shape = Block.box(0, 0, min, 16, 16, max);
+				else
+					shape = Block.box(0, 0, min, 16, 16, max);
 			}
 		}
 

@@ -1,16 +1,17 @@
 package org.violetmoon.quark.mixin.client;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.violetmoon.quark.content.tools.module.ColorRunesModule;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ThrownTridentRenderer;
 import net.minecraft.world.entity.projectile.ThrownTrident;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 
 @Mixin(ThrownTridentRenderer.class)
 public class ThrownTridentRendererMixin {

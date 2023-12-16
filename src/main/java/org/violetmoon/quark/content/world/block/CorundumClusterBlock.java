@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.world.block;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -24,6 +22,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -57,7 +58,7 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 	public CorundumClusterBlock(CorundumBlock base) {
 		super(Quark.ZETA.registryUtil.inheritQuark(base, "%s_cluster"), base.getModule(),
 				Block.Properties.copy(base)
-				.sound(SoundType.AMETHYST_CLUSTER));
+						.sound(SoundType.AMETHYST_CLUSTER));
 
 		this.base = base;
 		base.cluster = this;
@@ -76,13 +77,13 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 	@Override
 	public VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		Direction direction = state.getValue(FACING);
-		return switch (direction) {
-			case NORTH -> northAabb;
-			case SOUTH -> southAabb;
-			case EAST -> eastAabb;
-			case WEST -> westAabb;
-			case DOWN -> downAabb;
-			default -> upAabb;
+		return switch(direction) {
+		case NORTH -> northAabb;
+		case SOUTH -> southAabb;
+		case EAST -> eastAabb;
+		case WEST -> westAabb;
+		case DOWN -> downAabb;
+		default -> upAabb;
 		};
 	}
 
@@ -114,7 +115,7 @@ public class CorundumClusterBlock extends ZetaBlock implements SimpleWaterlogged
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 

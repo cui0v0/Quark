@@ -1,16 +1,5 @@
 package org.violetmoon.quark.content.tools.module;
 
-import org.violetmoon.quark.content.tools.item.SlimeInABucketItem;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -24,10 +13,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.gameevent.GameEvent;
 
+import org.violetmoon.quark.content.tools.item.SlimeInABucketItem;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.entity.player.ZPlayerInteract;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.util.ItemNBTHelper;
+
 @ZetaLoadModule(category = "tools")
 public class SlimeInABucketModule extends ZetaModule {
 
-	@Hint public static Item slime_in_a_bucket;
+	@Hint
+	public static Item slime_in_a_bucket;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -51,7 +52,7 @@ public class SlimeInABucketModule extends ZetaModule {
 						ItemStack outStack = new ItemStack(slime_in_a_bucket);
 						CompoundTag cmp = event.getTarget().serializeNBT();
 						ItemNBTHelper.setCompound(outStack, SlimeInABucketItem.TAG_ENTITY_DATA, cmp);
-						
+
 						if(stack.getCount() == 1)
 							player.setItemInHand(hand, outStack);
 						else {
@@ -62,11 +63,11 @@ public class SlimeInABucketModule extends ZetaModule {
 								player.drop(outStack, false);
 						}
 
-			            event.getLevel().gameEvent(player, GameEvent.ENTITY_INTERACT, event.getTarget().position());
+						event.getLevel().gameEvent(player, GameEvent.ENTITY_INTERACT, event.getTarget().position());
 						event.getTarget().discard();
-					}
-					else player.swing(hand);
-					
+					} else
+						player.swing(hand);
+
 					event.setCanceled(true);
 					event.setCancellationResult(InteractionResult.SUCCESS);
 				}

@@ -1,6 +1,7 @@
 package org.violetmoon.quark.base.world;
 
 import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -27,6 +28,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.world.generator.IGenerator;
@@ -104,7 +106,8 @@ public class WorldGenHandler {
 					if(GeneralConfig.enableWorldgenWatchdog) {
 						final int finalStageNum = stageNum;
 						stageNum = watchdogRun(gen, () -> gen.generate(finalStageNum, seed, stage, region, generator, random, pos), 1, TimeUnit.MINUTES);
-					} else stageNum = gen.generate(stageNum, seed, stage, region, generator, random, pos);
+					} else
+						stageNum = gen.generate(stageNum, seed, stage, region, generator, random, pos);
 				}
 			}
 		}
@@ -117,22 +120,22 @@ public class WorldGenHandler {
 
 		try {
 			return future.get(time, unit);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Error generating " + gen, e);
 		}
 	}
-	
+
 	public static void registerBiomeModifier(IEventBus bus) {
-        DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
-        biomeModifiers.register(bus);
-        biomeModifiers.register(QuarkBiomeModifier.RESOURCE.getPath(), QuarkBiomeModifier::makeCodec);
+		DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
+		biomeModifiers.register(bus);
+		biomeModifiers.register(QuarkBiomeModifier.RESOURCE.getPath(), QuarkBiomeModifier::makeCodec);
 	}
-	
+
 	private static class QuarkBiomeModifier implements BiomeModifier {
 
 		public static final ResourceLocation RESOURCE = new ResourceLocation(Quark.MOD_ID, "biome_modifier");
-	    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(RESOURCE, ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
-		
+		private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(RESOURCE, ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Quark.MOD_ID);
+
 		@Override
 		public void modify(Holder<Biome> biome, Phase phase, Builder builder) {
 			if(phase == Phase.ADD) {
@@ -142,13 +145,13 @@ public class WorldGenHandler {
 		}
 
 		@Override
-	    public Codec<? extends BiomeModifier> codec() {
-	        return SERIALIZER.get();
-	    }
+		public Codec<? extends BiomeModifier> codec() {
+			return SERIALIZER.get();
+		}
 
-	    public static Codec<QuarkBiomeModifier> makeCodec() {
-	        return Codec.unit(QuarkBiomeModifier::new);
-	    }
+		public static Codec<QuarkBiomeModifier> makeCodec() {
+			return Codec.unit(QuarkBiomeModifier::new);
+		}
 	}
 
 }

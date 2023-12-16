@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +15,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix.Piece;
@@ -98,8 +101,8 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 		pieceList.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		if(enchanter.matrix != null
-			 && enchanter.matrix.canGeneratePiece(enchanter.influences, enchanter.bookshelfPower, enchanter.enchantability)
-			 && !mc.player.getAbilities().instabuild) {
+				&& enchanter.matrix.canGeneratePiece(enchanter.influences, enchanter.bookshelfPower, enchanter.enchantability)
+				&& !mc.player.getAbilities().instabuild) {
 			int x = i + 74;
 			int y = j + 58;
 			int xpCost = enchanter.matrix.getNewPiecePrice();
@@ -138,6 +141,7 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 			renderMatrixGrid(guiGraphics, enchanter.matrix);
 		}
 	}
+
 	@Override
 	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(guiGraphics);
@@ -149,7 +153,7 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 
 			if(hoveredPiece.influence > 0)
 				tooltip.add(Component.translatable("quark.gui.enchanting.influence", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
-			else if (hoveredPiece.influence < 0)
+			else if(hoveredPiece.influence < 0)
 				tooltip.add(Component.translatable("quark.gui.enchanting.dampen", (int) (hoveredPiece.influence * MatrixEnchantingModule.influencePower * 100)).withStyle(ChatFormatting.GRAY));
 
 			int max = hoveredPiece.getMaxXP();
@@ -188,23 +192,23 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 			int hover = enchanter.matrix.matrix[gridHoverX][gridHoverY];
 			hoveredPiece = getPiece(hover);
 		}
-		
+
 		pieceList.mouseMoved(gridMouseX, gridMouseY);
 
 		super.mouseMoved(mouseX, mouseY);
 	}
-	
+
 	@Override
 	public boolean mouseDragged(double p_97752_, double p_97753_, int p_97754_, double p_97755_, double p_97756_) {
 		pieceList.mouseDragged(p_97752_, p_97753_, p_97754_, p_97755_, p_97756_);
-		
+
 		return super.mouseDragged(p_97752_, p_97753_, p_97754_, p_97755_, p_97756_);
 	}
-	
+
 	@Override
 	public boolean mouseReleased(double p_97812_, double p_97813_, int p_97814_) {
 		pieceList.mouseReleased(p_97812_, p_97813_, p_97814_);
-		
+
 		return super.mouseReleased(p_97812_, p_97813_, p_97814_);
 	}
 
@@ -213,7 +217,7 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 
 		pieceList.mouseClicked(mouseX, mouseY, mouseButton);
-		
+
 		if(enchanter.matrix == null)
 			return true;
 
@@ -223,7 +227,8 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 			if(selectedPiece != -1) {
 				if(hover == -1)
 					place(selectedPiece, gridHoverX, gridHoverY);
-				else merge(selectedPiece);
+				else
+					merge(selectedPiece);
 			} else {
 				remove(hover);
 				if(!hasShiftDown())
@@ -248,7 +253,7 @@ public class MatrixEnchantingScreen extends AbstractContainerScreen<MatrixEnchan
 
 		for(int i : matrix.placedPieces) {
 			Piece piece = getPiece(i);
-			if (piece != null) {
+			if(piece != null) {
 				stack.pushPose();
 				stack.translate(piece.x * 10, piece.y * 10, 0);
 				renderPiece(guiGraphics, piece, 1F);

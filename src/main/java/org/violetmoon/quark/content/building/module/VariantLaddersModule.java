@@ -1,7 +1,7 @@
 package org.violetmoon.quark.content.building.module;
 
-import java.util.LinkedList;
-import java.util.List;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.FuelHandler;
@@ -16,13 +16,14 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import java.util.LinkedList;
+import java.util.List;
 
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VariantLaddersModule extends ZetaModule {
 
-	@Config public static boolean changeNames = true;
+	@Config
+	public static boolean changeNames = true;
 
 	public static List<Block> variantLadders = new LinkedList<>();
 

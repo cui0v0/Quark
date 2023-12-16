@@ -25,4 +25,3 @@ public class WraithRenderer extends MobRenderer<Wraith, WraithModel> {
 	}
 
 }
-

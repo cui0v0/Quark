@@ -1,11 +1,12 @@
 package org.violetmoon.quark.mixin;
 
+import net.minecraft.world.item.crafting.BannerDuplicateRecipe;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.violetmoon.quark.content.tweaks.module.MoreBannerLayersModule;
 
-import net.minecraft.world.item.crafting.BannerDuplicateRecipe;
+import org.violetmoon.quark.content.tweaks.module.MoreBannerLayersModule;
 
 @Mixin(BannerDuplicateRecipe.class)
 public class BannerDuplicateRecipeMixin {

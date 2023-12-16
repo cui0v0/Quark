@@ -2,7 +2,7 @@ package org.violetmoon.quark.base.util;
 
 /**
  * @author WireSegal
- * Created at 11:08 AM on 8/25/19.
+ *         Created at 11:08 AM on 8/25/19.
  */
 @FunctionalInterface
 public interface TriFunction<R, T, U, V> {

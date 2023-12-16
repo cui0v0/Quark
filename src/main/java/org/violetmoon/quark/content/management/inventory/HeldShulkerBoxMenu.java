@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.management.inventory;
 
-import org.violetmoon.quark.api.ISortingLockedSlots;
-import org.violetmoon.quark.content.management.module.ExpandedItemInteractionsModule;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -12,6 +9,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ShulkerBoxSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+
+import org.violetmoon.quark.api.ISortingLockedSlots;
+import org.violetmoon.quark.content.management.module.ExpandedItemInteractionsModule;
 
 public class HeldShulkerBoxMenu extends AbstractContainerMenu implements ISortingLockedSlots {
 
@@ -50,7 +50,7 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements ISortin
 				this.addSlot(new Slot(p_40192_, j1, 8 + j1 * 18, 142));
 		}
 	}
-	
+
 	public static HeldShulkerBoxMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		int slot = buf.readInt();
 		HeldShulkerBoxContainer container = new HeldShulkerBoxContainer(playerInventory.player, slot);
@@ -66,18 +66,18 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements ISortin
 	public ItemStack quickMoveStack(Player p_40199_, int p_40200_) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(p_40200_);
-		if (slot != null && slot.hasItem()) {
+		if(slot != null && slot.hasItem()) {
 			ItemStack itemstack1 = slot.getItem();
 			itemstack = itemstack1.copy();
-			if (p_40200_ < this.container.getContainerSize()) {
-				if (!this.moveItemStackTo(itemstack1, this.container.getContainerSize(), this.slots.size(), true)) {
+			if(p_40200_ < this.container.getContainerSize()) {
+				if(!this.moveItemStackTo(itemstack1, this.container.getContainerSize(), this.slots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!this.moveItemStackTo(itemstack1, 0, this.container.getContainerSize(), false)) {
+			} else if(!this.moveItemStackTo(itemstack1, 0, this.container.getContainerSize(), false)) {
 				return ItemStack.EMPTY;
 			}
 
-			if (itemstack1.isEmpty()) {
+			if(itemstack1.isEmpty()) {
 				slot.set(ItemStack.EMPTY);
 			} else {
 				slot.setChanged();
@@ -86,13 +86,13 @@ public class HeldShulkerBoxMenu extends AbstractContainerMenu implements ISortin
 
 		return itemstack;
 	}
-	
+
 	@Override
 	public void suppressRemoteUpdates() {
 		super.suppressRemoteUpdates();
 		player.inventoryMenu.suppressRemoteUpdates();
 	}
-	
+
 	@Override
 	public void resumeRemoteUpdates() {
 		super.resumeRemoteUpdates();

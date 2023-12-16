@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -25,7 +26,9 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
 import org.violetmoon.quark.content.client.module.ChestSearchingModule;
@@ -52,15 +55,15 @@ public class ShulkerBoxTooltips {
 				return;
 
 			BlockEntity te = BlockEntity.loadStatic(BlockPos.ZERO, ((BlockItem) stack.getItem()).getBlock().defaultBlockState(), cmp);
-			if (te != null && te.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
+			if(te != null && te.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
 				List<Either<FormattedText, TooltipComponent>> tooltip = event.getTooltipElements();
 				List<Either<FormattedText, TooltipComponent>> tooltipCopy = new ArrayList<>(tooltip);
 
-				for (int i = 1; i < tooltipCopy.size(); i++) {
+				for(int i = 1; i < tooltipCopy.size(); i++) {
 					Either<FormattedText, TooltipComponent> either = tooltipCopy.get(i);
 					if(either.left().isPresent()) {
 						String s = either.left().get().getString();
-						if (!s.startsWith("\u00a7") || s.startsWith("\u00a7o"))
+						if(!s.startsWith("\u00a7") || s.startsWith("\u00a7o"))
 							tooltip.remove(either);
 					}
 				}
@@ -75,39 +78,38 @@ public class ShulkerBoxTooltips {
 
 	public record ShulkerComponent(ItemStack stack) implements ClientTooltipComponent, TooltipComponent {
 
-		private static final int[][] TARGET_RATIOS = new int[][]{
-				{1, 1},
-				{9, 3},
-				{9, 5},
-				{9, 6},
-				{9, 8},
-				{9, 9},
-				{12, 9}
+		private static final int[][] TARGET_RATIOS = new int[][] {
+				{ 1, 1 },
+				{ 9, 3 },
+				{ 9, 5 },
+				{ 9, 6 },
+				{ 9, 8 },
+				{ 9, 9 },
+				{ 12, 9 }
 		};
 
 		private static final int CORNER = 5;
 		private static final int BUFFER = 1;
 		private static final int EDGE = 18;
 
-
 		@Override
 		public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 			Minecraft mc = Minecraft.getInstance();
-			
+
 			PoseStack pose = guiGraphics.pose();
 
 			CompoundTag cmp = ItemNBTHelper.getCompound(stack, "BlockEntityTag", true);
-			if (cmp != null) {
-				if (cmp.contains("LootTable"))
+			if(cmp != null) {
+				if(cmp.contains("LootTable"))
 					return;
 
-				if (!cmp.contains("id")) {
+				if(!cmp.contains("id")) {
 					cmp = cmp.copy();
 					cmp.putString("id", "minecraft:shulker_box");
 				}
 				BlockEntity te = BlockEntity.loadStatic(BlockPos.ZERO, ((BlockItem) stack.getItem()).getBlock().defaultBlockState(), cmp);
-				if (te != null) {
-					if (te instanceof RandomizableContainerBlockEntity randomizable)
+				if(te != null) {
+					if(te instanceof RandomizableContainerBlockEntity randomizable)
 						randomizable.setLootTable(null, 0);
 
 					LazyOptional<IItemHandler> handler = te.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
@@ -117,9 +119,9 @@ public class ShulkerBoxTooltips {
 						int currentY = tooltipY - 1;
 
 						int size = capability.getSlots();
-						int[] dims = {Math.min(size, 9), Math.max(size / 9, 1)};
-						for (int[] testAgainst : TARGET_RATIOS) {
-							if (testAgainst[0] * testAgainst[1] == size) {
+						int[] dims = { Math.min(size, 9), Math.max(size / 9, 1) };
+						for(int[] testAgainst : TARGET_RATIOS) {
+							if(testAgainst[0] * testAgainst[1] == size) {
 								dims = testAgainst;
 								break;
 							}
@@ -128,7 +130,7 @@ public class ShulkerBoxTooltips {
 						int texWidth = CORNER * 2 + EDGE * dims[0];
 						int right = currentX + texWidth;
 						Window window = mc.getWindow();
-						if (right > window.getGuiScaledWidth())
+						if(right > window.getGuiScaledWidth())
 							currentX -= (right - window.getGuiScaledWidth());
 
 						pose.pushPose();
@@ -136,9 +138,9 @@ public class ShulkerBoxTooltips {
 
 						int color = -1;
 
-						if (ImprovedTooltipsModule.shulkerBoxUseColors && ((BlockItem) currentBox.getItem()).getBlock() instanceof ShulkerBoxBlock boxBlock) {
+						if(ImprovedTooltipsModule.shulkerBoxUseColors && ((BlockItem) currentBox.getItem()).getBlock() instanceof ShulkerBoxBlock boxBlock) {
 							DyeColor dye = boxBlock.getColor();
-							if (dye != null) {
+							if(dye != null) {
 								float[] colorComponents = dye.getTextureDiffuseColors();
 								color = ((int) (colorComponents[0] * 255) << 16) |
 										((int) (colorComponents[1] * 255) << 8) |
@@ -148,17 +150,17 @@ public class ShulkerBoxTooltips {
 
 						renderTooltipBackground(guiGraphics, mc, pose, currentX, currentY, dims[0], dims[1], color);
 
-						for (int i = 0; i < size; i++) {
+						for(int i = 0; i < size; i++) {
 							ItemStack itemstack = capability.getStackInSlot(i);
 							int xp = currentX + 6 + (i % 9) * 18;
 							int yp = currentY + 6 + (i / 9) * 18;
 
-							if (!itemstack.isEmpty()) {
+							if(!itemstack.isEmpty()) {
 								guiGraphics.renderItem(itemstack, xp, yp);
 								guiGraphics.renderItemDecorations(mc.font, itemstack, xp, yp);
 							}
 
-							if (!Quark.ZETA.modules.get(ChestSearchingModule.class).namesMatch(itemstack)) {
+							if(!Quark.ZETA.modules.get(ChestSearchingModule.class).namesMatch(itemstack)) {
 								RenderSystem.disableDepthTest();
 								guiGraphics.fill(xp, yp, xp + 16, yp + 16, 0xAA000000);
 							}
@@ -190,15 +192,15 @@ public class ShulkerBoxTooltips {
 			guiGraphics.blit(WIDGET_RESOURCE, x, y + CORNER + EDGE * height,
 					0, CORNER + BUFFER + EDGE + BUFFER,
 					CORNER, CORNER, 256, 256);
-			for (int row = 0; row < height; row++) {
+			for(int row = 0; row < height; row++) {
 				guiGraphics.blit(WIDGET_RESOURCE, x, y + CORNER + EDGE * row,
 						0, CORNER + BUFFER,
 						CORNER, EDGE, 256, 256);
 				guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * width, y + CORNER + EDGE * row,
 						CORNER + BUFFER + EDGE + BUFFER, CORNER + BUFFER,
 						CORNER, EDGE, 256, 256);
-				for (int col = 0; col < width; col++) {
-					if (row == 0) {
+				for(int col = 0; col < width; col++) {
+					if(row == 0) {
 						guiGraphics.blit(WIDGET_RESOURCE, x + CORNER + EDGE * col, y,
 								CORNER + BUFFER, 0,
 								EDGE, CORNER, 256, 256);

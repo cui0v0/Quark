@@ -1,18 +1,10 @@
 package org.violetmoon.quark.addons.oddities.entity;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.addons.oddities.item.BackpackItem;
-import org.violetmoon.quark.addons.oddities.module.TotemOfHoldingModule;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,9 +20,17 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.addons.oddities.item.BackpackItem;
+import org.violetmoon.quark.addons.oddities.module.TotemOfHoldingModule;
+
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author WireSegal
- * Created at 1:34 PM on 3/30/20.
+ *         Created at 1:34 PM on 3/30/20.
  */
 public class TotemOfHoldingEntity extends Entity {
 	private static final String TAG_ITEMS = "storedItems";
@@ -149,7 +149,8 @@ public class TotemOfHoldingEntity extends Entity {
 		if(isDying()) {
 			if(deathTicks > DEATH_TIME)
 				discard();
-			else deathTicks++;
+			else
+				deathTicks++;
 		}
 
 		else if(level().isClientSide)
@@ -158,7 +159,7 @@ public class TotemOfHoldingEntity extends Entity {
 
 	private void dropEverythingAndDie() {
 		if(!TotemOfHoldingModule.destroyLostItems)
-			for (ItemStack storedItem : storedItems)
+			for(ItemStack storedItem : storedItems)
 				spawnAtLocation(storedItem, 0);
 
 		storedItems.clear();
@@ -200,7 +201,7 @@ public class TotemOfHoldingEntity extends Entity {
 
 		compound.put(TAG_ITEMS, list);
 		compound.putBoolean(TAG_DYING, isDying());
-		if (owner != null)
+		if(owner != null)
 			compound.putString(TAG_OWNER, owner);
 	}
 

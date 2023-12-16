@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface ISortingLockedSlots extends IQuarkButtonAllowed {
 
-	 @Nullable public int[] getSortingLockedSlots(boolean sortingPlayerInventory);
-	
+	@Nullable
+	public int[] getSortingLockedSlots(boolean sortingPlayerInventory);
+
 }

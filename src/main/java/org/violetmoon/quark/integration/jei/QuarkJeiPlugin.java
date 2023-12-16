@@ -1,6 +1,7 @@
 package org.violetmoon.quark.integration.jei;
 
 import com.google.common.collect.Sets;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -12,6 +13,7 @@ import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
@@ -31,7 +33,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
@@ -80,7 +84,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	@Override
 	public void onRuntimeAvailable(@NotNull final IJeiRuntime jeiRuntime) {
 		List<ItemStack> disabledItems = Quark.ZETA.requiredModTooltipHandler.disabledItems();
-		if (!disabledItems.isEmpty())
+		if(!disabledItems.isEmpty())
 			jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, disabledItems);
 
 		Quark.ZETA.configManager.setJeiReloadListener(configInternals -> {
@@ -91,24 +95,24 @@ public class QuarkJeiPlugin implements IModPlugin {
 				return;
 
 			Set<Potion> hidePotions = Sets.newHashSet();
-			for (Potion potion : BuiltInRegistries.POTION) {
+			for(Potion potion : BuiltInRegistries.POTION) {
 				ResourceLocation loc = BuiltInRegistries.POTION.getKey(potion);
-				if (loc != null && loc.getNamespace().equals("quark")) {
-					if (!Quark.ZETA.brewingRegistry.isEnabled(potion)) {
+				if(loc != null && loc.getNamespace().equals("quark")) {
+					if(!Quark.ZETA.brewingRegistry.isEnabled(potion)) {
 						hidePotions.add(potion);
 					}
 				}
 			}
 
 			NonNullList<ItemStack> stacksToHide = NonNullList.create();
-			for (Item item : BuiltInRegistries.ITEM) {
+			for(Item item : BuiltInRegistries.ITEM) {
 				ResourceLocation loc = BuiltInRegistries.ITEM.getKey(item);
-				if (loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
+				if(loc.getNamespace().equals("quark") && !IDisableable.isEnabled(item)) {
 					//TODO 1.20: this just enumerated the item's variants
 					//item.fillItemCategory(CreativeModeTab.TAB_SEARCH, stacksToHide);
 				}
 
-				if (item instanceof PotionItem || item instanceof TippedArrowItem) {
+				if(item instanceof PotionItem || item instanceof TippedArrowItem) {
 					NonNullList<ItemStack> potionStacks = NonNullList.create();
 					//TODO 1.20: this just enumerated the item's variants
 					//item.fillItemCategory(CreativeModeTab.TAB_SEARCH, potionStacks);
@@ -116,7 +120,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				}
 			}
 
-			if (!stacksToHide.isEmpty())
+			if(!stacksToHide.isEmpty())
 				Minecraft.getInstance().submitAsync(() -> jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, stacksToHide));
 		});
 	}
@@ -133,7 +137,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerCategories(@NotNull IRecipeCategoryRegistration registration) {
-		if (matrix())
+		if(matrix())
 			registration.addRecipeCategories(new InfluenceCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
@@ -141,18 +145,18 @@ public class QuarkJeiPlugin implements IModPlugin {
 	public void registerRecipes(@NotNull IRecipeRegistration registration) {
 		IVanillaRecipeFactory factory = registration.getVanillaRecipeFactory();
 
-		if (Quark.ZETA.modules.isEnabled(AncientTomesModule.class))
+		if(Quark.ZETA.modules.isEnabled(AncientTomesModule.class))
 			registerAncientTomeAnvilRecipes(registration, factory);
 
-		if (Quark.ZETA.modules.isEnabled(PickarangModule.class)) {
+		if(Quark.ZETA.modules.isEnabled(PickarangModule.class)) {
 			registerPickarangAnvilRepairs(PickarangModule.pickarang, Items.DIAMOND, registration, factory);
 			registerPickarangAnvilRepairs(PickarangModule.flamerang, Items.NETHERITE_INGOT, registration, factory);
 		}
 
-		if (Quark.ZETA.modules.isEnabled(ColorRunesModule.class))
+		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class))
 			registerRuneAnvilRecipes(registration, factory);
 
-		if (matrix())
+		if(matrix())
 			registerInfluenceRecipes(registration);
 
 		if(Quark.ZETA.modules.isEnabled(DiamondRepairModule.class))
@@ -195,8 +199,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 			registration.addRecipeCatalyst(new ItemStack(VariantFurnacesModule.blackstoneFurnace), RecipeTypes.FUELING, RecipeTypes.SMELTING);
 		}
 
-		if (matrix()) {
-			if (MatrixEnchantingModule.automaticallyConvert)
+		if(matrix()) {
+			if(MatrixEnchantingModule.automaticallyConvert)
 				registration.addRecipeCatalyst(new ItemStack(Blocks.ENCHANTING_TABLE), INFLUENCING);
 			else
 				registration.addRecipeCatalyst(new ItemStack(MatrixEnchantingModule.matrixEnchanter), INFLUENCING);
@@ -216,7 +220,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	private void registerAncientTomeAnvilRecipes(@NotNull IRecipeRegistration registration, @NotNull IVanillaRecipeFactory factory) {
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Enchantment enchant : AncientTomesModule.validEnchants) {
+		for(Enchantment enchant : AncientTomesModule.validEnchants) {
 			EnchantmentInstance data = new EnchantmentInstance(enchant, enchant.getMaxLevel());
 			recipes.add(factory.createAnvilRecipe(EnchantedBookItem.createForEnchantment(data),
 					Collections.singletonList(AncientTomeItem.getEnchantedItemStack(enchant)),
@@ -228,7 +232,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	private void registerRuneAnvilRecipes(@NotNull IRecipeRegistration registration, @NotNull IVanillaRecipeFactory factory) {
 		RandomSource random = RandomSource.create();
 		Stream<ItemStack> displayItems;
-		if (Quark.ZETA.modules.isEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
+		if(Quark.ZETA.modules.isEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
 			displayItems = EnchantedBookTooltips.getTestItems().stream();
 		} else {
 			displayItems = Stream.of(Items.DIAMOND_SWORD, Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE,
@@ -243,7 +247,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 				.collect(Collectors.toList());
 
 		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for (Item rune : RegistryUtil.getTagValues(QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess(), ColorRunesModule.runesTag)) {
+		for(Item rune : RegistryUtil.getTagValues(QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess(), ColorRunesModule.runesTag)) {
 			ItemStack runeStack = new ItemStack(rune);
 			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
 					used.stream().map(stack -> {
@@ -261,7 +265,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 	private static ItemStack makeEnchantedDisplayItem(ItemStack input, RandomSource random) {
 		ItemStack stack = input.copy();
 		stack.setHoverName(Component.translatable("quark.jei.any_enchanted"));
-		if (Quark.ZETA.itemExtensions.get(stack).getEnchantmentValueZeta(stack) <= 0) { // If it can't take anything in ench. tables...
+		if(Quark.ZETA.itemExtensions.get(stack).getEnchantmentValueZeta(stack) <= 0) { // If it can't take anything in ench. tables...
 			stack.enchant(Enchantments.UNBREAKING, 3); // it probably accepts unbreaking anyways
 			return stack;
 		}
@@ -316,7 +320,7 @@ public class QuarkJeiPlugin implements IModPlugin {
 							.orElse(null);
 
 					if(left != null) {
-						for(ItemStack right: r.getRightInputs()) {
+						for(ItemStack right : r.getRightInputs()) {
 							Item item = left.getItem();
 							if(item.isValidRepairItem(left, right))
 								return true;
@@ -357,4 +361,3 @@ public class QuarkJeiPlugin implements IModPlugin {
 
 	}
 }
-

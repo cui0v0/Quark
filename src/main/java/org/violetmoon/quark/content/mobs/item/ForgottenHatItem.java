@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.mobs.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -10,7 +11,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeMod;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.item.IZetaItem;
 import org.violetmoon.zeta.item.ZetaArmorItem;
@@ -30,9 +33,9 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 	public ForgottenHatItem(ZetaModule module) {
 		super(ArmorMaterials.LEATHER, Type.HELMET,
 				new Item.Properties()
-				.stacksTo(1)
-				.durability(0)
-				.rarity(Rarity.RARE));
+						.stacksTo(1)
+						.durability(0)
+						.rarity(Rarity.RARE));
 
 		Quark.ZETA.registry.registerItem(this, "forgotten_hat");
 		this.module = module;
@@ -74,7 +77,7 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 			//Todo: Check me ig
 			builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(uuid, "Armor entity reach modifier", 2, AttributeModifier.Operation.ADDITION));
 			builder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(uuid, "Armor block reach modifier", 2, AttributeModifier.Operation.ADDITION));
-			
+
 			attributes = builder.build();
 		}
 

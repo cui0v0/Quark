@@ -8,26 +8,27 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IClaimIntegration {
 
-    default boolean canBreak(@NotNull Player player, @NotNull BlockPos pos) {
-        return true;
-    }
+	default boolean canBreak(@NotNull Player player, @NotNull BlockPos pos) {
+		return true;
+	}
 
-    default boolean canPlace(@NotNull Player player, @NotNull BlockPos pos) {
-        return true;
-    }
+	default boolean canPlace(@NotNull Player player, @NotNull BlockPos pos) {
+		return true;
+	}
 
-    default boolean canReplace(@NotNull Player player, @NotNull BlockPos pos) {
-        return true;
-    }
+	default boolean canReplace(@NotNull Player player, @NotNull BlockPos pos) {
+		return true;
+	}
 
-    default boolean canAttack(@NotNull Player player, @NotNull Entity victim) {
-        return true;
-    }
+	default boolean canAttack(@NotNull Player player, @NotNull Entity victim) {
+		return true;
+	}
 
-    default boolean canInteract(@NotNull Player player, @NotNull BlockPos targetPos) {
-        return true;
-    }
+	default boolean canInteract(@NotNull Player player, @NotNull BlockPos targetPos) {
+		return true;
+	}
 
-    class Dummy implements IClaimIntegration { }
+	class Dummy implements IClaimIntegration {
+	}
 
 }

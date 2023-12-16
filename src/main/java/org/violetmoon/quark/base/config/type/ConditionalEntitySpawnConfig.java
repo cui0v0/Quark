@@ -10,22 +10,21 @@ public class ConditionalEntitySpawnConfig extends EntitySpawnConfig {
 	public boolean enabled = true;
 
 	public final String flag;
-	
+
 	public ConditionalEntitySpawnConfig(String flag, int spawnWeight, int minGroupSize, int maxGroupSize, BiomeTagConfig biomes) {
 		super(spawnWeight, minGroupSize, maxGroupSize, biomes);
 		this.flag = flag;
 	}
-	
+
 	@Override
 	public void onReload(ZetaModule module, ConfigFlagManager flagManager) {
 		if(module != null)
 			flagManager.putFlag(module, flag, enabled);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean isEnabled() {
 		return enabled && super.isEnabled();
 	}
-	
 
 }

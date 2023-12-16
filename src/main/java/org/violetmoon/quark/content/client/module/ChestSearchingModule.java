@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.client.module;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +29,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
+
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
@@ -86,15 +89,14 @@ public class ChestSearchingModule extends ZetaModule {
 
 		@LoadEvent
 		public final void clientSetup(ZClientSetup event) {
-			InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_INVENTORY, 1, (parent, x, y) ->
-					new MiniInventoryButton(parent, 3, x, y, "quark.gui.button.filter", (b) -> {
-						if(searchBar != null) {
-							searchEnabled = !searchEnabled;
-							updateSearchStatus();
-							searchBar.setFocused(true);
-						}
-					}).setTextureShift(() -> searchEnabled),
-				null);
+			InventoryButtonHandler.addButtonProvider(this, ButtonTargetType.CONTAINER_INVENTORY, 1, (parent, x, y) -> new MiniInventoryButton(parent, 3, x, y, "quark.gui.button.filter", (b) -> {
+				if(searchBar != null) {
+					searchEnabled = !searchEnabled;
+					updateSearchStatus();
+					searchBar.setFocused(true);
+				}
+			}).setTextureShift(() -> searchEnabled),
+					null);
 		}
 
 		@PlayEvent
@@ -102,8 +104,8 @@ public class ChestSearchingModule extends ZetaModule {
 			Screen gui = event.getScreen();
 			boolean apiAllowed = gui instanceof IQuarkButtonAllowed;
 			if(!(gui instanceof InventoryScreen) &&
-				gui instanceof AbstractContainerScreen<?> chest &&
-				(apiAllowed || GeneralConfig.isScreenAllowed(gui))) {
+					gui instanceof AbstractContainerScreen<?> chest &&
+					(apiAllowed || GeneralConfig.isScreenAllowed(gui))) {
 				Minecraft mc = gui.getMinecraft();
 				if(apiAllowed || InventoryTransferHandler.accepts(chest.getMenu(), mc.player)) {
 					searchBar = new EditBox(mc.font, 18, 6, 117, 10, Component.literal(text));
@@ -188,14 +190,16 @@ public class ChestSearchingModule extends ZetaModule {
 								int y = s.y;
 
 								guiGraphics.fill(x, y, x + 16, y + 16, overlayColor.getColor());
-							} else matched++;
+							} else
+								matched++;
 						}
 					}
 				}
 
 				if(matched == 0 && !text.isEmpty())
 					searchBar.setTextColor(0xFF5555);
-				else searchBar.setTextColor(0xFFFFFF);
+				else
+					searchBar.setTextColor(0xFFFFFF);
 
 				searchBar.render(guiGraphics, 0, 0, 0);
 				matrix.popPose();
@@ -203,7 +207,7 @@ public class ChestSearchingModule extends ZetaModule {
 		}
 
 		private void drawBackground(GuiGraphics guiGraphics, Screen gui, int x, int y) {
-			if (gui == null)
+			if(gui == null)
 				return;
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -294,7 +298,8 @@ public class ChestSearchingModule extends ZetaModule {
 			//			return true;
 
 			ResourceLocation itemName = BuiltInRegistries.ITEM.getKey(item);
-			@Nullable String modDisplayName = zeta.getModDisplayName(itemName.getNamespace());
+			@Nullable
+			String modDisplayName = zeta.getModDisplayName(itemName.getNamespace());
 
 			if(modDisplayName != null && matcher.test(modDisplayName.toLowerCase(Locale.ROOT), search))
 				return true;
@@ -303,7 +308,8 @@ public class ChestSearchingModule extends ZetaModule {
 			//		return ISearchHandler.hasHandler(stack) && ISearchHandler.getHandler(stack).stackMatchesSearchQuery(search, matcher, ChestSearchBar::namesMatch);
 		}
 
-		private interface StringMatcher extends BiPredicate<String, String> {}
+		private interface StringMatcher extends BiPredicate<String, String> {
+		}
 
 	}
 

@@ -2,23 +2,26 @@ package org.violetmoon.quark.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.HitResult;
+
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.client.module.LongRangePickBlockModule;
-
-import net.minecraft.client.Minecraft;
-
-import org.jetbrains.annotations.Nullable;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
 
-	@Shadow @Nullable public HitResult hitResult;
+	@Shadow
+	@Nullable
+	public HitResult hitResult;
 
 	@Inject(method = "pickBlock", at = @At("HEAD"))
 	private void pickBlockHead(CallbackInfo ci, @Share("hitResult") LocalRef<HitResult> hitResult) {

@@ -1,10 +1,12 @@
 package org.violetmoon.quark.addons.oddities.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+
 import org.jetbrains.annotations.NotNull;
 
 public class MatrixEnchantingPlusButton extends Button {

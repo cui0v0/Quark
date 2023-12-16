@@ -4,12 +4,12 @@ import org.violetmoon.quark.base.config.Config;
 
 public class CostSensitiveEntitySpawnConfig extends EntitySpawnConfig {
 
-	@Config 
+	@Config
 	public double maxCost;
-	
-	@Config 
+
+	@Config
 	public double spawnCost;
-	
+
 	public CostSensitiveEntitySpawnConfig(int spawnWeight, int minGroupSize, int maxGroupSize, double maxCost, double spawnCost, IBiomeConfig biomes) {
 		super(spawnWeight, minGroupSize, maxGroupSize, biomes);
 		this.maxCost = maxCost;

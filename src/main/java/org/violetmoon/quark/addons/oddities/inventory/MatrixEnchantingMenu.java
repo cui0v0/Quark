@@ -83,7 +83,7 @@ public class MatrixEnchantingMenu extends AbstractContainerMenu {
 
 		if(player instanceof ServerPlayer serverPlayer) {
 			CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, stack, 1);
-			
+
 			if(enchanter.isMatrixInfluenced())
 				MatrixEnchantingModule.influenceTrigger.trigger(serverPlayer);
 		}
@@ -107,19 +107,17 @@ public class MatrixEnchantingMenu extends AbstractContainerMenu {
 		ItemStack originalStack = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if(slot != null && slot.hasItem()) {
 			ItemStack stackInSlot = slot.getItem();
 			originalStack = stackInSlot.copy();
 
 			if(index < 3) {
-				if (!moveItemStackTo(stackInSlot, 3, 39, true))
+				if(!moveItemStackTo(stackInSlot, 3, 39, true))
 					return ItemStack.EMPTY;
-			}
-			else if(isLapis(stackInSlot)) {
+			} else if(isLapis(stackInSlot)) {
 				if(!moveItemStackTo(stackInSlot, 1, 2, true))
 					return ItemStack.EMPTY;
-			}
-			else {
+			} else {
 				if(slots.get(0).hasItem() || !slots.get(0).mayPlace(stackInSlot))
 					return ItemStack.EMPTY;
 
@@ -134,7 +132,8 @@ public class MatrixEnchantingMenu extends AbstractContainerMenu {
 
 			if(stackInSlot.isEmpty())
 				slot.set(ItemStack.EMPTY);
-			else slot.setChanged();
+			else
+				slot.setChanged();
 
 			if(stackInSlot.getCount() == originalStack.getCount())
 				return ItemStack.EMPTY;

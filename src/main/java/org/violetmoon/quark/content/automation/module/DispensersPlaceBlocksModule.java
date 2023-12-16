@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.automation.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -35,13 +36,16 @@ import java.util.Objects;
 @ZetaLoadModule(category = "automation")
 public class DispensersPlaceBlocksModule extends ZetaModule {
 
-	@Config public static List<String> blacklist = Lists.newArrayList("minecraft:water", "minecraft:lava", "minecraft:fire");
+	@Config
+	public static List<String> blacklist = Lists.newArrayList("minecraft:water", "minecraft:lava", "minecraft:fire");
 
-	@Config(description = "Set to false to refrain from registering any behaviors for blocks that have optional dispense behaviors already set.\n"
-			+ "An optional behavior is one that will defer to the generic dispense item behavior if its condition fails.\n"
-			+ "e.g. the Shulker Box behavior is optional, because it'll throw out the item if it fails, whereas TNT is not optional.\n"
-			+ "If true, it'll attempt to use the previous behavior before trying to place the block in the world.\n"
-			+ "Requires a game restart to re-apply.")
+	@Config(
+		description = "Set to false to refrain from registering any behaviors for blocks that have optional dispense behaviors already set.\n"
+				+ "An optional behavior is one that will defer to the generic dispense item behavior if its condition fails.\n"
+				+ "e.g. the Shulker Box behavior is optional, because it'll throw out the item if it fails, whereas TNT is not optional.\n"
+				+ "If true, it'll attempt to use the previous behavior before trying to place the block in the world.\n"
+				+ "Requires a game restart to re-apply."
+	)
 	public static boolean wrapExistingBehaviors = true;
 
 	@LoadEvent
@@ -61,12 +65,12 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 					if(item instanceof BlockItem) {
 						DispenseItemBehavior original = registry.get(item);
 						boolean exists = original != null && original.getClass() != DefaultDispenseItemBehavior.class;
-						if(original instanceof BlockBehavior) continue; //some blocks map to same item (mob heads)
+						if(original instanceof BlockBehavior)
+							continue; //some blocks map to same item (mob heads)
 						if(exists) {
 							if(wrapExistingBehaviors && original instanceof OptionalDispenseItemBehavior opt)
 								registry.put(item, new BlockBehavior(opt));
-						}
-						else
+						} else
 							registry.put(item, baseBehavior);
 					}
 
@@ -104,15 +108,15 @@ public class DispensersPlaceBlocksModule extends ZetaModule {
 			Direction against = direction;
 			BlockPos pos = source.getPos().relative(direction);
 
-			if (stack.getItem() instanceof BlockItem item) {
+			if(stack.getItem() instanceof BlockItem item) {
 				Block block = item.getBlock();
-				if (block instanceof StairBlock && direction.getAxis() != Axis.Y)
+				if(block instanceof StairBlock && direction.getAxis() != Axis.Y)
 					direction = direction.getOpposite();
-				else if (block instanceof SlabBlock)
+				else if(block instanceof SlabBlock)
 					against = Direction.UP;
 
 				setSuccess(item.place(new NotStupidDirectionalPlaceContext(source.getLevel(), pos, direction, stack, against))
-					.consumesAction());
+						.consumesAction());
 			}
 
 			return stack;

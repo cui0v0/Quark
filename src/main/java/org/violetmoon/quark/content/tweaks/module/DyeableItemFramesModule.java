@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tweaks.client.render.entity.DyedItemFrameRenderer;
 import org.violetmoon.quark.content.tweaks.entity.DyedItemFrame;
@@ -40,8 +41,8 @@ import java.util.List;
 public class DyeableItemFramesModule extends ZetaModule {
 
 	public static EntityType<DyedItemFrame> entityType;
-	
-	@Hint(key = "item_frame_dyeing") 
+
+	@Hint(key = "item_frame_dyeing")
 	List<Item> itemFrames = Arrays.asList(Items.ITEM_FRAME, Items.GLOW_ITEM_FRAME);
 
 	@LoadEvent
@@ -72,14 +73,14 @@ public class DyeableItemFramesModule extends ZetaModule {
 			Level level = player.level();
 			BlockPos pos = event.getPos();
 			BlockState state = level.getBlockState(pos);
-			
-			InteractionResult result = player.isCrouching() ? InteractionResult.PASS : state.use(level, player, hand, blockhit); 
+
+			InteractionResult result = player.isCrouching() ? InteractionResult.PASS : state.use(level, player, hand, blockhit);
 			if(result == InteractionResult.PASS)
 				result = useOn(context);
-			
+
 			if(result != InteractionResult.PASS) {
 				event.setCanceled(true);
-				event.setCancellationResult(result);	
+				event.setCancellationResult(result);
 			}
 		}
 	}
@@ -94,7 +95,7 @@ public class DyeableItemFramesModule extends ZetaModule {
 
 		if(player != null && !mayPlace(player, direction, itemstack, blockpos1))
 			return InteractionResult.FAIL;
-		
+
 		Level level = context.getLevel();
 		HangingEntity hangingentity = new DyedItemFrame(level, blockpos1, direction, Quark.ZETA.dyeables.getDye(itemstack), itemstack.is(Items.GLOW_ITEM_FRAME));
 
@@ -111,10 +112,10 @@ public class DyeableItemFramesModule extends ZetaModule {
 
 			if(!player.isCreative())
 				itemstack.shrink(1);
-			
+
 			return InteractionResult.sidedSuccess(level.isClientSide);
-		} 
-			
+		}
+
 		return InteractionResult.CONSUME;
 	}
 

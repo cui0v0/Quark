@@ -1,11 +1,7 @@
 package org.violetmoon.quark.content.world.block;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,10 +17,16 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.block.ZetaBushBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GlowLichenGrowthBlock extends ZetaBushBlock implements BonemealableBlock {
 
@@ -33,8 +35,8 @@ public class GlowLichenGrowthBlock extends ZetaBushBlock implements Bonemealable
 	public GlowLichenGrowthBlock(@Nullable ZetaModule module) {
 		super("glow_lichen_growth", module, CreativeModeTabs.NATURAL_BLOCKS,
 				Properties.copy(Blocks.GLOW_LICHEN)
-				.randomTicks()
-				.lightLevel(s -> 8));
+						.randomTicks()
+						.lightLevel(s -> 8));
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class GlowLichenGrowthBlock extends ZetaBushBlock implements Bonemealable
 
 	@Override
 	public boolean isValidBonemealTarget(@NotNull LevelReader levelReader, @NotNull BlockPos blockPos,
-										 @NotNull BlockState blockState, boolean isClientSided) {
+			@NotNull BlockState blockState, boolean isClientSided) {
 		for(Direction dir : MiscUtil.HORIZONTALS)
 			if(canSpread(levelReader, blockPos.relative(dir)))
 				return true;

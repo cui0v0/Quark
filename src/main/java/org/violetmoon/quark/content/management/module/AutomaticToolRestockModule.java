@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.management.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
+
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.api.event.GatherToolClassesEvent;
 import org.violetmoon.quark.base.Quark;
@@ -53,8 +55,10 @@ public class AutomaticToolRestockModule extends ZetaModule {
 	public List<Enchantment> importantEnchants = new ArrayList<>();
 	public List<Item> itemsToIgnore = new ArrayList<>();
 
-	@Config(name = "Important Enchantments",
-			description = "Enchantments deemed important enough to have special priority when finding a replacement")
+	@Config(
+		name = "Important Enchantments",
+		description = "Enchantments deemed important enough to have special priority when finding a replacement"
+	)
 	private List<String> enchantNames = generateDefaultEnchantmentList();
 
 	private static final String LOOSE_MATCHING = "automatic_restock_loose_matching";
@@ -91,23 +95,23 @@ public class AutomaticToolRestockModule extends ZetaModule {
 		ItemStack stack = event.getOriginal();
 		Item item = stack.getItem();
 
-		if (player instanceof ServerPlayer serverPlayer) {
-			if (!SyncedFlagHandler.getFlagForPlayer(serverPlayer, "automatic_tool_restock"))
+		if(player instanceof ServerPlayer serverPlayer) {
+			if(!SyncedFlagHandler.getFlagForPlayer(serverPlayer, "automatic_tool_restock"))
 				return;
 
 			boolean onlyUnstackables = SyncedFlagHandler.getFlagForPlayer(serverPlayer, UNSTACKABLES_ONLY);
 
-			if (!stack.isEmpty() && !(item instanceof ArmorItem) && (!onlyUnstackables || !stack.isStackable())) {
+			if(!stack.isEmpty() && !(item instanceof ArmorItem) && (!onlyUnstackables || !stack.isStackable())) {
 
 				boolean hotbar = SyncedFlagHandler.getFlagForPlayer(serverPlayer, CHECK_HOTBAR);
 
 				int currSlot = player.getInventory().selected;
-				if (event.getHand() == InteractionHand.OFF_HAND)
+				if(event.getHand() == InteractionHand.OFF_HAND)
 					currSlot = player.getInventory().getContainerSize() - 1;
 
 				List<Enchantment> enchantmentsOnStack = getImportantEnchantments(stack);
 				Predicate<ItemStack> itemPredicate = (other) -> other.getItem() == item;
-				if (!stack.isDamageableItem())
+				if(!stack.isDamageableItem())
 					itemPredicate = itemPredicate.and((other) -> other.getDamageValue() == stack.getDamageValue());
 
 				Predicate<ItemStack> enchantmentPredicate = (other) -> !(new ArrayList<>(enchantmentsOnStack)).retainAll(getImportantEnchantments(other));
@@ -115,7 +119,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 				Set<String> classes = getItemClasses(stack);
 				Optional<Predicate<ItemStack>> toolPredicate = Optional.empty();
 
-				if (!classes.isEmpty())
+				if(!classes.isEmpty())
 					toolPredicate = Optional.of((other) -> {
 						Set<String> otherClasses = getItemClasses(other);
 						return !otherClasses.isEmpty() && !otherClasses.retainAll(classes);
@@ -127,10 +131,10 @@ public class AutomaticToolRestockModule extends ZetaModule {
 				int upper = player.getInventory().items.size();
 				boolean foundInInv = crawlInventory(new PlayerInvWrapper(player.getInventory()), lower, upper, ctx);
 
-				if (!foundInInv && Quark.ZETA.modules.isEnabled(BackpackModule.class)) {
+				if(!foundInInv && Quark.ZETA.modules.isEnabled(BackpackModule.class)) {
 					ItemStack backpack = player.getInventory().armor.get(2);
 
-					if (backpack.getItem() == BackpackModule.backpack) {
+					if(backpack.getItem() == BackpackModule.backpack) {
 						InventoryIIH inv = new InventoryIIH(backpack);
 						crawlInventory(inv, 0, inv.getSlots(), ctx);
 					}
@@ -171,7 +175,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 	public void onPlayerTick(ZPlayerTick.End event) {
 		if(!event.getPlayer().level().isClientSide && replacements.containsKey(event.getPlayer())) {
 			Stack<QueuedRestock> replacementStack = replacements.get(event.getPlayer());
-			synchronized(mutex) {
+			synchronized (mutex) {
 				while(!replacementStack.isEmpty()) {
 					QueuedRestock restock = replacementStack.pop();
 					switchItems(event.getPlayer(), restock);
@@ -202,7 +206,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 	}
 
 	private boolean findReplacement(IItemHandler inv, Player player, int lowerBound, int upperBound, int currSlot, Predicate<ItemStack> match) {
-		synchronized(mutex) {
+		synchronized (mutex) {
 			for(int i = lowerBound; i < upperBound; i++) {
 				if(i == currSlot)
 					continue;
@@ -238,7 +242,7 @@ public class AutomaticToolRestockModule extends ZetaModule {
 		ItemStack stackProvidingSlot = providingInv.getStackInSlot(providingSlot).copy();
 
 		//Botania rods are only detected in the stackAtPlayerSlot but other tools are only detected in stackProvidingSlot so we check em both
-		if (itemIgnored(stackAtPlayerSlot) || itemIgnored(stackProvidingSlot))
+		if(itemIgnored(stackAtPlayerSlot) || itemIgnored(stackProvidingSlot))
 			return;
 
 		providingInv.extractItem(providingSlot, stackProvidingSlot.getCount(), false);
@@ -280,8 +284,10 @@ public class AutomaticToolRestockModule extends ZetaModule {
 			List<Enchantment> enchantmentsOnStack,
 			Predicate<ItemStack> itemPredicate,
 			Predicate<ItemStack> enchantmentPredicate,
-			Optional<Predicate<ItemStack>> toolPredicate) {}
+			Optional<Predicate<ItemStack>> toolPredicate) {
+	}
 
-	private record QueuedRestock(IItemHandler providingInv, int providingSlot, int playerSlot) {}
+	private record QueuedRestock(IItemHandler providingInv, int providingSlot, int playerSlot) {
+	}
 
 }

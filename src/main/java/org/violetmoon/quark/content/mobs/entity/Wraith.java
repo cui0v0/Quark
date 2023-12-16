@@ -1,13 +1,8 @@
 package org.violetmoon.quark.content.mobs.entity;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.content.mobs.module.WraithModule;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -37,6 +32,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.mobs.module.WraithModule;
+
 public class Wraith extends Zombie {
 
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation("quark:entities/wraith");
@@ -47,7 +46,7 @@ public class Wraith extends Zombie {
 	private static final String TAG_IDLE_SOUND = "IdleSound";
 	private static final String TAG_HURT_SOUND = "HurtSound";
 	private static final String TAG_DEATH_SOUND = "DeathSound";
-	
+
 	boolean aggroed = false;
 
 	public Wraith(EntityType<? extends Wraith> type, Level worldIn) {
@@ -109,13 +108,13 @@ public class Wraith extends Zombie {
 		super.tick();
 
 		double pad = 0.2;
-		
+
 		AABB aabb = getBoundingBox();
 		double x = aabb.minX + Math.random() * (aabb.maxX - aabb.minX + (pad * 2)) - pad;
 		double y = aabb.minY + Math.random() * (aabb.maxY - aabb.minY + (pad * 2)) - pad;
 		double z = aabb.minZ + Math.random() * (aabb.maxZ - aabb.minZ + (pad * 2)) - pad;
 		level().addParticle(ParticleTypes.MYCELIUM, x, y, z, 0, 0, 0);
-	
+
 		if(Math.random() < 0.1) {
 			y = aabb.minY + 0.1;
 			level().addParticle(ParticleTypes.SOUL, x, y, z, 0, 0, 0);
@@ -137,7 +136,7 @@ public class Wraith extends Zombie {
 
 		return did;
 	}
-	
+
 	@Override
 	public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
 		int idx = random.nextInt(WraithModule.validWraithSounds.size());
@@ -198,16 +197,16 @@ public class Wraith extends Zombie {
 
 	@Override
 	public boolean hurt(@NotNull DamageSource source, float amount) {
-		if (!super.hurt(source, amount)) {
+		if(!super.hurt(source, amount)) {
 			return false;
 		} else {
 			if(source != null && source.getDirectEntity() instanceof Player)
 				aggroed = true;
-			
+
 			return this.level() instanceof ServerLevel;
 		}
 	}
-	
+
 	@Override
 	public void setTarget(LivingEntity target) {
 		if(aggroed)

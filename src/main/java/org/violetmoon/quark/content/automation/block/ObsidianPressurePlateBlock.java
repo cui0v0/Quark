@@ -1,24 +1,25 @@
 package org.violetmoon.quark.content.automation.block;
 
-import java.util.List;
-
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.zeta.block.ZetaPressurePlateBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.List;
+
 /**
  * @author WireSegal
- * Created at 9:47 PM on 10/8/19.
+ *         Created at 9:47 PM on 10/8/19.
  */
 public class ObsidianPressurePlateBlock extends ZetaPressurePlateBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -33,9 +34,9 @@ public class ObsidianPressurePlateBlock extends ZetaPressurePlateBlock {
 		AABB bounds = TOUCH_AABB.move(pos);
 		List<? extends Entity> entities = worldIn.getEntitiesOfClass(Player.class, bounds);
 
-		if (!entities.isEmpty()) {
+		if(!entities.isEmpty()) {
 			for(Entity entity : entities) {
-				if (!entity.isIgnoringBlockTriggers()) {
+				if(!entity.isIgnoringBlockTriggers()) {
 					return 15;
 				}
 			}

@@ -1,9 +1,6 @@
 package org.violetmoon.quark.base.config.type.inputtable;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Preconditions;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -13,21 +10,27 @@ import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.quark.content.client.module.GreenerGrassModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import com.google.common.base.Preconditions;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConvulsionMatrixConfig implements IConfigType {
 
-	@Config public List<Double> r;
-	@Config public List<Double> g;
-	@Config public List<Double> b;
+	@Config
+	public List<Double> r;
+	@Config
+	public List<Double> g;
+	@Config
+	public List<Double> b;
 
 	public final Params params;
-	
+
 	public double[] colorMatrix;
 
 	public ConvulsionMatrixConfig(Params params) {
 		this.params = params;
-		
+
 		double[] defaultMatrix = params.defaultMatrix;
 		this.colorMatrix = Arrays.copyOf(defaultMatrix, defaultMatrix.length);
 
@@ -42,12 +45,12 @@ public class ConvulsionMatrixConfig implements IConfigType {
 					g.get(0), g.get(1), g.get(2),
 					b.get(0), b.get(1), b.get(2)
 			};
-		} catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
+		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 			colorMatrix = Arrays.copyOf(params.defaultMatrix, params.defaultMatrix.length);
 		}
 	}
-	
+
 	private void updateRGB() {
 		r = Arrays.asList(colorMatrix[0], colorMatrix[1], colorMatrix[2]);
 		g = Arrays.asList(colorMatrix[3], colorMatrix[4], colorMatrix[5]);
@@ -86,55 +89,56 @@ public class ConvulsionMatrixConfig implements IConfigType {
 	}
 
 	public static class Params {
-		
+
 		private static final String IDENTITY_NAME = "Vanilla";
 		public static final double[] IDENTITY = {
 				1, 0, 0,
 				0, 1, 0,
 				0, 0, 1
-			};
-		
+		};
+
 		public final String name;
 		public final String[] biomeNames;
 		public final double[] defaultMatrix;
 		public final int[] testColors;
-		@Nullable public final int[] folliageTestColors;
-		
+		@Nullable
+		public final int[] folliageTestColors;
+
 		private final String[] presetNames;
 		private final double[][] presets;
-		
+
 		public final Map<String, double[]> presetMap;
 
-		public Params(String name, double[] defaultMatrix,  String[] biomeNames, int[] testColors, @Nullable int[] folliageTestColors, String[] presetNames, double[][] presets) {
+		public Params(String name, double[] defaultMatrix, String[] biomeNames, int[] testColors, @Nullable int[] folliageTestColors, String[] presetNames, double[][] presets) {
 			Preconditions.checkArgument(defaultMatrix.length == 9);
 			Preconditions.checkArgument(biomeNames.length == 6);
 			Preconditions.checkArgument(testColors.length == 6);
 			Preconditions.checkArgument(folliageTestColors == null || folliageTestColors.length == 6);
 			Preconditions.checkArgument(presetNames.length == presets.length);
-			
+
 			this.name = name;
 			this.defaultMatrix = defaultMatrix;
 			this.biomeNames = biomeNames;
 			this.testColors = testColors;
 			this.folliageTestColors = folliageTestColors;
-			
+
 			this.presetNames = presetNames;
 			this.presets = presets;
-			
+
 			presetMap = new LinkedHashMap<>();
 			presetMap.put(IDENTITY_NAME, IDENTITY);
 			for(int i = 0; i < presetNames.length; i++)
 				presetMap.put(presetNames[i], presets[i]);
 		}
-		
+
 		public Params cloneWithNewDefault(double[] newDefault) {
 			return new Params(name, newDefault, biomeNames, testColors, folliageTestColors, presetNames, presets);
 		}
-		
+
 		public boolean shouldDisplayFolliage() {
 			return folliageTestColors != null && GreenerGrassModule.affectLeaves;
 		}
-		
+
 	}
-	
+
 }

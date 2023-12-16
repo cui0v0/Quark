@@ -73,8 +73,8 @@ public class ModelAccessor implements TweenAccessor<HumanoidModel<?>> {
 		int axis = tweenType % MODEL_PROPS;
 		int bodyPart = tweenType - axis;
 
-		if (bodyPart == MODEL) {
-			if (!MODEL_VALUES.containsKey(target)) {
+		if(bodyPart == MODEL) {
+			if(!MODEL_VALUES.containsKey(target)) {
 				returnValues[0] = 0;
 				return 1;
 			}
@@ -88,24 +88,24 @@ public class ModelAccessor implements TweenAccessor<HumanoidModel<?>> {
 		if(model == null)
 			return 0;
 
-		switch (axis) {
-			case ROT_X -> returnValues[0] = model.xRot;
-			case ROT_Y -> returnValues[0] = model.yRot;
-			case ROT_Z -> returnValues[0] = model.zRot;
+		switch(axis) {
+		case ROT_X -> returnValues[0] = model.xRot;
+		case ROT_Y -> returnValues[0] = model.yRot;
+		case ROT_Z -> returnValues[0] = model.zRot;
 		}
 
 		return 1;
 	}
 
 	private ModelPart getBodyPart(HumanoidModel<?> model, int part) {
-		return switch (part) {
-			case HEAD -> model.head;
-			case BODY -> model.body;
-			case RIGHT_ARM -> model.rightArm;
-			case LEFT_ARM -> model.leftArm;
-			case RIGHT_LEG -> model.rightLeg;
-			case LEFT_LEG -> model.leftLeg;
-			default -> null;
+		return switch(part) {
+		case HEAD -> model.head;
+		case BODY -> model.body;
+		case RIGHT_ARM -> model.rightArm;
+		case LEFT_ARM -> model.leftArm;
+		case RIGHT_LEG -> model.rightLeg;
+		case LEFT_LEG -> model.leftLeg;
+		default -> null;
 		};
 	}
 
@@ -114,7 +114,7 @@ public class ModelAccessor implements TweenAccessor<HumanoidModel<?>> {
 		int axis = tweenType % MODEL_PROPS;
 		int bodyPart = tweenType - axis;
 
-		if (bodyPart == MODEL) {
+		if(bodyPart == MODEL) {
 			float[] values = MODEL_VALUES.computeIfAbsent(target, k -> new float[MODEL_PROPS]);
 
 			values[axis] = newValues[0];
@@ -151,12 +151,11 @@ public class ModelAccessor implements TweenAccessor<HumanoidModel<?>> {
 		if(part == null)
 			return;
 
-		switch (axis) {
-			case ROT_X -> part.xRot = val;
-			case ROT_Y -> part.yRot = val;
-			case ROT_Z -> part.zRot = val;
+		switch(axis) {
+		case ROT_X -> part.xRot = val;
+		case ROT_Y -> part.yRot = val;
+		case ROT_Z -> part.zRot = val;
 		}
 	}
 
 }
-

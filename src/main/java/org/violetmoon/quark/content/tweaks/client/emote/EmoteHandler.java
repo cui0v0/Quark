@@ -11,6 +11,7 @@
 package org.violetmoon.quark.content.tweaks.client.emote;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -107,7 +108,7 @@ public final class EmoteHandler {
 
 	public static void preRender(PoseStack stack, Player player) {
 		EmoteBase emote = getPlayerEmote(player);
-		if (emote != null) {
+		if(emote != null) {
 			stack.pushPose();
 			emote.rotateAndOffset(stack);
 		}
@@ -115,7 +116,7 @@ public final class EmoteHandler {
 
 	public static void postRender(PoseStack stack, Player player) {
 		EmoteBase emote = getPlayerEmote(player);
-		if (emote != null) {
+		if(emote != null) {
 			stack.popPose();
 		}
 	}
@@ -197,7 +198,7 @@ public final class EmoteHandler {
 	}
 
 	private static void resetModel(HumanoidModel<?> model) {
-		if (model != null) {
+		if(model != null) {
 			resetPart(model.head);
 			resetPart(model.hat);
 			resetPart(model.body);
@@ -212,7 +213,6 @@ public final class EmoteHandler {
 				resetPart(pmodel.leftPants);
 				resetPart(pmodel.rightPants);
 			}
-
 
 			ModelAccessor.INSTANCE.resetModel(model);
 		}

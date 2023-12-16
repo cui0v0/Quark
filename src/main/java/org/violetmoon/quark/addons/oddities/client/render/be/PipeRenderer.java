@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.client.render.be;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -19,7 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.ConnectionType;
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity.PipeItem;
@@ -63,14 +66,14 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		ConnectionType type = te.getConnectionTo(dir);
 		if(type.isFlared) {
 			matrix.pushPose();
-			switch (dir.getAxis()) {
-				case X -> matrix.mulPose(Axis.YP.rotationDegrees(-dir.toYRot()));
-				case Z -> matrix.mulPose(Axis.YP.rotationDegrees(dir.toYRot()));
-				case Y -> {
-					matrix.mulPose(Axis.XP.rotationDegrees(90F));
-					if (dir == Direction.UP)
-						matrix.mulPose(Axis.YP.rotationDegrees(180F));
-				}
+			switch(dir.getAxis()) {
+			case X -> matrix.mulPose(Axis.YP.rotationDegrees(-dir.toYRot()));
+			case Z -> matrix.mulPose(Axis.YP.rotationDegrees(dir.toYRot()));
+			case Y -> {
+				matrix.mulPose(Axis.XP.rotationDegrees(90F));
+				if(dir == Direction.UP)
+					matrix.mulPose(Axis.YP.rotationDegrees(180F));
+			}
 			}
 
 			matrix.translate(-0.5, -0.5, type.getFlareShift(te));
@@ -130,7 +133,7 @@ public class PipeRenderer implements BlockEntityRenderer<PipeBlockEntity> {
 		if(stack.getCount() > 16)
 			return 3;
 
-		if (stack.getCount() > 1)
+		if(stack.getCount() > 1)
 			return 2;
 
 		return 1;

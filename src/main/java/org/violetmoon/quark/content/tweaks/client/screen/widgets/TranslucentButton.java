@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.client.screen.widgets;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+
 import org.jetbrains.annotations.NotNull;
 
 public class TranslucentButton extends Button {
@@ -18,7 +19,7 @@ public class TranslucentButton extends Button {
 	}
 
 	@Override
-	public void setFocused(boolean focused) { } // NO-OP
+	public void setFocused(boolean focused) {} // NO-OP
 
 	@Override
 	public boolean isFocused() {

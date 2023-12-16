@@ -1,10 +1,5 @@
 package org.violetmoon.quark.addons.oddities.client.render.be;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
-import org.violetmoon.quark.content.automation.client.render.QuarkPistonBlockEntityRenderer;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -22,6 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
+import org.violetmoon.quark.content.automation.client.render.QuarkPistonBlockEntityRenderer;
+
 public class MagnetizedBlockRenderer implements BlockEntityRenderer<MagnetizedBlockBlockEntity> {
 
 	private BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
@@ -33,11 +33,11 @@ public class MagnetizedBlockRenderer implements BlockEntityRenderer<MagnetizedBl
 	@Override
 	public void render(MagnetizedBlockBlockEntity tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		Level world = tileEntityIn.getLevel();
-		if (world != null) {
+		if(world != null) {
 			BlockPos truepos = tileEntityIn.getBlockPos();
 			BlockPos blockpos = truepos.relative(tileEntityIn.getFacing().getOpposite());
 			BlockState blockstate = tileEntityIn.getMagnetState();
-			if (!blockstate.isAir() && (tileEntityIn.getProgress(partialTicks) <= 1.0F)) {
+			if(!blockstate.isAir() && (tileEntityIn.getProgress(partialTicks) <= 1.0F)) {
 				BlockEntity subTile = tileEntityIn.getSubTile(tileEntityIn.getBlockPos());
 				Vec3 offset = new Vec3(tileEntityIn.getOffsetX(partialTicks), tileEntityIn.getOffsetY(partialTicks), tileEntityIn.getOffsetZ(partialTicks));
 				if(QuarkPistonBlockEntityRenderer.renderTESafely(world, truepos, blockstate, subTile, tileEntityIn, partialTicks, offset, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn))
@@ -46,7 +46,7 @@ public class MagnetizedBlockRenderer implements BlockEntityRenderer<MagnetizedBl
 				ModelBlockRenderer.enableCaching();
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(offset.x, offset.y, offset.z);
-				if (blockstate.getBlock() == Blocks.PISTON_HEAD && tileEntityIn.getProgress(partialTicks) <= 4.0F) {
+				if(blockstate.getBlock() == Blocks.PISTON_HEAD && tileEntityIn.getProgress(partialTicks) <= 4.0F) {
 					blockstate = blockstate.setValue(PistonHeadBlock.SHORT, Boolean.TRUE);
 					renderStateModel(blockpos, blockstate, matrixStackIn, bufferIn, world, false, combinedOverlayIn);
 				} else {

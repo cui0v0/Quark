@@ -19,7 +19,7 @@ import org.violetmoon.zeta.util.ItemNBTHelper;
 
 /**
  * @author WireSegal
- * Created at 4:27 PM on 12/15/18.
+ *         Created at 4:27 PM on 12/15/18.
  */
 public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifiable, ICapabilityProvider {
 
@@ -47,10 +47,10 @@ public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifi
 
 	private ListTag getStackList() {
 		ListTag list = ItemNBTHelper.getList(stack, key, 10, true);
-		if (list == null)
+		if(list == null)
 			ItemNBTHelper.setList(stack, key, list = new ListTag());
 
-		while (list.size() < size)
+		while(list.size() < size)
 			list.add(new CompoundTag());
 
 		return list;
@@ -87,7 +87,7 @@ public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifi
 	@Override
 	@NotNull
 	public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-		if (stack.isEmpty())
+		if(stack.isEmpty())
 			return ItemStack.EMPTY;
 
 		validateSlotIndex(slot);
@@ -96,19 +96,19 @@ public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifi
 
 		int limit = getStackLimit(slot, stack);
 
-		if (!existing.isEmpty()) {
-			if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
+		if(!existing.isEmpty()) {
+			if(!ItemHandlerHelper.canItemStacksStack(stack, existing))
 				return stack;
 
 			limit -= existing.getCount();
 		}
 
-		if (limit <= 0)
+		if(limit <= 0)
 			return stack;
 
 		boolean reachedLimit = stack.getCount() > limit;
 
-		if (!simulate)
+		if(!simulate)
 			writeStack(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
 
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
@@ -117,25 +117,25 @@ public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifi
 	@Override
 	@NotNull
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		if (amount == 0)
+		if(amount == 0)
 			return ItemStack.EMPTY;
 
 		validateSlotIndex(slot);
 
 		ItemStack existing = readStack(slot);
 
-		if (existing.isEmpty())
+		if(existing.isEmpty())
 			return ItemStack.EMPTY;
 
 		int toExtract = Math.min(amount, existing.getMaxStackSize());
 
-		if (existing.getCount() <= toExtract) {
-			if (!simulate)
+		if(existing.getCount() <= toExtract) {
+			if(!simulate)
 				writeStack(slot, ItemStack.EMPTY);
 
 			return existing;
 		} else {
-			if (!simulate)
+			if(!simulate)
 				writeStack(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
 
 			return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
@@ -157,7 +157,7 @@ public class ProxiedItemStackHandler implements IItemHandler, IItemHandlerModifi
 	}
 
 	protected void validateSlotIndex(int slot) {
-		if (slot < 0 || slot >= size)
+		if(slot < 0 || slot >= size)
 			throw new RuntimeException("Slot " + slot + " not in valid range - [0," + size + ")");
 	}
 

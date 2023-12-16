@@ -5,18 +5,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 
-import java.util.function.BooleanSupplier;
-
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.network.message.SortInventoryMessage;
 import org.violetmoon.quark.content.management.client.screen.widgets.MiniInventoryButton;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.function.BooleanSupplier;
 
 @ZetaLoadModule(category = "management")
 public class InventorySortingModule extends ZetaModule {
@@ -39,8 +38,8 @@ public class InventorySortingModule extends ZetaModule {
 			InventoryButtonHandler.addButtonProvider(this, InventoryButtonHandler.ButtonTargetType.PLAYER_INVENTORY, 0,
 					sortPlayer,
 					(screen) -> {
-						if (enablePlayerInventory) {
-							if (satisfyingClick)
+						if(enablePlayerInventory) {
+							if(satisfyingClick)
 								click();
 							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(true));
 						}
@@ -51,8 +50,8 @@ public class InventorySortingModule extends ZetaModule {
 			InventoryButtonHandler.addButtonProvider(this, InventoryButtonHandler.ButtonTargetType.CONTAINER_PLAYER_INVENTORY, 0,
 					sortPlayer,
 					(screen) -> {
-						if (enablePlayerInventoryInChests) {
-							if (satisfyingClick)
+						if(enablePlayerInventoryInChests) {
+							if(satisfyingClick)
 								click();
 							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(true));
 						}
@@ -63,8 +62,8 @@ public class InventorySortingModule extends ZetaModule {
 			InventoryButtonHandler.addButtonProvider(event, this, InventoryButtonHandler.ButtonTargetType.CONTAINER_INVENTORY, 0,
 					"quark.keybind.sort_container",
 					(screen) -> {
-						if (enableChests) {
-							if (satisfyingClick)
+						if(enableChests) {
+							if(satisfyingClick)
 								click();
 							QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(false));
 						}
@@ -74,8 +73,7 @@ public class InventorySortingModule extends ZetaModule {
 		}
 
 		private InventoryButtonHandler.ButtonProvider provider(String tooltip, boolean forcePlayer, BooleanSupplier condition) {
-			return (parent, x, y) -> !condition.getAsBoolean() ? null :
-					new MiniInventoryButton(parent, 0, x, y, "quark.gui.button." + tooltip, (b) -> QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(forcePlayer)));
+			return (parent, x, y) -> !condition.getAsBoolean() ? null : new MiniInventoryButton(parent, 0, x, y, "quark.gui.button." + tooltip, (b) -> QuarkClient.ZETA_CLIENT.sendToServer(new SortInventoryMessage(forcePlayer)));
 		}
 
 		private void click() {

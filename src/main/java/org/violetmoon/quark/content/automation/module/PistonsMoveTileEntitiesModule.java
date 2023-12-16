@@ -1,9 +1,9 @@
 package org.violetmoon.quark.content.automation.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,10 @@ import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraftforge.common.util.NonNullConsumer;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.api.IPistonCallback;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
@@ -35,7 +38,6 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.piston.ZetaPistonStructureResolver;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -69,14 +71,14 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	@PlayEvent
 	public void onWorldTick(ZLevelTick.End event) {
-		if (!delayedUpdates.containsKey(event.getLevel()))
+		if(!delayedUpdates.containsKey(event.getLevel()))
 			return;
 
 		List<Pair<BlockPos, CompoundTag>> delays = delayedUpdates.get(event.getLevel());
-		if (delays.isEmpty())
+		if(delays.isEmpty())
 			return;
 
-		for (Pair<BlockPos, CompoundTag> delay : delays) {
+		for(Pair<BlockPos, CompoundTag> delay : delays) {
 			BlockPos pos = delay.getLeft();
 			BlockState state = event.getLevel().getBlockState(pos);
 			BlockEntity entity = loadBlockEntitySafe(event.getLevel(), pos, delay.getRight());
@@ -103,7 +105,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	// This is called from injected code and subsequently flipped, so to make it move, we return false
 	public static boolean shouldMoveTE(boolean te, BlockState state) {
-		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
+		if(!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
 			return te;
 
 		return shouldMoveTE(state);
@@ -111,10 +113,10 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	public static boolean shouldMoveTE(BlockState state) {
 		// Jukeboxes that are playing can't be moved so the music can be stopped
-		if (state.getValues().containsKey(JukeboxBlock.HAS_RECORD) && state.getValue(JukeboxBlock.HAS_RECORD))
+		if(state.getValues().containsKey(JukeboxBlock.HAS_RECORD) && state.getValue(JukeboxBlock.HAS_RECORD))
 			return true;
 
-		if (state.getBlock() == Blocks.PISTON_HEAD)
+		if(state.getBlock() == Blocks.PISTON_HEAD)
 			return true;
 
 		ResourceLocation res = BuiltInRegistries.BLOCK.getKey(state.getBlock());
@@ -122,19 +124,19 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	public static void detachTileEntities(Level world, PistonStructureResolver helper, Direction facing, boolean extending) {
-		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
+		if(!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class))
 			return;
 
-		if (!extending)
+		if(!extending)
 			facing = facing.getOpposite();
 
 		List<BlockPos> moveList = helper.getToPush();
 
-		for (BlockPos pos : moveList) {
+		for(BlockPos pos : moveList) {
 			BlockState state = world.getBlockState(pos);
-			if (state.getBlock() instanceof EntityBlock) {
+			if(state.getBlock() instanceof EntityBlock) {
 				BlockEntity tile = world.getBlockEntity(pos);
-				if (tile != null) {
+				if(tile != null) {
 					callCallback(tile, IPistonCallback::onPistonMovementStarted);
 
 					CompoundTag tag = tile.saveWithFullMetadata();
@@ -146,7 +148,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	public static boolean setPistonBlock(Level world, BlockPos pos, BlockState state, int flags) {
-		if (!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class)) {
+		if(!Quark.ZETA.modules.isEnabled(PistonsMoveTileEntitiesModule.class)) {
 			world.setBlock(pos, state, flags);
 			return false;
 		}
@@ -158,13 +160,13 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 		CompoundTag entityTag = getAndClearMovement(world, pos);
 		boolean destroyed = false;
 
-		if (entityTag != null) {
+		if(entityTag != null) {
 			BlockState currState = world.getBlockState(pos);
 			BlockEntity currEntity = world.getBlockEntity(pos);
 			CompoundTag currTag = currEntity == null ? null : currEntity.saveWithFullMetadata();
 
 			world.removeBlock(pos, false);
-			if (!block.canSurvive(state, world, pos)) {
+			if(!block.canSurvive(state, world, pos)) {
 				world.setBlock(pos, state, flags);
 				BlockEntity entity = loadBlockEntitySafe(world, pos, entityTag);
 				callCallback(entity, IPistonCallback::onPistonMovementFinished);
@@ -173,21 +175,21 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 				destroyed = true;
 			}
 
-			if (!destroyed) {
+			if(!destroyed) {
 				world.setBlockAndUpdate(pos, currState);
 				if(currTag != null)
 					loadBlockEntitySafe(world, pos, currTag);
 			}
 		}
 
-		if (!destroyed) {
+		if(!destroyed) {
 			world.setBlock(pos, state, flags);
 
-			if (world.getBlockEntity(pos) != null)
+			if(world.getBlockEntity(pos) != null)
 				world.setBlock(pos, state, 0);
 
-			if (entityTag != null && !world.isClientSide) {
-				if (delayedUpdateList.contains(Objects.toString(BuiltInRegistries.BLOCK.getKey(block))))
+			if(entityTag != null && !world.isClientSide) {
+				if(delayedUpdateList.contains(Objects.toString(BuiltInRegistries.BLOCK.getKey(block))))
 					registerDelayedUpdate(world, pos, entityTag);
 				else {
 					BlockEntity entity = loadBlockEntitySafe(world, pos, entityTag);
@@ -202,9 +204,10 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 
 	/**
 	 * Use to update your tile entity data. Use with care
+	 * 
 	 * @param world current world
-	 * @param pos moving tile position
-	 * @param nbt tile entity data
+	 * @param pos   moving tile position
+	 * @param nbt   tile entity data
 	 */
 	public static void setMovingBlockEntityData(Level world, BlockPos pos, CompoundTag nbt) {
 		movements.computeIfAbsent(world, l -> new HashMap<>()).put(pos, nbt);
@@ -220,15 +223,15 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	private static CompoundTag getMovingBlockEntityData(Level world, BlockPos pos, boolean remove) {
-		if (!movements.containsKey(world))
+		if(!movements.containsKey(world))
 			return null;
 
 		Map<BlockPos, CompoundTag> worldMovements = movements.get(world);
-		if (!worldMovements.containsKey(pos))
+		if(!worldMovements.containsKey(pos))
 			return null;
 
 		CompoundTag ret = worldMovements.get(pos);
-		if (remove)
+		if(remove)
 			worldMovements.remove(pos);
 
 		return ret;
@@ -240,7 +243,7 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	}
 
 	private static void registerDelayedUpdate(Level world, BlockPos pos, CompoundTag tag) {
-		if (!delayedUpdates.containsKey(world))
+		if(!delayedUpdates.containsKey(world))
 			delayedUpdates.put(world, new ArrayList<>());
 
 		delayedUpdates.get(world).add(Pair.of(pos, tag));
@@ -290,10 +293,10 @@ public class PistonsMoveTileEntitiesModule extends ZetaModule {
 	private static BlockEntity loadBlockEntitySafe(Level level, BlockPos pos, CompoundTag tag) {
 		BlockEntity inWorldEntity = level.getBlockEntity(pos);
 		String expectedTypeStr = tag.getString("id");
-		if (inWorldEntity == null) {
+		if(inWorldEntity == null) {
 			Quark.LOG.warn("No block entity found at {} (expected {})", pos.toShortString(), expectedTypeStr);
 			return null;
-		} else if (inWorldEntity.getType() != BuiltInRegistries.BLOCK_ENTITY_TYPE.get(new ResourceLocation(expectedTypeStr))) {
+		} else if(inWorldEntity.getType() != BuiltInRegistries.BLOCK_ENTITY_TYPE.get(new ResourceLocation(expectedTypeStr))) {
 			Quark.LOG.warn("Wrong block entity found at {} (expected {}, got {})", pos.toShortString(), expectedTypeStr, BlockEntityType.getKey(inWorldEntity.getType()));
 			return null;
 		} else {

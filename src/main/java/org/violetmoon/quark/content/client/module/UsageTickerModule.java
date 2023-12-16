@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.client.module;
 
 import com.mojang.blaze3d.platform.Window;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.InteractionHand;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantments;
+
 import org.violetmoon.quark.api.IUsageTickerOverride;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -34,12 +36,17 @@ public class UsageTickerModule extends ZetaModule {
 	@Config(description = "Switch the armor display to the off hand side and the hand display to the main hand side")
 	public static boolean invert = false;
 
-	@Config public static int shiftLeft = 0;
-	@Config public static int shiftRight = 0;
+	@Config
+	public static int shiftLeft = 0;
+	@Config
+	public static int shiftRight = 0;
 
-	@Config public static boolean enableMainHand = true;
-	@Config public static boolean enableOffHand = true;
-	@Config public static boolean enableArmor = true;
+	@Config
+	public static boolean enableMainHand = true;
+	@Config
+	public static boolean enableOffHand = true;
+	@Config
+	public static boolean enableArmor = true;
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends UsageTickerModule {
@@ -119,7 +126,8 @@ public class UsageTickerModule extends ZetaModule {
 					else if(!animatingIn) {
 						if(!done)
 							liveTicks = MAX_TIME - ANIM_TIME;
-						else liveTicks = MAX_TIME;
+						else
+							liveTicks = MAX_TIME;
 					}
 				} else if(liveTicks > 0)
 					liveTicks--;
@@ -135,7 +143,8 @@ public class UsageTickerModule extends ZetaModule {
 
 					if(liveTicks < ANIM_TIME)
 						animProgress = Math.max(0, liveTicks - partialTicks) / ANIM_TIME;
-					else animProgress = Math.min(ANIM_TIME, (MAX_TIME - liveTicks) + partialTicks) / ANIM_TIME;
+					else
+						animProgress = Math.min(ANIM_TIME, (MAX_TIME - liveTicks) + partialTicks) / ANIM_TIME;
 
 					float anim = -animProgress * (animProgress - 2) * 20F;
 
@@ -160,7 +169,8 @@ public class UsageTickerModule extends ZetaModule {
 					if(ourSide == HumanoidArm.LEFT) {
 						x -= slots * 20;
 						x += shiftLeft;
-					} else x += shiftRight;
+					} else
+						x += shiftRight;
 
 					ItemStack stack = getRenderedStack(player);
 

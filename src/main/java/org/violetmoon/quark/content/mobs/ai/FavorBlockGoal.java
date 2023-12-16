@@ -51,7 +51,7 @@ public class FavorBlockGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (runDelay > 0) {
+		if(runDelay > 0) {
 			--runDelay;
 			return false;
 		} else {
@@ -72,13 +72,12 @@ public class FavorBlockGoal extends Goal {
 		maxStayTicks = creature.getRandom().nextInt(creature.getRandom().nextInt(1200) + 1200) + 1200;
 	}
 
-
 	@Override
 	public void tick() {
-		if (creature.distanceToSqr(new Vec3(destinationBlock.getX(), destinationBlock.getY(), destinationBlock.getZ()).add(0.5, 1.5, 0.5)) > 1.0D) {
+		if(creature.distanceToSqr(new Vec3(destinationBlock.getX(), destinationBlock.getY(), destinationBlock.getZ()).add(0.5, 1.5, 0.5)) > 1.0D) {
 			++timeoutCounter;
 
-			if (timeoutCounter % 40 == 0)
+			if(timeoutCounter % 40 == 0)
 				creature.getNavigation().moveTo(destinationBlock.getX() + 0.5D, destinationBlock.getY() + 1, destinationBlock.getZ() + 0.5D, movementSpeed);
 		} else {
 			--timeoutCounter;
@@ -94,22 +93,22 @@ public class FavorBlockGoal extends Goal {
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-		for (int yShift = 0;
-			 yShift <= 1;
-			 yShift = yShift > 0 ? -yShift : 1 - yShift) {
+		for(int yShift = 0;
+				yShift <= 1;
+				yShift = yShift > 0 ? -yShift : 1 - yShift) {
 
-			for (int seekDist = 0; seekDist < followRange; ++seekDist) {
-				for (int xShift = 0;
-					 xShift <= seekDist;
-					 xShift = xShift > 0 ? -xShift : 1 - xShift) {
+			for(int seekDist = 0; seekDist < followRange; ++seekDist) {
+				for(int xShift = 0;
+						xShift <= seekDist;
+						xShift = xShift > 0 ? -xShift : 1 - xShift) {
 
-					for (int zShift = xShift < seekDist && xShift > -seekDist ? seekDist : 0;
-						 zShift <= seekDist;
-						 zShift = zShift > 0 ? -zShift : 1 - zShift) {
+					for(int zShift = xShift < seekDist && xShift > -seekDist ? seekDist : 0;
+							zShift <= seekDist;
+							zShift = zShift > 0 ? -zShift : 1 - zShift) {
 
 						pos.set(xBase + xShift, yBase + yShift - 1, zBase + zShift);
 
-						if (creature.isWithinRestriction(pos) &&
+						if(creature.isWithinRestriction(pos) &&
 								targetBlock.test(creature.level().getBlockState(pos))) {
 							destinationBlock = pos;
 							return true;

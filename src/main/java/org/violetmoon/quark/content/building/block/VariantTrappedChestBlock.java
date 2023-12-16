@@ -1,30 +1,29 @@
 package org.violetmoon.quark.content.building.block;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import org.violetmoon.quark.content.building.module.VariantChestsModule.IVariantChest;
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 

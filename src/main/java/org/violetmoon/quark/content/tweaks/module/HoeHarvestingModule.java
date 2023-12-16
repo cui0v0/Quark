@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.ToolActions;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -49,7 +50,6 @@ public class HoeHarvestingModule extends ZetaModule {
 	@Config.Max(5)
 	public static int highTierHoeRadius = 3;
 
-
 	@Hint(key = "hoe_harvesting")
 	TagKey<Item> hoes = ItemTags.HOES;
 
@@ -61,7 +61,7 @@ public class HoeHarvestingModule extends ZetaModule {
 
 		if(!isHoe(hoe))
 			return 1;
-		else if (hoe.is(bigHarvestingHoesTag))
+		else if(hoe.is(bigHarvestingHoesTag))
 			return highTierHoeRadius;
 		else
 			return regularHoeRadius;
@@ -88,30 +88,30 @@ public class HoeHarvestingModule extends ZetaModule {
 		Player player = event.getPlayer();
 		BlockPos basePos = event.getPos();
 		ItemStack stack = player.getMainHandItem();
-		if (isHoe(stack) && canHarvest(player, world, basePos, event.getState())) {
+		if(isHoe(stack) && canHarvest(player, world, basePos, event.getState())) {
 			boolean brokeNonInstant = false;
 			int range = getRange(stack);
 
-			for (int i = 1 - range; i < range; i++)
-				for (int k = 1 - range; k < range; k++) {
-					if (i == 0 && k == 0)
+			for(int i = 1 - range; i < range; i++)
+				for(int k = 1 - range; k < range; k++) {
+					if(i == 0 && k == 0)
 						continue;
 
 					BlockPos pos = basePos.offset(i, 0, k);
 					BlockState state = world.getBlockState(pos);
-					if (canHarvest(player, world, pos, state)) {
+					if(canHarvest(player, world, pos, state)) {
 						Block block = state.getBlock();
 
-						if (state.getDestroySpeed(world, pos) != 0.0F)
+						if(state.getDestroySpeed(world, pos) != 0.0F)
 							brokeNonInstant = true;
-						if (block.canHarvestBlock(state, world, pos, player))
+						if(block.canHarvestBlock(state, world, pos, player))
 							block.playerDestroy(level, player, pos, state, world.getBlockEntity(pos), stack);
 						world.destroyBlock(pos, false);
 						world.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
 					}
 				}
 
-			if (brokeNonInstant)
+			if(brokeNonInstant)
 				MiscUtil.damageStack(player, InteractionHand.MAIN_HAND, stack, 1);
 		}
 	}

@@ -1,12 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import java.util.function.BooleanSupplier;
-
-import org.violetmoon.zeta.block.IZetaBlock;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-import org.violetmoon.zeta.registry.RenderLayerRegistry;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -15,7 +8,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.registry.RenderLayerRegistry;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.function.BooleanSupplier;
 
 public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 
@@ -38,7 +38,7 @@ public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 	public VariantLadderBlock(String type, ZetaModule module, boolean flammable) {
 		this(type, module,
 				Block.Properties.copy(Blocks.LADDER),
-			flammable);
+				flammable);
 	}
 
 	@Override

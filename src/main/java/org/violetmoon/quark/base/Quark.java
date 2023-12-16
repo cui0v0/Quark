@@ -5,8 +5,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.violetmoon.quark.base.proxy.ClientProxy;
 import org.violetmoon.quark.base.proxy.CommonProxy;
 import org.violetmoon.quark.integration.claim.FlanIntegration;
@@ -33,16 +35,16 @@ public class Quark {
 	public static final Zeta ZETA = new ForgeZeta(MOD_ID, LogManager.getLogger("quark-zeta"));
 
 	public static final IClaimIntegration FLAN_INTEGRATION = ZETA.modIntegration("flan",
-		() -> FlanIntegration::new,
-		() -> IClaimIntegration.Dummy::new);
+			() -> FlanIntegration::new,
+			() -> IClaimIntegration.Dummy::new);
 
 	public static final ILootrIntegration LOOTR_INTEGRATION = ZETA.modIntegration("lootr",
-		() -> LootrIntegration::new,
-		() -> ILootrIntegration.Dummy::new);
+			() -> LootrIntegration::new,
+			() -> ILootrIntegration.Dummy::new);
 
 	public static final AbstractUndergroundBiomeHandler TERRABLENDER_INTEGRATION = ZETA.modIntegration("terrablender",
-		() -> TerrablenderUndergroundBiomeHandler::new,
-		() -> VanillaUndergroundBiomeHandler::new);
+			() -> TerrablenderUndergroundBiomeHandler::new,
+			() -> VanillaUndergroundBiomeHandler::new);
 
 	public Quark() {
 		instance = this;

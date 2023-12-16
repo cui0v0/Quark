@@ -1,17 +1,18 @@
 package org.violetmoon.quark.base.config;
 
-import java.util.function.BooleanSupplier;
+import com.google.gson.JsonObject;
+
+import net.minecraft.resources.ResourceLocation;
 
 import org.violetmoon.zeta.recipe.IZetaCondition;
 import org.violetmoon.zeta.recipe.IZetaConditionSerializer;
-
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * @author WireSegal
- * Created at 1:23 PM on 8/24/19.
+ *         Created at 1:23 PM on 8/24/19.
  */
 public record FlagCondition(ConfigFlagManager cfm, String flag, ResourceLocation loc, BooleanSupplier extraCondition) implements IZetaCondition {
 
@@ -22,10 +23,10 @@ public record FlagCondition(ConfigFlagManager cfm, String flag, ResourceLocation
 
 	@Override
 	public boolean test(IContext context) {
-		if (flag.contains("%"))
+		if(flag.contains("%"))
 			throw new RuntimeException("Illegal flag: " + flag);
 
-		if (!cfm.isValidFlag(flag))
+		if(!cfm.isValidFlag(flag))
 			cfm.zeta.log.warn("Non-existent flag " + flag + " being used");
 
 		return extraCondition.getAsBoolean() && cfm.getFlag(flag);

@@ -8,7 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Implement on a Block to make it able to be crawled in like hollow logs.
- * Your block should be hollow internally, except on faces you {@link ICrawlSpaceBlock#canCrawl(Level, BlockState, BlockPos, Direction)}.
+ * Your block should be hollow internally, except on faces you
+ * {@link ICrawlSpaceBlock#canCrawl(Level, BlockState, BlockPos, Direction)}.
  */
 public interface ICrawlSpaceBlock {
 	boolean canCrawl(Level level, BlockState state, BlockPos pos, Direction direction);

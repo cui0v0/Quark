@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.building.block;
 
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -22,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -35,7 +32,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.building.entity.Stool;
 import org.violetmoon.quark.content.building.module.StoolsModule;
 import org.violetmoon.zeta.block.OldMaterials;
@@ -66,11 +66,11 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 
 	public StoolBlock(@Nullable ZetaModule module, DyeColor color) {
 		super(color.getName() + "_stool", module,
-			OldMaterials.wool()
-				.mapColor(color.getMapColor())
-				.sound(SoundType.WOOD)
-				.strength(0.2F)
-				.noOcclusion());
+				OldMaterials.wool()
+						.mapColor(color.getMapColor())
+						.sound(SoundType.WOOD)
+						.strength(0.2F)
+						.noOcclusion());
 
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false).setValue(BIG, false).setValue(SAT_IN, false));
 
@@ -83,7 +83,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 		BlockState state = world.getBlockState(pos);
 		if(!state.getValue(BIG)) {
 			world.setBlockAndUpdate(pos, state.setValue(BIG, true));
-			 world.scheduleTick(pos, this, 1);
+			world.scheduleTick(pos, this, 1);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 		Vec3 vector3d = entity.getDeltaMovement();
 		if(vector3d.y < 0.0D) {
 			double d0 = entity instanceof LivingEntity ? 1.0D : 0.8D;
-			entity.setDeltaMovement(vector3d.x, -vector3d.y * (double)0.66F * d0, vector3d.z);
+			entity.setDeltaMovement(vector3d.x, -vector3d.y * (double) 0.66F * d0, vector3d.z);
 		}
 	}
 
@@ -157,7 +157,7 @@ public class StoolBlock extends ZetaBlock implements SimpleWaterloggedBlock {
 	@NotNull
 	@Override
 	public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if(state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 

@@ -12,7 +12,7 @@ import org.violetmoon.quark.content.mobs.client.layer.ToretoiseOreLayer;
 import org.violetmoon.quark.content.mobs.client.model.ToretoiseModel;
 import org.violetmoon.quark.content.mobs.entity.Toretoise;
 
-public class ToretoiseRenderer extends MobRenderer<Toretoise, ToretoiseModel>{
+public class ToretoiseRenderer extends MobRenderer<Toretoise, ToretoiseModel> {
 
 	private static final ResourceLocation BASE_TEXTURE = new ResourceLocation(Quark.MOD_ID, "textures/model/entity/toretoise/base.png");
 

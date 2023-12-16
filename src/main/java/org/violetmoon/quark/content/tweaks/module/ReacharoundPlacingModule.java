@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -29,7 +30,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBColorConfig;
@@ -53,11 +56,16 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	@Config.Max(1)
 	public double leniency = 0.5;
 
-	@Config public List<String> whitelist = Lists.newArrayList();
-	@Config public List<String> blacklist = Lists.newArrayList();
-	@Config public String display = "[  ]";
-	@Config public String displayHorizontal = "<  >";
-	@Config public RGBColorConfig color = RGBColorConfig.forColor(1, 1, 1);
+	@Config
+	public List<String> whitelist = Lists.newArrayList();
+	@Config
+	public List<String> blacklist = Lists.newArrayList();
+	@Config
+	public String display = "[  ]";
+	@Config
+	public String displayHorizontal = "<  >";
+	@Config
+	public RGBColorConfig color = RGBColorConfig.forColor(1, 1, 1);
 
 	protected ReacharoundTarget currentTarget;
 	protected int ticksDisplayed;
@@ -79,7 +87,8 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			if(!player.mayUseItemAt(target.pos, target.dir, stack) || !player.level().mayInteract(player, target.pos))
 				return;
 
-			if(!Quark.FLAN_INTEGRATION.canPlace(player, target.pos))return;
+			if(!Quark.FLAN_INTEGRATION.canPlace(player, target.pos))
+				return;
 
 			int count = stack.getCount();
 			InteractionHand hand = event.getHand();
@@ -88,7 +97,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			boolean remote = player.level().isClientSide;
 			InteractionResult res = remote ? InteractionResult.SUCCESS : stack.useOn(context);
 
-			if (res != InteractionResult.PASS) {
+			if(res != InteractionResult.PASS) {
 				event.setCanceled(true);
 				event.setCancellationResult(res);
 
@@ -129,7 +138,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 		HitResult normalRes = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
-		if (normalRes.getType() == HitResult.Type.MISS) {
+		if(normalRes.getType() == HitResult.Type.MISS) {
 			ReacharoundTarget target = getPlayerVerticalReacharoundTarget(player, hand, world, rayPos, ray);
 			if(target != null)
 				return target;
@@ -148,11 +157,11 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		rayPos = rayPos.add(0, leniency, 0);
 		HitResult take2Res = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
-		if (take2Res.getType() == HitResult.Type.BLOCK) {
+		if(take2Res.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().below();
 			BlockState state = world.getBlockState(pos);
 
-			if (player.position().y - pos.getY() > 1 && (world.isEmptyBlock(pos) || state.canBeReplaced()))
+			if(player.position().y - pos.getY() > 1 && (world.isEmptyBlock(pos) || state.canBeReplaced()))
 				return new ReacharoundTarget(pos, Direction.DOWN, hand);
 		}
 
@@ -164,11 +173,11 @@ public class ReacharoundPlacingModule extends ZetaModule {
 		rayPos = rayPos.subtract(leniency * dir.getStepX(), 0, leniency * dir.getStepZ());
 		HitResult take2Res = Quark.ZETA.raytracingUtil.rayTrace(player, world, rayPos, ray, Block.OUTLINE, Fluid.NONE);
 
-		if (take2Res.getType() == HitResult.Type.BLOCK) {
+		if(take2Res.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = ((BlockHitResult) take2Res).getBlockPos().relative(dir);
 			BlockState state = world.getBlockState(pos);
 
-			if ((world.isEmptyBlock(pos) || state.canBeReplaced()))
+			if((world.isEmptyBlock(pos) || state.canBeReplaced()))
 				return new ReacharoundTarget(pos, dir.getOpposite(), hand);
 		}
 
@@ -178,12 +187,13 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	private boolean validateReacharoundStack(ItemStack stack) {
 		Item item = stack.getItem();
 		String name = BuiltInRegistries.ITEM.getKey(item).toString();
-		if (blacklist.contains(name))
+		if(blacklist.contains(name))
 			return false;
 		return item instanceof BlockItem || stack.is(reacharoundTag) || whitelist.contains(name);
 	}
 
-	protected record ReacharoundTarget(BlockPos pos, Direction dir, InteractionHand hand) {}
+	protected record ReacharoundTarget(BlockPos pos, Direction dir, InteractionHand hand) {
+	}
 
 	@ZetaLoadModule(clientReplacement = true)
 	public static class Client extends ReacharoundPlacingModule {
@@ -195,7 +205,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			Minecraft mc = Minecraft.getInstance();
 			Player player = mc.player;
 
-			if (mc.options.hideGui)
+			if(mc.options.hideGui)
 				return;
 
 			if(player != null && currentTarget != null) {
@@ -231,7 +241,8 @@ public class ReacharoundPlacingModule extends ZetaModule {
 			if(currentTarget != null) {
 				if(ticksDisplayed < 5)
 					ticksDisplayed++;
-			} else ticksDisplayed = 0;
+			} else
+				ticksDisplayed = 0;
 		}
 
 	}

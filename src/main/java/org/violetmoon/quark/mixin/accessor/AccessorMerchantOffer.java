@@ -1,6 +1,7 @@
 package org.violetmoon.quark.mixin.accessor;
 
 import net.minecraft.world.item.trading.MerchantOffer;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 

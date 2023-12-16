@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class StructureBlockReplacementHandler {
 	public static Holder<Structure> getStructure(ServerLevelAccessor accessor, StructureHolder structure) {
 		Optional<? extends Registry<Structure>> registry = accessor.registryAccess().registry(Registries.STRUCTURE);
 		Optional<Holder<Structure>> holder = registry
-			.flatMap((reg) -> reg.getResourceKey(structure.currentStructure).flatMap(reg::getHolder));
+				.flatMap((reg) -> reg.getResourceKey(structure.currentStructure).flatMap(reg::getHolder));
 
 		return holder.isEmpty() ? null : holder.get();
 	}
@@ -39,7 +40,7 @@ public class StructureBlockReplacementHandler {
 	@Nullable
 	public static ResourceKey<Structure> getStructureKey(ServerLevelAccessor accessor, StructureHolder structure) {
 		Optional<ResourceKey<Structure>> res = accessor.registryAccess().registry(Registries.STRUCTURE)
-			.flatMap((it) -> it.getResourceKey(structure.currentStructure));
+				.flatMap((it) -> it.getResourceKey(structure.currentStructure));
 
 		return res.isEmpty() ? null : res.get();
 	}
@@ -47,7 +48,7 @@ public class StructureBlockReplacementHandler {
 	@Nullable
 	public static ResourceLocation getStructureRes(ServerLevelAccessor accessor, StructureHolder structure) {
 		Optional<ResourceLocation> res = accessor.registryAccess().registry(Registries.STRUCTURE)
-			.map((it) -> it.getKey(structure.currentStructure));
+				.map((it) -> it.getKey(structure.currentStructure));
 
 		return res.isEmpty() ? null : res.get();
 	}

@@ -1,15 +1,5 @@
 package org.violetmoon.quark.content.tools.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
-import org.violetmoon.quark.content.tools.module.AncientTomesModule;
-import org.violetmoon.zeta.item.ZetaItem;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -22,6 +12,17 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
+import org.violetmoon.quark.content.tools.module.AncientTomesModule;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AncientTomeItem extends ZetaItem implements CreativeTabManager.AppendsUniquely {
 
@@ -66,7 +67,7 @@ public class AncientTomeItem extends ZetaItem implements CreativeTabManager.Appe
 		else
 			tooltip.add(Component.translatable("quark.misc.ancient_tome_tooltip_any").withStyle(ChatFormatting.GRAY));
 
-		if(AncientTomesModule.curseGear){
+		if(AncientTomesModule.curseGear) {
 			tooltip.add(Component.translatable("quark.misc.ancient_tome_tooltip_curse").withStyle(ChatFormatting.RED));
 		}
 	}
@@ -75,12 +76,12 @@ public class AncientTomeItem extends ZetaItem implements CreativeTabManager.Appe
 	public List<ItemStack> appendItemsToCreativeTab() {
 		List<ItemStack> items = new ArrayList<>();
 		BuiltInRegistries.ENCHANTMENT.forEach(ench -> {
-					if (!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
-						if (!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
-							items.add(getEnchantedItemStack(ench));
-						}
-					}
-				});
+			if(!EnchantmentsBegoneModule.shouldBegone(ench) && (!AncientTomesModule.sanityCheck || ench.getMaxLevel() != 1)) {
+				if(!AncientTomesModule.isInitialized() || AncientTomesModule.validEnchants.contains(ench)) {
+					items.add(getEnchantedItemStack(ench));
+				}
+			}
+		});
 		return items;
 	}
 }

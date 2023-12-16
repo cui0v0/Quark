@@ -19,13 +19,14 @@ public class DuskboundBlocksModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		CreativeTabManager.daisyChain();
 		Block duskbound = new ZetaBlock("duskbound_block", this, Block.Properties.copy(Blocks.PURPUR_BLOCK)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.COAL_BLOCK, true);
-		
+
 		new ZetaBlock("duskbound_lantern", this,
 				Block.Properties.copy(Blocks.PURPUR_BLOCK)
-				.lightLevel(b -> 15)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		
+						.lightLevel(b -> 15))
+				.setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+
 		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) duskbound, null);
 		CreativeTabManager.endDaisyChain();
 	}
-	
+
 }

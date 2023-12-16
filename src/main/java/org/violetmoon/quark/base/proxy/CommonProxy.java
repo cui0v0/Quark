@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
 import org.violetmoon.quark.QuarkForgeCapabilities;
 import org.violetmoon.quark.api.*;
 import org.violetmoon.quark.base.Quark;
@@ -41,11 +42,11 @@ public class CommonProxy {
 		// CAPABILITIES
 		//todo put this bit in forge-specific code
 		Quark.ZETA.capabilityManager
-			.register(QuarkCapabilities.SORTING, QuarkForgeCapabilities.SORTING)
-			.register(QuarkCapabilities.TRANSFER, QuarkForgeCapabilities.TRANSFER)
-			.register(QuarkCapabilities.PISTON_CALLBACK, QuarkForgeCapabilities.PISTON_CALLBACK)
-			.register(QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, QuarkForgeCapabilities.MAGNET_TRACKER_CAPABILITY)
-			.register(QuarkCapabilities.RUNE_COLOR, QuarkForgeCapabilities.RUNE_COLOR);
+				.register(QuarkCapabilities.SORTING, QuarkForgeCapabilities.SORTING)
+				.register(QuarkCapabilities.TRANSFER, QuarkForgeCapabilities.TRANSFER)
+				.register(QuarkCapabilities.PISTON_CALLBACK, QuarkForgeCapabilities.PISTON_CALLBACK)
+				.register(QuarkCapabilities.MAGNET_TRACKER_CAPABILITY, QuarkForgeCapabilities.MAGNET_TRACKER_CAPABILITY)
+				.register(QuarkCapabilities.RUNE_COLOR, QuarkForgeCapabilities.RUNE_COLOR);
 		//weird forge capability-implementation-class stuff
 		MinecraftForge.EVENT_BUS.addListener((RegisterCapabilitiesEvent e) -> {
 			e.register(ICustomSorting.class);
@@ -57,23 +58,23 @@ public class CommonProxy {
 
 		// GLOBAL EVENT LISTENERS
 		Quark.ZETA.loadBus
-			.subscribe(ContributorRewardHandler.class)
-			.subscribe(EntitySpawnHandler.class)
-			.subscribe(FuelHandler.class)
-			.subscribe(QuarkSounds.class)
-			.subscribe(RecipeCrawlHandler.class)
-			.subscribe(ToolInteractionHandler.class)
-			.subscribe(WoodSetHandler.class)
-			.subscribe(WorldGenHandler.class)
-			.subscribe(this);
+				.subscribe(ContributorRewardHandler.class)
+				.subscribe(EntitySpawnHandler.class)
+				.subscribe(FuelHandler.class)
+				.subscribe(QuarkSounds.class)
+				.subscribe(RecipeCrawlHandler.class)
+				.subscribe(ToolInteractionHandler.class)
+				.subscribe(WoodSetHandler.class)
+				.subscribe(WorldGenHandler.class)
+				.subscribe(this);
 
 		Quark.ZETA.playBus
-			.subscribe(CapabilityHandler.class)
-			.subscribe(ContributorRewardHandler.class)
-			.subscribe(FuelHandler.class)
-			.subscribe(RecipeCrawlHandler.class)
-			.subscribe(SyncedFlagHandler.class)
-			.subscribe(ToolInteractionHandler.class);
+				.subscribe(CapabilityHandler.class)
+				.subscribe(ContributorRewardHandler.class)
+				.subscribe(FuelHandler.class)
+				.subscribe(RecipeCrawlHandler.class)
+				.subscribe(SyncedFlagHandler.class)
+				.subscribe(ToolInteractionHandler.class);
 
 		MinecraftForge.EVENT_BUS.register(ToolInteractionHandler.class);
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -85,24 +86,24 @@ public class CommonProxy {
 
 		// MODULES
 		Quark.ZETA.loadModules(
-			List.of(
-				new ZetaCategory("automation", Items.REDSTONE),
-				new ZetaCategory("building", Items.BRICKS),
-				new ZetaCategory("management", Items.CHEST),
-				new ZetaCategory("tools", Items.IRON_PICKAXE),
-				new ZetaCategory("tweaks", Items.NAUTILUS_SHELL),
-				new ZetaCategory("world", Items.GRASS_BLOCK),
-				new ZetaCategory("mobs", Items.PIG_SPAWN_EGG),
-				new ZetaCategory("client", Items.ENDER_EYE),
-				new ZetaCategory("experimental", Items.TNT),
-				new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
-			),
-			new ModFileScanDataModuleFinder(Quark.MOD_ID), //forge only
-			GeneralConfig.INSTANCE
+				List.of(
+						new ZetaCategory("automation", Items.REDSTONE),
+						new ZetaCategory("building", Items.BRICKS),
+						new ZetaCategory("management", Items.CHEST),
+						new ZetaCategory("tools", Items.IRON_PICKAXE),
+						new ZetaCategory("tweaks", Items.NAUTILUS_SHELL),
+						new ZetaCategory("world", Items.GRASS_BLOCK),
+						new ZetaCategory("mobs", Items.PIG_SPAWN_EGG),
+						new ZetaCategory("client", Items.ENDER_EYE),
+						new ZetaCategory("experimental", Items.TNT),
+						new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
+				),
+				new ModFileScanDataModuleFinder(Quark.MOD_ID), //forge only
+				GeneralConfig.INSTANCE
 		);
 
 		LocalDateTime now = LocalDateTime.now();
-		if (now.getMonth() == Month.DECEMBER && now.getDayOfMonth() >= 16 || now.getMonth() == Month.JANUARY && now.getDayOfMonth() <= 2)
+		if(now.getMonth() == Month.DECEMBER && now.getDayOfMonth() >= 16 || now.getMonth() == Month.JANUARY && now.getDayOfMonth() <= 2)
 			jingleTheBells = true;
 	}
 

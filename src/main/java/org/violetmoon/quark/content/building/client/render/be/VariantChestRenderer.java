@@ -27,8 +27,8 @@ public class VariantChestRenderer extends ChestRenderer<ChestBlockEntity> {
 
 		//apply the texture naming convention
 		StringBuilder tex = new StringBuilder("quark_variant_chests/")
-			.append(v.getChestType())
-			.append('/');
+				.append(v.getChestType())
+				.append('/');
 		if(isTrap)
 			tex.append(choose(type, "trap", "trap_left", "trap_right"));
 		else
@@ -39,9 +39,9 @@ public class VariantChestRenderer extends ChestRenderer<ChestBlockEntity> {
 
 	protected <X> X choose(ChestType type, X single, X left, X right) {
 		return switch(type) {
-			case SINGLE -> single;
-			case LEFT -> left;
-			case RIGHT -> right;
+		case SINGLE -> single;
+		case LEFT -> left;
+		case RIGHT -> right;
 		};
 	}
 

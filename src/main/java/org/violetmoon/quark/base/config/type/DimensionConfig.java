@@ -4,11 +4,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
+import org.violetmoon.quark.base.config.Config;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.violetmoon.quark.base.config.Config;
 
 public class DimensionConfig implements IConfigType {
 
@@ -41,14 +41,14 @@ public class DimensionConfig implements IConfigType {
 	}
 
 	public boolean canSpawnHere(LevelAccessor world) {
-		if (!(world instanceof Level level))
+		if(!(world instanceof Level level))
 			return false;
 
 		return canSpawnHere(level.dimension().location());
 	}
 
 	public boolean canSpawnHere(ResourceLocation resloc) {
-		 return dimensions.contains(resloc.toString()) != isBlacklist;
+		return dimensions.contains(resloc.toString()) != isBlacklist;
 	}
 
 }

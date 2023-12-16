@@ -1,12 +1,13 @@
 package org.violetmoon.quark.base.config.type.inputtable;
 
-import java.util.Objects;
-
 import org.violetmoon.quark.base.config.Config;
+
+import java.util.Objects;
 
 public class RGBAColorConfig extends RGBColorConfig {
 
-	@Config public double a;
+	@Config
+	public double a;
 
 	protected double da;
 
@@ -38,8 +39,10 @@ public class RGBAColorConfig extends RGBColorConfig {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if(this == o)
+			return true;
+		if(o == null || getClass() != o.getClass())
+			return false;
 		RGBAColorConfig that = (RGBAColorConfig) o;
 		return Double.compare(that.r, r) == 0 && Double.compare(that.g, g) == 0 && Double.compare(that.b, b) == 0 && Double.compare(that.a, a) == 0;
 	}

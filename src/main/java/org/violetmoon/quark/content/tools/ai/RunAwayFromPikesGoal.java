@@ -49,7 +49,6 @@ public class RunAwayFromPikesGoal extends Goal {
 		if(avoidTarget.distanceToSqr(posToMove.x, posToMove.y, posToMove.z) < avoidTarget.distanceToSqr(entity))
 			return false;
 
-
 		path = navigation.createPath(posToMove.x, posToMove.y, posToMove.z, 0);
 		return path != null;
 	}
@@ -69,7 +68,7 @@ public class RunAwayFromPikesGoal extends Goal {
 				continue;
 
 			double d1 = t1.distanceToSqr(x, y, z);
-			if (d0 == -1.0D || d1 < d0) {
+			if(d0 == -1.0D || d1 < d0) {
 				d0 = d1;
 				t = t1;
 			}
@@ -95,7 +94,7 @@ public class RunAwayFromPikesGoal extends Goal {
 
 	@Override
 	public void tick() {
-		if (this.entity.distanceToSqr(this.avoidTarget) < 49.0D) {
+		if(this.entity.distanceToSqr(this.avoidTarget) < 49.0D) {
 			this.entity.getNavigation().setSpeedModifier(this.nearSpeed);
 		} else {
 			this.entity.getNavigation().setSpeedModifier(this.farSpeed);

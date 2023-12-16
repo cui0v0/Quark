@@ -1,13 +1,13 @@
 package org.violetmoon.quark.content.tools.entity.rang;
 
-import org.violetmoon.quark.content.tools.config.PickarangType;
-import org.violetmoon.quark.content.tools.module.PickarangModule;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import org.violetmoon.quark.content.tools.config.PickarangType;
+import org.violetmoon.quark.content.tools.module.PickarangModule;
 
 public class Flamerang extends AbstractPickarang<Flamerang> {
 
@@ -18,7 +18,7 @@ public class Flamerang extends AbstractPickarang<Flamerang> {
 	public Flamerang(EntityType<Flamerang> type, Level worldIn, Player thrower) {
 		super(type, worldIn, thrower);
 	}
-	
+
 	@Override
 	protected void emitParticles(Vec3 pos, Vec3 ourMotion) {
 		if(Math.random() < 0.4)

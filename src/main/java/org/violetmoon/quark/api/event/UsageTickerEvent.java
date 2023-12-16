@@ -15,7 +15,7 @@ public class UsageTickerEvent extends Event {
 	public final int currentCount;
 	public final Pass pass;
 	public final Player player;
-	
+
 	public UsageTickerEvent(EquipmentSlot slot, ItemStack currentStack, ItemStack currentRealStack, int currentCount, boolean isRender, Player player) {
 		this.slot = slot;
 		this.currentStack = currentStack;
@@ -24,50 +24,49 @@ public class UsageTickerEvent extends Event {
 		this.pass = (isRender ? Pass.RENDERING : Pass.LOGICAL);
 		this.player = player;
 	}
-	
+
 	public static enum Pass {
 		LOGICAL, RENDERING
 	}
-	
+
 	public static class GetStack extends UsageTickerEvent {
-		
+
 		private ItemStack resultStack;
-		
+
 		public GetStack(EquipmentSlot slot, ItemStack currentStack, ItemStack currentRealStack, int currentCount, boolean isRender, Player player) {
 			super(slot, currentStack, currentRealStack, currentCount, isRender, player);
-			
+
 			resultStack = currentStack;
 		}
-		
+
 		public ItemStack getResultStack() {
 			return resultStack;
 		}
-		
+
 		public void setResultStack(ItemStack resultStack) {
 			this.resultStack = resultStack;
 		}
-		
+
 	}
-	
-	
+
 	public static class GetCount extends UsageTickerEvent {
-		
+
 		private int resultCount;
-		
+
 		public GetCount(EquipmentSlot slot, ItemStack currentStack, ItemStack currentRealStack, int currentCount, boolean isRender, Player player) {
 			super(slot, currentStack, currentRealStack, currentCount, isRender, player);
-			
+
 			resultCount = currentCount;
 		}
 
 		public int getResultCount() {
 			return resultCount;
 		}
-		
+
 		public void setResultCount(int resultCount) {
 			this.resultCount = resultCount;
 		}
-		
+
 	}
-	
+
 }

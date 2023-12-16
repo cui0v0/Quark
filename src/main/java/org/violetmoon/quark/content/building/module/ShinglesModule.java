@@ -1,15 +1,15 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 @ZetaLoadModule(category = "building")
 public class ShinglesModule extends ZetaModule {
@@ -35,7 +35,7 @@ public class ShinglesModule extends ZetaModule {
 		add(event, "red_", Blocks.RED_TERRACOTTA);
 		add(event, "black_", Blocks.BLACK_TERRACOTTA);
 	}
-	
+
 	private void add(ZRegister event, String name, Block parent) {
 		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) new ZetaBlock(name + "shingles", this, Block.Properties.copy(parent)).setCreativeTab(CreativeModeTabs.COLORED_BLOCKS, parent, false), CreativeModeTabs.COLORED_BLOCKS);
 	}

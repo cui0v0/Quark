@@ -1,10 +1,5 @@
 package org.violetmoon.quark.content.tools.entity;
 
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tools.module.TorchArrowModule;
-import org.violetmoon.quark.integration.claim.IClaimIntegration;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,8 +17,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.tools.module.TorchArrowModule;
+
 public class TorchArrow extends AbstractArrow {
-	
+
 	public TorchArrow(EntityType<TorchArrow> type, Level level) {
 		super(type, level);
 	}
@@ -51,7 +51,7 @@ public class TorchArrow extends AbstractArrow {
 				double px = getX() - motion.x * ((float) i / parts) + (Math.random() - 0.5) * sprd;
 				double py = getY() - motion.y * ((float) i / parts) + (Math.random() - 0.5) * sprd;
 				double pz = getZ() - motion.z * ((float) i / parts) + (Math.random() - 0.5) * sprd;
-				
+
 				double mx = (Math.random() - 0.5) * rs - motion.x * ms;
 				double my = (Math.random() - 0.5) * rs - motion.y * ms;
 				double mz = (Math.random() - 0.5) * rs - motion.z * ms;
@@ -60,7 +60,7 @@ public class TorchArrow extends AbstractArrow {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		if(!level().isClientSide) {
@@ -68,7 +68,7 @@ public class TorchArrow extends AbstractArrow {
 			Direction direction = result.getDirection();
 			BlockPos finalPos = pos.relative(direction);
 			BlockState state = level().getBlockState(finalPos);
-			
+
 			if((state.isAir() || state.canBeReplaced()) && direction != Direction.DOWN) {
 
 				if(this.getOwner() instanceof Player p && !Quark.FLAN_INTEGRATION.canPlace(p, finalPos))
@@ -77,8 +77,9 @@ public class TorchArrow extends AbstractArrow {
 				BlockState setState;
 				if(direction == Direction.UP)
 					setState = Blocks.TORCH.defaultBlockState();
-				else setState = Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, direction);
-				
+				else
+					setState = Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, direction);
+
 				if(setState.canSurvive(level(), finalPos)) {
 					level().setBlock(finalPos, setState, 2);
 					playSound(setState.getSoundType().getPlaceSound());
@@ -87,7 +88,7 @@ public class TorchArrow extends AbstractArrow {
 				}
 			}
 		}
-		
+
 		super.onHitBlock(result);
 	}
 

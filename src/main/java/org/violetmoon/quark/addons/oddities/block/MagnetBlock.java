@@ -1,10 +1,5 @@
 package org.violetmoon.quark.addons.oddities.block;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,12 +24,18 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.MagnetBlockEntity;
 import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import org.violetmoon.quark.addons.oddities.magnetsystem.MagnetSystem;
 import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
 
 public class MagnetBlock extends ZetaBlock implements EntityBlock {
 
@@ -52,7 +53,7 @@ public class MagnetBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @Nullable BlockGetter worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
-		if (stack.getHoverName().getString().equals("Q"))
+		if(stack.getHoverName().getString().equals("Q"))
 			tooltip.add(Component.literal("haha yes"));
 	}
 
@@ -81,28 +82,28 @@ public class MagnetBlock extends ZetaBlock implements EntityBlock {
 		BlockState targetState = world.getBlockState(targetPos);
 
 		BlockEntity tile = world.getBlockEntity(pos);
-		if (!(tile instanceof MagnetBlockEntity be))
+		if(!(tile instanceof MagnetBlockEntity be))
 			return false;
 
 		BlockPos endPos = targetPos.relative(moveDir);
 		PushReaction reaction = MagnetSystem.getPushAction(be, targetPos, targetState, moveDir);
-		if (reaction != PushReaction.IGNORE && reaction != PushReaction.DESTROY)
+		if(reaction != PushReaction.IGNORE && reaction != PushReaction.DESTROY)
 			return false;
 
 		BlockEntity tilePresent = world.getBlockEntity(targetPos);
 		CompoundTag tileData = new CompoundTag();
-		if (tilePresent != null && !(tilePresent instanceof MagnetizedBlockBlockEntity))
+		if(tilePresent != null && !(tilePresent instanceof MagnetizedBlockBlockEntity))
 			tileData = tilePresent.saveWithFullMetadata();
 
 		BlockState setState = MagnetsModule.magnetized_block.defaultBlockState().setValue(MovingMagnetizedBlock.FACING, moveDir);
 		MagnetizedBlockBlockEntity movingTile = new MagnetizedBlockBlockEntity(endPos, setState, targetState, tileData, moveDir);
 
-		if (!world.isClientSide && reaction == PushReaction.DESTROY) {
+		if(!world.isClientSide && reaction == PushReaction.DESTROY) {
 			BlockState blockstate = world.getBlockState(endPos);
 			Block.dropResources(blockstate, world, endPos, tilePresent);
 		}
 
-		if (tilePresent != null)
+		if(tilePresent != null)
 			tilePresent.setRemoved();
 
 		world.setBlock(endPos, setState, 68);

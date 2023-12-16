@@ -18,7 +18,7 @@ public class VariantTrappedChestBlockEntity extends VariantChestBlockEntity {
 	@Override
 	protected void signalOpenCount(@NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState state, int prevOpenCount, int openCount) {
 		super.signalOpenCount(world, pos, state, prevOpenCount, openCount);
-		if (prevOpenCount != openCount) {
+		if(prevOpenCount != openCount) {
 			Block block = state.getBlock();
 			world.updateNeighborsAt(pos, block);
 			world.updateNeighborsAt(pos.below(), block);

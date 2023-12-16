@@ -1,6 +1,21 @@
 package org.violetmoon.quark.content.tools.module;
 
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.PatrollingMonster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
@@ -18,22 +33,6 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.PatrollingMonster;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-
 @ZetaLoadModule(category = "tools")
 public class SkullPikesModule extends ZetaModule {
 
@@ -42,7 +41,8 @@ public class SkullPikesModule extends ZetaModule {
 	@Hint(key = "skull_pikes")
 	public static TagKey<Block> pikeTrophiesTag;
 
-	@Config public static double pikeRange = 5;
+	@Config
+	public static double pikeRange = 5;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -93,7 +93,7 @@ public class SkullPikesModule extends ZetaModule {
 		if(e instanceof Monster monster && !(e instanceof PatrollingMonster) && e.canChangeDimensions() && e.isAlive()) {
 			boolean alreadySetUp = monster.goalSelector.getAvailableGoals().stream().anyMatch((goal) -> goal.getGoal() instanceof RunAwayFromPikesGoal);
 
-			if (!alreadySetUp)
+			if(!alreadySetUp)
 				MiscUtil.addGoalJustAfterLatestWithPriority(monster.goalSelector, 3, new RunAwayFromPikesGoal(monster, (float) pikeRange, 1.0D, 1.2D));
 		}
 	}

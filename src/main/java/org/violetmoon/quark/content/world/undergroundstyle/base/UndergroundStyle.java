@@ -1,11 +1,5 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
-import java.util.function.Predicate;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.MiscUtil;
-import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator.Context;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +10,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator.Context;
+
+import java.util.function.Predicate;
 
 public abstract class UndergroundStyle {
 
@@ -134,11 +134,11 @@ public abstract class UndergroundStyle {
 	}
 
 	public static Rotation rotationFromFacing(Direction facing) {
-		return switch (facing) {
-			case SOUTH -> Rotation.CLOCKWISE_180;
-			case WEST -> Rotation.COUNTERCLOCKWISE_90;
-			case EAST -> Rotation.CLOCKWISE_90;
-			default -> Rotation.NONE;
+		return switch(facing) {
+		case SOUTH -> Rotation.CLOCKWISE_180;
+		case WEST -> Rotation.COUNTERCLOCKWISE_90;
+		case EAST -> Rotation.CLOCKWISE_90;
+		default -> Rotation.NONE;
 		};
 	}
 

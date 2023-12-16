@@ -22,14 +22,16 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.BlockHitResult;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
 
-import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,13 +47,13 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 	protected static final BooleanProperty EAST = BlockStateProperties.EAST;
 
 	protected static BooleanProperty property(Direction direction) {
-		return switch (direction) {
-			case DOWN -> DOWN;
-			case UP -> UP;
-			case NORTH -> NORTH;
-			case SOUTH -> SOUTH;
-			case WEST -> WEST;
-			case EAST -> EAST;
+		return switch(direction) {
+		case DOWN -> DOWN;
+		case UP -> UP;
+		case NORTH -> NORTH;
+		case SOUTH -> SOUTH;
+		case WEST -> WEST;
+		case EAST -> EAST;
 		};
 	}
 
@@ -135,7 +137,7 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation direction) {
 		BlockState newState = state;
-		for (Direction dir : Direction.values())
+		for(Direction dir : Direction.values())
 			newState = newState.setValue(property(dir), state.getValue(property(direction.rotate(dir))));
 		return newState;
 	}
@@ -144,14 +146,14 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 	@Override
 	public BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror) {
 		BlockState newState = state;
-		for (Direction dir : Direction.values())
+		for(Direction dir : Direction.values())
 			newState = newState.setValue(property(dir), state.getValue(property(mirror.mirror(dir))));
 		return newState;
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile){
+		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile) {
 			tile.refreshAllConnections();
 		}
 		return getTargetState(level, pos);
@@ -164,7 +166,7 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
-		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile){
+		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile) {
 			tile.refreshAllConnections();
 		}
 		super.setPlacedBy(level, pos, state, entity, stack);

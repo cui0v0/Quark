@@ -1,5 +1,13 @@
 package org.violetmoon.quark.content.tools.module;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.item.QuarkMusicDiscItem;
@@ -13,24 +21,21 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-
 @ZetaLoadModule(category = "tools")
 public class EndermoshMusicDiscModule extends ZetaModule {
 
-	@Config protected boolean playEndermoshDuringEnderdragonFight = false;
+	@Config
+	protected boolean playEndermoshDuringEnderdragonFight = false;
 
-	@Config protected boolean addToEndCityLoot = true;
-	@Config protected int lootWeight = 5;
-	@Config protected int lootQuality = 1;
+	@Config
+	protected boolean addToEndCityLoot = true;
+	@Config
+	protected int lootWeight = 5;
+	@Config
+	protected int lootQuality = 1;
 
-	@Hint public QuarkMusicDiscItem endermosh;
+	@Hint
+	public QuarkMusicDiscItem endermosh;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -69,8 +74,8 @@ public class EndermoshMusicDiscModule extends ZetaModule {
 
 				Minecraft mc = Minecraft.getInstance();
 				isFightingDragon = mc.level != null
-					&& mc.level.dimension().location().equals(LevelStem.END.location())
-					&& mc.gui.getBossOverlay().shouldPlayMusic();
+						&& mc.level.dimension().location().equals(LevelStem.END.location())
+						&& mc.gui.getBossOverlay().shouldPlayMusic();
 
 				final int targetDelay = 50;
 
@@ -84,7 +89,7 @@ public class EndermoshMusicDiscModule extends ZetaModule {
 					double x = mc.player.getX();
 					double z = mc.player.getZ();
 
-					if(mc.screen == null && ((x*x) + (z*z)) < 3000) // is not in screen and within island
+					if(mc.screen == null && ((x * x) + (z * z)) < 3000) // is not in screen and within island
 						delay++;
 
 				} else if(wasFightingDragon && sound != null) {

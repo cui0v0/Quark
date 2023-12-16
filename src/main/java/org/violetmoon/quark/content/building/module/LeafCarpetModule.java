@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.building.module;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
@@ -31,7 +32,7 @@ public class LeafCarpetModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		for(Wood wood : VanillaWoods.OVERWORLD_WITH_TREE)
 			carpet(wood.leaf());
-		
+
 		carpet(Blocks.AZALEA_LEAVES);
 		carpet(Blocks.FLOWERING_AZALEA_LEAVES);
 	}
@@ -39,7 +40,7 @@ public class LeafCarpetModule extends ZetaModule {
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
 		BlossomTreesModule.blossomTrees.stream().map(t -> t.leaves).forEach(this::blossomCarpet);
-		
+
 		carpetBlock(AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}
 

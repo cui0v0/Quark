@@ -1,22 +1,22 @@
 package org.violetmoon.quark.content.tweaks.recipe;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.content.tweaks.module.DragonScalesModule;
-
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.Level;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.content.tweaks.module.DragonScalesModule;
 
 public class ElytraDuplicationRecipe extends CustomRecipe {
 
@@ -42,7 +42,8 @@ public class ElytraDuplicationRecipe extends CustomRecipe {
 					if(sources >= 1)
 						return false;
 					sources++;
-				} else return false;
+				} else
+					return false;
 			}
 		}
 

@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
+
 import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -21,7 +22,8 @@ import org.violetmoon.zeta.util.Hint;
 @ZetaLoadModule(category = "tweaks")
 public class DragonScalesModule extends ZetaModule {
 
-	@Hint public static Item dragon_scale;
+	@Hint
+	public static Item dragon_scale;
 
 	@LoadEvent
 	public final void register(ZRegister event) {

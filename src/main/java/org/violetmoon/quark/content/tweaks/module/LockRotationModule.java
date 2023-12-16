@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -27,7 +28,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
+
 import org.lwjgl.opengl.GL11;
+
 import org.violetmoon.quark.api.IRotationLockable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
@@ -248,7 +251,7 @@ public class LockRotationModule extends ZetaModule {
 
 		@PlayEvent
 		public void onHUDRender(ZRenderGuiOverlay.Crosshair.Post event) {
-			if (clientProfile != null) {
+			if(clientProfile != null) {
 				GuiGraphics guiGraphics = event.getGuiGraphics();
 
 				RenderSystem.enableBlend();

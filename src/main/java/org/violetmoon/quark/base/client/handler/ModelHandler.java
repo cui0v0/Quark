@@ -1,13 +1,18 @@
 package org.violetmoon.quark.base.client.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.violetmoon.quark.addons.oddities.client.model.BackpackModel;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.render.QuarkArmorModel;
@@ -21,17 +26,13 @@ import org.violetmoon.quark.content.mobs.client.model.WraithModel;
 import org.violetmoon.zeta.client.event.load.ZRegisterLayerDefinitions;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.BoatModel;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-//TODO ZETA: Move into respective modules so it's not a singleton
+// TODO ZETA: Move into respective modules so it's not a singleton
 public class ModelHandler {
 
 	private static final Map<ModelLayerLocation, Layer> layers = new HashMap<>();
@@ -43,7 +44,7 @@ public class ModelHandler {
 	public static ModelLayerLocation crab;
 	public static ModelLayerLocation toretoise;
 	public static ModelLayerLocation wraith;
-	
+
 	public static ModelLayerLocation quark_boat;
 	public static ModelLayerLocation quark_boat_chest;
 
@@ -62,7 +63,7 @@ public class ModelHandler {
 		crab = addModel("crab", CrabModel::createBodyLayer, CrabModel::new);
 		toretoise = addModel("toretoise", ToretoiseModel::createBodyLayer, ToretoiseModel::new);
 		wraith = addModel("wraith", WraithModel::createBodyLayer, WraithModel::new);
-		
+
 		quark_boat = addModel("quark_boat", BoatModel::createBodyModel, BoatModel::new);
 		quark_boat_chest = addModel("quark_boat_chest", ChestBoatModel::createBodyModel, ChestBoatModel::new);
 

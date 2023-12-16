@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+
 import org.violetmoon.quark.base.util.MutableVectorHolder;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 
@@ -75,7 +76,7 @@ public class ActWaryGoal extends WaterAvoidingRandomStrollGoal {
 
 	@Override
 	public void tick() {
-		if (stoneling.getNavigation().isDone() && shouldApplyPath())
+		if(stoneling.getNavigation().isDone() && shouldApplyPath())
 			start();
 	}
 
@@ -91,18 +92,18 @@ public class ActWaryGoal extends WaterAvoidingRandomStrollGoal {
 
 	@Override
 	public boolean canUse() {
-		if (startled || stoneling.isPlayerMade())
+		if(startled || stoneling.isPlayerMade())
 			return false;
 
 		List<Player> playersAround = stoneling.level().getEntitiesOfClass(Player.class, stoneling.getBoundingBox().inflate(range),
 				(player) -> player != null && !player.getAbilities().instabuild && player.distanceToSqr(stoneling) < range * range);
 
-		if (playersAround.isEmpty())
+		if(playersAround.isEmpty())
 			return false;
 
-		for (Player player : playersAround) {
-			if (player.isDiscrete()) {
-				if (scaredBySuddenMovement.getAsBoolean()) {
+		for(Player player : playersAround) {
+			if(player.isDiscrete()) {
+				if(scaredBySuddenMovement.getAsBoolean()) {
 					MutableVectorHolder lastSpeed = lastSpeeds.computeIfAbsent(player, p -> new MutableVectorHolder());
 					MutableVectorHolder lastPos = lastPositions.computeIfAbsent(player, ActWaryGoal::initPos);
 					Vec3 pos = player.position();
@@ -122,7 +123,7 @@ public class ActWaryGoal extends WaterAvoidingRandomStrollGoal {
 							yDisplacement * yDisplacement +
 							zDisplacement * zDisplacement;
 
-					if (displacementSq < 0.01)
+					if(displacementSq < 0.01)
 						return true;
 
 					startled = true;

@@ -3,6 +3,7 @@ package org.violetmoon.quark.base.config;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author WireSegal
- * Created at 1:23 PM on 8/24/19.
+ *         Created at 1:23 PM on 8/24/19.
  */
 public record FlagLootCondition(ConfigFlagManager manager, String flag, LootItemConditionType selfType) implements LootItemCondition {
 

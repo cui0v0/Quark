@@ -10,10 +10,6 @@
  */
 package org.violetmoon.quark.base.util;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.zeta.block.be.ZetaBlockEntity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -29,7 +25,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-//formerly from AutoRegLib
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.zeta.block.be.ZetaBlockEntity;
+
+// formerly from AutoRegLib
 public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity implements WorldlyContainer {
 
 	public SimpleInventoryBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -37,18 +37,18 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	}
 
 	protected NonNullList<ItemStack> inventorySlots = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-	
+
 	@Override
 	public void readSharedNBT(CompoundTag par1NBTTagCompound) {
 		if(!needsToSyncInventory())
 			return;
-		
+
 		ListTag var2 = par1NBTTagCompound.getList("Items", 10);
 		clearContent();
 		for(int var3 = 0; var3 < var2.size(); ++var3) {
 			CompoundTag var4 = var2.getCompound(var3);
 			byte var5 = var4.getByte("Slot");
-			if (var5 >= 0 && var5 < inventorySlots.size())
+			if(var5 >= 0 && var5 < inventorySlots.size())
 				inventorySlots.set(var5, ItemStack.of(var4));
 		}
 	}
@@ -57,23 +57,23 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	public void writeSharedNBT(CompoundTag par1NBTTagCompound) {
 		if(!needsToSyncInventory())
 			return;
-		
+
 		ListTag var2 = new ListTag();
-		for (int var3 = 0; var3 < inventorySlots.size(); ++var3) {
+		for(int var3 = 0; var3 < inventorySlots.size(); ++var3) {
 			if(!inventorySlots.get(var3).isEmpty()) {
 				CompoundTag var4 = new CompoundTag();
-				var4.putByte("Slot", (byte)var3);
+				var4.putByte("Slot", (byte) var3);
 				inventorySlots.get(var3).save(var4);
 				var2.add(var4);
 			}
 		}
 		par1NBTTagCompound.put("Items", var2);
 	}
-	
+
 	protected boolean needsToSyncInventory() {
 		return true;
 	}
-	
+
 	@NotNull
 	@Override
 	public ItemStack getItem(int i) {
@@ -83,10 +83,10 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	@NotNull
 	@Override
 	public ItemStack removeItem(int i, int j) {
-		if (!inventorySlots.get(i).isEmpty()) {
+		if(!inventorySlots.get(i).isEmpty()) {
 			ItemStack stackAt;
 
-			if (inventorySlots.get(i).getCount() <= j) {
+			if(inventorySlots.get(i).getCount() <= j) {
 				stackAt = inventorySlots.get(i);
 				inventorySlots.set(i, ItemStack.EMPTY);
 				inventoryChanged(i);
@@ -94,7 +94,7 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 			} else {
 				stackAt = inventorySlots.get(i).split(j);
 
-				if (inventorySlots.get(i).getCount() == 0)
+				if(inventorySlots.get(i).getCount() == 0)
 					inventorySlots.set(i, ItemStack.EMPTY);
 				inventoryChanged(i);
 
@@ -124,7 +124,7 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	public int getMaxStackSize() {
 		return 64;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		for(int i = 0; i < getContainerSize(); i++) {
@@ -132,7 +132,7 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 			if(!stack.isEmpty())
 				return false;
 		}
-			
+
 		return true;
 	}
 
@@ -140,13 +140,13 @@ public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity impleme
 	public boolean stillValid(@NotNull Player entityplayer) {
 		return getLevel().getBlockEntity(getBlockPos()) == this && entityplayer.distanceToSqr(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D) <= 64;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction facing) {
 		if(capability == ForgeCapabilities.ITEM_HANDLER)
 			return (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, facing));
-		
+
 		return LazyOptional.empty();
 	}
 

@@ -13,8 +13,10 @@ package org.violetmoon.quark.content.management.module;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +30,9 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+
 import org.lwjgl.glfw.GLFW;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -51,6 +55,7 @@ public class ItemSharingModule extends ZetaModule {
 	public static boolean renderItemsInChat = true;
 
 	private static final Object2IntMap<UUID> lastSendTimes = new Object2IntOpenHashMap<>();
+
 	public static boolean canShare(UUID sender, MinecraftServer server) {
 		if(!Quark.ZETA.modules.get(ItemSharingModule.class).enabled)
 			return false;
@@ -71,11 +76,11 @@ public class ItemSharingModule extends ZetaModule {
 	}
 
 	public static MutableComponent createStackComponent(ItemStack stack, MutableComponent component) {
-		if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
+		if(!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 			return component;
 
 		Style style = component.getStyle();
-		if (stack.getCount() > 64) {
+		if(stack.getCount() > 64) {
 			ItemStack copyStack = stack.copy();
 			copyStack.setCount(64);
 			style = style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(copyStack)));
@@ -119,7 +124,8 @@ public class ItemSharingModule extends ZetaModule {
 
 			if(mc.level.getGameTime() - lastClientShare > cooldown) {
 				lastClientShare = mc.level.getGameTime();
-			} else return false;
+			} else
+				return false;
 
 			//TODO: smuggle into a correctly signed chat message, so stuff like discord integration picks up on it
 
@@ -143,7 +149,7 @@ public class ItemSharingModule extends ZetaModule {
 		}
 
 		public static void renderItemForMessage(GuiGraphics guiGraphics, FormattedCharSequence sequence, float x, float y, int color) {
-			if (!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
+			if(!Quark.ZETA.modules.isEnabled(ItemSharingModule.class) || !renderItemsInChat)
 				return;
 
 			Minecraft mc = Minecraft.getInstance();
@@ -154,7 +160,7 @@ public class ItemSharingModule extends ZetaModule {
 
 			sequence.accept((counter_, style, character) -> {
 				String sofar = before.toString();
-				if (sofar.endsWith("   ")) {
+				if(sofar.endsWith("   ")) {
 					render(mc, guiGraphics, sofar.substring(0, sofar.length() - 2), character == ' ' ? 0 : -halfSpace, x, y, style, color);
 					return false;
 				}
@@ -169,17 +175,17 @@ public class ItemSharingModule extends ZetaModule {
 			PoseStack pose = guiGraphics.pose();
 
 			HoverEvent hoverEvent = style.getHoverEvent();
-			if (hoverEvent != null && hoverEvent.getAction() == HoverEvent.Action.SHOW_ITEM) {
+			if(hoverEvent != null && hoverEvent.getAction() == HoverEvent.Action.SHOW_ITEM) {
 				HoverEvent.ItemStackInfo contents = hoverEvent.getValue(HoverEvent.Action.SHOW_ITEM);
 
 				ItemStack stack = contents != null ? contents.getItemStack() : ItemStack.EMPTY;
 
-				if (stack.isEmpty())
+				if(stack.isEmpty())
 					stack = new ItemStack(Blocks.BARRIER); // for invalid icon
 
 				float shift = mc.font.width(before) + extraShift;
 
-				if (a > 0) {
+				if(a > 0) {
 					alphaValue = a;
 
 					guiGraphics.pose().pushPose();

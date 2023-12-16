@@ -1,17 +1,17 @@
 package org.violetmoon.quark.content.tweaks.ai;
 
-import java.util.EnumSet;
-
-import org.violetmoon.quark.content.tweaks.module.PatTheDogsModule;
-
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
+import org.violetmoon.quark.content.tweaks.module.PatTheDogsModule;
+
+import java.util.EnumSet;
+
 /**
  * @author WireSegal
- * Created at 11:27 AM on 9/2/19.
+ *         Created at 11:27 AM on 9/2/19.
  */
 public class WantLoveGoal extends Goal {
 
@@ -26,14 +26,14 @@ public class WantLoveGoal extends Goal {
 	}
 
 	public static boolean needsPets(TamableAnimal entity) {
-		if (PatTheDogsModule.dogsWantLove <= 0)
+		if(PatTheDogsModule.dogsWantLove <= 0)
 			return false;
 
 		return timeSinceLastPet(entity) > PatTheDogsModule.dogsWantLove;
 	}
 
 	public static long timeSinceLastPet(TamableAnimal entity) {
-		if (!entity.isTame())
+		if(!entity.isTame())
 			return 0;
 
 		long lastPetAt = entity.getPersistentData().getLong(PET_TIME);
@@ -52,12 +52,12 @@ public class WantLoveGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (!needsPets(creature))
+		if(!needsPets(creature))
 			return false;
 
 		this.leapTarget = this.creature.getOwner();
 
-		if (this.leapTarget == null)
+		if(this.leapTarget == null)
 			return false;
 		else {
 			double distanceToTarget = this.creature.distanceToSqr(this.leapTarget);
@@ -69,7 +69,7 @@ public class WantLoveGoal extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		if (!WantLoveGoal.needsPets(creature))
+		if(!WantLoveGoal.needsPets(creature))
 			return false;
 		return !this.creature.onGround();
 	}
@@ -78,14 +78,14 @@ public class WantLoveGoal extends Goal {
 	public void start() {
 		Vec3 leapPos = leapTarget.position();
 		Vec3 creaturePos = creature.position();
-		
+
 		double dX = leapPos.x - creaturePos.x;
 		double dZ = leapPos.z - creaturePos.z;
 		float leapMagnitude = (float) Math.sqrt(dX * dX + dZ * dZ);
 
 		Vec3 motion = this.creature.getDeltaMovement();
 
-		if (leapMagnitude >= 0.0001) {
+		if(leapMagnitude >= 0.0001) {
 			motion = motion.add(
 					dX / leapMagnitude * 0.4 + motion.x * 0.2,
 					0,
@@ -97,4 +97,3 @@ public class WantLoveGoal extends Goal {
 		this.creature.setDeltaMovement(motion);
 	}
 }
-

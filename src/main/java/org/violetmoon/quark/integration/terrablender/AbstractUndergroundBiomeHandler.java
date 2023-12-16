@@ -1,17 +1,19 @@
 package org.violetmoon.quark.integration.terrablender;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+
 import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class AbstractUndergroundBiomeHandler {
 
@@ -33,7 +35,8 @@ public abstract class AbstractUndergroundBiomeHandler {
 
 	/**
 	 * This gets hooked up to the vanilla method OverworldBiomeBuilder#addUndergroundBiomes.
-	 * Calling the Consumer will effectively, add biomes to the `minecraft:overworld` MultiNoiseBiomeSourceParameterList.Preset.
+	 * Calling the Consumer will effectively, add biomes to the `minecraft:overworld`
+	 * MultiNoiseBiomeSourceParameterList.Preset.
 	 */
 	public abstract void modifyVanillaOverworldPreset(OverworldBiomeBuilder builder, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer);
 

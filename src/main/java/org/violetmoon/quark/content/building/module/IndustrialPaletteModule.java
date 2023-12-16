@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.common.util.ForgeSoundType;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.VariantLadderBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
@@ -46,7 +47,7 @@ public class IndustrialPaletteModule extends ZetaModule {
 
 		Block plate = new ZetaBlock("iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.CHAIN, true);
 		Block rusty = new ZetaBlock("rusty_iron_plate", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
-		
+
 		new ZetaPillarBlock("iron_pillar", this, props).setCondition(ironPlateCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
 		event.getVariantRegistry().addSlabAndStairs((IZetaBlock) plate, null);
@@ -60,7 +61,7 @@ public class IndustrialPaletteModule extends ZetaModule {
 				.noOcclusion()
 				.pushReaction(PushReaction.DESTROY), false
 		)
-		.setCondition(ironLadderCond);
+				.setCondition(ironLadderCond);
 	}
 
 }

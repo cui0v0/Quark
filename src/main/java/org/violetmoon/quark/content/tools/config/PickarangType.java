@@ -1,15 +1,15 @@
 package org.violetmoon.quark.content.tools.config;
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
-
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 
 public class PickarangType<T extends AbstractPickarang<T>> implements IConfigType {

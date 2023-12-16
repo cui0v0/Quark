@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
@@ -43,7 +45,7 @@ import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.Liv
 
 /**
  * @author WireSegal
- * Created at 5:00 PM on 9/26/19.
+ *         Created at 5:00 PM on 9/26/19.
  */
 @ZetaLoadModule(category = "mobs")
 public class FoxhoundModule extends ZetaModule {
@@ -55,7 +57,7 @@ public class FoxhoundModule extends ZetaModule {
 
 	@Config(flag = "foxhound_furnace")
 	public static boolean foxhoundsSpeedUpFurnaces = true;
-	
+
 	@Config
 	public static EntitySpawnConfig spawnConfig = new EntitySpawnConfig(30, 1, 2, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:nether_wastes", "minecraft:basalt_deltas"));
 
@@ -63,7 +65,7 @@ public class FoxhoundModule extends ZetaModule {
 	public static EntitySpawnConfig lesserSpawnConfig = new CostSensitiveEntitySpawnConfig(2, 1, 1, 0.7, 0.15, CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:soul_sand_valley"));
 
 	public static TagKey<Block> foxhoundSpawnableTag;
-	
+
 	public static ManualTrigger foxhoundFurnaceTrigger;
 
 	@LoadEvent
@@ -82,10 +84,10 @@ public class FoxhoundModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
-		
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+
 		foxhoundFurnaceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("foxhound_furnace");
 	}
 
@@ -101,11 +103,11 @@ public class FoxhoundModule extends ZetaModule {
 
 	@PlayEvent
 	public void onAggro(ZLivingChangeTarget event) {
-		if (event.getNewTarget() != null
-			&& event.getTargetType() != BEHAVIOR_TARGET
-			&& event.getEntity().getType() == EntityType.IRON_GOLEM
-			&& event.getNewTarget().getType() == foxhoundType
-			&& ((Foxhound) event.getNewTarget()).isTame())
+		if(event.getNewTarget() != null
+				&& event.getTargetType() != BEHAVIOR_TARGET
+				&& event.getEntity().getType() == EntityType.IRON_GOLEM
+				&& event.getNewTarget().getType() == foxhoundType
+				&& ((Foxhound) event.getNewTarget()).isTame())
 			event.setCanceled(true);
 	}
 

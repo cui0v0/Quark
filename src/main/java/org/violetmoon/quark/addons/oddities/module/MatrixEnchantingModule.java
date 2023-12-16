@@ -1,6 +1,7 @@
 package org.violetmoon.quark.addons.oddities.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.common.util.FakePlayer;
+
 import org.violetmoon.quark.addons.oddities.block.MatrixEnchantingTableBlock;
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.render.be.MatrixEnchantingTableRenderer;
@@ -115,8 +117,10 @@ public class MatrixEnchantingModule extends ZetaModule {
 	@Config(description = "A list of enchantment IDs you don't want the enchantment table to be able to create")
 	public static List<String> disallowedEnchantments = Lists.newArrayList();
 
-	@Config(description = "An array of influences each candle should apply. This list must be 16 elements long, and is in order of wool colors.\n" +
-			"A minus sign before an enchantment will make the influence decrease the probability of that enchantment.")
+	@Config(
+		description = "An array of influences each candle should apply. This list must be 16 elements long, and is in order of wool colors.\n" +
+				"A minus sign before an enchantment will make the influence decrease the probability of that enchantment."
+	)
 	private static List<String> influencesList = Lists.newArrayList(
 			"minecraft:unbreaking", // White
 			"minecraft:fire_protection", // Orange
@@ -134,11 +138,12 @@ public class MatrixEnchantingModule extends ZetaModule {
 			"minecraft:thorns,minecraft:piercing", // Green
 			"minecraft:fire_aspect,minecraft:flame", // Red
 			"minecraft:smite,minecraft:projectile_protection" // Black
-			);
+	);
 
-
-	@Config(description = "An array of influences that other blocks should apply.\n" +
-			"Format is: \"blockstate;strength;color;enchantments\", i.e. \"minecraft:sea_pickle[pickles=1,waterlogged=false];1;#008000;minecraft:aqua_affinity,minecraft:depth_strider,minecraft:riptide\" (etc) or \"minecraft:anvil[facing=north];#808080;-minecraft:thorns,minecraft:unbreaking\" (etc)")
+	@Config(
+		description = "An array of influences that other blocks should apply.\n" +
+				"Format is: \"blockstate;strength;color;enchantments\", i.e. \"minecraft:sea_pickle[pickles=1,waterlogged=false];1;#008000;minecraft:aqua_affinity,minecraft:depth_strider,minecraft:riptide\" (etc) or \"minecraft:anvil[facing=north];#808080;-minecraft:thorns,minecraft:unbreaking\" (etc)"
+	)
 	private static List<String> statesToInfluences = Lists.newArrayList();
 
 	@Config(description = "Set to false to disable the ability to influence enchantment outcomes with candles", flag = "candle_influencing")
@@ -215,14 +220,14 @@ public class MatrixEnchantingModule extends ZetaModule {
 		List<Enchantment> boost = new ArrayList<>();
 		List<Enchantment> dampen = new ArrayList<>();
 		String[] enchantments = enchantmentList.split(",");
-		for (String enchStr : enchantments) {
+		for(String enchStr : enchantments) {
 			boolean damp = enchStr.startsWith("-");
-			if (damp)
+			if(damp)
 				enchStr = enchStr.substring(1);
 
 			Enchantment ench = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(enchStr));
-			if (ench != null) {
-				if (damp)
+			if(ench != null) {
+				if(damp)
 					dampen.add(ench);
 				else
 					boost.add(ench);
@@ -237,9 +242,9 @@ public class MatrixEnchantingModule extends ZetaModule {
 		candleInfluences = new HashMap<>();
 		customInfluences = new HashMap<>();
 
-		for (String influence : statesToInfluences) {
+		for(String influence : statesToInfluences) {
 			String[] split = influence.split(";");
-			if (split.length == 4) {
+			if(split.length == 4) {
 				int strength, color;
 				BlockState state = MiscUtil.fromString(split[0]);
 				try {
@@ -258,7 +263,7 @@ public class MatrixEnchantingModule extends ZetaModule {
 			(new IllegalArgumentException("Matrix Enchanting Influences must be of size 16, please fix this in the config.")).printStackTrace();
 			candleInfluencingFailed = true;
 		} else {
-			for (int i = 0; i < 16; i++) {
+			for(int i = 0; i < 16; i++) {
 				candleInfluences.put(DyeColor.values()[i], parseEnchantmentList(influencesList.get(i)));
 			}
 		}

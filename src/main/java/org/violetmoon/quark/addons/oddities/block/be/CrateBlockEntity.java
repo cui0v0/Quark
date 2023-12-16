@@ -87,7 +87,7 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 
 	public CrateItemHandler itemHandler() {
 		LazyOptional<IItemHandler> handler = getCapability(ForgeCapabilities.ITEM_HANDLER);
-		if (handler.isPresent() && handler.orElse(new EmptyHandler()) instanceof CrateItemHandler crateHandler)
+		if(handler.isPresent() && handler.orElse(new EmptyHandler()) instanceof CrateItemHandler crateHandler)
 			return crateHandler;
 
 		// Should never happen, but just to prevent null-pointers
@@ -146,9 +146,10 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 	@Override
 	public int[] getSlotsForFace(@NotNull Direction dir) {
 		int slotCount = itemHandler().getSlots();
-		if (visibleSlots.length != slotCount) {
+		if(visibleSlots.length != slotCount) {
 			visibleSlots = new int[slotCount];
-			for (int i = 0; i < slotCount; i++) visibleSlots[i] = i;
+			for(int i = 0; i < slotCount; i++)
+				visibleSlots[i] = i;
 		}
 		return visibleSlots;
 	}
@@ -175,24 +176,24 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 
 	@Override
 	public boolean stillValid(@NotNull Player player) {
-		if (this.level.getBlockEntity(this.worldPosition) != this) {
+		if(this.level.getBlockEntity(this.worldPosition) != this) {
 			return false;
 		} else {
-			return !(player.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) > 64.0D);
+			return !(player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) > 64.0D);
 		}
 	}
 
 	@Override
 	public void startOpen(Player player) {
-		if (!player.isSpectator()) {
-			if (this.numPlayersUsing < 0) {
+		if(!player.isSpectator()) {
+			if(this.numPlayersUsing < 0) {
 				this.numPlayersUsing = 0;
 			}
 
 			++this.numPlayersUsing;
 			BlockState blockstate = this.getBlockState();
 			boolean flag = blockstate.getValue(CrateBlock.PROPERTY_OPEN);
-			if (!flag) {
+			if(!flag) {
 				this.playSound(blockstate, SoundEvents.BARREL_OPEN);
 				level.gameEvent(player, GameEvent.CONTAINER_OPEN, worldPosition);
 				this.setOpenProperty(blockstate, true);
@@ -211,17 +212,17 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 		int j = this.worldPosition.getY();
 		int k = this.worldPosition.getZ();
 		this.numPlayersUsing = calculatePlayersUsing(this.level, this, i, j, k);
-		if (this.numPlayersUsing > 0)
+		if(this.numPlayersUsing > 0)
 			this.scheduleTick();
 	}
 
 	public static int calculatePlayersUsing(Level world, BaseContainerBlockEntity container, int x, int y, int z) {
 		int i = 0;
 
-		for(Player playerentity : world.getEntitiesOfClass(Player.class, new AABB((float)x - 5.0F, (float)y - 5.0F, (float)z - 5.0F, (float)(x + 1) + 5.0F, (float)(y + 1) + 5.0F, (float)(z + 1) + 5.0F))) {
-			if (playerentity.containerMenu instanceof CrateMenu) {
-				Container iinventory = ((CrateMenu)playerentity.containerMenu).crate;
-				if (iinventory == container) {
+		for(Player playerentity : world.getEntitiesOfClass(Player.class, new AABB((float) x - 5.0F, (float) y - 5.0F, (float) z - 5.0F, (float) (x + 1) + 5.0F, (float) (y + 1) + 5.0F, (float) (z + 1) + 5.0F))) {
+			if(playerentity.containerMenu instanceof CrateMenu) {
+				Container iinventory = ((CrateMenu) playerentity.containerMenu).crate;
+				if(iinventory == container) {
 					++i;
 				}
 			}
@@ -232,19 +233,19 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 
 	@Override
 	public void stopOpen(Player player) {
-		if (!player.isSpectator()) {
+		if(!player.isSpectator()) {
 			--this.numPlayersUsing;
 		}
 
-		if(numPlayersUsing <= 0 ){
+		if(numPlayersUsing <= 0) {
 			BlockState blockstate = this.getBlockState();
-			if (!blockstate.is(CrateModule.crate)) {
+			if(!blockstate.is(CrateModule.crate)) {
 				this.setRemoved();
 				return;
 			}
 
 			boolean flag = blockstate.getValue(CrateBlock.PROPERTY_OPEN);
-			if (flag) {
+			if(flag) {
 				this.playSound(blockstate, SoundEvents.BARREL_CLOSE);
 				level.gameEvent(player, GameEvent.CONTAINER_OPEN, worldPosition);
 				this.setOpenProperty(blockstate, false);
@@ -255,14 +256,14 @@ public class CrateBlockEntity extends BaseContainerBlockEntity implements Worldl
 	private void setOpenProperty(BlockState state, boolean open) {
 		BlockPos pos = this.getBlockPos();
 		BlockState prev = level.getBlockState(pos);
-		if (prev.is(state.getBlock()))
+		if(prev.is(state.getBlock()))
 			level.setBlock(pos, state.setValue(CrateBlock.PROPERTY_OPEN, open), 3);
 	}
 
 	private void playSound(BlockState state, SoundEvent sound) {
-		double d0 = (double)this.worldPosition.getX() + 0.5D;
-		double d1 = (double)this.worldPosition.getY() + 0.5D;
-		double d2 = (double)this.worldPosition.getZ() + 0.5D;
+		double d0 = (double) this.worldPosition.getX() + 0.5D;
+		double d1 = (double) this.worldPosition.getY() + 0.5D;
+		double d2 = (double) this.worldPosition.getZ() + 0.5D;
 		this.level.playSound(null, d0, d1, d2, sound, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
 	}
 

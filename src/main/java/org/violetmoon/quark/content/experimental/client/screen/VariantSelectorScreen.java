@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,8 +21,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
+
 import org.violetmoon.quark.content.experimental.module.VariantSelectorModule;
 
 import java.util.ArrayList;
@@ -63,9 +66,9 @@ public class VariantSelectorScreen extends Screen {
 		float degPer = (float) Math.PI * 2 / segments;
 
 		// ensure the boring one is always at the bottom
-		float pad = - ((float) Math.PI / segments) + ((float) Math.PI / 2);
+		float pad = -((float) Math.PI / segments) + ((float) Math.PI / 2);
 		double angle = mouseAngle(x, y, mx, my);
-		double dist = (x - mx) * (x - mx) + (y - my) * (y - my); 
+		double dist = (x - mx) * (x - mx) + (y - my) * (y - my);
 
 		// loop angle around to ensure the last bit is accessible
 		if(angle < pad)
@@ -111,7 +114,7 @@ public class VariantSelectorScreen extends Screen {
 				gs += 0x29;
 
 			int r = gs;
-			int g = gs ;
+			int g = gs;
 			int b = gs;
 			int a = 0x44;
 
@@ -131,8 +134,7 @@ public class VariantSelectorScreen extends Screen {
 				slotSelected = seg;
 				r = 0x00;
 				g = b = 0xAA;
-			} 
-			else if(rightVariant) {
+			} else if(rightVariant) {
 				r = b = 0x00;
 				g = 0xAA;
 			}
@@ -159,7 +161,7 @@ public class VariantSelectorScreen extends Screen {
 
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-		
+
 		for(DrawStack ds : drawStacks) {
 			if(!ds.stack().isEmpty())
 				guiGraphics.renderItem(ds.stack(), ds.x(), ds.y());
@@ -170,12 +172,12 @@ public class VariantSelectorScreen extends Screen {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!isKeyDown(key)) {
+		if(!isKeyDown(key)) {
 			mc.setScreen(null);
-			
+
 			if(slotSelected == -1 && timeIn < 10)
 				slotSelected = 0;
-			
+
 			if(slotSelected != -1) {
 				String variant = slotSelected == 0 ? "" : variants.get(slotSelected - 1);
 				VariantSelectorModule.Client.setClientVariant(variant, true);
@@ -184,14 +186,14 @@ public class VariantSelectorScreen extends Screen {
 		}
 
 		ImmutableSet<KeyMapping> set = ImmutableSet.of(mc.options.keyUp, mc.options.keyLeft, mc.options.keyDown, mc.options.keyRight, mc.options.keyShift, mc.options.keySprint, mc.options.keyJump);
-		for (KeyMapping k : set) {
+		for(KeyMapping k : set) {
 			KeyMapping.set(k.getKey(), isKeyDown(k));
 		}
 	}
 
 	public boolean isKeyDown(KeyMapping keybind) {
 		InputConstants.Key key = keybind.getKey();
-		if (key.getType() == InputConstants.Type.MOUSE) {
+		if(key.getType() == InputConstants.Type.MOUSE) {
 			return keybind.isDown();
 		}
 		return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getValue());
@@ -206,6 +208,7 @@ public class VariantSelectorScreen extends Screen {
 		return (Mth.atan2(my - y, mx - x) + Math.PI * 2) % (Math.PI * 2);
 	}
 
-	private record DrawStack(ItemStack stack, int x, int y) {};
+	private record DrawStack(ItemStack stack, int x, int y) {
+	};
 
 }

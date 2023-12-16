@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import net.minecraft.Util;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -51,7 +52,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
@@ -81,15 +84,15 @@ public class MiscUtil {
 			DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE,
 			DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK
 	};
-	
+
 	public static BooleanProperty directionProperty(Direction direction) {
-		return switch (direction) {
-			case DOWN -> BlockStateProperties.DOWN;
-			case UP -> BlockStateProperties.UP;
-			case NORTH -> BlockStateProperties.NORTH;
-			case SOUTH -> BlockStateProperties.SOUTH;
-			case WEST -> BlockStateProperties.WEST;
-			case EAST -> BlockStateProperties.EAST;
+		return switch(direction) {
+		case DOWN -> BlockStateProperties.DOWN;
+		case UP -> BlockStateProperties.UP;
+		case NORTH -> BlockStateProperties.NORTH;
+		case SOUTH -> BlockStateProperties.SOUTH;
+		case WEST -> BlockStateProperties.WEST;
+		case EAST -> BlockStateProperties.EAST;
 		};
 	}
 
@@ -108,18 +111,18 @@ public class MiscUtil {
 	public static void addGoalJustAfterLatestWithPriority(GoalSelector selector, int priority, Goal goal) {
 		Set<WrappedGoal> allGoals = new LinkedHashSet<>(selector.getAvailableGoals());
 		WrappedGoal latestWithPriority = null;
-		for (WrappedGoal wrappedGoal : allGoals) {
-			if (wrappedGoal.getPriority() == priority)
+		for(WrappedGoal wrappedGoal : allGoals) {
+			if(wrappedGoal.getPriority() == priority)
 				latestWithPriority = wrappedGoal;
 		}
 
 		selector.removeAllGoals(g -> true);
-		if (latestWithPriority == null)
+		if(latestWithPriority == null)
 			selector.addGoal(priority, goal);
 
-		for (WrappedGoal wrappedGoal : allGoals) {
+		for(WrappedGoal wrappedGoal : allGoals) {
 			selector.addGoal(wrappedGoal.getPriority(), wrappedGoal.getGoal());
-			if (wrappedGoal == latestWithPriority)
+			if(wrappedGoal == latestWithPriority)
 				selector.addGoal(priority, goal);
 		}
 	}
@@ -132,7 +135,7 @@ public class MiscUtil {
 		enchants.clear();
 		for(String s : enchantNames) {
 			Enchantment enchant = BuiltInRegistries.ENCHANTMENT.get(new ResourceLocation(s));
-			if (enchant != null && !EnchantmentsBegoneModule.shouldBegone(enchant))
+			if(enchant != null && !EnchantmentsBegoneModule.shouldBegone(enchant))
 				enchants.add(enchant);
 		}
 	}
@@ -149,7 +152,7 @@ public class MiscUtil {
 	}
 
 	public static boolean validSpawnLight(ServerLevelAccessor world, BlockPos pos, RandomSource rand) {
-		if (world.getBrightness(LightLayer.SKY, pos) > rand.nextInt(32)) {
+		if(world.getBrightness(LightLayer.SKY, pos) > rand.nextInt(32)) {
 			return false;
 		} else {
 			int light = world.getLevel().isThundering() ? world.getMaxLocalRawBrightness(pos, 10) : world.getMaxLocalRawBrightness(pos);
@@ -159,7 +162,7 @@ public class MiscUtil {
 
 	public static boolean validSpawnLocation(@NotNull EntityType<? extends Mob> type, @NotNull LevelAccessor world, MobSpawnType reason, BlockPos pos) {
 		BlockPos below = pos.below();
-		if (reason == MobSpawnType.SPAWNER)
+		if(reason == MobSpawnType.SPAWNER)
 			return true;
 		BlockState state = world.getBlockState(below);
 		return BlockUtils.isStoneBased(state, world, below) && state.isValidSpawn(world, below, type);
@@ -170,8 +173,8 @@ public class MiscUtil {
 
 		if(packet != null && tile.getLevel() instanceof ServerLevel serverLevel) {
 			serverLevel.getChunkSource().chunkMap
-			.getPlayers(new ChunkPos(tile.getBlockPos()), false)
-			.forEach(e -> e.connection.send(packet));
+					.getPlayers(new ChunkPos(tile.getBlockPos()), false)
+					.forEach(e -> e.connection.send(packet));
 		}
 	}
 
@@ -227,11 +230,11 @@ public class MiscUtil {
 		@PlayEvent
 		public static void onKeystroke(ZScreen.KeyPressed.Pre event) {
 			final String[] ids = new String[] {
-				"-FCYE87P5L0","mybsDDymrsc","6a4BWpBJppI","thpTOAS1Vgg","ZNcBZM5SvbY","_qJEoSa3Ie0",
-				"RWeyOyY_puQ","VBbeuXW8Nko","LIDe-yTxda0","BVVfMFS3mgc","m5qwcYL8a0o","UkY8HvgvBJ8",
-				"4K4b9Z9lSwc","tyInv6RWL0Q","tIWpr3tHzII","AFJPFfnzZ7w","846cjX0ZTrk","XEOCbFJjRw0",
-				"GEo5bmUKFvI","b6li05zh3Kg","_EEo-iE5u_A","SPYX2y4NzTU","UDxID0_A9x4","ZBl48MK17cI",
-				"l6p8FDJqUj4"
+					"-FCYE87P5L0", "mybsDDymrsc", "6a4BWpBJppI", "thpTOAS1Vgg", "ZNcBZM5SvbY", "_qJEoSa3Ie0",
+					"RWeyOyY_puQ", "VBbeuXW8Nko", "LIDe-yTxda0", "BVVfMFS3mgc", "m5qwcYL8a0o", "UkY8HvgvBJ8",
+					"4K4b9Z9lSwc", "tyInv6RWL0Q", "tIWpr3tHzII", "AFJPFfnzZ7w", "846cjX0ZTrk", "XEOCbFJjRw0",
+					"GEo5bmUKFvI", "b6li05zh3Kg", "_EEo-iE5u_A", "SPYX2y4NzTU", "UDxID0_A9x4", "ZBl48MK17cI",
+					"l6p8FDJqUj4"
 			};
 			final int[] keys = new int[] { 265, 265, 264, 264, 263, 262, 263, 262, 66, 65 };
 			if(event.getScreen() instanceof ZetaScreen) {
@@ -242,7 +245,8 @@ public class MiscUtil {
 						progress = 0;
 						Util.getPlatform().openUri("https://www.youtube.com/watch?v=" + ids[new Random().nextInt(ids.length)]);
 					}
-				} else progress = 0;
+				} else
+					progress = 0;
 			}
 		}
 

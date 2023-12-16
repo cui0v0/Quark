@@ -1,7 +1,9 @@
 package org.violetmoon.quark.content.tools.entity.rang;
 
 import com.google.common.collect.Multimap;
+
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -46,8 +48,10 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.entity.Toretoise;
@@ -90,29 +94,29 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	@Override
 	public boolean shouldRenderAtSqrDistance(double distance) {
 		double d0 = this.getBoundingBox().getSize() * 4.0D;
-		if (Double.isNaN(d0)) d0 = 4.0D;
+		if(Double.isNaN(d0))
+			d0 = 4.0D;
 
 		d0 = d0 * 64.0D;
 		return distance < d0 * d0;
 	}
 
 	public void shoot(Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
-		float f = -Mth.sin(rotationYawIn * ((float)Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float)Math.PI / 180F));
-		float f1 = -Mth.sin((rotationPitchIn + pitchOffset) * ((float)Math.PI / 180F));
-		float f2 = Mth.cos(rotationYawIn * ((float)Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float)Math.PI / 180F));
+		float f = -Mth.sin(rotationYawIn * ((float) Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float) Math.PI / 180F));
+		float f1 = -Mth.sin((rotationPitchIn + pitchOffset) * ((float) Math.PI / 180F));
+		float f2 = Mth.cos(rotationYawIn * ((float) Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float) Math.PI / 180F));
 		this.shoot(f, f1, f2, velocity, inaccuracy);
 		Vec3 Vector3d = entityThrower.getDeltaMovement();
 		this.setDeltaMovement(this.getDeltaMovement().add(Vector3d.x, entityThrower.onGround() ? 0.0D : Vector3d.y, Vector3d.z));
 	}
-
 
 	@Override
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
 		Vec3 vec = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.0075F * inaccuracy, this.random.nextGaussian() * 0.0075F * inaccuracy, this.random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
 		this.setDeltaMovement(vec);
 		float f = (float) vec.horizontalDistance();
-		setYRot((float)(Mth.atan2(vec.x, vec.z) * (180F / (float)Math.PI)));
-		setXRot((float)(Mth.atan2(vec.y, f) * (180F / (float)Math.PI)));
+		setYRot((float) (Mth.atan2(vec.x, vec.z) * (180F / (float) Math.PI)));
+		setXRot((float) (Mth.atan2(vec.y, f) * (180F / (float) Math.PI)));
 		this.yRotO = this.getYRot();
 		this.xRotO = this.getXRot();
 	}
@@ -120,10 +124,10 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	@Override
 	public void lerpMotion(double x, double y, double z) {
 		this.setDeltaMovement(x, y, z);
-		if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
+		if(this.xRotO == 0.0F && this.yRotO == 0.0F) {
 			float f = (float) Math.sqrt(x * x + z * z);
-			setYRot((float)(Mth.atan2(x, z) * (180F / (float)Math.PI)));
-			setXRot((float)(Mth.atan2(y, f) * (180F / (float)Math.PI)));
+			setYRot((float) (Mth.atan2(x, z) * (180F / (float) Math.PI)));
+			setXRot((float) (Mth.atan2(y, f) * (180F / (float) Math.PI)));
 			this.yRotO = this.getYRot();
 			this.xRotO = this.getXRot();
 		}
@@ -142,7 +146,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	protected void checkImpact() {
-		if (level().isClientSide)
+		if(level().isClientSide)
 			return;
 
 		Vec3 motion = getDeltaMovement();
@@ -157,7 +161,8 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 				EntityHitResult result = raycastEntities(position, rayEnd);
 				if(result != null)
 					onHit(result);
-				else doEntities = false;
+				else
+					doEntities = false;
 			} else {
 				HitResult result = level().clip(new ClipContext(position, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 				if(result.getType() == Type.MISS)
@@ -177,8 +182,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 	@Nullable
 	protected EntityHitResult raycastEntities(Vec3 from, Vec3 to) {
-		return ProjectileUtil.getEntityHitResult(level(), this, from, to, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), (entity) ->
-			!entity.isSpectator()
+		return ProjectileUtil.getEntityHitResult(level(), this, from, to, getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), (entity) -> !entity.isSpectator()
 				&& entity.isAlive()
 				&& (entity.isPickable() || entity instanceof AbstractPickarang)
 				&& entity != getThrower()
@@ -204,18 +208,19 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 			if(!(owner instanceof ServerPlayer player))
 				return;
 			//more general way of doing it instead of just checking hardness
-			float progress = getBlockDestroyProgress(state,player, level(), hit);
-			if (progress == 0) return;
+			float progress = getBlockDestroyProgress(state, player, level(), hit);
+			if(progress == 0)
+				return;
 
 			float equivalentHardness = (1) / (progress * 100);
 
-			if (equivalentHardness <= getPickarangType().maxHardness
+			if(equivalentHardness <= getPickarangType().maxHardness
 					&& equivalentHardness >= 0
 					&& canDestroyBlock(state)) {
 				ItemStack prev = player.getMainHandItem();
 				player.setItemInHand(InteractionHand.MAIN_HAND, getStack());
 
-				if (player.gameMode.destroyBlock(hit))
+				if(player.gameMode.destroyBlock(hit))
 					level().levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, hit, Block.getId(state));
 				else
 					clank();
@@ -230,14 +235,14 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 			if(hit != owner) {
 				addHit(hit);
-				if (hit instanceof AbstractPickarang) {
+				if(hit instanceof AbstractPickarang) {
 					((AbstractPickarang<?>) hit).setReturning();
 					clank();
 				} else {
 					ItemStack pickarang = getStack();
 					Multimap<Attribute, AttributeModifier> modifiers = pickarang.getAttributeModifiers(EquipmentSlot.MAINHAND);
 
-					if (owner != null) {
+					if(owner != null) {
 						ItemStack prev = owner.getMainHandItem();
 						owner.setItemInHand(InteractionHand.MAIN_HAND, pickarang);
 						owner.getAttributes().addTransientAttributeModifiers(modifiers);
@@ -255,10 +260,10 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 								if(ore != 0) {
 									addHit(toretoise);
-									if (level() instanceof ServerLevel serverLevel) {
+									if(level() instanceof ServerLevel serverLevel) {
 										LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
 												.withParameter(LootContextParams.TOOL, pickarang);
-										if (owner instanceof Player player)
+										if(owner instanceof Player player)
 											lootBuilder.withLuck(player.getLuck());
 										toretoise.dropOre(ore, lootBuilder);
 									}
@@ -266,15 +271,14 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 								}
 							}
 
-							if (owner instanceof Player)
+							if(owner instanceof Player)
 								((Player) owner).attack(hit);
 							else
 								owner.doHurtTarget(hit);
 
-							if (hit instanceof LivingEntity && ((LivingEntity) hit).getHealth() == prevHealth)
+							if(hit instanceof LivingEntity && ((LivingEntity) hit).getHealth() == prevHealth)
 								clank();
 						}
-
 
 						PickarangModule.setActivePickarang(null);
 
@@ -305,11 +309,11 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	//equivalent of BlockState::getDestroyProgress
 	private float getBlockDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		float f = state.getDestroySpeed(level, pos);
-		if (f == -1.0F) {
+		if(f == -1.0F) {
 			return 0.0F;
 		} else {
 			float i = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
-			float digSpeed = getPlayerDigSpeed(player,state, pos);
+			float digSpeed = getPlayerDigSpeed(player, state, pos);
 			return (digSpeed / f / i);
 		}
 	}
@@ -318,21 +322,21 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	private float getPlayerDigSpeed(Player player, BlockState state, @Nullable BlockPos pos) {
 		float f = 1;
 
-		if (MobEffectUtil.hasDigSpeed(player)) {
+		if(MobEffectUtil.hasDigSpeed(player)) {
 			f *= 1.0F + (MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
 		}
 
-		if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-			float f1 = switch (player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
-				case 0 -> 0.3F;
-				case 1 -> 0.09F;
-				case 2 -> 0.0027F;
-				default -> 8.1E-4F;
+		if(player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
+			float f1 = switch(player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
+			case 0 -> 0.3F;
+			case 1 -> 0.09F;
+			case 2 -> 0.0027F;
+			default -> 8.1E-4F;
 			};
 
 			f *= f1;
 		}
-		if (this.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
+		if(this.isEyeInFluidType(ForgeMod.WATER_TYPE.get())) {
 			f /= 5.0F;
 		}
 		f = ForgeEventFactory.getBreakSpeed(player, state, f, pos);
@@ -350,7 +354,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	}
 
 	public void addHit(Entity entity) {
-		if (entitiesHit == null)
+		if(entitiesHit == null)
 			entitiesHit = new IntOpenHashSet(5);
 		entitiesHit.add(entity.getId());
 		postHit();
@@ -359,7 +363,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 	public void postHit() {
 		if((entitiesHit == null ? 0 : entitiesHit.size()) + blockHitCount > getPiercingModifier())
 			setReturning();
-		else if (getPiercingModifier() > 0)
+		else if(getPiercingModifier() > 0)
 			setDeltaMovement(getDeltaMovement().scale(0.8));
 	}
 
@@ -393,29 +397,33 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		setPos(pos.x + ourMotion.x, pos.y + ourMotion.y, pos.z + ourMotion.z);
 
 		float f = (float) ourMotion.horizontalDistance();
-		setYRot((float)(Mth.atan2(ourMotion.x, ourMotion.z) * (180F / (float)Math.PI)));
+		setYRot((float) (Mth.atan2(ourMotion.x, ourMotion.z) * (180F / (float) Math.PI)));
 
-		setXRot((float)(Mth.atan2(ourMotion.y, f) * (180F / (float)Math.PI)));
-		while (this.getXRot() - this.xRotO < -180.0F) this.xRotO -= 360.0F;
+		setXRot((float) (Mth.atan2(ourMotion.y, f) * (180F / (float) Math.PI)));
+		while(this.getXRot() - this.xRotO < -180.0F)
+			this.xRotO -= 360.0F;
 
-		while(this.getXRot() - this.xRotO >= 180.0F) this.xRotO += 360.0F;
+		while(this.getXRot() - this.xRotO >= 180.0F)
+			this.xRotO += 360.0F;
 
-		while(this.getYRot() - this.yRotO < -180.0F) this.yRotO -= 360.0F;
+		while(this.getYRot() - this.yRotO < -180.0F)
+			this.yRotO -= 360.0F;
 
-		while(this.getYRot() - this.yRotO >= 180.0F) this.yRotO += 360.0F;
+		while(this.getYRot() - this.yRotO >= 180.0F)
+			this.yRotO += 360.0F;
 
 		setXRot(Mth.lerp(0.2F, this.xRotO, this.getXRot()));
 		setYRot(Mth.lerp(0.2F, this.yRotO, this.getYRot()));
 
-
 		float drag;
-		if (this.isInWater()) {
+		if(this.isInWater()) {
 			for(int i = 0; i < 4; ++i) {
 				this.level().addParticle(ParticleTypes.BUBBLE, pos.x - ourMotion.x * 0.25D, pos.y - ourMotion.y * 0.25D, pos.z - ourMotion.z * 0.25D, ourMotion.x, ourMotion.y, ourMotion.z);
 			}
 
 			drag = 0.8F;
-		} else drag = 0.99F;
+		} else
+			drag = 0.99F;
 
 		if(hasDrag())
 			this.setDeltaMovement(ourMotion.scale(drag));
@@ -448,7 +456,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		if(!returning) {
 			if(liveTime > getPickarangType().timeout)
 				setReturning();
-			if (!level().getWorldBorder().isWithinBounds(getBoundingBox()))
+			if(!level().getWorldBorder().isWithinBounds(getBoundingBox()))
 				spark();
 		} else {
 			noPhysics = true;
@@ -460,7 +468,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 			Vec3 ourPos = position();
 			for(ItemEntity item : items) {
-				if (item.isPassenger())
+				if(item.isPassenger())
 					continue;
 				item.startRiding(this);
 
@@ -468,7 +476,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 			}
 
 			for(ExperienceOrb xpOrb : xp) {
-				if (xpOrb.isPassenger())
+				if(xpOrb.isPassenger())
 					continue;
 				xpOrb.startRiding(this);
 			}
@@ -488,27 +496,28 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 					if(player instanceof ServerPlayer sp && (this instanceof Flamerang) && isOnFire() && getPassengers().size() > 0)
 						PickarangModule.useFlamerangTrigger.trigger(sp);
 
-					if(!stack.isEmpty()) if (player.isAlive() && stackInSlot.isEmpty())
-						inventory.setItem(slot, stack);
-					else if (!player.isAlive() || !inventory.add(stack))
-						player.drop(stack, false);
+					if(!stack.isEmpty())
+						if(player.isAlive() && stackInSlot.isEmpty())
+							inventory.setItem(slot, stack);
+						else if(!player.isAlive() || !inventory.add(stack))
+							player.drop(stack, false);
 
-					if (player.isAlive()) {
-						for (ItemEntity item : items)
+					if(player.isAlive()) {
+						for(ItemEntity item : items)
 							if(item.isAlive())
 								giveItemToPlayer(player, item);
 
-						for (ExperienceOrb xpOrb : xp)
+						for(ExperienceOrb xpOrb : xp)
 							if(xpOrb.isAlive())
 								xpOrb.playerTouch(player);
 
-						for (Entity riding : getPassengers()) {
-							if (!riding.isAlive())
+						for(Entity riding : getPassengers()) {
+							if(!riding.isAlive())
 								continue;
 
-							if (riding instanceof ItemEntity)
+							if(riding instanceof ItemEntity)
 								giveItemToPlayer(player, (ItemEntity) riding);
-							else if (riding instanceof ExperienceOrb)
+							else if(riding instanceof ExperienceOrb)
 								riding.playerTouch(player);
 						}
 					}
@@ -538,7 +547,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		itemEntity.setPickUpDelay(0);
 		itemEntity.playerTouch(player);
 
-		if (itemEntity.isAlive()) {
+		if(itemEntity.isAlive()) {
 			// Player could not pick up everything
 			ItemStack drop = itemEntity.getItem();
 
@@ -549,10 +558,10 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 
 	@Nullable
 	public LivingEntity getThrower() {
-		if (this.owner == null && this.ownerId != null && this.level() instanceof ServerLevel) {
+		if(this.owner == null && this.ownerId != null && this.level() instanceof ServerLevel) {
 			Entity entity = ((ServerLevel) this.level()).getEntity(this.ownerId);
-			if (entity instanceof LivingEntity) {
-				this.owner = (LivingEntity)entity;
+			if(entity instanceof LivingEntity) {
+				this.owner = (LivingEntity) entity;
 			} else {
 				this.ownerId = null;
 			}
@@ -600,14 +609,14 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		blockHitCount = compound.getInt(TAG_BLOCKS_BROKEN);
 		slot = compound.getInt(TAG_RETURN_SLOT);
 
-		if (compound.contains(TAG_ITEM_STACK))
+		if(compound.contains(TAG_ITEM_STACK))
 			setStack(ItemStack.of(compound.getCompound(TAG_ITEM_STACK)));
 		else
 			setStack(new ItemStack(PickarangModule.pickarang));
 
-		if (compound.contains("owner", 10)) {
+		if(compound.contains("owner", 10)) {
 			Tag owner = compound.get("owner");
-			if (owner != null)
+			if(owner != null)
 				this.ownerId = NbtUtils.loadUUID(owner);
 		}
 	}
@@ -620,7 +629,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 		compound.putInt(TAG_RETURN_SLOT, slot);
 
 		compound.put(TAG_ITEM_STACK, getStack().serializeNBT());
-		if (this.ownerId != null)
+		if(this.ownerId != null)
 			compound.put("owner", NbtUtils.createUUID(this.ownerId));
 	}
 

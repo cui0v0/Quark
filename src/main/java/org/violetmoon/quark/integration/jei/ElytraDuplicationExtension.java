@@ -1,18 +1,22 @@
 package org.violetmoon.quark.integration.jei;
 
 import com.google.common.collect.Lists;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 
@@ -24,7 +28,7 @@ public record ElytraDuplicationExtension(ElytraDuplicationRecipe recipe) impleme
 	@Override
 	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
 		List<List<ItemStack>> inputLists = new ArrayList<>();
-		for (Ingredient input : recipe.getIngredients()) {
+		for(Ingredient input : recipe.getIngredients()) {
 			ItemStack[] stacks = input.getItems();
 			List<ItemStack> expandedInput = List.of(stacks);
 			inputLists.add(expandedInput);

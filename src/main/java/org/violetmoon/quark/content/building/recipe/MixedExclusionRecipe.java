@@ -1,12 +1,9 @@
 package org.violetmoon.quark.content.building.recipe;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import org.jetbrains.annotations.NotNull;
-
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -15,11 +12,14 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<CraftingContainer> {
 
@@ -104,7 +104,8 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 							first = stack;
 						else if(!ItemStack.isSameItem(first, stack))
 							foundDifference = true;
-					} else return false;
+					} else
+						return false;
 				}
 
 			return foundDifference;
@@ -162,11 +163,11 @@ public class MixedExclusionRecipe implements CraftingRecipe, IShapedRecipe<Craft
 		}
 
 		private MixedExclusionRecipe forType(ResourceLocation res, String type) {
-			return switch (type) {
-				case "chest" -> MixedExclusionRecipe.forChest(type, res, false);
-				case "chest4" -> MixedExclusionRecipe.forChest(type, res, true);
-				case "furnace" -> MixedExclusionRecipe.forFurnace(type, res);
-				default -> null;
+			return switch(type) {
+			case "chest" -> MixedExclusionRecipe.forChest(type, res, false);
+			case "chest4" -> MixedExclusionRecipe.forChest(type, res, true);
+			case "furnace" -> MixedExclusionRecipe.forFurnace(type, res);
+			default -> null;
 			};
 		}
 

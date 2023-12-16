@@ -1,5 +1,7 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.level.block.Blocks;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
@@ -11,12 +13,11 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 
-import net.minecraft.world.level.block.Blocks;
-
 @ZetaLoadModule(category = "building", antiOverlap = { "woodworks" })
 public class VariantBookshelvesModule extends ZetaModule {
 
-	@Config public static boolean changeNames = true;
+	@Config
+	public static boolean changeNames = true;
 
 	@LoadEvent
 	public final void register(ZRegister event) {

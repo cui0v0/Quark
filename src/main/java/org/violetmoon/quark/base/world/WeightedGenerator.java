@@ -6,13 +6,13 @@ import org.violetmoon.quark.base.world.generator.IGenerator;
 import org.violetmoon.zeta.module.ZetaModule;
 
 public record WeightedGenerator(ZetaModule module,
-								IGenerator generator,
-								int weight) implements Comparable<WeightedGenerator> {
+		IGenerator generator,
+		int weight) implements Comparable<WeightedGenerator> {
 
 	@Override
 	public int compareTo(@NotNull WeightedGenerator o) {
 		int diff = weight - o.weight;
-		if (diff != 0)
+		if(diff != 0)
 			return diff;
 
 		return hashCode() - o.hashCode();

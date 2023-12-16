@@ -1,7 +1,7 @@
 package org.violetmoon.quark.content.client.module;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
@@ -9,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.ConvulsionMatrixConfig;
@@ -31,14 +32,14 @@ public class GreenerGrassModule extends ZetaModule {
 	private static final int[] FOLLIAGE_COLORS = { 0xff77ab2f, 0xff59ae30, 0xff6da36b, 0xff30bb0b, 0xffaea42a, 0xff6a7039 };
 	private static final double[][] GRASS_PRESETS = {
 			{
-				1.24, 0.00, 0.00,
-				0.00, 0.84, 0.00,
-				0.00, 0.16, 0.36
+					1.24, 0.00, 0.00,
+					0.00, 0.84, 0.00,
+					0.00, 0.16, 0.36
 			},
 			{
-				1.00, 0.00, 0.00,
-				0.24, 1.00, 0.24,
-				0.00, 0.00, 0.60
+					1.00, 0.00, 0.00,
+					0.24, 1.00, 0.24,
+					0.00, 0.00, 0.60
 			}
 	};
 	private static final double[] GRASS_DEFAULT = {
@@ -46,21 +47,21 @@ public class GreenerGrassModule extends ZetaModule {
 			0.00, 1.11, 0.00,
 			0.00, 0.00, 0.89
 	};
-	
+
 	private static final String[] WATER_PRESET_NAMES = { "Muddy", "Colder" };
 	private static final String WATER_NAME = "Water Colors";
-	private static final String[] WATER_BIOMES = { "generic", "swamp", "meadow", "mangrove", "cold", "warm" }; 
+	private static final String[] WATER_BIOMES = { "generic", "swamp", "meadow", "mangrove", "cold", "warm" };
 	private static final int[] WATER_COLORS = { 0xff3f76e4, 0xff617B64, 0xff0e4ecf, 0xff3a7a6a, 0xff3d57D6, 0xff43d5ee };
 	private static final double[][] WATER_PRESETS = {
 			{
-				0.76, 0.00, 0.10,
-				0.00, 0.80, 0.00,
-				0.00, 0.00, 0.70
+					0.76, 0.00, 0.10,
+					0.00, 0.80, 0.00,
+					0.00, 0.00, 0.70
 			},
 			{
-				1.00, 0.00, 0.00,
-				0.24, 0.96, 0.24,
-				0.20, 0.52, 1.00
+					1.00, 0.00, 0.00,
+					0.24, 0.96, 0.24,
+					0.20, 0.52, 1.00
 			}
 	};
 	private static final double[] WATER_DEFAULT = {
@@ -68,14 +69,17 @@ public class GreenerGrassModule extends ZetaModule {
 			0.00, 1.00, 0.22,
 			0.00, 0.00, 1.22
 	};
-	
+
 	private static final ConvulsionMatrixConfig.Params GRASS_PARAMS = new ConvulsionMatrixConfig.Params(GRASS_NAME, GRASS_DEFAULT, GRASS_BIOMES, GRASS_COLORS, FOLLIAGE_COLORS, GRASS_PRESET_NAMES, GRASS_PRESETS);
 	private static final ConvulsionMatrixConfig.Params WATER_PARAMS = new ConvulsionMatrixConfig.Params(WATER_NAME, WATER_DEFAULT, WATER_BIOMES, WATER_COLORS, null, WATER_PRESET_NAMES, WATER_PRESETS);
 
-	@Config public static boolean affectLeaves = true;
-	@Config public static boolean affectWater = false;
+	@Config
+	public static boolean affectLeaves = true;
+	@Config
+	public static boolean affectWater = false;
 
-	@Config public static List<String> blockList = Lists.newArrayList(
+	@Config
+	public static List<String> blockList = Lists.newArrayList(
 			"minecraft:large_fern",
 			"minecraft:tall_grass",
 			"minecraft:grass_block",
@@ -86,7 +90,8 @@ public class GreenerGrassModule extends ZetaModule {
 			"environmental:giant_tall_grass",
 			"valhelsia_structures:grass_block");
 
-	@Config public static List<String> leavesList = Lists.newArrayList(
+	@Config
+	public static List<String> leavesList = Lists.newArrayList(
 			"minecraft:spruce_leaves",
 			"minecraft:birch_leaves",
 			"minecraft:oak_leaves",
@@ -100,9 +105,11 @@ public class GreenerGrassModule extends ZetaModule {
 			"environmental:willow_leaves",
 			"environmental:hanging_willow_leaves",
 			"minecraft:vine");
-	
-	@Config public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(GRASS_PARAMS);
-	@Config public static ConvulsionMatrixConfig waterMatrix = new ConvulsionMatrixConfig(WATER_PARAMS);
+
+	@Config
+	public static ConvulsionMatrixConfig colorMatrix = new ConvulsionMatrixConfig(GRASS_PARAMS);
+	@Config
+	public static ConvulsionMatrixConfig waterMatrix = new ConvulsionMatrixConfig(WATER_PARAMS);
 
 	public int getWaterColor(int orig) {
 		return orig;

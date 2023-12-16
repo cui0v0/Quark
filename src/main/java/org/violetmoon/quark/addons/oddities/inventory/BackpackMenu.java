@@ -8,12 +8,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.inventory.slot.BackpackSlot;
 import org.violetmoon.quark.addons.oddities.inventory.slot.CachedItemHandlerSlot;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.util.InventoryIIH;
-
-import org.jetbrains.annotations.NotNull;
 
 public class BackpackMenu extends InventoryMenu {
 
@@ -23,7 +24,7 @@ public class BackpackMenu extends InventoryMenu {
 
 		Inventory inventory = player.getInventory();
 		for(Slot slot : slots)
-			if (slot.container == inventory && slot.getSlotIndex() < inventory.getContainerSize() - 5)
+			if(slot.container == inventory && slot.getSlotIndex() < inventory.getContainerSize() - 5)
 				slot.y += 58;
 
 		Slot anchor = slots.get(9);
@@ -61,13 +62,13 @@ public class BackpackMenu extends InventoryMenu {
 		ItemStack baseStack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(index);
 
-		if (slot != null && slot.hasItem()) {
+		if(slot != null && slot.hasItem()) {
 			ItemStack stack = slot.getItem();
 			baseStack = stack.copy();
 			EquipmentSlot slotType = Mob.getEquipmentSlotForItem(stack);
 			int equipIndex = topSlots - (slotType == null ? 0 : slotType.getIndex());
 
-			if (index < invStart || index == shieldSlot) { // crafting and armor slots
+			if(index < invStart || index == shieldSlot) { // crafting and armor slots
 				ItemStack target = null;
 				if(!this.moveItemStackTo(stack, invStart, hotbarEnd, false) && !this.moveItemStackTo(stack, backpackStart, backpackEnd, false))
 					target = ItemStack.EMPTY;
@@ -83,13 +84,13 @@ public class BackpackMenu extends InventoryMenu {
 					return ItemStack.EMPTY;
 			}
 
-			else if (slotType != null && slotType == EquipmentSlot.OFFHAND && !this.slots.get(shieldSlot).hasItem()) { // shift clicking shield
+			else if(slotType != null && slotType == EquipmentSlot.OFFHAND && !this.slots.get(shieldSlot).hasItem()) { // shift clicking shield
 				if(!this.moveItemStackTo(stack, shieldSlot, shieldSlot + 1, false))
 					return ItemStack.EMPTY;
 			}
 
-			else if (index < invEnd) {
-				if (!this.moveItemStackTo(stack, backpackStart, backpackEnd, false) && !this.moveItemStackTo(stack, hotbarStart, hotbarEnd, false))
+			else if(index < invEnd) {
+				if(!this.moveItemStackTo(stack, backpackStart, backpackEnd, false) && !this.moveItemStackTo(stack, hotbarStart, hotbarEnd, false))
 					return ItemStack.EMPTY;
 			}
 
@@ -101,11 +102,12 @@ public class BackpackMenu extends InventoryMenu {
 			else if(!this.moveItemStackTo(stack, hotbarStart, hotbarEnd, false) && !this.moveItemStackTo(stack, invStart, invEnd, false))
 				return ItemStack.EMPTY;
 
-			if (stack.isEmpty())
+			if(stack.isEmpty())
 				slot.set(ItemStack.EMPTY);
-			else slot.setChanged();
+			else
+				slot.setChanged();
 
-			if (stack.getCount() == baseStack.getCount())
+			if(stack.getCount() == baseStack.getCount())
 				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stack);
@@ -128,33 +130,34 @@ public class BackpackMenu extends InventoryMenu {
 		Slot slot;
 		ItemStack existingStack;
 
-		if(stack.isStackable()) while (stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
-			slot = slots.get(i);
+		if(stack.isStackable())
+			while(stack.getCount() > 0 && (!r && i < length || r && i >= start)) {
+				slot = slots.get(i);
 
-			existingStack = slot.getItem();
+				existingStack = slot.getItem();
 
-			if (!existingStack.isEmpty()) {
-				int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
-				int rmv = Math.min(maxStack, stack.getCount());
+				if(!existingStack.isEmpty()) {
+					int maxStack = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
+					int rmv = Math.min(maxStack, stack.getCount());
 
-				if (slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.isSameItemSameTags(stack, existingStack)) {
-					int existingSize = existingStack.getCount() + stack.getCount();
+					if(slot.mayPlace(cloneStack(stack, rmv)) && existingStack.getItem().equals(stack.getItem()) && ItemStack.isSameItemSameTags(stack, existingStack)) {
+						int existingSize = existingStack.getCount() + stack.getCount();
 
-					if (existingSize <= maxStack) {
-						stack.setCount(0);
-						existingStack.setCount(existingSize);
-						slot.set(existingStack);
-						successful = true;
-					} else if (existingStack.getCount() < maxStack) {
-						stack.shrink(maxStack - existingStack.getCount());
-						existingStack.setCount(maxStack);
-						slot.set(existingStack);
-						successful = true;
+						if(existingSize <= maxStack) {
+							stack.setCount(0);
+							existingStack.setCount(existingSize);
+							slot.set(existingStack);
+							successful = true;
+						} else if(existingStack.getCount() < maxStack) {
+							stack.shrink(maxStack - existingStack.getCount());
+							existingStack.setCount(maxStack);
+							slot.set(existingStack);
+							successful = true;
+						}
 					}
 				}
+				i += iterOrder;
 			}
-			i += iterOrder;
-		}
 		if(stack.getCount() > 0) {
 			i = !r ? start : length - 1;
 			while(stack.getCount() > 0 && (!r && i < length || r && i >= start)) {

@@ -1,20 +1,21 @@
 package org.violetmoon.quark.base.world.generator.multichunk;
 
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Random;
-
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
 import org.violetmoon.quark.base.config.type.IBiomeConfig;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 
+import java.util.Random;
+
 public record ClusterShape(BlockPos src, Vec3 radius,
-						   PerlinSimplexNoise noiseGenerator) {
+		PerlinSimplexNoise noiseGenerator) {
 
 	public boolean isInside(BlockPos pos) {
 		return noiseDiff(pos) > 0;
@@ -31,9 +32,9 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 		double dz = (double) (pos.getZ() - src.getZ()) / radius.z;
 
 		double r = Math.sqrt(dx * dx + dy * dy + dz * dz);
-		if (r > 1)
+		if(r > 1)
 			return -1;
-		if (GeneralConfig.useFastWorldgen)
+		if(GeneralConfig.useFastWorldgen)
 			return 1;
 
 		// convert to spherical
@@ -47,7 +48,7 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 
 		// when nearing the end of the loop, lerp back to the start to prevent it cutting off
 		double cutoff = 0.75 * Math.PI;
-		if (phi > cutoff) {
+		if(phi > cutoff) {
 			double noise0 = noiseGenerator.getValue(-Math.PI + src.getX(), yn, false);
 			noise = Mth.lerp((phi - cutoff) / (Math.PI - cutoff), noise, noise0);
 		}

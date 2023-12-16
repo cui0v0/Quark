@@ -1,8 +1,8 @@
 package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
@@ -11,17 +11,15 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.common.Tags;
 
-import java.util.List;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
-import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ToretoiseRenderer;
 import org.violetmoon.quark.content.mobs.entity.Toretoise;
+import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
@@ -29,24 +27,29 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
+import java.util.List;
+
 @ZetaLoadModule(category = "mobs")
 public class ToretoiseModule extends ZetaModule {
 
 	public static EntityType<Toretoise> toretoiseType;
 
-	@Config public static int maxYLevel = 0;
+	@Config
+	public static int maxYLevel = 0;
 
-	@Config(description="The number of ticks from mining a tortoise until feeding it could cause it to regrow.")
+	@Config(description = "The number of ticks from mining a tortoise until feeding it could cause it to regrow.")
 	public static int cooldownTicks = 20 * 60;
 
-	@Config(description="The items that can be fed to toretoises to make them regrow ores.")
+	@Config(description = "The items that can be fed to toretoises to make them regrow ores.")
 	public static List<String> foods = Lists.newArrayList("minecraft:glow_berries");
 
 	@Config(flag = "toretoise_regrow")
 	public static boolean allowToretoiseToRegrow = true;
-	
-	@Config(description="Feeding a toretoise after cooldown will regrow them with a one-in-this-number chance. "
-			+ "Set to 1 to always regrow, higher = lower chance.")
+
+	@Config(
+		description = "Feeding a toretoise after cooldown will regrow them with a one-in-this-number chance. "
+				+ "Set to 1 to always regrow, higher = lower chance."
+	)
 	public static int regrowChance = 3;
 
 	@Config
@@ -57,7 +60,7 @@ public class ToretoiseModule extends ZetaModule {
 
 	public static ManualTrigger mineToretoiseTrigger;
 	public static ManualTrigger mineFedToretoiseTrigger;
-	
+
 	@LoadEvent
 	public final void register(ZRegister event) {
 		toretoiseType = EntityType.Builder.of(Toretoise::new, MobCategory.CREATURE)
@@ -71,7 +74,7 @@ public class ToretoiseModule extends ZetaModule {
 
 		EntitySpawnHandler.registerSpawn(toretoiseType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Toretoise::spawnPredicate, spawnConfig);
 		EntitySpawnHandler.addEgg(this, toretoiseType, 0x55413b, 0x383237, spawnConfig);
-		
+
 		mineToretoiseTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("mine_toretoise");
 		mineFedToretoiseTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("mine_fed_toretoise");
 	}

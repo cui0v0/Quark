@@ -2,10 +2,11 @@ package org.violetmoon.quark.content.tweaks.client.emote;
 
 import com.google.common.collect.Lists;
 
-import aurelienribon.tweenengine.*;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+
+import org.violetmoon.quark.base.Quark;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,7 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-import org.violetmoon.quark.base.Quark;
+import aurelienribon.tweenengine.*;
 
 public class EmoteTemplate {
 
@@ -54,7 +55,7 @@ public class EmoteTemplate {
 						tweenables.put(name, val);
 					else
 						parts.put(name, val);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					Quark.LOG.error("Failed while attempting to set up model parameters for emotes", e);
 				}
 			}
@@ -69,7 +70,7 @@ public class EmoteTemplate {
 				equations.put(name, eq);
 				if(name.equals("none"))
 					equations.put("linear", eq);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Quark.LOG.error("Failed while attempting to set up tween equations for emotes", e);
 			}
 		}
@@ -107,7 +108,7 @@ public class EmoteTemplate {
 			try {
 				for(; i < readLines.size() && !compiled; i++)
 					timeline = handle(model, player, timeline, readLines.get(i));
-			} catch(Exception e) {
+			} catch (Exception e) {
 				logError(e, i);
 				return Timeline.createSequence();
 			}
@@ -138,7 +139,7 @@ public class EmoteTemplate {
 					readLines.add(s);
 					timeline = handle(model, player, timeline, s);
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 				logError(e, lines);
 				return fallback();
 			}
@@ -147,12 +148,12 @@ public class EmoteTemplate {
 				return fallback();
 
 			return timeline;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			Quark.LOG.warn("Failed to load emote " + desc, e);
 			return fallback();
 		} finally {
 			compiledOnce = true;
-			if (desc != null)
+			if(desc != null)
 				desc.updateTier(this);
 		}
 	}
@@ -169,8 +170,8 @@ public class EmoteTemplate {
 		Quark.LOG.error("[Custom Emotes] Error loading line " + (line + 1) + " of emote " + file);
 		if(!(e instanceof IllegalArgumentException)) {
 			Quark.LOG.error("[Custom Emotes] This is an Internal Error, and not one in the emote file, please report it", e);
-		}
-		else Quark.LOG.error("[Custom Emotes] " + e.getMessage());
+		} else
+			Quark.LOG.error("[Custom Emotes] " + e.getMessage());
 	}
 
 	private Timeline handle(HumanoidModel<?> model, Player player, Timeline timeline, String s) throws IllegalArgumentException {
@@ -187,7 +188,7 @@ public class EmoteTemplate {
 		throw new IllegalArgumentException("Illegal function name " + function);
 	}
 
-	protected void setName(String[] tokens) { }
+	protected void setName(String[] tokens) {}
 
 	private static Timeline name(EmoteTemplate em, Timeline timeline, String[] tokens) throws IllegalArgumentException {
 		em.setName(tokens);
@@ -204,7 +205,8 @@ public class EmoteTemplate {
 
 		if(parts.containsKey(part))
 			em.usedParts.add(parts.get(part));
-		else throw new IllegalArgumentException("Illegal part name for function use: " + part);
+		else
+			throw new IllegalArgumentException("Illegal part name for function use: " + part);
 
 		return timeline;
 	}
@@ -229,10 +231,10 @@ public class EmoteTemplate {
 
 		String type = tokens[1];
 
-		Timeline newTimeline = switch (type) {
-			case "sequence" -> Timeline.createSequence();
-			case "parallel" -> Timeline.createParallel();
-			default -> throw new IllegalArgumentException("Illegal animation type: " + type);
+		Timeline newTimeline = switch(type) {
+		case "sequence" -> Timeline.createSequence();
+		case "parallel" -> Timeline.createParallel();
+		default -> throw new IllegalArgumentException("Illegal animation type: " + type);
 		};
 
 		newTimeline.addCallback(TweenCallback.START, (tween) -> {
@@ -248,10 +250,10 @@ public class EmoteTemplate {
 		assertParamSize(tokens, 2);
 
 		String type = tokens[1];
-		Timeline newTimeline = switch (type) {
-			case "sequence" -> Timeline.createSequence();
-			case "parallel" -> Timeline.createParallel();
-			default -> throw new IllegalArgumentException("Illegal section type: " + type);
+		Timeline newTimeline = switch(type) {
+		case "sequence" -> Timeline.createSequence();
+		case "parallel" -> Timeline.createParallel();
+		default -> throw new IllegalArgumentException("Illegal section type: " + type);
 		};
 
 		em.timelineStack.push(timeline);
@@ -283,7 +285,8 @@ public class EmoteTemplate {
 		int part;
 		if(tweenables.containsKey(partStr))
 			part = tweenables.get(partStr);
-		else throw new IllegalArgumentException("Illegal part name for function move: " + partStr);
+		else
+			throw new IllegalArgumentException("Illegal part name for function move: " + partStr);
 
 		float time = Float.parseFloat(tokens[2]) * em.speed;
 		float target = Float.parseFloat(tokens[3]);
@@ -298,35 +301,37 @@ public class EmoteTemplate {
 				String cmd = tokens[index++];
 				int times;
 				float delay;
-				switch (cmd) {
-					case "delay" -> {
-						assertParamSize("delay", tokens, 1, index);
-						delay = Float.parseFloat(tokens[index++]) * em.speed;
-						if (valid)
-							tween = tween.delay(delay);
-					}
-					case "yoyo" -> {
-						assertParamSize("yoyo", tokens, 2, index);
-						times = Integer.parseInt(tokens[index++]);
-						delay = Float.parseFloat(tokens[index++]) * em.speed;
-						if (valid)
-							tween = tween.repeatYoyo(times, delay);
-					}
-					case "repeat" -> {
-						assertParamSize("repeat", tokens, 2, index);
-						times = Integer.parseInt(tokens[index++]);
-						delay = Float.parseFloat(tokens[index++]) * em.speed;
-						if (valid)
-							tween = tween.repeat(times, delay);
-					}
-					case "ease" -> {
-						assertParamSize("ease", tokens, 1, index);
-						String easeType = tokens[index++];
-						if (equations.containsKey(easeType)) {
-							if (valid) tween.ease(equations.get(easeType));
-						} else throw new IllegalArgumentException("Easing type " + easeType + " doesn't exist");
-					}
-					default -> throw new IllegalArgumentException(String.format("Invalid modifier %s for move function", cmd));
+				switch(cmd) {
+				case "delay" -> {
+					assertParamSize("delay", tokens, 1, index);
+					delay = Float.parseFloat(tokens[index++]) * em.speed;
+					if(valid)
+						tween = tween.delay(delay);
+				}
+				case "yoyo" -> {
+					assertParamSize("yoyo", tokens, 2, index);
+					times = Integer.parseInt(tokens[index++]);
+					delay = Float.parseFloat(tokens[index++]) * em.speed;
+					if(valid)
+						tween = tween.repeatYoyo(times, delay);
+				}
+				case "repeat" -> {
+					assertParamSize("repeat", tokens, 2, index);
+					times = Integer.parseInt(tokens[index++]);
+					delay = Float.parseFloat(tokens[index++]) * em.speed;
+					if(valid)
+						tween = tween.repeat(times, delay);
+				}
+				case "ease" -> {
+					assertParamSize("ease", tokens, 1, index);
+					String easeType = tokens[index++];
+					if(equations.containsKey(easeType)) {
+						if(valid)
+							tween.ease(equations.get(easeType));
+					} else
+						throw new IllegalArgumentException("Easing type " + easeType + " doesn't exist");
+				}
+				default -> throw new IllegalArgumentException(String.format("Invalid modifier %s for move function", cmd));
 				}
 			}
 		}
@@ -337,18 +342,18 @@ public class EmoteTemplate {
 	}
 
 	private static Timeline sound(EmoteTemplate em, Player player, Timeline timeline, String[] tokens) throws IllegalArgumentException {
-		if (timeline == null)
+		if(timeline == null)
 			throw new IllegalArgumentException("Illegal use of function sound, animation not started");
-		if (tokens.length < 2)
+		if(tokens.length < 2)
 			throw new IllegalArgumentException("Expected action (continuous, instant, stop) for function sound");
 
 		String playType = tokens[1];
-		if (playType.equals("stop")) {
+		if(playType.equals("stop")) {
 
 			List<BaseTween<?>> children = timeline.getChildren();
 			BaseTween<?> callbackTween = timeline;
 			int tweenEvent = TweenCallback.START;
-			if (!children.isEmpty()) {
+			if(!children.isEmpty()) {
 				tweenEvent = TweenCallback.COMPLETE;
 				callbackTween = children.get(children.size() - 1);
 			}
@@ -357,14 +362,14 @@ public class EmoteTemplate {
 		} else {
 
 			boolean repeating = playType.equals("continuous");
-			if (!repeating && !playType.equals("instant"))
+			if(!repeating && !playType.equals("instant"))
 				throw new IllegalArgumentException(String.format("Invalid modifier %s for sound function", playType));
 
 			assertParamSize(tokens, 4, 6);
 
 			String endCondition = tokens[2];
 			boolean endWithSequence = endCondition.equals("section");
-			if (!endWithSequence && !endCondition.equals("emote"))
+			if(!endWithSequence && !endCondition.equals("emote"))
 				throw new IllegalArgumentException(String.format("Invalid modifier %s for sound function", endCondition));
 
 			String type = tokens[3];
@@ -372,10 +377,10 @@ public class EmoteTemplate {
 			float pitch = 1f;
 
 			try {
-				if (tokens.length >= 5)
+				if(tokens.length >= 5)
 					volume = Math.min(Float.parseFloat(tokens[4]), 1.5f);
 
-				if (tokens.length >= 6)
+				if(tokens.length >= 6)
 					pitch = Float.parseFloat(tokens[5]);
 			} catch (NumberFormatException ex) {
 				throw new IllegalArgumentException("Illegal number in function sound", ex);
@@ -392,7 +397,7 @@ public class EmoteTemplate {
 
 			BaseTween<?> callbackTween = timeline;
 			int tweenEvent = TweenCallback.START;
-			if (!children.isEmpty()) {
+			if(!children.isEmpty()) {
 				tweenEvent = TweenCallback.COMPLETE;
 				callbackTween = children.get(children.size() - 1);
 			}

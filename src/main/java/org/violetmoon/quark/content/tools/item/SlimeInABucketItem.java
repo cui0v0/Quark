@@ -1,8 +1,5 @@
 package org.violetmoon.quark.content.tools.item;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -27,6 +25,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.phys.Vec3;
+
+import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
@@ -40,8 +41,8 @@ public class SlimeInABucketItem extends ZetaItem {
 	public SlimeInABucketItem(ZetaModule module) {
 		super("slime_in_a_bucket", module,
 				new Item.Properties()
-				.stacksTo(1)
-				.craftRemainder(Items.BUCKET));
+						.stacksTo(1)
+						.craftRemainder(Items.BUCKET));
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.TOOLS_AND_UTILITIES, this, Items.TADPOLE_BUCKET, false);
 	}
 
@@ -85,7 +86,7 @@ public class SlimeInABucketItem extends ZetaItem {
 
 			slime.setPos(x, y, z);
 
-            worldIn.gameEvent(playerIn, GameEvent.ENTITY_PLACE, slime.position());
+			worldIn.gameEvent(playerIn, GameEvent.ENTITY_PLACE, slime.position());
 			worldIn.addFreshEntity(slime);
 			playerIn.swing(hand);
 		}

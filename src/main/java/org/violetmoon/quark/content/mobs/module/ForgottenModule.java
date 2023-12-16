@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.mobs.module;
 
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -11,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
@@ -38,12 +40,14 @@ public class ForgottenModule extends ZetaModule {
 
 	public static EntityType<Forgotten> forgottenType;
 
-	@Hint public static Item forgotten_hat;
+	@Hint
+	public static Item forgotten_hat;
 
 	@Config(description = "This is the probability of a Skeleton that spawns under the height threshold being replaced with a Forgotten.")
 	public double forgottenSpawnRate = 0.05;
 
-	@Config public int maxHeightForSpawn = 0;
+	@Config
+	public int maxHeightForSpawn = 0;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -59,7 +63,7 @@ public class ForgottenModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, BooleanSuppliers.TRUE);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
-			.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent
@@ -69,18 +73,18 @@ public class ForgottenModule extends ZetaModule {
 
 	@PlayEvent
 	public void onSkeletonSpawn(ZMobSpawnEvent.CheckSpawn.Lowest event) {
-		if (event.getSpawnType() == MobSpawnType.SPAWNER)
+		if(event.getSpawnType() == MobSpawnType.SPAWNER)
 			return;
 
 		LivingEntity entity = event.getEntity();
 		ZResult result = event.getResult();
 		ServerLevelAccessor world = event.getLevel();
 
-		if (entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != ZResult.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
+		if(entity.getType() == EntityType.SKELETON && entity instanceof Mob mob && result != ZResult.DENY && entity.getY() < maxHeightForSpawn && world.getRandom().nextDouble() < forgottenSpawnRate) {
 			if(result == ZResult.ALLOW || (mob.checkSpawnRules(world, event.getSpawnType()) && mob.checkSpawnObstruction(world))) {
 				Forgotten forgotten = new Forgotten(forgottenType, entity.level());
 				Vec3 epos = entity.position();
-				
+
 				forgotten.absMoveTo(epos.x, epos.y, epos.z, entity.getYRot(), entity.getXRot());
 				forgotten.prepareEquipment();
 
@@ -89,7 +93,7 @@ public class ForgottenModule extends ZetaModule {
 				//fixme maybe broken? - IThundxr
 				MobSpawnEvent.FinalizeSpawn newEvent = new MobSpawnEvent.FinalizeSpawn(forgotten, world, event.getX(), event.getY(), event.getZ(), world.getCurrentDifficultyAt(pos), event.getSpawnType(), null, null, event.getSpawner());
 				MinecraftForge.EVENT_BUS.post(newEvent);
-				
+
 				if(newEvent.getResult() != Result.DENY) {
 					world.addFreshEntity(forgotten);
 					event.setResult(ZResult.DENY);

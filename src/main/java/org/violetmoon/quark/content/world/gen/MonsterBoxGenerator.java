@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
+
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.base.world.generator.Generator;
@@ -43,7 +44,7 @@ public class MonsterBoxGenerator extends Generator {
 				}
 			}
 
-			chance -=MonsterBoxModule.chancePerChunk;
+			chance -= MonsterBoxModule.chancePerChunk;
 		}
 	}
 

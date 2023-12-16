@@ -1,10 +1,5 @@
 package org.violetmoon.quark.integration.jei;
 
-import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.base.Quark;
-
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -14,9 +9,15 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.base.Quark;
 
 public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 
@@ -61,15 +62,15 @@ public class InfluenceCategory implements IRecipeCategory<InfluenceEntry> {
 	@Override
 	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull InfluenceEntry recipe, @NotNull IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 10)
-			 .addItemStack(recipe.getCandleStack());
+				.addItemStack(recipe.getCandleStack());
 
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 55, 1)
-			 .addItemStack(recipe.getBoostBook());
+				.addItemStack(recipe.getBoostBook());
 
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 55, 19)
-			 .addItemStack(recipe.getDampenBook());
+				.addItemStack(recipe.getDampenBook());
 
 		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT)
-			 .addItemStacks(recipe.getAssociatedBooks());
+				.addItemStacks(recipe.getAssociatedBooks());
 	}
 }

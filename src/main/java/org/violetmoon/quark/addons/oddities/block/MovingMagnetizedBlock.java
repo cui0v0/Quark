@@ -23,8 +23,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.addons.oddities.block.be.MagnetizedBlockBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.MagnetsModule;
 import org.violetmoon.zeta.block.OldMaterials;
@@ -36,7 +38,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- * Created at 3:05 PM on 2/26/20.
+ *         Created at 3:05 PM on 2/26/20.
  */
 public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	public static final DirectionProperty FACING = PistonHeadBlock.FACING;
@@ -54,9 +56,9 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
+		if(state.getBlock() != newState.getBlock()) {
 			MagnetizedBlockBlockEntity tile = getMagnetTileEntity(worldIn, pos);
-			if (tile != null)
+			if(tile != null)
 				tile.clearMagnetTileEntity();
 		}
 	}
@@ -69,7 +71,7 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	@NotNull
 	@Override
 	public InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
-		if (!worldIn.isClientSide && worldIn.getBlockEntity(pos) == null) {
+		if(!worldIn.isClientSide && worldIn.getBlockEntity(pos) == null) {
 			worldIn.removeBlock(pos, false);
 			return InteractionResult.SUCCESS;
 		} else
@@ -99,7 +101,7 @@ public class MovingMagnetizedBlock extends ZetaBlock implements EntityBlock {
 	@Nullable
 	private MagnetizedBlockBlockEntity getMagnetTileEntity(BlockGetter world, BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
-		return tile instanceof MagnetizedBlockBlockEntity ? (MagnetizedBlockBlockEntity)tile : null;
+		return tile instanceof MagnetizedBlockBlockEntity ? (MagnetizedBlockBlockEntity) tile : null;
 	}
 
 	@Override

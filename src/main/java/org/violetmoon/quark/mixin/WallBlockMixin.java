@@ -1,11 +1,14 @@
 package org.violetmoon.quark.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
 import org.violetmoon.quark.content.building.module.VerticalSlabsModule;
 
 @Mixin(WallBlock.class)

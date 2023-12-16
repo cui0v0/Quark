@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.tweaks.module;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -31,7 +33,7 @@ import java.util.List;
 
 /**
  * @author WireSegal
- * Created at 11:25 AM on 9/2/19.
+ *         Created at 11:25 AM on 9/2/19.
  */
 @ZetaLoadModule(category = "tweaks")
 public class PatTheDogsModule extends ZetaModule {
@@ -46,10 +48,10 @@ public class PatTheDogsModule extends ZetaModule {
 
 	@PlayEvent
 	public void onWolfAppear(ZEntityJoinLevel event) {
-		if (dogsWantLove > 0 && event.getEntity() instanceof Wolf wolf) {
+		if(dogsWantLove > 0 && event.getEntity() instanceof Wolf wolf) {
 			boolean alreadySetUp = wolf.goalSelector.getAvailableGoals().stream().anyMatch((goal) -> goal.getGoal() instanceof WantLoveGoal);
 
-			if (!alreadySetUp) {
+			if(!alreadySetUp) {
 				MiscUtil.addGoalJustAfterLatestWithPriority(wolf.goalSelector, 4, new NuzzleGoal(wolf, 0.5F, 16, 2, SoundEvents.WOLF_WHINE));
 				MiscUtil.addGoalJustAfterLatestWithPriority(wolf.goalSelector, 5, new WantLoveGoal(wolf, 0.2F));
 			}
@@ -60,82 +62,83 @@ public class PatTheDogsModule extends ZetaModule {
 	public void onInteract(ZPlayerInteract.EntityInteract event) {
 		var player = event.getEntity();
 
-		if (player.isDiscrete() && player.getMainHandItem().isEmpty()) {
-			if (event.getTarget() instanceof Wolf wolf) {
-				if (event.getHand() == InteractionHand.MAIN_HAND && WantLoveGoal.canPet(wolf)) {
-					if (player.level() instanceof ServerLevel serverLevel) {
+		if(player.isDiscrete() && player.getMainHandItem().isEmpty()) {
+			if(event.getTarget() instanceof Wolf wolf) {
+				if(event.getHand() == InteractionHand.MAIN_HAND && WantLoveGoal.canPet(wolf)) {
+					if(player.level() instanceof ServerLevel serverLevel) {
 						var pos = wolf.position();
 						serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 						wolf.playSound(SoundEvents.WOLF_WHINE, 1F, 0.5F + (float) Math.random() * 0.5F);
-					} else player.swing(InteractionHand.MAIN_HAND);
+					} else
+						player.swing(InteractionHand.MAIN_HAND);
 
 					WantLoveGoal.setPetTime(wolf);
 
-					if (wolf instanceof Foxhound && !player.isInWater() && !player.hasEffect(MobEffects.FIRE_RESISTANCE)
-						&& !player.getAbilities().invulnerable)
+					if(wolf instanceof Foxhound && !player.isInWater() && !player.hasEffect(MobEffects.FIRE_RESISTANCE)
+							&& !player.getAbilities().invulnerable)
 						player.setSecondsOnFire(5);
 				}
 
 				event.setCanceled(true);
-			} else if (event.getTarget() instanceof LivingEntity living &&
-				(petAllMobs || living instanceof Player || pettableAllowlist.contains(living.getEncodeId())) &&
-				!pettableDenylist.contains(living.getEncodeId())) {
+			} else if(event.getTarget() instanceof LivingEntity living &&
+					(petAllMobs || living instanceof Player || pettableAllowlist.contains(living.getEncodeId())) &&
+					!pettableDenylist.contains(living.getEncodeId())) {
 				SoundEvent sound = null;
 				float pitchCenter = 1f;
-				if (living instanceof Axolotl) {
+				if(living instanceof Axolotl) {
 					sound = SoundEvents.AXOLOTL_SPLASH;
-				} else if (living instanceof Cat || living instanceof Ocelot) {
+				} else if(living instanceof Cat || living instanceof Ocelot) {
 					sound = SoundEvents.CAT_PURREOW;
-				} else if (living instanceof Chicken) {
+				} else if(living instanceof Chicken) {
 					sound = SoundEvents.CHICKEN_AMBIENT;
-				} else if (living instanceof Cow) {
+				} else if(living instanceof Cow) {
 					sound = SoundEvents.COW_AMBIENT;
 					pitchCenter = 1.2f;
-				} else if (living instanceof AbstractHorse) {
+				} else if(living instanceof AbstractHorse) {
 					sound = SoundEvents.HORSE_AMBIENT;
-				} else if (living instanceof AbstractFish) {
+				} else if(living instanceof AbstractFish) {
 					sound = SoundEvents.FISH_SWIM;
-				} else if (living instanceof Fox) {
+				} else if(living instanceof Fox) {
 					sound = SoundEvents.FOX_SLEEP;
-				} else if (living instanceof Squid) {
-					sound = (living instanceof GlowSquid) ?
-						SoundEvents.GLOW_SQUID_SQUIRT : SoundEvents.SQUID_SQUIRT;
+				} else if(living instanceof Squid) {
+					sound = (living instanceof GlowSquid) ? SoundEvents.GLOW_SQUID_SQUIRT : SoundEvents.SQUID_SQUIRT;
 					pitchCenter = 1.2f;
-				} else if (living instanceof Parrot) {
+				} else if(living instanceof Parrot) {
 					sound = SoundEvents.PARROT_AMBIENT;
-				} else if (living instanceof Pig) {
+				} else if(living instanceof Pig) {
 					sound = SoundEvents.PIG_AMBIENT;
-				} else if (living instanceof Rabbit) {
+				} else if(living instanceof Rabbit) {
 					sound = SoundEvents.RABBIT_AMBIENT;
-				} else if (living instanceof Sheep) {
+				} else if(living instanceof Sheep) {
 					sound = SoundEvents.SHEEP_AMBIENT;
-				} else if (living instanceof Strider) {
+				} else if(living instanceof Strider) {
 					sound = SoundEvents.STRIDER_HAPPY;
-				} else if (living instanceof Turtle) {
+				} else if(living instanceof Turtle) {
 					sound = SoundEvents.TURTLE_AMBIENT_LAND;
-				} else if (living instanceof Player pettee) {
+				} else if(living instanceof Player pettee) {
 					var uuid = pettee.getStringUUID();
-					sound = switch (uuid) {
-						case "a2ce9382-2518-4752-87b2-c6a5c97f173e" -> // petra_the_kat
-							QuarkSounds.PET_DEVICE;
-						case "29a10dc6-a201-4993-80d8-c847212bc92b", // MacyMacerator
+					sound = switch(uuid) {
+					case "a2ce9382-2518-4752-87b2-c6a5c97f173e" -> // petra_the_kat
+						QuarkSounds.PET_DEVICE;
+					case "29a10dc6-a201-4993-80d8-c847212bc92b", // MacyMacerator
 							"d30d8e38-6f93-4d96-968d-dd6ec5596941" -> // Falkory220
-							QuarkSounds.PET_NEKO;
-						case "d475af59-d73c-42be-90ed-f1a78f10d452" -> // DaniCherryJam
-							QuarkSounds.PET_SLIME;
-						case "458391f5-6303-4649-b416-e4c0d18f837a" -> // yrsegal
-							QuarkSounds.PET_WIRE;
-						default -> null;
+						QuarkSounds.PET_NEKO;
+					case "d475af59-d73c-42be-90ed-f1a78f10d452" -> // DaniCherryJam
+						QuarkSounds.PET_SLIME;
+					case "458391f5-6303-4649-b416-e4c0d18f837a" -> // yrsegal
+						QuarkSounds.PET_WIRE;
+					default -> null;
 					};
 				}
-				if (sound != null) {
-					if (event.getHand() == InteractionHand.MAIN_HAND) {
-						if (player.level() instanceof ServerLevel serverLevel) {
+				if(sound != null) {
+					if(event.getHand() == InteractionHand.MAIN_HAND) {
+						if(player.level() instanceof ServerLevel serverLevel) {
 							var pos = living.getEyePosition();
 							serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
 
 							living.playSound(sound, 1F, pitchCenter + (float) (Math.random() - 0.5) * 0.5F);
-						} else player.swing(InteractionHand.MAIN_HAND);
+						} else
+							player.swing(InteractionHand.MAIN_HAND);
 					}
 
 					event.setCanceled(true);
@@ -143,9 +146,6 @@ public class PatTheDogsModule extends ZetaModule {
 			}
 		}
 	}
-
-
-
 
 	@PlayEvent
 	public void onTame(ZAnimalTame event) {

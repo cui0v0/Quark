@@ -1,17 +1,20 @@
 package org.violetmoon.quark.integration.terrablender;
 
-import java.util.function.Consumer;
-
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
+
+import java.util.function.Consumer;
+
 import terrablender.api.Region;
 import terrablender.api.RegionType;
 import terrablender.api.Regions;
@@ -33,7 +36,7 @@ public class TerrablenderUndergroundBiomeHandler extends AbstractUndergroundBiom
 				@Override
 				public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
 					// Quark's region is the same as vanilla's, but with underground biomes added.
-					addModifiedVanillaOverworldBiomes(consumer, noModifications -> { });
+					addModifiedVanillaOverworldBiomes(consumer, noModifications -> {});
 
 					// When we call TerraBlender's addModifiedVanillaOverworldBiomes...
 					// -> it calls terrablender ModifiedVanillaOverworldBuilder.build

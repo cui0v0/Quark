@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.violetmoon.zeta.block.IZetaBlock;
 import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 
@@ -23,7 +24,7 @@ public class PaperWallBlock extends ZetaInheritedPaneBlock {
 	public PaperWallBlock(IZetaBlock parent, String name) {
 		super(parent, name,
 				Block.Properties.copy(parent.getBlock())
-					.lightLevel(b -> 0));
+						.lightLevel(b -> 0));
 	}
 
 	@Override

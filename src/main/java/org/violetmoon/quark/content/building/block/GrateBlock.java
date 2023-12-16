@@ -1,6 +1,7 @@
 package org.violetmoon.quark.content.building.block;
 
 import it.unimi.dsi.fastutil.floats.Float2ObjectArrayMap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,8 +33,10 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
 import org.violetmoon.zeta.block.SimpleFluidloggedBlock;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -49,12 +52,12 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 
 	public GrateBlock(@Nullable ZetaModule module) {
 		super("grate", module,
-			Block.Properties.of()
-				.strength(5, 10)
-				.sound(SoundType.METAL)
-				.isValidSpawn((what, huh, idk, hoh) -> false)
-				.lightLevel(state -> state.getValue(LAVALOGGED) ? 15 : 0)
-				.noOcclusion());
+				Block.Properties.of()
+						.strength(5, 10)
+						.sound(SoundType.METAL)
+						.isValidSpawn((what, huh, idk, hoh) -> false)
+						.lightLevel(state -> state.getValue(LAVALOGGED) ? 15 : 0)
+						.noOcclusion());
 
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(LAVALOGGED, false));
 
@@ -100,8 +103,8 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 
 	@Override
 	public boolean collisionExtendsVerticallyZeta(BlockState state, BlockGetter level, BlockPos pos, Entity collidingEntity) {
-		if (collidingEntity instanceof Animal || collidingEntity instanceof WaterAnimal)
-			if (!(collidingEntity instanceof Animal animal && animal.getLeashHolder() != null))
+		if(collidingEntity instanceof Animal || collidingEntity instanceof WaterAnimal)
+			if(!(collidingEntity instanceof Animal animal && animal.getLeashHolder() != null))
 				return !(collidingEntity instanceof WaterAnimal waterAnimal && waterAnimal.getLeashHolder() != null);
 		return false;
 	}
@@ -111,8 +114,8 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	public VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
 		Entity entity = context instanceof EntityCollisionContext ? ((EntityCollisionContext) context).getEntity() : null;
 
-		if (entity != null) {
-			if (entity instanceof ItemEntity || entity instanceof ExperienceOrb)
+		if(entity != null) {
+			if(entity instanceof ItemEntity || entity instanceof ExperienceOrb)
 				return Shapes.empty();
 
 			boolean preventedType = entity instanceof Animal || entity instanceof WaterAnimal;
@@ -121,7 +124,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 
 			boolean onGrate = world.getBlockState(entity.blockPosition().offset(0, -1, 0)).getBlock() instanceof GrateBlock;
 
-			if (preventedType && !leashed && !onGrate) {
+			if(preventedType && !leashed && !onGrate) {
 				return getCachedShape(entity.getStepHeight());
 			}
 
@@ -151,9 +154,9 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	@Override
 	public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block updatedBlock, @NotNull BlockPos neighbor, boolean isMoving) {
 		super.neighborChanged(state, level, pos, updatedBlock, neighbor, isMoving);
-		if (!pos.below().equals(neighbor)) {
+		if(!pos.below().equals(neighbor)) {
 			BlockState neighborState = level.getBlockState(neighbor);
-			if (neighborState.getFluidState().is(FluidTags.WATER) &&
+			if(neighborState.getFluidState().is(FluidTags.WATER) &&
 					fluidContained(state).isSame(Fluids.LAVA)) {
 				level.destroyBlock(pos, true);
 				level.setBlock(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, neighbor, Blocks.OBSIDIAN.defaultBlockState()), 3);
@@ -165,11 +168,11 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	@NotNull
 	@Override
 	public BlockState updateShape(@NotNull BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos facingPos) {
-		if (state.getValue(LAVALOGGED) && state.getValue(WATERLOGGED))
+		if(state.getValue(LAVALOGGED) && state.getValue(WATERLOGGED))
 			state = withFluid(state, Fluids.WATER);
 
 		Fluid fluid = fluidContained(state);
-		if (fluid != Fluids.EMPTY)
+		if(fluid != Fluids.EMPTY)
 			level.scheduleTick(pos, fluid, fluid.getTickDelay(level));
 
 		return super.updateShape(state, facing, facingState, level, pos, facingPos);
@@ -184,7 +187,7 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	@Override
 	public FluidState getFluidState(@NotNull BlockState state) {
 		FluidState contained = fluidContained(state).defaultFluidState();
-		if (contained.hasProperty(BlockStateProperties.FALLING))
+		if(contained.hasProperty(BlockStateProperties.FALLING))
 			contained = contained.setValue(BlockStateProperties.FALLING, false);
 		return contained;
 	}
@@ -205,9 +208,9 @@ public class GrateBlock extends ZetaBlock implements SimpleFluidloggedBlock, ICr
 	@NotNull
 	@Override
 	public Fluid fluidContained(@NotNull BlockState state) {
-		if (state.getValue(WATERLOGGED))
+		if(state.getValue(WATERLOGGED))
 			return Fluids.WATER;
-		else if (state.getValue(LAVALOGGED))
+		else if(state.getValue(LAVALOGGED))
 			return Fluids.LAVA;
 		else
 			return Fluids.EMPTY;

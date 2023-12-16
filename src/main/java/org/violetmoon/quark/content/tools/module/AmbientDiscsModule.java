@@ -14,6 +14,7 @@ import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
+
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.base.item.QuarkMusicDiscItem;
@@ -31,8 +32,10 @@ import java.util.List;
 @ZetaLoadModule(category = "tools")
 public class AmbientDiscsModule extends ZetaModule {
 
-	@Config public static boolean dropOnSpiderKill = true;
-	@Config public static double volume = 3;
+	@Config
+	public static boolean dropOnSpiderKill = true;
+	@Config
+	public static double volume = 3;
 
 	@Hint(key = "ambience_discs")
 	private final List<Item> discs = new ArrayList<>();
@@ -95,7 +98,7 @@ public class AmbientDiscsModule extends ZetaModule {
 				soundEngine.play(simplesound);
 
 				if(mc.level != null)
-					mc.level.addParticle(ParticleTypes.NOTE,pos.getX() + Math.random(), pos.getY() + 1.1, pos.getZ() + Math.random(), Math.random(), 0, 0);
+					mc.level.addParticle(ParticleTypes.NOTE, pos.getX() + Math.random(), pos.getY() + 1.1, pos.getZ() + Math.random(), Math.random(), 0, 0);
 
 				return true;
 			}

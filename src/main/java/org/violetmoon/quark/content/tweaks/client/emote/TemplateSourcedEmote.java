@@ -1,12 +1,13 @@
 package org.violetmoon.quark.content.tweaks.client.emote;
 
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.player.Player;
+
 import org.violetmoon.quark.base.Quark;
 
 import aurelienribon.tweenengine.Timeline;
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.IEnvironment;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.world.entity.player.Player;
 
 public class TemplateSourcedEmote extends EmoteBase {
 
@@ -20,7 +21,7 @@ public class TemplateSourcedEmote extends EmoteBase {
 			desc.template.readAndMakeTimeline(desc, player, model);
 		}
 	}
-	
+
 	public boolean shouldLoadTimelineOnLaunch() {
 		return DEOBF;
 	}

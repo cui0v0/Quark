@@ -15,8 +15,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -28,11 +30,11 @@ public class MonsterBoxBlock extends ZetaBlock implements EntityBlock {
 	public MonsterBoxBlock(@Nullable ZetaModule module) {
 		super("monster_box", module,
 				Block.Properties.of()
-				.mapColor(MapColor.METAL)
-				.instrument(NoteBlockInstrument.IRON_XYLOPHONE)
-				.strength(25F)
-				.sound(SoundType.METAL)
-				.noOcclusion());
+						.mapColor(MapColor.METAL)
+						.instrument(NoteBlockInstrument.IRON_XYLOPHONE)
+						.strength(25F)
+						.sound(SoundType.METAL)
+						.noOcclusion());
 
 		if(module == null) //auto registration below this line
 			return;

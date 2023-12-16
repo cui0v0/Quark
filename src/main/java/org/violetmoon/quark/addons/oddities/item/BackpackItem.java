@@ -2,6 +2,7 @@ package org.violetmoon.quark.addons.oddities.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -25,7 +26,9 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import org.violetmoon.quark.base.Quark;
@@ -50,9 +53,9 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	public BackpackItem(ZetaModule module) {
 		super(ArmorMaterials.LEATHER, Type.CHESTPLATE,
 				new Item.Properties()
-				.stacksTo(1)
-				.durability(0)
-				.rarity(Rarity.RARE));
+						.stacksTo(1)
+						.durability(0)
+						.rarity(Rarity.RARE));
 
 		this.module = module;
 		module.zeta.registry.registerItem(this, "backpack");
@@ -86,7 +89,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	public static boolean doesBackpackHaveItems(ItemStack stack) {
 		LazyOptional<IItemHandler> handlerOpt = stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
 
-		if (!handlerOpt.isPresent())
+		if(!handlerOpt.isPresent())
 			return false;
 
 		IItemHandler handler = handlerOpt.orElse(new ItemStackHandler());
@@ -168,7 +171,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 		if(BackpackModule.superOpMode || entityItem.level().isClientSide)
 			return false;
 
-		if (!ItemNBTHelper.detectNBT(stack))
+		if(!ItemNBTHelper.detectNBT(stack))
 			return false;
 
 		LazyOptional<IItemHandler> handlerOpt = stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null);
@@ -188,7 +191,7 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 
 		CompoundTag comp = ItemNBTHelper.getNBT(stack);
 		comp.remove("Inventory");
-		if (comp.size() == 0)
+		if(comp.size() == 0)
 			stack.setTag(null);
 
 		return false;
@@ -200,12 +203,12 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag oldCapNbt) {
 		ProxiedItemStackHandler handler = new ProxiedItemStackHandler(stack, 27);
 
-		if (oldCapNbt != null && oldCapNbt.contains("Parent")) {
+		if(oldCapNbt != null && oldCapNbt.contains("Parent")) {
 			CompoundTag itemData = oldCapNbt.getCompound("Parent");
 			ItemStackHandler stacks = new ItemStackHandler();
 			stacks.deserializeNBT(itemData);
 
-			for (int i = 0; i < stacks.getSlots(); i++)
+			for(int i = 0; i < stacks.getSlots(); i++)
 				handler.setStackInSlot(i, stacks.getStackInSlot(i));
 
 			oldCapNbt.remove("Parent");
@@ -244,6 +247,5 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	public Component getDisplayName() {
 		return Component.translatable(getDescriptionId());
 	}
-
 
 }
