@@ -23,9 +23,11 @@ public class QButtonHandler {
 		Screen gui = event.getScreen();
 
 		if(GeneralConfig.enableQButton && (gui instanceof TitleScreen || gui instanceof PauseScreen)) {
+			//todo: Player Reporting / Open to Lan occupy the same location depending on if its single or multiplayer
+			// Temporarily, Im setting it to be next to ReportBugs, but we will need to revisit it.
 			ImmutableSet<String> targets = GeneralConfig.qButtonOnRight
 					? ImmutableSet.of(I18n.get("fml.menu.modoptions"), I18n.get("menu.online"))
-					: ImmutableSet.of(I18n.get("menu.options"), I18n.get("fml.menu.mods"));
+							: ImmutableSet.of(I18n.get("menu.options"), I18n.get("menu.reportBugs"));
 
 			List<GuiEventListener> listeners = event.getListenersList();
 			for(GuiEventListener b : listeners)

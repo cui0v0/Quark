@@ -59,7 +59,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('runServer')
             mods {
                 quark {
                     source sourceSets.main
