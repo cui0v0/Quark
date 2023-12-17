@@ -101,6 +101,11 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 	}
 
 	@Override
+	public boolean canEquipZeta(ItemStack stack, EquipmentSlot equipmentSlot, Entity ent) {
+		return equipmentSlot == EquipmentSlot.CHEST;
+	}
+
+	@Override
 	public boolean isBookEnchantableZeta(ItemStack stack, ItemStack book) {
 		return false;
 	}
