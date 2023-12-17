@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import org.violetmoon.quark.addons.oddities.module.BackpackModule;
+import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
@@ -25,7 +26,7 @@ import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BackpackInventoryScreen extends InventoryScreen {
+public class BackpackInventoryScreen extends InventoryScreen implements IQuarkButtonAllowed {
 
 	private static final ResourceLocation BACKPACK_INVENTORY_BACKGROUND = new ResourceLocation(Quark.MOD_ID, "textures/misc/backpack_gui.png");
 

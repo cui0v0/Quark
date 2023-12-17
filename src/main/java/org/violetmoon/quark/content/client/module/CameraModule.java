@@ -317,10 +317,7 @@ public class CameraModule extends ZetaModule {
 				matrix.pushPose();
 				matrix.translate(overlayX, overlayY, 0);
 				matrix.scale((float) overlayScale, (float) overlayScale, 1.0F);
-				if(overlayShadow)
-					guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor, true);
-				else
-					guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor);
+				guiGraphics.drawString(mc.font, overlayText, 0, 0, overlayColor, overlayShadow);
 				matrix.popPose();
 			}
 
