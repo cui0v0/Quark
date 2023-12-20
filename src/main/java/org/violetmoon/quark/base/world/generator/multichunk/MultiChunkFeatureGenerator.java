@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.generator.Generator;
 
@@ -47,15 +49,9 @@ public abstract class MultiChunkFeatureGenerator extends Generator {
 				Random chunkRandom = new Random(chunkSeed);
 				BlockPos chunkCorner = new BlockPos(x << 4, 0, z << 4);
 
-				BlockPos[] sources = getSourcesInChunk(world, chunkRandom, generator, chunkCorner);
-				for(BlockPos source : sources)
-					if(source != null && isSourceValid(world, generator, source))
-						generateChunkPart(source, generator, ourRandom, pos, world);
+				for(BlockPos source : getSourcesInChunk(world, chunkRandom, generator, chunkCorner))
+					generateChunkPart(source, generator, ourRandom, pos, world);
 			}
-	}
-
-	public boolean isSourceValid(WorldGenRegion world, ChunkGenerator generator, BlockPos pos) {
-		return true;
 	}
 
 	public abstract int getFeatureRadius();

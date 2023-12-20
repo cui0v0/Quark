@@ -6,6 +6,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
 
 import java.util.Random;
@@ -27,9 +28,14 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 	@Override
 	public BlockPos[] getSourcesInChunk(WorldGenRegion world, Random random, ChunkGenerator generator, BlockPos chunkCorner) {
 		if(info.rarity > 0 && random.nextInt(info.rarity) == 0) {
-			return new BlockPos[] {
-					chunkCorner.offset(random.nextInt(16), info.minYLevel + random.nextInt(info.maxYLevel - info.minYLevel), random.nextInt(16))
-			};
+			int x = chunkCorner.getX() + random.nextInt(16);
+			int y = random.nextInt(info.maxYLevel - info.minYLevel);
+			int z = chunkCorner.getZ() + random.nextInt(16);
+			BlockPos pos = new BlockPos(x, y, z);
+
+			//check the biome at world height, and don't start blobs unless theyre actually underground
+			if(info.biomes.canSpawn(getBiome(world, pos, true)) && world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) >= y)
+				return new BlockPos[]{ pos };
 		}
 
 		return new BlockPos[0];
@@ -38,13 +44,6 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 	@Override
 	public IGenerationContext createContext(BlockPos src, ChunkGenerator generator, Random random, BlockPos chunkCorner, WorldGenRegion world) {
 		return new Context(world, src, generator, random, info);
-	}
-
-	@Override
-	public boolean isSourceValid(WorldGenRegion world, ChunkGenerator generator, BlockPos pos) {
-		BlockPos check = new BlockPos(pos.getX(), info.minYLevel, pos.getZ());
-		Holder<Biome> biome = getBiome(world, check, true);
-		return info.biomes.canSpawn(biome);
 	}
 
 	@Override

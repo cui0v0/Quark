@@ -29,26 +29,19 @@ public class BigStoneClusterGenerator extends ClusterBasedGenerator {
 	}
 
 	@Override
-	public boolean isSourceValid(WorldGenRegion world, ChunkGenerator generator, BlockPos pos) {
-		return config.biomes.canSpawn(getBiome(world, pos, true));
-	}
-
-	@Override
-	public BlockPos[] getSourcesInChunk(WorldGenRegion world, Random random, ChunkGenerator generator, BlockPos chunkLeft) {
+	public BlockPos[] getSourcesInChunk(WorldGenRegion world, Random random, ChunkGenerator generator, BlockPos chunkCorner) {
 		int chance = config.rarity;
 
-		BlockPos[] sources;
 		if(chance > 0 && random.nextInt(chance) == 0) {
-			sources = new BlockPos[1];
 			int lower = config.minYLevel;
 			int range = Math.abs(config.maxYLevel - config.minYLevel);
 
-			BlockPos pos = chunkLeft.offset(random.nextInt(16), random.nextInt(range) + lower, random.nextInt(16));
-			sources[0] = pos;
-		} else
-			sources = new BlockPos[0];
+			BlockPos pos = chunkCorner.offset(random.nextInt(16), random.nextInt(range) + lower, random.nextInt(16));
+			if(config.biomes.canSpawn(getBiome(world, pos, true)))
+				return new BlockPos[] { pos };
+		}
 
-		return sources;
+		return new BlockPos[0];
 	}
 
 	@Override
