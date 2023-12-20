@@ -3,6 +3,7 @@ package org.violetmoon.quark.mixin;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 
 import org.spongepowered.asm.mixin.Final;
@@ -33,11 +34,11 @@ public class TemptGoalMixin {
 
 	@Inject(method = "canUse", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/ai/goal/TemptGoal;player:Lnet/minecraft/world/entity/player/Player;", ordinal = 0, shift = At.Shift.AFTER))
 	private void findTroughs(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-		if(mob.level() instanceof ServerLevel level) {
+		if(mob.level() instanceof ServerLevel level && mob instanceof Animal animal) {
 			if(nextScheduledStart == 0L) {
 				nextScheduledStart = level.getGameTime() + level.random.nextInt(RATE);
 			} else if(level.getGameTime() >= nextScheduledStart)
-				player = FeedingTroughModule.temptWithTroughs((TemptGoal) (Object) this, player, level);
+				player = FeedingTroughModule.modifyTemptGoal(player, (TemptGoal) (Object) this, animal, level);
 		}
 	}
 

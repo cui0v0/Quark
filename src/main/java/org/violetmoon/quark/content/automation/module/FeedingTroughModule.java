@@ -1,9 +1,11 @@
 package org.violetmoon.quark.content.automation.module;
 
-import com.google.common.base.Predicates;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
+
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -14,10 +16,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.sensing.TemptingSensor;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -30,13 +34,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
+import org.violetmoon.quark.mixin.accessor.AccessorTemptingSensor;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -45,9 +48,6 @@ import org.violetmoon.zeta.event.play.entity.living.ZBabyEntitySpawn;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-
-import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * @author WireSegal
@@ -99,48 +99,74 @@ public class FeedingTroughModule extends ZetaModule {
 		}
 	}
 
-	public static Player temptWithTroughs(TemptGoal goal, Player found, ServerLevel level) {
+	// Both TempingSensor and TemptGoal work by keeping track of a nearby player who is holding food.
+	// The Feeding Trough causes mobs to pathfind to it by injecting a fakeplayer into these AI goals, who stands at the
+	// location of the Trough and holds food they like.
+
+	// The "realPlayer" parameter represents a real player located by existing TemptingSensor/TemptGoal code.
+	// If there is a real player, and they are holding food, we don't swap them for a fakeplayer, so that animals path to
+	// real players before they consider pathing to the Trough.
+
+	public static @Nullable Player modifyTemptingSensor(@Nullable Player realPlayer, TemptingSensor sensor, Animal animal, ServerLevel level) {
+		return modifyTempt(realPlayer, level, animal, ((AccessorTemptingSensor) sensor).quark$getTemptations());
+	}
+
+	public static @Nullable Player modifyTemptGoal(@Nullable Player realPlayer, TemptGoal goal, Animal animal, ServerLevel level) {
+		return modifyTempt(realPlayer, level, animal, goal.items);
+	}
+
+	private static @Nullable Player modifyTempt(@Nullable Player realPlayer, ServerLevel level, Animal animal, Ingredient temptations) {
+		//early-exit conditions
 		if(!Quark.ZETA.modules.isEnabled(FeedingTroughModule.class) ||
-				(found != null && (goal.items.test(found.getMainHandItem()) || goal.items.test(found.getOffhandItem()))))
-			return found;
+			!animal.canFallInLove() ||
+			animal.getAge() != 0
+		) {
+			return realPlayer;
+		}
 
-		if(!(goal.mob instanceof Animal animal) ||
-				!animal.canFallInLove() ||
-				animal.getAge() != 0)
-			return found;
+		//deference to real players
+		if(realPlayer != null && (temptations.test(realPlayer.getMainHandItem()) || temptations.test(realPlayer.getOffhandItem())))
+			return realPlayer;
 
-		Vec3 position = animal.position();
+		//locating the feeding trough
 		TroughPointer pointer = null;
 
+		//is there a cached one?
 		boolean cached = false;
 		if(enableTroughCaching) {
-			TroughPointer candidate = TroughPointer.fromEntity(animal, goal);
+			TroughPointer candidate = TroughPointer.loadCached(animal, temptations);
 			if(candidate != null) {
 				pointer = candidate;
 				cached = true;
 			}
 		}
 
-		if(!cached)
+		//if not, try locating a trough in the world
+		if(!cached) {
+			Vec3 position = animal.position();
 			pointer = level.getPoiManager().findAllClosestFirstWithType(
 					IS_FEEDER, p -> p.distSqr(new Vec3i((int) position.x, (int) position.y, (int) position.z)) <= range * range,
 					animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
-					.map(Pair::getSecond)
-					.map(pos -> getTroughFakePlayer(level, pos, goal))
-					.filter(Predicates.notNull())
-					.findFirst()
-					.orElse(null);
+				.map(Pair::getSecond)
+				.map(pos -> getTroughPointer(level, pos, animal, temptations))
+				.filter(Objects::nonNull)
+				.findFirst()
+				.orElse(null);
+		}
 
+		//did we find one?
 		if(pointer != null && pointer.exists()) {
+			//can the animal see it?
 			BlockPos location = pointer.pos();
-			Vec3 eyesPos = goal.mob.position().add(0, goal.mob.getEyeHeight(), 0);
+			Vec3 eyesPos = animal.position().add(0, animal.getEyeHeight(), 0);
 			Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
-			BlockHitResult ray = goal.mob.level().clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, goal.mob));
+			BlockHitResult ray = level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, animal));
 
 			if(ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
 				if(!cached)
-					pointer.save(animal);
+					pointer.saveCache(animal);
 
+				//direct the mob to this feeding trough's fakeplayer
 				return pointer.player();
 			}
 		}
@@ -149,12 +175,12 @@ public class FeedingTroughModule extends ZetaModule {
 		if(cached)
 			animal.getPersistentData().remove(TAG_CACHE);
 
-		return found;
+		return realPlayer;
 	}
 
-	private static @Nullable TroughPointer getTroughFakePlayer(Level level, BlockPos pos, TemptGoal goal) {
+	private static @Nullable TroughPointer getTroughPointer(Level level, BlockPos pos, Animal mob, Ingredient temptations) {
 		if(level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough)
-			return new TroughPointer(pos, trough.getFoodHolder(goal));
+			return new TroughPointer(pos, trough.getFoodHolder(mob, temptations));
 
 		return null;
 	}
@@ -181,7 +207,7 @@ public class FeedingTroughModule extends ZetaModule {
 			return player != null;
 		}
 
-		public void save(Entity e) {
+		public void saveCache(Entity e) {
 			CompoundTag data = e.getPersistentData();
 			CompoundTag tag = new CompoundTag();
 			tag.putInt("x", pos.getX());
@@ -191,8 +217,8 @@ public class FeedingTroughModule extends ZetaModule {
 			data.put(TAG_CACHE, tag);
 		}
 
-		public static TroughPointer fromEntity(Entity e, TemptGoal goal) {
-			CompoundTag data = e.getPersistentData();
+		public static TroughPointer loadCached(Animal mob, Ingredient temptations) {
+			CompoundTag data = mob.getPersistentData();
 			if(!data.contains(TAG_CACHE, data.getId()))
 				return null;
 
@@ -202,7 +228,7 @@ public class FeedingTroughModule extends ZetaModule {
 			int z = tag.getInt("z");
 
 			BlockPos pos = new BlockPos(x, y, z);
-			return getTroughFakePlayer(e.level(), pos, goal);
+			return getTroughPointer(mob.level(), pos, mob, temptations);
 		}
 
 	}

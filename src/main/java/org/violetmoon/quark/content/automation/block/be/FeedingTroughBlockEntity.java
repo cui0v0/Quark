@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,21 +56,19 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 		this.stacks = NonNullList.withSize(9, ItemStack.EMPTY);
 	}
 
-	public FakePlayer getFoodHolder(TemptGoal goal) {
+	public FakePlayer getFoodHolder(Animal mob, Ingredient temptations) {
 		FakePlayer foodHolder = null;
 		if(level instanceof ServerLevel serverLevel)
 			foodHolder = FakePlayerFactory.get(serverLevel, DUMMY_PROFILE);
 
-		Animal entity = (Animal) goal.mob;
-
 		if(foodHolder != null) {
 			for(int i = 0; i < getContainerSize(); i++) {
 				ItemStack stack = getItem(i);
-				if(goal.items.test(stack) && entity.isFood(stack)) {
+				if(temptations.test(stack) && mob.isFood(stack)) {
 					Inventory inventory = foodHolder.getInventory();
 					inventory.items.set(inventory.selected, stack);
 					Vec3 position = new Vec3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()).add(0.5, -1, 0.5);
-					Vec3 direction = goal.mob.position().subtract(position).normalize();
+					Vec3 direction = mob.position().subtract(position).normalize();
 					Vec2 angles = MiscUtil.getMinecraftAngles(direction);
 
 					Vec3 shift = direction.scale(-0.5 / Math.max(

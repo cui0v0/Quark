@@ -61,6 +61,7 @@
     "StructureStartMixin",
     "StructureTemplateMixin",
     "TemptGoalMixin",
+    "TemptingSensorMixin",
     "TripWireHookBlockMixin",
     "VillagerMixin",
     "WallBlockMixin",
@@ -68,7 +69,8 @@
     "accessor.AccessorAbstractChestedHorse",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
-    "accessor.AccessorPotionBrewing"
+    "accessor.AccessorPotionBrewing",
+    "accessor.AccessorTemptingSensor"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
