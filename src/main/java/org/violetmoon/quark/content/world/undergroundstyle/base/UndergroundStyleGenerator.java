@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.biome.Biome;
@@ -9,10 +8,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class UndergroundStyleGenerator<T extends UndergroundStyle> extends ClusterBasedGenerator {
@@ -57,19 +52,13 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		return "UndergroundBiomeGenerator[" + info.biomeObj + "]";
 	}
 
-	public static class Context implements IFinishableContext {
+	public static class Context implements IGenerationContext {
 
 		public final WorldGenRegion world;
 		public final BlockPos source;
 		public final ChunkGenerator generator;
 		public final Random random;
 		public final UndergroundStyleConfig<?> info;
-
-		public final List<BlockPos> floorList = new LinkedList<>();
-		public final List<BlockPos> ceilingList = new LinkedList<>();
-		public final List<BlockPos> insideList = new LinkedList<>();
-
-		public final Map<BlockPos, Direction> wallMap = new HashMap<>();
 
 		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig<?> info) {
 			this.world = world;
@@ -82,14 +71,6 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		@Override
 		public void consume(BlockPos pos, double noise) {
 			info.biomeObj.fill(this, pos);
-		}
-
-		@Override
-		public void finish() {
-			floorList.forEach(pos -> info.biomeObj.finalFloorPass(this, pos));
-			ceilingList.forEach(pos -> info.biomeObj.finalCeilingPass(this, pos));
-			wallMap.keySet().forEach(pos -> info.biomeObj.finalWallPass(this, pos));
-			insideList.forEach(pos -> info.biomeObj.finalInsidePass(this, pos));
 		}
 
 	}

@@ -31,7 +31,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.world.generator.IGenerator;
+import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaModule;
@@ -41,17 +41,15 @@ import java.util.concurrent.*;
 
 public class WorldGenHandler {
 
-	private static final Map<GenerationStep.Decoration, Holder<PlacedFeature>> defers = new HashMap<>();
-	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new HashMap<>();
+	private static final Map<GenerationStep.Decoration, Holder<PlacedFeature>> defers = new EnumMap<>(GenerationStep.Decoration.class);
+	private static final Map<GenerationStep.Decoration, SortedSet<WeightedGenerator>> generators = new EnumMap<>(GenerationStep.Decoration.class);
 
 	@LoadEvent
 	public static void register(ZRegister event) {
 		for(GenerationStep.Decoration stage : GenerationStep.Decoration.values()) {
 			Feature<NoneFeatureConfiguration> deferredFeature = new DeferredFeature(stage);
 
-			// Always do .toLowerCase(Locale.ENGLISH) with that locale. If you leave it off, computers in
-			// countries like Turkey will use a special character instead of i and well, crash the ResourceLocation.
-			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ENGLISH);
+			String name = "deferred_feature_" + stage.name().toLowerCase(Locale.ROOT);
 			Quark.ZETA.registry.register(deferredFeature, name, Registries.FEATURE);
 
 			ConfiguredFeature<?, ?> feature = new ConfiguredFeature<>(deferredFeature, FeatureConfiguration.NONE);
@@ -75,7 +73,7 @@ public class WorldGenHandler {
 		}
 	}
 
-	public static void addGenerator(ZetaModule module, IGenerator generator, GenerationStep.Decoration stage, int weight) {
+	public static void addGenerator(ZetaModule module, Generator generator, GenerationStep.Decoration stage, int weight) {
 		WeightedGenerator weighted = new WeightedGenerator(module, generator, weight);
 		if(!generators.containsKey(stage))
 			generators.put(stage, new TreeSet<>());
@@ -100,7 +98,7 @@ public class WorldGenHandler {
 			SortedSet<WeightedGenerator> set = generators.get(stage);
 
 			for(WeightedGenerator wgen : set) {
-				IGenerator gen = wgen.generator();
+				Generator gen = wgen.generator();
 
 				if(wgen.module().enabled && gen.canGenerate(region)) {
 					if(GeneralConfig.enableWorldgenWatchdog) {
@@ -113,7 +111,7 @@ public class WorldGenHandler {
 		}
 	}
 
-	private static int watchdogRun(IGenerator gen, Callable<Integer> run, int time, TimeUnit unit) {
+	private static int watchdogRun(Generator gen, Callable<Integer> run, int time, TimeUnit unit) {
 		ExecutorService exec = Executors.newSingleThreadExecutor();
 		Future<Integer> future = exec.submit(run);
 		exec.shutdown();

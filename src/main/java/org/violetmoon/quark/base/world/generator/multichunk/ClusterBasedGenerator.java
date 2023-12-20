@@ -39,19 +39,12 @@ public abstract class ClusterBasedGenerator extends MultiChunkFeatureGenerator {
 			if(noise > 0)
 				context.consume(pos, noise);
 		});
-
-		if(context instanceof IFinishableContext finishableContext)
-			finishableContext.finish();
 	}
 
 	public abstract IGenerationContext createContext(BlockPos src, ChunkGenerator generator, Random random, BlockPos chunkCorner, WorldGenRegion world);
 
 	public interface IGenerationContext {
 		void consume(BlockPos pos, double noise);
-	}
-
-	public interface IFinishableContext extends IGenerationContext {
-		void finish();
 	}
 
 }
