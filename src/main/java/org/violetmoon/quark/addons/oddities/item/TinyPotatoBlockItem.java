@@ -38,8 +38,8 @@ public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProv
 	}
 
 	@Override
-	public boolean canEquipZeta(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return super.canEquipZeta(stack, armorType, entity) ||
+	public boolean canEquipZeta(ItemStack stack, EquipmentSlot equipmentSlot, Entity entity) {
+		return equipmentSlot == EquipmentSlot.HEAD &&
 				(entity instanceof Player player && ContributorRewardHandler.getTier(player) > 0);
 	}
 

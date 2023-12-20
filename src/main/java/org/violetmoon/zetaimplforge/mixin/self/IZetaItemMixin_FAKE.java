@@ -1,8 +1,5 @@
 package org.violetmoon.zetaimplforge.mixin.self;
 
-import java.util.Map;
-import java.util.function.Consumer;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +24,9 @@ import org.violetmoon.zeta.item.ZetaArmorItem;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
+
+import java.util.Map;
+import java.util.function.Consumer;
 
 // Forge can't actually mixin to interfaces, so we fake it by just... mixing in to everyone inheriting the interface.
 @Mixin({
@@ -57,8 +57,8 @@ public class IZetaItemMixin_FAKE implements IForgeItem, IZetaItemExtensions {
 	}
 
 	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return canEquipZeta(stack, armorType, entity);
+	public boolean canEquip(ItemStack stack, EquipmentSlot equipmentSlot, Entity entity) {
+		return canEquipZeta(stack, equipmentSlot, entity);
 	}
 
 	@Override

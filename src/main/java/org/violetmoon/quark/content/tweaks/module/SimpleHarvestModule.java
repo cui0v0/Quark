@@ -13,7 +13,6 @@ package org.violetmoon.quark.content.tweaks.module;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,9 +40,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-
 import org.apache.commons.lang3.mutable.MutableBoolean;
-
 import org.violetmoon.quark.api.event.SimpleHarvestEvent;
 import org.violetmoon.quark.api.event.SimpleHarvestEvent.ActionType;
 import org.violetmoon.quark.base.Quark;
@@ -51,7 +48,6 @@ import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.network.message.HarvestMessage;
-import org.violetmoon.quark.mixin.accessor.AccessorCropBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -121,16 +117,16 @@ public class SimpleHarvestModule extends ZetaModule {
 		staticEnabled = enabled;
 
 		if(doHarvestingSearch) {
-			BuiltInRegistries.BLOCK.stream()
-					.filter(b -> !isVanilla(b) && b instanceof CropBlock)
-					.map(b -> (CropBlock) b)
-					//only grabbing blocks whose max age is acceptable
-					.filter(b -> b.isMaxAge(b.defaultBlockState().setValue(((AccessorCropBlock) b).quark$getAgeProperty(), last(((AccessorCropBlock) b).quark$getAgeProperty().getPossibleValues()))))
-					.forEach(b -> crops.put(b.defaultBlockState().setValue(((AccessorCropBlock) b).quark$getAgeProperty(), last(((AccessorCropBlock) b).quark$getAgeProperty().getPossibleValues())), b.defaultBlockState()));
-
-			BuiltInRegistries.BLOCK.stream()
-					.filter(b -> !isVanilla(b) && (b instanceof BushBlock || b instanceof GrowingPlantBlock) && b instanceof BonemealableBlock && !(b instanceof CropBlock))
-					.forEach(rightClickCrops::add);
+			for (var b : BuiltInRegistries.BLOCK) {
+				if (!isVanilla(b)) {
+					if (b instanceof CropBlock c) {
+						//only grabbing blocks whose max age is acceptable
+						crops.put(c.getStateForAge(c.getMaxAge()), c.defaultBlockState());
+					} else if ((b instanceof BushBlock || b instanceof GrowingPlantBlock) && b instanceof BonemealableBlock) {
+						rightClickCrops.add(b);
+					}
+				}
+			}
 		}
 
 		for(String harvestKey : harvestableBlocks) {
@@ -153,10 +149,6 @@ public class SimpleHarvestModule extends ZetaModule {
 		}
 
 		crops.values().forEach(bl -> cropBlocks.add(bl.getBlock()));
-	}
-
-	private int last(Collection<Integer> vals) {
-		return vals.stream().max(Integer::compare).orElse(0);
 	}
 
 	private String[] tokenize(String harvestKey) {

@@ -10,6 +10,7 @@
  */
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.BambooMatBlock;
 import org.violetmoon.quark.content.building.block.BambooMatCarpetBlock;
@@ -20,6 +21,7 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
 
 import java.util.function.BooleanSupplier;
 
@@ -37,12 +39,15 @@ public class JapanesePaletteModule extends ZetaModule {
 		BooleanSupplier paperBlockCond = () -> enablePaperBlocks;
 		BooleanSupplier bambooMatCond = () -> enableBambooMats;
 
-		IZetaBlock parent = new PaperLanternBlock("paper_lantern", this).setCondition(paperBlockCond);
-		new PaperLanternBlock("paper_lantern_sakura", this).setCondition(paperBlockCond);
+		IZetaBlock paperLantern = new PaperLanternBlock("paper_lantern", this).setCondition(paperBlockCond);
+		IZetaBlock paperLanternSakura = new PaperLanternBlock("paper_lantern_sakura", this).setCondition(paperBlockCond);
 
-		new PaperWallBlock(parent, "paper_wall").setCondition(paperBlockCond);
-		new PaperWallBlock(parent, "paper_wall_big").setCondition(paperBlockCond);
-		new PaperWallBlock(parent, "paper_wall_sakura").setCondition(paperBlockCond);
+		CreativeTabManager.daisyChain();
+		new PaperWallBlock(paperLantern, "paper_wall").setCondition(paperBlockCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, paperLantern.getBlock(), false);
+		new PaperWallBlock(paperLantern, "paper_wall_big").setCondition(paperBlockCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, paperLantern.getBlock(), false);
+		CreativeTabManager.endDaisyChain();
+
+		new PaperWallBlock(paperLantern, "paper_wall_sakura").setCondition(paperBlockCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, paperLanternSakura.getBlock(), false);
 
 		new BambooMatBlock("bamboo_mat", this).setCondition(bambooMatCond);
 		new BambooMatCarpetBlock("bamboo_mat_carpet", this).setCondition(bambooMatCond);

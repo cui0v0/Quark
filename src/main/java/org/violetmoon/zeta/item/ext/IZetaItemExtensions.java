@@ -1,8 +1,5 @@
 package org.violetmoon.zeta.item.ext;
 
-import java.util.Map;
-import java.util.function.Consumer;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +20,9 @@ import net.minecraft.world.level.LevelReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+import java.util.function.Consumer;
+
 @SuppressWarnings("deprecation") //forge ext
 public interface IZetaItemExtensions {
 
@@ -42,7 +42,7 @@ public interface IZetaItemExtensions {
 		return false;
 	}
 
-	default boolean canEquipZeta(ItemStack stack, EquipmentSlot armorType, Entity ent) {
+	default boolean canEquipZeta(ItemStack stack, EquipmentSlot equipmentSlot, Entity ent) {
 		return false;
 	}
 

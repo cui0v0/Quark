@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.addons.oddities.inventory.CrateMenu;
 import org.violetmoon.quark.addons.oddities.module.CrateModule;
+import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
@@ -23,7 +24,7 @@ import org.violetmoon.quark.content.client.module.ChestSearchingModule;
 
 import java.util.List;
 
-public class CrateScreen extends AbstractContainerScreen<CrateMenu> {
+public class CrateScreen extends AbstractContainerScreen<CrateMenu> implements IQuarkButtonAllowed {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Quark.MOD_ID, "textures/gui/crate.png");
 
 	private int lastScroll;

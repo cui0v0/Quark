@@ -66,7 +66,6 @@
     "WallBlockMixin",
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
-    "accessor.AccessorCropBlock",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
     "accessor.AccessorPotionBrewing"

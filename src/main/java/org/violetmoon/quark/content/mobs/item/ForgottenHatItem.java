@@ -58,6 +58,11 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 	}
 
 	@Override
+	public boolean canEquipZeta(ItemStack stack, EquipmentSlot equipmentSlot, Entity ent) {
+		return equipmentSlot == EquipmentSlot.HEAD;
+	}
+
+	@Override
 	public String getArmorTextureZeta(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return TEXTURE;
 	}
