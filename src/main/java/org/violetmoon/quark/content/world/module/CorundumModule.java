@@ -13,6 +13,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.material.MapColor;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,12 +22,14 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.util.CorundumColor;
+import org.violetmoon.quark.base.world.WorldGenHandler;
+import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule;
 import org.violetmoon.quark.content.world.block.CorundumBlock;
 import org.violetmoon.quark.content.world.block.CorundumClusterBlock;
 import org.violetmoon.quark.content.world.undergroundstyle.CorundumStyle;
-import org.violetmoon.quark.content.world.undergroundstyle.base.AbstractUndergroundStyleModule;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleConfig;
+import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator;
 import org.violetmoon.zeta.api.IIndirectConnector;
 import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -36,12 +39,17 @@ import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
 import java.util.List;
 
 @ZetaLoadModule(category = "world")
-public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle> {
+public class CorundumModule extends ZetaModule {
+
+	@Config
+	public UndergroundStyleConfig<CorundumStyle> generationSettings = new UndergroundStyleConfig<>(new CorundumStyle(), 400, true, BiomeTags.IS_OCEAN)
+		.setDefaultSize(72, 20, 22, 4);
 
 	@Config
 	@Config.Min(value = 0)
@@ -77,7 +85,7 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	public static List<CorundumBlock> crystals = Lists.newArrayList();
 	public static List<CorundumClusterBlock> clusters = Lists.newArrayList();
 	@Hint
-	public static TagKey<Block> corundumTag;
+	public static final TagKey<Block> corundumTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "corundum"));
 
 	@LoadEvent
 	public final void register(ZRegister event) {
@@ -91,8 +99,12 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 	}
 
 	@LoadEvent
-	public final void mySetup(ZCommonSetup event) {
-		corundumTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "corundum"));
+	public final void setup(ZCommonSetup event) {
+		WorldGenHandler.addGenerator(this,
+			new UndergroundStyleGenerator<>(generationSettings, "corundum"),
+			GenerationStep.Decoration.UNDERGROUND_DECORATION,
+			WorldGenWeights.UNDERGROUND_BIOMES
+		);
 	}
 
 	@PlayEvent
@@ -119,16 +131,6 @@ public class CorundumModule extends AbstractUndergroundStyleModule<CorundumStyle
 
 		ClusterConnection connection = new ClusterConnection(cluster);
 		IIndirectConnector.INDIRECT_STICKY_BLOCKS.add(Pair.of(connection::isValidState, connection));
-	}
-
-	@Override
-	protected String getStyleName() {
-		return "corundum";
-	}
-
-	@Override
-	protected UndergroundStyleConfig<CorundumStyle> getStyleConfig() {
-		return new UndergroundStyleConfig<>(new CorundumStyle(), 400, true, BiomeTags.IS_OCEAN).setDefaultSize(72, 20, 22, 4);
 	}
 
 	public record ClusterConnection(CorundumClusterBlock cluster) implements IIndirectConnector {
