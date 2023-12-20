@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.client.render.entity.TorchArrowRenderer;
 import org.violetmoon.quark.content.tools.entity.TorchArrow;
@@ -43,12 +42,17 @@ public class TorchArrowModule extends ZetaModule {
 				.clientTrackingRange(4)
 				.updateInterval(20) // update interval
 				.build("torch_arrow");
-		Quark.ZETA.registry.register(torchArrowType, "torch_arrow", Registries.ENTITY_TYPE);
+		event.getRegistry().register(torchArrowType, "torch_arrow", Registries.ENTITY_TYPE);
 	}
 
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(torchArrowType, TorchArrowRenderer::new);
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends TorchArrowModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			EntityRenderers.register(torchArrowType, TorchArrowRenderer::new);
+		}
+
 	}
 
 }
