@@ -66,7 +66,12 @@ public class UndergroundStyleGenerator extends ClusterBasedGenerator {
 		}
 
 		@Override
-		public void consume(BlockPos pos, double noise) {
+		public boolean canPlaceAt(BlockPos pos) {
+			return world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) > pos.getY();
+		}
+
+		@Override
+		public void consume(BlockPos pos) {
 			info.style.fill(this, pos);
 		}
 

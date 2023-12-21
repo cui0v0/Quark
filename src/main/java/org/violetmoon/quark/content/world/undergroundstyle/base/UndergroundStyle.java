@@ -28,20 +28,6 @@ public abstract class UndergroundStyle {
 		if(state.getDestroySpeed(world, pos) == -1)
 			return;
 
-		//boolean shrouded = false;
-		//BlockPos testPos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
-		//while(!world.isOutsideBuildHeight(testPos)) {
-		//	testPos = testPos.above();
-		//	if(world.getBlockState(testPos).isSolidRender(world, testPos)) {
-		//		shrouded = true;
-		//		break;
-		//	}
-		//}
-		//if(!shrouded)
-		//  return;
-		if(world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) < pos.getY())
-			return;
-
 		if(isFloor(world, pos, state))
 			fillFloor(context, pos, state);
 		else if(isCeiling(world, pos, state))
