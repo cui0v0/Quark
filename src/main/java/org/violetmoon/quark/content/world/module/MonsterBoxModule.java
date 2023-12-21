@@ -45,7 +45,7 @@ public class MonsterBoxModule extends ZetaModule {
 
 	public static BlockEntityType<MonsterBoxBlockEntity> blockEntityType;
 
-	@Config(description = "The chance for the monster box generator to try and place one in a chunk, 1 is 100%\nThis can be higher than 100% if you want multiple per chunk, , 0 is 0%")
+	@Config(description = "The chance for the monster box generator to try and place one in a chunk. 0 is 0%, 1 is 100%\nThis can be higher than 100% if you want multiple per chunk.")
 	public static double chancePerChunk = 0.2;
 
 	@Config
