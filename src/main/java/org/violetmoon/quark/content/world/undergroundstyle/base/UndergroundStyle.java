@@ -9,17 +9,17 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator.Context;
 
-import java.util.function.Predicate;
-
 public abstract class UndergroundStyle {
 
-	private static final TagKey<Block> fillerTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "underground_biome_replaceable"));
-	public static final Predicate<BlockState> UNDERGROUND_BIOME_REPLACEABLE = state -> state != null && state.is(fillerTag);
+	private static final TagKey<Block> UNDERGROUND_BIOME_REPLACEABLE = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "underground_biome_replaceable"));
+
+	public boolean canReplace(BlockState state) {
+		return state.canBeReplaced() || state.is(UNDERGROUND_BIOME_REPLACEABLE);
+	}
 
 	public final void fill(Context context, BlockPos pos) {
 		LevelAccessor world = context.world;
@@ -43,8 +43,10 @@ public abstract class UndergroundStyle {
 	public abstract void fillWall(Context context, BlockPos pos, BlockState state);
 	public abstract void fillInside(Context context, BlockPos pos, BlockState state);
 
+	//nb. checking isSolidRender so that air doesn't count as a floor or wall etc
+
 	public boolean isFloor(LevelAccessor world, BlockPos pos, BlockState state) {
-		if(!state.isSolidRender(world, pos))
+		if(!state.isSolidRender(world, pos) || !canReplace(state))
 			return false;
 
 		BlockPos upPos = pos.above();
@@ -52,7 +54,7 @@ public abstract class UndergroundStyle {
 	}
 
 	public boolean isCeiling(LevelAccessor world, BlockPos pos, BlockState state) {
-		if(!state.isSolidRender(world, pos))
+		if(!state.isSolidRender(world, pos) || !canReplace(state))
 			return false;
 
 		BlockPos downPos = pos.below();
@@ -60,7 +62,7 @@ public abstract class UndergroundStyle {
 	}
 
 	public boolean isWall(LevelAccessor world, BlockPos pos, BlockState state) {
-		if(!state.isSolidRender(world, pos) || !UNDERGROUND_BIOME_REPLACEABLE.test(state))
+		if(!state.isSolidRender(world, pos) || !canReplace(state))
 			return false;
 
 		return isBorder(world, pos);
@@ -84,7 +86,7 @@ public abstract class UndergroundStyle {
 	}
 
 	public boolean isInside(BlockState state) {
-		return UNDERGROUND_BIOME_REPLACEABLE.test(state);
+		return state.is(UNDERGROUND_BIOME_REPLACEABLE);
 	}
 
 }
