@@ -10,6 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.generator.Generator;
+import org.violetmoon.quark.content.world.undergroundstyle.PermafrostStyle;
+import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator;
 
 import java.util.Random;
 import java.util.function.BooleanSupplier;
@@ -49,8 +51,14 @@ public abstract class MultiChunkFeatureGenerator extends Generator {
 				Random chunkRandom = new Random(chunkSeed);
 				BlockPos chunkCorner = new BlockPos(x << 4, 0, z << 4);
 
-				for(BlockPos source : getSourcesInChunk(world, chunkRandom, generator, chunkCorner))
+				for(BlockPos source : getSourcesInChunk(world, chunkRandom, generator, chunkCorner)) {
 					generateChunkPart(source, generator, ourRandom, pos, world);
+
+//					if(isInsideChunk(source, chunkX, chunkZ) && this instanceof UndergroundStyleGenerator what && what.info.style instanceof PermafrostStyle) {
+//						Quark.LOG.info(source);
+//						world.setBlock(source, Blocks.BEACON.defaultBlockState(), 0);
+//					}
+				}
 			}
 	}
 

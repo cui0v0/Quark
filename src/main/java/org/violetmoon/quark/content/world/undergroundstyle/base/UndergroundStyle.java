@@ -39,7 +39,7 @@ public abstract class UndergroundStyle {
 		//}
 		//if(!shrouded)
 		//  return;
-		if(world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) >= pos.getY())
+		if(world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) < pos.getY())
 			return;
 
 		if(isFloor(world, pos, state))

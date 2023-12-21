@@ -1,37 +1,32 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
-import org.violetmoon.quark.base.config.type.IBiomeConfig;
 
-public class UndergroundStyleConfig<T extends UndergroundStyle> extends ClusterSizeConfig {
+public class UndergroundStyleConfig extends ClusterSizeConfig {
 
-	public final T biomeObj;
+	public final UndergroundStyle style;
 
-	@SafeVarargs
-	public UndergroundStyleConfig(T biomeObj, int rarity, boolean isBlacklist, TagKey<Biome>... tags) {
-		super(rarity, 26, 14, 14, 6, isBlacklist, tags);
-		this.biomeObj = biomeObj;
+	public UndergroundStyleConfig(Builder<?> builder) {
+		super(builder);
+		this.style = builder.style;
 	}
 
-	@SafeVarargs
-	public UndergroundStyleConfig(T biomeObj, int rarity, TagKey<Biome>... tags) {
-		this(biomeObj, rarity, false, tags);
+	public static <B extends Builder<B>> Builder<B> styleBuilder() {
+		return new Builder<>();
 	}
 
-	public UndergroundStyleConfig(T biomeObj, int rarity, int horizontal, int vertical, int horizontalVariation, int verticalVariation, IBiomeConfig config) {
-		super(rarity, horizontal, vertical, horizontalVariation, verticalVariation, config);
-		this.biomeObj = biomeObj;
-	}
+	public static class Builder<B extends Builder<B>> extends ClusterSizeConfig.Builder<B> {
+		protected UndergroundStyle style;
 
-	public UndergroundStyleConfig<T> setDefaultSize(int horizontal, int vertical, int horizontalVariation, int verticalVariation) {
-		this.horizontalSize = horizontal;
-		this.verticalSize = vertical;
-		this.horizontalVariation = horizontalVariation;
-		this.verticalVariation = verticalVariation;
-		return this;
+		public Builder<B> style(UndergroundStyle style) {
+			this.style = style;
+			return this;
+		}
+
+		@Override //covariant override
+		public UndergroundStyleConfig build() {
+			return new UndergroundStyleConfig(this);
+		}
 	}
 
 }

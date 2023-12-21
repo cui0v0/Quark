@@ -29,12 +29,17 @@ import org.violetmoon.zeta.util.Hint;
 public class PermafrostModule extends ZetaModule {
 
 	@Config
-	public UndergroundStyleConfig<PermafrostStyle> generationSettings = new UndergroundStyleConfig<>(new PermafrostStyle(), 2, 100, 30, 10, 5,
-		CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:frozen_peaks"));
-	{
-		generationSettings.minYLevel = 105;
-		generationSettings.maxYLevel = 140;
-	}
+	public UndergroundStyleConfig generationSettings = UndergroundStyleConfig.styleBuilder()
+		.style(new PermafrostStyle())
+		.biomes(CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:frozen_peaks"))
+		.rarity(2)
+		.horizontalSize(72)
+		.verticalSize(20)
+		.horizontalVariation(22)
+		.verticalVariation(4)
+		.minYLevel(105)
+		.maxYLevel(140)
+		.build();
 
 	@Hint
 	public static ZetaBlock permafrost;
@@ -54,13 +59,13 @@ public class PermafrostModule extends ZetaModule {
 		event.getVariantRegistry().addSlabStairsWall((IZetaBlock) new ZetaBlock("permafrost_bricks", this, Block.Properties.copy(permafrost)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS), null);
 		CreativeTabManager.endDaisyChain();
 
-		generationSettings.biomeObj.setBlock(permafrost.defaultBlockState());
+		((PermafrostStyle) generationSettings.style).setBlock(permafrost.defaultBlockState());
 	}
 
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		WorldGenHandler.addGenerator(this,
-			new UndergroundStyleGenerator<>(generationSettings, "permafrost"),
+			new UndergroundStyleGenerator(generationSettings, "permafrost"),
 			GenerationStep.Decoration.UNDERGROUND_DECORATION,
 			WorldGenWeights.UNDERGROUND_BIOMES
 		);

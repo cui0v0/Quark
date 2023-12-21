@@ -12,6 +12,7 @@ public class PermafrostStyle extends BasicUndergroundStyle {
 
 	public PermafrostStyle() {
 		super(Blocks.PACKED_ICE.defaultBlockState(), Blocks.PACKED_ICE.defaultBlockState(), Blocks.PACKED_ICE.defaultBlockState(), true);
+		//super(Blocks.RED_STAINED_GLASS.defaultBlockState(), Blocks.LIME_STAINED_GLASS.defaultBlockState(), Blocks.BLUE_STAINED_GLASS.defaultBlockState(), true);
 	}
 
 	public void setBlock(BlockState state) {
@@ -36,4 +37,8 @@ public class PermafrostStyle extends BasicUndergroundStyle {
 		}
 	}
 
+	@Override
+	public void fillInside(Context context, BlockPos pos, BlockState state) {
+		context.world.setBlock(pos, Blocks.PINK_STAINED_GLASS.defaultBlockState(), 0);
+	}
 }

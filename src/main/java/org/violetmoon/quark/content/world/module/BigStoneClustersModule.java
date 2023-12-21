@@ -5,8 +5,10 @@ import com.google.common.collect.Lists;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -36,19 +38,40 @@ import java.util.function.BooleanSupplier;
 @ZetaLoadModule(category = "world")
 public class BigStoneClustersModule extends ZetaModule {
 
-	@Config
-	public static BigStoneClusterConfig calcite = new BigStoneClusterConfig(BiomeTags.IS_MOUNTAIN);
-	@Config
-	public static BigStoneClusterConfig limestone = new BigStoneClusterConfig(Tags.Biomes.IS_SWAMP, BiomeTags.IS_OCEAN);
-	@Config
-	public static BigStoneClusterConfig jasper = new BigStoneClusterConfig(BiomeTags.IS_BADLANDS, Tags.Biomes.IS_SANDY);
-	@Config
-	public static BigStoneClusterConfig shale = new BigStoneClusterConfig(Tags.Biomes.IS_SNOWY);
+	@SafeVarargs
+	private static BigStoneClusterConfig.Builder<?> bob(TagKey<Biome>... tags) {
+		return BigStoneClusterConfig.stoneBuilder()
+			.dimensions(DimensionConfig.overworld(false))
+			.horizontalSize(14).verticalSize(14)
+			.horizontalVariation(9).verticalVariation(9)
+			.rarity(4)
+			.minYLevel(20)
+			.maxYLevel(80)
+			.biomeAllow(tags);
+	}
 
 	@Config
-	public static BigStoneClusterConfig myalite = new AirStoneClusterConfig(DimensionConfig.end(false), 20, 6, 100, 58, 62,
-			CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:end_highlands"))
-			.setVertical(40, 10);
+	public static BigStoneClusterConfig calcite = bob(BiomeTags.IS_MOUNTAIN).build();
+	@Config
+	public static BigStoneClusterConfig limestone = bob(Tags.Biomes.IS_SWAMP, BiomeTags.IS_OCEAN).build();
+	@Config
+	public static BigStoneClusterConfig jasper = bob(BiomeTags.IS_BADLANDS, Tags.Biomes.IS_SANDY).build();
+	@Config
+	public static BigStoneClusterConfig shale = bob(Tags.Biomes.IS_SNOWY).build();
+
+	@Config
+	public static AirStoneClusterConfig myalite = AirStoneClusterConfig.airStoneBuilder()
+		.generateInAir(true)
+		.dimensions(DimensionConfig.end(false))
+		.biomes(CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:end_highlands"))
+		.horizontalSize(20)
+		.verticalSize(40)
+		.horizontalVariation(6)
+		.verticalVariation(10)
+		.rarity(100)
+		.minYLevel(58)
+		.maxYLevel(62)
+		.build();
 
 	@Config(
 		description = "Blocks that stone clusters can replace. If you want to make it so it only replaces in one dimension,\n"

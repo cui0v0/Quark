@@ -1,9 +1,7 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -11,11 +9,11 @@ import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerato
 
 import java.util.Random;
 
-public class UndergroundStyleGenerator<T extends UndergroundStyle> extends ClusterBasedGenerator {
+public class UndergroundStyleGenerator extends ClusterBasedGenerator {
 
-	public final UndergroundStyleConfig<T> info;
+	public final UndergroundStyleConfig info;
 
-	public UndergroundStyleGenerator(UndergroundStyleConfig<T> info, String name) {
+	public UndergroundStyleGenerator(UndergroundStyleConfig info, String name) {
 		super(info.dimensions, info, name.hashCode());
 		this.info = info;
 	}
@@ -29,7 +27,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 	public BlockPos[] getSourcesInChunk(WorldGenRegion world, Random random, ChunkGenerator generator, BlockPos chunkCorner) {
 		if(info.rarity > 0 && random.nextInt(info.rarity) == 0) {
 			int x = chunkCorner.getX() + random.nextInt(16);
-			int y = random.nextInt(info.maxYLevel - info.minYLevel);
+			int y = random.nextInt(info.minYLevel, info.maxYLevel);
 			int z = chunkCorner.getZ() + random.nextInt(16);
 			BlockPos pos = new BlockPos(x, y, z);
 
@@ -48,7 +46,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 
 	@Override
 	public String toString() {
-		return "UndergroundBiomeGenerator[" + info.biomeObj + "]";
+		return "UndergroundBiomeGenerator[" + info.style + "]";
 	}
 
 	public static class Context implements IGenerationContext {
@@ -57,9 +55,9 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		public final BlockPos source;
 		public final ChunkGenerator generator;
 		public final Random random;
-		public final UndergroundStyleConfig<?> info;
+		public final UndergroundStyleConfig info;
 
-		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig<?> info) {
+		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig info) {
 			this.world = world;
 			this.source = source;
 			this.generator = generator;
@@ -69,7 +67,7 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 
 		@Override
 		public void consume(BlockPos pos, double noise) {
-			info.biomeObj.fill(this, pos);
+			info.style.fill(this, pos);
 		}
 
 	}

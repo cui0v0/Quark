@@ -1,16 +1,34 @@
 package org.violetmoon.quark.content.world.config;
 
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.config.type.IBiomeConfig;
 
 public class AirStoneClusterConfig extends BigStoneClusterConfig {
 
 	@Config
-	public boolean generateInAir = true;
+	public boolean generateInAir;
 
-	public AirStoneClusterConfig(DimensionConfig dimensions, int clusterSize, int sizeVariation, int rarity, int minYLevel, int maxYLevel, IBiomeConfig biomes) {
-		super(dimensions, clusterSize, sizeVariation, rarity, minYLevel, maxYLevel, biomes);
+	public AirStoneClusterConfig(Builder<? extends Builder<?>> builder) {
+		super(builder);
+		this.generateInAir = builder.generateInAir;
+	}
+
+	public static <B extends Builder<B>> Builder<B> airStoneBuilder() {
+		return new Builder<>();
+	}
+
+	public static class Builder<B extends Builder<B>> extends BigStoneClusterConfig.Builder<B> {
+		boolean generateInAir = true;
+
+		public B generateInAir(boolean generateInAir) {
+			this.generateInAir = generateInAir;
+			return downcast();
+		}
+
+		@Override //covariant override
+		public AirStoneClusterConfig build() {
+			return new AirStoneClusterConfig(this);
+		}
+
 	}
 
 }

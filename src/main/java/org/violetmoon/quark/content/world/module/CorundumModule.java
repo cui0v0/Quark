@@ -48,8 +48,15 @@ import java.util.List;
 public class CorundumModule extends ZetaModule {
 
 	@Config
-	public UndergroundStyleConfig<CorundumStyle> generationSettings = new UndergroundStyleConfig<>(new CorundumStyle(), 400, true, BiomeTags.IS_OCEAN)
-		.setDefaultSize(72, 20, 22, 4);
+	public UndergroundStyleConfig generationSettings = UndergroundStyleConfig.styleBuilder()
+		.style(new CorundumStyle())
+		.biomeDeny(BiomeTags.IS_OCEAN)
+		.rarity(400)
+		.horizontalSize(26)
+		.verticalSize(14)
+		.horizontalVariation(14)
+		.verticalVariation(6)
+		.build();
 
 	@Config
 	@Config.Min(value = 0)
@@ -101,7 +108,7 @@ public class CorundumModule extends ZetaModule {
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
 		WorldGenHandler.addGenerator(this,
-			new UndergroundStyleGenerator<>(generationSettings, "corundum"),
+			new UndergroundStyleGenerator(generationSettings, "corundum"),
 			GenerationStep.Decoration.UNDERGROUND_DECORATION,
 			WorldGenWeights.UNDERGROUND_BIOMES
 		);
