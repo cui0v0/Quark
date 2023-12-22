@@ -155,16 +155,13 @@ public class ChestSearchingModule extends ZetaModule {
 		@PlayEvent
 		public void onClick(ZScreen.MouseButtonPressed.Pre event) {
 			if(searchBar != null && searchEnabled && event.getScreen() instanceof AbstractContainerScreen<?> containerScreen) {
-				searchBar.mouseClicked(event.getMouseX() - containerScreen.getGuiLeft(), event.getMouseY() - containerScreen.getGuiTop(), event.getButton());
-
-				long time = System.currentTimeMillis();
-				long delta = time - lastClick;
-				if(delta < 200 && searchBar.isFocused()) {
+				boolean isMouseOver = searchBar.isMouseOver(event.getMouseX() - containerScreen.getGuiLeft(), event.getMouseY() - containerScreen.getGuiTop());
+				if(event.getButton() == 1 && isMouseOver) {
 					searchBar.setValue("");
 					text = "";
 				}
 
-				lastClick = time;
+				searchBar.setFocused(isMouseOver);
 			}
 		}
 
