@@ -23,7 +23,7 @@ import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.network.message.structural.C2SUpdateFlag;
-import org.violetmoon.quark.mixin.client.accessor.AccessorMultiPlayerGameMode;
+import org.violetmoon.quark.mixin.mixins.client.accessor.AccessorMultiPlayerGameMode;
 import org.violetmoon.zeta.client.TopLayerTooltipHandler;
 import org.violetmoon.zeta.util.RequiredModTooltipHandler;
 

@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import org.violetmoon.quark.content.client.resources.AttributeSlot;
+import org.violetmoon.quark.mixin.mixins.ItemStackMixin;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  * doing.
  *
  * This class is implemented on {@link net.minecraft.world.item.ItemStack} via
- * {@link org.violetmoon.quark.mixin.ItemStackMixin}.
+ * {@link ItemStackMixin}.
  * Therefore, a stack can be cast to this interface, and subsequently use the interface methods implemented in the
  * mixin.
  *

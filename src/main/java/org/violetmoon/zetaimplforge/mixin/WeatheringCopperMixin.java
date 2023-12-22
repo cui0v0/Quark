@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.WeatheringCopper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.violetmoon.zeta.mixin.plugin.DelegateInterfaceMixin;
 import org.violetmoon.zeta.mixin.plugin.DelegateReturnValueModifier;
-import org.violetmoon.zeta.mixin.plugin.delegates.WeatheringCopperDelegate;
+import org.violetmoon.quark.mixin.delegates.WeatheringCopperDelegate;
 
 @Mixin(WeatheringCopper.class)
 @DelegateInterfaceMixin(delegate = WeatheringCopperDelegate.class, methods = {

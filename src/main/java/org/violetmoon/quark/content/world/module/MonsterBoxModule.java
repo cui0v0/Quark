@@ -25,7 +25,7 @@ import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MonsterBoxBlock;
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.gen.MonsterBoxGenerator;
-import org.violetmoon.quark.mixin.accessor.AccessorLivingEntity;
+import org.violetmoon.quark.mixin.mixins.accessor.AccessorLivingEntity;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

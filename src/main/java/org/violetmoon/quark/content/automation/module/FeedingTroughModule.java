@@ -39,7 +39,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
-import org.violetmoon.quark.mixin.accessor.AccessorTemptingSensor;
+import org.violetmoon.quark.mixin.mixins.accessor.AccessorTemptingSensor;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
