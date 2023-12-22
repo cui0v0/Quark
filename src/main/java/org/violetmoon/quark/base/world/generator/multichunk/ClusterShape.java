@@ -18,24 +18,18 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 		PerlinSimplexNoise noiseGenerator) {
 
 	public boolean isInside(BlockPos pos) {
-		return noiseDiff(pos) > 0;
-	}
-
-	// For result of this method, positive result is the valid spots and negative is outside.
-	// 0 is edge of the cluster which is very useful for speedups in checks in
-	// UndergroundSpaceGenerator as some checks should happen only at edges of cave.
-	// You can use these kinds of tricks for speedups towards edge of other clusters as well.
-	public double noiseDiff(BlockPos pos) {
 		// normalize distances by the radius
 		double dx = (double) (pos.getX() - src.getX()) / radius.x;
 		double dy = (double) (pos.getY() - src.getY()) / radius.y;
 		double dz = (double) (pos.getZ() - src.getZ()) / radius.z;
 
-		double r = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		double r = dx * dx + dy * dy + dz * dz;
 		if(r > 1)
-			return -1;
+			return false;
 		if(GeneralConfig.useFastWorldgen)
-			return 1;
+			return true;
+
+		r = Math.sqrt(r);
 
 		// convert to spherical
 		double phi = Math.atan2(dz, dx);
@@ -55,7 +49,7 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 
 		// accept if within constrains
 		double maxR = noise + 0.5;
-		return maxR - r;
+		return (maxR - r) > 0;
 	}
 
 	public int getUpperBound() {
@@ -93,14 +87,6 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 
 		public int getRarity() {
 			return config.rarity;
-		}
-
-		public int getRandomYLevel(Random rand) {
-			return config.minYLevel + (config.minYLevel == config.maxYLevel ? 0 : rand.nextInt(Math.max(config.maxYLevel, config.minYLevel) - Math.min(config.maxYLevel, config.minYLevel)));
-		}
-
-		public IBiomeConfig getBiomeTypes() {
-			return config.biomes;
 		}
 
 		public Random randAroundBlockPos(BlockPos pos) {

@@ -3,7 +3,8 @@
   "required": true,
   "compatibilityLevel": "JAVA_17",
   "refmap": "quark.mixins.refmap.json",
-  "package": "org.violetmoon.quark.mixin",
+  "package": "org.violetmoon.quark.mixin.mixins",
+  "plugin": "org.violetmoon.zeta.mixin.plugin.InterfaceDelegateMixinPlugin",
   "mixins": [
     "AbstractVillagerMixin",
     "AnimalMixin",
@@ -39,6 +40,7 @@
     "IronBarsBlockMixin",
     "ItemMixin",
     "ItemStackMixin",
+    "IZetaItemExtensionsMixin",
     "LadderBlockMixin",
     "LanternBlockMixin",
     "LoomMenuMixin",
@@ -61,15 +63,16 @@
     "StructureStartMixin",
     "StructureTemplateMixin",
     "TemptGoalMixin",
+    "TemptingSensorMixin",
     "TripWireHookBlockMixin",
     "VillagerMixin",
     "WallBlockMixin",
     "accessor.AccessorAbstractArrow",
     "accessor.AccessorAbstractChestedHorse",
-    "accessor.AccessorCropBlock",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
-    "accessor.AccessorPotionBrewing"
+    "accessor.AccessorPotionBrewing",
+    "accessor.AccessorTemptingSensor"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",

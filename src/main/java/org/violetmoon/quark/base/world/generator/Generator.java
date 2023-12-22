@@ -16,7 +16,7 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 
-public abstract class Generator implements IGenerator {
+public abstract class Generator {
 
 	public final DimensionConfig dimConfig;
 	private final BooleanSupplier condition;
@@ -30,7 +30,6 @@ public abstract class Generator implements IGenerator {
 		this.condition = condition;
 	}
 
-	@Override
 	public final int generate(int seedIncrement, long seed, GenerationStep.Decoration stage, WorldGenRegion worldIn, ChunkGenerator generator, WorldgenRandom rand, BlockPos pos) {
 		rand.setFeatureSeed(seed, seedIncrement, stage.ordinal());
 		generateChunk(worldIn, generator, rand, pos);
@@ -39,7 +38,6 @@ public abstract class Generator implements IGenerator {
 
 	public abstract void generateChunk(WorldGenRegion worldIn, ChunkGenerator generator, RandomSource rand, BlockPos pos);
 
-	@Override
 	public boolean canGenerate(ServerLevelAccessor world) {
 		return condition.getAsBoolean() && dimConfig.canSpawnHere(world.getLevel());
 	}

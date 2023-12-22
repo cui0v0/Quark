@@ -33,7 +33,7 @@ import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
 import org.violetmoon.quark.addons.oddities.util.TinyPotatoInfo;
 import org.violetmoon.quark.content.tools.item.RuneItem;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
-import org.violetmoon.quark.mixin.client.accessor.AccessorModelManager;
+import org.violetmoon.quark.mixin.mixins.client.accessor.AccessorModelManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;

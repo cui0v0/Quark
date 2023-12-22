@@ -186,10 +186,10 @@ public class EnchantmentMatrix {
 		for(EnchantmentDataWrapper wrapper : validEnchants)
 			total += wrapper.mutableWeight.val;
 
-		if(total == 0) {
+		/*if(total == 0) {
 			for(EnchantmentDataWrapper wrapper : validEnchants)
 				wrapper.mutableWeight.val++;
-		}
+		}*/
 
 		EnchantmentDataWrapper ret = WeightedRandom.getRandomItem(rng, validEnchants).orElse(null);
 		if(!simulate && ret != null && influences.containsKey(ret.enchantment) && influences.get(ret.enchantment) > 0)
@@ -506,8 +506,7 @@ public class EnchantmentMatrix {
 				case UNCOMMON -> mutableWeight.val = 40000;
 				case RARE -> mutableWeight.val = 25000;
 				case VERY_RARE -> mutableWeight.val = 5000;
-				default -> {
-				}
+				default -> {}
 				}
 
 				influence = Mth.clamp(influences.getOrDefault(enchantment, 0), -MatrixEnchantingModule.influenceMax, MatrixEnchantingModule.influenceMax);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.violetmoon.quark.mixin.accessor.AccessorPotionBrewing;
+import org.violetmoon.quark.mixin.mixins.accessor.AccessorPotionBrewing;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.registry.BrewingRegistry;

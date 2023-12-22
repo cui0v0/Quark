@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.tweaks.module;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
+import org.violetmoon.quark.mixin.mixins.ArmorStandMixin;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -14,7 +15,7 @@ import org.violetmoon.zeta.util.Hint;
  *         Created at 8:40 AM on 8/27/19.
  *
  *         modified by quat
- * @see org.violetmoon.quark.mixin.ArmorStandMixin
+ * @see ArmorStandMixin
  */
 @ZetaLoadModule(category = "tweaks")
 public class ArmedArmorStandsModule extends ZetaModule {

@@ -1,36 +1,35 @@
 package org.violetmoon.quark.content.world.config;
 
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
-import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
-import org.violetmoon.quark.base.config.type.IBiomeConfig;
 
 public class BigStoneClusterConfig extends ClusterSizeConfig {
 
 	@Config
-	public boolean enabled = true;
+	public boolean enabled;
 
-	@SafeVarargs
-	public BigStoneClusterConfig(TagKey<Biome>... tags) {
-		this(DimensionConfig.overworld(false), 14, 9, 4, 20, 80, CompoundBiomeConfig.fromBiomeTags(false, tags));
+	public BigStoneClusterConfig(Builder<?> builder) {
+		super(builder);
+		this.enabled = builder.enabled;
 	}
 
-	public BigStoneClusterConfig(DimensionConfig dimensions, int clusterSize, int sizeVariation, int rarity, int minYLevel, int maxYLevel, IBiomeConfig biomes) {
-		super(rarity, clusterSize, clusterSize, sizeVariation, sizeVariation, biomes);
-		this.dimensions = dimensions;
-
-		this.minYLevel = minYLevel;
-		this.maxYLevel = maxYLevel;
+	public static <B extends Builder<B>> Builder<B> stoneBuilder() {
+		return new Builder<>();
 	}
 
-	public BigStoneClusterConfig setVertical(int vertical, int verticalVariation) {
-		this.verticalSize = vertical;
-		this.verticalVariation = verticalVariation;
-		return this;
+	public static class Builder<B extends Builder<B>> extends ClusterSizeConfig.Builder<B> {
+		protected boolean enabled = true;
+
+		public B enabled(boolean enabled) {
+			this.enabled = enabled;
+			return downcast();
+		}
+
+		//covariant override
+		@Override
+		public BigStoneClusterConfig build() {
+			return new BigStoneClusterConfig(this);
+		}
 	}
 
 }

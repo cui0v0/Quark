@@ -50,7 +50,7 @@ public class TorchArrowModule extends ZetaModule {
 				.clientTrackingRange(4)
 				.updateInterval(20) // update interval
 				.build("torch_arrow");
-		Quark.ZETA.registry.register(torchArrowType, "torch_arrow", Registries.ENTITY_TYPE);
+		event.getRegistry().register(torchArrowType, "torch_arrow", Registries.ENTITY_TYPE);
 
 		DispenserBlock.registerBehavior(torch_arrow, new AbstractProjectileDispenseBehavior() {
 			@Override
@@ -62,9 +62,14 @@ public class TorchArrowModule extends ZetaModule {
 		});
 	}
 
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		EntityRenderers.register(torchArrowType, TorchArrowRenderer::new);
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends TorchArrowModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			EntityRenderers.register(torchArrowType, TorchArrowRenderer::new);
+		}
+
 	}
 
 }

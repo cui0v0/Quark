@@ -2,11 +2,11 @@ package org.violetmoon.quark.base.world;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.violetmoon.quark.base.world.generator.IGenerator;
+import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.zeta.module.ZetaModule;
 
 public record WeightedGenerator(ZetaModule module,
-		IGenerator generator,
+		Generator generator,
 		int weight) implements Comparable<WeightedGenerator> {
 
 	@Override

@@ -43,7 +43,6 @@ public class RainbowLampBlock extends ZetaGlassBlock {
 						.instrument(NoteBlockInstrument.HAT)
 						.sound(SoundType.AMETHYST)
 						.lightLevel(b -> b.getValue(LIT) ? RainbowLampsModule.lightLevel : 0)
-						.requiresCorrectToolForDrops()
 						.noOcclusion());
 
 		float r = ((color >> 16) & 0xff) / 255f;

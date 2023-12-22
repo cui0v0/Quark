@@ -47,15 +47,9 @@ public abstract class MultiChunkFeatureGenerator extends Generator {
 				Random chunkRandom = new Random(chunkSeed);
 				BlockPos chunkCorner = new BlockPos(x << 4, 0, z << 4);
 
-				BlockPos[] sources = getSourcesInChunk(world, chunkRandom, generator, chunkCorner);
-				for(BlockPos source : sources)
-					if(source != null && isSourceValid(world, generator, source))
-						generateChunkPart(source, generator, ourRandom, pos, world);
+				for(BlockPos source : getSourcesInChunk(world, chunkRandom, generator, chunkCorner))
+					generateChunkPart(source, generator, ourRandom, pos, world);
 			}
-	}
-
-	public boolean isSourceValid(WorldGenRegion world, ChunkGenerator generator, BlockPos pos) {
-		return true;
 	}
 
 	public abstract int getFeatureRadius();
@@ -67,12 +61,14 @@ public abstract class MultiChunkFeatureGenerator extends Generator {
 	public void forEachChunkBlock(LevelReader level, BlockPos chunkCorner, int minY, int maxY, Consumer<BlockPos> func) {
 		minY = Math.max(level.getMinBuildHeight() + 1, minY);
 		maxY = Math.min(level.getMaxBuildHeight() - 1, maxY);
+		int chunkCornerX = chunkCorner.getX(); //hoisting out of loop
+		int chunkCornerZ = chunkCorner.getZ();
 
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(0, 0, 0);
 		for(int x = 0; x < 16; x++)
 			for(int y = minY; y < maxY; y++)
 				for(int z = 0; z < 16; z++) {
-					mutable.set(chunkCorner.getX() + x, y, chunkCorner.getZ() + z);
+					mutable.set(chunkCornerX + x, y, chunkCornerZ + z);
 					func.accept(mutable);
 				}
 	}

@@ -13,7 +13,7 @@
         "axis": "x"
       },
       "apply": {
-        "model": "quark:block/stripped_bamboo_post",
+        "model": "quark:block/stripped_cherry_post",
         "x": 90,
         "y": 90
       }
@@ -23,7 +23,7 @@
         "axis": "z"
       },
       "apply": {
-        "model": "quark:block/stripped_bamboo_post",
+        "model": "quark:block/stripped_cherry_post",
         "x": 90
       }
     },

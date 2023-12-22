@@ -8,7 +8,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
 
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.entity.Shiba;
-import org.violetmoon.quark.mixin.accessor.AccessorAbstractArrow;
+import org.violetmoon.quark.mixin.mixins.accessor.AccessorAbstractArrow;
 
 import java.util.EnumSet;
 

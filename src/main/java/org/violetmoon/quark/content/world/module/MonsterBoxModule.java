@@ -25,7 +25,7 @@ import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MonsterBoxBlock;
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.gen.MonsterBoxGenerator;
-import org.violetmoon.quark.mixin.accessor.AccessorLivingEntity;
+import org.violetmoon.quark.mixin.mixins.accessor.AccessorLivingEntity;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
@@ -45,7 +45,7 @@ public class MonsterBoxModule extends ZetaModule {
 
 	public static BlockEntityType<MonsterBoxBlockEntity> blockEntityType;
 
-	@Config(description = "The chance for the monster box generator to try and place one in a chunk, 1 is 100%\nThis can be higher than 100% if you want multiple per chunk, , 0 is 0%")
+	@Config(description = "The chance for the monster box generator to try and place one in a chunk. 0 is 0%, 1 is 100%\nThis can be higher than 100% if you want multiple per chunk.")
 	public static double chancePerChunk = 0.2;
 
 	@Config

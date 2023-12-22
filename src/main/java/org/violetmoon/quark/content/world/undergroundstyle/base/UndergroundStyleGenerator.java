@@ -1,25 +1,19 @@
 package org.violetmoon.quark.content.world.undergroundstyle.base;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.violetmoon.quark.base.world.generator.multichunk.ClusterBasedGenerator;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-public class UndergroundStyleGenerator<T extends UndergroundStyle> extends ClusterBasedGenerator {
+public class UndergroundStyleGenerator extends ClusterBasedGenerator {
 
-	public final UndergroundStyleConfig<T> info;
+	public final UndergroundStyleConfig info;
 
-	public UndergroundStyleGenerator(UndergroundStyleConfig<T> info, String name) {
+	public UndergroundStyleGenerator(UndergroundStyleConfig info, String name) {
 		super(info.dimensions, info, name.hashCode());
 		this.info = info;
 	}
@@ -32,9 +26,14 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 	@Override
 	public BlockPos[] getSourcesInChunk(WorldGenRegion world, Random random, ChunkGenerator generator, BlockPos chunkCorner) {
 		if(info.rarity > 0 && random.nextInt(info.rarity) == 0) {
-			return new BlockPos[] {
-					chunkCorner.offset(random.nextInt(16), info.minYLevel + random.nextInt(info.maxYLevel - info.minYLevel), random.nextInt(16))
-			};
+			int x = chunkCorner.getX() + random.nextInt(16);
+			int y = random.nextInt(info.minYLevel, info.maxYLevel);
+			int z = chunkCorner.getZ() + random.nextInt(16);
+			BlockPos pos = new BlockPos(x, y, z);
+
+			//check the biome at world height, and don't start blobs unless theyre actually underground
+			if(info.biomes.canSpawn(getBiome(world, pos, true)) && world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) >= y)
+				return new BlockPos[]{ pos };
 		}
 
 		return new BlockPos[0];
@@ -46,32 +45,19 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 	}
 
 	@Override
-	public boolean isSourceValid(WorldGenRegion world, ChunkGenerator generator, BlockPos pos) {
-		BlockPos check = new BlockPos(pos.getX(), info.minYLevel, pos.getZ());
-		Holder<Biome> biome = getBiome(world, check, true);
-		return info.biomes.canSpawn(biome);
-	}
-
-	@Override
 	public String toString() {
-		return "UndergroundBiomeGenerator[" + info.biomeObj + "]";
+		return "UndergroundBiomeGenerator[" + info.style + "]";
 	}
 
-	public static class Context implements IFinishableContext {
+	public static class Context implements IGenerationContext {
 
 		public final WorldGenRegion world;
 		public final BlockPos source;
 		public final ChunkGenerator generator;
 		public final Random random;
-		public final UndergroundStyleConfig<?> info;
+		public final UndergroundStyleConfig info;
 
-		public final List<BlockPos> floorList = new LinkedList<>();
-		public final List<BlockPos> ceilingList = new LinkedList<>();
-		public final List<BlockPos> insideList = new LinkedList<>();
-
-		public final Map<BlockPos, Direction> wallMap = new HashMap<>();
-
-		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig<?> info) {
+		public Context(WorldGenRegion world, BlockPos source, ChunkGenerator generator, Random random, UndergroundStyleConfig info) {
 			this.world = world;
 			this.source = source;
 			this.generator = generator;
@@ -80,16 +66,13 @@ public class UndergroundStyleGenerator<T extends UndergroundStyle> extends Clust
 		}
 
 		@Override
-		public void consume(BlockPos pos, double noise) {
-			info.biomeObj.fill(this, pos);
+		public boolean canPlaceAt(BlockPos pos) {
+			return world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) > pos.getY();
 		}
 
 		@Override
-		public void finish() {
-			floorList.forEach(pos -> info.biomeObj.finalFloorPass(this, pos));
-			ceilingList.forEach(pos -> info.biomeObj.finalCeilingPass(this, pos));
-			wallMap.keySet().forEach(pos -> info.biomeObj.finalWallPass(this, pos));
-			insideList.forEach(pos -> info.biomeObj.finalInsidePass(this, pos));
+		public void consume(BlockPos pos) {
+			info.style.fill(this, pos);
 		}
 
 	}
