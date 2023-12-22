@@ -281,7 +281,7 @@ public class AttributeTooltips {
 		AttributeDisplayType displayType = entry.displayTypes().get(slot);
 
 		if(displayType != AttributeDisplayType.PERCENTAGE) {
-			if(slot != null || !key.equals(Attributes.ATTACK_DAMAGE)) { // ATTACK_DAMAGE
+			if(slot != AttributeSlot.POTION || !key.equals(Attributes.ATTACK_DAMAGE)) { // ATTACK_DAMAGE
 				AttributeInstance attribute = player.getAttribute(key);
 				if(attribute != null)
 					value = attribute.getBaseValue();
@@ -311,7 +311,7 @@ public class AttributeTooltips {
 			value += Quark.ZETA.itemExtensions.get(stack).getEnchantmentLevelZeta(stack, Enchantments.KNOCKBACK);
 
 		if(displayType == AttributeDisplayType.DIFFERENCE) {
-			if(slot != null || !key.equals(Attributes.ATTACK_DAMAGE)) {
+			if(slot != AttributeSlot.POTION || !key.equals(Attributes.ATTACK_DAMAGE)) {
 				AttributeInstance attribute = player.getAttribute(key);
 				if(attribute != null)
 					value -= attribute.getBaseValue();
