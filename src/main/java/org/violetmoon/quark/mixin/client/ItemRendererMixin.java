@@ -28,6 +28,9 @@ public abstract class ItemRendererMixin {
 		ColorRunesModule.setTargetStack(itemStackIn);
 	}
 
+	// getArmorFoilBuffer: used only by the Elytra armor layer //
+
+	//TODO: I think this one is currently unused, ElytraLayer always calls getArmorFoilBuffer with 'false' in the third param
 	@ModifyExpressionValue(method = "getArmorFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;armorGlint()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getArmorGlint(RenderType prev) {
 		return ColorRunesModule.Client.getArmorGlint();
@@ -37,6 +40,8 @@ public abstract class ItemRendererMixin {
 	private static RenderType getArmorEntityGlint(RenderType prev) {
 		return ColorRunesModule.Client.getArmorEntityGlint();
 	}
+
+	// getFoilBuffer: tiny potato, ??? supposedly used for enchanted items in-world but i can //
 
 	@ModifyExpressionValue(method = "getFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;glintTranslucent()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getGlintTranslucent(RenderType prev) {
@@ -52,6 +57,8 @@ public abstract class ItemRendererMixin {
 	private static RenderType getEntityGlint(RenderType prev) {
 		return ColorRunesModule.Client.getEntityGlint();
 	}
+
+	// getFoilBufferDirect: used most of the time for rendering enchanted items. glintDirect is used most often //
 
 	@ModifyExpressionValue(method = "getFoilBufferDirect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType;glintDirect()Lnet/minecraft/client/renderer/RenderType;"))
 	private static RenderType getGlintDirect(RenderType prev) {
