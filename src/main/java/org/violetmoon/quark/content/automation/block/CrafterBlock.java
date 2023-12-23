@@ -76,6 +76,7 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 		return new CrafterBlockEntity(pos, state);
 	}
 
+	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (world.isClientSide) {
 			return InteractionResult.SUCCESS;
@@ -108,6 +109,7 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 		world.setBlock(pos, state.setValue(POWER, bl ? PowerState.ON : PowerState.OFF), 2);
 	}
 
+	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
 		boolean bl = world.hasNeighborSignal(pos) || world.hasNeighborSignal(pos.above());
 		boolean bl2 = state.getValue(POWER).powered();
@@ -157,14 +159,16 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 
 		private final String name;
 
-		private PowerState(String name) {
+		PowerState(String name) {
 			this.name = name;
 		}
 
+		@Override
 		public String toString() {
 			return this.getSerializedName();
 		}
 
+		@Override
 		public String getSerializedName() {
 			return this.name;
 		}

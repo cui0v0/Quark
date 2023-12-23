@@ -255,6 +255,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 		return true;
 	}
 
+	@Override
 	public ItemStack removeItem(int slot, int amount) {
 		ItemStack stack = ContainerHelper.removeItem(stacks, slot, amount);
 		if (!stack.isEmpty()) {
@@ -264,6 +265,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 		return stack;
 	}
 
+	@Override
 	public ItemStack removeItemNoUpdate(int slot) {
 		ItemStack stack = ContainerHelper.takeItem(stacks, slot);
 		update();
@@ -336,6 +338,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 
 	private static class CraftDispenseBehavior implements DispenseItemBehavior {
 
+		@Override
 		public final ItemStack dispense(BlockSource blockSource, ItemStack itemStack) {
 			ItemStack itemStack2 = this.dispenseSilently(blockSource, itemStack);
 			this.playSound(blockSource);
