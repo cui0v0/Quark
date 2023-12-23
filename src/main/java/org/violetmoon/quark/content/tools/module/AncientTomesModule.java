@@ -78,7 +78,7 @@ public class AncientTomesModule extends ZetaModule {
 
 	@Config(description = "Format is lootTable,weight. i.e. \"minecraft:chests/stronghold_library,30\"")
 	public static List<String> lootTables = Lists.newArrayList(
-			loot(BuiltInLootTables.STRONGHOLD_LIBRARY, 30),
+			loot(BuiltInLootTables.STRONGHOLD_LIBRARY, 20),
 			loot(BuiltInLootTables.SIMPLE_DUNGEON, 20),
 			loot(BuiltInLootTables.BASTION_TREASURE, 25),
 			loot(BuiltInLootTables.WOODLAND_MANSION, 15),
