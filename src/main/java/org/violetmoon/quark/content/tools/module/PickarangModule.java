@@ -61,7 +61,7 @@ public class PickarangModule extends ZetaModule {
 	private static List<PickarangType<?>> knownTypes = new ArrayList<>();
 	private static boolean isEnabled;
 
-	public static TagKey<Block> pickarangImmuneTag;
+	public static final TagKey<Block> pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
 
 	public static ManualTrigger throwPickarangTrigger;
 	public static ManualTrigger useFlamerangTrigger;
@@ -80,7 +80,7 @@ public class PickarangModule extends ZetaModule {
 			PickarangType.PickarangConstructor<T> thrownFactory,
 			BooleanSupplier condition) {
 
-		EntityType<T> entityType = EntityType.Builder.<T>of(entityFactory, MobCategory.MISC)
+		EntityType<T> entityType = EntityType.Builder.of(entityFactory, MobCategory.MISC)
 				.sized(0.4F, 0.4F)
 				.clientTrackingRange(4)
 				.updateInterval(10)
@@ -104,16 +104,6 @@ public class PickarangModule extends ZetaModule {
 			properties.fireResistant();
 
 		return properties;
-	}
-
-	@LoadEvent
-	public final void setup(ZCommonSetup event) {
-		pickarangImmuneTag = BlockTags.create(new ResourceLocation(Quark.MOD_ID, "pickarang_immune"));
-	}
-
-	@LoadEvent
-	public final void clientSetup(ZClientSetup event) {
-		knownTypes.forEach(t -> EntityRenderers.register(t.getEntityType(), PickarangRenderer::new));
 	}
 
 	@LoadEvent
@@ -146,6 +136,16 @@ public class PickarangModule extends ZetaModule {
 			return pick.getPickarangType().isFireResistant();
 
 		return false;
+	}
+
+	@ZetaLoadModule(clientReplacement = true)
+	public static class Client extends PickarangModule {
+
+		@LoadEvent
+		public final void clientSetup(ZClientSetup event) {
+			knownTypes.forEach(t -> EntityRenderers.register(t.getEntityType(), PickarangRenderer::new));
+		}
+
 	}
 
 }
