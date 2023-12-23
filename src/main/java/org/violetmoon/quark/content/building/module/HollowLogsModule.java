@@ -39,7 +39,7 @@ public class HollowLogsModule extends ZetaModule {
 	public static boolean enableAutoCrawl = true;
 
 	@Hint(key = "hollow_logs", value = "hollow_log_auto_crawl")
-	TagKey<Block> hollowLogsTag;
+	public static TagKey<Block> hollowLogsTag;
 
 	@LoadEvent
 	public final void register(ZRegister event) {
