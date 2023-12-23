@@ -149,4 +149,8 @@ public class CommonProxy {
 	public boolean isClientPlayerHoldingShift() {
 		return false;
 	}
+
+	public float getVisualTime() {
+		return 0f;
+	}
 }

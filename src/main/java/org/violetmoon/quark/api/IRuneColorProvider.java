@@ -1,6 +1,7 @@
 package org.violetmoon.quark.api;
 
 import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 
 /**
  * @author WireSegal
@@ -8,5 +9,5 @@ import net.minecraft.world.item.ItemStack;
  */
 public interface IRuneColorProvider {
 
-	int getRuneColor(ItemStack stack);
+	RuneColor getRuneColor(ItemStack stack);
 }

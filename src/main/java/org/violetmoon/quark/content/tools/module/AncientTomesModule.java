@@ -43,6 +43,7 @@ import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.MiscUtil;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
 import org.violetmoon.quark.content.tools.loot.EnchantTome;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
@@ -363,9 +364,9 @@ public class AncientTomesModule extends ZetaModule {
 		if(event.getObject().getItem() == Items.ENCHANTED_BOOK) {
 			event.addCapability(OVERLEVEL_COLOR_HANDLER, QuarkCapabilities.RUNE_COLOR, stack -> {
 				if(overleveledBooksGlowRainbow && isOverlevel(stack))
-					return 16;
+					return RuneColor.RAINBOW;
 				else
-					return -1;
+					return null;
 			});
 		}
 	}

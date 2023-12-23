@@ -1,41 +1,51 @@
 package org.violetmoon.quark.content.tools.item;
 
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.api.IRuneColorProvider;
-import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.tools.base.RuneColor;
+import org.violetmoon.zeta.item.ZetaSmithingTemplateItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
+
+import java.util.List;
 
 /**
  * @author WireSegal
  *         Created at 2:27 PM on 8/17/19.
  */
-public class RuneItem extends ZetaItem implements IRuneColorProvider {
+public class RuneItem extends ZetaSmithingTemplateItem implements IRuneColorProvider {
 
-	private final int color;
-	private final boolean glow;
+	private static final Component RUNE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.applies_to"))).withStyle(DESCRIPTION_FORMAT);
+	private static final Component RUNE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.ingredients"))).withStyle(DESCRIPTION_FORMAT);
+	private static final Component RUNE_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(Quark.MOD_ID, "rune_upgrade"))).withStyle(TITLE_FORMAT);
+	private static final Component RUNE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.base_slot_description")));
+	private static final Component RUNE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.additions_slot_description")));
 
-	public RuneItem(String regname, ZetaModule module, int color, boolean glow) {
-		super(regname, module, new Item.Properties());
-		this.color = color;
-		this.glow = glow;
+	private static final ResourceLocation EMPTY_SLOT_BLAZE_POWDER = new ResourceLocation(Quark.MOD_ID, "item/empty_slot_blaze_powder");
+	private static final ResourceLocation EMPTY_SLOT_DYE = new ResourceLocation(Quark.MOD_ID, "item/empty_slot_dye");
+	private static final ResourceLocation EMPTY_SLOT_NOTHING = new ResourceLocation(Quark.MOD_ID, "item/empty_slot_nothing");
 
-		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.INGREDIENTS, this, Items.EXPERIENCE_BOTTLE, true);
+	public RuneItem(String regname, ZetaModule module) {
+		super(regname, module, RUNE_APPLIES_TO, RUNE_INGREDIENTS, RUNE_UPGRADE, RUNE_BASE_SLOT_DESCRIPTION, RUNE_ADDITIONS_SLOT_DESCRIPTION, anyToolIconList(),
+			List.of(EMPTY_SLOT_BLAZE_POWDER, EMPTY_SLOT_DYE, EMPTY_SLOT_NOTHING));
+
+		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.INGREDIENTS, this, Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, false);
 	}
 
 	@Override
 	public boolean isFoil(@NotNull ItemStack stack) {
-		return glow;
+		return true;
 	}
 
 	@Override
-	public int getRuneColor(ItemStack stack) {
-		return color;
+	public RuneColor getRuneColor(ItemStack stack) {
+		return RuneColor.RAINBOW;
 	}
 }

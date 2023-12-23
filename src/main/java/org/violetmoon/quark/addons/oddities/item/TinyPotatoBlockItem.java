@@ -20,6 +20,7 @@ import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.util.TinyPotatoInfo;
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
@@ -102,9 +103,9 @@ public class TinyPotatoBlockItem extends ZetaBlockItem implements IRuneColorProv
 	}
 
 	@Override
-	public int getRuneColor(ItemStack stack) {
+	public RuneColor getRuneColor(ItemStack stack) {
 		if(stack.hasCustomHoverName())
 			return TinyPotatoInfo.fromComponent(stack.getHoverName()).runeColor();
-		return -1;
+		return null;
 	}
 }

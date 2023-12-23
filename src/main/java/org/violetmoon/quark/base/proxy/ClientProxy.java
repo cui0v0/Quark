@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.fml.ModLoadingContext;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.config.QButtonHandler;
@@ -100,6 +99,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public boolean isClientPlayerHoldingShift() {
 		return Screen.hasShiftDown();
+	}
+
+	@Override
+	public float getVisualTime() {
+		return QuarkClient.ticker.total;
 	}
 
 	private static void copyProgrammerArtIfMissing() {

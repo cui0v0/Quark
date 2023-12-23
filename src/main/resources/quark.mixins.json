@@ -10,6 +10,7 @@
     "AnimalMixin",
     "AnvilMenuMixin",
     "ArmorStandMixin",
+    "ArmorTrimMixin",
     "ArrowPiercingEnchantmentMixin",
     "BannerDuplicateRecipeMixin",
     "BaseCoralPlantTypeBlockMixin",

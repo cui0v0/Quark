@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.mobs.entity;
 
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -28,7 +27,7 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -36,17 +35,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.mobs.module.ForgottenModule;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
-import org.violetmoon.zeta.util.ItemNBTHelper;
-import org.violetmoon.zeta.util.RegistryUtil;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Forgotten extends Skeleton {
@@ -171,17 +166,11 @@ public class Forgotten extends Skeleton {
 		EnchantmentHelper.enchantItem(random, sheathed, 20, false);
 
 		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class) && random.nextBoolean()) {
-			List<Item> items = RegistryUtil.getTagValues(level().registryAccess(), ColorRunesModule.runesLootableTag);
-			if(!items.isEmpty()) {
-				ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
-				CompoundTag runeNbt = item.serializeNBT();
+			DyeColor color = DyeColor.values()[random.nextInt(DyeColor.values().length)];
+			RuneColor rune = RuneColor.byDyeColor(color);
 
-				ItemNBTHelper.setBoolean(bow, ColorRunesModule.TAG_RUNE_ATTACHED, true);
-				ItemNBTHelper.setBoolean(sheathed, ColorRunesModule.TAG_RUNE_ATTACHED, true);
-
-				ItemNBTHelper.setCompound(bow, ColorRunesModule.TAG_RUNE_COLOR, runeNbt);
-				ItemNBTHelper.setCompound(sheathed, ColorRunesModule.TAG_RUNE_COLOR, runeNbt);
-			}
+			ColorRunesModule.withRune(bow, rune);
+			ColorRunesModule.withRune(sheathed, rune);
 		}
 
 		setItemSlot(EquipmentSlot.MAINHAND, bow);

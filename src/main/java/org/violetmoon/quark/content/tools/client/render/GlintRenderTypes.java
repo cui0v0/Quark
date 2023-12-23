@@ -3,19 +3,15 @@ package org.violetmoon.quark.content.tools.client.render;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.tools.module.ColorRunesModule;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class GlintRenderTypes extends RenderType {
@@ -24,13 +20,13 @@ public class GlintRenderTypes extends RenderType {
 		throw new UnsupportedOperationException("Don't instantiate this");
 	}
 
-	public static List<RenderType> glint = newRenderList(GlintRenderTypes::buildGlintRenderType);
-	public static List<RenderType> glintTranslucent = newRenderList(GlintRenderTypes::buildGlintTranslucentRenderType);
-	public static List<RenderType> entityGlint = newRenderList(GlintRenderTypes::buildEntityGlintRenderType);
-	public static List<RenderType> glintDirect = newRenderList(GlintRenderTypes::buildGlintDirectRenderType);
-	public static List<RenderType> entityGlintDirect = newRenderList(GlintRenderTypes::buildEntityGlintDriectRenderType);
-	public static List<RenderType> armorGlint = newRenderList(GlintRenderTypes::buildArmorGlintRenderType);
-	public static List<RenderType> armorEntityGlint = newRenderList(GlintRenderTypes::buildArmorEntityGlintRenderType);
+	public static Map<RuneColor, RenderType> glint = newRenderMap(GlintRenderTypes::buildGlintRenderType);
+	public static Map<RuneColor, RenderType> glintTranslucent = newRenderMap(GlintRenderTypes::buildGlintTranslucentRenderType);
+	public static Map<RuneColor, RenderType> entityGlint = newRenderMap(GlintRenderTypes::buildEntityGlintRenderType);
+	public static Map<RuneColor, RenderType> glintDirect = newRenderMap(GlintRenderTypes::buildGlintDirectRenderType);
+	public static Map<RuneColor, RenderType> entityGlintDirect = newRenderMap(GlintRenderTypes::buildEntityGlintDriectRenderType);
+	public static Map<RuneColor, RenderType> armorGlint = newRenderMap(GlintRenderTypes::buildArmorGlintRenderType);
+	public static Map<RuneColor, RenderType> armorEntityGlint = newRenderMap(GlintRenderTypes::buildArmorEntityGlintRenderType);
 
 	public static void addGlintTypes(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> map) {
 		addGlintTypes(map, glint);
@@ -42,19 +38,17 @@ public class GlintRenderTypes extends RenderType {
 		addGlintTypes(map, armorEntityGlint);
 	}
 
-	private static List<RenderType> newRenderList(Function<String, RenderType> func) {
-		ArrayList<RenderType> list = new ArrayList<>(ColorRunesModule.RUNE_TYPES + 1);
+	private static Map<RuneColor, RenderType> newRenderMap(Function<String, RenderType> func) {
+		EnumMap<RuneColor, RenderType> map = new EnumMap<>(RuneColor.class);
 
-		for(DyeColor color : DyeColor.values())
-			list.add(func.apply(color.getName()));
-		list.add(func.apply("rainbow"));
-		list.add(func.apply("blank"));
+		for(RuneColor color : RuneColor.values())
+			map.put(color, func.apply(color.getSerializedName()));
 
-		return list;
+		return map;
 	}
 
-	private static void addGlintTypes(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> map, List<RenderType> typeList) {
-		for(RenderType renderType : typeList)
+	private static void addGlintTypes(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> map, Map<RuneColor, RenderType> typeMap) {
+		for(RenderType renderType : typeMap.values())
 			if(!map.containsKey(renderType))
 				map.put(renderType, new BufferBuilder(renderType.bufferSize()));
 	}

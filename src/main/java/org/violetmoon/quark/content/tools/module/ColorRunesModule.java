@@ -1,49 +1,51 @@
 package org.violetmoon.quark.content.tools.module;
 
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CompassItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.api.IRuneColorProvider;
 import org.violetmoon.quark.api.QuarkCapabilities;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.network.message.UpdateTridentMessage;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.quark.content.tools.client.render.GlintRenderTypes;
 import org.violetmoon.quark.content.tools.item.RuneItem;
+import org.violetmoon.quark.content.tools.recipe.SmithingRuneRecipe;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.ZAnvilRepair;
-import org.violetmoon.zeta.event.play.ZAnvilUpdate;
 import org.violetmoon.zeta.event.play.entity.player.ZPlayerTick;
 import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
-import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -55,24 +57,11 @@ import java.util.function.Supplier;
 @ZetaLoadModule(category = "tools")
 public class ColorRunesModule extends ZetaModule {
 
-	public static final String TAG_RUNE_ATTACHED = Quark.MOD_ID + ":RuneAttached";
 	public static final String TAG_RUNE_COLOR = Quark.MOD_ID + ":RuneColor";
 
-	public static final int RUNE_TYPES = 17;
-
-	@Config(description = "Whether you can blend runes of each of the 'primary' colors plus white to create rainbow runes.", flag = "craftable_rainbow_rune")
-	public static boolean rainbowRuneCraftable = true;
-
-	@Config(description = "Whether you can blend runes of the 'primary' colors to create other colors of rune.", flag = "color_blending_runes")
-	public static boolean colorBlendingRunes = true;
-
-	private static final ThreadLocal<ItemStack> targetStack = new ThreadLocal<>();
+	private static final ThreadLocal<RuneColor> targetColor = new ThreadLocal<>();
 	@Hint
-	public static TagKey<Item> runesTag;
-	public static TagKey<Item> runesLootableTag;
-	public static List<RuneItem> runes;
-	public static Item rainbow_rune;
-	public static Item blank_rune;
+	public static Item rune;
 
 	@Config
 	public static int dungeonWeight = 10;
@@ -84,45 +73,42 @@ public class ColorRunesModule extends ZetaModule {
 	public static int desertTempleWeight = 8;
 	@Config
 	public static int itemQuality = 0;
-	@Config
-	public static int applyCost = 5;
 
-	public static ManualTrigger applyRuneTrigger;
 	public static ManualTrigger fullRainbowTrigger;
 
 	public static void setTargetStack(ItemStack stack) {
-		targetStack.set(stack);
+		setTargetColor(getStackColor(stack));
 	}
 
-	public static int changeColor() {
-		ItemStack target = targetStack.get();
-
-		return getStackColor(target);
+	public static void setTargetColor(RuneColor color) {
+		targetColor.set(color);
 	}
 
-	private static int getStackColor(ItemStack target) {
+	public static RuneColor changeColor() {
+		return targetColor.get();
+	}
+
+	@Nullable
+	public static RuneColor getStackColor(ItemStack target) {
 		if(target == null)
-			return -1;
+			return null;
+
+		RuneColor manualColor = getAppliedStackColor(target);
+		if (manualColor != null)
+			return manualColor;
 
 		@Nullable
 		IRuneColorProvider cap = get(target);
 
-		if(cap != null) {
-			int color = cap.getRuneColor(target);
-			if(color != -1)
-				return color;
-		}
+		return cap != null ? cap.getRuneColor(target) : null;
 
-		if(!ItemNBTHelper.getBoolean(target, TAG_RUNE_ATTACHED, false))
-			return -1;
+	}
 
-		ItemStack proxied = ItemStack.of(ItemNBTHelper.getCompound(target, TAG_RUNE_COLOR, false));
-		@Nullable
-		IRuneColorProvider proxyCap = get(proxied);
-		if(proxyCap != null)
-			return proxyCap.getRuneColor(target);
-
-		return -1;
+	@Nullable
+	public static RuneColor getAppliedStackColor(ItemStack target) {
+		if(target == null)
+			return null;
+		return RuneColor.byName(ItemNBTHelper.getString(target, TAG_RUNE_COLOR, null));
 	}
 
 	private static final Map<ThrownTrident, ItemStack> TRIDENT_STACK_REFERENCES = new WeakHashMap<>();
@@ -136,33 +122,18 @@ public class ColorRunesModule extends ZetaModule {
 			TRIDENT_STACK_REFERENCES.put(trident, stack);
 	}
 
-	public static ItemStack withRune(ItemStack stack, ItemStack rune) {
-		ItemNBTHelper.setBoolean(stack, ColorRunesModule.TAG_RUNE_ATTACHED, true);
-		ItemNBTHelper.setCompound(stack, ColorRunesModule.TAG_RUNE_COLOR, rune.serializeNBT());
+	public static ItemStack withRune(ItemStack stack, RuneColor color) {
+		ItemNBTHelper.setString(stack, ColorRunesModule.TAG_RUNE_COLOR, color.getSerializedName());
 		return stack;
-	}
-
-	public static ItemStack withRune(ItemStack stack, DyeColor color) {
-		return withRune(stack, new ItemStack(runes.get(color.getId())));
 	}
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		CreativeTabManager.daisyChain();
-		runes = Arrays.stream(MiscUtil.CREATIVE_COLOR_ORDER).map(color -> new RuneItem(color.getSerializedName() + "_rune", this, color.getId(), true)).toList();
+		event.getRegistry().register(SmithingRuneRecipe.SERIALIZER, "smithing_rune", Registries.RECIPE_SERIALIZER);
 
-		rainbow_rune = new RuneItem("rainbow_rune", this, 16, true);
-		blank_rune = new RuneItem("blank_rune", this, 17, false);
-		CreativeTabManager.endDaisyChain();
+		rune = new RuneItem("smithing_template_rune", this);
 
-		applyRuneTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("apply_rune");
 		fullRainbowTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("full_rainbow");
-	}
-
-	@LoadEvent
-	public final void setup(ZCommonSetup event) {
-		runesTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "runes"));
-		runesLootableTag = ItemTags.create(new ResourceLocation(Quark.MOD_ID, "runes_lootable"));
 	}
 
 	@PlayEvent
@@ -179,45 +150,12 @@ public class ColorRunesModule extends ZetaModule {
 			weight = desertTempleWeight;
 
 		if(weight > 0) {
-			LootPoolEntryContainer entry = LootItem.lootTableItem(blank_rune)
+			LootPoolEntryContainer entry = LootItem.lootTableItem(rune)
 					.setWeight(weight)
 					.setQuality(itemQuality)
 					.build();
 			event.add(entry);
 		}
-	}
-
-	@PlayEvent
-	public void onAnvilUpdate(ZAnvilUpdate.Highest event) {
-		ItemStack left = event.getLeft();
-		ItemStack right = event.getRight();
-		ItemStack output = event.getOutput();
-
-		if(!left.isEmpty() && !right.isEmpty() && canHaveRune(left) && right.is(runesTag)) {
-			ItemStack out = (output.isEmpty() ? left : output).copy();
-			ItemNBTHelper.setBoolean(out, TAG_RUNE_ATTACHED, true);
-			ItemNBTHelper.setCompound(out, TAG_RUNE_COLOR, right.serializeNBT());
-			event.setOutput(out);
-
-			String name = event.getName();
-			int cost = Math.max(1, applyCost);
-
-			if(name != null && !name.isEmpty() && (!out.hasCustomHoverName() || !out.getHoverName().getString().equals(name))) {
-				out.setHoverName(Component.literal(name));
-				cost++;
-			}
-
-			event.setCost(cost);
-			event.setMaterialCost(1);
-		}
-	}
-
-	@PlayEvent
-	public void onAnvilUse(ZAnvilRepair event) {
-		ItemStack right = event.getRight();
-
-		if(right.is(runesTag) && event.getEntity() instanceof ServerPlayer sp)
-			applyRuneTrigger.trigger(sp);
 	}
 
 	@PlayEvent
@@ -240,15 +178,49 @@ public class ColorRunesModule extends ZetaModule {
 
 		for(EquipmentSlot slot : checks) {
 			ItemStack stack = player.getItemBySlot(slot);
-			if(stack.isEmpty() || getStackColor(stack) != 16) // 16 = rainbow rune
+			if(stack.isEmpty() || getStackColor(stack) != RuneColor.RAINBOW)
 				return false;
 		}
 
 		return true;
 	}
 
-	private static boolean canHaveRune(ItemStack stack) {
+	public static boolean canHaveRune(ItemStack stack) {
 		return stack.isEnchanted() || (stack.getItem() == Items.COMPASS && CompassItem.isLodestoneCompass(stack)); // isLodestoneCompass = is lodestone compass
+	}
+
+	public static Component extremeRainbow(Component component) {
+		String emphasis = component.getString();
+
+		float time = Quark.proxy.getVisualTime();
+
+		MutableComponent emphasized = Component.empty();
+		for (int i = 0; i < emphasis.length(); i++) {
+			emphasized.append(rainbow(Component.literal("" + emphasis.charAt(i)), i, time));
+		}
+
+		return emphasized;
+	}
+
+	private static MutableComponent rainbow(MutableComponent component, int shift, float time) {
+		return component.withStyle((s) -> s.withColor(
+			TextColor.fromRgb(Mth.hsvToRgb((time + shift) * 2 % 360 / 360F, 1F, 1F))));
+	}
+
+	public static void appendRuneText(ItemStack stack, List<Component> components, Component upgradeTitle) {
+		RuneColor color = getAppliedStackColor(stack);
+		if (color != null) {
+			if (!components.contains(upgradeTitle))
+				components.add(upgradeTitle);
+
+			MutableComponent baseComponent = Component.translatable("rune.quark." + color.getName());
+
+			if (color == RuneColor.RAINBOW)
+				components.add(CommonComponents.space().append(extremeRainbow(baseComponent)));
+			else
+				components.add(CommonComponents.space().append(baseComponent
+					.withStyle((style) -> style.withColor(color.getTextColor()))));
+		}
 	}
 
 	private static @Nullable IRuneColorProvider get(ItemStack stack) {
@@ -286,9 +258,9 @@ public class ColorRunesModule extends ZetaModule {
 			return renderType(GlintRenderTypes.armorEntityGlint, RenderType::armorEntityGlint);
 		}
 
-		private static RenderType renderType(List<RenderType> list, Supplier<RenderType> vanilla) {
-			int color = changeColor();
-			return color >= 0 && color <= RUNE_TYPES ? list.get(color) : vanilla.get();
+		private static RenderType renderType(Map<RuneColor, RenderType> map, Supplier<RenderType> vanilla) {
+			RuneColor color = changeColor();
+			return color != null ? map.get(color) : vanilla.get();
 		}
 
 	}
