@@ -44,3 +44,4 @@ Alpha changelog for build 421
 - Tuff blocks now have 1.21 textures (one was left out on purpose to maintain consistency)
 - Right clicking an armor stand with both hands empty while wearing a backpack moves the backpack to the armor stand (even if there's items inside)
 - Potted Pitcher Plant
+- Chute can now drop items through Hollow Logs
