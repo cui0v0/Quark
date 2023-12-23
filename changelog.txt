@@ -30,6 +30,9 @@ Alpha changelog for build 421
 - Fix double-clicking in a chest clearing the search bar.
 - Fix pickarangs being able to break reinforced deepslate.
 - Fix holding a bow in creative glitching out the Usage Ticker.
+- Fix map tooltips not rendering
+- Fix stronghold libraries having too many ancient tomes
+- Fix dropped backpack with items spilled out still showing the lock icon
 
 ## Performance
 
@@ -38,3 +41,5 @@ Alpha changelog for build 421
 ## New
 
 - Dispensers can now shoot torch arrows.
+- Tuff blocks now have 1.21 textures (one was left out on purpose to maintain consistency)
+- Right clicking an armor stand with both hands empty while wearing a backpack moves the backpack to the armor stand (even if there's items inside)

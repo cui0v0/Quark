@@ -194,8 +194,16 @@ public class BackpackItem extends DyeableArmorItem implements IZetaItem, IZetaIt
 			}
 		}
 
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
+		boolean isCursed = enchants.containsKey(Enchantments.BINDING_CURSE);
+		if(isCursed) {
+			enchants.remove(Enchantments.BINDING_CURSE);
+			EnchantmentHelper.setEnchantments(enchants, stack);
+		}
+		
 		CompoundTag comp = ItemNBTHelper.getNBT(stack);
 		comp.remove("Inventory");
+		
 		if(comp.size() == 0)
 			stack.setTag(null);
 
