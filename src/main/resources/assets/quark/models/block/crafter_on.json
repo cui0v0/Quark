@@ -1,0 +1,88 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "back": "quark:block/crafter_back_on",
+    "bottom": "quark:block/crafter_bottom",
+    "left": "quark:block/crafter_left_on",
+    "right": "quark:block/crafter_right_on",
+    "top": "quark:block/crafter_top_on",
+    "front": "quark:block/crafter_front",
+    "particle": "quark:block/crafter_front"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            0,
+            16,
+            16,
+            0
+          ],
+          "texture": "#top",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#front",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#back",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#left",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#right",
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}
