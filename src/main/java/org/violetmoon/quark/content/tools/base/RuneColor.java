@@ -28,7 +28,7 @@ public enum RuneColor implements StringRepresentable {
 	BROWN(DyeColor.BROWN),
 	GREEN(DyeColor.GREEN),
 	RED(DyeColor.RED),
-	BLACK(DyeColor.BLACK),
+	BLACK(DyeColor.BLACK, DyeColor.BLACK.getFireworkColor()),
 	RAINBOW("rainbow", ChatFormatting.WHITE),
 	BLANK("blank", ChatFormatting.GRAY);
 
@@ -38,7 +38,11 @@ public enum RuneColor implements StringRepresentable {
 	private final int textColor;
 
 	RuneColor(DyeColor color) {
-		this(color.getSerializedName(), color.getTextColor(), color);
+		this(color, color.getTextColor());
+	}
+
+	RuneColor(DyeColor color, int textColor) {
+		this(color.getSerializedName(), textColor, color);
 	}
 
 	RuneColor(String name, ChatFormatting textColor) {
