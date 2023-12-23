@@ -1,1 +1,40 @@
-- Fixed a crash when a villager fails to restock its trade for unknown reasons
+Alpha changelog for build 421
+
+# Fixes
+
+- Fix more cases of blocks not having their correct mining tool.
+- Fix more cases of blocks being missing from creative tabs (and therefore JEI).
+- Simplify SimpleHarvestModule code, fixing a crash with Farmer's Delight.
+- Fix our LivingDeath and ItemTooltip events not firing (had various effects).
+- Fix missing Hotbar Changer texture.
+- Fix Fence Gates not opening with double-door opening.
+- Fix Shibas getting stuck trying to pick up arrows fired from an Infinity bow (...!)
+- Fix stonelings getting damaged by projectiles.
+- Fix pickarang damage sources.
+- Fix the Q button being misplaced, and the "q button on right" option making it more misplaced.
+- Fix Forgotten Hat having 2 identical reach indicators (one for each Forge reach attribute).
+- Fix Crate not having the chest interaction buttons.
+- Fix the Backpack screen not having the sort button.
+- Fix inability to put 1.20 seeds in the Seed Pouch.
+- Fix Tiny Potato being equippable in any slot. Too OP.
+- Fix Backpack and Forgotten Hat not being equippable with right mouse.
+- Fix Corundum Lamps not being mineable.
+- Fix Matrix Enchanting generating pieces you can't actually apply to the tool you're enchanting.
+- Fix Multishot crossbows duplicating torch arrows.
+- Fix sideways Stripped Cherry Posts having the Stripped Bamboo Post model due to a copy-paste error.
+- Fix the Feeding Trough not attracting Brain system mobs, like the Sniffer, Goat, Frog etc.
+- Try to fix Permafrost replacing blocks other than overworld stones.
+- Fix Rune colors not being applied to armor worn on your player/an armor stand.
+- Fix "Gold Tools Have Fortune" not making gold tools have fortune.
+- Fix potion attributes not appearing on items.
+- Fix double-clicking in a chest clearing the search bar.
+- Fix pickarangs being able to break reinforced deepslate.
+- Fix holding a bow in creative glitching out the Usage Ticker.
+
+## Performance
+
+- Try to fix Permafrost worldgen performance. It's still slow.
+
+## New
+
+- Dispensers can now shoot torch arrows.
