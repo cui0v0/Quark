@@ -1,5 +1,16 @@
 package org.violetmoon.quark.content.building.module;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.util.Hint;
+
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 
@@ -9,17 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
-
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ZetaLoadModule(category = "building")
 public class MorePottedPlantsModule extends ZetaModule {
@@ -55,6 +55,7 @@ public class MorePottedPlantsModule extends ZetaModule {
 		add(event, Blocks.WEEPING_VINES, "weeping_vines");
 		add(event, Blocks.WHEAT, "wheat");
 		event.getVariantRegistry().addFlowerPot(Blocks.CAVE_VINES, "cave_vines", p -> p.lightLevel(b -> 14));
+		add(event, Blocks.PITCHER_PLANT, "pitcher_plant");
 
 		tintedBlocks.put(grass, Blocks.GRASS);
 		tintedBlocks.put(largeFern, Blocks.LARGE_FERN);

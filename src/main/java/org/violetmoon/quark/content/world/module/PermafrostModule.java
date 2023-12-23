@@ -34,7 +34,7 @@ public class PermafrostModule extends ZetaModule {
 		.biomes(CompoundBiomeConfig.fromBiomeReslocs(false, "minecraft:frozen_peaks"))
 		.rarity(2)
 		.horizontalSize(72)
-		.verticalSize(20)
+		.verticalSize(15)
 		.horizontalVariation(22)
 		.verticalVariation(4)
 		.minYLevel(105)

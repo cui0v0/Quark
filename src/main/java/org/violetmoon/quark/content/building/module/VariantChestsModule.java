@@ -102,7 +102,7 @@ public class VariantChestsModule extends ZetaModule {
 		event.getRegistry().register(MixedExclusionRecipe.SERIALIZER, "mixed_exclusion", Registries.RECIPE_SERIALIZER);
 
 		for(Wood s : VanillaWoods.ALL)
-			makeChestBlocks(s.name(), Blocks.CHEST, s.sound());
+			makeChestBlocks(s.name(), Blocks.CHEST, s.soundPlanks());
 		makeChestBlocks("nether_brick", Blocks.NETHER_BRICKS, null);
 		makeChestBlocks("purpur", Blocks.PURPUR_BLOCK, null);
 		makeChestBlocks("prismarine", Blocks.PRISMARINE, null);

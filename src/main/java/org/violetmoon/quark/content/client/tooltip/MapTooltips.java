@@ -70,12 +70,9 @@ public class MapTooltips {
 			RenderSystem.enableBlend();
 
 			guiGraphics.blit(RES_MAP_BACKGROUND, -pad, -pad, 0, 0, size, size, size, size);
-
-			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			MultiBufferSource.BufferSource immediateBuffer = MultiBufferSource.immediate(buffer);
-			mc.gameRenderer.getMapRenderer().render(pose, immediateBuffer, mapID, mapdata, true, 240);
-			immediateBuffer.endBatch();
-			pose.popPose();
+			
+			pose.translate(0, 0, 1);
+			mc.gameRenderer.getMapRenderer().render(pose, guiGraphics.bufferSource(), mapID, mapdata, true, 240);
 		}
 
 		@Override

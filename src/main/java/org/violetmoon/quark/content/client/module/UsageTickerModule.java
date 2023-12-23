@@ -180,7 +180,7 @@ public class UsageTickerModule extends ZetaModule {
 			}
 
 			public boolean shouldChange(ItemStack currStack, ItemStack prevStack, int currentTotal, int pastTotal) {
-				return !(prevStack == currStack) || (currStack.isDamageableItem() && currStack.getDamageValue() != prevStack.getDamageValue()) || currentTotal != pastTotal;
+				return currStack.getItem() != prevStack.getItem() || (currStack.isDamageableItem() && currStack.getDamageValue() != prevStack.getDamageValue()) || currentTotal != pastTotal;
 			}
 
 			public ItemStack getStack(Player player) {

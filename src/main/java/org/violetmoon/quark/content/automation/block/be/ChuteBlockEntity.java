@@ -1,22 +1,23 @@
 package org.violetmoon.quark.content.automation.block.be;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.content.automation.block.ChuteBlock;
+import org.violetmoon.quark.content.automation.module.ChuteModule;
+import org.violetmoon.quark.content.building.module.GrateModule;
+import org.violetmoon.quark.content.building.module.HollowLogsModule;
+import org.violetmoon.zeta.block.be.ZetaBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import org.violetmoon.quark.content.automation.block.ChuteBlock;
-import org.violetmoon.quark.content.automation.module.ChuteModule;
-import org.violetmoon.quark.content.building.module.GrateModule;
-import org.violetmoon.zeta.block.be.ZetaBlockEntity;
 
 /**
  * @author WireSegal
@@ -32,7 +33,9 @@ public class ChuteBlockEntity extends ZetaBlockEntity {
 		if(level != null && level.getBlockState(worldPosition).getValue(ChuteBlock.ENABLED)) {
 			BlockPos below = worldPosition.below();
 			BlockState state = level.getBlockState(below);
-			return state.isAir() || state.getCollisionShape(level, below).isEmpty() || state.getBlock() == GrateModule.grate;
+			return state.isAir() || state.getCollisionShape(level, below).isEmpty() 
+					|| state.getBlock() == GrateModule.grate
+					|| (state.is(HollowLogsModule.hollowLogsTag) && state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y);
 		}
 
 		return false;

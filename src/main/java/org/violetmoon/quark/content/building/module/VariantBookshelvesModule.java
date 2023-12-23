@@ -23,7 +23,7 @@ public class VariantBookshelvesModule extends ZetaModule {
 	public final void register(ZRegister event) {
 		CreativeTabManager.daisyChain();
 		for(Wood type : VanillaWoods.NON_OAK)
-			new VariantBookshelfBlock(type.name(), this, !type.nether(), type.sound());
+			new VariantBookshelfBlock(type.name(), this, !type.nether(), type.soundPlanks());
 		CreativeTabManager.endDaisyChain();
 	}
 
