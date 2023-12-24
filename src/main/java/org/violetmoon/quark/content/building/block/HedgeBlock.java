@@ -52,20 +52,29 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	private final Object2IntMap<BlockState> hedgeStateToIndex;
 	private final VoxelShape[] hedgeShapes;
 
+	@Nullable
 	private final ZetaModule module;
 	public final BlockState leafState;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public static final BooleanProperty EXTEND = BooleanProperty.create("extend");
 
-	public HedgeBlock(ZetaModule module, Block fence, Block leaf) {
+	public HedgeBlock(@Nullable ZetaModule module, Block fence, Block leaf) {
 		super(Block.Properties.copy(fence));
 
 		this.module = module;
 		this.leafState = leaf.defaultBlockState();
 
+		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
+
+		hedgeStateToIndex = new Object2IntOpenHashMap<>();
+		hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
+
+		if(module == null) //auto registration below this line
+			return;
+
 		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, BuiltInRegistries.BLOCK);
-		if(leaf instanceof BlossomLeavesBlock) {
+		if (leaf instanceof BlossomLeavesBlock) {
 			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
 			Quark.ZETA.registry.registerBlock(this, colorName + "_blossom_hedge", true);
 		} else {
@@ -75,11 +84,6 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.NATURAL_BLOCKS, this, leaf, false);
 
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
-
-		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
-
-		hedgeStateToIndex = new Object2IntOpenHashMap<>();
-		hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
 	}
 
 	public BlockState getLeaf() {
@@ -183,6 +187,7 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 		return "hedge";
 	}
 
+	@Nullable
 	@Override
 	public ZetaModule getModule() {
 		return module;
