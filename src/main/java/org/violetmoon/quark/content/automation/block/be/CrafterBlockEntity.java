@@ -27,8 +27,21 @@
 
 package org.violetmoon.quark.content.automation.block.be;
 
-import net.minecraft.core.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
+
+import org.violetmoon.quark.content.automation.block.CrafterBlock;
+import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
+import org.violetmoon.quark.content.automation.module.CrafterModule;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.BlockSourceImpl;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
@@ -54,17 +67,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.quark.content.automation.block.CrafterBlock;
-import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
-import org.violetmoon.quark.content.automation.module.CrafterModule;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 public class CrafterBlockEntity extends BaseContainerBlockEntity implements CraftingContainer, WorldlyContainer {
 	private static final DispenseItemBehavior BEHAVIOR = new CraftDispenseBehavior();
-	private static final int[] SLOTS = IntStream.range(0, 9).toArray();
 	public final NonNullList<ItemStack> stacks = NonNullList.withSize(9, ItemStack.EMPTY);
 	public final ResultContainer result = new ResultContainer();
 	public final boolean[] blocked = new boolean[9];
@@ -112,16 +117,16 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 		super.load(nbt);
 		if (nbt.contains("Blocked")) {
 			ListTag list = nbt.getList("Blocked", Tag.TAG_BYTE);
-			for (int i = 0; i < list.size() && i < 8; i++) {
+			for (int i = 0; i < list.size() && i < 9; i++) {
 				blocked[i] = ((ByteTag) list.get(i)).getAsByte() != 0;
 			}
 		}
 		ContainerHelper.loadAllItems(nbt, stacks);
 	}
-	
+
 	public void craft() {
 		if (level instanceof ServerLevel sw) {
-//			BlockSource blockSource = new BlockSource(sw, worldPosition, this.getBlockState(), null);
+			//			BlockSource blockSource = new BlockSource(sw, worldPosition, this.getBlockState(), null);
 			BlockSource blockSource = new BlockSourceImpl(sw, worldPosition);
 			ItemStack itemStack = result.getItem(0);
 			if (!itemStack.isEmpty()) {
@@ -297,7 +302,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 
 	@Override
 	protected Component getDefaultName() {
-		return Component.literal("Crafter");
+		return Component.translatable("block.quark.crafter");
 	}
 
 	@Override
@@ -328,12 +333,47 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 
 	@Override
 	public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
-		return getItem(slot).isEmpty() && !blocked[slot] && !level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
+		return canPlaceItem(slot, stack);
+	}
+
+	@Override
+	public boolean canPlaceItem(int slot, ItemStack stack) {
+		ItemStack stackInSlot = getItem(slot);
+		boolean allowed = stackInSlot.isEmpty();
+
+		if(!CrafterModule.useEmiLogic && !allowed) {
+			int min = 999;
+			for(int i = 0; i < 9; i++) {
+				if(blocked[i])
+					continue;
+				
+				ItemStack testStack = getItem(i);
+				if(testStack.isEmpty() || ItemStack.isSameItemSameTags(stackInSlot, testStack))
+					min = Math.min(min, testStack.getCount());
+			}
+			
+			return stackInSlot.getCount() == min;
+		}
+
+		return allowed && !blocked[slot] && !level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
 	}
 
 	@Override
 	public int[] getSlotsForFace(Direction side) {
-		return SLOTS;
+		int ct = 0;
+		for(boolean bl : blocked)
+			if(!bl)
+				ct++;
+
+		int[] ret = new int[ct];
+		int i = 0;
+		for(int j = 0; j < blocked.length; j++)
+			if(!blocked[j]) {
+				ret[i] = j;
+				i++;
+			}
+
+		return ret;
 	}
 
 	private static class CraftDispenseBehavior implements DispenseItemBehavior {

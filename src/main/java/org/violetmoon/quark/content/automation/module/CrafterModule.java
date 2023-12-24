@@ -1,14 +1,7 @@
 package org.violetmoon.quark.content.automation.module;
 
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.common.extensions.IForgeMenuType;
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.CrafterBlock;
 import org.violetmoon.quark.content.automation.block.be.CrafterBlockEntity;
 import org.violetmoon.quark.content.automation.client.screen.CrafterScreen;
@@ -18,16 +11,28 @@ import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.util.Hint;
+
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 
 @ZetaLoadModule(category = "automation")
 public class CrafterModule extends ZetaModule {
+	
     public static Block block;
     public static MenuType<CrafterMenu> menuType;
     public static BlockEntityType<CrafterBlockEntity> blockEntityType;
 
-    @Hint
     Block crafter;
+    
+    @Config(description = "Setting this to true will change the Crafter to use Emi's original design instead of Mojang's.\n"
+    		+ "Emi's design allows only one item per slot, instead of continuing to fill it round robin")
+    public static boolean useEmiLogic = false;
 
     @LoadEvent
     public final void register(ZRegister event) {
