@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class RuneItem extends ZetaSmithingTemplateItem implements IRuneColorProvider {
 
-	private static final Component RUNE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.applies_to"))).withStyle(DESCRIPTION_FORMAT);
-	private static final Component RUNE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-	private static final Component RUNE_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(Quark.MOD_ID, "rune_upgrade"))).withStyle(TITLE_FORMAT);
+	private static final Component RUNE_APPLIES_TO = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.applies_to"))).withStyle(Z_DESCRIPTION_FORMAT);
+	private static final Component RUNE_INGREDIENTS = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.ingredients"))).withStyle(Z_DESCRIPTION_FORMAT);
+	private static final Component RUNE_UPGRADE = Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(Quark.MOD_ID, "rune_upgrade"))).withStyle(Z_TITLE_FORMAT);
 	private static final Component RUNE_BASE_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.base_slot_description")));
 	private static final Component RUNE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(Util.makeDescriptionId("item", new ResourceLocation(Quark.MOD_ID, "smithing_template.rune.additions_slot_description")));
 
