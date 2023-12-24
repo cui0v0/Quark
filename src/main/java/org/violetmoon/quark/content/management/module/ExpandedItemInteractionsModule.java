@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.management.module;
 
 import com.mojang.datafixers.util.Either;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,7 +37,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 import net.minecraftforge.network.NetworkHooks;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
@@ -203,19 +201,20 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			if(equipSlot != null) {
 				ItemStack currArmor = player.getItemBySlot(equipSlot);
 
-				if(slot.mayPickup(player) && slot.mayPlace(currArmor))
-					if(currArmor.isEmpty() || (!EnchantmentHelper.hasBindingCurse(currArmor) && currArmor != stack)) {
-						int index = slot.getSlotIndex();
-						if(index < slot.container.getContainerSize()) {
-							if(!simulate) {
-								player.setItemSlot(equipSlot, stack.copy());
+                if (slot.mayPickup(player)) {
+                    if (slot.mayPlace(currArmor) || (currArmor.isEmpty())) {
+                        if (currArmor.isEmpty() || (!EnchantmentHelper.hasBindingCurse(currArmor) && currArmor != stack)) {
+                            if (!simulate) {
+                                player.setItemSlot(equipSlot, stack.copy());
+                                if ((currArmor.isEmpty())) slot.remove(1); // Added to allow people to grab from Forge component slots while not wearing an item. God Forge is weird.
+                                else slot.set(currArmor.copy());
 
-								slot.container.setItem(index, currArmor.copy());
-								slot.onQuickCraft(stack, currArmor);
-							}
-							return true;
-						}
-					}
+                                slot.onQuickCraft(stack, currArmor);
+                            }
+                            return true;
+                        }
+                    }
+                }
 			}
 		}
 
