@@ -42,8 +42,9 @@ public class LootrVariantChestRenderer<T extends LootrVariantChestBlockEntity> e
 		boolean opened = tile.isOpened() || tile.getOpeners().contains(playerIdCache);
 
 		//apply the texture naming convention
-		StringBuilder tex = new StringBuilder("quark_variant_chests/")
-				.append(v.getChestType())
+		StringBuilder tex = new StringBuilder(v.getTextureFolder())
+				.append('/')
+				.append(v.getTexturePath())
 				.append('/');
 		if(isTrap) {
 			if(ConfigManager.isVanillaTextures())

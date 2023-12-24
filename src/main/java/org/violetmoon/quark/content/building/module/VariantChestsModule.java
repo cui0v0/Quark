@@ -92,7 +92,11 @@ public class VariantChestsModule extends ZetaModule {
 	private static final String DONK_CHEST = "Quark:DonkChest";
 
 	public interface IVariantChest {
-		String getChestType();
+		String getTexturePath();
+
+		default String getTextureFolder(){
+			return "quark_variant_chests";
+		}
 	}
 
 	/// BLOCKS ///
