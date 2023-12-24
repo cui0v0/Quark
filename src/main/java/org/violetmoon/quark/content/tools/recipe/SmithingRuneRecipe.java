@@ -162,7 +162,7 @@ public final class SmithingRuneRecipe extends SmithingTrimRecipe { // Extends to
 		@Override
 		public SmithingRuneRecipe fromNetwork(@Nonnull ResourceLocation id, @Nonnull FriendlyByteBuf buf) {
 			Ingredient template = Ingredient.fromNetwork(buf);
-			Ingredient addition = buf.readBoolean() ? Ingredient.fromNetwork(buf) : Ingredient.EMPTY;
+			Ingredient addition = buf.readBoolean() ? Ingredient.EMPTY : Ingredient.fromNetwork(buf);
 			RuneColor runeColor = buf.readEnum(RuneColor.class);
 			return new SmithingRuneRecipe(id, template, addition, runeColor);
 		}

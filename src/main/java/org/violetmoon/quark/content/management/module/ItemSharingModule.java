@@ -160,7 +160,7 @@ public class ItemSharingModule extends ZetaModule {
 
 			sequence.accept((counter_, style, character) -> {
 				String sofar = before.toString();
-				if(sofar.endsWith("   ")) {
+				if(sofar.endsWith("  ")) {
 					render(mc, guiGraphics, sofar.substring(0, sofar.length() - 2), character == ' ' ? 0 : -halfSpace, x, y, style, color);
 					return false;
 				}
