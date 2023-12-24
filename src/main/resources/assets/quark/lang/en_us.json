@@ -332,7 +332,10 @@
 	"quark.readout.sign_says": ". Sign Says ",
 	"quark.readout.no_item": "No item",
 
-	"quark.subtitles.shiba_eat_arrow": "Shiba… eats arrow?",
+	"quark.subtitles.shiba_eat_arrow": "Shiba... eats arrow?",
+	"quark.subtitles.shiba_ambient": "Shiba pants",
+	"quark.subtitles.shiba_hurt": "Shiba hurts",
+	"quark.subtitles.shiba_dead": "Shiba dies",
 	"quark.subtitles.meep": "Stoneling runs away",
 	"quark.subtitles.give_stoneling": "Stoneling gives item",
 	"quark.subtitles.take_stoneling": "Stoneling takes item",

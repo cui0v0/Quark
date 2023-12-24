@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,9 +31,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
 import org.jetbrains.annotations.NotNull;
-
+import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.ai.BarkAtDarknessGoal;
 import org.violetmoon.quark.content.mobs.ai.DeliverFetchedItemGoal;
 import org.violetmoon.quark.content.mobs.ai.FetchArrowGoal;
@@ -69,7 +67,7 @@ public class Shiba extends TamableAnimal {
 		goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
 		goalSelector.addGoal(7, new TemptGoal(this, 1, Ingredient.of(Items.BONE), false));
 		goalSelector.addGoal(8, new BreedGoal(this, 1.0D));
-		goalSelector.addGoal(9, new NuzzleGoal(this, 0.5F, 16, 2, SoundEvents.WOLF_WHINE));
+		goalSelector.addGoal(9, new NuzzleGoal(this, 0.5F, 16, 2, QuarkSounds.ENTITY_SHIBA_WHINE));
 		goalSelector.addGoal(10, new WantLoveGoal(this, 0.2F));
 		goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -262,7 +260,7 @@ public class Shiba extends TamableAnimal {
 				if(player.level() instanceof ServerLevel serverLevel) {
 					Vec3 pos = position();
 					serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
-					playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
+					playSound(QuarkSounds.ENTITY_SHIBA_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
 				} else
 					player.swing(InteractionHand.MAIN_HAND);
 
@@ -284,7 +282,7 @@ public class Shiba extends TamableAnimal {
 					if(player.level() instanceof ServerLevel serverLevel) {
 						Vec3 pos = position();
 						serverLevel.sendParticles(ParticleTypes.HEART, pos.x, pos.y + 0.5, pos.z, 1, 0, 0, 0, 0.1);
-						playSound(SoundEvents.WOLF_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
+						playSound(QuarkSounds.ENTITY_SHIBA_WHINE, 0.6F, 0.5F + (float) Math.random() * 0.5F);
 					}
 					setMouthItem(ItemStack.EMPTY);
 					return InteractionResult.SUCCESS;
@@ -368,25 +366,25 @@ public class Shiba extends TamableAnimal {
 
 	@Override
 	protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState blockIn) {
-		playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
+		playSound(QuarkSounds.ENTITY_SHIBA_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
 		if(random.nextInt(3) == 0)
-			return (getHealth() / getMaxHealth()) < 0.5f ? SoundEvents.WOLF_WHINE : SoundEvents.WOLF_PANT;
+			return (getHealth() / getMaxHealth()) < 0.5f ? QuarkSounds.ENTITY_SHIBA_WHINE : QuarkSounds.ENTITY_SHIBA_PANT;
 		else
-			return SoundEvents.WOLF_AMBIENT;
+			return QuarkSounds.ENTITY_SHIBA_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) {
-		return SoundEvents.WOLF_HURT;
+		return QuarkSounds.ENTITY_SHIBA_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.WOLF_DEATH;
+		return QuarkSounds.ENTITY_SHIBA_DEATH;
 	}
 
 	@Override
