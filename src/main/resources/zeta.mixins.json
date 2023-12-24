@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "quark.mixins.refmap.json",
   "package": "org.violetmoon.zeta.mixin.mixins",
+  "plugin": "org.violetmoon.zeta.mixin.plugin.InterfaceDelegateMixinPlugin",
   "mixins": [
     "AccessorLootTable",
     "AccessorPistonStructureResolver",
