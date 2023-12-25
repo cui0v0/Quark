@@ -117,7 +117,7 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 			world.scheduleTick(pos, this, 6);
 			((CrafterBlockEntity) world.getBlockEntity(pos)).craft();
 			world.setBlock(pos, state.setValue(POWER, PowerState.TRIGGERED), 2);
-		} else if (!bl && state.getValue(POWER) == PowerState.ON) {
+		} else if (!bl && state.getValue(POWER) != PowerState.OFF) {
 			world.setBlock(pos, state.setValue(POWER, PowerState.OFF), 2);
 		}
 	}
