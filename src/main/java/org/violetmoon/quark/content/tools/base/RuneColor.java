@@ -28,7 +28,7 @@ public enum RuneColor implements StringRepresentable {
 	BROWN(DyeColor.BROWN),
 	GREEN(DyeColor.GREEN),
 	RED(DyeColor.RED),
-	BLACK(DyeColor.BLACK, DyeColor.BLACK.getFireworkColor()),
+	BLACK(DyeColor.BLACK, 0x404040),
 	RAINBOW("rainbow", ChatFormatting.WHITE),
 	BLANK("blank", ChatFormatting.GRAY);
 

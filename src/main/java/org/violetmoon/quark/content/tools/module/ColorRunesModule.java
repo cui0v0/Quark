@@ -60,7 +60,7 @@ public class ColorRunesModule extends ZetaModule {
 	public static final String TAG_RUNE_COLOR = Quark.MOD_ID + ":RuneColor";
 
 	private static final ThreadLocal<RuneColor> targetColor = new ThreadLocal<>();
-	@Hint(key = "smithing_template_rune")
+	@Hint
 	public static Item rune;
 
 	@Config

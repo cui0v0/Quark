@@ -20,6 +20,12 @@ public class QuarkSounds {
 	private static final List<SoundEvent> REGISTRY_DEFERENCE = Lists.newArrayList();
 
 	public static final SoundEvent ENTITY_SHIBA_EAT_ARROW = register("entity.shiba.eat_arrow");
+	public static final SoundEvent ENTITY_SHIBA_WHINE = register("entity.shiba.whine");
+	public static final SoundEvent ENTITY_SHIBA_STEP = register("entity.shiba.step");
+	public static final SoundEvent ENTITY_SHIBA_AMBIENT = register("entity.shiba.ambient");
+	public static final SoundEvent ENTITY_SHIBA_PANT = register("entity.shiba.pant");
+	public static final SoundEvent ENTITY_SHIBA_HURT = register("entity.shiba.hurt");
+	public static final SoundEvent ENTITY_SHIBA_DEATH = register("entity.shiba.death");
 
 	public static final SoundEvent ENTITY_STONELING_MEEP = register("entity.stoneling.meep");
 	public static final SoundEvent ENTITY_STONELING_PURR = register("entity.stoneling.purr");
