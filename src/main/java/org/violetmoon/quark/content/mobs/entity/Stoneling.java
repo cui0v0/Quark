@@ -2,7 +2,6 @@ package org.violetmoon.quark.content.mobs.entity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +29,6 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -48,10 +46,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.NetworkHooks;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
@@ -91,7 +87,7 @@ public class Stoneling extends PathfinderMob {
 	public Stoneling(EntityType<? extends Stoneling> type, Level worldIn) {
 		super(type, worldIn);
 		this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 1.0F);
-		this.setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, 1.0F); //TODO 1.20: looks weird to me. formerly both DAMAGE_CACTUS
+		this.setPathfindingMalus(BlockPathTypes.DANGER_OTHER, 1.0F);
 	}
 
 	@Override
@@ -284,7 +280,7 @@ public class Stoneling extends PathfinderMob {
 	}
 
 	private static boolean isProjectileWithoutPiercing(DamageSource source) {
-		if(source.getEntity() instanceof Projectile)
+		if(!source.isIndirect())
 			return false;
 
 		Entity sourceEntity = source.getDirectEntity();
