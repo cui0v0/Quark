@@ -74,6 +74,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	public final ResultContainer result = new ResultContainer();
 	public final boolean[] blocked = new boolean[9];
 	public final ContainerData delegate;
+	private boolean didInitialScan = false;
 
 	public CrafterBlockEntity(BlockPos pos, BlockState state) {
 		super(CrafterModule.blockEntityType, pos, state);
@@ -127,6 +128,7 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	public void craft() {
 		if (level instanceof ServerLevel sw) {
 			//			BlockSource blockSource = new BlockSource(sw, worldPosition, this.getBlockState(), null);
+			update();
 			BlockSource blockSource = new BlockSourceImpl(sw, worldPosition);
 			ItemStack itemStack = result.getItem(0);
 			if (!itemStack.isEmpty()) {
@@ -218,6 +220,10 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, CrafterBlockEntity be) {
+		if(!be.didInitialScan && !world.isClientSide) {
+			be.update();
+			be.didInitialScan = true;
+		}
 	}
 
 	public static ItemStack getResult(Level world, CraftingContainer craftingInventory) {
@@ -355,7 +361,10 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 			return stackInSlot.getCount() == min;
 		}
 
-		return allowed && !blocked[slot] && !level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
+		boolean blockedSlot = blocked[slot];
+		boolean powered = level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
+		
+		return allowed && !blockedSlot && (CrafterModule.allowItemsWhilePowered || !powered);
 	}
 
 	@Override

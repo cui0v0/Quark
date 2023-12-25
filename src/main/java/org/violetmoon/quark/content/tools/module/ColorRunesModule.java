@@ -159,7 +159,7 @@ public class ColorRunesModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void onPlayerTick(ZPlayerTick event) {
+	public void onPlayerTick(ZPlayerTick.Start event) {
 		final String tag = "quark:what_are_you_gay_or_something";
 		Player player = event.getPlayer();
 
