@@ -78,11 +78,8 @@ public class FeedingTroughModule extends ZetaModule {
 	@Config
 	public static double range = 10;
 
-	@Config(description = "Set to false to make it so animals look for a nearby trough every time they want to eat instead of remembering the last one. Can affect performance if false.")
-	public static boolean enableTroughCaching = true;
-
-	@Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one. Only active with cache on")
-	public static double lookChance = 0.05;
+	@Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one")
+	public static double lookChance = 0.005;
 
 	private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
 
@@ -135,15 +132,13 @@ public class FeedingTroughModule extends ZetaModule {
 
 		//is there a cached one?
 		boolean cached = false;
-		if(enableTroughCaching) {
-			TroughPointer candidate = TroughPointer.loadCached(animal, temptations);
-			if(candidate != null) {
-				pointer = candidate;
-				cached = true;
-			}
-			// We don't have a cached one and we don't want to keep looking to save on time. Exit early
-			else if(level.random.nextFloat() > lookChance) return realPlayer;
+		TroughPointer candidate = TroughPointer.loadCached(animal, temptations);
+		if(candidate != null) {
+			pointer = candidate;
+			cached = true;
 		}
+		// We don't have a cached one and we don't want to keep looking to save on time. Exit early
+		else if(level.random.nextFloat() > lookChance) return realPlayer;
 
 		//if not, try locating a trough in the world
 		if(!cached) {
