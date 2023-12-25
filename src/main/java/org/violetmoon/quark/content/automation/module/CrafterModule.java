@@ -31,9 +31,13 @@ public class CrafterModule extends ZetaModule {
     Block crafter;
     
     @Config(description = "Setting this to true will change the Crafter to use Emi's original design instead of Mojang's.\n"
-    		+ "Emi's design allows only one item per slot, instead of continuing to fill it round robin")
+    		+ "Emi's design allows only one item per slot, instead of continuing to fill it round robin.\n"
+    		+ "If this is enabled, Allow Items While Powered should also be set to false for the full design.")
     public static boolean useEmiLogic = false;
-
+    
+    @Config(description =  "Set to false to allow items to be inserted into the Crafter even while it's powered.")
+    public static boolean allowItemsWhilePowered = true;
+    
     @LoadEvent
     public final void register(ZRegister event) {
         crafter = block = new CrafterBlock("crafter", this,

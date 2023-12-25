@@ -361,7 +361,10 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 			return stackInSlot.getCount() == min;
 		}
 
-		return allowed && !blocked[slot] && !level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
+		boolean blockedSlot = blocked[slot];
+		boolean powered = level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
+		
+		return allowed && !blockedSlot && (CrafterModule.allowItemsWhilePowered || !powered);
 	}
 
 	@Override
