@@ -1,11 +1,6 @@
 package org.violetmoon.quark.content.automation.module;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-
 import com.google.common.collect.ImmutableSet;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -49,6 +44,9 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
+import java.util.Set;
+import java.util.function.Predicate;
+
 /**
  * @author WireSegal
  *         Created at 9:48 AM on 9/20/19.
@@ -82,6 +80,9 @@ public class FeedingTroughModule extends ZetaModule {
 
 	@Config(description = "Set to false to make it so animals look for a nearby trough every time they want to eat instead of remembering the last one. Can affect performance if false.")
 	public static boolean enableTroughCaching = true;
+
+	@Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one. Only active with cache on")
+	public static double lookChance = 0.05;
 
 	private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
 
@@ -120,6 +121,7 @@ public class FeedingTroughModule extends ZetaModule {
 		if(!Quark.ZETA.modules.isEnabled(FeedingTroughModule.class) ||
 			!animal.canFallInLove() ||
 			animal.getAge() != 0
+
 		) {
 			return realPlayer;
 		}
@@ -139,6 +141,8 @@ public class FeedingTroughModule extends ZetaModule {
 				pointer = candidate;
 				cached = true;
 			}
+			// We don't have a cached one and we don't want to keep looking to save on time. Exit early
+			else if(level.random.nextFloat() > lookChance) return realPlayer;
 		}
 
 		//if not, try locating a trough in the world
@@ -147,10 +151,8 @@ public class FeedingTroughModule extends ZetaModule {
 			pointer = level.getPoiManager().findAllClosestFirstWithType(
 					IS_FEEDER, p -> p.distSqr(new Vec3i((int) position.x, (int) position.y, (int) position.z)) <= range * range,
 					animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
-				.map(Pair::getSecond)
-				.map(pos -> getTroughPointer(level, pos, animal, temptations))
-				.filter(Objects::nonNull)
 				.findFirst()
+				.map(p -> getTroughPointer(level, p.getSecond(), animal, temptations))
 				.orElse(null);
 		}
 
