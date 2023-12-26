@@ -26,7 +26,7 @@ public class OldMaterials {
 	}
 
 	public static BlockBehaviour.Properties wood() {
-		return BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASEDRUM);
+		return BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS);
 	}
 
 	public static BlockBehaviour.Properties wool() {
