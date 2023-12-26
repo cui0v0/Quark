@@ -355,11 +355,11 @@ public class Shiba extends TamableAnimal {
 	@Override
 	public void setTame(boolean tamed) {
 		super.setTame(tamed);
-		if(tamed) {
+		if (tamed) {
 			getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
 			setHealth(20);
-		}
-		getAttribute(Attributes.MAX_HEALTH).setBaseValue(8);
+		} else
+			getAttribute(Attributes.MAX_HEALTH).setBaseValue(8);
 
 		getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4);
 	}
