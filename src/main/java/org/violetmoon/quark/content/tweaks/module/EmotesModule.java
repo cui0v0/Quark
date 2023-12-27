@@ -9,9 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ChatScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
@@ -19,13 +17,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.network.message.RequestEmoteMessage;
 import org.violetmoon.quark.content.tweaks.client.emote.*;
-import org.violetmoon.quark.content.tweaks.client.screen.widgets.EmoteButton;
-import org.violetmoon.quark.content.tweaks.client.screen.widgets.TranslucentButton;
+import org.violetmoon.quark.content.tweaks.client.screen.NotButton;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZInput;
@@ -97,6 +95,9 @@ public class EmotesModule extends ZetaModule {
 
 		private static Map<KeyMapping, String> emoteKeybinds;
 
+		private static NotButton emoteToggleButton;
+		private static List<NotButton> emoteButtons = new ArrayList<>();
+
 		@LoadEvent
 		public void onReady(ZModulesReady e) {
 			Minecraft mc = Minecraft.getInstance();
@@ -153,10 +154,29 @@ public class EmotesModule extends ZetaModule {
 				EmoteHandler.addCustomEmote(s);
 		}
 
+		//For some god damn reason it is impossible to get "whether the mouse is down" outside of a screen.
+		//this is a very obscure piece of information it Definitely makes sense to encapsulate this as tightly as possible for no reason
+		// THank you Mojang <33333333333 i love writing MODS!!
+		boolean theMouseIsPressedNowThankYou = false;
+		@PlayEvent
+		public void mouseStupidAwfulBad(ZInput.MouseButton event) {
+			if(event.getButton() == GLFW.GLFW_MOUSE_BUTTON_1) {
+				if(event.getAction() == GLFW.GLFW_PRESS)
+					theMouseIsPressedNowThankYou = true;
+				else if(event.getAction() == GLFW.GLFW_RELEASE)
+					theMouseIsPressedNowThankYou = false;
+			}
+		}
+
 		@PlayEvent
 		public void initGui(ZScreen.Init.Post event) {
-			Screen gui = event.getScreen();
-			if(gui instanceof ChatScreen) {
+			if(event.getScreen() instanceof ChatScreen) {
+				emoteButtons.clear();
+
+				Window window = Minecraft.getInstance().getWindow();
+				int windowWidth = window.getGuiScaledWidth();
+				int windowHeight = window.getGuiScaledHeight();
+
 				Map<Integer, List<EmoteDescriptor>> descriptorSorting = new TreeMap<>();
 
 				for(EmoteDescriptor desc : EmoteHandler.emoteMap.values()) {
@@ -185,9 +205,8 @@ public class EmotesModule extends ZetaModule {
 				}
 
 				int buttonX = buttonShiftX;
-				int buttonY = (expandDown ? 2 : gui.height - 40) + buttonShiftY;
+				int buttonY = (expandDown ? 2 : windowHeight - 40) + buttonShiftY;
 
-				List<Button> emoteButtons = new LinkedList<>();
 				for(int tier : keys) {
 					rowPos = 0;
 					tierRow = 0;
@@ -196,18 +215,17 @@ public class EmotesModule extends ZetaModule {
 						for(EmoteDescriptor desc : descriptors) {
 							int rowSize = Math.min(descriptors.size() - tierRow * EMOTES_PER_ROW, EMOTES_PER_ROW);
 
-							int x = buttonX + gui.width - 2 - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
+							int x = buttonX + windowWidth - 2 - (EMOTE_BUTTON_WIDTH * (EMOTES_PER_ROW + 1)) + (((rowPos + 1) * 2 + EMOTES_PER_ROW - rowSize) * EMOTE_BUTTON_WIDTH / 2 + 1);
 							int y = buttonY + (EMOTE_BUTTON_WIDTH * (rows - row)) * (expandDown ? 1 : -1);
 
-							Button button = new EmoteButton(x, y, desc, (b) -> {
-								String name = desc.getRegistryName();
-								QuarkClient.ZETA_CLIENT.sendToServer(new RequestEmoteMessage(name));
-							});
-							emoteButtons.add(button);
+							NotButton button = new NotButton(
+								x, y,
+								EMOTE_BUTTON_WIDTH - 1, EMOTE_BUTTON_WIDTH - 1,
+								desc,
+								() -> QuarkClient.ZETA_CLIENT.sendToServer(new RequestEmoteMessage(desc.getRegistryName()))
+							);
 
-							button.visible = emotesVisible;
-							button.active = emotesVisible;
-							event.addListener(button);
+							emoteButtons.add(button);
 
 							if(++rowPos == EMOTES_PER_ROW) {
 								tierRow++;
@@ -220,17 +238,19 @@ public class EmotesModule extends ZetaModule {
 						row++;
 				}
 
-				event.addListener(new TranslucentButton(buttonX + gui.width - 2 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY, EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
-						Component.translatable("quark.gui.button.emotes"),
-						(b) -> {
-							for(Button bt : emoteButtons)
-								if(bt instanceof EmoteButton) {
-									bt.visible = !bt.visible;
-									bt.active = !bt.active;
-								}
+				emoteToggleButton = new NotButton(
+					buttonX + windowWidth - 2 - EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, buttonY,
+					EMOTE_BUTTON_WIDTH * EMOTES_PER_ROW, 20,
+					Component.translatable("quark.gui.button.emotes"),
+					() -> emotesVisible ^= true
+				);
 
-							emotesVisible = !emotesVisible;
-						}));
+				event.getScreen().renderables.add((gfx, mouseX, mouseY, partialTicks) -> {
+					emoteToggleButton.draw(gfx, mouseX, mouseY, theMouseIsPressedNowThankYou);
+					if(emotesVisible)
+						for(NotButton b : emoteButtons)
+							b.draw(gfx, mouseX, mouseY, theMouseIsPressedNowThankYou);
+				});
 			}
 		}
 

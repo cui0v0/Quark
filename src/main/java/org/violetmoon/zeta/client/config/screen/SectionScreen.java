@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.client.ZetaClient;
@@ -17,9 +16,7 @@ import org.violetmoon.zeta.config.Definition;
 import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.ValueDefinition;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,12 +38,14 @@ public class SectionScreen extends ZetaScreen {
 	@Override
 	protected void init() {
 		super.init();
+		double previousScrollAmount = list == null ? 0 : list.getScrollAmount(); //for preserving scroll across re-init
 
-		//first append the default/discard/done buttons, then add the scrolling list. then the buttons will take click priority
+		//first append the default/discard/done buttons, then add the scrolling list. this way the buttons will take click priority
 		this.defaultDiscardDone = new DefaultDiscardDone(this, changes, section);
 		defaultDiscardDone.addWidgets(this::addRenderableWidget);
 
 		this.list = new ScrollableWidgetList<>(this);
+
 		for(ValueDefinition<?> value : section.getValues())
 			list.addEntry(new ValueDefinitionEntry<>(changes, value));
 
@@ -60,6 +59,7 @@ public class SectionScreen extends ZetaScreen {
 
 		addWidget(list);
 		list.addChildWidgets(this::addRenderableWidget, this::addWidget);
+		list.setScrollAmount(previousScrollAmount);
 
 		defaultDiscardDone.discard.active = changes.isDirty(section);
 	}

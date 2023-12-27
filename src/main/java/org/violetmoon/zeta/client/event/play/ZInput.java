@@ -5,6 +5,7 @@ import org.violetmoon.zeta.event.bus.IZetaPlayEvent;
 public interface ZInput extends IZetaPlayEvent {
 	interface MouseButton extends ZInput {
 		int getButton();
+		int getAction();
 	}
 
 	interface Key extends ZInput {
