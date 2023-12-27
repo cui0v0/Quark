@@ -78,7 +78,6 @@
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
-    "client.AbstractContainerEventHandlerMixin",
     "client.ArmorStandModelMixin",
     "client.BannerItemMixin",
     "client.BeaconTileEntityRendererMixin",
