@@ -1,11 +1,11 @@
 package org.violetmoon.quark.content.automation.module;
 
+import java.util.Optional;
+import java.util.WeakHashMap;
+
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -28,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -77,6 +78,8 @@ public class FeedingTroughModule extends ZetaModule {
 	@Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one")
 	public static double lookChance = 0.005;
 
+	private static final WeakHashMap<Entity, TroughPointer> NEARBY_TROUGH_CACHE = new WeakHashMap<>();
+
 	private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
 
 	@PlayEvent
@@ -114,7 +117,6 @@ public class FeedingTroughModule extends ZetaModule {
 		if(!Quark.ZETA.modules.isEnabled(FeedingTroughModule.class) ||
 			!animal.canFallInLove() ||
 			animal.getAge() != 0
-
 		) {
 			return realPlayer;
 		}
@@ -123,59 +125,37 @@ public class FeedingTroughModule extends ZetaModule {
 		if(realPlayer != null && (temptations.test(realPlayer.getMainHandItem()) || temptations.test(realPlayer.getOffhandItem())))
 			return realPlayer;
 
-		//locating the feeding trough
-		TroughPointer pointer = null;
-
-		//is there a cached one?
-		boolean cached = false;
-		TroughPointer candidate = TroughPointer.loadCached(animal, temptations);
-		if(candidate != null) {
-			pointer = candidate;
-			cached = true;
+		//do we already know about a nearby trough?
+		TroughPointer pointer = NEARBY_TROUGH_CACHE.get(animal);
+		if(pointer != null && !pointer.valid(animal)) { //invalid cache
+			pointer = null;
+			NEARBY_TROUGH_CACHE.remove(animal);
 		}
-		// We don't have a cached one and we don't want to keep looking to save on time. Exit early
-		else if(level.random.nextFloat() > lookChance) return realPlayer;
 
-		//if not, try locating a trough in the world
-		if(!cached) {
+		//there's no cached trough nearby.
+		//Randomize whether we actually look for a new trough, to hopefully not eat all the tick time.
+		if(pointer == null && level.random.nextFloat() <= lookChance) {
 			BlockPos position = animal.blockPosition();
-
 			pointer = level.getPoiManager().findClosest(
 					holder -> holder.is(FEEDING_TROUGH_POI_KEY), p -> p.distSqr(position) <= range * range,
 					position, (int) range, PoiManager.Occupancy.ANY)
-				.map(p -> getTroughPointer(level, p, animal, temptations))
+				.flatMap(p -> TroughPointer.find(level, p, animal, temptations))
 				.orElse(null);
+			NEARBY_TROUGH_CACHE.put(animal, pointer);
 		}
 
 		//did we find one?
-		if(pointer != null && pointer.exists()) {
-			//can the animal see it?
+		if(pointer != null) {
+			//if the animal can see it, direct the animal to this trough's fakeplayer
 			BlockPos location = pointer.pos();
 			Vec3 eyesPos = animal.position().add(0, animal.getEyeHeight(), 0);
 			Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
 			BlockHitResult ray = level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, animal));
-
-			if(ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
-				if(!cached)
-					pointer.saveCache(animal);
-
-				//direct the mob to this feeding trough's fakeplayer
+			if(ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location))
 				return pointer.player();
-			}
 		}
 
-		// if we got here that means the cache is invalid
-		if(cached)
-			animal.getPersistentData().remove(TAG_CACHE);
-
 		return realPlayer;
-	}
-
-	private static @Nullable TroughPointer getTroughPointer(Level level, BlockPos pos, Animal mob, Ingredient temptations) {
-		if(level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough)
-			return new TroughPointer(pos, trough.getFoodHolder(mob, temptations));
-
-		return null;
 	}
 
 	@LoadEvent
@@ -190,34 +170,19 @@ public class FeedingTroughModule extends ZetaModule {
 		event.getRegistry().register(feedingTroughPoi, FEEDING_TROUGH_POI_KEY.location(), Registries.POINT_OF_INTEREST_TYPE);
 	}
 
-	private record TroughPointer(BlockPos pos, FakePlayer player) {
+	private record TroughPointer(@NotNull BlockPos pos, @NotNull FakePlayer player) {
 
-		public boolean exists() {
-			return player != null;
+		static Optional<TroughPointer> find(Level level, BlockPos pos, Animal mob, Ingredient temptations) {
+			if(level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough) {
+				FakePlayer fakeplayer = trough.getFoodHolder(mob, temptations);
+				if(fakeplayer != null)
+					return Optional.of(new TroughPointer(pos, fakeplayer));
+			}
+			return Optional.empty();
 		}
 
-		public void saveCache(Entity e) {
-			CompoundTag data = e.getPersistentData();
-			CompoundTag tag = new CompoundTag();
-			tag.putInt("x", pos.getX());
-			tag.putInt("y", pos.getY());
-			tag.putInt("z", pos.getZ());
-
-			data.put(TAG_CACHE, tag);
-		}
-
-		public static TroughPointer loadCached(Animal mob, Ingredient temptations) {
-			CompoundTag data = mob.getPersistentData();
-			if(!data.contains(TAG_CACHE, data.getId()))
-				return null;
-
-			CompoundTag tag = data.getCompound(TAG_CACHE);
-			int x = tag.getInt("x");
-			int y = tag.getInt("y");
-			int z = tag.getInt("z");
-
-			BlockPos pos = new BlockPos(x, y, z);
-			return getTroughPointer(mob.level(), pos, mob, temptations);
+		boolean valid(Animal animal) {
+			return !player.isRemoved() && player.level() == animal.level() && pos.distSqr(animal.blockPosition()) <= range * range;
 		}
 
 	}
