@@ -346,7 +346,7 @@ public class VariantSelectorModule extends ZetaModule {
 					int posY = y + hudOffsetY;
 
 					if(!showSimpleHud) {
-						guiGraphics.renderItemDecorations(mc.font, displayLeft, posX, posY);
+						guiGraphics.renderFakeItem(displayLeft, posX, posY);
 
 						RenderSystem.enableBlend();
 						RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -372,7 +372,7 @@ public class VariantSelectorModule extends ZetaModule {
 							posX += width;
 					}
 
-					guiGraphics.renderItemDecorations(mc.font, displayRight, posX, posY);
+					guiGraphics.renderFakeItem(displayRight, posX, posY);
 				}
 			}
 		}

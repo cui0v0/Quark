@@ -40,12 +40,6 @@ public class VariantLadderBlock extends LadderBlock implements IZetaBlock {
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
 	}
 
-	public VariantLadderBlock(String type, ZetaModule module, boolean flammable) {
-		this(type, module,
-				Block.Properties.copy(Blocks.LADDER),
-				flammable);
-	}
-
 	@Override
 	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return flammable;
