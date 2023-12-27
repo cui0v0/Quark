@@ -222,7 +222,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 				matrix.scale(scale, 1F, 1F);
 				matrix.translate(-mc.font.width(text) / 2f, 0, 0);
-				guiGraphics.drawString(mc.font, text, 0, 0, color.getColor() | opacity);
+				guiGraphics.drawString(mc.font, text, 0, 0, color.getColor() | opacity, false);
 				matrix.popPose();
 			}
 		}
