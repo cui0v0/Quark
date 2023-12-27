@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -44,9 +43,6 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import java.util.Set;
-import java.util.function.Predicate;
-
 /**
  * @author WireSegal
  *         Created at 9:48 AM on 9/20/19.
@@ -54,14 +50,14 @@ import java.util.function.Predicate;
 @ZetaLoadModule(category = "automation")
 public class FeedingTroughModule extends ZetaModule {
 
+	//using a ResourceKey because they're interned, and Holder.Reference#is leverages this for a very efficient implementation
+	private static final ResourceKey<PoiType> FEEDING_TROUGH_POI_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, Quark.asResource("feeding_trough"));
+
 	public static BlockEntityType<FeedingTroughBlockEntity> blockEntityType;
-	public static PoiType feedingTroughPoi;
 	@Hint
 	Block feeding_trough;
 
 	private static final String TAG_CACHE = "quark:feedingTroughCache";
-
-	public static final Predicate<Holder<PoiType>> IS_FEEDER = (holder) -> holder.is(BuiltInRegistries.POINT_OF_INTEREST_TYPE.getKey(feedingTroughPoi));
 
 	@Config(description = "How long, in game ticks, between animals being able to eat from the trough")
 	@Config.Min(1)
@@ -142,12 +138,12 @@ public class FeedingTroughModule extends ZetaModule {
 
 		//if not, try locating a trough in the world
 		if(!cached) {
-			Vec3 position = animal.position();
-			pointer = level.getPoiManager().findAllClosestFirstWithType(
-					IS_FEEDER, p -> p.distSqr(new Vec3i((int) position.x, (int) position.y, (int) position.z)) <= range * range,
-					animal.blockPosition(), (int) range, PoiManager.Occupancy.ANY)
-				.findFirst()
-				.map(p -> getTroughPointer(level, p.getSecond(), animal, temptations))
+			BlockPos position = animal.blockPosition();
+
+			pointer = level.getPoiManager().findClosest(
+					holder -> holder.is(FEEDING_TROUGH_POI_KEY), p -> p.distSqr(position) <= range * range,
+					position, (int) range, PoiManager.Occupancy.ANY)
+				.map(p -> getTroughPointer(level, p, animal, temptations))
 				.orElse(null);
 		}
 
@@ -188,14 +184,10 @@ public class FeedingTroughModule extends ZetaModule {
 				Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().strength(0.6F).sound(SoundType.WOOD));
 
 		blockEntityType = BlockEntityType.Builder.of(FeedingTroughBlockEntity::new, feeding_trough).build(null);
-		Quark.ZETA.registry.register(blockEntityType, "feeding_trough", Registries.BLOCK_ENTITY_TYPE);
+		event.getRegistry().register(blockEntityType, "feeding_trough", Registries.BLOCK_ENTITY_TYPE);
 
-		feedingTroughPoi = new PoiType(getBlockStates(feeding_trough), 1, 32);
-		Quark.ZETA.registry.register(feedingTroughPoi, "feeding_trough", Registries.POINT_OF_INTEREST_TYPE);
-	}
-
-	private static Set<BlockState> getBlockStates(Block p_218074_) {
-		return ImmutableSet.copyOf(p_218074_.getStateDefinition().getPossibleStates());
+		PoiType feedingTroughPoi = new PoiType(ImmutableSet.copyOf(feeding_trough.getStateDefinition().getPossibleStates()), 1, 32);
+		event.getRegistry().register(feedingTroughPoi, FEEDING_TROUGH_POI_KEY.location(), Registries.POINT_OF_INTEREST_TYPE);
 	}
 
 	private record TroughPointer(BlockPos pos, FakePlayer player) {
