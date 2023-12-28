@@ -2,12 +2,13 @@ package org.violetmoon.quark.addons.oddities.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.DyeColor;
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 
 import java.util.List;
 import java.util.Locale;
 
-public record TinyPotatoInfo(int runeColor, boolean enchanted, String name) {
+public record TinyPotatoInfo(@Nullable RuneColor runeColor, boolean enchanted, String name) {
 
 	private static final List<String> RAINBOW_NAMES = List.of("gay homosexual", "rainbow", "lgbt", "lgbtq", "lgbtq+", "gay");
 	private static final List<String> ENCHANTMENT_NAMES = List.of("enchanted", "glowy", "shiny", "gay");
@@ -28,7 +29,7 @@ public record TinyPotatoInfo(int runeColor, boolean enchanted, String name) {
 		string = ChatFormatting.stripFormatting(string);
 
 		if(string == null)
-			return new TinyPotatoInfo(-1, false, "");
+			return new TinyPotatoInfo(null, false, "");
 
 		string = string.trim().toLowerCase(Locale.ROOT);
 
@@ -41,28 +42,29 @@ public record TinyPotatoInfo(int runeColor, boolean enchanted, String name) {
 			}
 		}
 
-		int color = -1;
+		RuneColor color = null;
 
 		if(enchanted) {
-			for(DyeColor dyeColor : DyeColor.values()) {
-				String key = dyeColor.getSerializedName().replace("_", " ");
+			for(RuneColor runeColor : RuneColor.values()) {
+				String key = runeColor.getName().replace("_", " ");
 				if(matches(string, key)) {
-					color = dyeColor.getId();
+					color = runeColor;
 					string = removeFromFront(string, key);
 					break;
-				} else if(key.contains("gray")) {
+				} else if (key.contains("gray")) {
 					key = key.replace("gray", "grey");
 					if(matches(string, key)) {
-						color = dyeColor.getId();
+						color = runeColor;
 						string = removeFromFront(string, key);
 						break;
 					}
 				}
 			}
-			if(color == -1) {
+
+			if(color == null) {
 				for(String rainbow : RAINBOW_NAMES) {
 					if(matches(string, rainbow)) {
-						color = 16;
+						color = RuneColor.RAINBOW;
 						string = removeFromFront(string, rainbow);
 						break;
 					}

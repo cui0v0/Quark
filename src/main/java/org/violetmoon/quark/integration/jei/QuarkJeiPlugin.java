@@ -1,7 +1,6 @@
 package org.violetmoon.quark.integration.jei;
 
 import com.google.common.collect.Sets;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -13,7 +12,6 @@ import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.NonNullList;
@@ -22,20 +20,15 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
@@ -45,18 +38,14 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
-import org.violetmoon.quark.content.client.module.ImprovedTooltipsModule;
-import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
 import org.violetmoon.quark.content.tools.item.AncientTomeItem;
 import org.violetmoon.quark.content.tools.module.AncientTomesModule;
-import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.quark.content.tools.module.PickarangModule;
 import org.violetmoon.quark.content.tweaks.module.DiamondRepairModule;
 import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
 import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.IDisableable;
-import org.violetmoon.zeta.util.ItemNBTHelper;
 import org.violetmoon.zeta.util.RegistryUtil;
 
 import java.util.*;
@@ -153,9 +142,6 @@ public class QuarkJeiPlugin implements IModPlugin {
 			registerPickarangAnvilRepairs(PickarangModule.flamerang, Items.NETHERITE_INGOT, registration, factory);
 		}
 
-		if(Quark.ZETA.modules.isEnabled(ColorRunesModule.class))
-			registerRuneAnvilRecipes(registration, factory);
-
 		if(matrix())
 			registerInfluenceRecipes(registration);
 
@@ -227,49 +213,6 @@ public class QuarkJeiPlugin implements IModPlugin {
 					Collections.singletonList(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(data.enchantment, data.level + 1)))));
 		}
 		registration.addRecipes(RecipeTypes.ANVIL, recipes);
-	}
-
-	private void registerRuneAnvilRecipes(@NotNull IRecipeRegistration registration, @NotNull IVanillaRecipeFactory factory) {
-		RandomSource random = RandomSource.create();
-		Stream<ItemStack> displayItems;
-		if(Quark.ZETA.modules.isEnabled(ImprovedTooltipsModule.class) && ImprovedTooltipsModule.enchantingTooltips) {
-			displayItems = EnchantedBookTooltips.getTestItems().stream();
-		} else {
-			displayItems = Stream.of(Items.DIAMOND_SWORD, Items.DIAMOND_PICKAXE, Items.DIAMOND_AXE,
-					Items.DIAMOND_SHOVEL, Items.DIAMOND_HOE, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE,
-					Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, Items.ELYTRA, Items.SHIELD, Items.BOW, Items.CROSSBOW,
-					Items.TRIDENT, Items.FISHING_ROD, Items.SHEARS, PickarangModule.pickarang).map(ItemStack::new);
-		}
-
-		List<ItemStack> used = displayItems
-				.filter(it -> !(it.getItem() instanceof IDisableable<?> dis) || dis.isEnabled())
-				.map(item -> makeEnchantedDisplayItem(item, random))
-				.collect(Collectors.toList());
-
-		List<IJeiAnvilRecipe> recipes = new ArrayList<>();
-		for(Item rune : RegistryUtil.getTagValues(QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess(), ColorRunesModule.runesTag)) {
-			ItemStack runeStack = new ItemStack(rune);
-			recipes.add(factory.createAnvilRecipe(used, Collections.singletonList(runeStack),
-					used.stream().map(stack -> {
-						ItemStack output = stack.copy();
-						ItemNBTHelper.setBoolean(output, ColorRunesModule.TAG_RUNE_ATTACHED, true);
-						ItemNBTHelper.setCompound(output, ColorRunesModule.TAG_RUNE_COLOR, runeStack.serializeNBT());
-						return output;
-					}).collect(Collectors.toList())));
-		}
-		registration.addRecipes(RecipeTypes.ANVIL, recipes);
-	}
-
-	// Runes only show up and can be only anvilled on enchanted items, so make some random enchanted items
-	@NotNull
-	private static ItemStack makeEnchantedDisplayItem(ItemStack input, RandomSource random) {
-		ItemStack stack = input.copy();
-		stack.setHoverName(Component.translatable("quark.jei.any_enchanted"));
-		if(Quark.ZETA.itemExtensions.get(stack).getEnchantmentValueZeta(stack) <= 0) { // If it can't take anything in ench. tables...
-			stack.enchant(Enchantments.UNBREAKING, 3); // it probably accepts unbreaking anyways
-			return stack;
-		}
-		return EnchantmentHelper.enchantItem(random, stack, 25, false);
 	}
 
 	private void registerPickarangAnvilRepairs(Item pickarang, Item repairMaterial, @NotNull IRecipeRegistration registration, @NotNull IVanillaRecipeFactory factory) {

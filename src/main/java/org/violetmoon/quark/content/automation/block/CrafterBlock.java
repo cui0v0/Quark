@@ -111,13 +111,15 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+		PowerState powerState = state.getValue(POWER);
 		boolean bl = world.hasNeighborSignal(pos) || world.hasNeighborSignal(pos.above());
-		boolean bl2 = state.getValue(POWER).powered();
+		boolean bl2 = powerState.powered();
+		
 		if (bl && !bl2) {
 			world.scheduleTick(pos, this, 6);
 			((CrafterBlockEntity) world.getBlockEntity(pos)).craft();
 			world.setBlock(pos, state.setValue(POWER, PowerState.TRIGGERED), 2);
-		} else if (!bl && state.getValue(POWER) == PowerState.ON) {
+		} else if (!bl && state.getValue(POWER) != PowerState.OFF) {
 			world.setBlock(pos, state.setValue(POWER, PowerState.OFF), 2);
 		}
 	}
@@ -134,7 +136,7 @@ public class CrafterBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return this.defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
+		return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Override

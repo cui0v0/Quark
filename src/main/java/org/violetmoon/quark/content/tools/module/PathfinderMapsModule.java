@@ -215,7 +215,7 @@ public class PathfinderMapsModule extends ZetaModule {
 	}
 
 	@PlayEvent
-	public void playerTick(ZPlayerTick event) {
+	public void playerTick(ZPlayerTick.Start event) {
 		Player player = event.getPlayer();
 		if(!(player instanceof ServerPlayer))
 			return;

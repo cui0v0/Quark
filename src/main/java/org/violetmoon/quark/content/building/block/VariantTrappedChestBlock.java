@@ -27,19 +27,22 @@ import java.util.function.Supplier;
 
 public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
+	@Nullable
 	private final ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	protected final String type;
 
-	public VariantTrappedChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
+	public VariantTrappedChestBlock(String prefix, String type, @Nullable ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
-		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
-
-		module.zeta.registry.registerBlock(this, resloc, true);
-
 		this.module = module;
 		this.type = type;
+
+		if(module == null) //auto registration below this line
+			return;
+
+		String resloc = (prefix != null ? prefix + "_" : "") + type + "_trapped_chest";
+		module.zeta.registry.registerBlock(this, resloc, true);
 	}
 
 	public VariantTrappedChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
@@ -79,7 +82,7 @@ public class VariantTrappedChestBlock extends ChestBlock implements IZetaBlock, 
 	}
 
 	@Override
-	public String getChestType() {
+	public String getTexturePath() {
 		return type;
 	}
 

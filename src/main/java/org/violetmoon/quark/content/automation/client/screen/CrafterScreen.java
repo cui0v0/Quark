@@ -27,16 +27,19 @@
 
 package org.violetmoon.quark.content.automation.client.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
+import java.util.List;
+
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
 
-import java.util.List;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
 public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 	private static final ResourceLocation TEXTURE = Quark.asResource("textures/gui/container/crafter.png");
@@ -53,11 +56,12 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
 	@Override
 	public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+		renderBackground(context);
 		super.render(context, mouseX, mouseY, delta);
 		this.renderTooltip(context, mouseX, mouseY);
 		if (menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getItem().isEmpty() && this.hoveredSlot.container == menu.crafter && !isBlocked(this.hoveredSlot)) {
 			context.renderComponentTooltip(font, List.of(
-				Component.literal("Click to disable slot")
+				Component.translatable("quark.misc.disable_slot")
 			), mouseX, mouseY);
 		}
 	}
@@ -66,6 +70,8 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getItem().isEmpty() && this.hoveredSlot.container == menu.crafter) {
 			this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, this.hoveredSlot.getContainerSlot());
+		    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
 			return true;
 		}
 		return super.mouseClicked(mouseX, mouseY, button);

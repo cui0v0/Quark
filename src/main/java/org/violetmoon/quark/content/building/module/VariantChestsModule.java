@@ -34,8 +34,7 @@ import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
-import org.violetmoon.quark.content.building.block.VariantChestBlock;
-import org.violetmoon.quark.content.building.block.VariantTrappedChestBlock;
+import org.violetmoon.quark.content.building.block.*;
 import org.violetmoon.quark.content.building.block.be.VariantChestBlockEntity;
 import org.violetmoon.quark.content.building.block.be.VariantTrappedChestBlockEntity;
 import org.violetmoon.quark.content.building.client.render.be.VariantChestRenderer;
@@ -92,7 +91,11 @@ public class VariantChestsModule extends ZetaModule {
 	private static final String DONK_CHEST = "Quark:DonkChest";
 
 	public interface IVariantChest {
-		String getChestType();
+		String getTexturePath();
+
+		default String getTextureFolder(){
+			return "quark_variant_chests";
+		}
 	}
 
 	/// BLOCKS ///

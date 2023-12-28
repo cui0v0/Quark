@@ -1,21 +1,19 @@
 package org.violetmoon.quark.integration.jei;
 
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Block;
-
 import org.violetmoon.quark.addons.oddities.util.Influence;
 import org.violetmoon.quark.content.client.tooltip.EnchantedBookTooltips;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.zeta.util.ItemNBTHelper;
 
@@ -30,8 +28,8 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 
 	public InfluenceEntry(Block candle, Influence influence) {
 		this.candleStack = new ItemStack(candle);
-		this.boost = getEnchantedBook(influence.boost(), DyeColor.GREEN, ChatFormatting.GREEN, "quark.jei.boost_influence");
-		this.dampen = getEnchantedBook(influence.dampen(), DyeColor.RED, ChatFormatting.RED, "quark.jei.dampen_influence");
+		this.boost = getEnchantedBook(influence.boost(), RuneColor.GREEN, ChatFormatting.GREEN, "quark.jei.boost_influence");
+		this.dampen = getEnchantedBook(influence.dampen(), RuneColor.RED, ChatFormatting.RED, "quark.jei.dampen_influence");
 		this.associatedBooks = buildAssociatedBooks(influence);
 	}
 
@@ -51,7 +49,7 @@ public class InfluenceEntry implements IRecipeCategoryExtension {
 		return this.associatedBooks;
 	}
 
-	private static ItemStack getEnchantedBook(List<Enchantment> enchantments, DyeColor runeColor, ChatFormatting chatColor, String locKey) {
+	private static ItemStack getEnchantedBook(List<Enchantment> enchantments, RuneColor runeColor, ChatFormatting chatColor, String locKey) {
 		ItemStack stack = ItemStack.EMPTY;
 
 		for(Enchantment enchantment : enchantments) {

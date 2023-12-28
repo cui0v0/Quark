@@ -1,6 +1,5 @@
 {
   "minVersion": "0.8",
-  "priority": 999,
   "required": true,
   "compatibilityLevel": "JAVA_17",
   "refmap": "quark.mixins.refmap.json",

@@ -1,9 +1,7 @@
 package org.violetmoon.quark.addons.oddities.client.render.be;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,19 +23,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-
 import org.jetbrains.annotations.NotNull;
-
 import org.violetmoon.quark.addons.oddities.block.be.TinyPotatoBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
 import org.violetmoon.quark.addons.oddities.util.TinyPotatoInfo;
-import org.violetmoon.quark.content.tools.item.RuneItem;
+import org.violetmoon.quark.content.tools.base.RuneColor;
 import org.violetmoon.quark.content.tools.module.ColorRunesModule;
 import org.violetmoon.quark.mixin.mixins.client.accessor.AccessorModelManager;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -47,8 +41,6 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 	public static final String ANGRY = "angry";
 	private static final Pattern ESCAPED = Pattern.compile("[^a-z0-9/._-]");
 	private final BlockRenderDispatcher blockRenderDispatcher;
-
-	private static List<ItemStack> runeStacks;
 
 	public static boolean isTheSpookDay() {
 		Calendar calendar = Calendar.getInstance();
@@ -93,15 +85,6 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 
 	@Override
 	public void render(@NotNull TinyPotatoBlockEntity potato, float partialTicks, @NotNull PoseStack ms, @NotNull MultiBufferSource buffers, int light, int overlay) {
-		if(runeStacks == null) {
-			List<ItemStack> stacks = new ArrayList<>();
-			for(RuneItem item : ColorRunesModule.runes) {
-				stacks.add(new ItemStack(item));
-			}
-			stacks.add(new ItemStack(ColorRunesModule.rainbow_rune));
-			runeStacks = ImmutableList.copyOf(stacks);
-		}
-
 		ms.pushPose();
 
 		TinyPotatoInfo info = TinyPotatoInfo.fromComponent(potato.name);
@@ -143,10 +126,9 @@ public class TinyPotatoRenderer implements BlockEntityRenderer<TinyPotatoBlockEn
 		if(render) {
 			ms.pushPose();
 			ms.translate(-0.5F, 0, -0.5F);
-			if(0 <= info.runeColor() && info.runeColor() < ColorRunesModule.RUNE_TYPES)
-				ColorRunesModule.setTargetStack(runeStacks.get(info.runeColor()));
-			else
-				ColorRunesModule.setTargetStack(ItemStack.EMPTY);
+			RuneColor runeColor = info.runeColor();
+			if(runeColor != null)
+				ColorRunesModule.setTargetColor(runeColor);
 
 			VertexConsumer buffer = ItemRenderer.getFoilBuffer(buffers, layer, true, info.enchanted());
 

@@ -44,7 +44,7 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 
 	private static final SoundType WOOD_WITH_PLANT_STEP = new ForgeSoundType(1.0F, 1.0F, () -> SoundEvents.WOOD_BREAK, () -> SoundEvents.GRASS_STEP, () -> SoundEvents.WOOD_PLACE, () -> SoundEvents.WOOD_HIT, () -> SoundEvents.WOOD_FALL);
 
-	public static BooleanProperty FULL = BooleanProperty.create("full");
+	public static final BooleanProperty FULL = BooleanProperty.create("full");
 
 	public static final VoxelShape CUBOID_SHAPE = box(0, 0, 0, 16, 8, 16);
 	public static final VoxelShape EMPTY_SHAPE = Shapes.join(CUBOID_SHAPE, box(2, 2, 2, 14, 8, 14), BooleanOp.ONLY_FIRST);
@@ -106,8 +106,8 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	public void onRemove(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
 		if(state.getBlock() != newState.getBlock()) {
 			BlockEntity tile = world.getBlockEntity(pos);
-			if(tile instanceof FeedingTroughBlockEntity) {
-				Containers.dropContents(world, pos, (FeedingTroughBlockEntity) tile);
+			if(tile instanceof FeedingTroughBlockEntity f) {
+				Containers.dropContents(world, pos, f);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -150,17 +150,12 @@ public class FeedingTroughBlock extends ZetaBlock implements EntityBlock {
 	@Nullable
 	public MenuProvider getMenuProvider(@NotNull BlockState state, Level world, @NotNull BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
-		return tile instanceof MenuProvider ? (MenuProvider) tile : null;
+		return tile instanceof MenuProvider m ? m : null;
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
 		return new FeedingTroughBlockEntity(pos, state);
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-		return createTickerHelper(type, FeedingTroughModule.blockEntityType, FeedingTroughBlockEntity::tick);
 	}
 
 }

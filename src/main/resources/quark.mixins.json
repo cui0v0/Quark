@@ -10,6 +10,7 @@
     "AnimalMixin",
     "AnvilMenuMixin",
     "ArmorStandMixin",
+    "ArmorTrimMixin",
     "ArrowPiercingEnchantmentMixin",
     "BannerDuplicateRecipeMixin",
     "BaseCoralPlantTypeBlockMixin",
@@ -43,6 +44,7 @@
     "IZetaItemExtensionsMixin",
     "LadderBlockMixin",
     "LanternBlockMixin",
+    "LightningBoltMixin",
     "LoomMenuMixin",
     "MerchantMenuMixin",
     "MerchantOfferMixin",
@@ -76,7 +78,6 @@
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
-    "client.AbstractContainerEventHandlerMixin",
     "client.ArmorStandModelMixin",
     "client.BannerItemMixin",
     "client.BeaconTileEntityRendererMixin",

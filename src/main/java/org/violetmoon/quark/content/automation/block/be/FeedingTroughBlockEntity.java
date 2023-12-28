@@ -12,14 +12,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
@@ -44,11 +45,8 @@ import java.util.UUID;
  */
 public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 
-	private static final GameProfile DUMMY_PROFILE = new GameProfile(UUID.randomUUID(), "[FeedingTrough]");
-
 	private NonNullList<ItemStack> stacks;
 
-	private int cooldown = 0;
 	private long internalRng = 0;
 
 	public FeedingTroughBlockEntity(BlockPos pos, BlockState state) {
@@ -56,72 +54,61 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 		this.stacks = NonNullList.withSize(9, ItemStack.EMPTY);
 	}
 
-	public FakePlayer getFoodHolder(Animal mob, Ingredient temptations) {
-		FakePlayer foodHolder = null;
-		if(level instanceof ServerLevel serverLevel)
-			foodHolder = FakePlayerFactory.get(serverLevel, DUMMY_PROFILE);
+	public void updateFoodHolder(Animal mob, Ingredient temptations, FakePlayer foodHolder) {
+		for(int i = 0; i < getContainerSize(); i++) {
+			ItemStack stack = getItem(i);
+			if(temptations.test(stack) && mob.isFood(stack)) {
+				Inventory inventory = foodHolder.getInventory();
+				inventory.items.set(inventory.selected, stack);
+				Vec3 througPos = new Vec3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ())
+						.add(0.5, -1, 0.5);
+				Vec3 mobPosition = mob.position();
+				Vec3 direction = mobPosition.subtract(througPos);
+				Vec2 angles = MiscUtil.getMinecraftAngles(direction);
 
-		if(foodHolder != null) {
-			for(int i = 0; i < getContainerSize(); i++) {
-				ItemStack stack = getItem(i);
-				if(temptations.test(stack) && mob.isFood(stack)) {
-					Inventory inventory = foodHolder.getInventory();
-					inventory.items.set(inventory.selected, stack);
-					Vec3 position = new Vec3(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ()).add(0.5, -1, 0.5);
-					Vec3 direction = mob.position().subtract(position).normalize();
-					Vec2 angles = MiscUtil.getMinecraftAngles(direction);
-
-					Vec3 shift = direction.scale(-0.5 / Math.max(
-							Math.abs(direction.x), Math.max(
-									Math.abs(direction.y),
-									Math.abs(direction.z))));
-
-					Vec3 truePos = position.add(shift);
-
-					foodHolder.moveTo(truePos.x, truePos.y, truePos.z, angles.x, angles.y);
-					return foodHolder;
+				Vec3 newPos = Vec3.ZERO;
+				// Fake player will always be at most maxDist blocks away from animal.
+				// If animal is closer to target, then we will be on target itself.
+				float maxDist = 3;
+				if(direction.lengthSqr() > (maxDist*maxDist)){
+					newPos = mobPosition.add(direction.normalize().scale(-maxDist));
+				}else{
+					//place slightly behind trough
+					newPos = througPos.add(direction.normalize().scale(-1));
 				}
+
+				foodHolder.moveTo(newPos.x, newPos.y, newPos.z, angles.x, angles.y);
+				return;
 			}
 		}
-
-		return null;
 	}
 
-	public static void tick(Level level, BlockPos pos, BlockState state, FeedingTroughBlockEntity be) {
-		if(level != null && !level.isClientSide) {
-			if(be.cooldown > 0)
-				be.cooldown--;
-			else {
-				be.cooldown = FeedingTroughModule.cooldown; // minimize aabb calls
-				List<Animal> animals = level.getEntitiesOfClass(Animal.class, new AABB(be.worldPosition).inflate(1.5, 0, 1.5).contract(0, 0.75, 0));
+	public enum FeedResult{
+		FED,SECS,NONE
+	}
+	public FeedResult tryFeedingAnimal(Animal animal) {
+		for(int i = 0; i < this.getContainerSize(); i++) {
+			ItemStack stack = this.getItem(i);
+			if(animal.isFood(stack)) {
+				SoundEvent soundEvent = animal.getEatingSound(stack);
+				animal.playSound(soundEvent, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
 
-				for(Animal creature : animals) {
-					if(creature.canFallInLove() && creature.getAge() == 0) {
-						for(int i = 0; i < be.getContainerSize(); i++) {
-							ItemStack stack = be.getItem(i);
-							if(creature.isFood(stack)) {
-								SoundEvent soundEvent = creature.getEatingSound(stack);
-								if(soundEvent != null)
-									creature.playSound(soundEvent, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+				this.addItemParticles(animal, stack, 16);
 
-								be.addItemParticles(creature, stack, 16);
+				stack.shrink(1);
+				this.setChanged();
 
-								if(be.getSpecialRand().nextDouble() < FeedingTroughModule.loveChance) {
-									List<Animal> animalsAround = level.getEntitiesOfClass(Animal.class, new AABB(be.worldPosition).inflate(FeedingTroughModule.range));
-									if(animalsAround.size() <= FeedingTroughModule.maxAnimals)
-										creature.setInLove(null);
-								}
-
-								stack.shrink(1);
-								be.setChanged();
-
-								return;
-							}
-						}
-					}
+				if(this.getSpecialRand().nextDouble() < FeedingTroughModule.loveChance) {
+					List<Animal> animalsAround = level.getEntitiesOfClass(Animal.class, new AABB(this.worldPosition).inflate(FeedingTroughModule.range));
+					if(animalsAround.size() <= FeedingTroughModule.maxAnimals)
+						animal.setInLove(null);
+					return FeedResult.SECS;
 				}
+
+				return FeedResult.FED;
 			}
 		}
+		return FeedResult.NONE;
 	}
 
 	@Override
@@ -148,8 +135,8 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 			position = position.xRot(-entity.getXRot() * ((float) Math.PI / 180F));
 			position = position.yRot(-entity.getYRot() * ((float) Math.PI / 180F));
 			position = position.add(entityPos.x, entityPos.y + entity.getEyeHeight(), entityPos.z);
-			if(this.level instanceof ServerLevel)
-				((ServerLevel) this.level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), position.x, position.y, position.z, 1, direction.x, direction.y + 0.05D, direction.z, 0.0D);
+			if(this.level instanceof ServerLevel serverLevel)
+				serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), position.x, position.y, position.z, 1, direction.x, direction.y + 0.05D, direction.z, 0.0D);
 			else if(this.level != null)
 				this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), position.x, position.y, position.z, direction.x, direction.y + 0.05D, direction.z);
 		}
@@ -187,7 +174,6 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 	public void load(@NotNull CompoundTag nbt) {
 		super.load(nbt);
 
-		this.cooldown = nbt.getInt("Cooldown");
 		this.internalRng = nbt.getLong("rng");
 		this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		if(!this.tryLoadLootTable(nbt))
@@ -199,7 +185,6 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 	protected void saveAdditional(@NotNull CompoundTag nbt) {
 		super.saveAdditional(nbt);
 
-		nbt.putInt("Cooldown", cooldown);
 		nbt.putLong("rng", internalRng);
 		if(!this.trySaveLootTable(nbt))
 			ContainerHelper.saveAllItems(nbt, this.stacks);

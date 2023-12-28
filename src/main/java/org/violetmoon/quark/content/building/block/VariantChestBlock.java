@@ -23,18 +23,21 @@ import java.util.function.Supplier;
 
 public class VariantChestBlock extends ChestBlock implements IZetaBlock, IVariantChest {
 
-	private final ZetaModule module;
+	private final @Nullable ZetaModule module;
 	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	protected final String type;
 
 	public VariantChestBlock(String prefix, String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
 		super(props, supplier);
-		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
-		module.zeta.registry.registerBlock(this, resloc, true);
-
 		this.module = module;
 		this.type = type;
+
+		if(module == null) //auto registration below this line
+			return;
+
+		String resloc = (prefix != null ? prefix + "_" : "") + type + "_chest";
+		module.zeta.registry.registerBlock(this, resloc, true);
 	}
 
 	public VariantChestBlock(String type, ZetaModule module, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, Properties props) {
@@ -74,7 +77,7 @@ public class VariantChestBlock extends ChestBlock implements IZetaBlock, IVarian
 	}
 
 	@Override
-	public String getChestType() {
+	public String getTexturePath() {
 		return type;
 	}
 

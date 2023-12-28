@@ -16,6 +16,11 @@ public class ForgeZInput implements ZInput {
 		public int getButton() {
 			return e.getButton();
 		}
+
+		@Override
+		public int getAction() {
+			return e.getAction();
+		}
 	}
 
 	public static class Key extends ForgeZInput implements ZInput.Key {
