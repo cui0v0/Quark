@@ -49,7 +49,7 @@ public class ItemSharingModule extends ZetaModule {
 
 	@Config(description = "In ticks.")
 	@Config.Min(0)
-	private static int cooldown = 5; //TODO: 100 ticks, it's low for testing
+	private static int cooldown = 100;
 
 	@Config
 	public static boolean renderItemsInChat = true;
