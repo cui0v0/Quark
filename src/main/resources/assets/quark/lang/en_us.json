@@ -484,6 +484,9 @@
 
 	"quark.container.feeding_trough": "Feeding Trough",
 
+	"quark.container.crafter": "Crafter",
+	"quark.gui.togglable_slot": "Click to disable slot",
+
 	"item.quark.trowel": "Trowel",
 	"item.quark.slime_in_a_bucket": "Bucket of Slime",
 	"item.quark.slime_in_a_bucket.named": "Bucket of %s",

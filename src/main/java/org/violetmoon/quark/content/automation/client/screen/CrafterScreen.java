@@ -27,77 +27,121 @@
 
 package org.violetmoon.quark.content.automation.client.screen;
 
-import java.util.List;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
+import org.violetmoon.quark.content.automation.inventory.CrafterSlot;
 
 public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
-	private static final ResourceLocation TEXTURE = Quark.asResource("textures/gui/container/crafter.png");
+	private static final ResourceLocation DISABLED_SLOT_LOCATION_SPRITE = Quark.asResource("container/crafter/disabled_slot");
+	private static final ResourceLocation POWERED_REDSTONE_LOCATION_SPRITE = Quark.asResource("container/crafter/powered_redstone");
+	private static final ResourceLocation UNPOWERED_REDSTONE_LOCATION_SPRITE = Quark.asResource("container/crafter/unpowered_redstone");
+	private static final ResourceLocation CONTAINER_LOCATION = Quark.asResource("textures/gui/container/crafter.png");
+	private static final Component DISABLED_SLOT_TOOLTIP = Component.translatable("quark.gui.togglable_slot");
+	private final Player player;
 
-	public CrafterScreen(CrafterMenu menu, Inventory inventory, Component title) {
-		super(menu, inventory, title);
+	public CrafterScreen(CrafterMenu crafterMenu, Inventory inventory, Component component) {
+		super(crafterMenu, inventory, component);
+		this.player = inventory.player;
 	}
 
 	@Override
-	public void init() {
+	protected void init() {
 		super.init();
 		this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
 	}
 
 	@Override
-	public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-		renderBackground(context);
-		super.render(context, mouseX, mouseY, delta);
-		this.renderTooltip(context, mouseX, mouseY);
-		if (menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getItem().isEmpty() && this.hoveredSlot.container == menu.crafter && !isBlocked(this.hoveredSlot)) {
-			context.renderComponentTooltip(font, List.of(
-				Component.translatable("quark.misc.disable_slot")
-			), mouseX, mouseY);
-		}
-	}
-
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getItem().isEmpty() && this.hoveredSlot.container == menu.crafter) {
-			this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, this.hoveredSlot.getContainerSlot());
-		    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-
-			return true;
-		}
-		return super.mouseClicked(mouseX, mouseY, button);
-	}
-
-	public boolean isBlocked(Slot slot) {
-		if (slot.container == menu.crafter && (menu.delegate.get(0) & (1 << (1 + slot.getContainerSlot()))) != 0) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
-		int i = this.leftPos;
-		int j = (this.height - this.imageHeight) / 2;
-		context.blit(TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
-		int del = menu.delegate.get(0);
-		if ((del & 1) != 0) {
-			context.blit(TEXTURE, i + 97, j + 38, 176, 18, 16, 11);
-		}
-		for (int s = 0; s < 9; s++) {
-			if ((del & (1 << (s + 1))) != 0) {
-				Slot slot = menu.slots.get(s + 1);
-				context.blit(TEXTURE, i + slot.x - 1, j + slot.y - 1, 176, 0, 18, 18);
+	protected void slotClicked(@NotNull Slot slot, int i, int j, @NotNull ClickType clickType) {
+		if (slot instanceof CrafterSlot && !slot.hasItem() && !this.player.isSpectator()) {
+			switch(clickType) {
+				case PICKUP:
+					if (this.menu.isSlotDisabled(i)) {
+						this.enableSlot(i);
+					} else if (this.menu.getCarried().isEmpty()) {
+						this.disableSlot(i);
+					}
+					break;
+				case SWAP:
+					ItemStack itemStack = this.player.getInventory().getItem(j);
+					if (this.menu.isSlotDisabled(i) && !itemStack.isEmpty()) {
+						this.enableSlot(i);
+					}
 			}
 		}
+
+		super.slotClicked(slot, i, j, clickType);
+	}
+
+	private void enableSlot(int i) {
+		this.updateSlotState(i, true);
+	}
+
+	private void disableSlot(int i) {
+		this.updateSlotState(i, false);
+	}
+
+	private void updateSlotState(int i, boolean bl) {
+		this.menu.setSlotState(i, bl);
+		float f = bl ? 1.0F : 0.75F;
+		this.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.4F, f);
+	}
+
+//	@Override
+//	public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+//		if (slot instanceof CrafterSlot crafterSlot && this.menu.isSlotDisabled(slot.index)) {
+//			this.renderDisabledSlot(guiGraphics, crafterSlot);
+//			return;
+//		}
+//
+//		super.renderSlot(guiGraphics, slot);
+//	}
+
+	private void renderDisabledSlot(GuiGraphics guiGraphics, CrafterSlot crafterSlot) {
+		guiGraphics.blit(DISABLED_SLOT_LOCATION_SPRITE, crafterSlot.x - 1, crafterSlot.y - 1, 18, 18, this.imageWidth, this.imageHeight);
+	}
+
+	@Override
+	public void render(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
+		super.render(guiGraphics, i, j, f);
+		this.renderRedstone(guiGraphics);
+		this.renderTooltip(guiGraphics, i, j);
+		if (this.hoveredSlot instanceof CrafterSlot
+				&& !this.menu.isSlotDisabled(this.hoveredSlot.index)
+				&& this.menu.getCarried().isEmpty()
+				&& !this.hoveredSlot.hasItem()
+				&& !this.player.isSpectator()) {
+			guiGraphics.renderTooltip(this.font, DISABLED_SLOT_TOOLTIP, i, j);
+		}
+	}
+
+	private void renderRedstone(GuiGraphics guiGraphics) {
+		int i = this.width / 2 + 9;
+		int j = this.height / 2 - 48;
+		ResourceLocation resourceLocation;
+		if (this.menu.isPowered()) {
+			resourceLocation = POWERED_REDSTONE_LOCATION_SPRITE;
+		} else {
+			resourceLocation = UNPOWERED_REDSTONE_LOCATION_SPRITE;
+		}
+
+		guiGraphics.blit(resourceLocation, i, j, 16, 16, this.imageWidth, this.imageHeight);
+	}
+
+	@Override
+	protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {
+		int k = (this.width - this.imageWidth) / 2;
+		int l = (this.height - this.imageHeight) / 2;
+		guiGraphics.blit(CONTAINER_LOCATION, k, l, 0, 0, this.imageWidth, this.imageHeight);
 	}
 }

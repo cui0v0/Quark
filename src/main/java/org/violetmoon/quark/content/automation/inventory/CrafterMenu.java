@@ -28,121 +28,144 @@
 package org.violetmoon.quark.content.automation.inventory;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import org.violetmoon.quark.content.automation.block.be.CrafterBlockEntity;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
+import org.violetmoon.quark.content.automation.block.CrafterBlock;
 import org.violetmoon.quark.content.automation.module.CrafterModule;
 
-public class CrafterMenu extends AbstractContainerMenu {
-	public Container crafter;
-	public ContainerData delegate;
+public class CrafterMenu extends AbstractContainerMenu implements ContainerListener {
+	private final ResultContainer resultContainer = new ResultContainer();
+	private final ContainerData containerData;
+	private final Player player;
+	private final CraftingContainer container;
 
-	public CrafterMenu(int syncId, Inventory player) {
-		super(CrafterModule.menuType, syncId);
-		init(player, new TransientCraftingContainer(this, 3, 3), new ResultContainer(), new SimpleContainerData(1));
+	public CrafterMenu(int i, Inventory inventory) {
+		super(CrafterModule.menuType, i);
+		this.player = inventory.player;
+		this.containerData = new SimpleContainerData(10);
+		this.container = new TransientCraftingContainer(this, 3, 3);
+		this.addSlots(inventory);
 	}
 
-	public CrafterMenu(int syncId, Inventory player, CraftingContainer crafter, ResultContainer result, ContainerData delegate) {
-		super(CrafterModule.menuType, syncId);
-		init(player, crafter, result, delegate);
+	public CrafterMenu(int i, Inventory inventory, CraftingContainer craftingContainer, ContainerData containerData) {
+		super(CrafterModule.menuType, i);
+		this.player = inventory.player;
+		this.containerData = containerData;
+		this.container = craftingContainer;
+		checkContainerSize(craftingContainer, 9);
+		craftingContainer.startOpen(inventory.player);
+		this.addSlots(inventory);
+		this.addSlotListener(this);
 	}
 
 	public static CrafterMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
 		return new CrafterMenu(windowId, playerInventory);
 	}
 
-	@Override
-	public boolean clickMenuButton(Player player, int id) {
-		if (id >= 0 && id < 9 && crafter instanceof CrafterBlockEntity cbe) {
-			cbe.blocked[id] = !cbe.blocked[id];
-			cbe.update();
-			cbe.setChanged();
-			return true;
-		}
-		return super.clickMenuButton(player, id);
-	}
-
-	public void init(Inventory player, CraftingContainer crafter, ResultContainer result, ContainerData delegate) {
-		checkContainerSize(crafter, 9);
-		this.crafter = crafter;
-		crafter.startOpen(player.player);
-		this.delegate = delegate;
-		this.addDataSlots(delegate);
-  
-		this.addSlot(new ResultSlot(player.player, crafter, result, 0, 26 + 18 * 6, 17 + 1 * 18));
-
-		int i;
-		int j;
-		for(i = 0; i < 3; ++i) {
-			for(j = 0; j < 3; ++j) {
-				this.addSlot(new Slot(crafter, j + i * 3, 26 + j * 18, 17 + i * 18));
+	private void addSlots(Inventory inventory) {
+		for(int i = 0; i < 3; ++i) {
+			for(int j = 0; j < 3; ++j) {
+				int k = j + i * 3;
+				this.addSlot(new CrafterSlot(this.container, k, 26 + j * 18, 17 + i * 18, this));
 			}
 		}
 
-		for(i = 0; i < 3; ++i) {
-			for(j = 0; j < 9; ++j) {
-				this.addSlot(new Slot(player, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+		for(int i = 0; i < 3; ++i) {
+			for(int j = 0; j < 9; ++j) {
+				this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 
-		for(i = 0; i < 9; ++i) {
-			this.addSlot(new Slot(player, i, 8 + i * 18, 142));
+		for(int i = 0; i < 9; ++i) {
+			this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
 		}
-  
+
+		this.addSlot(new NonInteractiveResultSlot(this.resultContainer, 0, 134, 35));
+		this.addDataSlots(this.containerData);
+		this.refreshRecipeResult();
+	}
+
+	public void setSlotState(int i, boolean bl) {
+		CrafterSlot crafterSlot = (CrafterSlot) this.getSlot(i);
+		this.containerData.set(crafterSlot.index, bl ? 0 : 1);
+		this.broadcastChanges();
+	}
+
+	public boolean isSlotDisabled(int i) {
+		if (i > -1 && i < 9) {
+			return this.containerData.get(i) == 1;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isPowered() {
+		return this.containerData.get(9) == 1;
 	}
 
 	@Override
-	public boolean stillValid(Player player) {
-		return crafter.stillValid(player);
-	}
-
-	@Override
-	public ItemStack quickMoveStack(Player player, int index) {
-		Slot slot = this.getSlot(index);
-		ItemStack original = ItemStack.EMPTY;
+	public @NotNull ItemStack quickMoveStack(@NotNull Player player, int i) {
+		ItemStack itemStack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(i);
 		if (slot != null && slot.hasItem()) {
-			ItemStack stack = slot.getItem();
-			original = stack.copy();
-			if (index == 0) {
-				if (!this.moveItemStackTo(stack, 10, 46, true)) {
+			ItemStack itemStack2 = slot.getItem();
+			itemStack = itemStack2.copy();
+			if (i < 9) {
+				if (!this.moveItemStackTo(itemStack2, 9, 45, true)) {
 					return ItemStack.EMPTY;
 				}
-				slot.onQuickCraft(stack, original);
-				/*
-				this.context.run((world, pos) -> {
-					stack.getItem().onCraft(stack, world, player);
-				});*/
-			} else if (index < 10) {
-				if (this.moveItemStackTo(stack, 10, 46, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else {
-				if (!this.moveItemStackTo(stack, 1, 10, false)) {
-					if (index < 37) {
-						if (!this.moveItemStackTo(stack, 37, 46, false)) {
-							return ItemStack.EMPTY;
-						}
-					} else if (!this.moveItemStackTo(stack, 10, 37, false)) {
-						return ItemStack.EMPTY;
-					}
-				}
+			} else if (!this.moveItemStackTo(itemStack2, 0, 9, false)) {
+				return ItemStack.EMPTY;
 			}
-			if (stack.isEmpty()) {
-				slot.setByPlayer(ItemStack.EMPTY);
+
+			if (itemStack2.isEmpty()) {
+				slot.set(ItemStack.EMPTY);
 			} else {
 				slot.setChanged();
 			}
-			if (stack.getCount() == original.getCount()) {
+
+			if (itemStack2.getCount() == itemStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
-			slot.onTake(player, stack);
-			if (index == 0) {
-				player.drop(stack, false);
-			}
+
+			slot.onTake(player, itemStack2);
 		}
-		return original;
+
+		return itemStack;
 	}
+
+	@Override
+	public boolean stillValid(@NotNull Player player) {
+		return this.container.stillValid(player);
+	}
+
+	private void refreshRecipeResult() {
+		Player player = this.player;
+		if (player instanceof ServerPlayer serverPlayer) {
+			Level levelx = serverPlayer.level();
+			ItemStack itemStack = CrafterBlock.getPotentialResults(levelx, this.container)
+					.map(craftingRecipe -> craftingRecipe.assemble(this.container, player.level().registryAccess()))
+					.orElse(ItemStack.EMPTY);
+			this.resultContainer.setItem(0, itemStack);
+		}
+	}
+
+	public Container getContainer() {
+		return this.container;
+	}
+
+	@Override
+	public void slotChanged(@NotNull AbstractContainerMenu abstractContainerMenu, int i, @NotNull ItemStack itemStack) {
+		this.refreshRecipeResult();
+	}
+
+	@Override
+	public void dataChanged(@NotNull AbstractContainerMenu abstractContainerMenu, int i, int j) {}
 }

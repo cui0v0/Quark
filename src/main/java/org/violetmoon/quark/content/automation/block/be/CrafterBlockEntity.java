@@ -27,266 +27,148 @@
 
 package org.violetmoon.quark.content.automation.block.be;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
-import org.violetmoon.quark.content.automation.block.CrafterBlock;
-import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
-import org.violetmoon.quark.content.automation.module.CrafterModule;
-
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.BlockSourceImpl;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.content.automation.block.CrafterBlock;
+import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
+import org.violetmoon.quark.content.automation.module.CrafterModule;
 
-public class CrafterBlockEntity extends BaseContainerBlockEntity implements CraftingContainer, WorldlyContainer {
-	private static final DispenseItemBehavior BEHAVIOR = new CraftDispenseBehavior();
-	public final NonNullList<ItemStack> stacks = NonNullList.withSize(9, ItemStack.EMPTY);
-	public final ResultContainer result = new ResultContainer();
-	public final boolean[] blocked = new boolean[9];
-	public final ContainerData delegate;
-	private boolean didInitialScan = false;
+public class CrafterBlockEntity extends RandomizableContainerBlockEntity implements CraftingContainer {
+	private NonNullList<ItemStack> items = NonNullList.withSize(9, ItemStack.EMPTY);
+	private int craftingTicksRemaining = 0;
+	protected final ContainerData containerData = new ContainerData() {
+		private final int[] slotStates = new int[9];
+		private int triggered = 0;
+
+		@Override
+		public int get(int i) {
+			return i == 9 ? this.triggered : this.slotStates[i];
+		}
+
+		@Override
+		public void set(int i, int j) {
+			if (i == 9) {
+				this.triggered = j;
+			} else {
+				this.slotStates[i] = j;
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return 10;
+		}
+	};
 
 	public CrafterBlockEntity(BlockPos pos, BlockState state) {
 		super(CrafterModule.blockEntityType, pos, state);
-		delegate = new ContainerData() {
-
-			@Override
-			public int get(int index) {
-				int res = level.getBlockState(pos).getValue(CrafterBlock.POWER) == CrafterBlock.PowerState.TRIGGERED ? 1 : 0;
-				for (int i = 0; i < 9; i++) {
-					if (blocked[i]) {
-						res |= 1 << (i + 1);
-					}
-				}
-				return res;
-			}
-
-			@Override
-			public void set(int index, int value) {
-			}
-
-			@Override
-			public int getCount() {
-				return 1;
-			}
-		};
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag nbt) {
-		super.saveAdditional(nbt);
-		ListTag list = new ListTag();
-		for (boolean b : blocked) {
-			list.add(ByteTag.valueOf(b));
-		}
-		nbt.put("Blocked", list);
-		ContainerHelper.saveAllItems(nbt, stacks);
+	protected @NotNull Component getDefaultName() {
+		return Component.translatable("quark.container.crafter");
 	}
 
 	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
-		if (nbt.contains("Blocked")) {
-			ListTag list = nbt.getList("Blocked", Tag.TAG_BYTE);
-			for (int i = 0; i < list.size() && i < 9; i++) {
-				blocked[i] = ((ByteTag) list.get(i)).getAsByte() != 0;
-			}
-		}
-		ContainerHelper.loadAllItems(nbt, stacks);
+	protected @NotNull AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory) {
+		return new CrafterMenu(i, inventory, this, this.containerData);
 	}
 
-	public void craft() {
-		if (level instanceof ServerLevel sw) {
-			//			BlockSource blockSource = new BlockSource(sw, worldPosition, this.getBlockState(), null);
-			update();
-			BlockSource blockSource = new BlockSourceImpl(sw, worldPosition);
-			ItemStack itemStack = result.getItem(0);
-			if (!itemStack.isEmpty()) {
-				Direction direction = this.getBlockState().getValue(CrafterBlock.FACING);
-				Container inventory = HopperBlockEntity.getContainerAt(level, worldPosition.relative(direction));
-				if (inventory == null) {
-					BEHAVIOR.dispense(blockSource, itemStack);
-				} else {
-					if (!hasSpace(inventory, direction, itemStack)) {
-						return;
-					}
-					if (inventory instanceof CrafterBlockEntity) {
-						int count = itemStack.getCount();
-						for (int i = 0; i < count; i++) {
-							ItemStack is = itemStack.copy();
-							is.setCount(1);
-							HopperBlockEntity.addItem(result, inventory, is, direction.getOpposite());
-						}
-					} else {
-						HopperBlockEntity.addItem(result, inventory, itemStack, direction.getOpposite());
-					}
-				}
-				takeItems();
-			}
+	public void setSlotState(int i, boolean bl) {
+		if (this.slotCanBeDisabled(i)) {
+			this.containerData.set(i, bl ? 0 : 1);
+			this.setChanged();
 		}
 	}
 
-	private static IntStream getAvailableSlots(Container inventory, Direction side) {
-		return inventory instanceof WorldlyContainer ? IntStream.of(((WorldlyContainer)inventory).getSlotsForFace(side)) : IntStream.range(0, inventory.getContainerSize());
+	public boolean isSlotDisabled(int i) {
+		if (i >= 0 && i < 9) {
+			return this.containerData.get(i) == 1;
+		} else {
+			return false;
+		}
 	}
 
-	public boolean hasSpace(Container inv, Direction dir, ItemStack stack) {
-		IntStream stream = getAvailableSlots(inv, dir);
-		int inserted = 0;
-		int slotMax = Math.min(stack.getMaxStackSize(), inv.getMaxStackSize());
-		if (inv instanceof CrafterBlockEntity) {
-			slotMax = 1;
-		}
-		for (int i : stream.toArray()) {
-			if (inv instanceof WorldlyContainer si && !si.canPlaceItemThroughFace(i, stack, dir)) {
-				continue;
-			}
-			ItemStack is = inv.getItem(i);
-			if (is.isEmpty()) {
-				inserted += slotMax;
-			} else if (ItemStack.isSameItemSameTags(is, stack) && is.getCount() < slotMax) {
-				inserted += slotMax - is.getCount();
-			}
-			if (inserted >= stack.getCount()) {
+	@Override
+	public boolean canPlaceItem(int i, @NotNull ItemStack itemStack) {
+		if (this.containerData.get(i) == 1) {
+			return false;
+		} else {
+			ItemStack itemStack2 = this.items.get(i);
+			int j = itemStack2.getCount();
+			if (j >= itemStack2.getMaxStackSize()) {
+				return false;
+			} else if (itemStack2.isEmpty()) {
 				return true;
+			} else {
+				return !this.smallerStackExist(j, itemStack2, i);
 			}
 		}
+	}
+
+	private boolean smallerStackExist(int i, ItemStack itemStack, int j) {
+		for(int k = j + 1; k < 9; ++k) {
+			if (!this.isSlotDisabled(k)) {
+				ItemStack itemStack2 = this.getItem(k);
+				if (itemStack2.isEmpty() || itemStack2.getCount() < i && ItemStack.isSameItemSameTags(itemStack2, itemStack)) {
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
-	public void takeItems() {
-		NonNullList<ItemStack> defaultedList = level.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this, level);
+	@Override
+	public void load(@NotNull CompoundTag compoundTag) {
+		super.load(compoundTag);
+		this.craftingTicksRemaining = compoundTag.getInt("crafting_ticks_remaining");
+		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+		if (!this.tryLoadLootTable(compoundTag)) {
+			ContainerHelper.loadAllItems(compoundTag, this.items);
+		}
 
-		for(int i = 0; i < defaultedList.size(); ++i) {
-			ItemStack itemStack = this.getItem(i);
-			ItemStack itemStack2 = defaultedList.get(i);
-			if (!itemStack.isEmpty()) {
-				this.removeItem(i, 1);
-				itemStack = this.getItem(i);
-			}
+		int[] is = compoundTag.getIntArray("disabled_slots");
 
-			if (!itemStack2.isEmpty()) {
-				if (itemStack.isEmpty()) {
-					this.setItem(i, itemStack2);
-				} else if (ItemStack.isSameItemSameTags(itemStack, itemStack2)) {
-					itemStack2.grow(itemStack.getCount());
-					this.setItem(i, itemStack2);
-				}/* else if (!this.player.getInventory().insertStack(itemStack2)) {
-					this.player.dropItem(itemStack2, false);
-				}*/
+		for(int i = 0; i < 9; ++i) {
+			this.containerData.set(i, 0);
+		}
+
+		for(int j : is) {
+			if (this.slotCanBeDisabled(j)) {
+				this.containerData.set(j, 1);
 			}
 		}
-		update();
+
+		this.containerData.set(9, compoundTag.getInt("triggered"));
 	}
 
-	public int getComparatorOutput() {
-		int out = 0;
-		for (int i = 0; i < 9; i++) {
-			if (blocked[i] || !getItem(i).isEmpty()) {
-				out++;
-			}
+	@Override
+	protected void saveAdditional(@NotNull CompoundTag compoundTag) {
+		super.saveAdditional(compoundTag);
+		compoundTag.putInt("crafting_ticks_remaining", this.craftingTicksRemaining);
+		if (!this.trySaveLootTable(compoundTag)) {
+			ContainerHelper.saveAllItems(compoundTag, this.items);
 		}
-		return out;
-	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, CrafterBlockEntity be) {
-		if(!be.didInitialScan && !world.isClientSide) {
-			be.update();
-			be.didInitialScan = true;
-		}
-	}
-
-	public static ItemStack getResult(Level world, CraftingContainer craftingInventory) {
-		Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingInventory, world);
-		if (optional.isPresent()) {
-			CraftingRecipe craftingRecipe = optional.get();
-			ItemStack stack = craftingRecipe.assemble(craftingInventory, world.registryAccess());
-			if (stack.isItemEnabled(world.enabledFeatures())) {
-				return stack;
-			}
-		}
-		return ItemStack.EMPTY;
-		// handler.setPreviousTrackedSlot(0, itemStack);
-		// serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));
-	}
-
-	public void update() {
-		ItemStack stack = CrafterBlockEntity.getResult(level, this);
-		result.setItem(0, stack);
-		level.updateNeighbourForOutputSignal(worldPosition, CrafterModule.block);
-	}
-
-	@Override
-	public boolean stillValid(Player player) {
-		return true;
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return stacks.get(slot);
-	}
-
-	@Override
-	public boolean isEmpty() {
-		for (ItemStack stack : stacks) {
-			if (!stack.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public ItemStack removeItem(int slot, int amount) {
-		ItemStack stack = ContainerHelper.removeItem(stacks, slot, amount);
-		if (!stack.isEmpty()) {
-			this.setChanged();
-		}
-		update();
-		return stack;
-	}
-
-	@Override
-	public ItemStack removeItemNoUpdate(int slot) {
-		ItemStack stack = ContainerHelper.takeItem(stacks, slot);
-		update();
-		return stack;
-	}
-
-	@Override
-	public void setItem(int slot, ItemStack stack) {
-		stacks.set(slot, stack);
-		update();
+		this.addDisabledSlots(compoundTag);
+		this.addTriggered(compoundTag);
 	}
 
 	@Override
@@ -295,26 +177,49 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	}
 
 	@Override
-	public void clearContent() {
-		for (int i = 0; i < getContainerSize(); i++) {
-			setItem(i, ItemStack.EMPTY);
+	public boolean isEmpty() {
+		for(ItemStack itemStack : this.items) {
+			if (!itemStack.isEmpty()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public @NotNull ItemStack getItem(int i) {
+		return this.items.get(i);
+	}
+
+	@Override
+	public void setItem(int i, @NotNull ItemStack itemStack) {
+		if (this.isSlotDisabled(i)) {
+			this.setSlotState(i, true);
+		}
+
+		super.setItem(i, itemStack);
+	}
+
+	@Override
+	public boolean stillValid(@NotNull Player player) {
+		if (this.level != null && this.level.getBlockEntity(this.worldPosition) == this) {
+			return !(
+					player.distanceToSqr((double)this.worldPosition.getX() + 0.5, (double)this.worldPosition.getY() + 0.5, (double)this.worldPosition.getZ() + 0.5) > 64.0
+			);
+		} else {
+			return false;
 		}
 	}
 
 	@Override
-	protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-		return new CrafterMenu(syncId, playerInventory, this, result, delegate);
+	public @NotNull NonNullList<ItemStack> getItems() {
+		return this.items;
 	}
 
 	@Override
-	protected Component getDefaultName() {
-		return Component.translatable("block.quark.crafter");
-	}
-
-	@Override
-	public void fillStackedContents(StackedContents finder) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'provideRecipeInputs'");
+	protected void setItems(@NotNull NonNullList<ItemStack> nonNullList) {
+		this.items = nonNullList;
 	}
 
 	@Override
@@ -328,108 +233,64 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	}
 
 	@Override
-	public List<ItemStack> getItems() {
-		return stacks;
+	public void fillStackedContents(@NotNull StackedContents stackedContents) {
+		for(ItemStack itemStack : this.items) {
+			stackedContents.accountSimpleStack(itemStack);
+		}
 	}
 
-	@Override
-	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
-		return true;
-	}
+	private void addDisabledSlots(CompoundTag compoundTag) {
+		IntList intList = new IntArrayList();
 
-	@Override
-	public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
-		return canPlaceItem(slot, stack);
-	}
-
-	@Override
-	public boolean canPlaceItem(int slot, ItemStack stack) {
-		ItemStack stackInSlot = getItem(slot);
-		boolean allowed = stackInSlot.isEmpty();
-
-		if(!CrafterModule.useEmiLogic && !allowed) {
-			int min = 999;
-			for(int i = 0; i < 9; i++) {
-				if(blocked[i])
-					continue;
-				
-				ItemStack testStack = getItem(i);
-				if(testStack.isEmpty() || ItemStack.isSameItemSameTags(stackInSlot, testStack))
-					min = Math.min(min, testStack.getCount());
+		for(int i = 0; i < 9; ++i) {
+			if (this.isSlotDisabled(i)) {
+				intList.add(i);
 			}
-			
-			return stackInSlot.getCount() == min;
 		}
 
-		boolean blockedSlot = blocked[slot];
-		boolean powered = level.getBlockState(worldPosition).getValue(CrafterBlock.POWER).powered();
-		
-		return allowed && !blockedSlot && (CrafterModule.allowItemsWhilePowered || !powered);
+		compoundTag.putIntArray("disabled_slots", intList);
 	}
 
-	@Override
-	public int[] getSlotsForFace(Direction side) {
-		int ct = 0;
-		for(boolean bl : blocked)
-			if(!bl)
-				ct++;
+	private void addTriggered(CompoundTag compoundTag) {
+		compoundTag.putInt("triggered", this.containerData.get(9));
+	}
 
-		int[] ret = new int[ct];
+	public void setTriggered(boolean bl) {
+		this.containerData.set(9, bl ? 1 : 0);
+	}
+
+	public boolean isTriggered() {
+		return this.containerData.get(9) == 1;
+	}
+
+	public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, CrafterBlockEntity crafterBlockEntity) {
+		int i = crafterBlockEntity.craftingTicksRemaining - 1;
+		if (i >= 0) {
+			crafterBlockEntity.craftingTicksRemaining = i;
+			if (i == 0) {
+				level.setBlock(blockPos, blockState.setValue(CrafterBlock.CRAFTING, Boolean.FALSE), 3);
+			}
+		}
+	}
+
+	public void setCraftingTicksRemaining(int i) {
+		this.craftingTicksRemaining = i;
+	}
+
+	public int getRedstoneSignal() {
 		int i = 0;
-		for(int j = 0; j < blocked.length; j++)
-			if(!blocked[j]) {
-				ret[i] = j;
-				i++;
-			}
 
-		return ret;
+		for(int j = 0; j < this.getContainerSize(); ++j) {
+			ItemStack itemStack = this.getItem(j);
+			if (!itemStack.isEmpty() || this.isSlotDisabled(j)) {
+				++i;
+			}
+		}
+
+		return i;
 	}
 
-	private static class CraftDispenseBehavior implements DispenseItemBehavior {
-
-		@Override
-		public final ItemStack dispense(BlockSource blockSource, ItemStack itemStack) {
-			ItemStack itemStack2 = this.dispenseSilently(blockSource, itemStack);
-			this.playSound(blockSource);
-			this.spawnParticles(blockSource, blockSource.getBlockState().getValue(CrafterBlock.FACING));
-			return itemStack2;
-		}
-
-		protected ItemStack dispenseSilently(BlockSource pointer, ItemStack stack) {
-			Direction direction = pointer.getBlockState().getValue(CrafterBlock.FACING);
-			Position position = getOutputLocation(pointer);
-			ItemStack itemStack = stack.split(1);
-			spawnItem(pointer.getLevel(), itemStack, 6, direction, position);
-			return stack;
-		}
-
-		public static void spawnItem(Level world, ItemStack stack, int speed, Direction side, Position pos) {
-			double d = pos.x();
-			double e = pos.y();
-			double f = pos.z();
-			if (side.getAxis() == Axis.Y) {
-				e -= 0.125;
-			} else {
-				e -= 0.15625;
-			}
-
-			ItemEntity itemEntity = new ItemEntity(world, d, e, f, stack);
-			double g = world.random.nextDouble() * 0.1 + 0.2;
-			itemEntity.setDeltaMovement(world.random.triangle((double)side.getStepX() * g, 0.0172275 * (double)speed), world.random.triangle(0.2, 0.0172275 * (double)speed), world.random.triangle((double)side.getStepZ() * g, 0.0172275 * (double)speed));
-			world.addFreshEntity(itemEntity);
-		}
-
-		protected void playSound(BlockSource pointer) {
-			pointer.getLevel().levelEvent(1000, pointer.getPos(), 0);
-		}
-
-		protected void spawnParticles(BlockSource pointer, Direction side) {
-			pointer.getLevel().levelEvent(2000, pointer.getPos(), side.get3DDataValue());
-		}
-
-		private static Position getOutputLocation(BlockSource pointer) {
-			Direction direction = pointer.getBlockState().getValue(CrafterBlock.FACING);
-			return pointer.getPos().getCenter().add(0.7 * (double)direction.getStepX(), 0.7 * (double)direction.getStepY(), 0.7 * (double)direction.getStepZ());
-		}
+	private boolean slotCanBeDisabled(int i) {
+		return i > -1 && i < 9 && this.items.get(i).isEmpty();
 	}
 }
