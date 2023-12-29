@@ -38,7 +38,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 
 import static org.violetmoon.quark.base.handler.MiscUtil.directionProperty;
 
-public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
+public class CopperPipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
 	private static final VoxelShape CENTER_SHAPE = Shapes.box(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875);
 
@@ -57,7 +57,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public PipeBlock(@Nullable ZetaModule module) {
+	public CopperPipeBlock(@Nullable ZetaModule module) {
 		super("pipe", module);
 	}
 
@@ -75,7 +75,7 @@ public class PipeBlock extends BasePipeBlock implements SimpleWaterloggedBlock {
 					worldIn.updateNeighborsAt(pos, PipesModule.encasedPipe);
 
 					BlockEntity newBe = worldIn.getBlockEntity(pos);
-					newBe.load(cmp);
+					if(newBe != null) newBe.load(cmp);
 				}
 
 				SoundType type = Blocks.GLASS.defaultBlockState().getSoundType(worldIn, pos, player);

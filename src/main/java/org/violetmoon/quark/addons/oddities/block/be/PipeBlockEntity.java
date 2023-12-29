@@ -71,7 +71,7 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 		//convert old pipes
 		if(convert) {
 			convert = false;
-			refreshAllConnections();
+			refreshVisualConnections();
 		}
 		boolean enabled = isPipeEnabled();
 		if(!enabled && level.getGameTime() % 10 == 0 && level instanceof ServerLevel serverLevel)
@@ -385,11 +385,11 @@ public class PipeBlockEntity extends SimpleInventoryBlockEntity {
 		MiscUtil.syncTE(this);
 	}
 
-	public void refreshAllConnections() {
+	public void refreshVisualConnections() {
 		Arrays.stream(Direction.values()).forEach(this::updateConnection);
 	}
 
-	protected ConnectionType updateConnection(Direction facing) {
+	public ConnectionType updateConnection(Direction facing) {
 		var c = computeConnectionTo(level, worldPosition, facing);
 		connectionsCache[facing.ordinal()] = c;
 		return c;

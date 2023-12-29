@@ -90,9 +90,8 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 		return conn.isSolid;
 	}
 
-	@NotNull
 	@Override
-	public InteractionResult use(@NotNull BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(handIn);
 
 		// fix pipes if they're ruined
@@ -153,10 +152,17 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+		PipeBlockEntity.ConnectionType type = PipeBlockEntity.computeConnectionTo(level, pos, direction);
+		state = state.setValue(directionProperty(direction), allowsFullConnection(type));
+		return state;
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
+		super.neighborChanged(state, level, pos, p_60512_, p_60513_, p_60514_);
 		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile) {
-			tile.refreshAllConnections();
+			tile.refreshVisualConnections();
 		}
-		return getTargetState(level, pos);
 	}
 
 	@Override
@@ -167,11 +173,12 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
 		if(level.getBlockEntity(pos) instanceof PipeBlockEntity tile) {
-			tile.refreshAllConnections();
+			tile.refreshVisualConnections();
 		}
 		super.setPlacedBy(level, pos, state, entity, stack);
 	}
 
+	// Update all connections in blockstate
 	protected BlockState getTargetState(LevelAccessor level, BlockPos pos) {
 		BlockState newState = defaultBlockState();
 
