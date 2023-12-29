@@ -5,7 +5,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
-
+import net.minecraft.world.phys.AABB;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -26,7 +26,12 @@ public class WoolShutsUpMinecartsModule extends ZetaModule {
 	}
 
 	public static boolean canPlay(AbstractMinecart cart) {
-		return !staticEnabled || !cart.level().getBlockState(cart.blockPosition().below()).is(BlockTags.DAMPENS_VIBRATIONS);
+		if (!staticEnabled)
+			return true;
+
+		AABB bounds = cart.getBoundingBox();
+		bounds = bounds.move(0, bounds.minY - bounds.maxY, 0);
+		return cart.level().getBlockStates(bounds).noneMatch((it) -> it.is(BlockTags.DAMPENS_VIBRATIONS));
 	}
 
 }

@@ -108,12 +108,8 @@ public class DoubleDoorOpeningModule extends ZetaModule {
 			BlockHitResult res = new BlockHitResult(new Vec3(otherPos.getX() + 0.5, otherPos.getY() + 0.5, otherPos.getZ() + 0.5), direction, otherPos, false);
 
 			if(res.getType() == HitResult.Type.BLOCK) {
-				boolean eventRes = Quark.ZETA.fireRightClickBlock(player, InteractionHand.MAIN_HAND, otherPos, res);
-
-				if(!eventRes) {
-					InteractionResult interaction = other.use(level, player, InteractionHand.MAIN_HAND, res);
-					return interaction != InteractionResult.PASS;
-				}
+				InteractionResult interaction = other.use(level, player, InteractionHand.MAIN_HAND, res);
+				return interaction != InteractionResult.PASS;
 			}
 		}
 
