@@ -249,6 +249,8 @@ public class GameNerfsModule extends ZetaModule {
 				gossips.remove(GossipType.MINOR_POSITIVE);
 			}
 
+			zombie.gossips = manager.store(NbtOps.INSTANCE);
+
 			zombie.getPersistentData().putBoolean(TAG_TRADES_ADJUSTED, true);
 		}
 	}

@@ -1,7 +1,5 @@
 package org.violetmoon.quark.content.automation.block.be;
 
-import com.mojang.authlib.GameProfile;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -13,12 +11,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,18 +22,16 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 import org.jetbrains.annotations.NotNull;
 
-import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.addons.oddities.block.pipe.CopperPipeBlock;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * @author WireSegal

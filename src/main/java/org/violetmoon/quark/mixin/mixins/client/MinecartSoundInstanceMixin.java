@@ -1,27 +1,22 @@
 package org.violetmoon.quark.mixin.mixins.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.resources.sounds.MinecartSoundInstance;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.violetmoon.quark.content.client.module.WoolShutsUpMinecartsModule;
 
 @Mixin(MinecartSoundInstance.class)
 public class MinecartSoundInstanceMixin {
 
-	@Shadow
-	@Final
-	private AbstractMinecart minecart;
-
-	@ModifyExpressionValue(method = "tick()V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/resources/sounds/MinecartSoundInstance;volume:F", opcode = Opcodes.PUTFIELD))
-	public float muteIfOnWool(float volumeToSet) {
-		if (volumeToSet > 0 && !WoolShutsUpMinecartsModule.canPlay(minecart))
-			return 0;
-		return volumeToSet;
+	@WrapOperation(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;getDeltaMovement()Lnet/minecraft/world/phys/Vec3;"))
+	public Vec3 pretendThereIsNoMovementIfMuted(AbstractMinecart minecart, Operation<Vec3> original) {
+		if (!WoolShutsUpMinecartsModule.canPlay(minecart))
+			return Vec3.ZERO;
+		return original.call(minecart);
 	}
 
 }

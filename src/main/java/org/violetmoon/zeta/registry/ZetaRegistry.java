@@ -6,9 +6,7 @@ import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +14,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.Zeta;
 import org.violetmoon.zeta.item.ZetaBlockItem;
 import org.violetmoon.zeta.util.RegisterDynamicUtil;
@@ -92,8 +89,6 @@ public abstract class ZetaRegistry {
 	public void registerBlock(Block block, ResourceLocation id, boolean hasBlockItem) {
 		register(block, id, Registries.BLOCK);
 
-		//TODO: this supplier is mostly a load-bearing way to defer calling groups.get(registryName),
-		// until after CreativeTabHandler.finalizeTabs is called
 		if(hasBlockItem)
 			defers.put(Registries.ITEM.location(), () -> createItemBlock(block));
 	}
@@ -177,7 +172,14 @@ public abstract class ZetaRegistry {
 		return (ResourceKey<Registry<?>>) (Object) weeeejava;
 	}
 
-	//main function - allows accessing the registry, but since it's lazily created, you don't get a Holder containing the object yet...
+	/**
+	 * Register something to a worldgen registry that requires a `RegistryInfoLookup` to construct.
+	 * You might use this when constructing placed features (which require configuredfeatures), biomes (which require placedfeatures and configuredcarvers), etc.
+	 *
+	 * The returned Holder type is a little odd.
+	 *  - We can't return a Holder.Direct, since it's not possible to construct the object yet.
+	 *  - We can't return a Holder.Reference, since the registry we're adding the object *to* doesn't even exist yet.
+	 */
 	public <T> LateBoundHolder<T> registerDynamicF(Function<RegistryOps.RegistryInfoLookup, T> objCreator, ResourceKey<T> id, ResourceKey<? extends Registry<T>> registry) {
 		RegisterDynamicUtil.signup(z);
 
@@ -195,7 +197,9 @@ public abstract class ZetaRegistry {
 		return registerDynamicF(objCreator, newResourceLocation(regname), registry);
 	}
 
-	//simpler function that just takes the object directly
+	/**
+	 * Register something to a worldgen registry that can be immediately constructed.
+	 */
 	public <T> Holder.Direct<T> registerDynamic(T obj, ResourceKey<T> id, ResourceKey<? extends Registry<T>> registry) {
 		RegisterDynamicUtil.signup(z);
 		dynamicDefers.computeIfAbsent(erase(registry), __ -> new ArrayList<>()).add(new DynamicEntry<>(id, __ -> obj, null));
@@ -217,7 +221,7 @@ public abstract class ZetaRegistry {
 		if(entries == null || entries.isEmpty())
 			return;
 
-		Quark.ZETA.log.info("Dynamically registering {} thing{} into {}", entries.size(), entries.size() > 1 ? "s" : "", registryKey.location());
+		z.log.info("Dynamically registering {} thing{} into {}", entries.size(), entries.size() > 1 ? "s" : "", registryKey.location());
 
 		List<DynamicEntry<T>> typePun = ((List<DynamicEntry<T>>) (Object) entries);
 		typePun.forEach(entry -> {

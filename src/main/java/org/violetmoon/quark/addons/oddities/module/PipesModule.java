@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.block.pipe.EncasedPipeBlock;
-import org.violetmoon.quark.addons.oddities.block.pipe.PipeBlock;
+import org.violetmoon.quark.addons.oddities.block.pipe.CopperPipeBlock;
 import org.violetmoon.quark.addons.oddities.client.render.be.PipeRenderer;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -58,7 +58,7 @@ public class PipesModule extends ZetaModule {
 
 	@LoadEvent
 	public final void register(ZRegister event) {
-		pipe = new PipeBlock(this);
+		pipe = new CopperPipeBlock(this);
 		encasedPipe = new EncasedPipeBlock(this);
 
 		blockEntityType = BlockEntityType.Builder.of(PipeBlockEntity::new, pipe, encasedPipe).build(null);
