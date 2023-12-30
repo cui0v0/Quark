@@ -73,14 +73,6 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 					newPos = througPos.add(direction.normalize().scale(-1));
 				}
 
-				// debug to visualize where fake player is
-				/*
-				ItemEntity e = new ItemEntity(level, newPos.x, newPos.y+2, newPos.z, Items.EMERALD.getDefaultInstance(), 0,0,0);
-				e.setNoGravity(true);
-				e.noPhysics =true;
-				level.addFreshEntity(e);
-				 */
-
 				foodHolder.moveTo(newPos.x, newPos.y, newPos.z, angles.x, angles.y);
 				return;
 			}

@@ -127,7 +127,7 @@ public class FeedingTroughModule extends ZetaModule {
 
         TroughPointer pointer = NEARBY_TROUGH_CACHE.get(animal);
 
-        //there's no cached trough nearby.
+        //There's no cached trough nearby.
         //Randomize whether we actually look for a new trough, to hopefully not eat all the tick time.
         if (pointer == null && level.random.nextFloat() <= lookChance) {
             pointer = TroughPointer.find(level, animal, temptations);
@@ -149,11 +149,7 @@ public class FeedingTroughModule extends ZetaModule {
                 BlockHitResult ray = level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, animal));
                 if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
                     return pointer.foodHolder;
-                } else {
-                    int error = 0;
                 }
-            }else{
-                int aa = 1;
             }
         }
 
@@ -202,14 +198,10 @@ public class FeedingTroughModule extends ZetaModule {
             }
             //check if it has food and tile is valid
             if(animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough){
-                //this should be called in tick but we save one tile call by doing this...
+                //this should be called in tick, but we save one tile call by doing this...
                 trough.updateFoodHolder(animal, temptations, foodHolder);
                 //if it still has food
-                var v = !foodHolder.getMainHandItem().isEmpty();
-                if(!v){
-                    int aa = 1;
-                }
-                return v;
+                return !foodHolder.getMainHandItem().isEmpty();
             }
             return false;
         }
@@ -217,7 +209,7 @@ public class FeedingTroughModule extends ZetaModule {
         void tryEatingOrTickCooldown(Animal animal) {
             giveUpCooldown--;
             if (eatCooldown == 0) {
-                //I wish this could be made smaller. Vanilla AI will not keep animals too close to player holding food
+                //I wish this could be made smaller. Vanilla AI will not keep animals too close to a player holding food
                 float feedDistance = 1.5f;
                 if (pos.distToCenterSqr(animal.position()) < (feedDistance * feedDistance)) {
                     if (animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough) {
