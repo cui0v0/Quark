@@ -210,6 +210,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
                                 else slot.set(currArmor.copy());
 
                                 slot.onQuickCraft(stack, currArmor);
+								slot.onTake(player, stack);
                             }
                             return true;
                         }
