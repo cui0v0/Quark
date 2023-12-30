@@ -1,13 +1,11 @@
 package org.violetmoon.zeta.module;
 
-import java.util.List;
+import org.apache.commons.lang3.text.WordUtils;
+import org.violetmoon.zeta.util.ZetaSide;
+
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
-
-import net.minecraftforge.api.distmarker.Dist;
-import org.apache.commons.lang3.text.WordUtils;
-import org.violetmoon.zeta.util.ZetaSide;
 
 /**
  * performs some common data-munging of the data straight off a ZetaLoadModule annotation

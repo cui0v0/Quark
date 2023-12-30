@@ -1,5 +1,13 @@
 package org.violetmoon.quark.content.automation.module;
 
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.CrafterBlock;
@@ -9,19 +17,10 @@ import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-
-@ZetaLoadModule(category = "automation")
+//fixme Fix crafter PITA atm and frankly not worth delaying a stable release over
+//@ZetaLoadModule(category = "automation")
 public class CrafterModule extends ZetaModule {
 	
     public static Block block;

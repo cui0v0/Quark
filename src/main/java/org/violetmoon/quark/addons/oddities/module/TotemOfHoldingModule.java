@@ -44,7 +44,7 @@ public class TotemOfHoldingModule extends ZetaModule {
 	@Config(description = "Set this to false to remove the behaviour where totems destroy themselves if the player dies again.")
 	public static boolean darkSoulsMode = true;
 
-	@Config(name = "Spawn Totem on PVP Kill", description = "Totem will always spawn if the player killer is himself.")
+	@Config(name = "Spawn Totem on PVP Kill", description = "Totem will always spawn if the player killer is themselves.")
 	public static boolean enableOnPK = false;
 
 	@Config(description = "Set this to true to make it so that if a totem is destroyed, the items it holds are destroyed alongside it rather than dropped")

@@ -18,7 +18,8 @@ public class QuarkRemapHandler {
     private static final Map<String, String> REMAP = new HashMap<>();
 
     static {
-        REMAP.put("quark:crafter", "minecraft:crafter");
+        //fixme crafter
+        //REMAP.put("quark:crafter", "minecraft:crafter");
         REMAP.put("quark:polished_tuff", "minecraft:polished_tuff");
     }
 
