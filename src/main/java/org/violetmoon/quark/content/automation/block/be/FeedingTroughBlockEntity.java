@@ -11,10 +11,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -63,13 +65,21 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 				Vec3 newPos = Vec3.ZERO;
 				// Fake player will always be at most maxDist blocks away from animal.
 				// If animal is closer to target, then we will be on target itself.
-				float maxDist = 3;
+				float maxDist = 5;
 				if(direction.lengthSqr() > (maxDist*maxDist)){
 					newPos = mobPosition.add(direction.normalize().scale(-maxDist));
 				}else{
 					//place slightly behind trough
 					newPos = througPos.add(direction.normalize().scale(-1));
 				}
+
+				// debug to visualize where fake player is
+				/*
+				ItemEntity e = new ItemEntity(level, newPos.x, newPos.y+2, newPos.z, Items.EMERALD.getDefaultInstance(), 0,0,0);
+				e.setNoGravity(true);
+				e.noPhysics =true;
+				level.addFreshEntity(e);
+				 */
 
 				foodHolder.moveTo(newPos.x, newPos.y, newPos.z, angles.x, angles.y);
 				return;

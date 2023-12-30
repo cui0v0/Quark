@@ -16,8 +16,6 @@ import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
 @Mixin(TemptingSensor.class)
 public class TemptingSensorMixin {
 
-	@Unique private static final int RATE = 20; //TODO: I think this needs to be applied every tick
-
 	@ModifyExpressionValue(
 		method = "doTick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/PathfinderMob;)V",
 		at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;collect(Ljava/util/stream/Collector;)Ljava/lang/Object;")
@@ -29,16 +27,14 @@ public class TemptingSensorMixin {
 
 		if(mob instanceof Animal animal) {
 			Player first = players.isEmpty() ? null : players.get(0);
-			Player replacement = FeedingTroughModule.modifyTemptingSensor(first, (TemptingSensor) (Object) this, animal, level);
+			// If first is there, it's already a valid temptation. We do not attempt to modify
+			if(first == null) {
+				Player replacement = FeedingTroughModule.modifyTemptingSensor((TemptingSensor) (Object) this, animal, level);
 
-			//Collectors.toList returns a mutable list, so it's okay to modify it. This is technically a Java implementation detail.
-			if(first != replacement)
-				if(players.isEmpty())
-					players.add(replacement);
-				else
-					players.set(0, replacement);
+				//Collectors.toList returns a mutable list, so it's okay to modify it. This is technically a Java implementation detail.
+				if (replacement != null) players.add(replacement);
+			}
 		}
-
 		return players;
 	}
 }

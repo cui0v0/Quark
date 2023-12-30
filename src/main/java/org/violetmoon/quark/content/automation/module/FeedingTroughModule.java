@@ -76,7 +76,7 @@ public class FeedingTroughModule extends ZetaModule {
     public static double range = 10;
 
     @Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one")
-    public static double lookChance = 0.005;
+    public static double lookChance = 0.01;
 
     private static final WeakHashMap<Animal, TroughPointer> NEARBY_TROUGH_CACHE = new WeakHashMap<>();
 
@@ -103,28 +103,24 @@ public class FeedingTroughModule extends ZetaModule {
     // The "realPlayer" parameter represents a real player located by existing TemptingSensor/TemptGoal code.
     // If there is a real player, and they are holding food, we don't swap them for a fakeplayer, so that animals path to
     // real players before they consider pathing to the Trough.
+    // We now only call these if a valid realPlayer is not there, hence why we don't need that parameter anymore
 
-    public static @Nullable Player modifyTemptingSensor(@Nullable Player realPlayer, TemptingSensor sensor, Animal animal, ServerLevel level) {
-        return modifyTempt(realPlayer, level, animal, ((AccessorTemptingSensor) sensor).quark$getTemptations());
+    public static @Nullable Player modifyTemptingSensor(TemptingSensor sensor, Animal animal, ServerLevel level) {
+        return modifyTempt(level, animal, ((AccessorTemptingSensor) sensor).quark$getTemptations());
     }
 
-    public static @Nullable Player modifyTemptGoal(@Nullable Player realPlayer, TemptGoal goal, Animal animal, ServerLevel level) {
-        return modifyTempt(realPlayer, level, animal, goal.items);
+    public static @Nullable Player modifyTemptGoal(TemptGoal goal, Animal animal, ServerLevel level) {
+        return modifyTempt(level, animal, goal.items);
     }
 
-    private static @Nullable Player modifyTempt(@Nullable Player realPlayer, ServerLevel level, Animal animal, Ingredient temptations) {
+    private static @Nullable Player modifyTempt(ServerLevel level, Animal animal, Ingredient temptations) {
         //early-exit conditions
         if (!Quark.ZETA.modules.isEnabled(FeedingTroughModule.class) ||
                 !animal.canFallInLove() ||
                 animal.getAge() != 0
         ) {
-            return realPlayer;
+            return null;
         }
-
-        //deference to real players
-        //TODO: this logic should not be here, should just be in vanilla code instead
-        if (realPlayer != null && (temptations.test(realPlayer.getMainHandItem()) || temptations.test(realPlayer.getOffhandItem())))
-            return realPlayer;
 
         //do we already know about a nearby trough?
         NEARBY_TROUGH_CACHE.entrySet().removeIf(p -> !p.getValue().valid(p.getKey()));
@@ -156,10 +152,12 @@ public class FeedingTroughModule extends ZetaModule {
                 } else {
                     int error = 0;
                 }
+            }else{
+                int aa = 1;
             }
         }
 
-        return realPlayer;
+        return null;
     }
 
 
@@ -199,15 +197,19 @@ public class FeedingTroughModule extends ZetaModule {
                 return false;
             }
             if (eatCooldown != 0) return true;
-            if (foodHolder.isRemoved() || foodHolder.level() != animal.level() || pos.distSqr(animal.blockPosition()) > range * range) {
-                return false;
+            if (animal.isRemoved() || !animal.isAlive() || foodHolder.level() != animal.level() || pos.distSqr(animal.blockPosition()) > range * range) {
+                    return false;
             }
             //check if it has food and tile is valid
-            if(animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough && !foodHolder.getMainHandItem().isEmpty()){
+            if(animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough){
                 //this should be called in tick but we save one tile call by doing this...
                 trough.updateFoodHolder(animal, temptations, foodHolder);
                 //if it still has food
-                return !foodHolder.getMainHandItem().isEmpty();
+                var v = !foodHolder.getMainHandItem().isEmpty();
+                if(!v){
+                    int aa = 1;
+                }
+                return v;
             }
             return false;
         }
@@ -216,7 +218,7 @@ public class FeedingTroughModule extends ZetaModule {
             giveUpCooldown--;
             if (eatCooldown == 0) {
                 //I wish this could be made smaller. Vanilla AI will not keep animals too close to player holding food
-                float feedDistance = 1.25f;
+                float feedDistance = 1.5f;
                 if (pos.distToCenterSqr(animal.position()) < (feedDistance * feedDistance)) {
                     if (animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough) {
                         switch (trough.tryFeedingAnimal(animal)) {
