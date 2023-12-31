@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.sensing.TemptingSensor;
@@ -31,7 +30,6 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
-import org.violetmoon.quark.content.building.block.VariantLadderBlock;
 import org.violetmoon.quark.mixin.mixins.accessor.AccessorTemptingSensor;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -42,9 +40,7 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
 
-import java.util.Objects;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * @author WireSegal
@@ -55,7 +51,12 @@ public class FeedingTroughModule extends ZetaModule {
 
     //using a ResourceKey because they're interned, and Holder.Reference#is leverages this for a very efficient implementation
     private static final ResourceKey<PoiType> FEEDING_TROUGH_POI_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, Quark.asResource("feeding_trough"));
-    private static final GameProfile DUMMY_PROFILE = new GameProfile(UUID.randomUUID(), "[FeedingTrough]");
+    private static final Set<FakePlayer> FREE_FAKE_PLAYERS = new HashSet<>();
+    //fake players created are either stored here above or in the cache below.
+    //this way each animal has its own player which is needed as they are moved in diff pos
+    private static final WeakHashMap<Animal, TroughPointer> NEARBY_TROUGH_CACHE = new WeakHashMap<>();
+    private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
+    private static int fakePlayersCount = 0;
 
     public static BlockEntityType<FeedingTroughBlockEntity> blockEntityType;
     @Hint
@@ -77,12 +78,9 @@ public class FeedingTroughModule extends ZetaModule {
     public static double range = 10;
 
     @Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one")
-    public static double lookChance = 0.02;
+    public static double lookChance = 0.015;
 
-    private static final WeakHashMap<Animal, TroughPointer> NEARBY_TROUGH_CACHE = new WeakHashMap<>();
-
-    private static final ThreadLocal<Boolean> breedingOccurred = ThreadLocal.withInitial(() -> false);
-
+    //TODO: not sure this works properly. it only cancels the first orb
     @PlayEvent
     public void onBreed(ZBabyEntitySpawn.Lowest event) {
         if (event.getCausedByPlayer() == null && event.getParentA().level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
@@ -124,16 +122,26 @@ public class FeedingTroughModule extends ZetaModule {
         }
 
         //do we already know about a nearby trough?
-        NEARBY_TROUGH_CACHE.entrySet().removeIf(p -> !p.getValue().valid(p.getKey()));
-
+        var iterator = NEARBY_TROUGH_CACHE.entrySet().iterator();
+        while (iterator.hasNext()) {
+            var entry = iterator.next();
+            TroughPointer pointer = entry.getValue();
+            if (!pointer.valid(entry.getKey())) {
+                iterator.remove();
+                // add fake player back to the list
+                FREE_FAKE_PLAYERS.add(pointer.fakePlayer);
+            }
+        }
         TroughPointer pointer = NEARBY_TROUGH_CACHE.get(animal);
 
         //There's no cached trough nearby.
         //Randomize whether we actually look for a new trough, to hopefully not eat all the tick time.
-        if (pointer == null && level.random.nextFloat() <= lookChance) {
+        if (pointer == null && level.random.nextFloat() <= lookChance*20) {
             pointer = TroughPointer.find(level, animal, temptations);
             if (pointer != null){
                 NEARBY_TROUGH_CACHE.put(animal, pointer);
+                // remove from free players list
+                FREE_FAKE_PLAYERS.remove(pointer.fakePlayer);
             }
         }
 
@@ -149,7 +157,7 @@ public class FeedingTroughModule extends ZetaModule {
                 Vec3 targetPos = new Vec3(location.getX(), location.getY(), location.getZ()).add(0.5, 0.0625, 0.5);
                 BlockHitResult ray = level.clip(new ClipContext(eyesPos, targetPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, animal));
                 if (ray.getType() == HitResult.Type.BLOCK && ray.getBlockPos().equals(location)) {
-                    return pointer.foodHolder;
+                    return pointer.fakePlayer;
                 }
             }
         }
@@ -172,14 +180,14 @@ public class FeedingTroughModule extends ZetaModule {
 
     private static final class TroughPointer {
         private final BlockPos pos;
-        private final FakePlayer foodHolder;
+        private final FakePlayer fakePlayer;
         private final Ingredient temptations;
         private int eatCooldown = 0; //Ideally cooldown should be per entity... Assuming troughs don't change much this is fine
         private int giveUpCooldown = 20 * 20; //max seconds till we give up
 
         private TroughPointer(BlockPos pos, FakePlayer player, Ingredient temptations) {
             this.pos = pos;
-            this.foodHolder = player;
+            this.fakePlayer = player;
             this.temptations = temptations;
         }
 
@@ -187,6 +195,9 @@ public class FeedingTroughModule extends ZetaModule {
         // Once a through is found and an animal is fed, its considered valid until cooldown runs out.
         // Then its invalidated so animals can find possibly closer ones
         boolean valid(Animal animal) {
+            if (animal.isRemoved() || !animal.isAlive() || fakePlayer.level() != animal.level() || pos.distSqr(animal.blockPosition()) > range * range) {
+                return false;
+            }
             if (eatCooldown == 1){
                 return false;
             }
@@ -194,15 +205,13 @@ public class FeedingTroughModule extends ZetaModule {
                 return false;
             }
             if (eatCooldown != 0) return true;
-            if (animal.isRemoved() || !animal.isAlive() || foodHolder.level() != animal.level() || pos.distSqr(animal.blockPosition()) > range * range) {
-                    return false;
-            }
+
             //check if it has food and tile is valid
             if(animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough){
                 //this should be called in tick, but we save one tile call by doing this...
-                trough.updateFoodHolder(animal, temptations, foodHolder);
+                trough.updateFoodHolder(animal, temptations, fakePlayer);
                 //if it still has food
-                return !foodHolder.getMainHandItem().isEmpty();
+                return !fakePlayer.getMainHandItem().isEmpty();
             }
             return false;
         }
@@ -228,12 +237,12 @@ public class FeedingTroughModule extends ZetaModule {
             if (obj == null || obj.getClass() != this.getClass()) return false;
             var that = (TroughPointer) obj;
             return Objects.equals(this.pos, that.pos) &&
-                    Objects.equals(this.foodHolder, that.foodHolder);
+                    Objects.equals(this.fakePlayer, that.fakePlayer);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(pos, foodHolder);
+            return Objects.hash(pos, fakePlayer);
         }
 
         // If animal cant eat.
@@ -256,7 +265,7 @@ public class FeedingTroughModule extends ZetaModule {
 
                 if (level.getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough) {
                     //only returns if it has the right food
-                    FakePlayer foodHolder = FakePlayerFactory.get(level, DUMMY_PROFILE);
+                    FakePlayer foodHolder = getOrCreateFakePlayer(level);
                     if (foodHolder != null) {
                         trough.updateFoodHolder(animal, temptations, foodHolder);
                         // if it has a food item
@@ -268,6 +277,19 @@ public class FeedingTroughModule extends ZetaModule {
                 }
             }
             return null;
+        }
+    }
+
+    private static FakePlayer getOrCreateFakePlayer(ServerLevel serverLevel){
+        Optional<FakePlayer> any = FREE_FAKE_PLAYERS.stream().findAny();
+        if(any.isEmpty()){
+            GameProfile dummyProfile = new GameProfile(UUID.randomUUID(), "[FeedingTrough-"+ ++fakePlayersCount+"]");
+            var p = FakePlayerFactory.get(serverLevel, dummyProfile);
+            FREE_FAKE_PLAYERS.add(p);
+            return p;
+        }
+        else {
+            return any.get();
         }
     }
 }
