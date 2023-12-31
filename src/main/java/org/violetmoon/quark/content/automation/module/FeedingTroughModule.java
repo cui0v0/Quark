@@ -31,6 +31,7 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.block.be.FeedingTroughBlockEntity;
+import org.violetmoon.quark.content.building.block.VariantLadderBlock;
 import org.violetmoon.quark.mixin.mixins.accessor.AccessorTemptingSensor;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -76,7 +77,7 @@ public class FeedingTroughModule extends ZetaModule {
     public static double range = 10;
 
     @Config(description = "Chance that an animal decides to look for a through. Closer it is to 1 the more performance it will take. Decreasing will make animals take longer to find one")
-    public static double lookChance = 0.01;
+    public static double lookChance = 0.02;
 
     private static final WeakHashMap<Animal, TroughPointer> NEARBY_TROUGH_CACHE = new WeakHashMap<>();
 
@@ -209,8 +210,7 @@ public class FeedingTroughModule extends ZetaModule {
         void tryEatingOrTickCooldown(Animal animal) {
             giveUpCooldown--;
             if (eatCooldown == 0) {
-                //I wish this could be made smaller. Vanilla AI will not keep animals too close to a player holding food
-                float feedDistance = 1.5f;
+                float feedDistance = animal.getBbWidth()*1.8f;
                 if (pos.distToCenterSqr(animal.position()) < (feedDistance * feedDistance)) {
                     if (animal.level().getBlockEntity(pos) instanceof FeedingTroughBlockEntity trough) {
                         switch (trough.tryFeedingAnimal(animal)) {
