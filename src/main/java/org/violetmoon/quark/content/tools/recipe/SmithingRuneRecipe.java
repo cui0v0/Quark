@@ -42,9 +42,9 @@ public final class SmithingRuneRecipe extends SmithingTrimRecipe { // Extends to
 	private final RuneColor runeColor;
 
 	private static Ingredient used;
-	private static final RandomSource BASE_INGREDIENT_RANDOM = RandomSource.create();
+	private static final RandomSource BASE_INGREDIENT_RANDOM = RandomSource.createThreadSafe();
 
-	private static ItemStack makeEnchantedDisplayItem(ItemStack input, RandomSource random) {
+	private static ItemStack makeEnchantedDisplayItem(ItemStack input) {
 		ItemStack stack = input.copy();
 		stack.hideTooltipPart(ItemStack.TooltipPart.ENCHANTMENTS);
 		stack.hideTooltipPart(ItemStack.TooltipPart.MODIFIERS);
@@ -53,7 +53,7 @@ public final class SmithingRuneRecipe extends SmithingTrimRecipe { // Extends to
 			stack.enchant(Enchantments.UNBREAKING, 3); // it probably accepts unbreaking anyways
 			return stack;
 		}
-		return EnchantmentHelper.enchantItem(random, stack, 25, false);
+		return EnchantmentHelper.enchantItem(BASE_INGREDIENT_RANDOM, stack, 25, false);
 	}
 
 	private static Ingredient createBaseIngredient() {
@@ -70,7 +70,7 @@ public final class SmithingRuneRecipe extends SmithingTrimRecipe { // Extends to
 
 			used = Ingredient.of(displayItems
 				.filter(it -> !(it.getItem() instanceof IDisableable<?> dis) || dis.isEnabled())
-				.map(item -> makeEnchantedDisplayItem(item, BASE_INGREDIENT_RANDOM)));
+				.map(SmithingRuneRecipe::makeEnchantedDisplayItem));
 		}
 
 		return used;
@@ -108,7 +108,7 @@ public final class SmithingRuneRecipe extends SmithingTrimRecipe { // Extends to
 	@Nonnull
 	@Override
 	public ItemStack getResultItem(@Nonnull RegistryAccess registry) {
-		ItemStack displayStack = makeEnchantedDisplayItem(new ItemStack(Items.IRON_CHESTPLATE), BASE_INGREDIENT_RANDOM);
+		ItemStack displayStack = makeEnchantedDisplayItem(new ItemStack(Items.IRON_CHESTPLATE));
 		ColorRunesModule.withRune(displayStack, runeColor);
 
 		return displayStack;
