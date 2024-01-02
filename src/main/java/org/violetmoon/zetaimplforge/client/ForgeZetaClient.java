@@ -203,12 +203,6 @@ public class ForgeZetaClient extends ZetaClient {
 		}
 
 		playBus.fire(new ForgeZClientTick(e), ZClientTick.class);
-
-		//TODO: BINARY-COMPAT with the first Quark alpha version ONLY. I think these can be removed
-		if (e.phase == TickEvent.Phase.START)
-			playBus.fire(new ZStartClientTick());
-		else
-			playBus.fire(new ZEndClientTick());
 	}
 
 	public void inputMouseButton(InputEvent.MouseButton e) {
