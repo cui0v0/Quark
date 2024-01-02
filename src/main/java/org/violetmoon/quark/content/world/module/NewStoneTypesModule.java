@@ -117,7 +117,7 @@ public class NewStoneTypesModule extends ZetaModule {
 		else
 			normal = constr.make(name, module, props).setCondition(enabledCond).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS, Blocks.DEEPSLATE, true);
 
-		ZetaBlock polished = (ZetaBlock) constr.make("polished_" + name, module, props).setCondition(enabledCond);
+		ZetaBlock polished = constr.make("polished_" + name, module, props).setCondition(enabledCond);
 		polishedBlocks.put(normal, polished);
 
 		if(isVanilla)

@@ -153,19 +153,15 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 				float scale = 0.32F;
 
 				switch(attach) {
-				case STANDING_BEHIND:
-					angle += 180F;
-					break;
-				case WALL_SIGN:
-					angle = 0;
-					matrix.translate(0.0, -0.3, 0.45);
-					break;
-				case HANGING_FROM_WALL:
-					angle = 0;
-					matrix.translate(0.0, -0.52, -0.01);
-
-				default:
-					break;
+					case STANDING_BEHIND -> angle += 180F;
+					case WALL_SIGN -> {
+						angle = 0;
+						matrix.translate(0.0, -0.3, 0.45);
+					}
+					case HANGING_FROM_WALL -> {
+						angle = 0;
+						matrix.translate(0.0, -0.52, -0.01);
+					}
 				}
 
 				matrix.translate(0, 0.35, 0.98);
@@ -173,15 +169,8 @@ public class GlassItemFrameRenderer extends EntityRenderer<GlassItemFrame> {
 				matrix.mulPose(Axis.YP.rotationDegrees(angle));
 
 				switch(attach) {
-				case HANGING_IN_FRONT:
-					matrix.translate(0.0, -0.52 / scale, -0.075);
-					break;
-				case HANGING_BEHIND:
-					matrix.translate(0.0, -0.52 / scale, 0.3);
-					break;
-
-				default:
-					break;
+					case HANGING_IN_FRONT -> matrix.translate(0.0, -0.52 / scale, -0.075);
+					case HANGING_BEHIND -> matrix.translate(0.0, -0.52 / scale, 0.3);
 				}
 
 				matrix.translate(0, 0, -0.5);
