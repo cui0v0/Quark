@@ -15,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -30,16 +31,13 @@ import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.building.module.HedgesModule;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.block.ZetaFenceBlock;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.registry.IZetaBlockColorProvider;
 import org.violetmoon.zeta.registry.RenderLayerRegistry;
-import org.violetmoon.zeta.util.BooleanSuppliers;
 
-import java.util.function.BooleanSupplier;
-
-// TODO ZETA: extend ZetaFenceBlock
-public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColorProvider {
+public class HedgeBlock extends ZetaFenceBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);
 	private static final VoxelShape HEDGE_CENTER_SHAPE = box(2F, 1F, 2F, 14F, 16F, 14F);
@@ -49,41 +47,39 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	private static final VoxelShape WEST_SHAPE = box(0F, 1F, 2F, 2F, 16F, 14F);
 	private static final VoxelShape EXTEND_SHAPE = box(2F, 0F, 2F, 14F, 1F, 14F);
 
-	private final Object2IntMap<BlockState> hedgeStateToIndex;
+	private final Object2IntMap<BlockState> hedgeStateToIndex = new Object2IntOpenHashMap<>();
 	private final VoxelShape[] hedgeShapes;
-
-	@Nullable
-	private final ZetaModule module;
 	public final BlockState leafState;
-	private BooleanSupplier enabledSupplier = BooleanSuppliers.TRUE;
 
 	public static final BooleanProperty EXTEND = BooleanProperty.create("extend");
 
-	public HedgeBlock(@Nullable ZetaModule module, Block fence, Block leaf) {
-		super(Block.Properties.copy(fence));
+	public HedgeBlock(String regname, @Nullable ZetaModule module, Block fence, Block leaf) {
+		super(regname, module, BlockBehaviour.Properties.copy(fence));
 
-		this.module = module;
 		this.leafState = leaf.defaultBlockState();
 
 		registerDefaultState(defaultBlockState().setValue(EXTEND, false));
-
-		hedgeStateToIndex = new Object2IntOpenHashMap<>();
-		hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
+		this.hedgeShapes = cacheHedgeShapes(stateDefinition.getPossibleStates());
 
 		if(module == null) //auto registration below this line
 			return;
 
-		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, BuiltInRegistries.BLOCK);
-		if (leaf instanceof BlossomLeavesBlock) {
-			String colorName = leafRes.getPath().replaceAll("_blossom_leaves", "");
-			Quark.ZETA.registry.registerBlock(this, colorName + "_blossom_hedge", true);
-		} else {
-			String resloc = leafRes.getPath().replaceAll("_leaves", "_hedge");
-			Quark.ZETA.registry.registerBlock(this, resloc, true);
-		}
 		CreativeTabManager.addToCreativeTabNextTo(CreativeModeTabs.NATURAL_BLOCKS, this, leaf, false);
-
 		module.zeta.renderLayerRegistry.put(this, RenderLayerRegistry.Layer.CUTOUT);
+	}
+
+	@Deprecated(forRemoval = true) //for bin compat; requires early registry-name-retrieval of blocks, which isn't composable with other mods etc.
+	public HedgeBlock(@Nullable ZetaModule module, Block fence, Block leaf) {
+		this(legacyComputeRegistryName(leaf), module, fence, leaf);
+	}
+
+	@Deprecated(forRemoval = true)
+	private static String legacyComputeRegistryName(Block leaf) {
+		ResourceLocation leafRes = Quark.ZETA.registry.getRegistryName(leaf, BuiltInRegistries.BLOCK);
+		if (leaf instanceof BlossomLeavesBlock)
+			return leafRes.getPath().replaceAll("_blossom_leaves", "") + "_blossom_hedge";
+		else
+			return leafRes.getPath().replaceAll("_leaves", "_hedge");
 	}
 
 	public BlockState getLeaf() {
@@ -185,23 +181,6 @@ public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColo
 	@Override
 	public @Nullable String getItemColorProviderName() {
 		return "hedge";
-	}
-
-	@Nullable
-	@Override
-	public ZetaModule getModule() {
-		return module;
-	}
-
-	@Override
-	public HedgeBlock setCondition(BooleanSupplier enabledSupplier) {
-		this.enabledSupplier = enabledSupplier;
-		return this;
-	}
-
-	@Override
-	public boolean doesConditionApply() {
-		return enabledSupplier.getAsBoolean();
 	}
 
 }

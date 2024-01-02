@@ -29,18 +29,19 @@ public class HedgesModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
 		for(Wood wood : VanillaWoods.OVERWORLD_WITH_TREE)
-			new HedgeBlock(this, wood.fence(), wood.leaf());
+			new HedgeBlock(wood.name() + "_hedge", this, wood.fence(), wood.leaf());
 
-		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.AZALEA_LEAVES);
-		new HedgeBlock(this, Blocks.OAK_FENCE, Blocks.FLOWERING_AZALEA_LEAVES);
+		new HedgeBlock("azalea_hedge", this, Blocks.OAK_FENCE, Blocks.AZALEA_LEAVES);
+		new HedgeBlock("flowering_azalea_hedge", this, Blocks.OAK_FENCE, Blocks.FLOWERING_AZALEA_LEAVES);
 	}
 
 	@LoadEvent
 	public void postRegister(ZRegister.Post e) {
 		for(BlossomTreesModule.BlossomTree tree : BlossomTreesModule.blossomTrees)
-			new HedgeBlock(this, BlossomTreesModule.woodSet.fence, tree.leaves).setCondition(tree.sapling::isEnabled);
+			new HedgeBlock(tree.name + "_hedge", this, BlossomTreesModule.woodSet.fence, tree.leaves).setCondition(tree.sapling::isEnabled);
 
-		new HedgeBlock(this, AncientWoodModule.woodSet.fence, AncientWoodModule.ancient_leaves).setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
+		new HedgeBlock("ancient_hedge", this, AncientWoodModule.woodSet.fence, AncientWoodModule.ancient_leaves)
+			.setCondition(() -> Quark.ZETA.modules.isEnabled(AncientWoodModule.class));
 	}
 
 	@LoadEvent
