@@ -11,12 +11,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,10 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
-
 import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.addons.oddities.block.pipe.CopperPipeBlock;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.content.automation.block.FeedingTroughBlock;
 import org.violetmoon.quark.content.automation.module.FeedingTroughModule;
@@ -87,7 +82,11 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 			ItemStack stack = this.getItem(i);
 			if(animal.isFood(stack)) {
 				SoundEvent soundEvent = animal.getEatingSound(stack);
-				animal.playSound(soundEvent, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+				// Try and catch this in case soundEvent is null somewhere (Its cleaner then null checking soundEvent
+				// after warping it
+				try {
+					animal.playSound(soundEvent, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+				} catch (NullPointerException ignored) {}
 
 				this.addItemParticles(animal, stack, 16);
 
