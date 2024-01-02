@@ -1,5 +1,6 @@
 package org.violetmoon.quark.content.building.module;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -20,7 +21,7 @@ import org.violetmoon.zeta.module.ZetaModule;
 public class NetherBrickFenceGateModule extends ZetaModule {
 	@LoadEvent
 	public final void register(ZRegister event) {
-		new ZetaFenceGateBlock("nether_brick_fence_gate", this,
+		new ZetaFenceGateBlock("nether_brick_fence_gate", this, SoundEvents.NETHER_WOOD_FENCE_GATE_OPEN, SoundEvents.NETHER_WOOD_FENCE_GATE_CLOSE,
 				OldMaterials.stone()
 						.mapColor(MapColor.NETHER)
 						.requiresCorrectToolForDrops()

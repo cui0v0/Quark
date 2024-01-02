@@ -201,7 +201,7 @@ public abstract class AbstractPickarang<T extends AbstractPickarang<T>> extends 
 			BlockPos hit = blockHitResult.getBlockPos();
 			BlockState state = level().getBlockState(hit);
 
-			// TODO find replacement for BlockState#isSolid
+			// TODO find replacement for BlockState#isSolid since it's deprecated. Vanilla uses it everywhere though
 			if(getPiercingModifier() == 0 || state.isSolid())
 				addHit();
 

@@ -1,8 +1,11 @@
 package org.violetmoon.quark.content.management.module;
 
+import java.util.List;
+
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 
+import net.minecraft.network.chat.Component;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
@@ -39,11 +42,14 @@ public class EasyTransferingModule extends ZetaModule {
 		}
 
 		private void addButton(ZKeyMapping event, int priority, String name, boolean restock) {
+			List<Component> shiftedTooltip = List.of(Component.translatable("quark.gui.button." + name + "_filtered"));
+			List<Component> regularTooltip = List.of(Component.translatable("quark.gui.button." + name));
+
 			InventoryButtonHandler.addButtonProvider(event, this, ButtonTargetType.CONTAINER_PLAYER_INVENTORY, priority,
 					"quark.keybind.transfer_" + name,
 					(screen) -> QuarkClient.ZETA_CLIENT.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)),
 					(parent, x, y) -> new MiniInventoryButton(parent, priority, x, y,
-							(t) -> t.add(I18n.get("quark.gui.button." + name + (Screen.hasShiftDown() ? "_filtered" : ""))),
+							() -> Screen.hasShiftDown() ? shiftedTooltip : regularTooltip,
 							(b) -> QuarkClient.ZETA_CLIENT.sendToServer(new InventoryTransferMessage(Screen.hasShiftDown(), restock)))
 							.setTextureShift(Screen::hasShiftDown),
 					null);

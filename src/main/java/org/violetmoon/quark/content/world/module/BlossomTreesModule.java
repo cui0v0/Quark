@@ -72,6 +72,7 @@ public class BlossomTreesModule extends ZetaModule {
 	public static final List<BlossomTree> blossomTrees = new ArrayList<>(5);
 
 	public static class BlossomTree {
+		public String name;
 		public BlossomTreeConfig quarkConfig;
 
 		public BlossomLeavesBlock leaves;
@@ -95,6 +96,7 @@ public class BlossomTreesModule extends ZetaModule {
 	private BlossomTree make(ZRegister event, String regname, MapColor color, BlossomTreeConfig quarkConfig, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey) {
 		BlossomTree tree = new BlossomTree();
 
+		tree.name = regname;
 		tree.quarkConfig = quarkConfig;
 		tree.leaves = new BlossomLeavesBlock(regname, this, color);
 

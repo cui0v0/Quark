@@ -1,5 +1,6 @@
 package org.violetmoon.quark.base.proxy;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,6 +14,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.QuarkForgeCapabilities;
 import org.violetmoon.quark.api.*;
 import org.violetmoon.quark.base.Quark;
@@ -131,9 +133,6 @@ public class CommonProxy {
 			handleQuarkConfigChange();
 	}
 
-	//TODO: probably find a better spot for this? It's not *only* fired when the
-	// config file is externally changed, but also when it's changed through config GUI,
-	// which means we roundtrip through the on-disk representation for no good reason
 	public void handleQuarkConfigChange() {
 		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());
@@ -152,5 +151,9 @@ public class CommonProxy {
 
 	public float getVisualTime() {
 		return 0f;
+	}
+
+	public @Nullable RegistryAccess hackilyGetCurrentClientLevelRegistryAccess() {
+		return null;
 	}
 }

@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.fml.ModLoadingContext;
+import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.config.QButtonHandler;
@@ -104,6 +106,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public float getVisualTime() {
 		return QuarkClient.ticker.total;
+	}
+
+	@Override
+	public @Nullable RegistryAccess hackilyGetCurrentClientLevelRegistryAccess() {
+		return QuarkClient.ZETA_CLIENT.hackilyGetCurrentClientLevelRegistryAccess();
 	}
 
 	private static void copyProgrammerArtIfMissing() {

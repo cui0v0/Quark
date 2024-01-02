@@ -25,13 +25,10 @@ public class RegistryUtil {
 	}
 
 	public static <T> List<T> getTagValues(RegistryAccess access, TagKey<T> tag) {
-		Registry<T> registry = access.registryOrThrow(tag.registry());
-		//HolderSet<T> holderSet = registry.getTag(tag).orElse(new HolderSet.Named<>(registry, tag)); //TODO 1.20 i dont know what the shit is going on
-		HolderSet<T> holderSet = registry.getTag(tag).orElse(null);
-		if(holderSet == null)
-			return Collections.emptyList();
-
-		return holderSet.stream().map(Holder::value).toList();
+		return access.registryOrThrow(tag.registry())
+			.getTag(tag)
+			.map(holderset -> holderset.stream().map(Holder::value).toList()) //tag exists, grab all items from it
+			.orElseGet(Collections::emptyList); //tag doesn't exist
 	}
 
 	//TODO: Can be made more 'static' when there's a nicer way to get a block's ID, instead of having to consult a particular Zeta

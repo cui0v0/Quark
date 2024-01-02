@@ -162,7 +162,7 @@ public class ConfigManager {
 		else
 			enabledCategories.remove(cat);
 
-		//TODO TODO bad bad bad, just forcing setEnabled to rerun since it checks category enablement
+		//TODO: hacky, just forcing setEnabled to rerun since it checks category enablement
 		for(ZetaModule mod : z.modules.modulesInCategory(cat)) {
 			mod.setEnabled(z, mod.enabled);
 		}

@@ -105,13 +105,6 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock, 
 		return state.getValue(TYPE).shape;
 	}
 
-	//TODO: doesn't actually work, "parent" is a slab block, and in vanilla slabs are never conduit frames
-	@Override
-	public boolean isConduitFrameZeta(BlockState state, LevelReader world, BlockPos pos, BlockPos conduit) {
-		BlockState parentState = parent.get().defaultBlockState();
-		return Quark.ZETA.blockExtensions.get(parentState).isConduitFrameZeta(parentState, world, pos, conduit);
-	}
-
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

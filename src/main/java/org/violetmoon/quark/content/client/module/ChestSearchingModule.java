@@ -286,13 +286,14 @@ public class ChestSearchingModule extends ZetaModule {
 					return true;
 			}
 
-			//TODO 1.20
-//			CreativeModeTab tab = item.getItemCategory();
-//			if(tab != null && matcher.test(tab.getDisplayName().getString().toLowerCase(Locale.ROOT), search))
-//				return true;
-
-			//		if(search.matches("favou?rites?") && FavoriteItems.isItemFavorited(stack))
-			//			return true;
+			for(String tabDisplayName : BuiltInRegistries.CREATIVE_MODE_TAB.stream()
+				.filter(tab -> tab.contains(stack))
+				.map(tab -> tab.getDisplayName().getString().toLowerCase(Locale.ROOT))
+				.toList()
+			) {
+				if(matcher.test(tabDisplayName, search))
+					return true;
+			}
 
 			ResourceLocation itemName = BuiltInRegistries.ITEM.getKey(item);
 			@Nullable

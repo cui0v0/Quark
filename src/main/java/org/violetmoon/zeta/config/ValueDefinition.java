@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-//TODO: maybe we need "boolean equals(T thing1, T thing2)"
 public class ValueDefinition<T> extends Definition {
 	public final @NotNull T defaultValue;
 	public final @Nullable Predicate<Object> validator;

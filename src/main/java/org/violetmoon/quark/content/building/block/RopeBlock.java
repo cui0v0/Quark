@@ -130,12 +130,12 @@ public class RopeBlock extends ZetaBlock implements IZetaBlockItemProvider, Simp
 					worldIn.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, 0.5F, 1F);
 					return InteractionResult.SUCCESS;
 				}
-			} else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
+			} else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) { //TODO: Forge extension
 				return FluidUtil.interactWithFluidHandler(player, hand, worldIn, getBottomPos(worldIn, pos), Direction.UP) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 			} else if(stack.getItem() == Items.GLASS_BOTTLE) {
 				BlockPos bottomPos = getBottomPos(worldIn, pos);
 				BlockState stateAt = worldIn.getBlockState(bottomPos);
-				if(stateAt.getFluidState().is(Fluids.WATER)) { //TODO 1.20: material -> fluidState check
+				if(stateAt.getFluidState().is(Fluids.WATER)) {
 					Vec3 playerPos = player.position();
 					worldIn.playSound(player, playerPos.x, playerPos.y, playerPos.z, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
 					stack.shrink(1);

@@ -39,7 +39,7 @@ public class WaxModifier extends AdvancementModifier {
 	public Set<ResourceLocation> getTargets() {
 		return ImmutableSet.of(TARGET_ON, TARGET_OFF);
 	}
-//
+
 	@Override
 	public boolean apply(ResourceLocation res, IMutableAdvancement adv) {
 		String title = res.getPath().replaceAll(".+/", "");
@@ -58,17 +58,6 @@ public class WaxModifier extends AdvancementModifier {
 									BlockPredicate.Builder.block().of(waxed).build()),
 							ItemPredicate.Builder.item().of(ItemTags.AXES))
 					.location.compositePredicates);
-		}
-		
-		return true;
-	}
-
-	//todo: Im thinking this goes byebye, but we should see if it is somehow still needed.
-	private static boolean addToBlockSet(Set<Block> blockSet, Set<Block> ourSet) {
-		try {
-			blockSet.addAll(ourSet);
-		} catch(Exception e) {
-			return false;
 		}
 		
 		return true;

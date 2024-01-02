@@ -89,6 +89,7 @@ public class WoodSetHandler {
 		CreativeTabManager.daisyChain();
 
 		//TODO 1.20: maybe expose stuff like canOpenByHand, sound types, etc
+		// builder api might be in order since there's a lot of parameters now :skull:
 		BlockSetType setType = new BlockSetType(Quark.MOD_ID + ":" + name);
 		SoundType sound = SoundType.WOOD;
 
@@ -107,7 +108,7 @@ public class WoodSetHandler {
 		set.stairs = event.getVariantRegistry().addStairs((IZetaBlock) set.planks, null).getBlock();
 
 		set.fence = new ZetaFenceBlock(name + "_fence", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD));
-		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
+		set.fenceGate = new ZetaFenceGateBlock(name + "_fence_gate", module, type, OldMaterials.wood().mapColor(color).strength(2.0F, 3.0F).sound(SoundType.WOOD)).setCreativeTab(CreativeModeTabs.BUILDING_BLOCKS);
 
 		set.door = new ZetaDoorBlock(setType, name + "_door", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion());
 		set.trapdoor = new ZetaTrapdoorBlock(setType, name + "_trapdoor", module, OldMaterials.wood().mapColor(color).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn((s, g, p, e) -> false));

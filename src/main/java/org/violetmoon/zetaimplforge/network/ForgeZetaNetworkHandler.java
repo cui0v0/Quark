@@ -73,7 +73,6 @@ public class ForgeZetaNetworkHandler extends ZetaNetworkHandler {
 		else
 			builder = builder.consumerNetworkThread((BiConsumer<T, Supplier<NetworkEvent.Context>>) (msg, ctxS) -> handlePacket(msg, ctxS, forgeDir)); //Yes you need the cast
 
-		//TODO is this strictly needed
 		if(!hasResponse)
 			builder = builder.noResponse();
 

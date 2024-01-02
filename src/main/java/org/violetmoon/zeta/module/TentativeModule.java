@@ -50,8 +50,7 @@ public record TentativeModule(
 		} else {
 			keyClass = clazz;
 
-			//leaving the category out of the annotation is only valid for client replacements
-			//TODO: maybe guess the category from the package name isntead ^^
+			//Only client replacement modules are allowed to leave off a category annotation (since it uses the same category as the module it's replacing)
 			if(data.category() == null || data.category().isEmpty())
 				throw new RuntimeException("Module " + clazz.getName() + " should specify a category");
 		}
