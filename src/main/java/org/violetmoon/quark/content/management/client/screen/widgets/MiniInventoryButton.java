@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
@@ -18,22 +17,32 @@ import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
 
 public class MiniInventoryButton extends Button {
 
-	private final Consumer<List<String>> tooltip;
+	private final Supplier<List<Component>> tooltip;
+
 	private final int type;
 	private final AbstractContainerScreen<?> parent;
 	private final int startX;
 
 	private BooleanSupplier shiftTexture = BooleanSuppliers.FALSE;
 
-	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Consumer<List<String>> tooltip, OnPress onPress) {
+	@Deprecated(forRemoval = true) //just bincompat for the Consumer-style API instead of the Supplier, in case anyones adding chest buttons (??)
+	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Consumer<List<String>> legacyTooltip, OnPress onPress) {
+		this(parent, type, x, y, () -> {
+			List<String> toConsume = new ArrayList<>();
+			legacyTooltip.accept(toConsume);
+			return toConsume.stream().map(z -> (Component) Component.translatable(z)).toList();
+		}, onPress);
+	}
+
+	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Supplier<List<Component>> tooltip, OnPress onPress) {
 		super(new Button.Builder(Component.literal(""), onPress).size(10, 10).pos(parent.getGuiLeft() + x, parent.getGuiTop() + y));
 		this.parent = parent;
 		this.type = type;
@@ -41,8 +50,12 @@ public class MiniInventoryButton extends Button {
 		this.startX = x;
 	}
 
-	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, String tooltip, OnPress onPress) {
-		this(parent, type, x, y, (t) -> t.add(I18n.get(tooltip)), onPress);
+	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, Component tooltip, OnPress onPress) {
+		this(parent, type, x, y, () -> List.of(tooltip), onPress);
+	}
+
+	public MiniInventoryButton(AbstractContainerScreen<?> parent, int type, int x, int y, String tooltipKey, OnPress onPress) {
+		this(parent, type, x, y, Component.translatable(tooltipKey), onPress);
 	}
 
 	public MiniInventoryButton setTextureShift(BooleanSupplier func) {
@@ -74,26 +87,16 @@ public class MiniInventoryButton extends Button {
 
 		guiGraphics.blit(MiscUtil.GENERAL_ICONS, getX(), getY(), u, v, width, height);
 
-		//TODO: change API to take Components so this awkward stream/map dance isn't needed
-		//Even better TODO: change API to use vanilla setTooltip
+		//we could use vanilla setTooltip, except the tooltip can change (hence the supplier)
 		if(isHovered)
-			guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, local$getToolTip().stream().map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, tooltip.get(), mouseX, mouseY);
 	}
 
 	@NotNull
 	@Override
 	protected MutableComponent createNarrationMessage() {
-		List<String> tooltip = local$getToolTip();
-		return tooltip.isEmpty() ? Component.literal("") : Component.translatable("gui.narrate.button", local$getToolTip().get(0));
-	}
-
-	/*
-	 * Prefixed with local$ to prevent clashing
-	 */
-	public List<String> local$getToolTip() {
-		List<String> list = new LinkedList<>();
-		tooltip.accept(list);
-		return list;
+		List<Component> resolvedTooltip = this.tooltip.get();
+		return resolvedTooltip.isEmpty() ? Component.literal("") : Component.translatable("gui.narrate.button", resolvedTooltip.get(0));
 	}
 
 }
