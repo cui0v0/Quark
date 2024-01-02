@@ -83,7 +83,7 @@ public class FeedingTroughBlockEntity extends RandomizableContainerBlockEntity {
 			if(animal.isFood(stack)) {
 				SoundEvent soundEvent = animal.getEatingSound(stack);
 				// Try and catch this in case soundEvent is null somewhere (Its cleaner then null checking soundEvent
-				// after warping it
+				// after warping it)
 				try {
 					animal.playSound(soundEvent, 0.5F + 0.5F * level.random.nextInt(2), (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
 				} catch (NullPointerException ignored) {}
