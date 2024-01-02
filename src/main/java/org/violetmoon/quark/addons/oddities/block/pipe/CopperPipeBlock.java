@@ -58,7 +58,7 @@ public class CopperPipeBlock extends BasePipeBlock implements SimpleWaterloggedB
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public CopperPipeBlock(@Nullable ZetaModule module) {
-		super("pipe", module);
+		super("pipe", SoundType.COPPER, module);
 	}
 
 	@Override

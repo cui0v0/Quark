@@ -16,16 +16,15 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.BlockHitResult;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import org.violetmoon.quark.addons.oddities.block.be.PipeBlockEntity;
 import org.violetmoon.quark.addons.oddities.module.PipesModule;
 import org.violetmoon.zeta.block.ZetaBlock;
@@ -57,14 +56,17 @@ public abstract class BasePipeBlock extends ZetaBlock implements EntityBlock {
 		};
 	}
 
-	protected BasePipeBlock(String name, @Nullable ZetaModule module) {
-		super(name, module,
-				Block.Properties.of()
+	protected BasePipeBlock(String name, SoundType soundType, @Nullable ZetaModule module){
+		this(name,module, Block.Properties.of()
 						.instrument(NoteBlockInstrument.HAT)
 						.strength(3F, 10F)
-						.sound(SoundType.GLASS)
+						.sound(soundType)
 						.noOcclusion()
 		);
+	}
+
+	protected BasePipeBlock(String name,  @Nullable ZetaModule module, BlockBehaviour.Properties properties) {
+		super(name, module, properties);
 
 		registerDefaultState(getDefaultPipeState());
 
