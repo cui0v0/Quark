@@ -104,6 +104,7 @@
     "client.ThrownTridentRendererMixin",
     "client.accessor.AccessorModelManager",
     "client.accessor.AccessorMultiPlayerGameMode",
+    "client.accessor.AccessorCustomCreativeSlot",
     "client.variants.BeeRendererMixin",
     "client.variants.ChickenRendererMixin",
     "client.variants.CowRendererMixin",

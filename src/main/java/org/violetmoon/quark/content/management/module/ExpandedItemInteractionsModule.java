@@ -46,6 +46,7 @@ import org.violetmoon.quark.base.network.message.ScrollOnBundleMessage;
 import org.violetmoon.quark.content.management.client.screen.HeldShulkerBoxScreen;
 import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxContainer;
 import org.violetmoon.quark.content.management.inventory.HeldShulkerBoxMenu;
+import org.violetmoon.quark.mixin.mixins.client.accessor.AccessorCustomCreativeSlot;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.play.ZRenderTooltip;
 import org.violetmoon.zeta.client.event.play.ZScreen;
@@ -382,20 +383,17 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 			Screen gui = mc.screen;
 			if(mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui && containerGui.getMenu().getCarried().isEmpty()) {
 				Slot under = containerGui.getSlotUnderMouse();
-				//TODO 1.20
-//				if(containerGui instanceof CreativeModeInventoryScreen creativeGui && creativeGui.getCurrentPage() != CreativeModeTab.TAB_INVENTORY.getId())
-//					return;
+				if(under == null || under instanceof AccessorCustomCreativeSlot)
+					return;
 
-				if(under != null) {
-					ItemStack underStack = under.getItem();
+				ItemStack underStack = under.getItem();
 
-					if(event.getItemStack() == underStack)
-						if(enableArmorInteraction && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
-							event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
+				if(event.getItemStack() == underStack)
+					if(enableArmorInteraction && armorOverride(underStack, ItemStack.EMPTY, under, ClickAction.SECONDARY, mc.player, true))
+						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.equip_armor").withStyle(ChatFormatting.YELLOW)));
 
-						else if(enableShulkerBoxInteraction && canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
-							event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.open_shulker").withStyle(ChatFormatting.YELLOW)));
-				}
+					else if(enableShulkerBoxInteraction && canOpenShulkerBox(underStack, ItemStack.EMPTY, under, mc.player))
+						event.getTooltipElements().add(Either.left(Component.translatable("quark.misc.open_shulker").withStyle(ChatFormatting.YELLOW)));
 			}
 		}
 
@@ -409,21 +407,21 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 				ItemStack held = containerGui.getMenu().getCarried();
 				if(!held.isEmpty()) {
 					Slot under = containerGui.getSlotUnderMouse();
+					if(under == null || under instanceof AccessorCustomCreativeSlot)
+						return;
 
-					if(under != null) {
-						ItemStack underStack = under.getItem();
+					ItemStack underStack = under.getItem();
 
-						int x = event.getMouseX();
-						int y = event.getMouseY();
-						if(enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
-							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
-						} else if(enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
-							guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable(
-									SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
-							).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
-						} else if(enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
-							guiGraphics.renderComponentTooltip(mc.font, Screen.getTooltipFromItem(mc, underStack), x, y, underStack);
-						}
+					int x = event.getMouseX();
+					int y = event.getMouseY();
+					if(enableLavaInteraction && canTrashItem(underStack, held, under, mc.player)) {
+						guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable("quark.misc.trash_item").withStyle(ChatFormatting.RED)), x, y);
+					} else if(enableShulkerBoxInteraction && tryAddToShulkerBox(mc.player, underStack, held, under, true, true, true) != null) {
+						guiGraphics.renderComponentTooltip(mc.font, List.of(Component.translatable(
+								SimilarBlockTypeHandler.isShulkerBox(held) ? "quark.misc.merge_shulker_box" : "quark.misc.insert_shulker_box"
+						).withStyle(ChatFormatting.YELLOW)), x, y, underStack);
+					} else if(enableShulkerBoxInteraction && SimilarBlockTypeHandler.isShulkerBox(underStack)) {
+						guiGraphics.renderComponentTooltip(mc.font, Screen.getTooltipFromItem(mc, underStack), x, y, underStack);
 					}
 
 				}
@@ -442,19 +440,20 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 
 			if(mc.player != null && gui instanceof AbstractContainerScreen<?> containerGui) {
 				Slot under = containerGui.getSlotUnderMouse();
-				if(under != null) {
-					ItemStack underStack = under.getItem();
-					if(underStack.is(Items.BUNDLE)) {
-						CompoundTag tag = underStack.getTag();
-						if(tag != null) {
-							ListTag items = tag.getList("Items", Tag.TAG_COMPOUND);
-							if(items.size() > 1) {
-								var menu = containerGui.getMenu();
-								event.setCanceled(true);
-								if(scrollDelta < -0.1 || scrollDelta > 0.1) {
-									rotateBundle(underStack, scrollDelta);
-									QuarkClient.ZETA_CLIENT.sendToServer(new ScrollOnBundleMessage(menu.containerId, menu.getStateId(), under.index, scrollDelta));
-								}
+				if(under == null || under instanceof AccessorCustomCreativeSlot)
+					return;
+
+				ItemStack underStack = under.getItem();
+				if(underStack.is(Items.BUNDLE)) {
+					CompoundTag tag = underStack.getTag();
+					if(tag != null) {
+						ListTag items = tag.getList("Items", Tag.TAG_COMPOUND);
+						if(items.size() > 1) {
+							var menu = containerGui.getMenu();
+							event.setCanceled(true);
+							if(scrollDelta < -0.1 || scrollDelta > 0.1) {
+								rotateBundle(underStack, scrollDelta);
+								QuarkClient.ZETA_CLIENT.sendToServer(new ScrollOnBundleMessage(menu.containerId, menu.getStateId(), under.index, scrollDelta));
 							}
 						}
 					}
