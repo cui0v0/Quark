@@ -29,7 +29,7 @@ public class TerrablenderUndergroundBiomeHandler extends AbstractUndergroundBiom
 	@LoadEvent
 	public void commonSetup(ZCommonSetup event) {
 		event.enqueueWork(() -> {
-			if(undergroundBiomeDescs.isEmpty() || GeneralConfig.terrablenderAddRegion)
+			if(undergroundBiomeDescs.isEmpty() || !GeneralConfig.terrablenderAddRegion)
 				return; // No need to register a region.
 
 			Regions.register(new Region(Quark.asResource("biome_provider"), RegionType.OVERWORLD, GeneralConfig.terrablenderRegionWeight) {
