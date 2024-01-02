@@ -291,9 +291,6 @@ public class ChestSearchingModule extends ZetaModule {
 //			if(tab != null && matcher.test(tab.getDisplayName().getString().toLowerCase(Locale.ROOT), search))
 //				return true;
 
-			//		if(search.matches("favou?rites?") && FavoriteItems.isItemFavorited(stack))
-			//			return true;
-
 			ResourceLocation itemName = BuiltInRegistries.ITEM.getKey(item);
 			@Nullable
 			String modDisplayName = zeta.getModDisplayName(itemName.getNamespace());

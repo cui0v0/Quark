@@ -170,7 +170,7 @@ public class SectionScreen extends ZetaScreen {
 
 			guiGraphics.drawString(minecraft.font, name, left, top, 0xFFFFFF, true);
 			if(ext != null)
-				guiGraphics.drawString(minecraft.font, ext.getSubtitle(changes, def), left, top + 10, 0x999999, true); //TODO: getSubtitle
+				guiGraphics.drawString(minecraft.font, ext.getSubtitle(changes, def), left, top + 10, 0x999999, true);
 		}
 
 		@Override

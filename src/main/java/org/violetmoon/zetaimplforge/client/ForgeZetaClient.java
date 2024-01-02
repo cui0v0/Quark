@@ -106,8 +106,6 @@ public class ForgeZetaClient extends ZetaClient {
 		MinecraftForge.EVENT_BUS.addListener(this::renderBlockHighlight);
 		MinecraftForge.EVENT_BUS.addListener(this::gatherTooltipComponents);
 
-		MinecraftForge.EVENT_BUS.addListener(this::customizeF3);
-
 		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenForeground);
 		MinecraftForge.EVENT_BUS.addListener(this::renderContainerScreenBackground);
 
@@ -235,10 +233,6 @@ public class ForgeZetaClient extends ZetaClient {
 
 	public void gatherTooltipComponents(RenderTooltipEvent.GatherComponents e) {
 		playBus.fire(new ForgeZGatherTooltipComponents(e), ZGatherTooltipComponents.class);
-	}
-
-	public void customizeF3(CustomizeGuiOverlayEvent.DebugText e) {
-		playBus.fire(new ForgeZCustomizeDebugText(e), ZCustomizeDebugText.class);
 	}
 
 	public void renderContainerScreenForeground(ContainerScreenEvent.Render.Foreground e) {

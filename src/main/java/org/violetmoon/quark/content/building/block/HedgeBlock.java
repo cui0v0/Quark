@@ -38,7 +38,7 @@ import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;
 
-// TODO ZETA: extend QuarkFenceBlock
+// TODO ZETA: extend ZetaFenceBlock
 public class HedgeBlock extends FenceBlock implements IZetaBlock, IZetaBlockColorProvider {
 
 	private static final VoxelShape WOOD_SHAPE = box(6F, 0F, 6F, 10F, 15F, 10F);

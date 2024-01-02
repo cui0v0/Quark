@@ -79,7 +79,8 @@ public class ForgottenHatItem extends ZetaArmorItem implements IZetaItem {
 			UUID uuid = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 			builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", 1, AttributeModifier.Operation.ADDITION));
 			builder.put(Attributes.LUCK, new AttributeModifier(uuid, "Armor luck modifier", 1, AttributeModifier.Operation.ADDITION));
-			//Todo: Check me ig
+
+			//TODO: Forge extension attributes (but these are on the way out, i guess)
 			builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(uuid, "Armor entity reach modifier", 2, AttributeModifier.Operation.ADDITION));
 			builder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(uuid, "Armor block reach modifier", 2, AttributeModifier.Operation.ADDITION));
 

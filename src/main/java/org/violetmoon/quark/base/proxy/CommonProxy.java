@@ -131,9 +131,6 @@ public class CommonProxy {
 			handleQuarkConfigChange();
 	}
 
-	//TODO: probably find a better spot for this? It's not *only* fired when the
-	// config file is externally changed, but also when it's changed through config GUI,
-	// which means we roundtrip through the on-disk representation for no good reason
 	public void handleQuarkConfigChange() {
 		Quark.ZETA.configManager.onReload();
 		Quark.ZETA.loadBus.fire(new ZConfigChanged());

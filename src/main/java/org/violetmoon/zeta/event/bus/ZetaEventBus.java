@@ -20,12 +20,11 @@ import org.violetmoon.zeta.Zeta;
 
 /**
  * A polymorphic event bus. Events can be fired under one of their supertypes, allowing a sort of API/impl split of events.
- */
-/*
- * TODO: No support for generic events (like forge's RegistryEvent<T>). It would be nice.
- *  - Hellish to reflect these apparently
- * TODO: No support for Consumer events (like forge's addListener).
- *  - I also think these are hard to reflect
+ *
+ * Due to implementation complexity, there is unfortunately no support for:
+ * - generic events (like Forge's RegistryEvent<T>)
+ * - registering an anonymous `Consumer` (like Forge's "addListener" method)
+ * Supported Java reflection APIs don't expose this information. Forge can only get at it with a library internally using sun.misc.Unsafe.
  */
 public class ZetaEventBus<E> {
 	private final Zeta z;
