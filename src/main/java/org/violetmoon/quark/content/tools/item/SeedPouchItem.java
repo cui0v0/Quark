@@ -2,6 +2,7 @@ package org.violetmoon.quark.content.tools.item;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,16 +28,21 @@ import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.api.ITrowelable;
 import org.violetmoon.quark.api.IUsageTickerOverride;
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.content.tools.module.SeedPouchModule;
 import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.module.IDisableable;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.ItemNBTHelper;
+import org.violetmoon.zeta.util.RegistryUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITrowelable {
+public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITrowelable, CreativeTabManager.AppendsUniquely {
 
 	public static final String TAG_STORED_ITEM = "storedItem";
 	public static final String TAG_COUNT = "itemCount";
@@ -290,31 +296,32 @@ public class SeedPouchItem extends ZetaItem implements IUsageTickerOverride, ITr
 		return res;
 	}
 
-	//TODO 1.20
-//	@Override
-//	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-//		super.fillItemCategory(group, items);
-//
-//		if(SeedPouchModule.showAllVariantsInCreative && isEnabled() && allowedIn(group)) {
-//			List<Item> tagItems;
-//
-//			try {
-//				tagItems = RegistryUtil.getTagValues(RegistryAccessUtil.getRegistryAccess(), SeedPouchModule.seedPouchHoldableTag);
-//			} catch(IllegalStateException e) { // Tag not bound yet
-//				return;
-//			}
-//
-//			for(Item i : tagItems) {
-//				if(!IDisableable.isEnabled(i))
-//					continue;
-//
-//				ItemStack stack = new ItemStack(this);
-//				setItemStack(stack, new ItemStack(i));
-//				setCount(stack, SeedPouchModule.maxItems);
-//				items.add(stack);
-//			}
-//		}
-//	}
+	@Override
+	public List<ItemStack> appendItemsToCreativeTab() {
+		if(!isEnabled())
+			return List.of();
+
+		List<ItemStack> list = new ArrayList<>();
+		list.add(new ItemStack(this));
+
+		if(SeedPouchModule.showAllVariantsInCreative) {
+			RegistryAccess access = Quark.proxy.hackilyGetCurrentClientLevelRegistryAccess();
+			if(access != null) {
+				for(Item seed : RegistryUtil.getTagValues(access, SeedPouchModule.seedPouchHoldableTag)) {
+					if(!IDisableable.isEnabled(seed))
+						continue;
+
+					ItemStack pouch = new ItemStack(this);
+					setItemStack(pouch, new ItemStack(seed));
+					setCount(pouch, SeedPouchModule.maxItems);
+					list.add(pouch);
+				}
+			}
+
+		}
+
+		return list;
+	}
 
 	@Override
 	public ItemStack getUsageTickerItem(ItemStack stack) {
