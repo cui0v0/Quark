@@ -141,7 +141,7 @@ public class Toretoise extends Animal {
 	@NotNull
 	@Override
 	public SoundEvent getEatingSound(@NotNull ItemStack itemStackIn) {
-		return null;
+		return eatCooldown == 0 ? QuarkSounds.ENTITY_TORETOISE_EAT : QuarkSounds.ENTITY_TORETOISE_EAT_SATIATED;
 	}
 
 	@Override
