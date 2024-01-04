@@ -17,26 +17,27 @@ import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 
 //fixme Fix crafter PITA atm and frankly not worth delaying a stable release over
-//@ZetaLoadModule(category = "automation")
+@ZetaLoadModule(category = "automation")
 public class CrafterModule extends ZetaModule {
-	
+
     public static Block block;
     public static MenuType<CrafterMenu> menuType;
     public static BlockEntityType<CrafterBlockEntity> blockEntityType;
 
     Block crafter;
-    
+
     @Config(description = "Setting this to true will change the Crafter to use Emi's original design instead of Mojang's.\n"
     		+ "Emi's design allows only one item per slot, instead of continuing to fill it round robin.\n"
     		+ "If this is enabled, Allow Items While Powered should also be set to false for the full design.")
     public static boolean useEmiLogic = false;
-    
+
     @Config(description =  "Set to false to allow items to be inserted into the Crafter even while it's powered.")
     public static boolean allowItemsWhilePowered = true;
-    
+
     @LoadEvent
     public final void register(ZRegister event) {
         crafter = block = new CrafterBlock("crafter", this,
