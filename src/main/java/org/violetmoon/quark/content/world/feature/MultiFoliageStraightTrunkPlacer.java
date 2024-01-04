@@ -28,7 +28,8 @@ public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 		this.maxBlobs = maxBlobs;
 	}
 
-	public static final Codec<MultiFoliageStraightTrunkPlacer> CODEC = RecordCodecBuilder.create(overengineered -> trunkPlacerParts(overengineered).and(
+	public static final Codec<MultiFoliageStraightTrunkPlacer> CODEC = RecordCodecBuilder.create(overengineered ->
+			trunkPlacerParts(overengineered).and(
 			overengineered.group(
 					Codec.INT.fieldOf("foliageDistance").forGetter(x -> x.foliageDistance),
 					Codec.INT.fieldOf("maxBlobs").forGetter(x -> x.maxBlobs)
@@ -44,7 +45,9 @@ public class MultiFoliageStraightTrunkPlacer extends TrunkPlacer {
 	}
 
 	@Override
-	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer, RandomSource random, int idk, BlockPos rootPos, TreeConfiguration cfg) {
+	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer,
+															RandomSource random, int idk,
+															BlockPos rootPos, TreeConfiguration cfg) {
 		setDirtAt(level, placer, random, rootPos.below(), cfg);
 
 		List<BlockPos> folliagePositions = new ArrayList<>();

@@ -124,9 +124,7 @@ public class RunAndPoofGoal<T extends Entity> extends Goal {
 	public void stop() {
 		this.closestLivingEntity = null;
 
-		Level world = entity.level();
-
-		if(world instanceof ServerLevel ws) {
+		if(entity.level() instanceof ServerLevel ws) {
 			Vec3 epos = entity.position();
 
 			ws.sendParticles(ParticleTypes.CLOUD, epos.x, epos.y, epos.z, 40, 0.5, 0.5, 0.5, 0.1);

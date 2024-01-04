@@ -16,9 +16,12 @@ import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
 import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
+import org.violetmoon.quark.content.automation.block.ChuteBlock;
 import org.violetmoon.quark.content.mobs.client.render.entity.StonelingRenderer;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
+import org.violetmoon.quark.content.world.module.AncientWoodModule;
+import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
@@ -71,6 +74,11 @@ public class StonelingsModule extends ZetaModule {
 		makeStonelingTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("make_stoneling");
 
 		EntitySpawnHandler.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
+		// Hardcoded AF yay
+		if(spawnConfig.isEnabled()) {
+			var GWConfig = new EntitySpawnConfig(200, 1, 4, CompoundBiomeConfig.fromBiomeReslocs(false, GlimmeringWealdModule.BIOME_NAME.toString()));
+			EntitySpawnHandler.track(stonelingType, MobCategory.MONSTER,  GWConfig, false);
+		}
 		EntitySpawnHandler.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);
 	}
 

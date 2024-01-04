@@ -28,6 +28,7 @@ import java.util.List;
 
 public class GlowShroomsFeature extends Feature<NoneFeatureConfiguration> {
 
+	//TODO: this could use some configs
 	public GlowShroomsFeature() {
 		super(NoneFeatureConfiguration.CODEC);
 	}

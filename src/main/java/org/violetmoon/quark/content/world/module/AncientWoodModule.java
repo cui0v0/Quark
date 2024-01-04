@@ -30,6 +30,7 @@ import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.content.world.feature.AncientTreeTopperDecorator;
 import org.violetmoon.quark.content.world.feature.MultiFoliageStraightTrunkPlacer;
+import org.violetmoon.quark.content.world.feature.OffsetFancyFoliagePlacer;
 import org.violetmoon.quark.content.world.item.AncientFruitItem;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
@@ -112,18 +113,11 @@ public class AncientWoodModule extends ZetaModule {
 
 		// tree //
 
-		//i don't think these custom tree placer bits *strictly* need to be registered in json, but it doesn't hurt
-		event.getRegistry().registerDynamic(MultiFoliageStraightTrunkPlacer.TYPE, "multi_foliage_straight_trunk_placer", Registries.TRUNK_PLACER_TYPE);
-		event.getRegistry().registerDynamic(AncientTreeTopperDecorator.TYPE, "ancient_tree_topper_decorator", Registries.TREE_DECORATOR_TYPE);
+		event.getRegistry().register(MultiFoliageStraightTrunkPlacer.TYPE, "multi_foliage_straight_trunk_placer", Registries.TRUNK_PLACER_TYPE);
+		event.getRegistry().register(AncientTreeTopperDecorator.TYPE, "ancient_tree_topper_decorator", Registries.TREE_DECORATOR_TYPE);
+		//TODO: this can lineky be replaced with Fnacy Foliage Placer by inserting the offset somewhere in the trunk placer
+		event.getRegistry().register(OffsetFancyFoliagePlacer.TYPE, "offset_fancy_foliage_placer", Registries.FOLIAGE_PLACER_TYPE);
 
-		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
-				BlockStateProvider.simple(woodSet.log),
-				new MultiFoliageStraightTrunkPlacer(17, 4, 6, 5, 3),
-				BlockStateProvider.simple(ancient_leaves),
-				new FancyFoliagePlacer(UniformInt.of(2, 4), ConstantInt.of(-3), 2),
-				new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
-		).decorators(List.of(new AncientTreeTopperDecorator())).ignoreVines().build();
-		event.getRegistry().registerDynamic(new ConfiguredFeature<>((TreeFeature) Feature.TREE, treeCfg), configuredFeatureKey, Registries.CONFIGURED_FEATURE);
 	}
 
 	@PlayEvent

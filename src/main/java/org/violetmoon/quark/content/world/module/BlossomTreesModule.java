@@ -100,19 +100,6 @@ public class BlossomTreesModule extends ZetaModule {
 		tree.quarkConfig = quarkConfig;
 		tree.leaves = new BlossomLeavesBlock(regname, this, color);
 
-		TreeConfiguration treeCfg = new TreeConfiguration.TreeConfigurationBuilder(
-				BlockStateProvider.simple(woodSet.log),
-				new FancyTrunkPlacer(8, 10, 10),
-				BlockStateProvider.simple(tree.leaves),
-				new FancyFoliagePlacer(ConstantInt.of(3), ConstantInt.of(1), 4),
-				new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
-		).ignoreVines().build();
-
-		// NOTE: treeFeature is intentionally not stored in a field.
-		// If it was accesible from Quark, overriding it with a datapack (for the 7 people who care about doing that) won't work.
-		ConfiguredFeature<TreeConfiguration, TreeFeature> treeFeature = new ConfiguredFeature<>((TreeFeature) Feature.TREE, treeCfg);
-		event.getRegistry().registerDynamic(treeFeature, configuredFeatureKey, Registries.CONFIGURED_FEATURE);
-
 		tree.configuredFeatureKey = configuredFeatureKey;
 		tree.grower = new PassthruTreeGrower(configuredFeatureKey);
 		tree.sapling = new ZetaSaplingBlock(regname, this, tree.grower);

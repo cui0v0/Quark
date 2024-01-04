@@ -3,6 +3,11 @@ package org.violetmoon.zetaimplforge.registry;
 import java.util.Collection;
 import java.util.function.Supplier;
 
+import net.minecraftforge.event.entity.item.ItemEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.GenericEvent;
+import noobanidus.mods.lootr.setup.CommonSetup;
+import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.registry.ZetaRegistry;
 import org.violetmoon.zetaimplforge.ForgeZeta;
 
@@ -17,26 +22,22 @@ public class ForgeZetaRegistry extends ZetaRegistry {
 	public ForgeZetaRegistry(ForgeZeta z) {
 		super(z);
 
-		FMLJavaModLoadingContext.get().getModEventBus().addListener((RegisterEvent e) ->
-			register(e.getRegistryKey(), e.getForgeRegistry()));
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterEvent);
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> void register(ResourceKey<? extends Registry<?>> key, IForgeRegistry<T> registry) {
+	private void onRegisterEvent(RegisterEvent event) {
+		var key = event.getRegistryKey();
 		ResourceLocation registryRes = key.location();
+		ResourceKey<Registry<Object>> keyGeneric = ResourceKey.createRegistryKey(registryRes);
 
 		Collection<Supplier<Object>> ourEntries = getDefers(registryRes);
 		if(ourEntries != null && !ourEntries.isEmpty()) {
-			if(registry == null) {
-				z.log.error(registryRes + " does not have a forge registry");
-				return;
-			}
 
 			for(Supplier<Object> supplier : ourEntries) {
 				Object entry = supplier.get();
 				ResourceLocation name = internalNames.get(entry);
 				z.log.debug("Registering to " + registryRes + " - " + name);
-				registry.register(name, (T) entry);
+				event.register(keyGeneric, e-> e.register(name, entry));
 			}
 
 			clearDeferCache(registryRes);

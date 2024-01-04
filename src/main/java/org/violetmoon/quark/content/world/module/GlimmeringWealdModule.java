@@ -64,6 +64,9 @@ public class GlimmeringWealdModule extends ZetaModule {
 	public static final ResourceLocation BIOME_NAME = new ResourceLocation(Quark.MOD_ID, "glimmering_weald");
 	public static final ResourceKey<Biome> BIOME_KEY = ResourceKey.create(Registries.BIOME, BIOME_NAME);
 
+	public static GlowShroomsFeature glow_shrooms_feature;
+	public static GlowExtrasFeature glow_shrooms_extra_feature;
+
 	public static Holder<PlacedFeature> ore_lapis_extra;
 	public static Holder<PlacedFeature> placed_glow_shrooms;
 	public static Holder<PlacedFeature> placed_glow_extras;
@@ -103,49 +106,18 @@ public class GlimmeringWealdModule extends ZetaModule {
 		glow_lichen_growth = new GlowLichenGrowthBlock(this);
 		CreativeTabManager.endDaisyChain();
 
+
 		event.getVariantRegistry().addFlowerPot(glow_lichen_growth, "glow_lichen_growth", prop -> prop.lightLevel((state) -> 8));
 		event.getVariantRegistry().addFlowerPot(glow_shroom, "glow_shroom", prop -> prop.lightLevel((state) -> 10));
 
-		// Features, Configured Features, Placed Features //
 
-		placed_glow_shrooms = place(event, "glow_shrooms", new GlowShroomsFeature(), GlowShroomsFeature.placed());
-		placed_glow_extras = place(event, "glow_extras", new GlowExtrasFeature(), GlowExtrasFeature.placed());
-		ore_lapis_extra = event.getRegistry().registerDynamicF(lookup -> {
-			Holder<ConfiguredFeature<?, ?>> lapisConfigured = lookup.lookup(Registries.CONFIGURED_FEATURE)
-					.orElseThrow() //it better exist
-					.getter()
-					.getOrThrow(OreFeatures.ORE_LAPIS); //it better exist
-			return new PlacedFeature(lapisConfigured, OrePlacements.commonOrePlacement(12, HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
-		}, Quark.asResourceKey(Registries.PLACED_FEATURE, "ore_lapis_glimmering_weald"), Registries.PLACED_FEATURE);
+		// Feature
+		glow_shrooms_feature= new GlowShroomsFeature();
+		event.getRegistry().register(glow_shrooms_feature, "glow_shrooms", Registries.FEATURE);
+		glow_shrooms_extra_feature = new GlowExtrasFeature();
+		event.getRegistry().register(glow_shrooms_extra_feature, "glow_shrooms_extras", Registries.FEATURE);
 
-		// Biomes //
 
-		event.getRegistry().registerDynamicF(lookup -> {
-			HolderGetter<PlacedFeature> placedFeatures = lookup.lookup(Registries.PLACED_FEATURE).orElseThrow().getter();
-			HolderGetter<ConfiguredWorldCarver<?>> configuredCarvers = lookup.lookup(Registries.CONFIGURED_CARVER).orElseThrow().getter();
-
-			MobSpawnSettings.Builder mobs = new MobSpawnSettings.Builder();
-			BiomeDefaultFeatures.commonSpawns(mobs);
-			if(Quark.ZETA.modules.isEnabled(StonelingsModule.class))
-				mobs.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(StonelingsModule.stonelingType, 200, 1, 4));
-			mobs.addSpawn(MobCategory.UNDERGROUND_WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.GLOW_SQUID, 20, 4, 6));
-
-			BiomeGenerationSettings.Builder settings = new BiomeGenerationSettings.Builder(placedFeatures, configuredCarvers);
-			OverworldBiomes.globalOverworldGeneration(settings);
-			BiomeDefaultFeatures.addPlainGrass(settings);
-			BiomeDefaultFeatures.addDefaultOres(settings, true);
-			BiomeDefaultFeatures.addDefaultSoftDisks(settings);
-			BiomeDefaultFeatures.addPlainVegetation(settings);
-			BiomeDefaultFeatures.addDefaultMushrooms(settings);
-			BiomeDefaultFeatures.addDefaultExtraVegetation(settings);
-
-			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_shrooms);
-			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, placed_glow_extras);
-			settings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ore_lapis_extra);
-
-			Music music = Musics.createGameMusic(Holder.direct(QuarkSounds.MUSIC_GLIMMERING_WEALD));
-			return OverworldBiomes.biome(true, 0.8F, 0.4F, mobs, settings, music);
-		}, BIOME_KEY, Registries.BIOME);
 	}
 
 	@LoadEvent
@@ -178,15 +150,4 @@ public class GlimmeringWealdModule extends ZetaModule {
 			ComposterBlock.COMPOSTABLES.put(glow_lichen_growth.asItem(), 0.5F);
 		});
 	}
-
-	@SuppressWarnings("unchecked")
-	private static Holder<PlacedFeature> place(ZRegister event, String featureName, Feature<NoneFeatureConfiguration> feature, List<PlacementModifier> placer) {
-		Holder<Feature<?>> featureHolder = event.getRegistry().registerDynamic(feature, featureName, Registries.FEATURE);
-
-		ConfiguredFeature<?, ?> cfg = new ConfiguredFeature<>((Feature<NoneFeatureConfiguration>) featureHolder.get(), NoneFeatureConfiguration.NONE);
-		Holder<ConfiguredFeature<?, ?>> configuredFeatureHolder = event.getRegistry().registerDynamic(cfg, featureName, Registries.CONFIGURED_FEATURE);
-
-		return event.getRegistry().registerDynamic(new PlacedFeature(configuredFeatureHolder, placer), featureName, Registries.PLACED_FEATURE);
-	}
-
 }

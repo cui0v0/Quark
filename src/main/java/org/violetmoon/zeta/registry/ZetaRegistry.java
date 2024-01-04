@@ -200,6 +200,7 @@ public abstract class ZetaRegistry {
 	/**
 	 * Register something to a worldgen registry that can be immediately constructed.
 	 */
+	@Deprecated(forRemoval = true)
 	public <T> Holder.Direct<T> registerDynamic(T obj, ResourceKey<T> id, ResourceKey<? extends Registry<T>> registry) {
 		RegisterDynamicUtil.signup(z);
 		dynamicDefers.computeIfAbsent(erase(registry), __ -> new ArrayList<>()).add(new DynamicEntry<>(id, __ -> obj, null));
@@ -207,6 +208,7 @@ public abstract class ZetaRegistry {
 		return new Holder.Direct<>(obj);
 	}
 
+	@Deprecated(forRemoval = true)
 	public <T> Holder.Direct<T> registerDynamic(T obj, ResourceLocation id, ResourceKey<? extends Registry<T>> registry) {
 		return registerDynamic(obj, ResourceKey.create(registry, id), registry);
 	}

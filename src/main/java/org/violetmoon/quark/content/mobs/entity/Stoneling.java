@@ -58,6 +58,7 @@ import org.violetmoon.quark.content.mobs.ai.FavorBlockGoal;
 import org.violetmoon.quark.content.mobs.ai.RunAndPoofGoal;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
 import org.violetmoon.quark.content.tools.entity.rang.Pickarang;
+import org.violetmoon.quark.content.world.feature.GlowShroomsFeature;
 import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 
 import java.util.List;
