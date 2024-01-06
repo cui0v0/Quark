@@ -115,7 +115,7 @@ public class AncientWoodModule extends ZetaModule {
 
 		event.getRegistry().register(MultiFoliageStraightTrunkPlacer.TYPE, "multi_foliage_straight_trunk_placer", Registries.TRUNK_PLACER_TYPE);
 		event.getRegistry().register(AncientTreeTopperDecorator.TYPE, "ancient_tree_topper_decorator", Registries.TREE_DECORATOR_TYPE);
-		//TODO: this can lineky be replaced with Fnacy Foliage Placer by inserting the offset somewhere in the trunk placer
+		//TODO: this can likely be replaced with Fnacy Foliage Placer by inserting the offset somewhere in the trunk placer
 		event.getRegistry().register(OffsetFancyFoliagePlacer.TYPE, "offset_fancy_foliage_placer", Registries.FOLIAGE_PLACER_TYPE);
 
 	}
