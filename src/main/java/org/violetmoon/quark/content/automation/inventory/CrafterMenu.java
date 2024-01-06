@@ -33,52 +33,49 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.violetmoon.quark.content.automation.block.be.CrafterBlockEntity;
 import org.violetmoon.quark.content.automation.module.CrafterModule;
 
+import javax.annotation.Nonnull;
+import java.util.function.Function;
+
 public class CrafterMenu extends AbstractContainerMenu {
-	public Container crafter;
-	public ContainerData delegate;
+	public final Container crafter;
+	public final ContainerData delegate;
+
+	private final ContainerLevelAccess access;
 
 	public CrafterMenu(int syncId, Inventory player) {
+		this(syncId, player, (it) -> new TransientCraftingContainer(it, 3, 3), new ResultContainer(), new SimpleContainerData(1), ContainerLevelAccess.NULL);
+	}
+
+	public CrafterMenu(int syncId, Inventory player, Function<CrafterMenu, CraftingContainer> crafterProvider, ResultContainer result, ContainerData delegate, ContainerLevelAccess access) {
 		super(CrafterModule.menuType, syncId);
-		init(player, new TransientCraftingContainer(this, 3, 3), new ResultContainer(), new SimpleContainerData(1));
-	}
 
-	public CrafterMenu(int syncId, Inventory player, CraftingContainer crafter, ResultContainer result, ContainerData delegate) {
-		super(CrafterModule.menuType, syncId);
-		init(player, crafter, result, delegate);
-	}
+		CraftingContainer crafter = crafterProvider.apply(this);
 
-	public static CrafterMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-		return new CrafterMenu(windowId, playerInventory);
-	}
+		this.access = access;
 
-	@Override
-	public boolean clickMenuButton(Player player, int id) {
-		if (id >= 0 && id < 9 && crafter instanceof CrafterBlockEntity cbe) {
-			cbe.blocked[id] = !cbe.blocked[id];
-			cbe.update();
-			cbe.setChanged();
-			return true;
-		}
-		return super.clickMenuButton(player, id);
-	}
-
-	public void init(Inventory player, CraftingContainer crafter, ResultContainer result, ContainerData delegate) {
 		checkContainerSize(crafter, 9);
 		this.crafter = crafter;
 		crafter.startOpen(player.player);
 		this.delegate = delegate;
 		this.addDataSlots(delegate);
-  
-		this.addSlot(new ResultSlot(player.player, crafter, result, 0, 26 + 18 * 6, 17 + 1 * 18));
+
+		this.addSlot(new ResultSlot(player.player, crafter, result, 0, 26 + 18 * 6, 17 + 18));
 
 		int i;
 		int j;
 		for(i = 0; i < 3; ++i) {
 			for(j = 0; j < 3; ++j) {
-				this.addSlot(new Slot(crafter, j + i * 3, 26 + j * 18, 17 + i * 18));
+				int index = j + i * 3;
+				this.addSlot(new Slot(crafter, index, 26 + j * 18, 17 + i * 18) {
+					@Override
+					public boolean mayPlace(@Nonnull ItemStack stack) {
+						return (delegate.get(0) & (1 << index)) == 0;
+					}
+				});
 			}
 		}
 
@@ -91,7 +88,42 @@ public class CrafterMenu extends AbstractContainerMenu {
 		for(i = 0; i < 9; ++i) {
 			this.addSlot(new Slot(player, i, 8 + i * 18, 142));
 		}
-  
+	}
+
+	public static CrafterMenu fromNetwork(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+		return new CrafterMenu(windowId, playerInventory);
+	}
+
+	@Override
+	public boolean clickMenuButton(Player player, int id) {
+		if (id >= 0 && id < 9) {
+			access.execute((level, pos) -> {
+				if (!level.isClientSide) {
+					BlockEntity be = level.getBlockEntity(pos);
+					if (be instanceof CrafterBlockEntity cbe) {
+						cbe.blocked[id] = !cbe.blocked[id];
+						cbe.update();
+						cbe.setChanged();
+					}
+				}
+			});
+			return true;
+		}
+
+		return super.clickMenuButton(player, id);
+	}
+
+	@Override
+	public void slotsChanged(Container container) {
+		super.slotsChanged(container);
+		access.execute((level, pos) -> {
+			if (!level.isClientSide) {
+				BlockEntity be = level.getBlockEntity(pos);
+				if (be instanceof CrafterBlockEntity cbe) {
+					cbe.update();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -116,7 +148,7 @@ public class CrafterMenu extends AbstractContainerMenu {
 					stack.getItem().onCraft(stack, world, player);
 				});*/
 			} else if (index < 10) {
-				if (this.moveItemStackTo(stack, 10, 46, false)) {
+				if (!this.moveItemStackTo(stack, 10, 46, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else {
