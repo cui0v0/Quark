@@ -51,6 +51,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            property "mixin.debug.export", "true"
             mods {
                 quark {
                     source sourceSets.main
@@ -60,6 +61,7 @@ minecraft {
 
         server {
             workingDirectory project.file('runServer')
+            property "mixin.debug.export", "true"
             mods {
                 quark {
                     source sourceSets.main
