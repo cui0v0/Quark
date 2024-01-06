@@ -15,6 +15,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -23,6 +26,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
+
+import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -39,9 +44,11 @@ import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
 import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
 import org.violetmoon.zeta.item.ZetaItem;
 import org.violetmoon.zeta.item.ZetaMobBucketItem;
 import org.violetmoon.zeta.module.ZetaLoadModule;
@@ -72,6 +79,9 @@ public class CrabsModule extends ZetaModule {
 				"Keep this on when brewing is disabled if your pack adds an alternative source for the effect."
 	)
 	public static boolean resilienceRequiredForAllEffects = true;
+	
+	@Config
+	public static boolean addCrabLegToFishermanTrades = true;
 
 	@Hint(key = "crab_info")
 	Item crab_leg;
@@ -126,6 +136,14 @@ public class CrabsModule extends ZetaModule {
 				.setCondition(() -> GeneralConfig.enableAdvancementModification));
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg))
 				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+	}
+	
+	@PlayEvent
+	public void onTradesLoaded(ZVillagerTrades event) {
+		if(event.getType() == VillagerProfession.FISHERMAN && addCrabLegToFishermanTrades) {
+			List<ItemListing> journeymanListing = event.getTrades().get(4);
+			journeymanListing.add(new VillagerTrades.EmeraldForItems(crab_leg, 4, 12, 30));
+		}
 	}
 
 	@LoadEvent

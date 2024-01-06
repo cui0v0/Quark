@@ -18,7 +18,6 @@ public class SocialButton extends Button {
 
 	public static final ResourceLocation SOCIAL_ICONS = new ResourceLocation(Quark.MOD_ID, "textures/gui/social_icons.png");
 
-	private final Component text;
 	private final int textColor;
 	private final int socialId;
 
@@ -26,7 +25,6 @@ public class SocialButton extends Button {
 		super(new Button.Builder(Component.literal(""), onClick).size(20, 20).pos(x, y));
 		this.textColor = textColor;
 		this.socialId = socialId;
-		this.text = text;
 
 		setTooltip(Tooltip.create(text));
 	}
@@ -48,9 +46,6 @@ public class SocialButton extends Button {
 		int v = isHovered ? 20 : 0;
 
 		guiGraphics.blit(SOCIAL_ICONS, getX(), getY(), u, v, 20, 20, 128, 64);
-
-		//if(isHovered)
-		//	guiGraphics.renderTooltip(Minecraft.getInstance().font, text, mouseX, mouseY);
 	}
 
 	@Override

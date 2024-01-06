@@ -1,7 +1,24 @@
 package org.violetmoon.quark.content.tweaks.module;
 
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.Config;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
+import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -31,25 +48,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.inputtable.RGBColorConfig;
-import org.violetmoon.zeta.client.event.play.ZClientTick;
-import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.bus.ZPhase;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
-import java.util.List;
-
 @ZetaLoadModule(category = "tweaks")
 public class ReacharoundPlacingModule extends ZetaModule {
+
+	public static final ResourceLocation OVERLAY_HORIZONTAL = new ResourceLocation(Quark.MOD_ID, "textures/gui/reacharound_overlay_horizontal.png");
+	public static final ResourceLocation OVERLAY_VERTICAL = new ResourceLocation(Quark.MOD_ID, "textures/gui/reacharound_overlay_vertical.png");
 
 	@Config
 	@Config.Min(0)
@@ -60,12 +63,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	public List<String> whitelist = Lists.newArrayList();
 	@Config
 	public List<String> blacklist = Lists.newArrayList();
-	@Config
-	public String display = "[  ]";
-	@Config
-	public String displayHorizontal = "<  >";
-	@Config
-	public RGBColorConfig color = RGBColorConfig.forColor(1, 1, 1);
+
 
 	protected ReacharoundTarget currentTarget;
 	protected int ticksDisplayed;
@@ -199,7 +197,7 @@ public class ReacharoundPlacingModule extends ZetaModule {
 	public static class Client extends ReacharoundPlacingModule {
 
 		@PlayEvent
-		public void onRender(ZRenderGuiOverlay.Crosshair event) {
+		public void onRender(ZRenderGuiOverlay.Crosshair.Post event) {
 			GuiGraphics guiGraphics = event.getGuiGraphics();
 
 			Minecraft mc = Minecraft.getInstance();
@@ -207,23 +205,34 @@ public class ReacharoundPlacingModule extends ZetaModule {
 
 			if(mc.options.hideGui)
 				return;
+			
+			HitResult result = mc.hitResult;
+			if(result instanceof BlockHitResult bhr) {
+				BlockPos hitPos = bhr.getBlockPos();
+				BlockState stateAt = player.level().getBlockState(hitPos);
+				if(!stateAt.isAir())
+					return;
+			}
+				
 
 			if(player != null && currentTarget != null) {
 				Window res = event.getWindow();
 				PoseStack matrix = event.getGuiGraphics().pose();
-				String text = (currentTarget.dir.getAxis() == Axis.Y ? display : displayHorizontal);
+
+				boolean vertical = (currentTarget.dir.getAxis() == Axis.Y);
+				ResourceLocation texture = (vertical ? OVERLAY_VERTICAL : OVERLAY_HORIZONTAL);
+
+				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
 				matrix.pushPose();
-				matrix.translate(res.getGuiScaledWidth() / 2F, res.getGuiScaledHeight() / 2f - 4, 0);
+				int x = res.getGuiScaledWidth() / 2 - 7;
+				int y = res.getGuiScaledHeight() / 2 - 7;
+				guiGraphics.blit(texture, x, y, 0, 0, 16, 16, 16, 16);
 
-				float scale = Math.min(5, ticksDisplayed + event.getPartialTick()) / 5F;
-				scale *= scale;
-				int opacity = ((int) (255 * scale)) << 24;
-
-				matrix.scale(scale, 1F, 1F);
-				matrix.translate(-mc.font.width(text) / 2f, 0, 0);
-				guiGraphics.drawString(mc.font, text, 0, 0, color.getColor() | opacity, false);
 				matrix.popPose();
+
+				RenderSystem.defaultBlendFunc();
+
 			}
 		}
 

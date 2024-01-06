@@ -52,9 +52,9 @@ public class CorundumModule extends ZetaModule {
 		.style(new CorundumStyle())
 		.biomeDeny(BiomeTags.IS_OCEAN)
 		.rarity(400)
-		.horizontalSize(26)
+		.horizontalSize(36)
 		.verticalSize(14)
-		.horizontalVariation(14)
+		.horizontalVariation(8)
 		.verticalVariation(6)
 		.build();
 
