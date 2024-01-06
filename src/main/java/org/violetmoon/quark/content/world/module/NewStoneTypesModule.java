@@ -1,22 +1,10 @@
 package org.violetmoon.quark.content.world.module;
 
-import com.google.common.collect.Maps;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.function.BooleanSupplier;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.config.Config;
@@ -34,18 +22,36 @@ import org.violetmoon.zeta.block.ZetaBlockWrapper;
 import org.violetmoon.zeta.client.event.load.ZAddBlockColorHandlers;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
 import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.Hint;
 
-import java.util.ArrayDeque;
-import java.util.Map;
-import java.util.Queue;
-import java.util.function.BooleanSupplier;
+import com.google.common.collect.Maps;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 @ZetaLoadModule(category = "world")
 public class NewStoneTypesModule extends ZetaModule {
@@ -78,6 +84,9 @@ public class NewStoneTypesModule extends ZetaModule {
 	public static Block shaleBlock;
 	@Hint("myalite")
 	public static Block myaliteBlock;
+	
+	@Config
+	public static boolean addNewStonesToMasonTrades = true;
 
 	public static Map<Block, Block> polishedBlocks = Maps.newHashMap();
 
@@ -139,6 +148,24 @@ public class NewStoneTypesModule extends ZetaModule {
 		}
 
 		return isVanilla ? polished : normal;
+	}
+	
+	@PlayEvent
+	public void onTradesLoaded(ZVillagerTrades event) {
+		if(event.getType() == VillagerProfession.MASON && addNewStonesToMasonTrades) {
+			if(enableLimestone)
+				addStoneTrade(event, limestoneBlock);
+			if(enableJasper)
+				addStoneTrade(event, jasperBlock);
+			if(enableShale)
+				addStoneTrade(event, shaleBlock);
+		}
+	}
+	
+	private void addStoneTrade(ZVillagerTrades event, Block block) {
+		List<ItemListing> journeymanListing = event.getTrades().get(2);
+		journeymanListing.add(new VillagerTrades.ItemsForEmeralds(block, 1, 4, 16, 10));
+		journeymanListing.add(new VillagerTrades.EmeraldForItems(polishedBlocks.get(block), 16, 16, 20));
 	}
 
 	@LoadEvent
