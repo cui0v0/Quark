@@ -163,7 +163,7 @@ public class NewStoneTypesModule extends ZetaModule {
 	}
 	
 	private void addStoneTrade(ZVillagerTrades event, Block block) {
-		List<ItemListing> journeymanListing = event.getTrades().get(2);
+		List<ItemListing> journeymanListing = event.getTrades().get(3);
 		journeymanListing.add(new VillagerTrades.ItemsForEmeralds(block, 1, 4, 16, 10));
 		journeymanListing.add(new VillagerTrades.EmeraldForItems(polishedBlocks.get(block), 16, 16, 20));
 	}
