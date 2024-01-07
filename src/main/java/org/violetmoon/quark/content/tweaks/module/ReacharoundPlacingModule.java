@@ -1,26 +1,10 @@
 package org.violetmoon.quark.content.tweaks.module;
 
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.client.event.play.ZClientTick;
-import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
-import org.violetmoon.zeta.config.Config;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.bus.ZPhase;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -47,6 +31,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.tuple.Pair;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.zeta.client.event.play.ZClientTick;
+import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.bus.ZPhase;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.play.entity.player.ZRightClickItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import java.util.List;
 
 @ZetaLoadModule(category = "tweaks")
 public class ReacharoundPlacingModule extends ZetaModule {
@@ -225,8 +223,8 @@ public class ReacharoundPlacingModule extends ZetaModule {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
 				matrix.pushPose();
-				int x = res.getGuiScaledWidth() / 2 - 7;
-				int y = res.getGuiScaledHeight() / 2 - 7;
+				int x = (res.getGuiScaledWidth() - 15) / 2;
+				int y = (res.getGuiScaledHeight() - 15) / 2;
 				guiGraphics.blit(texture, x, y, 0, 0, 16, 16, 16, 16);
 
 				matrix.popPose();
