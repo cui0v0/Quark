@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
@@ -101,7 +101,7 @@ public class WorldGenHandler {
 				Generator gen = wgen.generator();
 
 				if(wgen.module().enabled && gen.canGenerate(region)) {
-					if(GeneralConfig.enableWorldgenWatchdog) {
+					if(QuarkGeneralConfig.enableWorldgenWatchdog) {
 						final int finalStageNum = stageNum;
 						stageNum = watchdogRun(gen, () -> gen.generate(finalStageNum, seed, stage, region, generator, random, pos), 1, TimeUnit.MINUTES);
 					} else

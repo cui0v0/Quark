@@ -1,22 +1,9 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import com.google.common.collect.ImmutableSet;
-
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
-
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ForgottenRenderer;
 import org.violetmoon.quark.content.mobs.entity.Forgotten;
@@ -34,6 +21,23 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 import org.violetmoon.zeta.util.Hint;
+
+import com.google.common.collect.ImmutableSet;
+
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 
 @ZetaLoadModule(category = "mobs")
 public class ForgottenModule extends ZetaModule {
@@ -63,7 +67,7 @@ public class ForgottenModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, BooleanSuppliers.TRUE);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

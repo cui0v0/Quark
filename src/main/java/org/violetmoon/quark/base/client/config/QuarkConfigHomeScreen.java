@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.client.config.screen.ZetaConfigHomeScreen;
 
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class QuarkConfigHomeScreen extends ZetaConfigHomeScreen {
 			float spin = partialTicks * 2;
 			float blur = 0.85F;
 
-			if(time < 20F && !GeneralConfig.disableQMenuEffects) {
+			if(time < 20F && !QuarkGeneralConfig.disableQMenuEffects) {
 				spin += (20F - time);
 				blur = (time / 20F) * 0.75F + 0.1F;
 			}

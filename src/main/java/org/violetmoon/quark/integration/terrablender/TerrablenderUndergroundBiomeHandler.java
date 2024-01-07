@@ -9,7 +9,7 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 
@@ -29,10 +29,10 @@ public class TerrablenderUndergroundBiomeHandler extends AbstractUndergroundBiom
 	@LoadEvent
 	public void commonSetup(ZCommonSetup event) {
 		event.enqueueWork(() -> {
-			if(undergroundBiomeDescs.isEmpty() || !GeneralConfig.terrablenderAddRegion)
+			if(undergroundBiomeDescs.isEmpty() || !QuarkGeneralConfig.terrablenderAddRegion)
 				return; // No need to register a region.
 
-			Regions.register(new Region(Quark.asResource("biome_provider"), RegionType.OVERWORLD, GeneralConfig.terrablenderRegionWeight) {
+			Regions.register(new Region(Quark.asResource("biome_provider"), RegionType.OVERWORLD, QuarkGeneralConfig.terrablenderRegionWeight) {
 				@Override
 				public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
 					// Quark's region is the same as vanilla's, but with underground biomes added.
@@ -45,7 +45,7 @@ public class TerrablenderUndergroundBiomeHandler extends AbstractUndergroundBiom
 					// -> it gets hooked by Quark's OverworldBiomeBuilderMixin
 					// -> it calls quark AbstractUndergroundBiomeHandler.modifyVanillaOverworldPreset.
 					// Therefore, if terrablenderModifyVanillaAnyway is enabled, we already called addUndergroundBiomesTo.
-					if(!GeneralConfig.terrablenderModifyVanillaAnyway)
+					if(!QuarkGeneralConfig.terrablenderModifyVanillaAnyway)
 						addUndergroundBiomesTo(consumer);
 				}
 			});
@@ -54,7 +54,7 @@ public class TerrablenderUndergroundBiomeHandler extends AbstractUndergroundBiom
 
 	@Override
 	public void modifyVanillaOverworldPreset(OverworldBiomeBuilder builder, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer) {
-		if(GeneralConfig.terrablenderModifyVanillaAnyway)
+		if(QuarkGeneralConfig.terrablenderModifyVanillaAnyway)
 			addUndergroundBiomesTo(consumer);
 	}
 

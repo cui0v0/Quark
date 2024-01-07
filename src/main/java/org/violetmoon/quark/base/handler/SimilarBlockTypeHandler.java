@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
+
 /**
  * @author WireSegal
  *         Created at 11:01 AM on 9/1/19.
@@ -35,9 +37,9 @@ public class SimilarBlockTypeHandler {
 
 		String locStr = loc.toString();
 
-		if(GeneralConfig.shulkerBoxes.contains(locStr))
+		if(QuarkGeneralConfig.shulkerBoxes.contains(locStr))
 			return true;
 
-		return GeneralConfig.interpretShulkerBoxLikeBlocks && locStr.contains("shulker_box");
+		return QuarkGeneralConfig.interpretShulkerBoxLikeBlocks && locStr.contains("shulker_box");
 	}
 }

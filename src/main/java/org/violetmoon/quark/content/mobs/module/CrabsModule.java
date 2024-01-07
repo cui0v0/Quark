@@ -1,5 +1,34 @@
 package org.violetmoon.quark.content.mobs.module;
 
+import java.util.List;
+
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
+import org.violetmoon.quark.base.handler.QuarkSounds;
+import org.violetmoon.quark.base.util.QuarkEffect;
+import org.violetmoon.quark.base.world.EntitySpawnHandler;
+import org.violetmoon.quark.content.mobs.client.render.entity.CrabRenderer;
+import org.violetmoon.quark.content.mobs.entity.Crab;
+import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
+import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
+import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
+import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.CompoundBiomeConfig;
+import org.violetmoon.zeta.config.type.EntitySpawnConfig;
+import org.violetmoon.zeta.event.bus.LoadEvent;
+import org.violetmoon.zeta.event.bus.PlayEvent;
+import org.violetmoon.zeta.event.load.ZCommonSetup;
+import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
+import org.violetmoon.zeta.event.load.ZRegister;
+import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
+import org.violetmoon.zeta.item.ZetaItem;
+import org.violetmoon.zeta.item.ZetaMobBucketItem;
+import org.violetmoon.zeta.module.ZetaLoadModule;
+import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.registry.CreativeTabManager;
+import org.violetmoon.zeta.util.Hint;
+
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -26,35 +55,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.Fluids;
-
-import java.util.List;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.util.QuarkEffect;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
-import org.violetmoon.quark.content.mobs.client.render.entity.CrabRenderer;
-import org.violetmoon.quark.content.mobs.entity.Crab;
-import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
-import org.violetmoon.zeta.advancement.modifier.FuriousCocktailModifier;
-import org.violetmoon.zeta.advancement.modifier.TwoByTwoModifier;
-import org.violetmoon.zeta.client.event.load.ZClientSetup;
-import org.violetmoon.zeta.config.Config;
-import org.violetmoon.zeta.config.type.CompoundBiomeConfig;
-import org.violetmoon.zeta.config.type.EntitySpawnConfig;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.bus.PlayEvent;
-import org.violetmoon.zeta.event.load.ZCommonSetup;
-import org.violetmoon.zeta.event.load.ZEntityAttributeCreation;
-import org.violetmoon.zeta.event.load.ZRegister;
-import org.violetmoon.zeta.event.play.loading.ZVillagerTrades;
-import org.violetmoon.zeta.item.ZetaItem;
-import org.violetmoon.zeta.item.ZetaMobBucketItem;
-import org.violetmoon.zeta.module.ZetaLoadModule;
-import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.registry.CreativeTabManager;
-import org.violetmoon.zeta.util.Hint;
 
 /**
  * @author WireSegal
@@ -131,11 +131,11 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
 		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
 		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
 	}
 	
 	@PlayEvent

@@ -8,8 +8,8 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.phys.Vec3;
 
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
-import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.zeta.config.type.IBiomeConfig;
 
 import java.util.Random;
@@ -26,7 +26,7 @@ public record ClusterShape(BlockPos src, Vec3 radius,
 		double r = dx * dx + dy * dy + dz * dz;
 		if(r > 1)
 			return false;
-		if(GeneralConfig.useFastWorldgen)
+		if(QuarkGeneralConfig.useFastWorldgen)
 			return true;
 
 		r = Math.sqrt(r);

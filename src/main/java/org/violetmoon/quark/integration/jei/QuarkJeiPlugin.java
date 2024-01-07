@@ -1,6 +1,35 @@
 package org.violetmoon.quark.integration.jei;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
+import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
+import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
+import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
+import org.violetmoon.quark.addons.oddities.util.Influence;
+import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
+import org.violetmoon.quark.content.tools.item.AncientTomeItem;
+import org.violetmoon.quark.content.tools.module.AncientTomesModule;
+import org.violetmoon.quark.content.tools.module.PickarangModule;
+import org.violetmoon.quark.content.tweaks.module.DiamondRepairModule;
+import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
+import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
+import org.violetmoon.zeta.config.ZetaGeneralConfig;
+import org.violetmoon.zeta.event.play.loading.ZGatherHints;
+import org.violetmoon.zeta.module.IDisableable;
+import org.violetmoon.zeta.util.RegistryUtil;
+
 import com.google.common.collect.Sets;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -10,7 +39,13 @@ import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
@@ -20,7 +55,13 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -28,29 +69,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
-import org.violetmoon.quark.addons.oddities.block.be.MatrixEnchantingTableBlockEntity;
-import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-import org.violetmoon.quark.addons.oddities.client.screen.CrateScreen;
-import org.violetmoon.quark.addons.oddities.module.MatrixEnchantingModule;
-import org.violetmoon.quark.addons.oddities.util.Influence;
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.GeneralConfig;
-import org.violetmoon.quark.content.building.module.VariantFurnacesModule;
-import org.violetmoon.quark.content.tools.item.AncientTomeItem;
-import org.violetmoon.quark.content.tools.module.AncientTomesModule;
-import org.violetmoon.quark.content.tools.module.PickarangModule;
-import org.violetmoon.quark.content.tweaks.module.DiamondRepairModule;
-import org.violetmoon.quark.content.tweaks.recipe.ElytraDuplicationRecipe;
-import org.violetmoon.quark.content.tweaks.recipe.SlabToBlockRecipe;
-import org.violetmoon.zeta.event.play.loading.ZGatherHints;
-import org.violetmoon.zeta.module.IDisableable;
-import org.violetmoon.zeta.util.RegistryUtil;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @JeiPlugin
 public class QuarkJeiPlugin implements IModPlugin {
@@ -80,7 +98,8 @@ public class QuarkJeiPlugin implements IModPlugin {
 			if(Quark.ZETA.modules.isEnabled(DiamondRepairModule.class))
 				Minecraft.getInstance().submitAsync(() -> hideAnvilRepairRecipes(jeiRuntime.getRecipeManager()));
 
-			if(!GeneralConfig.hideDisabledContent)
+			// TODO: This needs to be moved to zeta
+			if(!ZetaGeneralConfig.hideDisabledContent)
 				return;
 
 			Set<Potion> hidePotions = Sets.newHashSet();
@@ -148,11 +167,12 @@ public class QuarkJeiPlugin implements IModPlugin {
 		if(Quark.ZETA.modules.isEnabled(DiamondRepairModule.class))
 			registerCustomAnvilRecipes(registration, factory);
 
-		if(GeneralConfig.enableJeiItemInfo) {
+		// TODO: This needs to be moved to zeta
+		if(ZetaGeneralConfig.enableJeiItemInfo) {
 			MutableComponent externalPreamble = Component.translatable("quark.jei.hint_preamble");
 			externalPreamble.setStyle(externalPreamble.getStyle().withColor(0x0b5d4b));
 
-			List<Item> blacklist = RegistryUtil.massRegistryGet(GeneralConfig.suppressedInfo, BuiltInRegistries.ITEM);
+			List<Item> blacklist = RegistryUtil.massRegistryGet(ZetaGeneralConfig.suppressedInfo, BuiltInRegistries.ITEM);
 
 			Quark.ZETA.playBus.fire(new ZGatherHints() {
 				@Override

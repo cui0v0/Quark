@@ -37,7 +37,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
 import org.violetmoon.quark.content.world.block.GlowLichenGrowthBlock;
@@ -134,7 +134,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 				Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F));
 
 		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent

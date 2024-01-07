@@ -14,8 +14,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.QuarkClient;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
-import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.MiscUtil;
 
 import java.awt.*;
@@ -149,7 +149,7 @@ public class QButton extends Button {
 			guiGraphics.blit(MiscUtil.GENERAL_ICONS, rx, ry, u, v, w, h);
 		}
 
-		if(showBubble && GeneralConfig.enableOnboarding) {
+		if(showBubble && QuarkGeneralConfig.enableOnboarding) {
 			Font font = Minecraft.getInstance().font;
 			int cy = getY() - 2;
 			if(QuarkClient.ticker.total % 20 > 10)

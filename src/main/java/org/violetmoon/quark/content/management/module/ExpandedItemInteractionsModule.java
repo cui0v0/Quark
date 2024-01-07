@@ -39,7 +39,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
 import org.violetmoon.quark.base.network.message.ScrollOnBundleMessage;
 import org.violetmoon.quark.content.management.client.screen.HeldShulkerBoxScreen;
@@ -102,7 +102,7 @@ public class ExpandedItemInteractionsModule extends ZetaModule {
 	public final void configChanged(ZConfigChanged event) {
 		staticEnabled = enabled;
 
-		shulkers = RegistryUtil.massRegistryGet(GeneralConfig.shulkerBoxes, BuiltInRegistries.ITEM);
+		shulkers = RegistryUtil.massRegistryGet(QuarkGeneralConfig.shulkerBoxes, BuiltInRegistries.ITEM);
 	}
 
 	public static boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {

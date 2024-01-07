@@ -22,7 +22,7 @@ import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScree
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.InventoryTransferHandler;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
 import org.violetmoon.zeta.client.event.play.ZScreen;
@@ -43,7 +43,7 @@ public final class InventoryButtonHandler {
 	public static void initGui(ZScreen.Init.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 		Screen screen = event.getScreen();
-		if(GeneralConfig.printScreenClassnames) {
+		if(QuarkGeneralConfig.printScreenClassnames) {
 			String print = I18n.get("quark.misc.opened_screen", ChatFormatting.AQUA + screen.getClass().getName());
 			Quark.LOG.info(print);
 
@@ -53,7 +53,7 @@ public final class InventoryButtonHandler {
 		currentButtons.clear();
 
 		boolean apiAllowed = screen instanceof IQuarkButtonAllowed;
-		if(screen instanceof AbstractContainerScreen<?> containerScreen && (apiAllowed || GeneralConfig.isScreenAllowed(screen))) {
+		if(screen instanceof AbstractContainerScreen<?> containerScreen && (apiAllowed || QuarkGeneralConfig.isScreenAllowed(screen))) {
 
 			if(containerScreen instanceof InventoryScreen || containerScreen.getClass().getName().contains("CuriosScreen"))
 				applyProviders(event, ButtonTargetType.PLAYER_INVENTORY, containerScreen, s -> s.container == mc.player.getInventory() && s.getSlotIndex() == 17);
@@ -88,7 +88,7 @@ public final class InventoryButtonHandler {
 	public static void mouseInputEvent(ZScreen.MouseButtonPressed.Pre pressed) {
 		Screen gui = pressed.getScreen();
 		if(gui instanceof AbstractContainerScreen<?> screen) {
-			if(!GeneralConfig.isScreenAllowed(screen))
+			if(!QuarkGeneralConfig.isScreenAllowed(screen))
 				return;
 
 			Collection<ButtonProviderHolder> holders = forGui(screen);
@@ -108,7 +108,7 @@ public final class InventoryButtonHandler {
 	public static void keyboardInputEvent(ZScreen.KeyPressed.Pre pressed) {
 		Screen gui = pressed.getScreen();
 		if(gui instanceof AbstractContainerScreen<?> screen) {
-			if(!GeneralConfig.isScreenAllowed(screen))
+			if(!QuarkGeneralConfig.isScreenAllowed(screen))
 				return;
 
 			Collection<ButtonProviderHolder> holders = forGui(screen);

@@ -1,18 +1,15 @@
-package org.violetmoon.quark.base.handler;
-
-import com.google.common.collect.Lists;
-
-import org.violetmoon.quark.base.Quark;
-import org.violetmoon.zeta.config.Config;
-import org.violetmoon.zeta.event.bus.LoadEvent;
-import org.violetmoon.zeta.event.load.ZConfigChanged;
-import org.violetmoon.zeta.piston.ZetaPistonStructureResolver;
+package org.violetmoon.quark.base.config;
 
 import java.util.List;
 
-public class GeneralConfig {
+import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
+import org.violetmoon.zeta.config.Config;
 
-	public static final GeneralConfig INSTANCE = new GeneralConfig();
+import com.google.common.collect.Lists;
+
+public class QuarkGeneralConfig {
+
+	public static final QuarkGeneralConfig INSTANCE = new QuarkGeneralConfig();
 
 	private static final List<String> STATIC_ALLOWED_SCREENS = Lists.newArrayList(
 			"appeng.client.gui.implementations.SkyChestScreen",
@@ -48,19 +45,6 @@ public class GeneralConfig {
 
 	@Config
 	public static boolean disableQMenuEffects = false;
-
-	@Config(description = "Disable this to turn off the quark system that makes features turn off when specified mods with the same content are loaded")
-	public static boolean useAntiOverlap = true;
-
-	@Config(
-		name = "Use Piston Logic Replacement",
-		description = "Enable Zeta's piston structure resolver, needed for some Quark features. If you're having troubles, try turning this off, but be aware other Zeta-using mods can enable it too."
-	)
-	public static boolean usePistonLogicRepl = true;
-
-	@Config(description = "Ask Zeta to set the piston push limit. Only has an effect if Zeta's piston structure resolver is in use.")
-	@Config.Min(value = 0, exclusive = true)
-	public static int pistonPushLimit = 12;
 
 	@Config(description = "How many advancements deep you can see in the advancement screen. Vanilla is 2.")
 	@Config.Min(value = 0, exclusive = true)
@@ -99,25 +83,16 @@ public class GeneralConfig {
 	)
 	public static boolean terrablenderModifyVanillaAnyway = false;
 
-	@Config(description = "Set to false to stop quark from adding its own items to multi-requirement vanilla advancements")
+	@Config(description = "Set to false to stop Quark from adding mod items to multi-requirement vanilla advancements")
 	public static boolean enableAdvancementModification = true;
-
+	
 	@Config(description = "Set to false to stop quark from adding its own advancements")
 	public static boolean enableQuarkAdvancements = true;
 
 	@Config(description = "Set to false to disable the popup message telling you that you can config quark in the q menu")
 	public static boolean enableOnboarding = true;
 
-	@Config(description = "Set to false to disable the behavior where quark will automatically hide any disabled items")
-	public static boolean hideDisabledContent = true;
-
-	@Config(description = "Set to false to disable Quark's item info when viewing recipe/uses for an item in JEI")
-	public static boolean enableJeiItemInfo = true;
-
-	@Config(description = "For JEI info purposes, add any items here to specifically disable their JEI info from Quark. Note that Quark already only shows info that's relevant to which features are enabled")
-	public static List<String> suppressedInfo = Lists.newArrayList();
-
-	private GeneralConfig() {
+	private QuarkGeneralConfig() {
 		// NO-OP
 	}
 
@@ -132,12 +107,6 @@ public class GeneralConfig {
 			return false;
 
 		return allowedScreens.contains(clazz) != useScreenListBlacklist;
-	}
-
-	@LoadEvent
-	public static void configChanged(ZConfigChanged e) {
-		ZetaPistonStructureResolver.GlobalSettings.requestEnabled(Quark.MOD_ID, usePistonLogicRepl);
-		ZetaPistonStructureResolver.GlobalSettings.requestPushLimit(Quark.MOD_ID, pistonPushLimit);
 	}
 
 }

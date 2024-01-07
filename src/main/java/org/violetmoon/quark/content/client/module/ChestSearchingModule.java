@@ -35,8 +35,8 @@ import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
-import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.InventoryTransferHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;
@@ -105,7 +105,7 @@ public class ChestSearchingModule extends ZetaModule {
 			boolean apiAllowed = gui instanceof IQuarkButtonAllowed;
 			if(!(gui instanceof InventoryScreen) &&
 					gui instanceof AbstractContainerScreen<?> chest &&
-					(apiAllowed || GeneralConfig.isScreenAllowed(gui))) {
+					(apiAllowed || QuarkGeneralConfig.isScreenAllowed(gui))) {
 				Minecraft mc = gui.getMinecraft();
 				if(apiAllowed || InventoryTransferHandler.accepts(chest.getMenu(), mc.player)) {
 					searchBar = new EditBox(mc.font, 18, 6, 117, 10, Component.literal(text));

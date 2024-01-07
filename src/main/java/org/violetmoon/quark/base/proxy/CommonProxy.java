@@ -19,6 +19,7 @@ import org.violetmoon.quark.QuarkForgeCapabilities;
 import org.violetmoon.quark.api.*;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.capability.CapabilityHandler;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.*;
 import org.violetmoon.quark.base.network.QuarkNetwork;
 import org.violetmoon.quark.base.recipe.ExclusionRecipe;
@@ -101,7 +102,7 @@ public class CommonProxy {
 						new ZetaCategory("oddities", Items.CHORUS_FRUIT, Quark.ODDITIES_ID)
 				),
 				new ModFileScanDataModuleFinder(Quark.MOD_ID), //forge only
-				GeneralConfig.INSTANCE
+				QuarkGeneralConfig.INSTANCE
 		);
 
 		LocalDateTime now = LocalDateTime.now();

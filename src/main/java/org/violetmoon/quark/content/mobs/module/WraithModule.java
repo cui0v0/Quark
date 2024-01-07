@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.SoulBeadRenderer;
 import org.violetmoon.quark.content.mobs.client.render.entity.WraithRenderer;
@@ -110,7 +110,7 @@ public class WraithModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, wraithType, 0xececec, 0xbdbdbd, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(wraithType))
-				.setCondition(() -> GeneralConfig.enableAdvancementModification));
+				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
 	}
 
 	@LoadEvent
