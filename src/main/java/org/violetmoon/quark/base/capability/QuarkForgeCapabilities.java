@@ -1,4 +1,4 @@
-package org.violetmoon.quark;
+package org.violetmoon.quark.base.capability;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;

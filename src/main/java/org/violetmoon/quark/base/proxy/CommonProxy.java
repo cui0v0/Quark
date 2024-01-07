@@ -15,10 +15,10 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.QuarkForgeCapabilities;
 import org.violetmoon.quark.api.*;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.capability.CapabilityHandler;
+import org.violetmoon.quark.base.capability.QuarkForgeCapabilities;
 import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.*;
 import org.violetmoon.quark.base.network.QuarkNetwork;
