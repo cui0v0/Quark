@@ -63,7 +63,12 @@ public class CrafterMenu extends AbstractContainerMenu {
 		this.delegate = delegate;
 		this.addDataSlots(delegate);
 
-		this.addSlot(new ResultSlot(player.player, crafter, result, 0, 26 + 18 * 6, 17 + 18));
+		this.addSlot(new ResultSlot(player.player, crafter, result, 0, 26 + 18 * 6, 17 + 18) {
+			@Override
+			public boolean mayPickup(Player p_40228_) {
+				return false;
+			}
+		});
 
 		int i;
 		int j;
