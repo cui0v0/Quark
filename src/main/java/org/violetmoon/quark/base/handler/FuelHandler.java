@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.zeta.util.BlockUtils;
 import org.violetmoon.quark.content.building.block.VerticalSlabBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;

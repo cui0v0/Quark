@@ -3,8 +3,8 @@ package org.violetmoon.quark.content.building.module;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 
-import org.violetmoon.quark.base.util.VanillaWoods;
-import org.violetmoon.quark.base.util.VanillaWoods.Wood;
+import org.violetmoon.zeta.util.VanillaWoods;
+import org.violetmoon.zeta.util.VanillaWoods.Wood;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;

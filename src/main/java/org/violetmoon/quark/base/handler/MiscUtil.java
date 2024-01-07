@@ -56,7 +56,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.zeta.util.BlockUtils;
 import org.violetmoon.quark.content.experimental.module.EnchantmentsBegoneModule;
 import org.violetmoon.zeta.client.config.screen.ZetaScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;

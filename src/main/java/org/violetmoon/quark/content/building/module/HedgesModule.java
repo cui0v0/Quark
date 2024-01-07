@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.VanillaWoods;
-import org.violetmoon.quark.base.util.VanillaWoods.Wood;
+import org.violetmoon.zeta.util.VanillaWoods;
+import org.violetmoon.zeta.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.HedgeBlock;
 import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.quark.content.world.module.BlossomTreesModule;

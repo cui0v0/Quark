@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.zeta.util.BlockUtils;
 import org.violetmoon.quark.content.mobs.module.ToretoiseModule;
 
 import java.util.List;

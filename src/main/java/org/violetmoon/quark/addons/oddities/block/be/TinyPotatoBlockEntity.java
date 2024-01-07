@@ -25,7 +25,7 @@ import org.violetmoon.quark.addons.oddities.module.TinyPotatoModule;
 import org.violetmoon.quark.addons.oddities.util.TinyPotatoInfo;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.QuarkSounds;
-import org.violetmoon.quark.base.util.SimpleInventoryBlockEntity;
+import org.violetmoon.zeta.util.SimpleInventoryBlockEntity;
 
 import java.util.HashMap;
 import java.util.Map;

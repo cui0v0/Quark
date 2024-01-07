@@ -10,7 +10,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.FlatLevelSource;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.zeta.util.BlockUtils;
 import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.quark.content.world.module.MonsterBoxModule;
 import org.violetmoon.zeta.config.type.DimensionConfig;

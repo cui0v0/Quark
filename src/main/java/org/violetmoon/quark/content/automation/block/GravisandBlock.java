@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import org.violetmoon.quark.base.util.BlockUtils;
+import org.violetmoon.zeta.util.BlockUtils;
 import org.violetmoon.quark.content.automation.entity.Gravisand;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.module.ZetaModule;
