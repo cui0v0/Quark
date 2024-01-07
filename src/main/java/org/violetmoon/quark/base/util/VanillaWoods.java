@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 
+@Deprecated(forRemoval = true)
 public class VanillaWoods {
 
 	public static record Wood(String name, Block log, Block wood, Block planks, Block leaf, Block fence, boolean nether, SoundType soundWood, SoundType soundPlanks) {}

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.violetmoon.zeta.block.be.ZetaBlockEntity;
 
 // formerly from AutoRegLib
+@Deprecated(forRemoval = true)
 public abstract class SimpleInventoryBlockEntity extends ZetaBlockEntity implements WorldlyContainer {
 
 	public SimpleInventoryBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {

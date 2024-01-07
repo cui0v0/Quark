@@ -16,6 +16,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 
 import org.violetmoon.quark.base.Quark;
 
+@Deprecated(forRemoval = true)
 public class QuarkEffect extends MobEffect {
 
 	public QuarkEffect(String name, MobEffectCategory type, int color) {

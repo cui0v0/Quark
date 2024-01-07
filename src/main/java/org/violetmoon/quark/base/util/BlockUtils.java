@@ -12,6 +12,7 @@ import net.minecraft.world.level.material.MapColor;
 /**
  * Assortment of Block Related Utilities
  */
+@Deprecated(forRemoval = true)
 public class BlockUtils {
 	public static boolean isWoodBased(BlockState state) {
 		NoteBlockInstrument noteBlockInstrument = state.instrument();
