@@ -27,8 +27,21 @@
 
 package org.violetmoon.quark.content.automation.block.be;
 
-import net.minecraft.core.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
+
+import org.violetmoon.quark.content.automation.block.CrafterBlock;
+import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
+import org.violetmoon.quark.content.automation.module.CrafterModule;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.BlockSourceImpl;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +56,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -51,13 +69,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.violetmoon.quark.content.automation.block.CrafterBlock;
-import org.violetmoon.quark.content.automation.inventory.CrafterMenu;
-import org.violetmoon.quark.content.automation.module.CrafterModule;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 public class CrafterBlockEntity extends BaseContainerBlockEntity implements CraftingContainer, WorldlyContainer {
 	private static final DispenseItemBehavior BEHAVIOR = new CraftDispenseBehavior();
@@ -180,25 +191,21 @@ public class CrafterBlockEntity extends BaseContainerBlockEntity implements Craf
 	public void takeItems() {
 		NonNullList<ItemStack> defaultedList = level.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this, level);
 
-		for(int i = 0; i < defaultedList.size(); ++i) {
-			ItemStack itemStack = this.getItem(i);
-			ItemStack itemStack2 = defaultedList.get(i);
-			if (!itemStack.isEmpty()) {
-				this.removeItem(i, 1);
-				itemStack = this.getItem(i);
-			}
-
-			if (!itemStack2.isEmpty()) {
-				if (itemStack.isEmpty()) {
-					this.setItem(i, itemStack2);
-				} else if (ItemStack.isSameItemSameTags(itemStack, itemStack2)) {
-					itemStack2.grow(itemStack.getCount());
-					this.setItem(i, itemStack2);
-				}/* else if (!this.player.getInventory().insertStack(itemStack2)) {
-					this.player.dropItem(itemStack2, false);
-				}*/
+		if(level instanceof ServerLevel serverLevel) {
+			BlockSource blockSource = new BlockSourceImpl(serverLevel, worldPosition);
+			for(int i = 0; i < defaultedList.size(); ++i) {
+				ItemStack itemInCrafter = this.getItem(i);
+				ItemStack remainingItem = defaultedList.get(i);
+				
+				if(remainingItem.isEmpty())
+					itemInCrafter.shrink(1);
+				else {
+					BEHAVIOR.dispense(blockSource, remainingItem);
+					itemInCrafter.shrink(itemInCrafter.getCount());
+				}
 			}
 		}
+
 		update();
 	}
 
