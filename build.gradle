@@ -72,8 +72,6 @@ mixin {
     add sourceSets.main, 'quark.mixins.refmap.json'
     config 'quark.mixins.json'
     config 'quark_integrations.mixins.json'
-    config 'zeta.mixins.json'
-    config 'zeta_forge.mixins.json'
 }
 
 repositories {
@@ -81,9 +79,6 @@ repositories {
         // for Zeta
         name "blamejared"
         url "https://maven.blamejared.com/"
-        content {
-            includeGroup "org.violetmoon.zeta"
-        }
     }
     maven {
         name "TerraformersMC"
