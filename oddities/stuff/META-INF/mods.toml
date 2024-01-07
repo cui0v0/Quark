@@ -13,3 +13,4 @@ description='''Crazier Small things.'''
 [[dependencies.quarkoddities]]
 modId="quark"
 mandatory=true
+versionRange="[0,)"

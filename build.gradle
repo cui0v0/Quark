@@ -49,8 +49,7 @@ minecraft {
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
     runs {
-        client {
-            workingDirectory project.file('run')
+        configureEach {
             property "mixin.debug.export", "true"
             mods {
                 quark {
@@ -59,14 +58,12 @@ minecraft {
             }
         }
 
+        client {
+            workingDirectory project.file('run')
+        }
+
         server {
             workingDirectory project.file('runServer')
-            property "mixin.debug.export", "true"
-            mods {
-                quark {
-                    source sourceSets.main
-                }
-            }
         }
     }
 }
