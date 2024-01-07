@@ -234,6 +234,8 @@ publishing {
             artifact sourcesJar {
                 classifier 'sources'
             }
+
+            jarJar.component(it)
         }
     }
 
