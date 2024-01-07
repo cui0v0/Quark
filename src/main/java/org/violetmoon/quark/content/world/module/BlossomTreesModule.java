@@ -22,7 +22,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.Tags;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.base.world.WorldGenHandler;
@@ -31,6 +30,7 @@ import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
 import org.violetmoon.quark.content.world.config.BlossomTreeConfig;
 import org.violetmoon.quark.content.world.gen.BlossomTreeGenerator;
 import org.violetmoon.zeta.block.ZetaSaplingBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

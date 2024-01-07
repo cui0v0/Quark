@@ -7,8 +7,6 @@ import java.util.Queue;
 import java.util.function.BooleanSupplier;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.base.world.generator.OreGenerator;
@@ -21,6 +19,8 @@ import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlockWrapper;
 import org.violetmoon.zeta.client.event.load.ZAddBlockColorHandlers;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

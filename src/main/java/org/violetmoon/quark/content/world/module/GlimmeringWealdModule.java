@@ -37,7 +37,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.QuarkSounds;
 import org.violetmoon.quark.content.mobs.module.StonelingsModule;
@@ -48,6 +47,7 @@ import org.violetmoon.quark.content.world.block.HugeGlowShroomBlock;
 import org.violetmoon.quark.content.world.feature.GlowExtrasFeature;
 import org.violetmoon.quark.content.world.feature.GlowShroomsFeature;
 import org.violetmoon.zeta.advancement.modifier.AdventuringTimeModifier;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZRegister;

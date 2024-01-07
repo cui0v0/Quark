@@ -18,10 +18,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.Tags;
 
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.util.BlockUtils;
 import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.quark.content.world.module.FairyRingsModule;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 
 import java.util.List;
 

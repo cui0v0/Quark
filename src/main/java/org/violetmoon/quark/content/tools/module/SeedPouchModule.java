@@ -16,11 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.client.tooltip.SeedPouchClientTooltipComponent;
 import org.violetmoon.quark.content.tools.item.SeedPouchItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.load.ZTooltipComponents;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

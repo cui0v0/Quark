@@ -14,9 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 import org.jetbrains.annotations.NotNull;
-
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.block.RopeBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;

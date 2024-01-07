@@ -35,9 +35,9 @@ import org.lwjgl.glfw.GLFW;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.network.message.ShareItemC2SMessage;
 import org.violetmoon.zeta.client.event.play.ZScreen;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;

@@ -11,7 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 
-import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.function.BooleanSupplier;

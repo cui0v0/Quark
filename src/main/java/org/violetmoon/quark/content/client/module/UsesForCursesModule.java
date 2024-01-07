@@ -10,9 +10,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
 
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tweaks.client.layer.ArmorStandFakePlayerLayer;
 import org.violetmoon.zeta.client.event.load.ZAddModelLayers;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.module.ZetaLoadModule;

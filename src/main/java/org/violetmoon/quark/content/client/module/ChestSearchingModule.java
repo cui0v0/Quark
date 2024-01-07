@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.InventoryTransferHandler;
@@ -45,6 +44,7 @@ import org.violetmoon.quark.content.management.client.screen.widgets.MiniInvento
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.play.ZRenderContainerScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;

@@ -14,11 +14,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.Fluids;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.world.generator.Generator;
 import org.violetmoon.quark.content.building.module.CompressedBlocksModule;
 import org.violetmoon.quark.content.world.module.NetherObsidianSpikesModule;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 
 public class ObsidianSpikeGenerator extends Generator {
 

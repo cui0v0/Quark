@@ -20,10 +20,10 @@ import net.minecraftforge.common.ToolActions;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.content.building.block.QuarkVerticalSlabBlock;
 import org.violetmoon.quark.content.building.block.WeatheringCopperVerticalSlabBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;
 import org.violetmoon.zeta.event.load.ZConfigChanged;

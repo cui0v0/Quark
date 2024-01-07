@@ -7,9 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.quark.content.tools.entity.rang.AbstractPickarang;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.IConfigType;
 import org.violetmoon.zeta.item.ext.IZetaItemExtensions;
 
 public class PickarangType<T extends AbstractPickarang<T>> implements IConfigType {

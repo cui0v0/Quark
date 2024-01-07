@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.generator.multichunk.MultiChunkFeatureGenerator;
 import org.violetmoon.quark.content.world.module.NewStoneTypesModule;
 import org.violetmoon.quark.content.world.module.SpiralSpiresModule;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.Random;

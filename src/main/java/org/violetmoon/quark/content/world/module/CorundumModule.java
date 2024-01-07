@@ -19,7 +19,6 @@ import net.minecraft.world.level.material.MapColor;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.util.CorundumColor;
 import org.violetmoon.quark.base.world.WorldGenHandler;
@@ -32,6 +31,7 @@ import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyle
 import org.violetmoon.quark.content.world.undergroundstyle.base.UndergroundStyleGenerator;
 import org.violetmoon.zeta.api.IIndirectConnector;
 import org.violetmoon.zeta.block.ZetaInheritedPaneBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

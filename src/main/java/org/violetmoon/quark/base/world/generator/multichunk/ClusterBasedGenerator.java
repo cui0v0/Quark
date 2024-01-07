@@ -5,7 +5,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 
 import java.util.Random;

@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import org.violetmoon.quark.base.util.VanillaWoods;
@@ -42,6 +41,7 @@ import org.violetmoon.quark.content.building.recipe.MixedExclusionRecipe;
 import org.violetmoon.quark.mixin.mixins.accessor.AccessorAbstractChestedHorse;
 import org.violetmoon.zeta.client.SimpleWithoutLevelRenderer;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;

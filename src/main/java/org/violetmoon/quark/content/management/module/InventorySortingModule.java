@@ -7,10 +7,10 @@ import net.minecraft.sounds.SoundEvents;
 
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.network.message.SortInventoryMessage;
 import org.violetmoon.quark.content.management.client.screen.widgets.MiniInventoryButton;
 import org.violetmoon.zeta.client.event.load.ZKeyMapping;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;

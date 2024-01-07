@@ -1,9 +1,13 @@
 package org.violetmoon.quark.base.config.type;
 
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.CompoundBiomeConfig;
+import org.violetmoon.zeta.config.type.DimensionConfig;
+import org.violetmoon.zeta.config.type.IBiomeConfig;
+import org.violetmoon.zeta.config.type.IConfigType;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-
-import org.violetmoon.quark.base.config.Config;
 
 public class ClusterSizeConfig implements IConfigType {
 

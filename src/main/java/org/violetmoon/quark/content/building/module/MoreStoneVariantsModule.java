@@ -7,14 +7,14 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.ConfigFlagManager;
 import org.violetmoon.quark.content.building.block.MyalitePillarBlock;
 import org.violetmoon.quark.content.world.block.MyaliteBlock;
 import org.violetmoon.quark.content.world.module.NewStoneTypesModule;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaBlockWrapper;
 import org.violetmoon.zeta.block.ZetaPillarBlock;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.ConfigFlagManager;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;

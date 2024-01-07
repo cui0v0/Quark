@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler;
 import org.violetmoon.quark.base.handler.StructureBlockReplacementHandler.StructureHolder;
 import org.violetmoon.zeta.block.ZetaPaneBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.event.load.ZRegister;

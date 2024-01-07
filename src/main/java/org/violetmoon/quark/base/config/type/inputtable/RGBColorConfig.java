@@ -2,9 +2,9 @@ package org.violetmoon.quark.base.config.type.inputtable;
 
 import net.minecraft.util.Mth;
 
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.ConfigFlagManager;
-import org.violetmoon.quark.base.config.type.IConfigType;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.ConfigFlagManager;
+import org.violetmoon.zeta.config.type.IConfigType;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Objects;

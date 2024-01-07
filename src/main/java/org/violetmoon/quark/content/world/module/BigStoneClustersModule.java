@@ -14,14 +14,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
 
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.CompoundBiomeConfig;
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.config.AirStoneClusterConfig;
 import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
 import org.violetmoon.quark.content.world.gen.BigStoneClusterGenerator;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.CompoundBiomeConfig;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

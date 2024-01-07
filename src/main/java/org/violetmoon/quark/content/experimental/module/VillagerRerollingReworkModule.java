@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.experimental.hax.PseudoAccessorMerchantOffer;
 import org.violetmoon.quark.mixin.mixins.accessor.AccessorMerchantOffer;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;

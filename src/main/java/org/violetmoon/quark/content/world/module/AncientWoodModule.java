@@ -23,8 +23,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.Config.Min;
 import org.violetmoon.quark.base.handler.GeneralConfig;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
@@ -36,6 +34,8 @@ import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.advancement.modifier.BalancedDietModifier;
 import org.violetmoon.zeta.block.ZetaLeavesBlock;
 import org.violetmoon.zeta.block.ZetaSaplingBlock;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.Config.Min;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

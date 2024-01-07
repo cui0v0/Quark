@@ -11,12 +11,13 @@
 package org.violetmoon.quark.content.building.module;
 
 import net.minecraft.world.item.CreativeModeTabs;
-import org.violetmoon.quark.base.config.Config;
+
 import org.violetmoon.quark.content.building.block.BambooMatBlock;
 import org.violetmoon.quark.content.building.block.BambooMatCarpetBlock;
 import org.violetmoon.quark.content.building.block.PaperLanternBlock;
 import org.violetmoon.quark.content.building.block.PaperWallBlock;
 import org.violetmoon.zeta.block.IZetaBlock;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;

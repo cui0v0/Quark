@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 
 import org.lwjgl.glfw.GLFW;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.handler.ContributorRewardHandler;
 import org.violetmoon.quark.base.network.message.RequestEmoteMessage;
 import org.violetmoon.quark.content.tweaks.client.emote.*;
@@ -31,6 +30,7 @@ import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
 import org.violetmoon.zeta.client.event.play.ZRenderLiving;
 import org.violetmoon.zeta.client.event.play.ZRenderTick;
 import org.violetmoon.zeta.client.event.play.ZScreen;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;

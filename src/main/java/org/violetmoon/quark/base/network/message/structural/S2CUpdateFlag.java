@@ -1,6 +1,6 @@
 package org.violetmoon.quark.base.network.message.structural;
 
-import org.violetmoon.quark.base.config.SyncedFlagHandler;
+import org.violetmoon.zeta.config.SyncedFlagHandler;
 import org.violetmoon.zeta.network.IZetaMessage;
 import org.violetmoon.zeta.network.IZetaNetworkEventContext;
 

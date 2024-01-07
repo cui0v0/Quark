@@ -16,8 +16,8 @@ import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.type.CostSensitiveEntitySpawnConfig;
-import org.violetmoon.quark.base.config.type.EntitySpawnConfig;
+import org.violetmoon.zeta.config.type.CostSensitiveEntitySpawnConfig;
+import org.violetmoon.zeta.config.type.EntitySpawnConfig;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;
 import org.violetmoon.zeta.item.ZetaSpawnEggItem;

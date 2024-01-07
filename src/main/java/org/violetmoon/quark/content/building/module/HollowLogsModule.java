@@ -14,11 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import org.violetmoon.quark.api.ICrawlSpaceBlock;
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.base.util.VanillaWoods;
 import org.violetmoon.quark.base.util.VanillaWoods.Wood;
 import org.violetmoon.quark.content.building.block.HollowLogBlock;
 import org.violetmoon.zeta.advancement.ManualTrigger;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZCommonSetup;

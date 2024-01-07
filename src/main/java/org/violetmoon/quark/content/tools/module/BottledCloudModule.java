@@ -11,12 +11,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.tools.block.CloudBlock;
 import org.violetmoon.quark.content.tools.block.be.CloudBlockEntity;
 import org.violetmoon.quark.content.tools.client.render.be.CloudRenderer;
 import org.violetmoon.quark.content.tools.item.BottledCloudItem;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZRegister;

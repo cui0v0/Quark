@@ -39,14 +39,14 @@ import org.jetbrains.annotations.NotNull;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
-import org.violetmoon.quark.base.config.Config;
-import org.violetmoon.quark.base.config.type.IConfigType;
 import org.violetmoon.quark.content.tools.item.PathfindersQuillItem;
 import org.violetmoon.quark.content.tools.loot.InBiomeCondition;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZAddItemColorHandlers;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
 import org.violetmoon.zeta.client.event.play.ZRenderGuiOverlay;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.type.IConfigType;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.bus.PlayEvent;
 import org.violetmoon.zeta.event.load.ZConfigChanged;

@@ -6,8 +6,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
-import org.violetmoon.quark.base.config.type.DimensionConfig;
 import org.violetmoon.quark.base.world.generator.Generator;
+import org.violetmoon.zeta.config.type.DimensionConfig;
 
 import java.util.Random;
 import java.util.function.BooleanSupplier;

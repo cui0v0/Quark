@@ -9,8 +9,8 @@ import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.phys.Vec3;
 
 import org.violetmoon.quark.base.config.type.ClusterSizeConfig;
-import org.violetmoon.quark.base.config.type.IBiomeConfig;
 import org.violetmoon.quark.base.handler.GeneralConfig;
+import org.violetmoon.zeta.config.type.IBiomeConfig;
 
 import java.util.Random;
 

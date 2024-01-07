@@ -8,12 +8,12 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.Config;
 import org.violetmoon.quark.content.building.client.render.entity.GlassItemFrameRenderer;
 import org.violetmoon.quark.content.building.entity.GlassItemFrame;
 import org.violetmoon.quark.content.building.item.QuarkItemFrameItem;
 import org.violetmoon.zeta.client.event.load.ZAddModels;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
+import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.event.bus.LoadEvent;
 import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
