@@ -131,11 +131,9 @@ public class CrabsModule extends ZetaModule {
 		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification && resilienceRequiredForAllEffects));
-		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
-		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
+				.setCondition(() -> resilienceRequiredForAllEffects));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(crabType)));
+		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(crab_leg, cookedCrabLeg)));
 	}
 	
 	@PlayEvent

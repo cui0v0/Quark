@@ -83,10 +83,8 @@ public class FoxhoundModule extends ZetaModule {
 
 		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
 
-		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
-		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
+		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));
 
 		foxhoundFurnaceTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("foxhound_furnace");
 	}

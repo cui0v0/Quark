@@ -1,24 +1,31 @@
 package org.violetmoon.quark.base.network;
 
-import net.minecraft.network.chat.LastSeenMessages;
-import net.minecraft.network.chat.MessageSignature;
+import java.time.Instant;
+import java.util.BitSet;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.network.message.*;
+import org.violetmoon.quark.base.network.message.ChangeHotbarMessage;
+import org.violetmoon.quark.base.network.message.DoEmoteMessage;
+import org.violetmoon.quark.base.network.message.DoubleDoorMessage;
+import org.violetmoon.quark.base.network.message.HarvestMessage;
+import org.violetmoon.quark.base.network.message.InventoryTransferMessage;
+import org.violetmoon.quark.base.network.message.RequestEmoteMessage;
+import org.violetmoon.quark.base.network.message.ScrollOnBundleMessage;
+import org.violetmoon.quark.base.network.message.SetLockProfileMessage;
+import org.violetmoon.quark.base.network.message.ShareItemC2SMessage;
+import org.violetmoon.quark.base.network.message.ShareItemS2CMessage;
+import org.violetmoon.quark.base.network.message.SortInventoryMessage;
+import org.violetmoon.quark.base.network.message.UpdateTridentMessage;
 import org.violetmoon.quark.base.network.message.experimental.PlaceVariantUpdateMessage;
 import org.violetmoon.quark.base.network.message.oddities.HandleBackpackMessage;
 import org.violetmoon.quark.base.network.message.oddities.MatrixEnchanterOperationMessage;
 import org.violetmoon.quark.base.network.message.oddities.ScrollCrateMessage;
-import org.violetmoon.quark.base.network.message.structural.C2SLoginFlag;
-import org.violetmoon.quark.base.network.message.structural.C2SUpdateFlag;
-import org.violetmoon.quark.base.network.message.structural.S2CLoginFlag;
-import org.violetmoon.quark.base.network.message.structural.S2CUpdateFlag;
 import org.violetmoon.quark.content.tweaks.module.LockRotationModule;
 import org.violetmoon.zeta.network.ZetaNetworkDirection;
 import org.violetmoon.zeta.network.ZetaNetworkHandler;
 
-import java.time.Instant;
-import java.util.BitSet;
+import net.minecraft.network.chat.LastSeenMessages;
+import net.minecraft.network.chat.MessageSignature;
 
 public final class QuarkNetwork {
 
@@ -31,7 +38,6 @@ public final class QuarkNetwork {
 		network.getSerializer().mapHandlers(Instant.class, (buf, field) -> buf.readInstant(), (buf, field, instant) -> buf.writeInstant(instant));
 		network.getSerializer().mapHandlers(MessageSignature.class, (buf, field) -> new MessageSignature(buf.accessByteBufWithCorrectSize()), (buf, field, signature) -> MessageSignature.write(buf, signature));
 		network.getSerializer().mapHandlers(LastSeenMessages.Update.class, (buf, field) -> new LastSeenMessages.Update(buf), (buf, field, update) -> update.write(buf));
-		network.getSerializer().mapHandlers(BitSet.class, (buf, field) -> BitSet.valueOf(buf.readLongArray()), (buf, field, bitSet) -> buf.writeLongArray(bitSet.toLongArray()));
 
 		// Base Quark
 		network.register(SortInventoryMessage.class, ZetaNetworkDirection.PLAY_TO_SERVER);
@@ -57,14 +63,6 @@ public final class QuarkNetwork {
 		network.register(DoEmoteMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 		network.register(UpdateTridentMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
 		network.register(ShareItemS2CMessage.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
-
-		// Flag Syncing
-		network.register(S2CUpdateFlag.class, ZetaNetworkDirection.PLAY_TO_CLIENT);
-		network.register(C2SUpdateFlag.class, ZetaNetworkDirection.PLAY_TO_SERVER);
-
-		// Login
-		network.registerLogin(S2CLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_CLIENT, 98, true, S2CLoginFlag::generateRegistryPackets);
-		network.registerLogin(C2SLoginFlag.class, ZetaNetworkDirection.LOGIN_TO_SERVER, 99, false, null);
 	}
 
 }

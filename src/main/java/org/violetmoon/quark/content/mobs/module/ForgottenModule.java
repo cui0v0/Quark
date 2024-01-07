@@ -66,8 +66,7 @@ public class ForgottenModule extends ZetaModule {
 		Quark.ZETA.registry.register(forgottenType, "forgotten", Registries.ENTITY_TYPE);
 		EntitySpawnHandler.addEgg(forgottenType, 0x969487, 0x3a3330, this, BooleanSuppliers.TRUE);
 
-		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
+		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(forgottenType)));
 	}
 
 	@LoadEvent

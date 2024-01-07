@@ -2,14 +2,19 @@ package org.violetmoon.quark.base.config.type.inputtable;
 
 import net.minecraft.util.Mth;
 
+import org.jetbrains.annotations.NotNull;
+import org.violetmoon.quark.base.config.definition.RGBClientDefinition;
+import org.violetmoon.zeta.client.config.definition.ClientDefinitionExt;
+import org.violetmoon.zeta.client.config.definition.IConfigDefinitionProvider;
 import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.config.ConfigFlagManager;
+import org.violetmoon.zeta.config.SectionDefinition;
 import org.violetmoon.zeta.config.type.IConfigType;
 import org.violetmoon.zeta.module.ZetaModule;
 
 import java.util.Objects;
 
-public class RGBColorConfig implements IConfigType {
+public class RGBColorConfig implements IConfigType, IConfigDefinitionProvider {
 
 	@Config
 	public double r;
@@ -108,6 +113,11 @@ public class RGBColorConfig implements IConfigType {
 
 	private static int clamp(int val) {
 		return Mth.clamp(val, 0, 0xFF);
+	}
+
+	@Override
+	public @NotNull ClientDefinitionExt<SectionDefinition> getClientConfigDefinition(SectionDefinition parent) {
+		return new RGBClientDefinition(parent);
 	}
 
 }

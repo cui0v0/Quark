@@ -1,20 +1,25 @@
 package org.violetmoon.quark.base.config.type.inputtable;
 
-import com.google.common.base.Preconditions;
-
-import org.jetbrains.annotations.Nullable;
-import org.violetmoon.quark.content.client.module.GreenerGrassModule;
-import org.violetmoon.zeta.config.Config;
-import org.violetmoon.zeta.config.ConfigFlagManager;
-import org.violetmoon.zeta.config.type.IConfigType;
-import org.violetmoon.zeta.module.ZetaModule;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConvulsionMatrixConfig implements IConfigType {
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.violetmoon.quark.base.config.definition.ConvulsionMatrixClientDefinition;
+import org.violetmoon.quark.content.client.module.GreenerGrassModule;
+import org.violetmoon.zeta.client.config.definition.ClientDefinitionExt;
+import org.violetmoon.zeta.client.config.definition.IConfigDefinitionProvider;
+import org.violetmoon.zeta.config.Config;
+import org.violetmoon.zeta.config.ConfigFlagManager;
+import org.violetmoon.zeta.config.SectionDefinition;
+import org.violetmoon.zeta.config.type.IConfigType;
+import org.violetmoon.zeta.module.ZetaModule;
+
+import com.google.common.base.Preconditions;
+
+public class ConvulsionMatrixConfig implements IConfigType, IConfigDefinitionProvider {
 
 	@Config
 	public List<Double> r;
@@ -87,6 +92,11 @@ public class ConvulsionMatrixConfig implements IConfigType {
 		return Arrays.hashCode(colorMatrix);
 	}
 
+	@Override
+	public @NotNull ClientDefinitionExt<SectionDefinition> getClientConfigDefinition(SectionDefinition def) {
+		return new ConvulsionMatrixClientDefinition(this, def);
+	}
+	
 	public static class Params {
 
 		private static final String IDENTITY_NAME = "Vanilla";

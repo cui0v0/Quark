@@ -133,8 +133,7 @@ public class GlimmeringWealdModule extends ZetaModule {
 		Quark.TERRABLENDER_INTEGRATION.registerUndergroundBiome(this, BIOME_NAME, Climate.parameters(FULL_RANGE, FULL_RANGE, FULL_RANGE, FULL_RANGE,
 				Climate.Parameter.span(wmin, wmax), FULL_RANGE, 0F));
 
-		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
+		Quark.ZETA.advancementModifierRegistry.addModifier(new AdventuringTimeModifier(this, ImmutableSet.of(BIOME_KEY)));
 	}
 
 	@LoadEvent

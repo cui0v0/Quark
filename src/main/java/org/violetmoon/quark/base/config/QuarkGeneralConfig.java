@@ -83,12 +83,6 @@ public class QuarkGeneralConfig {
 	)
 	public static boolean terrablenderModifyVanillaAnyway = false;
 
-	@Config(description = "Set to false to stop Quark from adding mod items to multi-requirement vanilla advancements")
-	public static boolean enableAdvancementModification = true;
-	
-	@Config(description = "Set to false to stop quark from adding its own advancements")
-	public static boolean enableQuarkAdvancements = true;
-
 	@Config(description = "Set to false to disable the popup message telling you that you can config quark in the q menu")
 	public static boolean enableOnboarding = true;
 

@@ -96,8 +96,7 @@ public class AncientWoodModule extends ZetaModule {
 		// fruit //
 
 		ancient_fruit = new AncientFruitItem(this);
-		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit))
-				.setCondition(() -> QuarkGeneralConfig.enableAdvancementModification));
+		event.getAdvancementModifierRegistry().addModifier(new BalancedDietModifier(this, ImmutableSet.of(ancient_fruit)));
 		ancientFruitTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("ancient_fruit_overlevel");
 
 		// tree //

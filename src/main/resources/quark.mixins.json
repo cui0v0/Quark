@@ -74,8 +74,9 @@
     "accessor.AccessorAbstractChestedHorse",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorMerchantOffer",
-    "accessor.AccessorPotionBrewing",
-    "accessor.AccessorTemptingSensor"
+    "accessor.AccessorTemptingSensor",
+    "self.IZetaBlockMixin_FAKE",
+    "self.IZetaItemMixin_FAKE"
   ],
   "client": [
     "client.AbstractCandleBlockMixin",
