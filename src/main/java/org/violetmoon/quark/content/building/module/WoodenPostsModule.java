@@ -34,8 +34,8 @@ public class WoodenPostsModule extends ZetaModule {
 		for(Wood wood : VanillaWoods.ALL) {
 			Block b = wood.fence();
 
-			WoodPostBlock post = new WoodPostBlock(this, b, "", wood.soundPlanks());
-			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", wood.soundPlanks());
+			WoodPostBlock post = new WoodPostBlock(this, b, "", wood.soundWood());
+			WoodPostBlock stripped = new WoodPostBlock(this, b, "stripped_", wood.soundWood());
 			ToolInteractionHandler.registerInteraction(ToolActions.AXE_STRIP, post, stripped);
 		}
 	}
