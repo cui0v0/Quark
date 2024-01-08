@@ -1,22 +1,9 @@
 package org.violetmoon.quark.content.mobs.module;
 
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacements.Type;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraftforge.common.Tags;
-
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
-import org.violetmoon.quark.content.automation.block.ChuteBlock;
 import org.violetmoon.quark.content.mobs.client.render.entity.StonelingRenderer;
 import org.violetmoon.quark.content.mobs.entity.Stoneling;
 import org.violetmoon.quark.content.mobs.item.DiamondHeartItem;
-import org.violetmoon.quark.content.world.module.AncientWoodModule;
 import org.violetmoon.quark.content.world.module.GlimmeringWealdModule;
 import org.violetmoon.zeta.advancement.ManualTrigger;
 import org.violetmoon.zeta.client.event.load.ZClientSetup;
@@ -30,6 +17,17 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.world.EntitySpawnHandler;
+
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements.Type;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraftforge.common.Tags;
 
 @ZetaLoadModule(category = "mobs")
 public class StonelingsModule extends ZetaModule {

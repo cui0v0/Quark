@@ -1,21 +1,10 @@
 package org.violetmoon.quark.content.world.module;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraftforge.common.Tags;
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 
 import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
-import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.content.world.config.AirStoneClusterConfig;
 import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
 import org.violetmoon.quark.content.world.gen.BigStoneClusterGenerator;
@@ -30,10 +19,21 @@ import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
+import org.violetmoon.zeta.world.WorldGenHandler;
 
-import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.BooleanSupplier;
+import com.google.common.collect.Lists;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraftforge.common.Tags;
 
 @ZetaLoadModule(category = "world")
 public class BigStoneClustersModule extends ZetaModule {

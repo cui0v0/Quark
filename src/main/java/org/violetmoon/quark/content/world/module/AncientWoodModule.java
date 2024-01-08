@@ -1,7 +1,6 @@
 package org.violetmoon.quark.content.world.module;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.QuarkGeneralConfig;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.content.world.feature.AncientTreeTopperDecorator;
@@ -22,7 +21,7 @@ import org.violetmoon.zeta.event.play.loading.ZLootTableLoad;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.world.PassthruTreeGrower;
+import org.violetmoon.zeta.world.PassthroughTreeGrower;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSet;
@@ -89,7 +88,7 @@ public class AncientWoodModule extends ZetaModule {
 
 		woodSet = WoodSetHandler.addWoodSet(event, this, "ancient", MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_WHITE, true);
 		ancient_leaves = new ZetaLeavesBlock(woodSet.name, this, MapColor.PLANT);
-		ancient_sapling = new ZetaSaplingBlock("ancient", this, new PassthruTreeGrower(configuredFeatureKey)); //actually called "ancient_sapling"
+		ancient_sapling = new ZetaSaplingBlock("ancient", this, new PassthroughTreeGrower(configuredFeatureKey)); //actually called "ancient_sapling"
 
 		event.getVariantRegistry().addFlowerPot(ancient_sapling, "ancient_sapling", Functions.identity()); //actually "potted_ancient_sapling"
 

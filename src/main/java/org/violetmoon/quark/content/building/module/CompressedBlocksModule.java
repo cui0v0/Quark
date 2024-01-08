@@ -1,17 +1,8 @@
 package org.violetmoon.quark.content.building.module;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.function.BooleanSupplier;
 
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
-
-import org.violetmoon.quark.base.handler.FuelHandler;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaFlammableBlock;
 import org.violetmoon.zeta.block.ZetaFlammablePillarBlock;
@@ -22,9 +13,18 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.util.handler.FuelHandler;
 
-import java.util.List;
-import java.util.function.BooleanSupplier;
+import com.google.common.collect.Lists;
+
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 @ZetaLoadModule(category = "building")
 public class CompressedBlocksModule extends ZetaModule {

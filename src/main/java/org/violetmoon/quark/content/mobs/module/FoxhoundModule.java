@@ -3,8 +3,6 @@ package org.violetmoon.quark.content.mobs.module;
 import static net.minecraftforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.BEHAVIOR_TARGET;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.config.QuarkGeneralConfig;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.FoxhoundRenderer;
 import org.violetmoon.quark.content.mobs.entity.Foxhound;
 import org.violetmoon.zeta.advancement.ManualTrigger;
@@ -25,6 +23,7 @@ import org.violetmoon.zeta.event.play.entity.living.ZLivingChangeTarget;
 import org.violetmoon.zeta.event.play.entity.living.ZSleepingLocationCheck;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
+import org.violetmoon.zeta.world.EntitySpawnHandler;
 
 import com.google.common.collect.ImmutableSet;
 

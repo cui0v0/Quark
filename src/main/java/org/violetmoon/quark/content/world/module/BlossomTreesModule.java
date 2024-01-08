@@ -1,31 +1,12 @@
 package org.violetmoon.quark.content.world.module;
 
-import com.google.common.base.Functions;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.common.Tags;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.WoodSetHandler;
 import org.violetmoon.quark.base.handler.WoodSetHandler.WoodSet;
 import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
-import org.violetmoon.quark.base.world.WorldGenHandler;
 import org.violetmoon.quark.content.world.block.BlossomLeavesBlock;
 import org.violetmoon.quark.content.world.config.BlossomTreeConfig;
 import org.violetmoon.quark.content.world.gen.BlossomTreeGenerator;
@@ -38,11 +19,21 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.event.play.loading.ZGatherHints;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
-import org.violetmoon.zeta.world.PassthruTreeGrower;
+import org.violetmoon.zeta.world.PassthroughTreeGrower;
+import org.violetmoon.zeta.world.WorldGenHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
+import com.google.common.base.Functions;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.Tags;
 
 @ZetaLoadModule(category = "world")
 public class BlossomTreesModule extends ZetaModule {
@@ -101,7 +92,7 @@ public class BlossomTreesModule extends ZetaModule {
 		tree.leaves = new BlossomLeavesBlock(regname, this, color);
 
 		tree.configuredFeatureKey = configuredFeatureKey;
-		tree.grower = new PassthruTreeGrower(configuredFeatureKey);
+		tree.grower = new PassthroughTreeGrower(configuredFeatureKey);
 		tree.sapling = new ZetaSaplingBlock(regname, this, tree.grower);
 
 		event.getVariantRegistry().addFlowerPot(tree.sapling, zeta.registry.getRegistryName(tree.sapling, BuiltInRegistries.BLOCK).getPath(), Functions.identity()); //sure

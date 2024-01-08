@@ -3,8 +3,6 @@ package org.violetmoon.quark.content.mobs.module;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.QuarkClient;
 import org.violetmoon.quark.base.client.handler.ModelHandler;
-import org.violetmoon.quark.base.config.QuarkGeneralConfig;
-import org.violetmoon.quark.base.world.EntitySpawnHandler;
 import org.violetmoon.quark.content.mobs.client.render.entity.ForgottenRenderer;
 import org.violetmoon.quark.content.mobs.entity.Forgotten;
 import org.violetmoon.quark.content.mobs.item.ForgottenHatItem;
@@ -21,6 +19,7 @@ import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.BooleanSuppliers;
 import org.violetmoon.zeta.util.Hint;
+import org.violetmoon.zeta.world.EntitySpawnHandler;
 
 import com.google.common.collect.ImmutableSet;
 

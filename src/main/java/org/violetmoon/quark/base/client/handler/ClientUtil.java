@@ -3,7 +3,6 @@ package org.violetmoon.quark.base.client.handler;
 import java.util.Random;
 
 import org.violetmoon.quark.base.Quark;
-import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.zeta.client.config.screen.ZetaScreen;
 import org.violetmoon.zeta.client.event.play.ZScreen;
 import org.violetmoon.zeta.event.bus.PlayEvent;
@@ -73,15 +72,15 @@ public class ClientUtil {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
 
 		if(extendRight) {
-			guiGraphics.blit(MiscUtil.GENERAL_ICONS, left, top, 227, 9, 6, 17, 256, 256);
+			guiGraphics.blit(GENERAL_ICONS, left, top, 227, 9, 6, 17, 256, 256);
 			for(int i = 0; i < w; i++)
-				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + i + 6, top, 232, 9, 1, 17, 256, 256);
-			guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + w + 5, top, 236, 9, 5, 17, 256, 256);
+				guiGraphics.blit(GENERAL_ICONS, left + i + 6, top, 232, 9, 1, 17, 256, 256);
+			guiGraphics.blit(GENERAL_ICONS, left + w + 5, top, 236, 9, 5, 17, 256, 256);
 		} else {
-			guiGraphics.blit(MiscUtil.GENERAL_ICONS, left, top, 242, 9, 5, 17, 256, 256);
+			guiGraphics.blit(GENERAL_ICONS, left, top, 242, 9, 5, 17, 256, 256);
 			for(int i = 0; i < w; i++)
-				guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + i + 5, top, 248, 9, 1, 17, 256, 256);
-			guiGraphics.blit(MiscUtil.GENERAL_ICONS, left + w + 5, top, 250, 9, 6, 17, 256, 256);
+				guiGraphics.blit(GENERAL_ICONS, left + i + 5, top, 248, 9, 1, 17, 256, 256);
+			guiGraphics.blit(GENERAL_ICONS, left + w + 5, top, 250, 9, 6, 17, 256, 256);
 		}
 
 		int alphaInt = (int) (256F * alpha) << 24;
