@@ -3,6 +3,7 @@ package org.violetmoon.quark.content.building.module;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import org.violetmoon.quark.base.Quark;
 import org.violetmoon.zeta.block.ZetaBlock;
 import org.violetmoon.zeta.block.ZetaFlammableBlock;
 import org.violetmoon.zeta.block.ZetaFlammablePillarBlock;
@@ -13,7 +14,6 @@ import org.violetmoon.zeta.event.load.ZRegister;
 import org.violetmoon.zeta.module.ZetaLoadModule;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.util.Hint;
-import org.violetmoon.zeta.util.handler.FuelHandler;
 
 import com.google.common.collect.Lists;
 
@@ -161,9 +161,9 @@ public class CompressedBlocksModule extends ZetaModule {
 					ComposterBlock.COMPOSTABLES.put(block.asItem(), 1F);
 		});
 
-		FuelHandler.addFuel(stick_block, stickBlockFuelTime);
-		FuelHandler.addFuel(charcoal_block, charcoalBlockFuelTime);
-		FuelHandler.addFuel(blaze_lantern, blazeLanternFuelTime);
+		Quark.ZETA.fuel.addFuel(stick_block, stickBlockFuelTime);
+		Quark.ZETA.fuel.addFuel(charcoal_block, charcoalBlockFuelTime);
+		Quark.ZETA.fuel.addFuel(blaze_lantern, blazeLanternFuelTime);
 	}
 
 	private Block pillar(String name, MapColor color, boolean compost, BooleanSupplier cond, int flammability) {

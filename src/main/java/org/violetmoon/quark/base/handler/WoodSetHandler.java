@@ -47,7 +47,6 @@ import org.violetmoon.zeta.item.ZetaSignItem;
 import org.violetmoon.zeta.module.ZetaModule;
 import org.violetmoon.zeta.registry.CreativeTabManager;
 import org.violetmoon.zeta.util.BooleanSuppliers;
-import org.violetmoon.zeta.util.handler.FuelHandler;
 import org.violetmoon.zeta.util.handler.ToolInteractionHandler;
 
 import com.google.common.collect.ImmutableSet;
@@ -179,8 +178,8 @@ public class WoodSetHandler {
 
 		VariantLaddersModule.variantLadders.add(set.ladder);
 
-		FuelHandler.addFuel(set.boatItem, 60 * 20);
-		FuelHandler.addFuel(set.chestBoatItem, 60 * 20);
+		Quark.ZETA.fuel.addFuel(set.boatItem, 60 * 20);
+		Quark.ZETA.fuel.addFuel(set.chestBoatItem, 60 * 20);
 
 		addQuarkBoatType(name, new QuarkBoatType(name, set.boatItem, set.chestBoatItem, set.planks));
 
