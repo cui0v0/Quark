@@ -54,14 +54,11 @@ public class ClientProxy extends CommonProxy {
 				.subscribe(ContributorRewardHandler.Client.class)
 				.subscribe(WoodSetHandler.Client.class);
 		
-		// TODO: ZETA: Some of the registers here are for zeta classes that should be registerd in zeta
 		Quark.ZETA.playBus
 				.subscribe(ContributorRewardHandler.Client.class)
 				.subscribe(ClientUtil.class)
 				.subscribe(InventoryButtonHandler.class)
-				.subscribe(QButtonHandler.class)
-				.subscribe(TopLayerTooltipHandler.class)
-				.subscribe(new RequiredModTooltipHandler.Client(Quark.ZETA)); //TODO: I think this can be spread into ZetaItem/ZetaBlock and not a singleton
+				.subscribe(QButtonHandler.class);
 
 		super.start(); //<- loads and initializes modules
 

@@ -69,11 +69,9 @@ public class CommonProxy {
 				.subscribe(WoodSetHandler.class)
 				.subscribe(this);
 
-		// TODO: ZETA: Some of the registers here are for zeta classes that should be registerd in zeta
 		Quark.ZETA.playBus
 				.subscribe(CapabilityHandler.class)
-				.subscribe(ContributorRewardHandler.class)
-				.subscribe(SyncedFlagHandler.class);
+				.subscribe(ContributorRewardHandler.class);
 
 		// OTHER RANDOM SHIT
 		QuarkNetwork.init();
