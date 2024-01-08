@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraftforge.common.Tags;
 
+import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
 import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.config.AirStoneClusterConfig;
 import org.violetmoon.quark.content.world.config.BigStoneClusterConfig;
 import org.violetmoon.quark.content.world.gen.BigStoneClusterGenerator;
@@ -101,7 +101,7 @@ public class BigStoneClustersModule extends ZetaModule {
 	}
 
 	private void add(BigStoneClusterConfig config, Block block, BooleanSupplier condition) {
-		WorldGenHandler.addGenerator(this, new BigStoneClusterGenerator(config, block.defaultBlockState(), condition), Decoration.UNDERGROUND_DECORATION, WorldGenWeights.BIG_STONE_CLUSTERS);
+		WorldGenHandler.addGenerator(this, new BigStoneClusterGenerator(config, block.defaultBlockState(), condition), Decoration.UNDERGROUND_DECORATION, QuarkWorldGenWeights.BIG_STONE_CLUSTERS);
 	}
 
 	@LoadEvent

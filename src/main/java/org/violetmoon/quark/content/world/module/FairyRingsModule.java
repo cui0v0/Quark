@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
+import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
 import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.gen.FairyRingGenerator;
 import org.violetmoon.zeta.config.Config;
 import org.violetmoon.zeta.config.type.DimensionConfig;
@@ -40,7 +40,7 @@ public class FairyRingsModule extends ZetaModule {
 
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
-		WorldGenHandler.addGenerator(this, new FairyRingGenerator(dimensions), Decoration.TOP_LAYER_MODIFICATION, WorldGenWeights.FAIRY_RINGS);
+		WorldGenHandler.addGenerator(this, new FairyRingGenerator(dimensions), Decoration.TOP_LAYER_MODIFICATION, QuarkWorldGenWeights.FAIRY_RINGS);
 	}
 
 	@LoadEvent

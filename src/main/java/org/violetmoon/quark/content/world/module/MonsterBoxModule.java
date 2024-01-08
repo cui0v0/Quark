@@ -18,8 +18,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
 import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MonsterBoxBlock;
 import org.violetmoon.quark.content.world.block.be.MonsterBoxBlockEntity;
 import org.violetmoon.quark.content.world.gen.MonsterBoxGenerator;
@@ -78,7 +78,7 @@ public class MonsterBoxModule extends ZetaModule {
 
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
-		WorldGenHandler.addGenerator(this, new MonsterBoxGenerator(dimensions), Decoration.UNDERGROUND_DECORATION, WorldGenWeights.MONSTER_BOXES);
+		WorldGenHandler.addGenerator(this, new MonsterBoxGenerator(dimensions), Decoration.UNDERGROUND_DECORATION, QuarkWorldGenWeights.MONSTER_BOXES);
 	}
 
 	@PlayEvent

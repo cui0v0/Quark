@@ -18,8 +18,8 @@ import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.material.MapColor;
 
 import org.violetmoon.quark.base.Quark;
+import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
 import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.world.block.MyaliteCrystalBlock;
 import org.violetmoon.quark.content.world.gen.SpiralSpireGenerator;
 import org.violetmoon.zeta.advancement.ManualTrigger;
@@ -91,7 +91,7 @@ public class SpiralSpiresModule extends ZetaModule {
 
 	@LoadEvent
 	public final void setup(ZCommonSetup event) {
-		WorldGenHandler.addGenerator(this, new SpiralSpireGenerator(dimensions), Decoration.SURFACE_STRUCTURES, WorldGenWeights.SPIRAL_SPIRES);
+		WorldGenHandler.addGenerator(this, new SpiralSpireGenerator(dimensions), Decoration.SURFACE_STRUCTURES, QuarkWorldGenWeights.SPIRAL_SPIRES);
 	}
 
 	@PlayEvent

@@ -36,7 +36,7 @@ import org.violetmoon.quark.api.IQuarkButtonAllowed;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler;
 import org.violetmoon.quark.base.client.handler.InventoryButtonHandler.ButtonTargetType;
 import org.violetmoon.quark.base.config.QuarkGeneralConfig;
-import org.violetmoon.quark.base.config.type.inputtable.RGBAColorConfig;
+import org.violetmoon.quark.base.config.type.RGBAColorConfig;
 import org.violetmoon.quark.base.handler.InventoryTransferHandler;
 import org.violetmoon.quark.base.handler.MiscUtil;
 import org.violetmoon.quark.base.handler.SimilarBlockTypeHandler;

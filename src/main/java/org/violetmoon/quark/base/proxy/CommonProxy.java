@@ -62,20 +62,14 @@ public class CommonProxy {
 		// GLOBAL EVENT LISTENERS
 		Quark.ZETA.loadBus
 				.subscribe(ContributorRewardHandler.class)
-				.subscribe(EntitySpawnHandler.class)
 				.subscribe(QuarkSounds.class)
 				.subscribe(WoodSetHandler.class)
-				.subscribe(WorldGenHandler.class)
 				.subscribe(this);
 
 		Quark.ZETA.playBus
 				.subscribe(CapabilityHandler.class)
 				.subscribe(ContributorRewardHandler.class)
 				.subscribe(SyncedFlagHandler.class)
-
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		bus.addListener(this::configChanged);
-		WorldGenHandler.registerBiomeModifier(bus);
 
 		// OTHER RANDOM SHIT
 		QuarkNetwork.init();
@@ -112,24 +106,6 @@ public class CommonProxy {
 	@LoadEvent
 	public void recipe(ZRegister event) {
 		event.getRegistry().register(ExclusionRecipe.SERIALIZER, "exclusion", Registries.RECIPE_SERIALIZER);
-	}
-
-	//forge event
-	public void configChanged(ModConfigEvent event) {
-		if(!event.getConfig().getModId().equals(Quark.MOD_ID) || Quark.ZETA.configInternals == null)
-			return;
-
-		// https://github.com/VazkiiMods/Quark/commit/b0e00864f74539d8650cb349e88d0302a0fda8e4
-		// "The Forge config api writes to the config file on every single change
-		//  to the config, which would cause the file watcher to trigger
-		//  a config reload while the config gui is committing changes."
-		if(System.currentTimeMillis() - Quark.ZETA.configInternals.debounceTime() > 20)
-			handleQuarkConfigChange();
-	}
-
-	public void handleQuarkConfigChange() {
-		Quark.ZETA.configManager.onReload();
-		Quark.ZETA.loadBus.fire(new ZConfigChanged());
 	}
 
 	/**

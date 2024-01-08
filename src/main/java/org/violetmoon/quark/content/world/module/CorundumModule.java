@@ -21,8 +21,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.violetmoon.quark.base.Quark;
 import org.violetmoon.quark.base.handler.ToolInteractionHandler;
 import org.violetmoon.quark.base.util.CorundumColor;
+import org.violetmoon.quark.base.util.QuarkWorldGenWeights;
 import org.violetmoon.quark.base.world.WorldGenHandler;
-import org.violetmoon.quark.base.world.WorldGenWeights;
 import org.violetmoon.quark.content.tools.module.BeaconRedirectionModule;
 import org.violetmoon.quark.content.world.block.CorundumBlock;
 import org.violetmoon.quark.content.world.block.CorundumClusterBlock;
@@ -110,7 +110,7 @@ public class CorundumModule extends ZetaModule {
 		WorldGenHandler.addGenerator(this,
 			new UndergroundStyleGenerator(generationSettings, "corundum"),
 			GenerationStep.Decoration.UNDERGROUND_DECORATION,
-			WorldGenWeights.UNDERGROUND_BIOMES
+			QuarkWorldGenWeights.UNDERGROUND_BIOMES
 		);
 	}
 
