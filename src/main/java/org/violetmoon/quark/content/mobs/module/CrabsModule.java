@@ -126,8 +126,8 @@ public class CrabsModule extends ZetaModule {
 				.build("crab");
 		Quark.ZETA.registry.register(crabType, "crab", Registries.ENTITY_TYPE);
 
-		EntitySpawnHandler.registerSpawn(crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
-		EntitySpawnHandler.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
+		Quark.ZETA.entitySpawn.registerSpawn(crabType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Crab::spawnPredicate, spawnConfig);
+		Quark.ZETA.entitySpawn.addEgg(this, crabType, 0x893c22, 0x916548, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new FuriousCocktailModifier(this, () -> enableBrewing, ImmutableSet.of(resilience))
 				.setCondition(() -> resilienceRequiredForAllEffects));

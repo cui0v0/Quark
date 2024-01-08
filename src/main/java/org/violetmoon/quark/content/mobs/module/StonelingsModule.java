@@ -71,13 +71,13 @@ public class StonelingsModule extends ZetaModule {
 
 		makeStonelingTrigger = event.getAdvancementModifierRegistry().registerManualTrigger("make_stoneling");
 
-		EntitySpawnHandler.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
+		Quark.ZETA.entitySpawn.registerSpawn(stonelingType, MobCategory.MONSTER, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Stoneling::spawnPredicate, spawnConfig);
 		// Hardcoded AF yay
 		if(spawnConfig.isEnabled()) {
 			var GWConfig = new EntitySpawnConfig(200, 1, 4, CompoundBiomeConfig.fromBiomeReslocs(false, GlimmeringWealdModule.BIOME_NAME.toString()));
-			EntitySpawnHandler.track(stonelingType, MobCategory.MONSTER,  GWConfig, false);
+			Quark.ZETA.entitySpawn.track(stonelingType, MobCategory.MONSTER,  GWConfig, false);
 		}
-		EntitySpawnHandler.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);
+		Quark.ZETA.entitySpawn.addEgg(this, stonelingType, 0xA1A1A1, 0x505050, spawnConfig);
 	}
 
 	@LoadEvent

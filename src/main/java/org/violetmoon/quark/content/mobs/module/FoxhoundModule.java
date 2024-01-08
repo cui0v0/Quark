@@ -77,10 +77,10 @@ public class FoxhoundModule extends ZetaModule {
 				.build("foxhound");
 		Quark.ZETA.registry.register(foxhoundType, "foxhound", Registries.ENTITY_TYPE);
 
-		EntitySpawnHandler.registerSpawn(foxhoundType, MobCategory.MONSTER, Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Foxhound::spawnPredicate, spawnConfig);
-		EntitySpawnHandler.track(foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);
+		Quark.ZETA.entitySpawn.registerSpawn(foxhoundType, MobCategory.MONSTER, Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Foxhound::spawnPredicate, spawnConfig);
+		Quark.ZETA.entitySpawn.track(foxhoundType, MobCategory.MONSTER, lesserSpawnConfig, true);
 
-		EntitySpawnHandler.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
+		Quark.ZETA.entitySpawn.addEgg(this, foxhoundType, 0x890d0d, 0xf2af4b, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new MonsterHunterModifier(this, ImmutableSet.of(foxhoundType)));
 		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(foxhoundType)));

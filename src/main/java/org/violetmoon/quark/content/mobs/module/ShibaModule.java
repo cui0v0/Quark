@@ -56,8 +56,8 @@ public class ShibaModule extends ZetaModule {
 				.build("shiba");
 		Quark.ZETA.registry.register(shibaType, "shiba", Registries.ENTITY_TYPE);
 
-		EntitySpawnHandler.registerSpawn(shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
-		EntitySpawnHandler.addEgg(this, shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
+		Quark.ZETA.entitySpawn.registerSpawn(shibaType, MobCategory.CREATURE, Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, spawnConfig);
+		Quark.ZETA.entitySpawn.addEgg(this, shibaType, 0xa86741, 0xe8d5b6, spawnConfig);
 
 		event.getAdvancementModifierRegistry().addModifier(new TwoByTwoModifier(this, ImmutableSet.of(shibaType)));
 
