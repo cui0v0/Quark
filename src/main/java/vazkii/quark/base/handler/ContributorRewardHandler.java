@@ -56,10 +56,10 @@ public class ContributorRewardHandler {
 	}
 
 	public static void init() {
-		if (thread != null && thread.isAlive())
-			return;
+		// if (thread != null && thread.isAlive())
+		// 	return;
 
-		thread = new ThreadContributorListLoader();
+		// thread = new ThreadContributorListLoader();
 	}
 
 	public static int getTier(Player player) {
